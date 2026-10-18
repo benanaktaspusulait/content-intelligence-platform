@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/private/tmp/verify_derived_http.py", line 46, in <module>
+    assert row['sourceUnknowns']==[{'check':k,'reason':f['reason']} for k,f in raw['semanticChecks'].items() if f['outcome']=='UNKNOWN']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

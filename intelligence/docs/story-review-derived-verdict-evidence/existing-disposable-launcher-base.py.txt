@@ -1,0 +1,54 @@
+import os,json,subprocess,time,shutil,secrets,socket,xml.etree.ElementTree as ET
+from pathlib import Path
+R=Path('/Users/benanaktas/project/video/content-intelligence-platform')
+D=R/'intelligence/backend/target/authentic-story-assessment-http-e2e-v1';D.mkdir(mode=0o700,exist_ok=False)
+S=R/'intelligence/backend/target/disposable-owner-http/run-oT9HS7'
+M=json.loads((R/'intelligence/docs/AUTHENTIC_STORY_ASSESSMENT_REVIEW_MANIFEST.json').read_text())
+M={'sourceScope':M['scope']['sourceScope']}
+def save(n,v):(D/n).write_text(json.dumps(v,indent=2,ensure_ascii=False)+'\n')
+def call(a,**kw):return subprocess.check_output(a,text=True,**kw).strip()
+def port():
+ s=socket.socket();s.bind(('127.0.0.1',0));p=s.getsockname()[1];s.close();return p
+net='pompom-assessment-e2e-v1-isolated';db='pompom-assessment-e2e-v1-db'
+call(['docker','network','create',net]);pw=secrets.token_hex(24)
+call(['docker','run','-d','--name',db,'--network',net,'-p','127.0.0.1::5432','-e','POSTGRES_DB=disposable_owner_http','-e','POSTGRES_USER=disposable_owner_http','-e','POSTGRES_PASSWORD='+pw,'postgres:17-alpine'])
+for _ in range(120):
+ if subprocess.run(['docker','exec',db,'pg_isready','-U','disposable_owner_http','-d','disposable_owner_http'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0:break
+ time.sleep(.3)
+time.sleep(1)
+call(['docker','cp',str(S/'disposable-real-provider.dump'),db+':/tmp/snapshot.dump'])
+subprocess.run(['docker','exec',db,'pg_restore','-U','disposable_owner_http','-d','disposable_owner_http','--no-owner','/tmp/snapshot.dump'],check=True)
+def q(sql):return call(['docker','exec',db,'psql','-U','disposable_owner_http','-d','disposable_owner_http','-Atc',sql])
+assert q('select current_database()')=='disposable_owner_http'
+for table in ('story_evolution_runs','optimization_runs'):
+ assert q("select count(*) from "+table+" where state in ('READY','RUNNING','AUTHORIZED')")=='0',table+' has active jobs'
+assert q("select count(*) from post_family_workflow_events where id in ('"+M['sourceScope']['sourceStoryRecordId']+"','"+M['sourceScope']['sourceApprovalRecordId']+"','"+M['sourceScope']['baselineAnalysisId']+"')")=='3'
+pgport=int(call(['docker','port',db,'5432']).rsplit(':',1)[1]);mlport=port();webport=port()
+# Private runtime configuration excludes production DB and API credentials.
+compose=json.loads(call(['docker','compose','config','--format','json'],cwd=R/'intelligence'))['services']['ml-service']['environment']
+data=D/'data';shutil.copytree(S/'data-root',data)
+shutil.copytree(R/'intelligence/data/workflow',data/'workflow',dirs_exist_ok=True)
+credential=D/'owner.credential';shutil.copyfile(S/'owner.credential',credential);credential.chmod(0o600)
+token=secrets.token_hex(48)
+base={k:v for k,v in os.environ.items() if k in ('PATH','HOME','TMPDIR','LANG','JAVA_HOME','SSL_CERT_FILE','REQUESTS_CA_BUNDLE')}
+mlenv={**base,**{k:str(v) for k,v in compose.items() if k.startswith(('WORKFLOW_STORY_','WORKFLOW_STORY_REVIEW_'))},'PYTHONPATH':str(R/'intelligence/ml-service')+':'+str(R/'intelligence/ml-service/tests'),'POMPOM_DATA_ROOT':str(data),'POMPOM_DISPOSABLE_REAL_PROVIDER':'true','CPQ_PILOT_REAL_ENABLED':'true','WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_ADAPTIVE_DISPATCH_TOKEN':token,'POMPOM_DISPOSABLE_NETWORK_AUDIT':str(D/'ml-network-audit.json'),'POMPOM_DISPOSABLE_ML_PORT':str(mlport),'OPENAI_REQUEST_TIMEOUT_SECONDS':'20'}
+mlenv['ASSESSMENT_MOCK_CALL_TRACE']=str(D/'mock-sdk-calls.jsonl')
+ml=subprocess.Popen([str(R/'intelligence/ml-service/.venv/bin/python'),'/private/tmp/assessment_mock_http_server.py'],env=mlenv,cwd=R/'intelligence/ml-service',stdout=(D/'ml.log').open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+props={x.attrib['name']:x.attrib['value'] for x in ET.parse(R/'intelligence/backend/target/assessment-only-build/surefire-reports/TEST-com.pompomhills.intelligence.workflow.StoryExperimentContractTest.xml').getroot().find('properties')}
+cp=props['java.class.path'];cp=':'.join(p for p in cp.split(':') if not p.endswith('test-classes'))
+java=Path(props['java.home'])/'bin/java';javac=java.with_name('javac')
+# Ephemeral launcher uses existing Java-21 network guard pattern; no app edits.
+(D/'PilotGuardMain.java').write_text('''import java.security.Permission;import java.util.Set;
+public class PilotGuardMain {
+ @SuppressWarnings("removal") public static void main(String[] args)throws Exception {
+ final Set<Integer> ports=Set.of(Integer.parseInt(System.getenv("PILOT_DB_PORT")),Integer.parseInt(System.getenv("PILOT_ML_PORT")));
+ System.setSecurityManager(new SecurityManager(){public void checkPermission(Permission p){} public void checkPermission(Permission p,Object c){}
+ public void checkConnect(String host,int port){if(Set.of("localhost","127.0.0.1","::1","[::1]","0:0:0:0:0:0:0:1").contains(host)&&(port==-1||ports.contains(port)))return;throw new SecurityException("Disposable runtime denies non-allowlisted network destination");}
+ public void checkConnect(String h,int p,Object c){checkConnect(h,p);}});
+ com.pompomhills.intelligence.PompomCreativeIntelligenceApplication.main(args);
+ }}''')
+subprocess.run([str(javac),'-cp',cp,str(D/'PilotGuardMain.java')],check=True)
+benv={**base,'DB_URL':f'jdbc:postgresql://127.0.0.1:{pgport}/disposable_owner_http','DB_USERNAME':'disposable_owner_http','DB_PASSWORD':pw,'SERVER_PORT':str(webport),'CPQ_OWNER_ID':'disposable-owner','CPQ_OWNER_SECRET_FILE':str(credential),'CPQ_PILOT_REAL_ENABLED':'true','POMPOM_DATA_ROOT':str(data),'ML_SERVICE_URL':f'http://127.0.0.1:{mlport}','ML_BASE_URL':f'http://127.0.0.1:{mlport}','QA_SERVICE_URL':f'http://127.0.0.1:{mlport}','WORKFLOW_ADAPTIVE_DISPATCH_TOKEN':token,'PILOT_DB_PORT':str(pgport),'PILOT_ML_PORT':str(mlport)}
+backend=subprocess.Popen([str(java),'-Djava.security.manager=allow','-cp',str(D)+':'+cp,'PilotGuardMain','--pompom.cpq-story-assessment.evidence-root='+str(R/'intelligence/docs'),'--server.address=127.0.0.1','--spring.ai.enabled=false','--pompom.openart.enabled=false','--pompom.meta.enabled=false','--pompom.story-evolution.poll-delay-ms=2000','--spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true'],env=benv,cwd=R/'intelligence/backend',stdout=(D/'backend.log').open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+save('runtime.json',{'databaseContainer':db,'network':net,'databasePort':pgport,'mlPort':mlport,'backendPort':webport,'mlPid':ml.pid,'backendPid':backend.pid,'databaseSnapshot':str(S/'disposable-real-provider.dump'),'providerRequestsBeforeStart':0,'productionDatabaseCredentialsPresent':False,'productionDatabaseNetworkAllowed':False,'productionApiCredentialsPresent':False,'ownerCredentialReused':True})
+print(json.dumps({'runtime':str(D),'mlPid':ml.pid,'backendPid':backend.pid,'backendPort':webport,'providerCalls':0}))

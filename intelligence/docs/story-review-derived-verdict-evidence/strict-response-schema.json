@@ -1,0 +1,498 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": [
+        "assessment-only-story-review-v4-derived-verdict"
+      ]
+    },
+    "candidateAssessments": {
+      "type": "object",
+      "properties": {
+        "A": {
+          "$ref": "#/$defs/candidate_A"
+        },
+        "B": {
+          "$ref": "#/$defs/candidate_B"
+        }
+      },
+      "required": [
+        "A",
+        "B"
+      ],
+      "additionalProperties": false
+    },
+    "researchPreference": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "NO_CREATIVE_WINNER"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "evidenceLimitations": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "candidateAssessments",
+    "researchPreference",
+    "reason",
+    "evidenceLimitations"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ids_S": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "S01-eddd77bfa3dd735f",
+          "S02-eddd77bfa3dd735f",
+          "S03-eddd77bfa3dd735f",
+          "S04-eddd77bfa3dd735f",
+          "S05-eddd77bfa3dd735f",
+          "S06-eddd77bfa3dd735f",
+          "S07-eddd77bfa3dd735f"
+        ]
+      }
+    },
+    "ids_A": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "A01-6f1e177d2eddfff5",
+          "A02-6f1e177d2eddfff5",
+          "A03-6f1e177d2eddfff5",
+          "A04-6f1e177d2eddfff5",
+          "A05-6f1e177d2eddfff5",
+          "A06-6f1e177d2eddfff5",
+          "A07-6f1e177d2eddfff5",
+          "A08-6f1e177d2eddfff5",
+          "A09-6f1e177d2eddfff5",
+          "A10-6f1e177d2eddfff5"
+        ]
+      }
+    },
+    "ids_B": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "B01-bf050df0590b2a67",
+          "B02-bf050df0590b2a67",
+          "B03-bf050df0590b2a67",
+          "B04-bf050df0590b2a67",
+          "B05-bf050df0590b2a67",
+          "B06-bf050df0590b2a67",
+          "B07-bf050df0590b2a67",
+          "B08-bf050df0590b2a67"
+        ]
+      }
+    },
+    "semantic_A": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "SEMANTIC_SUPPORT",
+            "CONTRADICTION",
+            "SUBSTANTIVE_OMISSION",
+            "INSUFFICIENT"
+          ]
+        },
+        "sourceEvidenceIds": {
+          "$ref": "#/$defs/ids_S"
+        },
+        "candidateEvidenceIds": {
+          "$ref": "#/$defs/ids_A"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "basis",
+        "sourceEvidenceIds",
+        "candidateEvidenceIds",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "dimension_A": {
+      "type": "object",
+      "properties": {
+        "candidateEvidenceIds": {
+          "$ref": "#/$defs/ids_A"
+        },
+        "strength": {
+          "type": "string"
+        },
+        "weakness": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidateEvidenceIds",
+        "strength",
+        "weakness",
+        "risk"
+      ],
+      "additionalProperties": false
+    },
+    "comparison_A": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "MATERIAL_IMPROVEMENT",
+            "MINOR_VARIATION",
+            "NO_MATERIAL_IMPROVEMENT",
+            "UNKNOWN"
+          ]
+        },
+        "baselineEvidenceIds": {
+          "$ref": "#/$defs/ids_S"
+        },
+        "candidateEvidenceIds": {
+          "$ref": "#/$defs/ids_A"
+        },
+        "change": {
+          "type": "string"
+        },
+        "visibleConsequence": {
+          "type": "string"
+        },
+        "addressedWeakness": {
+          "type": "string"
+        },
+        "newRisk": {
+          "type": "string"
+        },
+        "materialityReason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "baselineEvidenceIds",
+        "candidateEvidenceIds",
+        "change",
+        "visibleConsequence",
+        "addressedWeakness",
+        "newRisk",
+        "materialityReason"
+      ],
+      "additionalProperties": false
+    },
+    "candidate_A": {
+      "type": "object",
+      "properties": {
+        "semanticChecks": {
+          "type": "object",
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "premise": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "rule": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "continuity": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "ending": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "trigger_conditions": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "single_mechanic": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "causal_clarity": {
+              "$ref": "#/$defs/semantic_A"
+            },
+            "protected_events": {
+              "$ref": "#/$defs/semantic_A"
+            }
+          },
+          "required": [
+            "identity",
+            "premise",
+            "rule",
+            "continuity",
+            "ending",
+            "trigger_conditions",
+            "single_mechanic",
+            "causal_clarity",
+            "protected_events"
+          ],
+          "additionalProperties": false
+        },
+        "creativeDimensions": {
+          "type": "object",
+          "properties": {
+            "SCROLL_STOP_VISUAL_PROMISE": {
+              "$ref": "#/$defs/dimension_A"
+            },
+            "CAUSAL_PROGRESSION": {
+              "$ref": "#/$defs/dimension_A"
+            },
+            "VISUAL_STORYTELLING": {
+              "$ref": "#/$defs/dimension_A"
+            },
+            "PRODUCTION_EXECUTABILITY": {
+              "$ref": "#/$defs/dimension_A"
+            },
+            "ENDING_REPLAY": {
+              "$ref": "#/$defs/dimension_A"
+            },
+            "DISTINCTIVE_CREATIVE_VALUE": {
+              "$ref": "#/$defs/dimension_A"
+            }
+          },
+          "required": [
+            "SCROLL_STOP_VISUAL_PROMISE",
+            "CAUSAL_PROGRESSION",
+            "VISUAL_STORYTELLING",
+            "PRODUCTION_EXECUTABILITY",
+            "ENDING_REPLAY",
+            "DISTINCTIVE_CREATIVE_VALUE"
+          ],
+          "additionalProperties": false
+        },
+        "creativeConclusion": {
+          "$ref": "#/$defs/comparison_A"
+        }
+      },
+      "required": [
+        "semanticChecks",
+        "creativeDimensions",
+        "creativeConclusion"
+      ],
+      "additionalProperties": false
+    },
+    "semantic_B": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "SEMANTIC_SUPPORT",
+            "CONTRADICTION",
+            "SUBSTANTIVE_OMISSION",
+            "INSUFFICIENT"
+          ]
+        },
+        "sourceEvidenceIds": {
+          "$ref": "#/$defs/ids_S"
+        },
+        "candidateEvidenceIds": {
+          "$ref": "#/$defs/ids_B"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "basis",
+        "sourceEvidenceIds",
+        "candidateEvidenceIds",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "dimension_B": {
+      "type": "object",
+      "properties": {
+        "candidateEvidenceIds": {
+          "$ref": "#/$defs/ids_B"
+        },
+        "strength": {
+          "type": "string"
+        },
+        "weakness": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidateEvidenceIds",
+        "strength",
+        "weakness",
+        "risk"
+      ],
+      "additionalProperties": false
+    },
+    "comparison_B": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "MATERIAL_IMPROVEMENT",
+            "MINOR_VARIATION",
+            "NO_MATERIAL_IMPROVEMENT",
+            "UNKNOWN"
+          ]
+        },
+        "baselineEvidenceIds": {
+          "$ref": "#/$defs/ids_S"
+        },
+        "candidateEvidenceIds": {
+          "$ref": "#/$defs/ids_B"
+        },
+        "change": {
+          "type": "string"
+        },
+        "visibleConsequence": {
+          "type": "string"
+        },
+        "addressedWeakness": {
+          "type": "string"
+        },
+        "newRisk": {
+          "type": "string"
+        },
+        "materialityReason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "baselineEvidenceIds",
+        "candidateEvidenceIds",
+        "change",
+        "visibleConsequence",
+        "addressedWeakness",
+        "newRisk",
+        "materialityReason"
+      ],
+      "additionalProperties": false
+    },
+    "candidate_B": {
+      "type": "object",
+      "properties": {
+        "semanticChecks": {
+          "type": "object",
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "premise": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "rule": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "continuity": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "ending": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "trigger_conditions": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "single_mechanic": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "causal_clarity": {
+              "$ref": "#/$defs/semantic_B"
+            },
+            "protected_events": {
+              "$ref": "#/$defs/semantic_B"
+            }
+          },
+          "required": [
+            "identity",
+            "premise",
+            "rule",
+            "continuity",
+            "ending",
+            "trigger_conditions",
+            "single_mechanic",
+            "causal_clarity",
+            "protected_events"
+          ],
+          "additionalProperties": false
+        },
+        "creativeDimensions": {
+          "type": "object",
+          "properties": {
+            "SCROLL_STOP_VISUAL_PROMISE": {
+              "$ref": "#/$defs/dimension_B"
+            },
+            "CAUSAL_PROGRESSION": {
+              "$ref": "#/$defs/dimension_B"
+            },
+            "VISUAL_STORYTELLING": {
+              "$ref": "#/$defs/dimension_B"
+            },
+            "PRODUCTION_EXECUTABILITY": {
+              "$ref": "#/$defs/dimension_B"
+            },
+            "ENDING_REPLAY": {
+              "$ref": "#/$defs/dimension_B"
+            },
+            "DISTINCTIVE_CREATIVE_VALUE": {
+              "$ref": "#/$defs/dimension_B"
+            }
+          },
+          "required": [
+            "SCROLL_STOP_VISUAL_PROMISE",
+            "CAUSAL_PROGRESSION",
+            "VISUAL_STORYTELLING",
+            "PRODUCTION_EXECUTABILITY",
+            "ENDING_REPLAY",
+            "DISTINCTIVE_CREATIVE_VALUE"
+          ],
+          "additionalProperties": false
+        },
+        "creativeConclusion": {
+          "$ref": "#/$defs/comparison_B"
+        }
+      },
+      "required": [
+        "semanticChecks",
+        "creativeDimensions",
+        "creativeConclusion"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

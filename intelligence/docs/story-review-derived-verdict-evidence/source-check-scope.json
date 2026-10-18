@@ -1,0 +1,86 @@
+{
+  "identity": {
+    "meaning": "Preserve protected character identity.",
+    "anchorEvidence": {
+      "identity": [
+        "S01-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "premise": {
+    "meaning": "Preserve protected initial impossible situation.",
+    "anchorEvidence": {
+      "premise": [
+        "S01-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "rule": {
+    "meaning": "Preserve the primary impossible physical rule.",
+    "anchorEvidence": {
+      "rule": [
+        "S05-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "continuity": {
+    "meaning": "Preserve protected held states and release transitions.",
+    "anchorEvidence": {
+      "continuity": [
+        "S06-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "ending": {
+    "meaning": "Preserve the protected final state.",
+    "anchorEvidence": {
+      "ending": [
+        "S07-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "trigger_conditions": {
+    "meaning": "Preserve conditions activating the impossible rule, not triggers of ordinary/release events.",
+    "anchorEvidence": {
+      "rule": [
+        "S05-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "single_mechanic": {
+    "meaning": "Preserve the primary impossible mechanism; ordinary actions and release events need not be that mechanism.",
+    "anchorEvidence": {
+      "rule": [
+        "S05-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "causal_clarity": {
+    "meaning": "Preserve understandable action-to-impossible-consequence relationships and order.",
+    "anchorEvidence": {
+      "rule": [
+        "S05-eddd77bfa3dd735f"
+      ]
+    }
+  },
+  "protected_events": {
+    "meaning": "Preserve explicitly protected facts/events only; incidental staging is not a new lock.",
+    "anchorEvidence": {
+      "identity": [
+        "S01-eddd77bfa3dd735f"
+      ],
+      "premise": [
+        "S01-eddd77bfa3dd735f"
+      ],
+      "rule": [
+        "S05-eddd77bfa3dd735f"
+      ],
+      "continuity": [
+        "S06-eddd77bfa3dd735f"
+      ],
+      "ending": [
+        "S07-eddd77bfa3dd735f"
+      ]
+    }
+  }
+}

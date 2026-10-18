@@ -1,0 +1,7 @@
+from pathlib import Path
+s=Path('/private/tmp/assessment_http_runtime.py').read_text()
+s=s.replace('authentic-story-assessment-http-e2e-v1','derived-verdict-anchor-http-v1').replace('pompom-assessment-e2e-v1','pompom-derived-verdict-v1')
+s=s.replace('/private/tmp/assessment_mock_http_server.py','/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/story_assessment_http_sdk.py')
+s=s.replace('target/assessment-only-build/','target/derived-verdict-build/')
+s=s.replace("mlenv['ASSESSMENT_MOCK_CALL_TRACE']=str(D/'mock-sdk-calls.jsonl')", "mlenv['ASSESSMENT_MOCK_CALL_TRACE']=str(D/'mock-sdk-calls.jsonl')\nmlenv['OPENAI_API_KEY']='offline-not-a-credential'\nmlenv['ASSESSMENT_SDK_CONTROL']=str(D/'mode.json')\n(D/'mode.json').write_text('{\"mode\":\"positive\"}')")
+exec(compile(s,'<existing-disposable-test-launcher>','exec'))

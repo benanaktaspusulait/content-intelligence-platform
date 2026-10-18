@@ -1,0 +1,16 @@
+[
+  {
+    "runtime": "derived-verdict-anchor-http-v1",
+    "backendStopped": true,
+    "mlStopped": true,
+    "ownDatabaseStatus": "exited",
+    "productionServicesTouched": false
+  },
+  {
+    "runtime": "derived-verdict-final-unknown-http-v1",
+    "backendStopped": true,
+    "mlStopped": true,
+    "ownDatabaseStatus": "exited",
+    "productionServicesTouched": false
+  }
+]

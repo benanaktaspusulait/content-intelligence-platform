@@ -1,0 +1,159 @@
+..................FF..F................................................. [ 18%]
+........................................................................ [ 37%]
+........................................................................ [ 55%]
+........................................................................ [ 74%]
+........................................................................ [ 93%]
+...........................                                              [100%]
+=================================== FAILURES ===================================
+_ test_exact_provider_capabilities_serialized_without_fallback_or_retry[deepseek-primary-json_object-max_tokens] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10b2fb230>
+identity = 'deepseek-primary', mode = 'json_object'
+token_parameter = 'max_tokens'
+
+    @pytest.mark.parametrize('identity,mode,token_parameter',[('deepseek-primary','json_object','max_tokens'),('openai-escalation','json_schema','max_completion_tokens')])
+    def test_exact_provider_capabilities_serialized_without_fallback_or_retry(monkeypatch,identity,mode,token_parameter):
+        monkeypatch.setenv('DEEPSEEK_API_KEY','offline-only');monkeypatch.setenv('OPENAI_API_KEY','offline-only')
+        f=inputs();from app.workflow.creative_reconstruction import response_format
+>       p=profile(identity)
+          ^^^^^^^^^^^^^^^^^
+
+tests/test_adaptive_optimization_v3.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/workflow/creative_provider_profiles.py:33: in profile
+    p=deepcopy(profiles()['profiles'].get(identity))
+               ^^^^^^^^^^
+app/workflow/creative_provider_profiles.py:27: in profiles
+    data=json.loads(path.read_text())
+                    ^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('data/workflow/creative-provider-profiles-v3.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'data/workflow/creative-provider-profiles-v3.json'
+
+/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_ test_exact_provider_capabilities_serialized_without_fallback_or_retry[openai-escalation-json_schema-max_completion_tokens] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11785ce90>
+identity = 'openai-escalation', mode = 'json_schema'
+token_parameter = 'max_completion_tokens'
+
+    @pytest.mark.parametrize('identity,mode,token_parameter',[('deepseek-primary','json_object','max_tokens'),('openai-escalation','json_schema','max_completion_tokens')])
+    def test_exact_provider_capabilities_serialized_without_fallback_or_retry(monkeypatch,identity,mode,token_parameter):
+        monkeypatch.setenv('DEEPSEEK_API_KEY','offline-only');monkeypatch.setenv('OPENAI_API_KEY','offline-only')
+        f=inputs();from app.workflow.creative_reconstruction import response_format
+>       p=profile(identity)
+          ^^^^^^^^^^^^^^^^^
+
+tests/test_adaptive_optimization_v3.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/workflow/creative_provider_profiles.py:33: in profile
+    p=deepcopy(profiles()['profiles'].get(identity))
+               ^^^^^^^^^^
+app/workflow/creative_provider_profiles.py:27: in profiles
+    data=json.loads(path.read_text())
+                    ^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('data/workflow/creative-provider-profiles-v3.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'data/workflow/creative-provider-profiles-v3.json'
+
+/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+__ test_paid_adapter_contract_uses_exact_v3_profile_budget_and_one_mock_call ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11791f790>
+
+    def test_paid_adapter_contract_uses_exact_v3_profile_budget_and_one_mock_call(monkeypatch):
+        from app.workflow.creative_roles import run_paid_role
+        from app.workflow.creative_provider_profiles import readiness
+        from test_creative_reconstruction_v2 import response
+        f=inputs();monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED','true');monkeypatch.setenv('DEEPSEEK_API_KEY','offline-only')
+        context={**f['context'],'adaptiveVersion':'adaptive-creative-optimization-v3','providerProfileId':'deepseek-primary',
+>           'providerCapabilityBinding':readiness()['profiles']['deepseek-primary'],'authorizedOutputTokens':4000,'authorizedTimeoutSeconds':5}
+                                        ^^^^^^^^^^^
+
+tests/test_adaptive_optimization_v3.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/workflow/creative_provider_profiles.py:42: in readiness
+    data=profiles()
+         ^^^^^^^^^^
+app/workflow/creative_provider_profiles.py:27: in profiles
+    data=json.loads(path.read_text())
+                    ^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('data/workflow/creative-provider-profiles-v3.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'data/workflow/creative-provider-profiles-v3.json'
+
+/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+=============================== warnings summary ===============================
+tests/test_adaptive_optimization_v3.py: 171 warnings
+tests/test_creative_roles.py: 48 warnings
+tests/test_f8_authorization.py: 19 warnings
+tests/test_hook_002_metamorphic_stability.py: 31 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:209: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+tests/test_llm_providers.py::test_get_provider_gemini
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/llm/gemini_provider.py:3: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/story-review-derived-verdict-evidence/ml-results.xml -
+=========================== short test summary info ============================
+FAILED tests/test_adaptive_optimization_v3.py::test_exact_provider_capabilities_serialized_without_fallback_or_retry[deepseek-primary-json_object-max_tokens]
+FAILED tests/test_adaptive_optimization_v3.py::test_exact_provider_capabilities_serialized_without_fallback_or_retry[openai-escalation-json_schema-max_completion_tokens]
+FAILED tests/test_adaptive_optimization_v3.py::test_paid_adapter_contract_uses_exact_v3_profile_budget_and_one_mock_call
+3 failed, 384 passed, 270 warnings in 8.66s

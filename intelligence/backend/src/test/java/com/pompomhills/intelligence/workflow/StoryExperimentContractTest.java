@@ -155,7 +155,14 @@ class StoryExperimentContractTest {
     assertThat(transports).isEqualTo(1);assertThat(result.get("state")).isEqualTo("ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING");
     assertThat(rows(result.get("drafts"))).isEmpty();assertThat(map(result.get("progress"))).containsEntry("ownerStoryApproval","PENDING").containsEntry("renderAuthorized",false);
     var receipt=receipts().getFirst();assertThat(receipt.get("rawProviderResponse")).isNotNull();assertThat(receipt.get("rawReceiptSha256")).isNotNull();
-    assertThat(map(map(result.get("progress")).get("researchAssessment")).get("researchPreference")).isEqualTo("NO_CREATIVE_WINNER");
+    var derived=map(map(result.get("progress")).get("researchAssessment"));
+    assertThat(derived.get("researchPreference")).isEqualTo("NO_CREATIVE_WINNER");
+    assertThat(derived.get("evidenceType")).isEqualTo("APPLICATION_DERIVED_ASSESSMENT");
+    var derivedA=map(map(derived.get("candidateAssessments")).get("A"));
+    assertThat(derivedA).containsEntry("semanticOutcome","SEMANTIC_SOURCE_UNKNOWN").containsEntry("eligibleForOwnerProposal",false);
+    assertThat(rows(derivedA.get("sourceUnknowns"))).hasSize(9);
+    assertThat(map(map(map(receipt.get("result")).get("candidateAssessments")).get("A")))
+        .doesNotContainKeys("semanticOutcome","sourceUnknowns","eligibleForOwnerProposal");
     assertThatThrownBy(()->service.approve(run,Map.of(),owner)).hasMessageContaining("cannot approve");
     assertThatThrownBy(()->service.handoff(run,Map.of(),owner)).hasMessageContaining("cannot authorize BUILD_PROMPT");
     service.processNext();assertThat(transports).isEqualTo(1);

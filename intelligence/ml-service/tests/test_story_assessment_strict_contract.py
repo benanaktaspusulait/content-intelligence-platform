@@ -137,7 +137,7 @@ def test_semantic_evidence_and_aggregation_guards(failure):
 
 def test_substantive_omission_requires_adjacent_context_not_single_matching_passage():
     text,c,p,v=example();row=v['candidateAssessments']['A'];f=row['semanticChecks']['continuity'];ids=evidence_ids(p,'CANDIDATE_A')
-    row['semanticOutcome']='SEMANTIC_SOURCE_FAIL';f.update(outcome='FAIL',basis='SUBSTANTIVE_OMISSION',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered'),candidateEvidenceIds=ids[4:5],reason='Hypothetical omission claim; neighbouring narrative context must be supplied.')
+    f.update(outcome='FAIL',basis='SUBSTANTIVE_OMISSION',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered'),candidateEvidenceIds=ids[4:5],reason='Hypothetical omission claim; neighbouring narrative context must be supplied.')
     with pytest.raises(ValueError,match='adjacent'):a.validate_review(v,text,c)
     f['candidateEvidenceIds']=[ids[0],ids[-1]]
     with pytest.raises(ValueError,match='adjacent'):a.validate_review(v,text,c)
@@ -149,10 +149,10 @@ def test_substantive_omission_requires_adjacent_context_not_single_matching_pass
 def test_conflicting_text_can_be_referenced_without_hardcoded_outcome(conflict):
     text,c,p,v=example();synthetic=deepcopy(a.sources(text,c));synthetic[0]['narrative']+=' '+conflict
     with patch.object(a,'sources',return_value=synthetic):
-        payload=a.wire(text,c)['payload'];value=assessment_review(payload);row=value['candidateAssessments']['A'];row['semanticOutcome']='SEMANTIC_SOURCE_FAIL'
+        payload=a.wire(text,c)['payload'];value=assessment_review(payload);row=value['candidateAssessments']['A']
         check='continuity' if 'fall off' in conflict else 'trigger_conditions'
         row['semanticChecks'][check].update(outcome='FAIL',basis='CONTRADICTION',sourceEvidenceIds=evidence_ids(payload,'SOURCE','Pip remains covered' if check=='continuity' else 'every removal or transfer attempt'),candidateEvidenceIds=evidence_ids(payload,'CANDIDATE_A',conflict),reason='The selected synthetic passage explicitly conflicts with the protected release timing or multiplication trigger.')
-        assert a.validate_review(value,text,c)['candidateAssessments']['A']['eligibleForOwnerProposal'] is False
+        assert a.derive_assessment(value,text,c)['candidateAssessments']['A']['eligibleForOwnerProposal'] is False
 
 
 @pytest.mark.parametrize('failure',['empty','generic','cosmetic','audience','A-plus'])
@@ -171,9 +171,10 @@ def test_materiality_and_invented_production_claims_rejected(failure):
 def test_comparative_opinion_never_overrides_source_unknown(outcome):
     text,c,p,v=example();row=v['candidateAssessments']['A'];row['creativeConclusion']=material_comparison(p);row['creativeConclusion']['outcome']=outcome
     assert a.validate_review(v,text,c)['researchPreference']=='NO_CREATIVE_WINNER'
-    assert row['eligibleForOwnerProposal'] is False
+    assert a.derive_assessment(v,text,c)['candidateAssessments']['A']['eligibleForOwnerProposal'] is False
     v['researchPreference']='A'
-    with pytest.raises(ValueError):a.validate_review(v,text,c)
+    assert a.validate_review(v,text,c)['researchPreference']=='A'
+    assert a.derive_assessment(v,text,c)['candidateAssessments']['A']['eligibleForOwnerProposal'] is False
 
 
 def test_same_text_in_other_document_never_authorizes_other_role_id():

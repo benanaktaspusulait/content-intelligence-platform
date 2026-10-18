@@ -1,0 +1,73 @@
+import json,time,uuid,subprocess,hashlib,shutil,os,signal
+from pathlib import Path
+import requests
+R=Path('/Users/benanaktas/project/video/content-intelligence-platform');D=R/'intelligence/backend/target/derived-verdict-anchor-http-v1';E=R/'intelligence/docs/story-review-derived-verdict-evidence';rt=json.loads((D/'runtime.json').read_text());base='http://127.0.0.1:'+str(rt['backendPort']);s=requests.Session();s.trust_env=False
+
+def save(n,x):(E/n).write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+def q(sql):return subprocess.check_output(['docker','exec',rt['databaseContainer'],'psql','-U','disposable_owner_http','-d','disposable_owner_http','-Atc',sql],text=True).strip()
+def req(method,path,body=None,expected=200):
+ r=s.request(method,base+path,json=body,timeout=35)
+ if r.status_code!=expected:raise RuntimeError(str(r.status_code)+' '+r.text[:1600])
+ return r.json() if expected==200 else {'status':r.status_code}
+for _ in range(80):
+ try:a=req('GET','/api/v1/intelligence/workflow/owner-auth');break
+ except requests.ConnectionError:time.sleep(.3)
+s.headers.update({'Origin':base,'X-CPQ-CSRF':a['csrfToken']});a=req('POST','/api/v1/intelligence/workflow/owner-auth/login',{'credential':(D/'owner.credential').read_text().strip()});assert a['authenticated'];s.headers['X-CPQ-CSRF']=a['csrfToken']
+before=int(q('select count(*) from post_family_workflow_events'));tables=q("select tablename from pg_tables where schemaname='public' order by tablename").splitlines()
+counts={t:int(q('select count(*) from "'+t+'"')) for t in tables if t not in ('story_evolution_runs','story_evolution_events')}
+p=req('POST','/api/v1/intelligence/workflow/cpq/story-assessment-preflight',{'assessmentOnlyPolicy':'ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1'});save('actual-http-preflight.json',p)
+assert p['operations'][0]['serializedRequestBytes']<=24000
+for folder in ['authentic-story-independent-review-result-evidence','real-strict-story-review-execution-evidence','real-evidence-reference-story-review-evidence','real-timeout-hardened-story-review-evidence']:
+ old=json.loads((R/'intelligence/docs'/folder/'actual-owner-spending-grant.json').read_text());req('POST','/api/v1/intelligence/workflow/cpq/story-evolution-runs',old,409)
+assert p['operations'][0]['timeoutPolicy']==p['scope']['transportPolicy']
+summaries=[];modes=['positive','conservative','missing-check','fabricated-id','wrong-anchor','cross-candidate','missing-evidence','unsupported-materiality','ending-anchor','aggregation','refusal','timeout']
+for mode in modes:
+ (D/'mode.json').write_text(json.dumps({'mode':mode}))
+ g={'assessmentOnlyPolicy':'ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1',**{k:p[k] for k in ('scopeSha256','operations','maxTotalUsd')},'maxRequests':1,'maxRounds':1,'maxRunSeconds':600,'automaticRetries':False,'fallback':False,'authorizePaidInference':True,'confirmAssessmentOnly':True,'idempotencyKey':'OFFLINE-DERIVED-'+mode+'-'+str(uuid.uuid4())}
+ saved=E/('http-'+mode+'-run.json')
+ if saved.exists():
+  run=json.loads(saved.read_text())['trace']['runId']
+  g=json.loads(q("select authorization_payload::text from story_evolution_runs where id='"+run+"'"))
+ else:
+  started=req('POST','/api/v1/intelligence/workflow/cpq/story-evolution-runs',g);run=started['runId']
+ for _ in range(150):
+  v=req('GET','/api/v1/intelligence/workflow/cpq/story-evolution-runs/'+run)
+  if v['state'] not in ('READY','RUNNING'):break
+  time.sleep(.2)
+ expected='ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING' if mode in ('positive','conservative') else 'STOPPED';assert v['state']==expected,(mode,v['state'],v['progress'])
+ save('http-'+mode+'-run.json',{'evidenceOrigin':'ACTUAL_JAVA_FASTAPI_POSTGRES_ONLY_EXTERNAL_OPENAI_HTTP_MOCKED','realProviderCalls':0,'productionDbWrites':0,'trace':v})
+ events=v['events'];assert sum(x.get('state')=='REQUEST_RESERVED' for x in events)==1 and sum(x.get('state')=='PROVIDER_RECEIPT' for x in events)==1
+ receipt=v['progress']['assessmentReceipt'];assert v['drafts']==[]
+ req('POST','/api/v1/intelligence/workflow/cpq/story-evolution-runs/'+run+'/approve',{},409)
+ req('POST','/api/v1/intelligence/workflow/cpq/story-evolution-runs/'+run+'/prompt-handoff',{},409)
+ if mode in ('positive','conservative'):
+  assert v['progress']['ownerStoryApproval']=='PENDING' and not v['progress']['renderAuthorized']
+  assert receipt['result']==json.loads(receipt['rawProviderResponse'])
+  assert v['progress']['researchAssessment']==receipt['derivedAssessment']
+  for ref,row in receipt['derivedAssessment']['candidateAssessments'].items():
+   assert row['semanticOutcome']=='SEMANTIC_SOURCE_UNKNOWN' and not row['eligibleForOwnerProposal'] and row['sourceUnknowns']
+   raw=receipt['result']['candidateAssessments'][ref]
+   assert not set(raw)&{'semanticOutcome','sourceUnknowns','eligibleForOwnerProposal'}
+   assert {f['check']:f['reason'] for f in row['sourceUnknowns']}=={k:f['reason'] for k,f in raw['semanticChecks'].items() if f['outcome']=='UNKNOWN'}
+  assert receipt['derivedAssessment']['researchPreference']=='NO_CREATIVE_WINNER'
+  for field in ('sourceApproved','buildPromptAuthorized','renderAuthorized'):assert receipt['derivedAssessment'][field] is False
+  cp=Path(receipt['rawReceiptFile']);shutil.copyfile(cp,E/('http-'+mode+'-before-parsing.json'))
+ if mode=='timeout':assert receipt.get('actualCostUsd') is None and receipt['billingStatus']=='USAGE_UNKNOWN' and receipt['accountingError']
+ calls=[json.loads(x) for x in (D/'mock-sdk-calls.jsonl').read_text().splitlines()];assert sum(c['mode']==mode for c in calls)==1
+ assert calls[-1]['clientRequestId']==receipt['clientRequestId']==receipt['requestId']
+ assert calls[-1]['effectiveTimeouts']=={'connect':5,'pool':5,'write':10,'read':60}
+ replay=req('POST','/api/v1/intelligence/workflow/cpq/story-evolution-runs',g);assert replay['runId']==run and replay['state']==expected
+ summaries.append({'mode':mode,'runId':run,'state':v['state'],'mockSdkRequests':1,'processingStatus':receipt['processingStatus'],'error':receipt.get('error'),'retryAllowed':False,'storyApprovalDenied':True,'buildPromptDenied':True})
+time.sleep(4.2)
+calls=[json.loads(x) for x in (D/'mock-sdk-calls.jsonl').read_text().splitlines()];assert len(calls)==len(modes)
+for t,count in counts.items():assert int(q('select count(*) from "'+t+'"'))==count,t+' changed'
+shutil.copyfile(D/'mock-sdk-calls.jsonl',E/'actual-serialized-sdk-requests.jsonl')
+save('http-e2e-results.json',{'passed':True,'scenarios':summaries,'actualOwnerSessionCsrf':True,'actualHmac':True,'actualPostgresSnapshot':True,'mockedOnlyExternalSdkHttp':True,'realProviderCalls':0,'providerCredentials':'ONLY_OFFLINE_PLACEHOLDER','allExternalSocketsDenied':True,'productionDatabaseWrites':0,'sourceRecordsBefore':before,'sourceRecordsAfter':before,'allNonLedgerTableCountsUnchanged':counts,'fourOldPaidGrantsRejectedBeforeReservation':True,'sdkRequests':len(calls),'noRetryAfterTerminalState':True})
+subprocess.run(['docker','exec',rt['databaseContainer'],'pg_dump','-U','disposable_owner_http','-d','disposable_owner_http','-Fc','-f','/tmp/derived-review.dump'],check=True)
+subprocess.run(['docker','cp',rt['databaseContainer']+':/tmp/derived-review.dump',str(D/'post-http-e2e.dump')],check=True,stdout=subprocess.DEVNULL);(D/'post-http-e2e.dump').chmod(0o600)
+for k in ('backendPid','mlPid'):
+ try:os.killpg(rt[k],signal.SIGTERM)
+ except ProcessLookupError:pass
+subprocess.run(['docker','stop',rt['databaseContainer']],check=True,stdout=subprocess.DEVNULL)
+save('runtime-shutdown.json',{'applicationsStopped':True,'ownDisposableDatabaseStopped':True,'otherServicesUntouched':True,'dump':str(D/'post-http-e2e.dump'),'dumpSha256':hashlib.sha256((D/'post-http-e2e.dump').read_bytes()).hexdigest()})
+print(json.dumps({'scenariosPassed':len(summaries),'sdkCallsMocked':len(calls),'realCalls':0,'oldGrantsRejected':4,'runtimeStopped':True}))

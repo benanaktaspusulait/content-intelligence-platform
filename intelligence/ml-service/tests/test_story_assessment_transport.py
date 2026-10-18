@@ -142,14 +142,14 @@ def test_general_openai_adapter_keeps_its_original_timeout(monkeypatch):
  assert seen==[{'connect':20,'pool':20,'write':20,'read':20}]
 
 
-def test_changed_execution_policy_leaves_review_body_and_catalog_unchanged():
+def test_new_contract_changes_body_but_preserves_catalog_and_timeout():
  text,c=grant();docs=Path(__file__).resolve().parents[2]/'docs'
  old=json.loads((docs/'STORY_REVIEW_EVIDENCE_REFERENCE_REVIEW_MANIFEST.json').read_text())
- assert a.request_body(text,c)==old['providerRequest']
+ assert a.request_body(text,c)!=old['providerRequest']
  current=a.preview(text,c)
  assert current['evidenceCatalogSha256']==old['operation']['evidenceCatalogSha256']
  assert current['timeoutPolicy']==c['assessmentScope']['transportPolicy']
- assert current['serializedRequestSha256']==old['operation']['serializedRequestSha256']
+ assert current['serializedRequestSha256']!=old['operation']['serializedRequestSha256']
  assert current['implementationSha256']!=old['operation']['implementationSha256']
  c['assessmentScope']['transportPolicy']['backendHttpSeconds']=25
  with pytest.raises(ValueError,match='timeout policy'):a.preview(text,c)

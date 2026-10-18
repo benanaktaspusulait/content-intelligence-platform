@@ -1,0 +1,29 @@
+{
+  "allCurrentSnapshotFilesUnchanged": true,
+  "currentSnapshotFiles": 275,
+  "previousV4IntegritySnapshotFilesUnchanged": true,
+  "previousV4IntegritySnapshotFiles": 164,
+  "historicalRuns": [
+    {
+      "runId": "59f47fec-59fb-42e3-b3a4-c9f7d83c7ffc",
+      "state": "STOPPED"
+    },
+    {
+      "runId": "4b59d668-814c-4f9a-ab50-8e288b5df4df",
+      "state": "STOPPED"
+    },
+    {
+      "runId": "4c5b5453-6d04-424a-bacd-9575f6f9558d",
+      "state": "STOPPED"
+    },
+    {
+      "runId": "a9f02bcf-7371-4f5a-bb2b-8fddd70712ab",
+      "state": "STOPPED"
+    }
+  ],
+  "allFourHistoricalDumpsUnchanged": true,
+  "historicalProviderCsvsUnchanged": true,
+  "originalSourceAndCandidateArchivesUnchanged": true,
+  "historicalV3Billing": "INCONCLUSIVE",
+  "historicalRecordWrites": 0
+}

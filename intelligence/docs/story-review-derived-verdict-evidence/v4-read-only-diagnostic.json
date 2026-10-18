@@ -1,0 +1,75 @@
+{
+  "evidenceType": "READ_ONLY_HISTORICAL_DIAGNOSTIC_NOT_MACHINE_REVIEW_ACCEPTANCE",
+  "historicalOriginalContractError": "Uncertain/failed semantics cannot become PASS",
+  "historicalState": "STOPPED",
+  "rawResponseSha256": "5e409a27712652fd9ca5d41679965a0daa4292190199f2510943b034a1c3d4a1",
+  "modelCreativeOpinionsRemainHistoricallyUnvalidated": true,
+  "readOnlyCandidateDiagnostics": [
+    {
+      "candidate": "A",
+      "historicalClaimedAggregate": "SEMANTIC_SOURCE_PASS",
+      "readOnlyDerivedDiagnostic": {
+        "semanticOutcome": "SEMANTIC_SOURCE_UNKNOWN",
+        "sourceUnknowns": [
+          {
+            "check": "trigger_conditions",
+            "reason": "The narratives do not provide sufficient context to assess the trigger conditions for the sneeze."
+          },
+          {
+            "check": "single_mechanic",
+            "reason": "The narratives do not clarify if the sneeze is the only mechanic affecting the notes."
+          }
+        ]
+      },
+      "eligibleForOwnerProposal": false,
+      "diagnosticIsNotAReplacementReview": true,
+      "ruleSelectedSourceIds": [
+        "S06-eddd77bfa3dd735f"
+      ],
+      "ruleRequiredAnchorGroups": {
+        "rule": [
+          "S05-eddd77bfa3dd735f"
+        ]
+      },
+      "ruleAnchorMismatched": true,
+      "rawEndingReplayIds": [
+        "A05-6f1e177d2eddfff5"
+      ],
+      "expectedEndingBoundaryId": "A10-6f1e177d2eddfff5"
+    },
+    {
+      "candidate": "B",
+      "historicalClaimedAggregate": "SEMANTIC_SOURCE_PASS",
+      "readOnlyDerivedDiagnostic": {
+        "semanticOutcome": "SEMANTIC_SOURCE_UNKNOWN",
+        "sourceUnknowns": [
+          {
+            "check": "trigger_conditions",
+            "reason": "The narratives do not provide sufficient context to assess the trigger conditions for the sneeze."
+          },
+          {
+            "check": "single_mechanic",
+            "reason": "The narratives do not clarify if the sneeze is the only mechanic affecting the notes."
+          }
+        ]
+      },
+      "eligibleForOwnerProposal": false,
+      "diagnosticIsNotAReplacementReview": true,
+      "ruleSelectedSourceIds": [
+        "S06-eddd77bfa3dd735f"
+      ],
+      "ruleRequiredAnchorGroups": {
+        "rule": [
+          "S05-eddd77bfa3dd735f"
+        ]
+      },
+      "ruleAnchorMismatched": true,
+      "rawEndingReplayIds": [
+        "B05-bf050df0590b2a67"
+      ],
+      "expectedEndingBoundaryId": "B08-bf050df0590b2a67"
+    }
+  ],
+  "newProviderCalls": 0,
+  "historicalRecordWrites": 0
+}

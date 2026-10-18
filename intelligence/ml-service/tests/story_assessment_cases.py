@@ -30,16 +30,27 @@ def case_response(payload,mode):
             start=next(i for i,r in enumerate(records) if ('wrapping' if ref=='A' else 'plastering') in r['exactOriginalText'])
             end=next(i for i,r in enumerate(records) if 'scatters' in r['exactOriginalText'])
             item['semanticChecks']['continuity'].update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(payload,'SOURCE','Pip remains covered'),candidateEvidenceIds=[r['evidenceId'] for r in records[start:end+1]],reason='The covered-state, held-stop and sneeze-release sequence supports continuity without identical wording; synthetic interpretation only.')
-            item['sourceUnknowns']='Trigger meaning and creative/production effectiveness remain unverified by this mocked review.'
+        # Deliberately unresolved source-specific question, not a fabricated FAIL
+        # or a model-authored aggregate. Only the external provider is synthetic.
+        row['semanticChecks']['trigger_conditions'].update(
+            sourceEvidenceIds=evidence_ids(payload,'SOURCE','every removal or transfer attempt'),
+            candidateEvidenceIds=evidence_ids(payload,'CANDIDATE_A','Pip shakes the hand'),
+            reason='Synthetic uncertainty: shaking the hand could be an attempt to remove the note, but the intention is not explicit; does the protected activation condition remain preserved?')
     if mode=='missing-check':row['semanticChecks'].pop('trigger_conditions')
     if mode in ('fake-quote','fabricated-id'):row['semanticChecks']['identity']['candidateEvidenceIds']=['invented-id']
     if mode=='cross-candidate':row['creativeDimensions']['PRODUCTION_EXECUTABILITY']['candidateEvidenceIds']=evidence_ids(payload,'CANDIDATE_B')[:1]
     if mode=='stale-id':row['creativeDimensions']['PRODUCTION_EXECUTABILITY']['candidateEvidenceIds']=['A01-old-revision']
     if mode=='missing-evidence':
-        row['semanticChecks']['identity'].update(outcome='PASS',basis='SEMANTIC_SUPPORT');row['semanticOutcome']='SEMANTIC_SOURCE_UNKNOWN'
+        row['semanticChecks']['identity'].update(outcome='PASS',basis='SEMANTIC_SUPPORT')
     if mode=='unsupported-materiality':row['creativeConclusion']['outcome']='MATERIAL_IMPROVEMENT'
     if mode=='invalid-enum':v['researchPreference']='A | B | NO_CREATIVE_WINNER'
-    if mode=='aggregation':assessment_failed_check(v,payload);row['semanticOutcome']='SEMANTIC_SOURCE_PASS'
+    if mode=='aggregation':row['semanticOutcome']='SEMANTIC_SOURCE_PASS'
+    if mode=='wrong-anchor':
+        row['semanticChecks']['rule'].update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(payload,'SOURCE','Pip remains covered'),candidateEvidenceIds=evidence_ids(payload,'CANDIDATE_A','split into eight'),reason='Mock deliberately cites release rather than the protected impossible rule.')
+    if mode=='ending-anchor':row['creativeDimensions']['ENDING_REPLAY']['candidateEvidenceIds']=evidence_ids(payload,'CANDIDATE_A')[:1]
+    if mode=='conservative':
+        for ref,item in v['candidateAssessments'].items():
+            item['creativeConclusion'].update(outcome='NO_MATERIAL_IMPROVEMENT',change='Synthetic conservative opinion: the visible posture changes do not establish a material gain.',materialityReason='No measured visual or audience evidence.')
     if mode=='malformed':return '{bad'
     if mode=='incomplete':return '{"schemaVersion":'
     return json.dumps(v,ensure_ascii=False,separators=(',',':'))

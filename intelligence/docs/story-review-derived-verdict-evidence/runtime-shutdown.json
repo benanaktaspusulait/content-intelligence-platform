@@ -1,0 +1,7 @@
+{
+  "applicationsStopped": true,
+  "ownDisposableDatabaseStopped": true,
+  "otherServicesUntouched": true,
+  "dump": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/derived-verdict-anchor-http-v1/post-http-e2e.dump",
+  "dumpSha256": "a04f49d0c80d0538d1c8f623d29fb94868a1c052a52a2dfd2e9cf9f38076c3e1"
+}

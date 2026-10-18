@@ -497,7 +497,7 @@ public class StoryEvolutionService {
     if(receipt.get("actualCostUsd") instanceof Number cost)progress.put("knownActualCostUsd",cost.doubleValue());else progress.put("unresolvedBilling",true);
     durablePilot(id,progress,Map.of("state","PROVIDER_RECEIPT","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"role","STORY_REVIEW","requestId",requestId.toString(),"envelope",receipt));
     if(!"INDEPENDENT_REVIEW_COMPLETED".equals(receipt.get("processingStatus"))){stop(id,"ASSESSMENT_REJECTED_OR_UNCERTAIN","Receipt preserved; no retry");return;}
-    progress.put("researchAssessment",receipt.get("result"));progress.put("ownerStoryApproval","PENDING");progress.put("productionSourceAdmission","NOT_SATISFIED_BY_RESEARCH");progress.put("renderAuthorized",false);progress.put("officialAPlus","INACTIVE");
+    progress.put("researchAssessment",receipt.get("derivedAssessment"));progress.put("ownerStoryApproval","PENDING");progress.put("productionSourceAdmission","NOT_SATISFIED_BY_RESEARCH");progress.put("renderAuthorized",false);progress.put("officialAPlus","INACTIVE");
     db.sql("UPDATE story_evolution_runs SET state='ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id").param("p",util.encode(progress)).param("id",id).update();
     event(id,Map.of("state","ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"storyApproval",false,"renderAuthorized",false));
   }

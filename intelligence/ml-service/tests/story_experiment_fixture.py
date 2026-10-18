@@ -104,18 +104,17 @@ def assessment_review(payload):
         'semanticChecks':{check:{'outcome':'UNKNOWN','basis':'INSUFFICIENT',
             'sourceEvidenceIds':[],'candidateEvidenceIds':[],
             'reason':'Mock contract only; independent meaning unverified.'} for check in CHECKS},
-        'semanticOutcome':'SEMANTIC_SOURCE_UNKNOWN','sourceUnknowns':'Mocked review cannot independently resolve trigger or continuity semantics.',
-        'creativeDimensions':{d:{'candidateEvidenceIds':evidence_ids(payload,'CANDIDATE_'+c['ref'])[:1],
+        'creativeDimensions':{d:{'candidateEvidenceIds':evidence_ids(payload,'CANDIDATE_'+c['ref'])[-1:] if d=='ENDING_REPLAY' else evidence_ids(payload,'CANDIDATE_'+c['ref'])[:1],
             'strength':'Placement goal is introduced.','weakness':'Timing is unverified.','risk':'No visual evidence.'} for d in payload['dimensions']},
         'creativeConclusion':{'outcome':'UNKNOWN','baselineEvidenceIds':[],'candidateEvidenceIds':[],
             **{k:'' for k in ('change','visibleConsequence','addressedWeakness','newRisk','materialityReason')}},
-        'eligibleForOwnerProposal':False} for c in payload['candidates']},
+        } for c in payload['candidates']},
         'researchPreference':'NO_CREATIVE_WINNER','reason':'Mocked review proves contract only.',
         'evidenceLimitations':'No real reviewer, rendered or audience evidence.'}
 
 
 def assessment_failed_check(value,payload):
-    row=value['candidateAssessments']['A'];row['semanticOutcome']='SEMANTIC_SOURCE_FAIL'
+    row=value['candidateAssessments']['A']
     row['semanticChecks']['trigger_conditions']={'outcome':'FAIL','basis':'CONTRADICTION',
         'sourceEvidenceIds':evidence_ids(payload,'SOURCE','every removal or transfer attempt'),
         'candidateEvidenceIds':evidence_ids(payload,'CANDIDATE_A','Pip shakes the hand'),

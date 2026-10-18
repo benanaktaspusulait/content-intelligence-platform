@@ -1,0 +1,60 @@
+{
+  "ml": {
+    "passed": 387,
+    "failures": 0,
+    "errors": 0,
+    "exitCode": 0
+  },
+  "java": {
+    "passed": 50,
+    "exitCode": 0,
+    "suites": [
+      {
+        "name": "com.pompomhills.intelligence.quality.QualityMlAssessmentTimeoutTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.StoryReviewIndependenceTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.StoryEvolutionServiceTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.StoryExperimentContractTest",
+        "tests": "41",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "disposableHttp": {
+    "passedScenarios": 13,
+    "oldPaidGrantsRejected": 4,
+    "realProviderCalls": 0,
+    "sdkRequestsAllMocked": 13,
+    "exitCode": 0,
+    "mainScenarios": 12,
+    "finalSourceSpecificUnknownScenarios": 1
+  },
+  "initialHarnessFailures": {
+    "ml": "Missing explicit POMPOM_DATA_ROOT; rerun with existing repository data root, no production change",
+    "java": "Missing test-only HMAC environment token; rerun with offline token",
+    "http": "Compared JSONB object iteration order with preserved array order; verifier changed to compare check/reason mappings. Existing positive run inspected without redispatch."
+  },
+  "historicalOriginalV4ContractRejectionVerified": true,
+  "nativeSdkNumericTimeoutAndWireVerified": true,
+  "newProviderSpendUsd": 0,
+  "productionDbWrites": 0
+}

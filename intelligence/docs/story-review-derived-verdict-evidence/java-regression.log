@@ -1,0 +1,106 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------< com.pompomhills:creative-intelligence-backend >------------
+[INFO] Building Pompom Creative Intelligence Backend 0.1.0-SNAPSHOT
+[INFO]   from pompom-derived-verdict-pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ creative-intelligence-backend ---
+[INFO] Copying 77 resources from ../../Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/resources to ../../Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/derived-verdict-build/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ creative-intelligence-backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 205 source files with javac [debug parameters release 21] to ../../Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/derived-verdict-build/classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[WARNING] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/meta/MetaReadConfiguration.java:[39,12] messageConverters(java.util.function.Consumer<java.util.List<org.springframework.http.converter.HttpMessageConverter<?>>>) in org.springframework.web.client.RestClient.Builder has been deprecated and marked for removal
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/ValidationEvidenceService.java: Some input files use or override a deprecated API.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/ValidationEvidenceService.java: Recompile with -Xlint:deprecation for details.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/creative/CreativeAnalysisEntity.java: Some input files use unchecked or unsafe operations.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/creative/CreativeAnalysisEntity.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ creative-intelligence-backend ---
+[INFO] skip non existing resourceDirectory /private/tmp/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ creative-intelligence-backend ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 72 source files with javac [debug parameters release 21] to ../../Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/derived-verdict-build/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/DisposableOwnerHttpAcceptanceTest.java: Some input files use or override a deprecated API.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/DisposableOwnerHttpAcceptanceTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/OriginalCpqFidelityIntegrationTest.java: Some input files use unchecked or unsafe operations.
+[INFO] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/OriginalCpqFidelityIntegrationTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ creative-intelligence-backend ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.pompomhills.intelligence.quality.QualityMlAssessmentTimeoutTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+09:25:44.512 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:1
+09:25:44.615 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:1
+09:25:44.621 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:1
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.218 s -- in com.pompomhills.intelligence.quality.QualityMlAssessmentTimeoutTest
+09:25:44.645 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+09:25:44.830 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+09:25:45.031 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+09:25:45.032 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+09:25:45.045 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+09:25:45.053 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+09:25:45.054 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+09:25:45.151 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+09:25:45.285 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+09:25:45.426 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: a24aed4a9b52bc590cb6c4166f86ba91b52365d282ec64650c9b2f2e2d0fd0b7
+09:25:45.652 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.501247S
+09:25:45.660 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+09:25:45.660 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+09:25:45.660 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+[INFO] Running com.pompomhills.intelligence.workflow.StoryEvolutionServiceTest
+09:25:45.665 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:25:45.703 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 69f8427266623dccbadded8acf859c1a13d22761ff201e196222c206e6c43085
+09:25:47.079 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.414134S
+09:25:47.080 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:55179/test?loggerLevel=OFF)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.277 s -- in com.pompomhills.intelligence.workflow.StoryEvolutionServiceTest
+[INFO] Running com.pompomhills.intelligence.workflow.StoryExperimentContractTest
+09:25:48.943 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:25:48.977 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 3e10240e549345363f532010189d38d71d6875515e2511538157443969120023
+09:25:49.949 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.005836S
+09:25:49.949 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:55331/test?loggerLevel=OFF)
+[INFO] Tests run: 41, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.82 s -- in com.pompomhills.intelligence.workflow.StoryExperimentContractTest
+[INFO] Running com.pompomhills.intelligence.workflow.StoryReviewIndependenceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in com.pompomhills.intelligence.workflow.StoryReviewIndependenceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  33.386 s
+[INFO] Finished at: 2026-10-18T09:26:08+01:00
+[INFO] ------------------------------------------------------------------------
