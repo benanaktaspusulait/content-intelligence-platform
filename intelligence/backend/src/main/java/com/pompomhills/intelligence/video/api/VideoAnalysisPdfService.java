@@ -31,6 +31,11 @@ public class VideoAnalysisPdfService {
   private final byte[] boldBytes = readFont("fonts/DejaVuSans-Bold.ttf");
 
   public byte[] render(String title, VideoDtos.AnalysisStatusResponse status) {
+    return render(title, status, map(map(status.temporalProfile()).get("storyQc")));
+  }
+
+  public byte[] render(String title, VideoDtos.AnalysisStatusResponse status, Map<String, Object> qc) {
+    qc = map(qc);
     if (!status.hasCompletedAnalysis()) throw new IllegalArgumentException("A completed analysis is required before exporting a PDF");
     try {
       Fonts fonts = fonts();
@@ -43,7 +48,20 @@ public class VideoAnalysisPdfService {
       document.add(new Paragraph(clean(title), fonts.title));
       document.add(new Paragraph("VISUAL MOTION ANALYSIS  ·  " + clean(status.analysisVersion()), fonts.kicker));
       document.add(new Paragraph("A measured, duration-aware view of motion, sampling quality and observed visual structure. Audience performance and retention are not inferred.", fonts.body));
+      section(document, String.valueOf(qc.getOrDefault("storyStatus", "STORY_QC_NOT_EVALUATED")), fonts);
+      boolean passed = "STORY_QC_PASS".equals(qc.get("storyStatus"))
+          && "VIDEO_QC_PASS".equals(qc.get("status")) && Boolean.FALSE.equals(qc.get("approvalBlocked"));
+      document.add(new Paragraph(passed ? "Story evidence passed the bound visual contract." :
+          "AUTOMATIC CREATIVE APPROVAL BLOCKED. Motion score is not a story quality score.", fonts.body));
+      document.add(new Paragraph("Source analysis ID: " + (status.analysisId() == null ?
+          "NOT_PERSISTED (local inspection only)" : status.analysisId().toString()), fonts.muted));
+      Map<String,Object> binding = map(qc.get("storyBinding"));
+      document.add(new Paragraph("Source story: " + value(binding, "storyId") + " / revision " + value(binding, "storyRevision"), fonts.muted));
+      document.add(new Paragraph("Asset SHA-256: " + value(qc, "assetHash"), fonts.muted));
+      document.add(new Paragraph("Timestamped evidence: " + value(qc, "evidencePath"), fonts.muted));
+      document.add(storyTable(qc, fonts));
       document.add(summaryCards(status, fonts));
+      if (!list(qc.get("storyChecks")).isEmpty()) document.newPage();
       section(document, "Executive reading", fonts);
       document.add(new Paragraph(clean(orDash(status.reason())), fonts.body));
       document.add(assessmentTable(status, fonts));
@@ -55,16 +73,29 @@ public class VideoAnalysisPdfService {
       section(document, "Observed visual beats", fonts);
       document.add(beatTable(status, fonts));
       section(document, "Evidence limits", fonts);
-      document.add(new Paragraph("The report separates what was measured from what remains unknown. These limits prevent motion evidence from being read as a platform or audience outcome.", fonts.body));
-      addBullet(document, "Plan fidelity: " + value(map(map(status.temporalProfile()).get("planRenderFidelity")), "status"), fonts);
+      addBullet(document, "Story plan fidelity: " + qc.getOrDefault("storyStatus", "STORY_QC_NOT_EVALUATED"), fonts);
       addBullet(document, "Semantic evidence coverage: " + value(map(status.semanticVideoEvidence()), "semanticCoverage"), fonts);
       addBullet(document, "No imported retention curve, audience metric or platform outcome is used.", fonts);
-      document.add(new Paragraph("Source analysis ID: " + clean(orDash(status.analysisId() == null ? null : status.analysisId().toString())), fonts.muted));
       document.close();
       return out.toByteArray();
     } catch (DocumentException | IOException error) {
       throw new IllegalStateException("Video analysis PDF could not be rendered", error);
     }
+  }
+
+  private PdfPTable storyTable(Map<String,Object> qc, Fonts f) throws DocumentException {
+    PdfPTable table = table(4);
+    header(table, List.of("Required story event", "Window / evidence (s)", "Story QC", "Observed evidence / limitation"), f);
+    List<Map<String,Object>> checks = list(qc.get("storyChecks"));
+    if (checks.isEmpty()) {
+      addRow(table, "Story events", "—", "NOT_EVALUATED", "No bound semantic story evaluation exists.", f);
+    }
+    for (Map<String,Object> check : checks) {
+      addRow(table, value(check, "id"), String.valueOf(check.getOrDefault("window", "—")) + " / "
+          + String.valueOf(check.getOrDefault("timestampsSeconds", "—")), value(check, "status"), value(check, "reason"), f);
+    }
+    table.setHeaderRows(1);
+    return table;
   }
 
   private PdfPTable summaryCards(VideoDtos.AnalysisStatusResponse status, Fonts f) throws DocumentException {
@@ -125,12 +156,16 @@ public class VideoAnalysisPdfService {
     PdfPCell rest = new PdfPCell(new Phrase(" ", f.body)); rest.setBackgroundColor(new Color(0xe1,0xe6,0xdf)); rest.setBorder(Rectangle.NO_BORDER); rest.setFixedHeight(8);
     bar.addCell(fill); bar.addCell(rest); return bar;
   }
-  private static PdfPTable table(int columns) { PdfPTable table = new PdfPTable(columns); table.setWidthPercentage(100); table.setSpacingAfter(9); return table; }
+  private static PdfPTable table(int columns) { PdfPTable table = new PdfPTable(columns); table.setWidthPercentage(100); table.setSpacingBefore(6); table.setSpacingAfter(9); return table; }
   private static void header(PdfPTable table, List<String> labels, Fonts f) { for (String label : labels) { PdfPCell cell = cell(label, f.kickerLight); cell.setBackgroundColor(MOSS); table.addCell(cell); } }
   private static void addRow(PdfPTable table, String a, String b, String c, Fonts f) { table.addCell(cell(a,f.body)); table.addCell(cell(b,f.body)); table.addCell(cell(c,f.body)); }
   private static void addRow(PdfPTable table, String a, String b, String c, String d, Fonts f) { table.addCell(cell(a,f.body)); table.addCell(cell(b,f.body)); table.addCell(cell(c,f.body)); table.addCell(cell(d,f.body)); }
   private static PdfPCell cell(String value, Font font) { PdfPCell cell = new PdfPCell(new Phrase(clean(value), font)); cell.setPadding(5); cell.setBorderColor(new Color(0xd9,0xde,0xd7)); return cell; }
-  private static void section(Document document, String title, Fonts f) throws DocumentException { document.add(new Paragraph(title, f.heading)); }
+  private static void section(Document document, String title, Fonts f) throws DocumentException {
+    Paragraph heading = new Paragraph(title, f.heading);
+    heading.setSpacingBefore(3); heading.setSpacingAfter(2);
+    document.add(heading);
+  }
   private static void addBullet(Document document, String text, Fonts f) throws DocumentException { document.add(new Paragraph("• " + clean(text), f.body)); }
   private static String value(Map<String,Object> map, String key) { return map.isEmpty() ? "—" : String.valueOf(map.getOrDefault(key, "—")); }
   private static String value(Object value) { return value == null ? "—" : String.valueOf(value); }

@@ -2732,9 +2732,11 @@ public class WorkflowService {
     qa.put("videoId", video.id().toString());
     qa.put("duration", actualDuration);
     qa.put("relativePath", path);
-    var qc = videos.videoQc(video.id());
+    var sourcePlan = map(map(review.get("productionEvidence")).get("videoPlanIR"));
+    var qc = sourcePlan.isEmpty() ? videos.videoQc(video.id()) : videos.inspectVideoQc(video.id(), sourcePlan);
     qa.put("videoQc", qc);
-    qa.put("productionApprovalBlocked", !"VIDEO_QC_PASS".equals(qc.get("status")));
+    qa.put("productionApprovalBlocked", !"STORY_QC_PASS".equals(qc.get("storyStatus"))
+        || !"VIDEO_QC_PASS".equals(qc.get("status")) || !Boolean.FALSE.equals(qc.get("approvalBlocked")));
     qa.put("recordId", save("ACTUAL_RENDER_QA", String.valueOf(review.get("bindingHash")), qa));
     return qa;
   }

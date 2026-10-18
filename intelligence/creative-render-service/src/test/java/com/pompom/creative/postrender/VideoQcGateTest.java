@@ -11,12 +11,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class VideoQcGateTest {
   public static PostRenderEvaluation evaluation(String status, String hash) {
-    String contract = "{\"requirements\":[{\"id\":\"event\",\"mandatory\":true}]}";
+    String contract = "{\"scope\":\"FULL_VIDEO\",\"requirements\":[{\"id\":\"event\",\"mandatory\":true}]}";
     var job = RenderJob.builder().creativeContractSnapshot("{\"intent\":{\"visualAcceptanceContract\":" + contract + "}}").build();
     var asset = RenderAsset.builder().id(UUID.randomUUID()).renderJob(job).sha256("checksum")
         .assetType(RenderAsset.AssetType.VIDEO).build();
     var evidence = "{\"videoQc\":{\"status\":\"" + status + "\",\"assetHash\":\"" + hash
-        + "\",\"approvalBlocked\":false,\"contract\":" + contract
+        + "\",\"storyStatus\":\"STORY_QC_PASS\",\"approvalBlocked\":false,\"contract\":" + contract
         + ",\"frames\":[{\"timestampSeconds\":0}],\"motionWindows\":[{}],\"checks\":[{\"id\":\"event\",\"status\":\"PASS\"}]}}";
     return PostRenderEvaluation.builder().renderAsset(asset).evidenceSnapshot(evidence)
         .overallDecision(PostRenderDecision.PASS).build();
@@ -44,4 +44,11 @@ public class VideoQcGateTest {
         .evidenceSnapshot(e.getEvidenceSnapshot().replace("\"checks\":[{\"id\":\"event\",\"status\":\"PASS\"}]", "\"checks\":[]")).build();
     assertThatThrownBy(() -> VideoQcGate.requirePass(forged)).isInstanceOf(IllegalStateException.class);
   }
+  @Test void legacyMotionPassWithoutStoryStatusCannotApprove() {
+    var e = evaluation("VIDEO_QC_PASS", "checksum");
+    var legacy = PostRenderEvaluation.builder().renderAsset(e.getRenderAsset())
+        .evidenceSnapshot(e.getEvidenceSnapshot().replace("STORY_QC_PASS", "STORY_QC_NOT_EVALUATED")).build();
+    assertThatThrownBy(() -> VideoQcGate.requirePass(legacy)).isInstanceOf(IllegalStateException.class);
+  }
+
 }

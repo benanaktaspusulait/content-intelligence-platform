@@ -151,9 +151,15 @@ public class VideoService {
   public Map<String, Object> inspectVideoQc(UUID id, Map<String, Object> contract) {
     var video = videos.findById(id).orElseThrow(() -> new EntityNotFoundException("Video not found"));
     var qc = ml.inspectVideoQc(video.getRelativePath(), contract);
-    video.setPostRenderQc(qc);
+    if (!contract.equals(qc.get("contract")))
+      throw new IllegalStateException("Video QC must match the requested source story contract");
+    var bound = new LinkedHashMap<String, Object>(qc);
+    bound.put("videoId", id.toString());
+    analyses.findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(id, CURRENT_ANALYSIS_VERSION)
+        .ifPresent(analysis -> bound.put("analysisId", analysis.getId().toString()));
+    video.setPostRenderQc(bound);
     videos.save(video);
-    return qc;
+    return video.getPostRenderQc();
   }
 
   public DirectoryIngestResponse ingestDirectory(
@@ -621,6 +627,10 @@ public class VideoService {
               .orElse(Map.of());
       var result = ml.analyse(video.getRelativePath(), analysisVersion, cachedSemantic, true);
       var analysis = persistCreativeAnalysis(video, result);
+      if (video.getPostRenderQc().get("contract") instanceof Map<?, ?> source && !source.isEmpty()) {
+        @SuppressWarnings("unchecked") var contract = (Map<String, Object>) source;
+        inspectVideoQc(videoId, contract);
+      }
       video.markAnalysed();
       return new AnalysisResponse(
           analysis.getId(),

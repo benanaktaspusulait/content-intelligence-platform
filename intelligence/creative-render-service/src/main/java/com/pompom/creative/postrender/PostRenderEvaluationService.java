@@ -41,11 +41,11 @@ public class PostRenderEvaluationService {
           evidence.videoId(), evidence.variantId(), evidence.evidenceVersion(), evidence.capturedAt(),
           evidence.analyzerVersions(), Map.copyOf(enriched));
       String status = String.valueOf(qc.get("status"));
-      boolean passed = "VIDEO_QC_PASS".equals(status) && Boolean.FALSE.equals(qc.get("approvalBlocked"));
+      boolean passed = "STORY_QC_PASS".equals(qc.get("storyStatus")) && "VIDEO_QC_PASS".equals(status) && Boolean.FALSE.equals(qc.get("approvalBlocked"));
       results.add(new PostRenderRuleResult("STORY_VISUAL_CONTRACT", "1", ruleEngine.rulesetVersion(),
           "POST_RENDER", "STORY_VISUAL", PostRenderSeverity.BLOCKER,
           passed ? PostRenderOutcome.PASS : "VIDEO_QC_FAIL".equals(status) ? PostRenderOutcome.FAIL : PostRenderOutcome.UNKNOWN,
-          status + ": inspect videoQc.checks for timestamps and reasons", qc,
+          qc.getOrDefault("storyStatus", "STORY_QC_NOT_EVALUATED") + " / " + status + ": inspect videoQc.checks for timestamps and reasons", qc,
           Map.of("status", "VIDEO_QC_PASS"), Map.of("source", "videoQc"), "story-video-qc-v1", !passed, Instant.now()));
     }
     PostRenderDecision decision = new PostRenderDecisionAggregator().aggregate(results);

@@ -73,6 +73,77 @@ class VisualAcceptanceContract(BaseModel):
         return self
 
 
+def normalize_contract(source: dict[str, Any] | None) -> dict[str, Any] | None:
+    """Reuse the immutable production intent when no explicit visual contract was authored."""
+    if not isinstance(source, dict) or source.get("version") == "visual-acceptance-v1":
+        return source
+    intent = source.get("intent", source)
+    if not isinstance(intent, dict):
+        return source
+    explicit = intent.get("visualAcceptanceContract")
+    if isinstance(explicit, dict):
+        return explicit
+    beats = intent.get("timingIntent", intent.get("beats", []))
+    if not isinstance(beats, list) or not beats:
+        return source  # No invented timeline or story binding.
+    requirements = []
+    for i, beat in enumerate(beats):
+        start = beat.get("startTime", beat.get("startSeconds"))
+        end = beat.get("endTime", beat.get("endSeconds"))
+        action = beat.get("action", beat.get("description"))
+        if not isinstance(start, (int, float)) or not isinstance(end, (int, float)) or not action:
+            return source
+        requirements.append(dict(id=f"beat-{i + 1}", category="beat-order", startSeconds=start,
+                                 endSeconds=end, description="Required timed action and consequence: " + json.dumps(beat)))
+    end = max(r["endSeconds"] for r in requirements)
+    opening_end = min(end, requirements[0]["endSeconds"])
+    dimensions = {
+        "first-frame": (0, 0, intent.get("openingIntent", intent.get("hook", {}))),
+        "opening": (0, opening_end, intent.get("openingIntent", intent.get("hook", {}))),
+        "causality": (0, end, "Each required action must visibly cause its required consequence; do not infer missing events."),
+        "physical-rule": (0, end, intent.get("mechanicIntent", intent.get("coreMechanic", {}))),
+        "character-identity": (0, end, intent.get("characterIntent", intent.get("characters", {}))),
+        "object-continuity": (0, end, "Objects and attachment states must remain continuous across the required beats."),
+        "payoff": (requirements[-1]["startSeconds"], end, intent.get("payoffIntent", intent.get("finalPayoff", {}))),
+        "temporal-pacing": (0, end, "Required events must remain readable in their authored windows without unexplained stalls."),
+    }
+    loop = intent.get("loopIntent", intent.get("loop", {}))
+    loop_intended = isinstance(loop, dict) and loop.get("loopsToOpening") is True
+    if loop_intended:
+        dimensions["loop-compatibility"] = (0, end, loop)
+    for category, (start, stop, expected) in dimensions.items():
+        requirements.append(dict(id=category, category=category, startSeconds=start, endSeconds=stop,
+                                 requiresMotion=stop > start,
+                                 description="Compare actual temporal pixels against source intent: " + json.dumps(expected)))
+    digest = hashlib.sha256(json.dumps(source, sort_keys=True).encode()).hexdigest()
+    return dict(version="visual-acceptance-v1", scope="FULL_VIDEO", storyId="source-plan:" + digest,
+                storyRevision=str(source.get("promptVersion", source.get("videoPlanVersion", digest))),
+                loopIntended=loop_intended, requirements=requirements)
+
+
+def semantic_frames(contract: VisualAcceptanceContract, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Bound one existing vision call while retaining before/during/after per timed window.
+
+    Full contiguous evidence stays on disk. Sent pixels cover the entire clip at
+    roughly 4Hz, with denser authored opening/event anchors, capped at 100 images.
+    """
+    selected = {}
+    def add(t):
+        frame = min(frames, key=lambda f: abs(f["timestampSeconds"] - t))
+        selected[frame["index"]] = frame
+    end = frames[-1]["timestampSeconds"]
+    for t in np.linspace(0, end, min(65, max(3, math.ceil(end * 4) + 1))):
+        add(t)
+    for r in contract.requirements:
+        for t in np.linspace(r.startSeconds, r.endSeconds, 3 if r.requiresMotion else 1):
+            add(t)
+    for t in contract.sampleTimesSeconds:
+        add(t)
+    if len(selected) + len(contract.canonicalReferences) > 100:
+        raise ValueError("Authored temporal anchors exceed the single-call 100-image budget")
+    return sorted(selected.values(), key=lambda f: f["timestampSeconds"])
+
+
 def _digest(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as source:
@@ -114,7 +185,10 @@ def inspect_video(relative_path: str, contract: dict[str, Any] | None = None) ->
     }
     authored = None
     try:
-        authored = VisualAcceptanceContract.model_validate(contract)
+        authored = VisualAcceptanceContract.model_validate(normalize_contract(contract))
+        result["evaluatedContract"] = authored.model_dump()
+        result["storyBinding"] = {"storyId": authored.storyId, "storyRevision": authored.storyRevision,
+                                  "contractHash": contract_hash, "scope": authored.scope}
     except (ValueError, TypeError) as error:
         checks.append(_check("visual_contract", "NOT_EVALUATED", "Missing or invalid story visual acceptance contract: " + str(error)[:600]))
     try:
@@ -217,6 +291,9 @@ def inspect_video(relative_path: str, contract: dict[str, Any] | None = None) ->
         checks.append(_check("pixel_inspection", "NOT_EVALUATED", f"Inspection unavailable: {type(error).__name__}: {str(error)[:300]}"))
     if _digest(path) != asset_hash:
         checks.append(_check("asset_unchanged", "FAIL", "Video bytes changed during inspection"))
+    story_checks = [c for c in checks if c["id"] not in {"stream_decode", "timestamped_pixels", "pixel_inspection", "asset_unchanged"}]
+    result["storyStatus"] = decision(story_checks).replace("VIDEO_QC_", "STORY_QC_")
+    result["storyChecks"] = story_checks
     result["status"] = decision(checks)
     result["approvalBlocked"] = result["status"] != "VIDEO_QC_PASS" or authored is None or authored.scope != "FULL_VIDEO"
     if authored and authored.scope == "OPENING_PROOF":
@@ -235,13 +312,15 @@ def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], durat
     # Server/operator opt-in, independent from possession of API credentials or caller input.
     if os.getenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "false").lower() != "true":
         return checks
-    frames = result["frames"]
-    if len(frames) > 100:
-        for c in checks:
-            if c["status"] != "FAIL":
-                c["reason"] = "Contiguous motion evidence exceeds single-call visual evaluator capacity (100 frames)"
-        return checks
+    for check in checks:
+        if check["status"] != "FAIL":
+            check["reason"] = "Evaluator did not return usable timestamped evidence for this requirement"
     try:
+        frames = semantic_frames(contract, result["frames"])
+        result["semanticFrames"] = frames
+        result["semanticMotionWindows"] = [{**w, "frameIndices": [f["index"] for f in frames
+            if w["startSeconds"] <= f["timestampSeconds"] <= w["endSeconds"]], "contiguous": False,
+            "sampling": "TIMESTAMPED_WINDOW_SEQUENCE"} for w in result["motionWindows"]]
         from .llm import get_provider
         from .semantic_routing import SemanticModelRoutingPolicy
 
@@ -256,19 +335,22 @@ def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], durat
             references.append(str(image))
         prompt = (
             "Inspect these actual rendered frames IN TIMESTAMP ORDER against the authored visual contract. "
-            "Use the contiguous frames to judge events and causality, not just counts. "
+            "Use the timestamped sequences within EACH temporal window to judge events and causality, not just counts. "
+            "These are sampled sequences, not all consecutive frames. Use UNCERTAIN for transitions hidden between samples. "
             "Do not infer success from instructions. If ambiguous use UNCERTAIN; if not observable use NOT_EVALUATED. "
             "Return JSON {checks:[{id,status:PASS|FAIL|UNCERTAIN|NOT_EVALUATED,reason,timestampsSeconds:[number,...]}]}. "
             "For each mandatory event establish its before, transition and after states inside its deadline. "
             "Preserve source-object identity, attachment, temporal order, prohibited alternatives and visibility. "
             "No story-specific requirement may be assumed. Canonical reference images follow all timed video frames. "
             + json.dumps({"contract": contract.model_dump(), "assetHash": result["assetHash"],
+                          "motionWindows": result["semanticMotionWindows"],
                           "frames": [{"timestampSeconds": f["timestampSeconds"], "frameHash": f["frameHash"]} for f in frames]})
         )
         result["providerCalls"] = 1
         raw, usage = provider.complete_images(prompt, [f["framePath"] for f in frames] + references,
                                               system="Return only JSON observations grounded in supplied pixels.", temperature=0)
-        result["semanticProvenance"] = {"provider": selection.provider, "model": selection.model, "usage": usage}
+        result["semanticProvenance"] = {"provider": selection.provider, "model": selection.model, "usage": usage,
+                                         "framesSent": len(frames), "contractHash": result["contractHash"]}
         payload = json.loads(raw)
         observations = payload["checks"]
         if len({o["id"] for o in observations}) != len(observations):
@@ -285,11 +367,14 @@ def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], durat
                 continue
             timestamps = o.get("timestampsSeconds", [])
             valid = (isinstance(timestamps, list) and bool(timestamps)
-                     and all(isinstance(t, (int, float)) and t in known and r.startSeconds - .05 <= t <= r.endSeconds + .05 for t in timestamps))
-            if o["status"] in {"PASS", "FAIL"} and (not valid or (r.requiresMotion and len(set(timestamps)) < 3)):
+                     and all(not isinstance(t, bool) and isinstance(t, (int, float)) and t in known and r.startSeconds - .05 <= t <= r.endSeconds + .05 for t in timestamps))
+            if o["status"] in {"PASS", "FAIL", "UNCERTAIN"} and (not valid or (r.requiresMotion and len(set(timestamps)) < 3)):
                 c["reason"] = "Evaluator did not supply enough valid time-aligned motion evidence"
                 continue
             c.update(status=o["status"], reason=o["reason"], timestampsSeconds=timestamps)
     except Exception as error:
         result["semanticError"] = type(error).__name__  # Never persist provider exception text/credentials.
+        for check in checks:
+            if check["status"] == "NOT_EVALUATED":
+                check["reason"] = "Story-aware visual evaluator unavailable: " + type(error).__name__
     return checks

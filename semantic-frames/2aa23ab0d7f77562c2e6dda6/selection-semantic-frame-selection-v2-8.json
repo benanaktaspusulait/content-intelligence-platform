@@ -1,0 +1,113 @@
+{
+  "version": "semantic-frame-selection-v2",
+  "assetHash": "2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f",
+  "durationSeconds": 15.104,
+  "maxFrames": 8,
+  "targetFrames": 8,
+  "cacheHit": false,
+  "selectedFrameCount": 8,
+  "selectedFrames": [
+    {
+      "timestampSeconds": 0.0,
+      "selectionReason": "OPENING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-01-000.000.jpg",
+      "frameAvailable": true,
+      "frameHash": "0ce280c1c3e1403246c3ba6d486c53f5118c569b453488b9307373afac29afd3",
+      "preparedImageHash": "0ce280c1c3e1403246c3ba6d486c53f5118c569b453488b9307373afac29afd3",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 0.5,
+      "selectionReason": "OPENING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-02-000.500.jpg",
+      "frameAvailable": true,
+      "frameHash": "81d344f9e7ed8c7d28c11947108abbe62333fe544975f910dffdf0f01f62dff2",
+      "preparedImageHash": "81d344f9e7ed8c7d28c11947108abbe62333fe544975f910dffdf0f01f62dff2",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 1.0,
+      "selectionReason": "OPENING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-03-001.000.jpg",
+      "frameAvailable": true,
+      "frameHash": "0185d6a19b89129bf83eb4337bb41a02d0fb65bb3a9b0416b5320c302d04ea98",
+      "preparedImageHash": "0185d6a19b89129bf83eb4337bb41a02d0fb65bb3a9b0416b5320c302d04ea98",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 1.26,
+      "selectionReason": "V5_EVENT_BEFORE",
+      "relatedEventId": "v5-event-1",
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-04-001.260.jpg",
+      "frameAvailable": true,
+      "frameHash": "1dc6e68f2b004c0c61811f8d0acb795767c4d9df4bb46fb47ba746c0afc71aac",
+      "preparedImageHash": "1dc6e68f2b004c0c61811f8d0acb795767c4d9df4bb46fb47ba746c0afc71aac",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 1.5,
+      "selectionReason": "OPENING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-05-001.500.jpg",
+      "frameAvailable": true,
+      "frameHash": "e4225562fcd377a3cc53f9c7c651450774ad43c8746c94081bde01395ae5fce8",
+      "preparedImageHash": "e4225562fcd377a3cc53f9c7c651450774ad43c8746c94081bde01395ae5fce8",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 13.604,
+      "selectionReason": "ENDING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-06-013.604.jpg",
+      "frameAvailable": true,
+      "frameHash": "19e85e65bdbf398b4a0fb220a1dbd4f5cd0e96ee60b92638d2845753710fb9b3",
+      "preparedImageHash": "19e85e65bdbf398b4a0fb220a1dbd4f5cd0e96ee60b92638d2845753710fb9b3",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 14.104,
+      "selectionReason": "ENDING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-07-014.104.jpg",
+      "frameAvailable": true,
+      "frameHash": "15f9cf3fb2c7f05b7a6ee54e4e5e847e9e0311824da0f28cae6ce3b819487060",
+      "preparedImageHash": "15f9cf3fb2c7f05b7a6ee54e4e5e847e9e0311824da0f28cae6ce3b819487060",
+      "width": 496,
+      "height": 864
+    },
+    {
+      "timestampSeconds": 14.604,
+      "selectionReason": "ENDING_ANCHOR",
+      "relatedEventId": null,
+      "relatedBeatId": null,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/semantic-frames/2aa23ab0d7f77562c2e6dda6/frame-08-014.604.jpg",
+      "frameAvailable": true,
+      "frameHash": "5be415023c3236bcdd81994df661083884de2cfba18734a1334104ec51d29843",
+      "preparedImageHash": "5be415023c3236bcdd81994df661083884de2cfba18734a1334104ec51d29843",
+      "width": 496,
+      "height": 864
+    }
+  ],
+  "coverage": {
+    "openingAnchors": 4,
+    "endingAnchors": 3,
+    "v5Events": 1,
+    "planBeats": 0
+  }
+}

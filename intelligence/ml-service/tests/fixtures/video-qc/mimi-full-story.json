@@ -1,0 +1,156 @@
+{
+  "version": "visual-acceptance-v1",
+  "scope": "FULL_VIDEO",
+  "storyId": "mimi-multiplying-sticky-notes",
+  "storyRevision": "owner-final-15s-five-beats-2026-10-18",
+  "loopIntended": false,
+  "requirements": [
+    {
+      "id": "opening-state",
+      "category": "first-frame",
+      "startSeconds": 0,
+      "endSeconds": 0,
+      "description": "Exactly one complete yellow note is attached to Mimi anatomical right paw; left paw is empty and removal is already underway. Face and both paws are clear.",
+      "mandatory": true,
+      "requiresMotion": false,
+      "referenceRequired": false
+    },
+    {
+      "id": "duplication-1-to-2",
+      "category": "opening",
+      "startSeconds": 0,
+      "endSeconds": 2,
+      "description": "During the removal attempt a NEW complete yellow note appears on the left paw by 0.5s. The original remains attached to the right paw, intact. Two independent notes persist, followed by surprise. Reject transfer, splitting, tearing or hidden pre-existing sheets.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "duplication-2-to-4",
+      "category": "beat-order",
+      "startSeconds": 2,
+      "endSeconds": 5,
+      "description": "Mimi tries unsuccessfully to transfer/remove the two notes onto the wooden cabinet; the visible consequence is four complete independent notes. Establish the before, causal event and after count, not merely papers moving.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "duplication-4-to-8",
+      "category": "beat-order",
+      "startSeconds": 5,
+      "endSeconds": 8,
+      "description": "A further unsuccessful removal attempt visibly multiplies four notes into eight complete independent yellow notes. Establish before, transition and stable after count; eight must remain readable at 480p.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "recognition-and-stop",
+      "category": "beat-order",
+      "startSeconds": 8,
+      "endSeconds": 11,
+      "description": "Mimi visibly recognizes that removal multiplies the notes, stops trying to remove them and reacts. Avoid an extended reaction that loses momentum or an unexplained change in paper count.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "sneeze-cabinet-payoff",
+      "category": "payoff",
+      "startSeconds": 11,
+      "endSeconds": 15,
+      "description": "Mimi sneezes and the notes visibly scatter onto the wooden toy cabinet at screen right. The final outcome clearly shows the cabinet messy with the notes; causally connect the sneeze to that outcome.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "cause-and-consequence",
+      "category": "causality",
+      "startSeconds": 0,
+      "endSeconds": 15,
+      "description": "Each attempted removal or transfer causes the specified multiplication and reaction; each of the five authored timed beats has a visible understandable consequence. Do not infer offscreen events.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "one-impossible-rule",
+      "category": "physical-rule",
+      "startSeconds": 0,
+      "endSeconds": 15,
+      "description": "Only attempts to remove or transfer multiply sticky notes in a clear 1 to 2 to 4 to 8 sequence. Notes remain complete squares; reject tearing, unfolding, stretching, splitting and ordinary transfers posing as duplication.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "mimi-continuity",
+      "category": "character-identity",
+      "startSeconds": 0,
+      "endSeconds": 15,
+      "description": "Preserve the same single approved Mimi character appearance, face, clothing, paws and proportions throughout, matching the supplied approved opening reference. No extra characters.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": true
+    },
+    {
+      "id": "paper-and-background-continuity",
+      "category": "object-continuity",
+      "startSeconds": 0,
+      "endSeconds": 15,
+      "description": "Maintain note identity, complete shape, count and believable paw/cabinet contact between events. Preserve close-medium camera perspective and the same cabinet/background; no unexplained object changes.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "five-readable-beats",
+      "category": "temporal-pacing",
+      "startSeconds": 0,
+      "endSeconds": 15,
+      "description": "Opening action is immediate; multiplication consequences at 0 to 2, 2 to 5, 5 to 8 seconds, recognition at 8 to 11, and sneeze payoff at 11 to 15 are readable. Detect later reaction stalls and missing intermediate events.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    },
+    {
+      "id": "unwanted-text-artifacts",
+      "category": "visual-artifacts",
+      "startSeconds": 0,
+      "endSeconds": 15,
+      "description": "Yellow notes remain blank. Detect unwanted letters, words, symbols or text, paper deformation, unstable attachment and visible visual artifacts. Do not assume a blank note when pixels are ambiguous.",
+      "mandatory": true,
+      "requiresMotion": true,
+      "referenceRequired": false
+    }
+  ],
+  "sampleTimesSeconds": [
+    0,
+    0.15,
+    0.2,
+    0.3,
+    0.35,
+    0.45,
+    0.5,
+    0.75,
+    1,
+    2,
+    3.5,
+    5,
+    6.5,
+    8,
+    9.5,
+    11,
+    12.5,
+    14.8,
+    15
+  ],
+  "canonicalReferences": [
+    {
+      "relativePath": "intelligence/docs/mimi-sticky-first-frame/mimi-snap-state-a.png",
+      "sha256": "b3c360c1a4b42fe56cb1993365106fae462248fb09b6e7207e7e2a7d77c128a4"
+    }
+  ]
+}

@@ -110,3 +110,79 @@ def test_duplicate_requirement_ids_are_rejected():
     c["requirements"] *= 2
     with pytest.raises(ValueError):
         video_qc.VisualAcceptanceContract.model_validate(c)
+
+
+def test_existing_production_intent_is_bound_without_inventing_a_timeline():
+    source = {"promptVersion": "7", "intent": {"timingIntent": [
+        {"id": "a", "startTime": 0, "endTime": .5, "action": "Attempt transfer", "consequence": "Object duplicates"},
+        {"id": "b", "startTime": .5, "endTime": 1.5, "action": "Stop and react", "consequence": "Both objects remain"}],
+        "mechanicIntent": {"rule": "transfer duplicates"}, "payoffIntent": {"action": "stop"}}}
+    normalized = video_qc.VisualAcceptanceContract.model_validate(video_qc.normalize_contract(source))
+    assert normalized.scope == "FULL_VIDEO"
+    assert normalized.storyRevision == "7"
+    assert normalized.requirements[0].endSeconds == .5
+    assert "Object duplicates" in normalized.requirements[0].description
+    assert video_qc.normalize_contract({"intent": {}}) == {"intent": {}}
+
+
+def test_full_duration_evidence_fits_existing_single_call_budget(clip, monkeypatch):
+    # Transport regression, not a claim about the visual contents of the fixture.
+    frames = [{"index": i, "timestampSeconds": i / 24, "framePath": str(clip), "frameHash": "test"} for i in range(361)]
+    c = contract()
+    c["requirements"][0]["endSeconds"] = 15
+    selected = video_qc.semantic_frames(video_qc.VisualAcceptanceContract.model_validate(c), frames)
+    assert 3 <= len(selected) <= 100
+    assert selected[0]["timestampSeconds"] == 0
+    assert selected[-1]["timestampSeconds"] == 15
+    assert max(b["timestampSeconds"] - a["timestampSeconds"] for a, b in zip(selected, selected[1:])) <= .251
+
+
+def test_unavailable_story_is_prominent_and_never_motion_pass(clip):
+    result = video_qc.inspect_video(clip.name, contract())
+    assert result["storyStatus"] == "STORY_QC_NOT_EVALUATED"
+    assert result["storyChecks"][0]["id"] == "event"
+    assert result["storyBinding"]["storyId"] == "unit-transport-only"
+    assert result["approvalBlocked"]
+
+
+def test_ambiguous_or_contradictory_temporal_pixels_propagate_story_verdict(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    for status in ("FAIL", "UNCERTAIN"):
+        provider = Mock()
+        provider.complete_images.return_value = (json.dumps({"checks": [{"id": "event", "status": status,
+            "reason": "Adapter transport test, not a real visual finding", "timestampsSeconds": [0, .25, .5]}]}), {})
+        with patch("app.llm.get_provider", return_value=provider):
+            result = video_qc.inspect_video(clip.name, contract())
+        assert result["storyStatus"] == f"STORY_QC_{status}"
+        assert result["approvalBlocked"]
+        assert result["semanticFrames"]
+        assert result["semanticMotionWindows"][0]["sampling"] == "TIMESTAMPED_WINDOW_SEQUENCE"
+
+
+def test_actual_mimi_import_http_retains_all_story_windows_without_paid_calls(tmp_path, monkeypatch):
+    """Real pixels; no mocked or hardcoded semantic verdict about those pixels."""
+    import shutil
+    from fastapi.testclient import TestClient
+    from app.main import app
+    root = Path(__file__).resolve().parents[3]
+    source = root / "intelligence/docs/mimi-single-take-15s/mimi-openart-original-15s.mp4"
+    if not source.exists():
+        pytest.skip("Owner's real Mimi regression asset is not installed")
+    c = json.loads((Path(__file__).parent / "fixtures/video-qc/mimi-full-story.json").read_text())
+    for ref in c["canonicalReferences"]:
+        shutil.copyfile(root / ref["relativePath"], tmp_path / "approved.png")
+        ref["relativePath"] = "approved.png"
+    shutil.copyfile(source, tmp_path / "mimi.mp4")
+    monkeypatch.setattr(video_qc.settings, "data_root", tmp_path)
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "false")
+    with patch("app.llm.get_provider", side_effect=AssertionError("No paid evaluator is authorized")):
+        response = TestClient(app).post("/v1/analysis/video-qc", json={"relativePath": "mimi.mp4", "visualAcceptanceContract": c})
+    assert response.status_code == 200
+    result = response.json()
+    assert result["assetHash"] == video_qc._digest(source)
+    assert result["technicalObservations"]["decodedFrames"] == 361
+    assert result["storyStatus"] == "STORY_QC_NOT_EVALUATED"
+    assert result["approvalBlocked"] and result["providerCalls"] == 0
+    assert len(result["motionWindows"]) == 11
+    assert {c["id"] for c in result["storyChecks"]} == {r["id"] for r in c["requirements"]}
+    assert len(video_qc.semantic_frames(video_qc.VisualAcceptanceContract.model_validate(c), result["frames"])) + len(c["canonicalReferences"]) <= 100

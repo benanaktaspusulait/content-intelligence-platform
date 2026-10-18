@@ -289,7 +289,7 @@ interface VisualEvidenceResponse {
                           }
                           @if (postRenderDetails()?.evidence; as evidence) {
                             <section class="post-render-assessment">
-                              <h4>Rendered video QC: {{ evidence.videoQc?.status || 'VIDEO_QC_NOT_EVALUATED' }}</h4>
+                              <h4>Rendered video QC: {{ evidence.videoQc?.storyStatus || 'STORY_QC_NOT_EVALUATED' }} / {{ evidence.videoQc?.status || 'VIDEO_QC_NOT_EVALUATED' }}</h4>
                               @if (evidence.videoQc?.approvalBlocked !== false) {
                                 <p>Production approval is blocked until every mandatory visual check passes.</p>
                               }
@@ -558,6 +558,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     if (job.jobType !== 'VIDEO') return true;
     const details = this.postRenderDetails();
     return details?.id === job.qaResult?.id
+      && details?.evidence?.videoQc?.storyStatus === 'STORY_QC_PASS'
       && details?.evidence?.videoQc?.status === 'VIDEO_QC_PASS'
       && details?.evidence?.videoQc?.approvalBlocked === false;
   }

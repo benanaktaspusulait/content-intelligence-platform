@@ -1,0 +1,320 @@
+{
+  "version": "story-video-qc-v1",
+  "assetHash": "2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f",
+  "relativePath": "intelligence/docs/mimi-single-take-15s/mimi-openart-original-15s.mp4",
+  "contractHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "contract": {},
+  "capturedAt": "2026-10-18T21:17:18.923877+00:00",
+  "checks": [
+    {
+      "id": "visual_contract",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Missing or invalid story visual acceptance contract: 1 validation error for VisualAcceptanceContract\n  Input should be a valid dictionary or instance of VisualAcceptanceContract [type=model_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.14/v/model_type"
+    },
+    {
+      "id": "stream_decode",
+      "status": "PASS",
+      "mandatory": true,
+      "reason": "Complete video stream decoded without errors"
+    },
+    {
+      "id": "timestamped_pixels",
+      "status": "PASS",
+      "mandatory": true,
+      "reason": "PTS-aligned frames and contiguous motion windows saved"
+    }
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "timestampSeconds": 0.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00000.jpg",
+      "frameHash": "ea77e0eb5a053d6bc0fa78a7001db8f8221f3e36891fafe4fabe308c3669b6f2"
+    },
+    {
+      "index": 1,
+      "timestampSeconds": 0.041667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00001.jpg",
+      "frameHash": "dd17c9e6d8c1c595dfb24d6d0d3db4d4e0b4387e8a44fbdac3747782019fae8f"
+    },
+    {
+      "index": 2,
+      "timestampSeconds": 0.083333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00002.jpg",
+      "frameHash": "b77064e63a5bfde718043de33d6d53175c9a12e6ecc69e1cfc31bc33fd1ad394"
+    },
+    {
+      "index": 3,
+      "timestampSeconds": 0.125,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00003.jpg",
+      "frameHash": "0dbbccb4fdf0c6f23419a629559ff99346b14a73e31c0a7cb5b5fd66dfa7f2d1"
+    },
+    {
+      "index": 4,
+      "timestampSeconds": 0.166667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00004.jpg",
+      "frameHash": "3e2ef400137176058b0aeaa41e184716df6f50b9beeeae43691ca72167b59857"
+    },
+    {
+      "index": 5,
+      "timestampSeconds": 0.208333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00005.jpg",
+      "frameHash": "e8e1cfbc5fc03bad6b5c5cacd311ce20ad0bb80389dec2280584f59230e21545"
+    },
+    {
+      "index": 6,
+      "timestampSeconds": 0.25,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00006.jpg",
+      "frameHash": "3037015ccfbf207b6ff646b5f447484fe53be9cd15cd0f7cf03560ed3d195fbd"
+    },
+    {
+      "index": 7,
+      "timestampSeconds": 0.291667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00007.jpg",
+      "frameHash": "0bc2dbee9f0c223b265def509c9fa00f331a8289be794a0b55abe90cc7509834"
+    },
+    {
+      "index": 8,
+      "timestampSeconds": 0.333333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00008.jpg",
+      "frameHash": "8d8bc6686d6cd3fb02b287b3d72f141669a2e0167927acacede753a54447f9ed"
+    },
+    {
+      "index": 9,
+      "timestampSeconds": 0.375,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00009.jpg",
+      "frameHash": "77d12894335b6ad044d22c9a7bd6e29a0563d583fa0b8f12a463f3fab89d0e7f"
+    },
+    {
+      "index": 10,
+      "timestampSeconds": 0.416667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00010.jpg",
+      "frameHash": "d59f2136bb7ff0bf086066864f5fdcc686dab71ada55650bcf5ce7b7abe02ec5"
+    },
+    {
+      "index": 11,
+      "timestampSeconds": 0.458333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00011.jpg",
+      "frameHash": "767404640b845a092528c1a3704832caf3badc3819e03990a56da97cded38880"
+    },
+    {
+      "index": 12,
+      "timestampSeconds": 0.5,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00012.jpg",
+      "frameHash": "ddd94d733ba5d0aebb37c5a83563897c16a34fda051bee8a6d4f1d87da8f2606"
+    },
+    {
+      "index": 13,
+      "timestampSeconds": 0.541667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00013.jpg",
+      "frameHash": "2187c5115718e14e02ddccabbd5d122dd5ebe6e6cc6b0d1e85a93d938ff50846"
+    },
+    {
+      "index": 14,
+      "timestampSeconds": 0.583333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00014.jpg",
+      "frameHash": "210d085e20ef93eb8b278c7f1d796b7c9ddd51ecd946e0b30d4cac5766b527ba"
+    },
+    {
+      "index": 15,
+      "timestampSeconds": 0.625,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00015.jpg",
+      "frameHash": "fe53e23a42751f83324d2e57c8d7c574dfee2185ca7cbd5e21a0ae49cecb0dc6"
+    },
+    {
+      "index": 16,
+      "timestampSeconds": 0.666667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00016.jpg",
+      "frameHash": "e6ffaacb30d1383705ddfcf5dda1043623cd5fe65a223851190175ff1d8e4cca"
+    },
+    {
+      "index": 17,
+      "timestampSeconds": 0.708333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00017.jpg",
+      "frameHash": "3f4b9a678b181708b8b9fd0738a0b6d5ab72a7fe1b664b257fe26f86c0af371b"
+    },
+    {
+      "index": 18,
+      "timestampSeconds": 0.75,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00018.jpg",
+      "frameHash": "c619b34a136acc3e070119a3f309777ec8bd49c1aa5b0b2f509a6f55cc9fbf0d"
+    },
+    {
+      "index": 19,
+      "timestampSeconds": 0.791667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00019.jpg",
+      "frameHash": "6583cc511c3059e11ade0a6b100014764c5ac5f70fdd4c733fac536391af45e3"
+    },
+    {
+      "index": 20,
+      "timestampSeconds": 0.833333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00020.jpg",
+      "frameHash": "f547ca3b748ee7049f18ed1db5334540c9cbaea5097293815c72645205a0ae5e"
+    },
+    {
+      "index": 21,
+      "timestampSeconds": 0.875,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00021.jpg",
+      "frameHash": "7a3f1838096735fe2c435825bfdc670982fd5a3382e422d2384f1d9ec1a8c261"
+    },
+    {
+      "index": 22,
+      "timestampSeconds": 0.916667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00022.jpg",
+      "frameHash": "86a9b9f932894a6f5b6cfa5d84c2a9df7f357c0809f2198258c88381df0fb0a1"
+    },
+    {
+      "index": 23,
+      "timestampSeconds": 0.958333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00023.jpg",
+      "frameHash": "94e31b2e524d224f877bff38202c191bd94858fe3afd9efd66252824613c3acb"
+    },
+    {
+      "index": 24,
+      "timestampSeconds": 1.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00024.jpg",
+      "frameHash": "62c039e1e1ffb9b46b1bad0d4d6d1926d8a49b15b27f48824f46c6208b858b73"
+    },
+    {
+      "index": 48,
+      "timestampSeconds": 2.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00048.jpg",
+      "frameHash": "c2ecf1646382bb6937aa67fea0a15cfaa7eceab446b4e1f3e347a428f7a0bedd"
+    },
+    {
+      "index": 72,
+      "timestampSeconds": 3.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00072.jpg",
+      "frameHash": "3f2a1cc64d879e0f135a73058004e5ec5297d7230f4acc8334448acbcd2d94ab"
+    },
+    {
+      "index": 96,
+      "timestampSeconds": 4.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00096.jpg",
+      "frameHash": "9fe3c0a04ab35fe67af13678909bb651054c1431d9ce2544c01eaf973fed9e83"
+    },
+    {
+      "index": 120,
+      "timestampSeconds": 5.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00120.jpg",
+      "frameHash": "04af9d0ea35a3ad67aa4a2eb8605f1613ceab7a41453eb621bc065e8f376ec40"
+    },
+    {
+      "index": 144,
+      "timestampSeconds": 6.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00144.jpg",
+      "frameHash": "06817f5c8b4315c9c53b640d5d68fe2b597f9f720740bd4c0924b79f603f69cc"
+    },
+    {
+      "index": 168,
+      "timestampSeconds": 7.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00168.jpg",
+      "frameHash": "44356afc897db1f57c07587d5ff5a673e5872d564c3c27dd3d1972391caf58d8"
+    },
+    {
+      "index": 192,
+      "timestampSeconds": 8.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00192.jpg",
+      "frameHash": "2fcc03f3bdc3b12ec146c296f97314f9562cb40c7ab93f671b751eeb34841d88"
+    },
+    {
+      "index": 216,
+      "timestampSeconds": 9.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00216.jpg",
+      "frameHash": "f4a605f007d9ad0c8f0674e7c03a580c31591e9bdd63127d757bdfe8337ca6f7"
+    },
+    {
+      "index": 240,
+      "timestampSeconds": 10.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00240.jpg",
+      "frameHash": "3e428a4729c6904300a089fa0139bd09c33941380df3094080701715b66a7245"
+    },
+    {
+      "index": 264,
+      "timestampSeconds": 11.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00264.jpg",
+      "frameHash": "247cb0575a080eb8adfa8d033acff0310744432dca5c011c2b061ceff9c28bc5"
+    },
+    {
+      "index": 288,
+      "timestampSeconds": 12.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00288.jpg",
+      "frameHash": "d15d30d9f271f94fb639a57894f7153463c6e19d43e4786c453edb17085d08ab"
+    },
+    {
+      "index": 312,
+      "timestampSeconds": 13.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00312.jpg",
+      "frameHash": "cb7ef1812e2ad921f7b181a426b16637d0f43ec8e4c111c9707b99437850af82"
+    },
+    {
+      "index": 336,
+      "timestampSeconds": 14.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00336.jpg",
+      "frameHash": "a14dc71abe5228bc8f80b17607579db126f5808c44cb135d2c0c4af2a97b7e86"
+    },
+    {
+      "index": 360,
+      "timestampSeconds": 15.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/frame-00360.jpg",
+      "frameHash": "fe11165cb0800d016085a3a6e0ef37d5a98ae57c1a490e1f9bb03d6260d47cf2"
+    }
+  ],
+  "motionWindows": [
+    {
+      "requirementId": "opening",
+      "startSeconds": 0,
+      "endSeconds": 1,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "contiguous": true
+    }
+  ],
+  "providerCalls": 0,
+  "metadata": {
+    "durationMs": 15104,
+    "width": 496,
+    "height": 864,
+    "fps": 24.0,
+    "aspectRatio": 0.5740740740740741,
+    "codec": "h264",
+    "audioPresent": true,
+    "sha256": "2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f"
+  },
+  "technicalObservations": {
+    "decodedFrames": 361,
+    "darkFrameTimes": [],
+    "identicalFrameTimes": [],
+    "interpretation": "Darkness and holds are review signals, not semantic failures."
+  },
+  "contactSheetPath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/contact-sheet.jpg",
+  "status": "VIDEO_QC_NOT_EVALUATED",
+  "approvalBlocked": true,
+  "evidencePath": "/Users/benanaktas/project/video/content-intelligence-platform/video-qc/2aa23ab0d7f77562c2e6dda6372684e89cf839ee2ff559686a9f3811ba8ccc3f/fb85d9f9-b948-41c2-8c70-2c96472c11d6/result.json"
+}

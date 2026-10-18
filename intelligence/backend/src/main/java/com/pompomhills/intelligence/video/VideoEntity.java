@@ -62,7 +62,10 @@ public class VideoEntity extends AuditableEntity {
   private Map<String, Object> postRenderQc;
 
   public Map<String, Object> getPostRenderQc() {
-    return postRenderQc == null ? Map.of("status", "VIDEO_QC_NOT_EVALUATED", "approvalBlocked", true) : postRenderQc;
+    var qc = new java.util.LinkedHashMap<String, Object>(postRenderQc == null ? Map.of("status", "VIDEO_QC_NOT_EVALUATED") : postRenderQc);
+    qc.putIfAbsent("storyStatus", "STORY_QC_NOT_EVALUATED");
+    if (!"STORY_QC_PASS".equals(qc.get("storyStatus"))) qc.put("approvalBlocked", true);
+    return qc;
   }
 
   public void setPostRenderQc(Map<String, Object> result) {

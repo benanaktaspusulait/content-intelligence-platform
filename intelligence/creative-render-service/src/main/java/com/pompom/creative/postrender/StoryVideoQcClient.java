@@ -20,6 +20,9 @@ public class StoryVideoQcClient {
   @Value("${pompom.qa.service.url:http://localhost:8001}")
   private String serviceUrl;
 
+  @Value("${pompom.intelligence-base-url:http://localhost:8080}")
+  private String intelligenceBaseUrl;
+
   public Map<String, Object> inspect(RenderAsset asset) {
     try {
       var body = new LinkedHashMap<String, Object>();
@@ -28,10 +31,20 @@ public class StoryVideoQcClient {
       var snapshot = mapper.readTree(serialized == null ? "{}" : serialized);
       var contract = snapshot.path("intent").get("visualAcceptanceContract");
       if (contract == null) contract = snapshot.get("visualAcceptanceContract");
-      body.put("visualAcceptanceContract", contract);
-      Map<String, Object> result = restClientBuilder.baseUrl(serviceUrl).build().post()
-          .uri("/v1/analysis/video-qc").body(body).retrieve()
-          .body(new ParameterizedTypeReference<>() {});
+      if (contract == null || contract.isNull()) contract = snapshot;
+      var source = mapper.convertValue(contract, Map.class);
+      body.put("visualAcceptanceContract", source);
+      // The shared video endpoint persists the source binding and result for imports, UI and PDF.
+      Map<String, Object> result;
+      if (asset.getVideoId() != null) {
+        result = restClientBuilder.baseUrl(intelligenceBaseUrl).build().post()
+            .uri("/api/v1/videos/{id}/qc", asset.getVideoId()).body(source).retrieve()
+            .body(new ParameterizedTypeReference<>() {});
+      } else {
+        result = restClientBuilder.baseUrl(serviceUrl).build().post()
+            .uri("/v1/analysis/video-qc").body(body).retrieve()
+            .body(new ParameterizedTypeReference<>() {});
+      }
       if (result != null && asset.getSha256() != null && asset.getSha256().equals(result.get("assetHash")))
         return result;
       return unavailable("QC response did not match the downloaded asset checksum");
@@ -41,6 +54,6 @@ public class StoryVideoQcClient {
   }
 
   private Map<String, Object> unavailable(String reason) {
-    return Map.of("status", "VIDEO_QC_NOT_EVALUATED", "approvalBlocked", true, "reason", reason);
+    return Map.of("status", "VIDEO_QC_NOT_EVALUATED", "storyStatus", "STORY_QC_NOT_EVALUATED", "approvalBlocked", true, "reason", reason);
   }
 }

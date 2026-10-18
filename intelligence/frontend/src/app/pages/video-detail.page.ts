@@ -245,6 +245,10 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         </div>
         @if (analysisFeedback()) { <p class="analysis-feedback" [class.analysis-feedback--error]="analysisFeedbackKind() === 'error'" role="status">{{ analysisFeedback() }}</p> }
         <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
+        <div class="assessment-notice" role="status">
+          <strong>{{ storyQcStatus() }}</strong>
+          <span>{{ storyQcBlocked() ? 'Automatic creative approval blocked. Motion score does not establish story fidelity.' : 'Bound story evidence passed.' }}</span>
+        </div>
         @if (analysisStatus()?.hasCompletedAnalysis) {
           <section class="creative-evidence-summary" aria-labelledby="creative-evidence-summary-heading">
             <div class="section-heading"><div><span class="eyebrow">WHAT THE EVIDENCE SAYS</span><h3 id="creative-evidence-summary-heading">Human-readable motion interpretation</h3></div><span class="data-freshness">Motion evidence only</span></div>
@@ -1383,6 +1387,14 @@ export class VideoDetailPage implements OnDestroy {
   private loadVariants(videoId: string): void {
     this.variantsError.set('');
     this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: response => { this.videoVariants.set([]); this.variantsError.set(response.error?.message || 'Variant history could not be loaded.'); } });
+  }
+  protected storyQcStatus(): string {
+    const qc = this.analysisStatus()?.temporalProfile?.['storyQc'] as Record<string, unknown> | undefined;
+    return String(qc?.['storyStatus'] || 'STORY_QC_NOT_EVALUATED');
+  }
+  protected storyQcBlocked(): boolean {
+    const qc = this.analysisStatus()?.temporalProfile?.['storyQc'] as Record<string, unknown> | undefined;
+    return qc?.['storyStatus'] !== 'STORY_QC_PASS' || qc?.['status'] !== 'VIDEO_QC_PASS' || qc?.['approvalBlocked'] !== false;
   }
   protected pollAnalysisStatus(videoId: string): void {
     this.analysisPollSubscription?.unsubscribe();

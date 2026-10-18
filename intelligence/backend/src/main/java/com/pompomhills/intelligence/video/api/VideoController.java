@@ -191,7 +191,7 @@ public class VideoController {
   public ResponseEntity<byte[]> exportAnalysisPdf(@PathVariable UUID id) {
     var status = statusFor(id, VideoService.CURRENT_ANALYSIS_VERSION);
     var video = service.get(id);
-    byte[] pdf = analysisPdf.render(video.originalFilename(), status);
+    byte[] pdf = analysisPdf.render(video.originalFilename(), status, service.videoQc(id));
     String filename = video.originalFilename().replaceAll("[^A-Za-z0-9._-]+", "-") + "-analysis-report.pdf";
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(filename).build().toString())
@@ -206,6 +206,12 @@ public class VideoController {
       return ResponseEntity.status(503).body(Map.of("error", "Platform readiness service unavailable"));
     }
     return ResponseEntity.ok(platformReadiness.assess(id, platform));
+  }
+
+  private Map<String, Object> temporalWithStoryQc(UUID id, Map<String, Object> temporal) {
+    var bound = new java.util.LinkedHashMap<String, Object>(temporal);
+    bound.put("storyQc", service.videoQc(id));
+    return bound;
   }
 
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id, String analysisVersion) {
@@ -246,7 +252,7 @@ public class VideoController {
           analysis.getVisualSimilarity(),
           analysis.getDarkFrameCandidates(),
           analysis.getTimeline(),
-          analysis.getTemporalProfile(),
+          temporalWithStoryQc(id, analysis.getTemporalProfile()),
           analysis.getPresentation(),
           analysis.getSemanticVideoEvidence());
     }
