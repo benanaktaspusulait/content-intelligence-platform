@@ -416,9 +416,14 @@ public class RenderAttemptOrchestrator {
                         "RenderAsset not found for attempt " + attempt.getId()));
 
     QaAnalysisResult qaResult = null;
-    String qaStatus = "AVAILABLE";
+    String qaStatus = "NOT_EVALUATED";
     try {
-      qaResult = qaService.analyzeAsset(asset);
+      // Video QC below performs local inspection; legacy character QA can make paid calls.
+      // It must not be invoked automatically merely because rendering completed.
+      if (asset.getAssetType() != RenderAsset.AssetType.VIDEO) {
+        qaResult = qaService.analyzeAsset(asset);
+        qaStatus = "AVAILABLE";
+      }
     } catch (QaService.QaDependencyUnavailableException error) {
       qaStatus = "SERVICE_ERROR";
       log.warn(

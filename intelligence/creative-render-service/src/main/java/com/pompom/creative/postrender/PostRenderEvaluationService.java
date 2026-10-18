@@ -6,6 +6,9 @@ import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.qa.QaAnalysisResult;
 import java.time.Instant;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,13 +25,29 @@ public class PostRenderEvaluationService {
   private final PostRenderAssessmentRepository assessmentRepository;
   private final PostRenderAssessmentAggregator assessmentAggregator;
   private final ObjectMapper objectMapper;
+  private final StoryVideoQcClient storyVideoQcClient;
 
   @Transactional
   public EvaluationResult evaluate(
       RenderAsset asset, UUID renderAttemptId, QaAnalysisResult qa, String qaStatus) {
     Instant started = Instant.now();
     RenderEvidenceIR evidence = evidenceExtractor.extract(asset, renderAttemptId, qa, qaStatus);
-    List<PostRenderRuleResult> results = ruleEngine.evaluate(evidence);
+    List<PostRenderRuleResult> results = new ArrayList<>(ruleEngine.evaluate(evidence));
+    if (asset.getAssetType() == RenderAsset.AssetType.VIDEO) {
+      Map<String, Object> qc = storyVideoQcClient.inspect(asset);
+      Map<String, Object> enriched = new LinkedHashMap<>(evidence.evidence());
+      enriched.put("videoQc", qc);
+      evidence = new RenderEvidenceIR(evidence.assetId(), evidence.renderJobId(), evidence.renderAttemptId(),
+          evidence.videoId(), evidence.variantId(), evidence.evidenceVersion(), evidence.capturedAt(),
+          evidence.analyzerVersions(), Map.copyOf(enriched));
+      String status = String.valueOf(qc.get("status"));
+      boolean passed = "VIDEO_QC_PASS".equals(status) && Boolean.FALSE.equals(qc.get("approvalBlocked"));
+      results.add(new PostRenderRuleResult("STORY_VISUAL_CONTRACT", "1", ruleEngine.rulesetVersion(),
+          "POST_RENDER", "STORY_VISUAL", PostRenderSeverity.BLOCKER,
+          passed ? PostRenderOutcome.PASS : "VIDEO_QC_FAIL".equals(status) ? PostRenderOutcome.FAIL : PostRenderOutcome.UNKNOWN,
+          status + ": inspect videoQc.checks for timestamps and reasons", qc,
+          Map.of("status", "VIDEO_QC_PASS"), Map.of("source", "videoQc"), "story-video-qc-v1", !passed, Instant.now()));
+    }
     PostRenderDecision decision = new PostRenderDecisionAggregator().aggregate(results);
     PostRenderAssessment assessment = assessmentAggregator.aggregate(evidence, results);
     boolean reviewRequired =

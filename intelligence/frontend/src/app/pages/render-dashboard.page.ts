@@ -288,6 +288,19 @@ interface VisualEvidenceResponse {
                             </section>
                           }
                           @if (postRenderDetails()?.evidence; as evidence) {
+                            <section class="post-render-assessment">
+                              <h4>Rendered video QC: {{ evidence.videoQc?.status || 'VIDEO_QC_NOT_EVALUATED' }}</h4>
+                              @if (evidence.videoQc?.approvalBlocked !== false) {
+                                <p>Production approval is blocked until every mandatory visual check passes.</p>
+                              }
+                              @for (check of evidence.videoQc?.checks ?? []; track check.id) {
+                                <p><strong>{{ check.id }} · {{ check.status }}</strong>
+                                  @if (check.timestampsSeconds?.length) { <span> · {{ check.timestampsSeconds.join(', ') }}s</span> }
+                                  @else if (check.window) { <span> · {{ check.window[0] }}–{{ check.window[1] }}s</span> }
+                                  <br>{{ check.reason }}</p>
+                              }
+                              @if (evidence.videoQc?.reason) { <p>{{ evidence.videoQc.reason }}</p> }
+                            </section>
                             <section class="evidence-structure">
                               <div class="assessment-heading"><div><span class="metric-label">V4 creative evidence</span><strong>Plan, render and recurrence</strong></div></div>
                               <div class="evidence-structure__grid">
@@ -357,7 +370,7 @@ interface VisualEvidenceResponse {
                             <input type="password" placeholder="QA review token" [value]="reviewToken()" (input)="reviewToken.set(($any($event.target)).value)" />
                             <input type="text" placeholder="Decision notes" [value]="reviewNotes()" (input)="reviewNotes.set(($any($event.target)).value)" />
                             <div class="review-actions">
-                              <button type="button" (click)="decideQa(job, 'APPROVED')" [disabled]="reviewingQa() === job.id">Approve</button>
+                              <button type="button" (click)="decideQa(job, 'APPROVED')" [disabled]="reviewingQa() === job.id || !canApproveVideoQc(job)">Approve</button>
                               <button type="button" (click)="decideQa(job, 'REJECTED')" [disabled]="reviewingQa() === job.id">Reject</button>
                               <button type="button" (click)="decideQa(job, 'RERENDER_REQUESTED')" [disabled]="reviewingQa() === job.id">Request rerender</button>
                             </div>
@@ -519,6 +532,10 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   }
 
   decideQa(job: RenderJob, decision: 'APPROVED' | 'REJECTED' | 'RERENDER_REQUESTED'): void {
+    if (decision === 'APPROVED' && !this.canApproveVideoQc(job)) {
+      this.error.set('Inspect the video QC evidence; mandatory visual checks must pass before approval.');
+      return;
+    }
     if (!job.qaResult?.id || !this.reviewToken().trim()) {
       this.error.set('Enter the configured QA review token before submitting a decision.');
       return;
@@ -535,6 +552,14 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       next: () => { this.reviewingQa.set(null); this.reviewNotes.set(''); this.loadJobs(this.pageNumber()); },
       error: err => { this.reviewingQa.set(null); this.error.set(err.error?.detail || err.error?.message || 'QA decision could not be saved.'); },
     });
+  }
+
+  canApproveVideoQc(job: RenderJob): boolean {
+    if (job.jobType !== 'VIDEO') return true;
+    const details = this.postRenderDetails();
+    return details?.id === job.qaResult?.id
+      && details?.evidence?.videoQc?.status === 'VIDEO_QC_PASS'
+      && details?.evidence?.videoQc?.approvalBlocked === false;
   }
 
   loadPostRenderDetails(evaluationId: string): void {

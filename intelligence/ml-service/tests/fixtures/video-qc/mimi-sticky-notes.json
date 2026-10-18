@@ -1,0 +1,97 @@
+{
+  "version": "visual-acceptance-v1",
+  "storyId": "mimi-multiplying-sticky-notes",
+  "storyRevision": "owner-mid-action-opening-2026-10-18",
+  "sampleTimesSeconds": [
+    0,
+    0.15,
+    0.3,
+    0.5,
+    0.75,
+    1
+  ],
+  "canonicalReferences": [],
+  "requirements": [
+    {
+      "id": "opening-count",
+      "category": "object-count",
+      "startSeconds": 0,
+      "endSeconds": 0,
+      "requiresMotion": false,
+      "mandatory": true,
+      "description": "Exactly ONE complete yellow sticky note exists at video start, attached to Mimi anatomical RIGHT paw; LEFT paw has no note.",
+      "referenceRequired": false
+    },
+    {
+      "id": "mid-action",
+      "category": "opening",
+      "startSeconds": 0,
+      "endSeconds": 0.15,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "Mimi is already attempting removal at frame zero with her LEFT paw pulling the note attached to her RIGHT paw; no reaching or setup.",
+      "referenceRequired": false
+    },
+    {
+      "id": "new-note",
+      "category": "causal-event",
+      "startSeconds": 0,
+      "endSeconds": 0.5,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "A NEW complete yellow square note appears abruptly during 0.20\u20130.45 seconds and is clearly attached to the LEFT paw by 0.50 seconds; it did not exist before the event.",
+      "referenceRequired": false
+    },
+    {
+      "id": "original-persists",
+      "category": "object-persistence",
+      "startSeconds": 0,
+      "endSeconds": 1,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "The original note stays complete, intact and attached to the RIGHT paw throughout; it is not torn, moved to the other paw, or replaced.",
+      "referenceRequired": false
+    },
+    {
+      "id": "separate-paws",
+      "category": "attachment",
+      "startSeconds": 0.5,
+      "endSeconds": 1,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "Exactly TWO complete yellow notes persist, ONE attached to EACH separate paw, with clearly visible contact and occlusion.",
+      "referenceRequired": false
+    },
+    {
+      "id": "not-paper-separation",
+      "category": "prohibited-alternatives",
+      "startSeconds": 0,
+      "endSeconds": 1,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "The event is understandable as new matter appearing because of the removal attempt; no tearing, unfolding, folding, splitting, stretching, revealing hidden sheets, pre-stacked sheets or two existing notes moving apart.",
+      "referenceRequired": false
+    },
+    {
+      "id": "canonical-identity",
+      "category": "character-identity",
+      "startSeconds": 0,
+      "endSeconds": 1,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "Mimi preserves her exact approved light-blue rabbit identity, green eyes, floppy ears, rounded proportions and yellow shirt against the canonical reference.",
+      "referenceRequired": true
+    },
+    {
+      "id": "visible-interaction",
+      "category": "framing",
+      "startSeconds": 0,
+      "endSeconds": 1,
+      "requiresMotion": true,
+      "mandatory": true,
+      "description": "Both paws, notes and Mimi face remain large and unobstructed in a locked close-medium three-quarter camera; wooden toy cabinet visible on screen-right.",
+      "referenceRequired": false
+    }
+  ],
+  "scope": "OPENING_PROOF"
+}

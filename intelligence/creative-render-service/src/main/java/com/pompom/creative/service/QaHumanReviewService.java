@@ -7,6 +7,7 @@ import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.domain.RenderQaResult;
 import com.pompom.creative.postrender.PostRenderEvaluation;
 import com.pompom.creative.postrender.PostRenderEvaluationRepository;
+import com.pompom.creative.postrender.VideoQcGate;
 import com.pompom.creative.repository.QaHumanReviewRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
@@ -59,6 +60,13 @@ public class QaHumanReviewService {
       throw new IllegalStateException("This QA result has already been reviewed");
     }
 
+    if (decision == QaHumanReview.Decision.APPROVED
+        && qa.getRenderAsset().getAssetType() == com.pompom.creative.domain.RenderAsset.AssetType.VIDEO) {
+      var evaluation = postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(qa.getRenderAsset().getId())
+          .orElseThrow(() -> new IllegalStateException("Story-aware video QC evidence is missing"));
+      VideoQcGate.requirePass(evaluation);
+    }
+
     qa.setHumanReviewedAt(Instant.now());
     qa.setHumanReviewer(reviewer.trim());
     qa.setHumanDecision(decision.name());
@@ -98,6 +106,9 @@ public class QaHumanReviewService {
         postRenderEvaluationRepository
             .findById(evaluationId)
             .orElseThrow(() -> new IllegalArgumentException("Post-render evaluation not found"));
+    if (decision == QaHumanReview.Decision.APPROVED
+        && evaluation.getRenderAsset().getAssetType() == com.pompom.creative.domain.RenderAsset.AssetType.VIDEO)
+      VideoQcGate.requirePass(evaluation);
     evaluation.recordHumanDecision(reviewer.trim(), decision.name(), notes);
     postRenderEvaluationRepository.save(evaluation);
     if (decision == QaHumanReview.Decision.RERENDER_REQUESTED)

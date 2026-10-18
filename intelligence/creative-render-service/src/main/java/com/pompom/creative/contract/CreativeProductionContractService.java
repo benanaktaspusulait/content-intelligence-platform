@@ -45,6 +45,7 @@ public class CreativeProductionContractService {
       copy(intent, "payoffIntent", plan.get("finalPayoff"));
       copy(intent, "loopIntent", plan.get("loop"));
       copy(intent, "producibilityIntent", plan.get("producibility"));
+      copy(intent, "visualAcceptanceContract", plan.getOrDefault("visualAcceptanceContract", root.get("visualAcceptanceContract")));
       if (!intent.containsKey("loopIntent")
           && map(plan.get("finalPayoff")).containsKey("loopsToOpening")) {
         intent.put(

@@ -1,0 +1,578 @@
+{
+  "version": "story-video-qc-v1",
+  "assetHash": "b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048",
+  "relativePath": "sources/mimi-test-1.mp4",
+  "contractHash": "fc7175fda4f9963ea882405c61804462ed823cce25c9d1ff46664862afc4fda3",
+  "contract": {
+    "version": "visual-acceptance-v1",
+    "storyId": "mimi-multiplying-sticky-notes",
+    "storyRevision": "owner-mid-action-opening-2026-10-18",
+    "sampleTimesSeconds": [
+      0,
+      0.15,
+      0.3,
+      0.5,
+      0.75,
+      1
+    ],
+    "canonicalReferences": [],
+    "requirements": [
+      {
+        "id": "opening-count",
+        "category": "object-count",
+        "startSeconds": 0,
+        "endSeconds": 0,
+        "requiresMotion": false,
+        "mandatory": true,
+        "description": "Exactly ONE complete yellow sticky note exists at video start, attached to Mimi anatomical RIGHT paw; LEFT paw has no note.",
+        "referenceRequired": false
+      },
+      {
+        "id": "mid-action",
+        "category": "opening",
+        "startSeconds": 0,
+        "endSeconds": 0.15,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "Mimi is already attempting removal at frame zero with her LEFT paw pulling the note attached to her RIGHT paw; no reaching or setup.",
+        "referenceRequired": false
+      },
+      {
+        "id": "new-note",
+        "category": "causal-event",
+        "startSeconds": 0,
+        "endSeconds": 0.5,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "A NEW complete yellow square note appears abruptly during 0.20\u20130.45 seconds and is clearly attached to the LEFT paw by 0.50 seconds; it did not exist before the event.",
+        "referenceRequired": false
+      },
+      {
+        "id": "original-persists",
+        "category": "object-persistence",
+        "startSeconds": 0,
+        "endSeconds": 1,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "The original note stays complete, intact and attached to the RIGHT paw throughout; it is not torn, moved to the other paw, or replaced.",
+        "referenceRequired": false
+      },
+      {
+        "id": "separate-paws",
+        "category": "attachment",
+        "startSeconds": 0.5,
+        "endSeconds": 1,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "Exactly TWO complete yellow notes persist, ONE attached to EACH separate paw, with clearly visible contact and occlusion.",
+        "referenceRequired": false
+      },
+      {
+        "id": "not-paper-separation",
+        "category": "prohibited-alternatives",
+        "startSeconds": 0,
+        "endSeconds": 1,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "The event is understandable as new matter appearing because of the removal attempt; no tearing, unfolding, folding, splitting, stretching, revealing hidden sheets, pre-stacked sheets or two existing notes moving apart.",
+        "referenceRequired": false
+      },
+      {
+        "id": "canonical-identity",
+        "category": "character-identity",
+        "startSeconds": 0,
+        "endSeconds": 1,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "Mimi preserves her exact approved light-blue rabbit identity, green eyes, floppy ears, rounded proportions and yellow shirt against the canonical reference.",
+        "referenceRequired": true
+      },
+      {
+        "id": "visible-interaction",
+        "category": "framing",
+        "startSeconds": 0,
+        "endSeconds": 1,
+        "requiresMotion": true,
+        "mandatory": true,
+        "description": "Both paws, notes and Mimi face remain large and unobstructed in a locked close-medium three-quarter camera; wooden toy cabinet visible on screen-right.",
+        "referenceRequired": false
+      }
+    ],
+    "scope": "OPENING_PROOF"
+  },
+  "capturedAt": "2026-10-18T19:20:19.367489+00:00",
+  "checks": [
+    {
+      "id": "stream_decode",
+      "status": "PASS",
+      "mandatory": true,
+      "reason": "Complete video stream decoded without errors"
+    },
+    {
+      "id": "timestamped_pixels",
+      "status": "PASS",
+      "mandatory": true,
+      "reason": "PTS-aligned frames and contiguous motion windows saved"
+    },
+    {
+      "id": "opening-count",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "mid-action",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        0.15
+      ]
+    },
+    {
+      "id": "new-note",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "id": "original-persists",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "separate-paws",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "not-paper-separation",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "canonical-identity",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "visible-interaction",
+      "status": "NOT_EVALUATED",
+      "mandatory": true,
+      "reason": "Story-aware visual evaluator is not authorized/configured",
+      "window": [
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "timestampSeconds": 0.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00000.jpg",
+      "frameHash": "14d0ed2ea49b2782e1f1a17c33fad6b04a6fffd0507ef8f37d5d79eb42aa6d7b"
+    },
+    {
+      "index": 1,
+      "timestampSeconds": 0.041667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00001.jpg",
+      "frameHash": "f70f5e0a39dd912856a4dcc9a1db3ad6b0ee745e21b422dad14dda4aa614a94c"
+    },
+    {
+      "index": 2,
+      "timestampSeconds": 0.083333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00002.jpg",
+      "frameHash": "59d3212910622c61ab1fd94b425830274b57a7645a5b23dc5263dfcad1f0b79f"
+    },
+    {
+      "index": 3,
+      "timestampSeconds": 0.125,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00003.jpg",
+      "frameHash": "c3fc93f93785af9c0f0a98af39252f6fe745950818f84d772535e0a308e3ad93"
+    },
+    {
+      "index": 4,
+      "timestampSeconds": 0.166667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00004.jpg",
+      "frameHash": "b7f7a36471199b0a5875f68a5a4a762c6a0fc9fd60165bd5f962227aea04a7ff"
+    },
+    {
+      "index": 5,
+      "timestampSeconds": 0.208333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00005.jpg",
+      "frameHash": "ad4d6a11d7a8ef3f0533ddb96b56591951cd2b591ae55abacc873f1d8956b9f3"
+    },
+    {
+      "index": 6,
+      "timestampSeconds": 0.25,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00006.jpg",
+      "frameHash": "468abc7bbac3e28e99e601c8417e2eed50e9b880520d8bf12a20b45b9a4952bd"
+    },
+    {
+      "index": 7,
+      "timestampSeconds": 0.291667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00007.jpg",
+      "frameHash": "baf757baa6848ca637211eba7a3381a701c9a83dcf0d69e4e9de5295604e2f68"
+    },
+    {
+      "index": 8,
+      "timestampSeconds": 0.333333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00008.jpg",
+      "frameHash": "dd84db34f409822aa3a1b03aee9a11d08b60d2eb5e3de3dbfacea9feceabbf8a"
+    },
+    {
+      "index": 9,
+      "timestampSeconds": 0.375,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00009.jpg",
+      "frameHash": "bc1d67c972d17e701aa07fd03844cf7565e8b72de207d0004880179361dddc5f"
+    },
+    {
+      "index": 10,
+      "timestampSeconds": 0.416667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00010.jpg",
+      "frameHash": "60ecb5402b9b0991139df4709b6978b64d9ac8a0362f3c4ba29afaa537e5bae5"
+    },
+    {
+      "index": 11,
+      "timestampSeconds": 0.458333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00011.jpg",
+      "frameHash": "8e7df459b7b2aef3fbacff5b86c82002ee85acffff5bd52c614bcfe789b3d69c"
+    },
+    {
+      "index": 12,
+      "timestampSeconds": 0.5,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00012.jpg",
+      "frameHash": "9db3d115d1e151ab3a48ba5861442eaa383ee4e74c6539443d19b96d1c70b37d"
+    },
+    {
+      "index": 13,
+      "timestampSeconds": 0.541667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00013.jpg",
+      "frameHash": "b1efcb673084e85158ffd46497f7fc0eb7cd1e8211f6a4efdf27cf8c959ccdc8"
+    },
+    {
+      "index": 14,
+      "timestampSeconds": 0.583333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00014.jpg",
+      "frameHash": "3a4814e34ebc1f8ec3028e066af7a740ceb45adce7ccfb9d55d0a0ff393c88fc"
+    },
+    {
+      "index": 15,
+      "timestampSeconds": 0.625,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00015.jpg",
+      "frameHash": "cab836dffe4dcd03fa05f017991d05ca50a044fb5ec67f51705366c44c2e4605"
+    },
+    {
+      "index": 16,
+      "timestampSeconds": 0.666667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00016.jpg",
+      "frameHash": "a467f2fa3c2bbb42ee6fcee3334a7288bdda25b76e729ea472a894e286ce2d08"
+    },
+    {
+      "index": 17,
+      "timestampSeconds": 0.708333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00017.jpg",
+      "frameHash": "c2d933e096e18b722deb117dd8c9e0db886f74d636062548dede7d4ed767e120"
+    },
+    {
+      "index": 18,
+      "timestampSeconds": 0.75,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00018.jpg",
+      "frameHash": "2702c480a6428a1d93d7eadf1e74a997fcb259fc3047b73b832b6a44e464753a"
+    },
+    {
+      "index": 19,
+      "timestampSeconds": 0.791667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00019.jpg",
+      "frameHash": "49b2203f19b9972ee0d11a2fbecd797ab419971f475d8df2d78764b8c7d9b7f2"
+    },
+    {
+      "index": 20,
+      "timestampSeconds": 0.833333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00020.jpg",
+      "frameHash": "30f82d6f9efc857895c5d19773dc66d257ab7892128d61b89f81f62f1ea978b1"
+    },
+    {
+      "index": 21,
+      "timestampSeconds": 0.875,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00021.jpg",
+      "frameHash": "8db6606afd7e4137cdf8d8355669032efbda7c5556cc5738cc11e961679def62"
+    },
+    {
+      "index": 22,
+      "timestampSeconds": 0.916667,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00022.jpg",
+      "frameHash": "095ce54d4b0f15fc763695faaf394f11e24f9283372913789a0d4ab13ff7a7fc"
+    },
+    {
+      "index": 23,
+      "timestampSeconds": 0.958333,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00023.jpg",
+      "frameHash": "87b36d26470ca56c14275f10e2a7f3a0b72d7cd6c1542a7c9f674c218f99e978"
+    },
+    {
+      "index": 24,
+      "timestampSeconds": 1.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00024.jpg",
+      "frameHash": "2d756e926d170039a2131bbab6b0148cd0f842e53442ba53ae3885d900552d09"
+    },
+    {
+      "index": 48,
+      "timestampSeconds": 2.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00048.jpg",
+      "frameHash": "0523f57c6c8ab4c3ed0862b30c7b73bce83117018baea48941ad2d538930f41a"
+    },
+    {
+      "index": 72,
+      "timestampSeconds": 3.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00072.jpg",
+      "frameHash": "725e85ece18895dcd57abea2e419f56ad298fb1a90802dc94ecd871de823ddf6"
+    },
+    {
+      "index": 96,
+      "timestampSeconds": 4.0,
+      "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/frame-00096.jpg",
+      "frameHash": "bc0e3de282d1b8313cf2b49402458e11d874593388b2ab20911df0f884fbfb54"
+    }
+  ],
+  "motionWindows": [
+    {
+      "requirementId": "mid-action",
+      "startSeconds": 0.0,
+      "endSeconds": 0.15,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "contiguous": true
+    },
+    {
+      "requirementId": "new-note",
+      "startSeconds": 0.0,
+      "endSeconds": 0.5,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "contiguous": true
+    },
+    {
+      "requirementId": "original-persists",
+      "startSeconds": 0.0,
+      "endSeconds": 1.0,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "contiguous": true
+    },
+    {
+      "requirementId": "separate-paws",
+      "startSeconds": 0.5,
+      "endSeconds": 1.0,
+      "frameIndices": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "contiguous": true
+    },
+    {
+      "requirementId": "not-paper-separation",
+      "startSeconds": 0.0,
+      "endSeconds": 1.0,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "contiguous": true
+    },
+    {
+      "requirementId": "canonical-identity",
+      "startSeconds": 0.0,
+      "endSeconds": 1.0,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "contiguous": true
+    },
+    {
+      "requirementId": "visible-interaction",
+      "startSeconds": 0.0,
+      "endSeconds": 1.0,
+      "frameIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "contiguous": true
+    }
+  ],
+  "providerCalls": 0,
+  "metadata": {
+    "durationMs": 4096,
+    "width": 496,
+    "height": 864,
+    "fps": 24.0,
+    "aspectRatio": 0.5740740740740741,
+    "codec": "h264",
+    "audioPresent": true,
+    "sha256": "b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048"
+  },
+  "technicalObservations": {
+    "decodedFrames": 97,
+    "darkFrameTimes": [],
+    "identicalFrameTimes": [],
+    "interpretation": "Darkness and holds are review signals, not semantic failures."
+  },
+  "contactSheetPath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/contact-sheet.jpg",
+  "status": "VIDEO_QC_NOT_EVALUATED",
+  "approvalBlocked": true,
+  "approvalBlockReason": "Opening proofs do not evaluate the complete story and cannot authorize production",
+  "evidencePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/result.json"
+}

@@ -2732,6 +2732,9 @@ public class WorkflowService {
     qa.put("videoId", video.id().toString());
     qa.put("duration", actualDuration);
     qa.put("relativePath", path);
+    var qc = videos.videoQc(video.id());
+    qa.put("videoQc", qc);
+    qa.put("productionApprovalBlocked", !"VIDEO_QC_PASS".equals(qc.get("status")));
     qa.put("recordId", save("ACTUAL_RENDER_QA", String.valueOf(review.get("bindingHash")), qa));
     return qa;
   }

@@ -128,6 +128,11 @@ public class VideoService {
       persistCreativeAnalysis(entity, result);
       entity.markAnalysed();
     }
+    if (result.evidence().get("videoQc") instanceof Map<?, ?> qc) {
+      @SuppressWarnings("unchecked") var measured = (Map<String, Object>) qc;
+      // Do not discard an existing story-bound evaluation on an unchanged re-import.
+      if (!entity.getPostRenderQc().containsKey("contractHash")) entity.setPostRenderQc(measured);
+    }
     try {
       characterAssociations.associate(
           entity.getId(), VideoCharacterAssociationService.Mode.MISSING_ONLY);
@@ -135,6 +140,20 @@ public class VideoService {
       // Character reconciliation is best-effort during ingest; the explicit backfill can retry it.
     }
     return map(entity);
+  }
+
+  @Transactional(readOnly = true)
+  public Map<String, Object> videoQc(UUID id) {
+    return videos.findById(id).orElseThrow(() -> new EntityNotFoundException("Video not found")).getPostRenderQc();
+  }
+
+  @Transactional
+  public Map<String, Object> inspectVideoQc(UUID id, Map<String, Object> contract) {
+    var video = videos.findById(id).orElseThrow(() -> new EntityNotFoundException("Video not found"));
+    var qc = ml.inspectVideoQc(video.getRelativePath(), contract);
+    video.setPostRenderQc(qc);
+    videos.save(video);
+    return qc;
   }
 
   public DirectoryIngestResponse ingestDirectory(

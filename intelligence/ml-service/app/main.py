@@ -25,6 +25,7 @@ from .rules.rule_versioning import RulesetConfigurationError, RuleVersionManager
 from .video import analyse
 from .semantic_fusion import fuse_canonical_assessments
 from .semantic_evidence import analyse_semantic_video
+from .video_qc import inspect_video
 
 app = FastAPI(title="Pompom Creative Intelligence ML", version="0.1.0")
 
@@ -53,6 +54,19 @@ def get_character_verifier() -> CharacterVerifier:
 # QA Request/Response models
 class DeadAirRequest(BaseModel):
     video_path: str
+
+
+class VideoQcRequest(BaseModel):
+    relativePath: str
+    visualAcceptanceContract: dict[str, object] | None = None
+
+
+@app.post("/v1/analysis/video-qc")
+def video_qc(request: VideoQcRequest) -> dict[str, object]:
+    try:
+        return inspect_video(request.relativePath, request.visualAcceptanceContract)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
 
 
 class DeadAirSegment(BaseModel):

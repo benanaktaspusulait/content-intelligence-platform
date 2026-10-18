@@ -1,0 +1,29 @@
+[
+  {
+    "status": "VIDEO_QC_NOT_EVALUATED",
+    "assetHash": "b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048",
+    "evidencePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/result.json",
+    "contactSheetPath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/b3c4cc6654cee492cde53b92963bb4a6db1b3bd16c61488e3e7208cba4b1f048/cc03e639-958c-4071-99c7-837a43bc70aa/contact-sheet.jpg",
+    "providerCalls": 0,
+    "approvalBlocked": true,
+    "test": 1
+  },
+  {
+    "status": "VIDEO_QC_NOT_EVALUATED",
+    "assetHash": "e82bec21e57d2cfc339b110bbf555d40547f10e950ad5cce14322705ef5acf37",
+    "evidencePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/e82bec21e57d2cfc339b110bbf555d40547f10e950ad5cce14322705ef5acf37/09d4f02e-e566-43e9-93db-9983c3575854/result.json",
+    "contactSheetPath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/e82bec21e57d2cfc339b110bbf555d40547f10e950ad5cce14322705ef5acf37/09d4f02e-e566-43e9-93db-9983c3575854/contact-sheet.jpg",
+    "providerCalls": 0,
+    "approvalBlocked": true,
+    "test": 2
+  },
+  {
+    "status": "VIDEO_QC_NOT_EVALUATED",
+    "assetHash": "cc9096da3550b8dc91280c0f0a785ae3438d29f18e3864b1e12d1be746785897",
+    "evidencePath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/cc9096da3550b8dc91280c0f0a785ae3438d29f18e3864b1e12d1be746785897/85a61400-7b07-4bcb-8555-825c3e92af12/result.json",
+    "contactSheetPath": "/Users/benanaktas/project/video/content-intelligence-platform/output/verification/video-qc-regression/video-qc/cc9096da3550b8dc91280c0f0a785ae3438d29f18e3864b1e12d1be746785897/85a61400-7b07-4bcb-8555-825c3e92af12/contact-sheet.jpg",
+    "providerCalls": 0,
+    "approvalBlocked": true,
+    "test": 3
+  }
+]

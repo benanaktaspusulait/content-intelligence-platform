@@ -9,6 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Map;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "videos")
@@ -53,6 +56,20 @@ public class VideoEntity extends AuditableEntity {
 
   @Column(nullable = false)
   private Instant ingestedAt;
+
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(name = "post_render_qc", columnDefinition = "jsonb")
+  private Map<String, Object> postRenderQc;
+
+  public Map<String, Object> getPostRenderQc() {
+    return postRenderQc == null ? Map.of("status", "VIDEO_QC_NOT_EVALUATED", "approvalBlocked", true) : postRenderQc;
+  }
+
+  public void setPostRenderQc(Map<String, Object> result) {
+    if (result == null || !contentHash.equals(result.get("assetHash")))
+      throw new IllegalArgumentException("Video QC must match the imported bytes");
+    postRenderQc = Map.copyOf(result);
+  }
 
   protected VideoEntity() {}
 

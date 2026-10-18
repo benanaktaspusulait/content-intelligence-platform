@@ -34,6 +34,7 @@ class PublicationServiceTest {
   @Mock private PublicationAttemptRepository publicationAttemptRepository;
   @Mock private RenderAssetRepository renderAssetRepository;
   @Mock private RenderQaResultRepository qaResultRepository;
+  @Mock private com.pompom.creative.postrender.PostRenderEvaluationRepository postRenderEvaluationRepository;
   @Mock private AssetLibraryManager assetLibraryManager;
 
   @Mock private Map<String, PlatformPublisher> publishers;
@@ -75,8 +76,9 @@ class PublicationServiceTest {
             .requiresHumanReview(false)
             .build();
     when(renderAssetRepository.findById(assetId)).thenReturn(Optional.of(asset));
-    when(qaResultRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(assetId))
-        .thenReturn(Optional.of(qa));
+    var evaluation = com.pompom.creative.postrender.VideoQcGateTest.evaluation("VIDEO_QC_PASS", "checksum");
+    when(postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(assetId))
+        .thenReturn(Optional.of(evaluation));
     when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(videoPath);
     when(assetLibraryManager.checksum(videoPath)).thenReturn("checksum");
     String title = "Test Video";

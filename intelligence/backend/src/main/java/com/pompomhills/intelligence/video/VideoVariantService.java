@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class VideoVariantService {
   private final VideoRepository videos;
   private final VideoVariantRepository variants;
+  private final VideoService videoService;
 
-  public VideoVariantService(VideoRepository videos, VideoVariantRepository variants) {
+  public VideoVariantService(VideoRepository videos, VideoVariantRepository variants, VideoService videoService) {
     this.videos = videos;
     this.variants = variants;
+    this.videoService = videoService;
   }
 
   @Transactional
@@ -31,6 +33,8 @@ public class VideoVariantService {
         parentVariantId == null ? null : requireParentVariant(videoId, parentVariantId);
     VideoVariantEntity entity =
         new VideoVariantEntity(video, parentVariant, variantType, generatedPath, editOperations);
+    // Direct variant registration must inspect the imported bytes just like directory ingest.
+    videoService.ingest(generatedPath, null);
     VideoVariantEntity saved;
     try {
       saved = variants.save(entity);

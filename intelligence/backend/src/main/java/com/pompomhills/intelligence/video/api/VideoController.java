@@ -64,7 +64,20 @@ public class VideoController {
 
   @PostMapping("/ingest")
   public VideoDtos.VideoResponse ingest(@Valid @RequestBody VideoDtos.IngestRequest request) {
-    return service.ingest(request.relativePath(), request.seriesId());
+    var video = service.ingest(request.relativePath(), request.seriesId());
+    if (request.visualAcceptanceContract() != null)
+      service.inspectVideoQc(video.id(), request.visualAcceptanceContract());
+    return video;
+  }
+
+  @GetMapping("/{id}/qc")
+  public Map<String, Object> videoQc(@PathVariable UUID id) {
+    return service.videoQc(id);
+  }
+
+  @PostMapping("/{id}/qc")
+  public Map<String, Object> inspectVideoQc(@PathVariable UUID id, @RequestBody Map<String, Object> contract) {
+    return service.inspectVideoQc(id, contract);
   }
 
   @PostMapping("/ingest-directory")

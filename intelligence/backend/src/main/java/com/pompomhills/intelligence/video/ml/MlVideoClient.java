@@ -18,6 +18,13 @@ public class MlVideoClient {
     return analyse(relativePath, VideoService.CURRENT_ANALYSIS_VERSION);
   }
 
+  @SuppressWarnings("unchecked")
+  public Map<String, Object> inspectVideoQc(String relativePath, Map<String, Object> contract) {
+    return restClient.post().uri("/v1/analysis/video-qc")
+        .body(Map.of("relativePath", relativePath, "visualAcceptanceContract", contract))
+        .retrieve().body(Map.class);
+  }
+
   public MlAnalysisResponse analyse(String relativePath, String analysisVersion) {
     return analyse(relativePath, analysisVersion, Map.of(), false);
   }

@@ -27,7 +27,7 @@ class VideoVariantServiceTest {
   void setUp() {
     videos = mock(VideoRepository.class);
     variants = mock(VideoVariantRepository.class);
-    service = new VideoVariantService(videos, variants);
+    service = new VideoVariantService(videos, variants, mock(VideoService.class));
   }
 
   private VideoEntity sampleVideo(UUID id) {

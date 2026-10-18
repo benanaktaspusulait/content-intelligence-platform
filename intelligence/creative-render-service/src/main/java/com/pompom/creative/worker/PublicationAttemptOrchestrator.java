@@ -32,6 +32,7 @@ public class PublicationAttemptOrchestrator {
   private final TransactionTemplate transactionTemplate;
   private final MetaPublicationGuard metaPublicationGuard;
   private final InternalPublisherRegistry internalPublisherRegistry;
+  private final com.pompom.creative.postrender.PostRenderEvaluationRepository qcEvaluations;
 
   @Autowired
   public PublicationAttemptOrchestrator(
@@ -40,13 +41,15 @@ public class PublicationAttemptOrchestrator {
       Map<String, PlatformPublisher> publishers,
       TransactionTemplate transactionTemplate,
       MetaPublicationGuard metaPublicationGuard,
-      InternalPublisherRegistry internalPublisherRegistry) {
+      InternalPublisherRegistry internalPublisherRegistry,
+      com.pompom.creative.postrender.PostRenderEvaluationRepository qcEvaluations) {
     this.attemptRepository = attemptRepository;
     this.jobRepository = jobRepository;
     this.publishers = publishers;
     this.transactionTemplate = transactionTemplate;
     this.metaPublicationGuard = metaPublicationGuard;
     this.internalPublisherRegistry = internalPublisherRegistry;
+    this.qcEvaluations = qcEvaluations;
   }
 
   /** Compatibility constructor for focused publication tests. */
@@ -61,6 +64,7 @@ public class PublicationAttemptOrchestrator {
         publishers,
         transactionTemplate,
         new MetaPublicationGuard(true),
+        null,
         null);
   }
 
@@ -127,6 +131,42 @@ public class PublicationAttemptOrchestrator {
       clearLease(attempt);
       attemptRepository.save(attempt);
       return null;
+    }
+
+    if (qcEvaluations != null) {
+      try {
+        var asset = job.getRenderAsset();
+        if (asset == null) throw new IllegalStateException("Canonical video asset is missing");
+        var qc = qcEvaluations.findTopByRenderAssetIdOrderByCreatedAtDesc(asset.getId())
+            .orElseThrow(() -> new IllegalStateException("Story-aware video QC is missing"));
+        com.pompom.creative.postrender.VideoQcGate.requirePass(qc);
+        try (var bytes = java.nio.file.Files.newInputStream(java.nio.file.Path.of(job.getVideoPath()))) {
+          var digest = java.security.MessageDigest.getInstance("SHA-256");
+          byte[] buffer = new byte[65536];
+          int length;
+          while ((length = bytes.read(buffer)) != -1) digest.update(buffer, 0, length);
+          if (!asset.getSha256().equals(java.util.HexFormat.of().formatHex(digest.digest())))
+            throw new IllegalStateException("Queued video bytes changed after QC");
+        } catch (java.io.IOException | java.security.NoSuchAlgorithmException error) {
+          throw new IllegalStateException("Queued video bytes cannot be verified", error);
+        }
+        if (qc.getOverallDecision() == com.pompom.creative.postrender.PostRenderDecision.FAIL
+            || qc.getOverallDecision() == com.pompom.creative.postrender.PostRenderDecision.SYSTEM_ERROR
+            || (qc.getOverallDecision() == com.pompom.creative.postrender.PostRenderDecision.HUMAN_REVIEW
+                && !"APPROVED".equals(qc.getHumanDecision())))
+          throw new IllegalStateException("Post-render policy has not approved this video");
+      } catch (IllegalStateException blocked) {
+        attempt.setStage(PublicationExecutionStage.CANCELLED);
+        attempt.setErrorCode("VIDEO_QC_BLOCKED");
+        attempt.setErrorMessage(blocked.getMessage());
+        attempt.setCompletedAt(Instant.now());
+        clearLease(attempt);
+        attemptRepository.save(attempt);
+        job.updateStatus(PublicationStatus.FAILED);
+        job.setErrorMessage("VIDEO_QC_BLOCKED: " + blocked.getMessage());
+        jobRepository.save(job);
+        return null;
+      }
     }
 
     attempt.setStage(PublicationExecutionStage.SUBMITTING);

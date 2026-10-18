@@ -9,7 +9,9 @@ import java.util.UUID;
 public final class VideoDtos {
   private VideoDtos() {}
 
-  public record IngestRequest(@NotBlank String relativePath, UUID seriesId) {}
+  public record IngestRequest(@NotBlank String relativePath, UUID seriesId, Map<String, Object> visualAcceptanceContract) {
+    public IngestRequest(String relativePath, UUID seriesId) { this(relativePath, seriesId, null); }
+  }
 
   public record DirectoryIngestRequest(
       @NotBlank String relativeDirectory, UUID seriesId, boolean recursive) {}

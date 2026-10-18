@@ -1285,12 +1285,17 @@ def _analyse_v5(path: Path, metadata: VideoMetadata, cached_semantic_video_evide
 
 
 def analyse(relative_path: str, analysis_version: str = "sampled-visual-motion-v3", cached_semantic_video_evidence: dict[str, Any] | None = None, semantic_requested: bool = False) -> VideoAnalysisResponse:
+    from .video_qc import inspect_video
     path = safe_video_path(relative_path)
     metadata = probe(path)
     if analysis_version == V4_ANALYSIS_VERSION:
-        return _analyse_v4(path, metadata)
+        result = _analyse_v4(path, metadata)
+        result.evidence["videoQc"] = inspect_video(relative_path)
+        return result
     if analysis_version == V5_ANALYSIS_VERSION:
-        return _analyse_v5(path, metadata, cached_semantic_video_evidence, semantic_requested)
+        result = _analyse_v5(path, metadata, cached_semantic_video_evidence, semantic_requested)
+        result.evidence["videoQc"] = inspect_video(relative_path)
+        return result
     if analysis_version != "sampled-visual-motion-v3":
         raise ValueError(f"Unsupported video analysis version: {analysis_version}")
     duration = metadata.duration_ms / 1000
@@ -1412,6 +1417,7 @@ def analyse(relative_path: str, analysis_version: str = "sampled-visual-motion-v
             "darkFrameCount": len(dark_candidates),
             "motionScoreWeights": MOTION_SCORE_WEIGHTS,
             "motionNormalizationReference": MOTION_RATE_SCALE,
+            "videoQc": inspect_video(relative_path),
             "saturatedIntervalCount": sum(1 for item in intervals if item["normalizationSaturated"]),
             "temporalProfile": temporal_profile,
             "presentation": presentation_profile,
