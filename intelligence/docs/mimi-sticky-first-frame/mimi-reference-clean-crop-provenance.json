@@ -1,0 +1,31 @@
+{
+  "artifact": "Mimi clean character reference crop for owner review",
+  "status": "UNAPPROVED_DERIVATIVE_OWNER_REVIEW_ONLY",
+  "canonicalCharacterId": "00000000-0000-0000-0000-000000000003",
+  "canonicalApproval": "NOT_APPROVED",
+  "source": {
+    "applicationRelativePath": "library/01-CHARACTERS/drawings/mimi.png",
+    "sha256": "7ad3d0042965c53ae20c67c0242d49cec2d3cf43706915d715b4fadec3c59f57",
+    "approvalStatus": "UNREVIEWED",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  "derivative": {
+    "workspacePath": "intelligence/docs/mimi-sticky-first-frame/mimi-reference-clean-crop-owner-review.png",
+    "sha256": "80e0579ac5979be010da5c7250debbe9e74e84b37661d7a2213f24e055e49f14",
+    "dimensions": [
+      249,
+      394
+    ],
+    "operation": "PIL RGB pixel crop only; no resize, retouch, compositing, generative alteration, or color adjustment",
+    "cropBoxXYXY": [
+      12,
+      108,
+      261,
+      502
+    ]
+  },
+  "ownerReviewRequired": true
+}
