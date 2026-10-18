@@ -12,7 +12,7 @@ from pathlib import Path
 import hashlib
 import uuid
 import time
-import httpx
+from openai import Timeout
 from .story_experiment import sha, encoded, model_identity
 from .story_evidence import derive_source_evidence, review_evidence_catalog, verify_review_evidence_catalog
 from .creative_reconstruction import DIMENSIONS
@@ -22,7 +22,7 @@ SCHEMA='assessment-only-story-review-v3-evidence-refs'
 TIMEOUT_POLICY={'version':'assessment-story-review-timeouts-v1','connectSeconds':5,'poolSeconds':5,'writeSeconds':10,'readSeconds':60,'backendHttpSeconds':90,'workflowDeadlineSeconds':600}
 
 def sdk_timeout():
-    return httpx.Timeout(TIMEOUT_POLICY['readSeconds'],connect=TIMEOUT_POLICY['connectSeconds'],pool=TIMEOUT_POLICY['poolSeconds'],write=TIMEOUT_POLICY['writeSeconds'])
+    return Timeout(TIMEOUT_POLICY['readSeconds'],connect=TIMEOUT_POLICY['connectSeconds'],pool=TIMEOUT_POLICY['poolSeconds'],write=TIMEOUT_POLICY['writeSeconds'])
 SELECTED={
  'A':('50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088','34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1'),
  'B':('4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739','10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3')}

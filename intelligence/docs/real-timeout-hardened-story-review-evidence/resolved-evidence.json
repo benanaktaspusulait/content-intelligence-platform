@@ -1,0 +1,456 @@
+{
+  "evidenceType": "APPLICATION_DERIVED_EVIDENCE",
+  "catalogSha256": "5b15086899fc5c80f5de99a749fa3b70d47d32175a6a0ee0bcfdd8ab6f2273d7",
+  "offsetConvention": "UNICODE_CODE_POINTS",
+  "resolvedReferences": {
+    "A.semanticChecks.identity.sourceEvidenceIds": [
+      {
+        "evidenceId": "S01-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 0,
+        "endOffset": 173,
+        "exactOriginalText": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "A.semanticChecks.identity.candidateEvidenceIds": [
+      {
+        "evidenceId": "A01-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 0,
+        "endOffset": 155,
+        "exactOriginalText": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "A.semanticChecks.premise.sourceEvidenceIds": [
+      {
+        "evidenceId": "S01-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 0,
+        "endOffset": 173,
+        "exactOriginalText": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "A.semanticChecks.premise.candidateEvidenceIds": [
+      {
+        "evidenceId": "A01-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 0,
+        "endOffset": 155,
+        "exactOriginalText": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "A.semanticChecks.rule.sourceEvidenceIds": [
+      {
+        "evidenceId": "S06-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 695,
+        "endOffset": 767,
+        "exactOriginalText": " Pip remains covered until a sneeze scatters the notes onto the cabinet."
+      }
+    ],
+    "A.semanticChecks.rule.candidateEvidenceIds": [
+      {
+        "evidenceId": "A05-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 350,
+        "endOffset": 444,
+        "exactOriginalText": " Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face."
+      }
+    ],
+    "A.semanticChecks.continuity.sourceEvidenceIds": [
+      {
+        "evidenceId": "S06-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 695,
+        "endOffset": 767,
+        "exactOriginalText": " Pip remains covered until a sneeze scatters the notes onto the cabinet."
+      }
+    ],
+    "A.semanticChecks.continuity.candidateEvidenceIds": [
+      {
+        "evidenceId": "A09-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 607,
+        "endOffset": 664,
+        "exactOriginalText": " a sneeze erupts and scatters the notes onto the cabinet."
+      }
+    ],
+    "A.semanticChecks.ending.sourceEvidenceIds": [
+      {
+        "evidenceId": "S07-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 767,
+        "endOffset": 815,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "A.semanticChecks.ending.candidateEvidenceIds": [
+      {
+        "evidenceId": "A10-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 664,
+        "endOffset": 712,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "A.semanticChecks.trigger_conditions.sourceEvidenceIds": [],
+    "A.semanticChecks.trigger_conditions.candidateEvidenceIds": [],
+    "A.semanticChecks.single_mechanic.sourceEvidenceIds": [],
+    "A.semanticChecks.single_mechanic.candidateEvidenceIds": [],
+    "A.semanticChecks.causal_clarity.sourceEvidenceIds": [
+      {
+        "evidenceId": "S05-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 495,
+        "endOffset": 695,
+        "exactOriginalText": " Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror."
+      }
+    ],
+    "A.semanticChecks.causal_clarity.candidateEvidenceIds": [
+      {
+        "evidenceId": "A06-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 444,
+        "endOffset": 566,
+        "exactOriginalText": " Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything."
+      }
+    ],
+    "A.semanticChecks.protected_events.sourceEvidenceIds": [
+      {
+        "evidenceId": "S07-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 767,
+        "endOffset": 815,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "A.semanticChecks.protected_events.candidateEvidenceIds": [
+      {
+        "evidenceId": "A10-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 664,
+        "endOffset": 712,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "A.creativeDimensions.SCROLL_STOP_VISUAL_PROMISE.candidateEvidenceIds": [
+      {
+        "evidenceId": "A01-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 0,
+        "endOffset": 155,
+        "exactOriginalText": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "A.creativeDimensions.CAUSAL_PROGRESSION.candidateEvidenceIds": [
+      {
+        "evidenceId": "A02-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 155,
+        "endOffset": 176,
+        "exactOriginalText": " Pip shakes the hand;"
+      }
+    ],
+    "A.creativeDimensions.VISUAL_STORYTELLING.candidateEvidenceIds": [
+      {
+        "evidenceId": "A03-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 176,
+        "endOffset": 220,
+        "exactOriginalText": " the note splits into two, one on each hand."
+      }
+    ],
+    "A.creativeDimensions.PRODUCTION_EXECUTABILITY.candidateEvidenceIds": [
+      {
+        "evidenceId": "A04-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 220,
+        "endOffset": 350,
+        "exactOriginalText": " Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest."
+      }
+    ],
+    "A.creativeDimensions.ENDING_REPLAY.candidateEvidenceIds": [
+      {
+        "evidenceId": "A05-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 350,
+        "endOffset": 444,
+        "exactOriginalText": " Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face."
+      }
+    ],
+    "A.creativeDimensions.DISTINCTIVE_CREATIVE_VALUE.candidateEvidenceIds": [
+      {
+        "evidenceId": "A06-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 444,
+        "endOffset": 566,
+        "exactOriginalText": " Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything."
+      }
+    ],
+    "A.creativeConclusion.baselineEvidenceIds": [
+      {
+        "evidenceId": "S01-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 0,
+        "endOffset": 173,
+        "exactOriginalText": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "A.creativeConclusion.candidateEvidenceIds": [
+      {
+        "evidenceId": "A01-6f1e177d2eddfff5",
+        "documentRole": "CANDIDATE_A",
+        "documentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+        "startOffset": 0,
+        "endOffset": 155,
+        "exactOriginalText": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.semanticChecks.identity.sourceEvidenceIds": [
+      {
+        "evidenceId": "S01-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 0,
+        "endOffset": 173,
+        "exactOriginalText": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.semanticChecks.identity.candidateEvidenceIds": [
+      {
+        "evidenceId": "B01-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 0,
+        "endOffset": 157,
+        "exactOriginalText": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.semanticChecks.premise.sourceEvidenceIds": [
+      {
+        "evidenceId": "S01-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 0,
+        "endOffset": 173,
+        "exactOriginalText": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.semanticChecks.premise.candidateEvidenceIds": [
+      {
+        "evidenceId": "B01-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 0,
+        "endOffset": 157,
+        "exactOriginalText": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.semanticChecks.rule.sourceEvidenceIds": [
+      {
+        "evidenceId": "S06-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 695,
+        "endOffset": 767,
+        "exactOriginalText": " Pip remains covered until a sneeze scatters the notes onto the cabinet."
+      }
+    ],
+    "B.semanticChecks.rule.candidateEvidenceIds": [
+      {
+        "evidenceId": "B05-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 499,
+        "endOffset": 630,
+        "exactOriginalText": " Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes."
+      }
+    ],
+    "B.semanticChecks.continuity.sourceEvidenceIds": [
+      {
+        "evidenceId": "S06-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 695,
+        "endOffset": 767,
+        "exactOriginalText": " Pip remains covered until a sneeze scatters the notes onto the cabinet."
+      }
+    ],
+    "B.semanticChecks.continuity.candidateEvidenceIds": [
+      {
+        "evidenceId": "B07-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 706,
+        "endOffset": 806,
+        "exactOriginalText": " A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet."
+      }
+    ],
+    "B.semanticChecks.ending.sourceEvidenceIds": [
+      {
+        "evidenceId": "S07-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 767,
+        "endOffset": 815,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "B.semanticChecks.ending.candidateEvidenceIds": [
+      {
+        "evidenceId": "B08-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 806,
+        "endOffset": 854,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "B.semanticChecks.trigger_conditions.sourceEvidenceIds": [],
+    "B.semanticChecks.trigger_conditions.candidateEvidenceIds": [],
+    "B.semanticChecks.single_mechanic.sourceEvidenceIds": [],
+    "B.semanticChecks.single_mechanic.candidateEvidenceIds": [],
+    "B.semanticChecks.causal_clarity.sourceEvidenceIds": [
+      {
+        "evidenceId": "S05-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 495,
+        "endOffset": 695,
+        "exactOriginalText": " Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror."
+      }
+    ],
+    "B.semanticChecks.causal_clarity.candidateEvidenceIds": [
+      {
+        "evidenceId": "B06-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 630,
+        "endOffset": 706,
+        "exactOriginalText": " Pip deliberately stops struggling and stands still, letting the notes rest."
+      }
+    ],
+    "B.semanticChecks.protected_events.sourceEvidenceIds": [
+      {
+        "evidenceId": "S07-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 767,
+        "endOffset": 815,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "B.semanticChecks.protected_events.candidateEvidenceIds": [
+      {
+        "evidenceId": "B08-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 806,
+        "endOffset": 854,
+        "exactOriginalText": " Pip is relieved, but the cabinet remains messy."
+      }
+    ],
+    "B.creativeDimensions.SCROLL_STOP_VISUAL_PROMISE.candidateEvidenceIds": [
+      {
+        "evidenceId": "B01-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 0,
+        "endOffset": 157,
+        "exactOriginalText": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.creativeDimensions.CAUSAL_PROGRESSION.candidateEvidenceIds": [
+      {
+        "evidenceId": "B02-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 157,
+        "endOffset": 267,
+        "exactOriginalText": " Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw."
+      }
+    ],
+    "B.creativeDimensions.VISUAL_STORYTELLING.candidateEvidenceIds": [
+      {
+        "evidenceId": "B03-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 267,
+        "endOffset": 381,
+        "exactOriginalText": " Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms."
+      }
+    ],
+    "B.creativeDimensions.PRODUCTION_EXECUTABILITY.candidateEvidenceIds": [
+      {
+        "evidenceId": "B04-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 381,
+        "endOffset": 499,
+        "exactOriginalText": " Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks."
+      }
+    ],
+    "B.creativeDimensions.ENDING_REPLAY.candidateEvidenceIds": [
+      {
+        "evidenceId": "B05-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 499,
+        "endOffset": 630,
+        "exactOriginalText": " Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes."
+      }
+    ],
+    "B.creativeDimensions.DISTINCTIVE_CREATIVE_VALUE.candidateEvidenceIds": [
+      {
+        "evidenceId": "B06-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 630,
+        "endOffset": 706,
+        "exactOriginalText": " Pip deliberately stops struggling and stands still, letting the notes rest."
+      }
+    ],
+    "B.creativeConclusion.baselineEvidenceIds": [
+      {
+        "evidenceId": "S01-eddd77bfa3dd735f",
+        "documentRole": "SOURCE",
+        "documentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "startOffset": 0,
+        "endOffset": 173,
+        "exactOriginalText": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "B.creativeConclusion.candidateEvidenceIds": [
+      {
+        "evidenceId": "B01-bf050df0590b2a67",
+        "documentRole": "CANDIDATE_B",
+        "documentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "startOffset": 0,
+        "endOffset": 157,
+        "exactOriginalText": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ]
+  },
+  "semanticInterpretation": "MODEL_OPINION_NOT_DETERMINISTIC_PROOF"
+}

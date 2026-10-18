@@ -1,0 +1,7 @@
+{
+  "applicationsStopped": true,
+  "ownDisposableDatabaseStopped": true,
+  "otherServicesUntouched": true,
+  "dump": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/timeout-native-sdk-final-http-v1/post-http-e2e.dump",
+  "dumpSha256": "7bdb6b53baae42e4ae723bc432928936e88c8f422da3d7acf5442894dd5a8a7d"
+}

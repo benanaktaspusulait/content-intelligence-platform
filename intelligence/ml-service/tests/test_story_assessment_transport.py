@@ -153,3 +153,12 @@ def test_changed_execution_policy_leaves_review_body_and_catalog_unchanged():
  assert current['implementationSha256']!=old['operation']['implementationSha256']
  c['assessmentScope']['transportPolicy']['backendHttpSeconds']=25
  with pytest.raises(ValueError,match='timeout policy'):a.preview(text,c)
+
+
+def test_native_installed_sdk_default_transport_has_numeric_phase_limits(monkeypatch):
+ monkeypatch.setenv('OPENAI_API_KEY','offline-not-a-credential')
+ provider=OpenAIProvider(request_timeout=a.sdk_timeout())
+ try:
+  assert {k:getattr(provider.client._client.timeout,k) for k in ('connect','pool','write','read')}=={'connect':5,'pool':5,'write':10,'read':60}
+  assert provider.client.max_retries==0
+ finally:provider.client.close()

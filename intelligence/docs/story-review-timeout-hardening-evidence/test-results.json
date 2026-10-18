@@ -1,0 +1,57 @@
+{
+  "ml": {
+    "passed": 369,
+    "exitCode": 0,
+    "warnings": 343
+  },
+  "java": {
+    "passed": 50,
+    "exitCode": 0,
+    "suites": [
+      {
+        "suite": "com.pompomhills.intelligence.quality.QualityMlAssessmentTimeoutTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.pompomhills.intelligence.workflow.StoryReviewIndependenceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.pompomhills.intelligence.workflow.StoryEvolutionServiceTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.pompomhills.intelligence.workflow.StoryExperimentContractTest",
+        "tests": 41,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "httpInitial": {
+    "scenariosPassed": 16,
+    "externalHttpMocked": true,
+    "initialHarnessExitCode": 1,
+    "completedReadOnlyVerifierExitCode": 0,
+    "scope": "Before final native SDK Timeout type correction"
+  },
+  "httpFinal": {
+    "scenariosPassed": 3,
+    "exitCode": 0,
+    "externalHttpMocked": true,
+    "scope": "Final code: positive, read timeout, outer disconnect"
+  },
+  "installedNativeSdkDefaultClientVerified": true,
+  "realProviderCalls": 0,
+  "productionDbWrites": 0
+}

@@ -1,0 +1,511 @@
+{
+  "passed": true,
+  "scenarios": [
+    {
+      "mode": "invalid-usage",
+      "runId": "963c4a5c-3dd3-4bbf-9787-d2cddce07150",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Provider response contained invalid token usage; actual cost cannot be checked against the authorized ceiling",
+        "category": "ValueError",
+        "failureClass": "ACCOUNTING_VALIDATION_FAILED"
+      },
+      "processingStatus": "LOCALLY_REJECTED",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "pool-timeout",
+      "runId": "3207416b-b264-4ebe-9576-786321e27c01",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Request timed out.",
+        "category": "APITimeoutError",
+        "causeType": "PoolTimeout",
+        "httpStatus": null,
+        "failureClass": "SDK_TIMEOUT",
+        "elapsedSeconds": 0.001703,
+        "causeChainTypes": [
+          "PoolTimeout"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "write-timeout",
+      "runId": "0a8b06bf-fb0e-40bd-a5ce-be575887b44a",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Request timed out.",
+        "category": "APITimeoutError",
+        "causeType": "WriteTimeout",
+        "httpStatus": null,
+        "failureClass": "SDK_TIMEOUT",
+        "elapsedSeconds": 0.002044,
+        "causeChainTypes": [
+          "WriteTimeout"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "503",
+      "runId": "bd4221b2-7e96-49b5-9073-d32d302aec38",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "InternalServerError: message withheld (may contain private request data)",
+        "category": "InternalServerError",
+        "causeType": null,
+        "httpStatus": 503,
+        "failureClass": "HTTP_STATUS_ERROR",
+        "elapsedSeconds": 0.002493,
+        "causeChainTypes": [],
+        "providerHttpRequestId": "req-MOCK-ONLY-503"
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "incomplete",
+      "runId": "449e7601-ce70-41b9-b9d3-c65e56564e65",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Incomplete provider response; no accepted review",
+        "category": "ValueError",
+        "failureClass": "INCOMPLETE_RESPONSE",
+        "elapsedSeconds": 0.006476
+      },
+      "processingStatus": "LOCALLY_REJECTED",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "400",
+      "runId": "7728a83f-656e-48f5-8d40-50af0b64ea26",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "BadRequestError: message withheld (may contain private request data)",
+        "category": "BadRequestError",
+        "causeType": null,
+        "httpStatus": 400,
+        "failureClass": "HTTP_STATUS_ERROR",
+        "elapsedSeconds": 0.002278,
+        "causeChainTypes": [],
+        "providerHttpRequestId": "req-MOCK-ONLY-400"
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "refusal",
+      "runId": "859f3873-9b0c-4f2b-852a-aad1a2d36e40",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Provider refusal; no accepted review",
+        "category": "ValueError",
+        "failureClass": "PROVIDER_REFUSAL",
+        "elapsedSeconds": 0.007326
+      },
+      "processingStatus": "LOCALLY_REJECTED",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "429",
+      "runId": "88c1e25e-1c70-4ab0-ad3f-c70f46371030",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "RateLimitError: message withheld (may contain private request data)",
+        "category": "RateLimitError",
+        "causeType": null,
+        "httpStatus": 429,
+        "failureClass": "HTTP_STATUS_ERROR",
+        "elapsedSeconds": 0.002269,
+        "causeChainTypes": [],
+        "providerHttpRequestId": "req-MOCK-ONLY-429"
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "timeout",
+      "runId": "f944fc8c-34e8-4a67-8748-82febe4a18e4",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Request timed out.",
+        "category": "APITimeoutError",
+        "causeType": "ReadTimeout",
+        "httpStatus": null,
+        "failureClass": "SDK_TIMEOUT",
+        "elapsedSeconds": 0.001979,
+        "causeChainTypes": [
+          "ReadTimeout"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "outer-disconnect",
+      "runId": "a96232bc-1b3b-49be-8f82-a398b87e7df4",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Backend-to-ML transport did not return a complete receipt; provider outcome and billing remain unknown; no retry",
+        "category": "MlServiceException",
+        "failureClass": "BACKEND_TRANSPORT_FAILURE",
+        "elapsedSeconds": 0.025310917,
+        "causeChainTypes": [
+          "MlServiceException",
+          "IOException",
+          "IOException",
+          "EOFException"
+        ]
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "dns",
+      "runId": "1007719b-2b71-49ec-a15b-7c06e7d3543d",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Connection error.",
+        "category": "APIConnectionError",
+        "causeType": "ConnectError",
+        "httpStatus": null,
+        "failureClass": "NETWORK_CONNECTION_FAILURE",
+        "elapsedSeconds": 0.002393,
+        "causeChainTypes": [
+          "ConnectError"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "connect-timeout",
+      "runId": "1b44841e-3902-4d9e-835e-023ea1bb0e8c",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Request timed out.",
+        "category": "APITimeoutError",
+        "causeType": "ConnectTimeout",
+        "httpStatus": null,
+        "failureClass": "SDK_TIMEOUT",
+        "elapsedSeconds": 0.001844,
+        "causeChainTypes": [
+          "ConnectTimeout"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "positive",
+      "runId": "b5c965a4-a55c-42da-b8df-a3d8302fcfad",
+      "state": "ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": null,
+      "processingStatus": "INDEPENDENT_REVIEW_COMPLETED",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "reset",
+      "runId": "ed694087-9428-4f14-b7fb-4374137d550c",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Connection error.",
+        "category": "APIConnectionError",
+        "causeType": "ReadError",
+        "httpStatus": null,
+        "failureClass": "NETWORK_CONNECTION_FAILURE",
+        "elapsedSeconds": 0.002027,
+        "causeChainTypes": [
+          "ReadError"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "missing-usage",
+      "runId": "557dc21d-f493-4e8a-a849-a23c114972c7",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Provider response omitted verifiable token usage; actual cost cannot be checked against the authorized ceiling",
+        "category": "ValueError",
+        "failureClass": "MISSING_USAGE_AFTER_RESPONSE"
+      },
+      "processingStatus": "LOCALLY_REJECTED",
+      "noAutomaticRetry": true
+    },
+    {
+      "mode": "read-timeout",
+      "runId": "eecda6dd-327b-47df-92bd-c20ae68c15d7",
+      "state": "STOPPED",
+      "mockSdkRequests": 1,
+      "clientIdStoredAndSent": true,
+      "effectiveTimeouts": {
+        "connect": 5,
+        "read": 60,
+        "write": 10,
+        "pool": 5
+      },
+      "error": {
+        "detail": "Request timed out.",
+        "category": "APITimeoutError",
+        "causeType": "ReadTimeout",
+        "httpStatus": null,
+        "failureClass": "SDK_TIMEOUT",
+        "elapsedSeconds": 0.001607,
+        "causeChainTypes": [
+          "ReadTimeout"
+        ],
+        "providerHttpRequestId": null
+      },
+      "processingStatus": "DISPATCH_UNCERTAIN",
+      "noAutomaticRetry": true
+    }
+  ],
+  "sdkRequests": 16,
+  "actualOwnerSessionCsrf": true,
+  "actualHmac": true,
+  "actualSavedP2PostgresSnapshot": true,
+  "onlyExternalOpenAITransportMocked": true,
+  "realPaidProviderRequests": 0,
+  "allExternalSocketsDenied": true,
+  "allThreeConsumedGrantsRejected": true,
+  "nonLedgerTablesComparedToIndependentBaselineRestore": [
+    "ab_tests",
+    "analysis_jobs",
+    "audit_events",
+    "character_aliases",
+    "character_pairs",
+    "character_references",
+    "characters",
+    "content_source_path_aliases",
+    "contents",
+    "correlation_analyses",
+    "country_observations",
+    "cpq_assessments",
+    "cpq_calibration_corpora",
+    "cpq_calibration_examples",
+    "cpq_calibration_judgments",
+    "cpq_calibration_reports",
+    "cpq_fidelity_reviews",
+    "cpq_machine_requests",
+    "cpq_original_subjects",
+    "cpq_owner_pilots",
+    "cpq_pilot_evidence",
+    "cpq_policy_state",
+    "creative_analyses",
+    "creative_features",
+    "creative_fingerprints",
+    "derived_performance_metrics",
+    "experiment_variants",
+    "experiments",
+    "failed_rules",
+    "follower_metrics",
+    "governed_rule_candidates",
+    "governed_rule_conflicts",
+    "governed_rule_evidence",
+    "governed_rule_health",
+    "governed_rule_reviews",
+    "governed_ruleset_changesets",
+    "governed_ruleset_versions",
+    "human_decisions",
+    "human_predictions",
+    "import_batches",
+    "import_conflicts",
+    "import_rows",
+    "intervention_events",
+    "meta_connections",
+    "meta_page_insight_snapshots",
+    "metrics_collection_jobs",
+    "model_evaluations",
+    "model_versions",
+    "notifications",
+    "openart_credit_log",
+    "operational_guard_decisions",
+    "optimization_run_drafts",
+    "optimization_run_events",
+    "optimization_run_requests",
+    "optimization_runs",
+    "performance_classifications",
+    "performance_observation_corrections",
+    "performance_observations",
+    "performance_predictions",
+    "platform_content_state_observations",
+    "platform_content_states",
+    "platform_credentials",
+    "post_family_workflow_events",
+    "prediction_audits",
+    "prediction_feature_snapshots",
+    "prediction_targets",
+    "predictions",
+    "prompt_creative_provenance",
+    "prompt_versions",
+    "publication_analytics",
+    "publication_jobs",
+    "publication_review_acknowledgements",
+    "quality_validation_visual_evidence",
+    "quality_validations",
+    "reach_further_events",
+    "reference_prompts",
+    "render_assets",
+    "render_jobs",
+    "render_qa_results",
+    "research_findings",
+    "rule_candidates",
+    "scheduled_publications",
+    "series",
+    "start_frame_candidates",
+    "story_evolution_drafts",
+    "trajectory_analyses",
+    "validation_runs",
+    "video_characters",
+    "video_metrics",
+    "video_path_aliases",
+    "video_prompt_links",
+    "video_prompt_resolutions",
+    "video_publications",
+    "video_variants",
+    "videos",
+    "webhook_events",
+    "winner_entries",
+    "workflow_repair_sessions"
+  ],
+  "excludedRuntimeMetadataTable": "flyway_schema_history (startup migration metadata, not source evidence)",
+  "sourceRecordsBefore": 12,
+  "sourceRecordsAfter": 12,
+  "initialHarnessFailure": "Optional unknown actualCostUsd was absent in the outer-disconnect envelope; first harness indexed it directly (KeyError). Corrected to get() and completed nonmutating verification without repeating any mock dispatch.",
+  "finalVerifierExitCode": 0,
+  "newStoryGenerations": 0,
+  "storyApprovals": 0,
+  "buildPromptCalls": 0,
+  "productionDatabaseWrites": 0
+}

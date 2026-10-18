@@ -1,0 +1,27 @@
+{
+  "allProtectedFilesUnchanged": true,
+  "verifiedFiles": 164,
+  "previousRealReviews": [
+    {
+      "runId": "59f47fec-59fb-42e3-b3a4-c9f7d83c7ffc",
+      "state": "STOPPED",
+      "processingStatus": "LOCALLY_REJECTED"
+    },
+    {
+      "runId": "4b59d668-814c-4f9a-ab50-8e288b5df4df",
+      "state": "STOPPED",
+      "processingStatus": "LOCALLY_REJECTED"
+    },
+    {
+      "runId": "4c5b5453-6d04-424a-bacd-9575f6f9558d",
+      "state": "STOPPED",
+      "processingStatus": "DISPATCH_UNCERTAIN"
+    }
+  ],
+  "allThreePriorDatabaseDumpsUnchanged": true,
+  "officialUsageAndCostCsvsUnchanged": true,
+  "originalDeepSeekNarrativesAndQualificationsUnchanged": true,
+  "preparedManifestUnchanged": true,
+  "oldReservationsNotReleasedOrReused": true,
+  "productionDatabaseWrites": 0
+}

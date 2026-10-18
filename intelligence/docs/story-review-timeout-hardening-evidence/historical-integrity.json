@@ -1,0 +1,28 @@
+{
+  "allProtectedFilesUnchanged": true,
+  "filesVerified": 190,
+  "allThreeRealRunStatesUnchanged": true,
+  "officialProviderCsvsUnchanged": true,
+  "oldReservedCapsAndUnknownBillingUnchanged": true,
+  "archivedDeepSeekReceiptsUnchanged": true,
+  "oldManifestNotRewritten": true,
+  "sourceNarrativesUnchanged": true,
+  "productionDatabaseWrites": 0,
+  "historicalDatabaseDumpsVerified": [
+    {
+      "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/authentic-story-assessment-real-v1/post-real-assessment.dump",
+      "sha256": "9a71746d424052076663b05c5c6afa7e1c5551eacc52bebdec06c20a5cc1df25",
+      "verified": true
+    },
+    {
+      "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/strict-story-review-real-v2/post-real-strict-review.dump",
+      "sha256": "bffa0c28abeb799bbb9a9490dd05e6852ad3cd3f611851b622b55f805ac8be97",
+      "verified": true
+    },
+    {
+      "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/evidence-reference-review-real-v3/post-real-reference-review.dump",
+      "sha256": "82e83932af3ac186195d81b8419f215ec84e0a1f2822521867cd75b057b35d24",
+      "verified": true
+    }
+  ]
+}

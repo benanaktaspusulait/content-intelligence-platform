@@ -1,0 +1,36 @@
+{
+  "evidenceOrigin": "OFFLINE_INSTALLED_SDK_MOCKED_EXTERNAL_HTTP_ONLY",
+  "realProviderRequests": 0,
+  "sdkVersion": "3.32.0",
+  "httpxVersion": "0.28.1",
+  "httpx2Version": "2.13.1",
+  "effectiveConstructedClientTimeouts": {
+    "general": {
+      "connect": 20.0,
+      "pool": 20.0,
+      "write": 20.0,
+      "read": 20.0
+    },
+    "assessment": {
+      "connect": 5,
+      "pool": 5,
+      "write": 10,
+      "read": 60
+    }
+  },
+  "serializedBoundaryRequest": {
+    "clientId": "00000000-0000-4000-8000-000000000001",
+    "effectiveRequestTimeouts": {
+      "connect": 5,
+      "read": 60,
+      "write": 10,
+      "pool": 5
+    },
+    "actualWireBodyBytes": 23690,
+    "actualWireBodySha256": "ccd7a919df82af8583a9d0d86b68253c48d160a30e1adcb737824c36ef0eb0c9",
+    "canonicalBodySha256": "1a71b03de5462156ee09f6f4f65bd526c29f751f03e84b96f719d5eafd10ea35"
+  },
+  "httpRequestIdCapturedSeparately": true,
+  "maxRetries": 0,
+  "snapshotAvailabilityProbed": false
+}

@@ -1,0 +1,37 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+08:15:46.287 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:1
+08:15:46.379 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:1
+08:15:46.383 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:1
+08:15:46.403 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+08:15:46.560 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+08:15:46.746 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+08:15:46.747 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+08:15:46.762 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+08:15:46.769 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+08:15:46.770 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+08:15:46.865 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+08:15:47.029 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+08:15:47.115 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: ee716a2d3a467dd8c6d782243a64d440fc231b1aff823e8589aaa661bcacd16b
+08:15:47.300 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.435326S
+08:15:47.308 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+08:15:47.308 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+08:15:47.308 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+08:15:47.312 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+08:15:47.349 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: d0fa1a76ae7a940c4a3dd6e8b75f349eaa6089952a738151b453f5afef4d5882
+08:15:48.755 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.442488S
+08:15:48.755 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:51374/test?loggerLevel=OFF)
+08:15:50.592 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+08:15:50.624 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: f18b6f85e1af321819c606e7129b774c99670f3532704221eaa22ba733e82db9
+08:15:51.617 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.024916S
+08:15:51.617 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:51526/test?loggerLevel=OFF)

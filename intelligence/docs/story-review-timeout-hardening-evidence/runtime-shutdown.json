@@ -1,0 +1,10 @@
+{
+  "ownBackendStopped": true,
+  "ownMlStopped": true,
+  "ownDisposableDatabaseStopped": true,
+  "otherServicesUntouched": true,
+  "dump": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/timeout-hardened-story-review-http-v1/post-http-e2e.dump",
+  "dumpSha256": "5076761c0c05e188e718f1165a13add7245c52b88c4c3c3b02c601043d4fd14d",
+  "dumpArchiveVerified": true,
+  "baselineIndependentlyRestoredAndCompared": true
+}

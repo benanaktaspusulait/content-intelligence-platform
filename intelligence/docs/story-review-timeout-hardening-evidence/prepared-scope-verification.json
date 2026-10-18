@@ -1,0 +1,14 @@
+{
+  "allActualHttpPreflightBindingsMatchCurrentCode": true,
+  "compiledAuthorityMatches": true,
+  "unchangedSdkBodySchemaCatalog": true,
+  "sourceAndArchivedRawResponsesRevalidated": true,
+  "newOperationSha256": "d202794af8352aea371a7248be269c2eb045a1f696b61a3920ea58fe4b21f1c0",
+  "implementationSha256": "381d3bcddc8eb779b7020b8ab3be123661e09af21e5c072e342b30a10c37edd2",
+  "backendAuthoritySha256": "bd510940b702aded29592782e51464044e78489ffcba7d65835086370d091a72",
+  "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+  "maxReservedUsd": "0.006104",
+  "freshIdempotencyKey": "authentic-assessment-timeout-v4-3ec2ec356d6693039eadee73",
+  "ownerPaidAuthorization": "NOT_GRANTED",
+  "realCalls": 0
+}
