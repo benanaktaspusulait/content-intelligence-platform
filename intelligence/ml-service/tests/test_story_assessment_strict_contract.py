@@ -4,7 +4,9 @@ import hashlib,json,uuid
 from pathlib import Path
 from unittest.mock import patch
 import httpx,pytest,openai
+from fastapi.testclient import TestClient
 from jsonschema import Draft202012Validator
+from app.main import app
 from app.workflow import story_assessment as a
 from app.workflow.story_evidence import review_evidence_catalog,verify_review_evidence_catalog
 from story_experiment_fixture import assessment_inputs,assessment_review,evidence_ids,assessment_failed_check
@@ -111,12 +113,107 @@ def test_unknown_or_stale_id_rejected(bad):
 def test_verbatim_or_paraphrased_preservation_selects_real_adjacent_context(ref,fragment,check):
     text,c,p,v=example();row=v['candidateAssessments'][ref]
     ids=evidence_ids(p,'CANDIDATE_'+ref,fragment)
-    if check=='continuity':ids+=evidence_ids(p,'CANDIDATE_'+ref,'sneeze')
+    if check=='continuity':
+        records=[r for r in p['evidenceCatalog']['records'] if r['documentRole']=='CANDIDATE_'+ref]
+        start=min(i for i,r in enumerate(records) if r['evidenceId'] in ids)
+        ids=[r['evidenceId'] for r in records[start:]]
     row['semanticChecks'][check].update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered' if check=='continuity' else 'Pip the rabbit')[:1],candidateEvidenceIds=list(dict.fromkeys(ids)),reason='Selected sequence supports preserved meaning without a copied source sentence; synthetic opinion only.')
     assert a.validate_review(v,text,c) is v
     derived=a.resolve_review_evidence(v,text,c)
     assert derived['semanticInterpretation']=='MODEL_OPINION_NOT_DETERMINISTIC_PROOF'
     assert derived['evidenceType']=='APPLICATION_DERIVED_EVIDENCE'
+
+
+def test_real_v5_response_is_byte_identical_and_rejected_for_original_boundary_failure():
+    text,c=assessment_inputs();path=DOCS/'story-review-derived-verdict-evidence/real-v5-execution/raw-provider-response.json'
+    raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='797732d070321ad5f50b35503bfab0d6ff073eae2aeb864d7722fb469649ea81'
+    payload=a.wire(text,c)['payload'];assert payload['evidenceCatalog']['catalogSha256']=='5b15086899fc5c80f5de99a749fa3b70d47d32175a6a0ee0bcfdd8ab6f2273d7'
+    value=json.loads(raw)
+    with pytest.raises(ValueError,match=r'Creative boundary evidence missing: A\.ENDING_REPLAY'):
+        a.validate_review(value,text,c)
+    assert hashlib.sha256(path.read_bytes()).hexdigest()=='797732d070321ad5f50b35503bfab0d6ff073eae2aeb864d7722fb469649ea81'
+
+
+def test_semantic_ending_pass_requires_final_span_but_unknown_remains_valid():
+    text,c,p,v=example();row=v['candidateAssessments']['A'];f=row['semanticChecks']['ending']
+    f.update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip is relieved'),
+        candidateEvidenceIds=evidence_ids(p,'CANDIDATE_A','The notes stay put.'),reason='Synthetic ending opinion based only on an intermediate state.')
+    with pytest.raises(ValueError,match='Ending PASS evidence must include'):
+        a.validate_review(v,text,c)
+    f['candidateEvidenceIds']=evidence_ids(p,'CANDIDATE_A')[-1:]
+    assert a.validate_review(v,text,c) is v
+    f.update(outcome='UNKNOWN',basis='INSUFFICIENT',sourceEvidenceIds=[],candidateEvidenceIds=[],reason='Synthetic uncertainty remains unresolved.')
+    assert a.derive_assessment(v,text,c)['candidateAssessments']['A']['semanticOutcome']=='SEMANTIC_SOURCE_UNKNOWN'
+
+
+def test_continuity_pass_requires_full_candidate_suffix_and_allows_adjacent_context():
+    text,c,p,v=example();f=v['candidateAssessments']['A']['semanticChecks']['continuity']
+    f.update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered'))
+    f['candidateEvidenceIds']=evidence_ids(p,'CANDIDATE_A','goes still')
+    with pytest.raises(ValueError,match='Continuity PASS evidence must reach'):
+        a.validate_review(v,text,c)
+    records=[r for r in p['evidenceCatalog']['records'] if r['documentRole']=='CANDIDATE_A']
+    start=next(i for i,r in enumerate(records) if 'goes still' in r['exactOriginalText'])
+    f['candidateEvidenceIds']=[r['evidenceId'] for r in records[start:]]
+    assert a.validate_review(v,text,c) is v
+
+
+def test_synthetic_final_boundary_counterfactual_preserves_intermediate_context():
+    text,c,p,v=example();row=v['candidateAssessments']['A']
+    final=evidence_ids(p,'CANDIDATE_A')[-1]
+    row['creativeDimensions']['ENDING_REPLAY']['candidateEvidenceIds']=evidence_ids(p,'CANDIDATE_A','The notes stay put.')+[final]
+    row['semanticChecks']['ending'].update(outcome='PASS',basis='SEMANTIC_SUPPORT',
+        sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip is relieved'),candidateEvidenceIds=[final],
+        reason='Synthetic opinion cites the final outcome; application does not prove its meaning.')
+    continuity=row['semanticChecks']['continuity'];records=[r for r in p['evidenceCatalog']['records'] if r['documentRole']=='CANDIDATE_A']
+    start=next(i for i,r in enumerate(records) if 'goes still' in r['exactOriginalText'])
+    continuity.update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered'),
+        candidateEvidenceIds=[r['evidenceId'] for r in records[start:]],reason='Synthetic transition claim with full catalog suffix; meaning remains a model opinion.')
+    assert a.validate_review(v,text,c) is v
+
+
+def test_semantically_valid_no_winner_completes_machine_assessment_without_authority():
+    text,c,p,v=example()
+    scope=a.check_scope(text,c,p['evidenceCatalog'])
+    for ref,row in v['candidateAssessments'].items():
+        role='CANDIDATE_'+ref
+        records=[r for r in p['evidenceCatalog']['records'] if r['documentRole']==role and r['exactOriginalText'].strip()]
+        for check,f in row['semanticChecks'].items():
+            source=[]
+            for ids in scope[check]['anchorEvidence'].values():source.extend(ids)
+            f.update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=list(dict.fromkeys(source)),
+                reason='Synthetic contract-only finding; not an independent semantic result.')
+            if check=='continuity':
+                start=next(i for i,r in enumerate(records) if 'stops struggling' in r['exactOriginalText'] or 'goes still' in r['exactOriginalText'] or 'deliberately stops' in r['exactOriginalText'])
+                f['candidateEvidenceIds']=[r['evidenceId'] for r in records[start:]]
+            elif check=='ending':f['candidateEvidenceIds']=[records[-1]['evidenceId']]
+            elif check in ('protected_events','trigger_conditions'):f['candidateEvidenceIds']=[r['evidenceId'] for r in records]
+            elif check in ('rule','single_mechanic','causal_clarity'):f['candidateEvidenceIds']=[r['evidenceId'] for r in records if 'split into' in r['exactOriginalText'] or 'multiplies' in r['exactOriginalText']][:2]
+            else:f['candidateEvidenceIds']=[records[0]['evidenceId']]
+    v['researchPreference']='NO_CREATIVE_WINNER'
+    assert a.validate_review(v,text,c) is v
+    derived=a.derive_assessment(v,text,c)
+    for result in derived['candidateAssessments'].values():
+        assert result['semanticOutcome']=='SEMANTIC_SOURCE_PASS'
+        assert result['eligibleForOwnerProposal'] is False
+        assert 'NO_SUPPORTED_MATERIAL_IMPROVEMENT' in result['eligibilityRestrictions']
+    assert derived['researchPreferenceAuthority']=='MACHINE_OPINION_ONLY'
+    assert derived['ownerDecision']=='PENDING' and derived['sourceApproved'] is False
+    assert derived['buildPromptAuthorized'] is False and derived['renderAuthorized'] is False
+    assert derived['officialAPlus']=='INACTIVE'
+
+
+@pytest.mark.parametrize('check',['protected_events','trigger_conditions'])
+def test_all_event_pass_cannot_use_only_a_valid_but_partial_candidate_reference(check):
+    text,c,p,v=example();f=v['candidateAssessments']['A']['semanticChecks'][check]
+    scope=a.check_scope(text,c,p['evidenceCatalog']);source=[]
+    for ids in scope[check]['anchorEvidence'].values():source.extend(ids)
+    f.update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=list(dict.fromkeys(source)),
+        candidateEvidenceIds=evidence_ids(p,'CANDIDATE_A')[:1],reason='Synthetic all-events claim for coverage test only.')
+    with pytest.raises(ValueError,match='full candidate narrative'):
+        a.validate_review(v,text,c)
+    f['candidateEvidenceIds']=evidence_ids(p,'CANDIDATE_A')
+    assert a.validate_review(v,text,c) is v
 
 
 @pytest.mark.parametrize('failure',['unsupported-pass','unsupported-fail','literal-absence','wrong-basis','aggregation','unknown-question','fail-eligibility','duplicate-id'])
@@ -246,3 +343,28 @@ def test_same_authorized_source_reference_is_valid_for_both_baselines(ref):
     assert a.validate_review(v,text,c)['candidateAssessments'][ref]['creativeConclusion']['outcome']=='UNKNOWN'
     derived=a.resolve_review_evidence(v,text,c)
     assert derived['resolvedReferences'][ref+'.creativeConclusion.baselineEvidenceIds'][0]['documentRole']=='SOURCE'
+
+
+def test_signed_story_review_http_route_uses_only_mocked_provider_and_keeps_no_winner_non_authoritative(monkeypatch):
+    text,c=grant();token='offline-story-review-test-token-0123456789abcdef'
+    monkeypatch.setenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN',token)
+    body={'role':'STORY_REVIEW','text':text,'context':c,'maxCostUsd':.1}
+    raw=json.dumps(body,ensure_ascii=False,separators=(',',':')).encode()
+    import hmac
+    signature=hmac.new(token.encode(),raw,hashlib.sha256).hexdigest();calls=[]
+    class MockProvider:
+        def __init__(self,**kwargs):self.last_usage=None;self.last_response_metadata=None;self.last_provider_response=None
+        def complete(self,prompt,**kwargs):
+            calls.append(prompt);value=assessment_review(json.loads(prompt));result=json.dumps(value,ensure_ascii=False,separators=(',',':'))
+            self.last_raw_response=result;self.last_usage={'prompt_tokens':100,'completion_tokens':200}
+            self.last_response_metadata={'model':'gpt-4o-mini-2024-07-18','finishReason':'stop','requestId':'MOCK_ONLY'}
+            self.last_provider_response={'model':'gpt-4o-mini-2024-07-18','choices':[{'message':{'content':result},'finish_reason':'stop'}],'usage':self.last_usage}
+            return result
+    with patch('app.llm.openai_provider.OpenAIProvider',MockProvider):
+        response=TestClient(app).post('/api/v1/workflow/creative-role',content=raw,headers={'Content-Type':'application/json','X-Adaptive-Dispatch':signature})
+    assert response.status_code==200 and len(calls)==1
+    result=response.json();assert result['providerDispatched'] is True and result['evidenceType']=='MACHINE_REVIEW'
+    assert result['processingStatus']=='INDEPENDENT_REVIEW_COMPLETED'
+    assert result['derivedAssessment']['researchPreference']=='NO_CREATIVE_WINNER'
+    assert result['derivedAssessment']['ownerDecision']=='PENDING'
+    assert result['derivedAssessment']['buildPromptAuthorized'] is False and result['derivedAssessment']['renderAuthorized'] is False

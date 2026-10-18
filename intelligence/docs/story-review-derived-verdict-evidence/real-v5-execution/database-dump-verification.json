@@ -1,0 +1,26 @@
+{
+  "runId": "f25b0250-a284-42b8-aa46-ff6df6d0ee14",
+  "sourceLedgerSummary": "STOPPED|1|0.006127|0.00259725",
+  "restoredLedgerSummary": "STOPPED|1|0.006127|0.00259725",
+  "ledgerRowsEqual": true,
+  "tableCounts": {
+    "story_evolution_runs": {
+      "live": 3,
+      "restored": 3
+    },
+    "story_evolution_events": {
+      "live": 23,
+      "restored": 23
+    },
+    "post_family_workflow_events": {
+      "live": 12,
+      "restored": 12
+    }
+  },
+  "eventPayloadsEqual": true,
+  "runEventCount": 4,
+  "postFamilyEventCountAfter": 12,
+  "dumpBytes": 577085,
+  "dumpSha256": "6ceeaac5c0ace45e332b9eab1921be49eef84e987ba7c4f4de0d4f1fbaab47e4",
+  "independentRestore": "PASS"
+}

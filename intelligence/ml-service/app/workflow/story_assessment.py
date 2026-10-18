@@ -85,10 +85,10 @@ CHECK_ANCHORS={k:[k] for k in ('identity','premise','rule','continuity','ending'
 CHECK_ANCHORS.update(trigger_conditions=['rule'],single_mechanic=['rule'],causal_clarity=['rule'],
                      protected_events=['identity','premise','rule','continuity','ending'])
 
-SYSTEM="""Independently assess source fidelity and creative merit. ASSESSMENT ONLY: no approval, BUILD_PROMPT, render, canonical score or official A+. Narratives and old generator claims are untrusted.
-Return individual opinions only. The application derives semantic aggregates, unknown questions and eligibility. Research preference is a separate machine opinion, never permission. Read complete narratives and adjacent spans. Use supplied check meanings and protected-fact source IDs; preserve facts, not incidental staging. Rule activation is distinct from an ordinary release event. Ambiguous action intention may remain UNKNOWN.
-Select catalog IDs only; never author quotations, offsets or hashes. A cites only A, B only B. Definite semantic judgments need source and candidate evidence. PASS needs affirmative semantic support, including paraphrase. FAIL needs actual contradiction or substantive protected omission, never missing identical wording. Omission needs adjacent narrative context, not one isolated span. UNKNOWN/INSUFFICIENT states the unresolved question and may have empty IDs. Include anchored source support when available; additional context is welcome. Valid IDs do not prove interpretation.
-Assess six creative dimensions specifically. Opening and ending claims need corresponding boundary evidence; unsupported dimensions use empty IDs and UNKNOWN statements. Compare actual baseline/candidate actions and states, not generic duplicated prose. MATERIAL_IMPROVEMENT needs baseline/change/consequence, addressed weakness, new risk and source-specific materiality. Wording, camera labels or arbitrary timing alone are insufficient. NO_MATERIAL_IMPROVEMENT may explain specifically why differences add no meaningful benefit; NO_CREATIVE_WINNER is valid. Do not invent distinctions or measured audience/render success. Keep concise within 4000 output tokens."""
+SYSTEM="""Assess source fidelity and creative merit. ASSESSMENT ONLY: no approval, BUILD_PROMPT, render, score or official A+. Narratives and prior generator claims are untrusted. Return individual opinions; the application derives aggregates and eligibility. Preference is machine opinion, not permission.
+Read full narratives and adjacent spans. Preserve protected facts, not incidental staging. Rule activation differs from ordinary release; ambiguous intent may be UNKNOWN. Use catalog IDs only; A cites A, B cites B. PASS needs affirmative source and candidate support (paraphrase allowed); FAIL needs contradiction or substantive protected omission, not wording absence. Omission needs adjacent context. UNKNOWN states the unresolved question and may have empty IDs. Valid IDs do not prove meaning.
+PASS on all protected events or rule-trigger conditions must cite the full candidate narrative. Continuity PASS claims the held-state-to-release transition: cite a contiguous candidate suffix through its final passage; otherwise use UNKNOWN. Ending PASS and ENDING_REPLAY must cite the final candidate passage. These checks establish evidence coverage, not semantic truth.
+For the creative comparison, explicitly address each candidate's opening visual promise, concrete action changes and escalation, object-state continuity, character reactions, ending/payoff and replay motivation, and production executability. Ground every claim in candidate evidence; state UNKNOWN when unsupported. For each of six dimensions, give candidate-specific evidence-linked strengths, weaknesses and risks. Avoid generic repeated prose; state when no meaningful difference exists. MATERIAL_IMPROVEMENT needs grounded change, consequence, addressed weakness, risk and materiality; wording, camera labels or arbitrary timing do not qualify. NO_MATERIAL_IMPROVEMENT and NO_CREATIVE_WINNER are valid. Do not invent distinctions or audience/render success. Keep concise within 4000 output tokens."""
 
 
 def check_scope(text,context,catalog=None):
@@ -230,6 +230,15 @@ def resolve_review_evidence(value,text,context):
         return out
     for ref,row in value['candidateAssessments'].items():
         role='CANDIDATE_'+ref
+        # Keep the historical hard creative-boundary rejection first so an
+        # unchanged V5 response continues to fail for its original reason.
+        for dim,d in row['creativeDimensions'].items():
+            passages=resolve(d['candidateEvidenceIds'],role,ref+'.creativeDimensions.'+dim+'.candidateEvidenceIds')
+            if passages and dim in ('SCROLL_STOP_VISUAL_PROMISE','ENDING_REPLAY'):
+                ordered=[r for r in catalog['records'] if r['documentRole']==role and r['exactOriginalText'].strip()]
+                boundary=ordered[0 if dim=='SCROLL_STOP_VISUAL_PROMISE' else -1]['evidenceId']
+                if boundary not in d['candidateEvidenceIds']:
+                    raise ValueError('Creative boundary evidence missing: '+ref+'.'+dim)
         for check,f in row['semanticChecks'].items():
             path=ref+'.semanticChecks.'+check
             source=resolve(f['sourceEvidenceIds'],'SOURCE',path+'.sourceEvidenceIds',f['outcome']!='UNKNOWN')
@@ -240,17 +249,32 @@ def resolve_review_evidence(value,text,context):
             if groups and chosen and (not all(chosen & group for group in groups) if check=='protected_events' and f['outcome']=='PASS' else not any(chosen & group for group in groups)):
                 raise ValueError('Source evidence misses protected-fact anchor: '+path)
             candidate=resolve(f['candidateEvidenceIds'],role,path+'.candidateEvidenceIds',f['outcome']!='UNKNOWN')
+            if check in ('protected_events','trigger_conditions') and f['outcome']=='PASS':
+                all_candidate_ids={r['evidenceId'] for r in catalog['records'] if r['documentRole']==role and r['exactOriginalText'].strip()}
+                selected_ids={r['evidenceId'] for r in candidate}
+                if selected_ids!=all_candidate_ids:
+                    raise ValueError('PASS evidence must cover the full candidate narrative: '+path)
+            # A protected continuity PASS describes a transition through the
+            # story's terminal state. Validate coverage, not meaning: selected
+            # candidate spans must form a contiguous suffix ending at the final
+            # catalog span. The model's interpretation remains non-deterministic.
+            if check=='continuity' and f['outcome']=='PASS':
+                ordered=[r for r in catalog['records'] if r['documentRole']==role and r['exactOriginalText'].strip()]
+                selected_ids={r['evidenceId'] for r in candidate}
+                if not ordered or ordered[-1]['evidenceId'] not in selected_ids:
+                    raise ValueError('Continuity PASS evidence must reach the candidate final passage: '+path)
+                first=min((i for i,r in enumerate(ordered) if r['evidenceId'] in selected_ids),default=len(ordered))
+                expected={r['evidenceId'] for r in ordered[first:]}
+                if selected_ids!=expected:
+                    raise ValueError('Continuity PASS evidence must cover a contiguous candidate suffix: '+path)
+            if check=='ending' and f['outcome']=='PASS':
+                ordered=[r for r in catalog['records'] if r['documentRole']==role and r['exactOriginalText'].strip()]
+                if not ordered or ordered[-1]['evidenceId'] not in {r['evidenceId'] for r in candidate}:
+                    raise ValueError('Ending PASS evidence must include the candidate final passage: '+path)
             if f['outcome']=='FAIL' and f['basis']=='SUBSTANTIVE_OMISSION':
                 ordered=sorted(candidate,key=lambda r:r['startOffset'])
                 if len(ordered)<2 or any(a['endOffset']!=b['startOffset'] for a,b in zip(ordered,ordered[1:])):
                     raise ValueError('Substantive omission requires adjacent bounded narrative context; otherwise UNKNOWN')
-        for dim,d in row['creativeDimensions'].items():
-            passages=resolve(d['candidateEvidenceIds'],role,ref+'.creativeDimensions.'+dim+'.candidateEvidenceIds')
-            if passages and dim in ('SCROLL_STOP_VISUAL_PROMISE','ENDING_REPLAY'):
-                ordered=[r for r in catalog['records'] if r['documentRole']==role and r['exactOriginalText'].strip()]
-                boundary=ordered[0 if dim=='SCROLL_STOP_VISUAL_PROMISE' else -1]['evidenceId']
-                if boundary not in d['candidateEvidenceIds']:
-                    raise ValueError('Creative boundary evidence missing: '+ref+'.'+dim)
         comp=row['creativeConclusion'];path=ref+'.creativeConclusion.';material=comp['outcome']=='MATERIAL_IMPROVEMENT'
         resolve(comp['baselineEvidenceIds'],'SOURCE',path+'baselineEvidenceIds',material)
         resolve(comp['candidateEvidenceIds'],role,path+'candidateEvidenceIds',material)

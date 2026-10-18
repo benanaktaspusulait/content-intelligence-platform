@@ -1,0 +1,20 @@
+{
+  "strictSchema": "PASS",
+  "schemaErrors": [],
+  "fullValidation": "FAIL",
+  "failure": "ValueError: Creative boundary evidence missing: A.ENDING_REPLAY",
+  "wrongRoleOrUnknownIDs": [],
+  "protectedAnchorMismatches": [],
+  "boundaryFailures": [
+    [
+      "A",
+      "ENDING_REPLAY",
+      [
+        "A07-6f1e177d2eddfff5"
+      ],
+      "A10-6f1e177d2eddfff5",
+      " Pip is relieved, but the cabinet remains messy."
+    ]
+  ],
+  "applicationDerivedAssessmentCreated": false
+}

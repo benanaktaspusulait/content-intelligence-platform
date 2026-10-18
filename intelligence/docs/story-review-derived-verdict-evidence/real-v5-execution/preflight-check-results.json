@@ -1,0 +1,28 @@
+{
+  "preflightChecks": {
+    "scope": true,
+    "scopeSha256": true,
+    "operation": true,
+    "oneRequest": true,
+    "costCap": true,
+    "nonPersisting": true,
+    "zeroProviderCalls": true,
+    "openAIModel": true,
+    "retryFallbackDisabled": true,
+    "assessmentOnly": true,
+    "strictSchema": true,
+    "wireFingerprint": true,
+    "zeroPriorRunsForKey": true,
+    "noPriorLocalReservation": true,
+    "authenticatedOwner": true
+  },
+  "allPassed": true,
+  "priorRunsForIdempotencyKey": 0,
+  "priorReservationFiles": [],
+  "ownerAuthenticated": true,
+  "providerCallsBeforeStart": 0,
+  "preflightPersisted": false,
+  "scopeSha256": "64f9755b9f75536c35fa30fe86d2a36bd9b6fe566d58b294d58efa884938476f",
+  "operationSha256": "7f8a23611d6783c64e82089e934394889438baac670ca7a92cb766a475f5387b",
+  "maxUsd": 0.006127
+}

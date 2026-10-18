@@ -28,7 +28,7 @@ def case_response(payload,mode):
             item['semanticChecks']['identity'].update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(payload,'SOURCE','Pip the rabbit')[:1],candidateEvidenceIds=evidence_ids(payload,'CANDIDATE_'+ref)[:1],reason='The same named rabbit is explicit; mocked opinion, not a real review.')
             records=[r for r in payload['evidenceCatalog']['records'] if r['documentRole']=='CANDIDATE_'+ref]
             start=next(i for i,r in enumerate(records) if ('wrapping' if ref=='A' else 'plastering') in r['exactOriginalText'])
-            end=next(i for i,r in enumerate(records) if 'scatters' in r['exactOriginalText'])
+            end=len(records)-1
             item['semanticChecks']['continuity'].update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(payload,'SOURCE','Pip remains covered'),candidateEvidenceIds=[r['evidenceId'] for r in records[start:end+1]],reason='The covered-state, held-stop and sneeze-release sequence supports continuity without identical wording; synthetic interpretation only.')
         # Deliberately unresolved source-specific question, not a fabricated FAIL
         # or a model-authored aggregate. Only the external provider is synthetic.

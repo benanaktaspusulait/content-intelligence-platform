@@ -1,0 +1,21 @@
+{
+  "evidenceType": "OWNER_DECISION",
+  "ownerPolicyApproval": true,
+  "ownerPaidReviewAuthorization": true,
+  "authorizationTextSha256": "0911704026c59fbcc46f18dcf9ebb2fa1d8403331e09c569e4ae738eefc3b83e",
+  "authorizationSource": "V5 user instruction in current task",
+  "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+  "scopeSha256": "64f9755b9f75536c35fa30fe86d2a36bd9b6fe566d58b294d58efa884938476f",
+  "preparedOperationSha256": "7f8a23611d6783c64e82089e934394889438baac670ca7a92cb766a475f5387b",
+  "provider": "openai",
+  "model": "gpt-4o-mini-2024-07-18",
+  "role": "STORY_REVIEW",
+  "maxRequests": 1,
+  "maxRounds": 1,
+  "maxRunSeconds": 600,
+  "maxTotalUsd": 0.006127,
+  "maxOutputTokens": 4000,
+  "automaticRetries": false,
+  "fallback": false,
+  "modelSubstitution": false
+}

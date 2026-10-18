@@ -1,0 +1,14 @@
+[
+  {
+    "manifest": "intelligence/docs/story-review-derived-verdict-evidence/historical-before-sha256.json",
+    "count": 275,
+    "unchanged": true,
+    "mismatches": []
+  },
+  {
+    "manifest": "intelligence/docs/real-timeout-hardened-story-review-evidence/historical-before-sha256.json",
+    "count": 164,
+    "unchanged": true,
+    "mismatches": []
+  }
+]
