@@ -63,7 +63,11 @@ class StoryExperimentContractTest {
     owner=new MockHttpServletRequest();owner.setUserPrincipal(()->"disposable-test-owner");owner.addUserRole("OWNER");
     when(ml.workflow(anyString(),anyMap())).thenAnswer(inv->{
       String operation=inv.getArgument(0);Map<String,Object> input=inv.getArgument(1);
-      if(operation.equals("creative-role"))transports++;
+      if(operation.equals("creative-role")){
+        if(input.get("context") instanceof Map<?,?> c&&StoryEvolutionService.ASSESSMENT.equals(c.get("assessmentOnlyPolicy")))
+          assertThat(sql.queryForObject("SELECT count(*) FROM story_evolution_events WHERE payload->>'state'='REQUEST_RESERVED' AND payload->>'requestId'=? AND payload->>'assessmentOnlyPolicy'=?",Long.class,c.get("storyRequestId"),StoryEvolutionService.ASSESSMENT)).isEqualTo(1L);
+        transports++;
+      }
       var output=new LinkedHashMap<>(bridge(operation,input));
       if((operation.equals("story-experiment/preflight")||operation.equals("story-experiment/assessment-preflight"))&&!drift.isBlank())output.put(drift,"changed-after-authorization");
       if(operation.equals("creative-role")&&mode.equals("fixture-fallback"))output.put("provider","ISOLATED_FIXTURE");
@@ -74,7 +78,7 @@ class StoryExperimentContractTest {
     body.put("protectedAnchors",map(map(fixture.get("context")).get("storyExperiment")).get("protectedAnchors"));
   }
   String readPrompt(){try{return Files.readString(ROOT.resolve("intelligence/docs/p2-canonical-aware-story-evidence/generated-prompt.txt")).strip();}catch(Exception e){throw new RuntimeException(e);}}
-  Map<String,Object> grant(){var g=new LinkedHashMap<>(body);var inspected=service.inspectPilot(g,owner);g.put("sourceScopeSha256",inspected.get("sourceScopeSha256"));g.put("operations",inspected.get("operations"));g.put("maxTotalUsd",inspected.get("maxTotalUsd"));g.put("maxRounds",1);g.put("maxRequests",2);g.put("maxRunSeconds",600);g.put("automaticRetries",false);g.put("fallback",false);g.put("authorizePaidInference",true);g.put("confirmSourceAuthority",true);g.put("idempotencyKey",UUID.randomUUID().toString());return g;}
+  Map<String,Object> grant(){var g=new LinkedHashMap<>(body);var inspected=service.inspectPilot(g,owner);g.put("sourceScopeSha256",inspected.get("sourceScopeSha256"));g.put("operations",inspected.get("operations"));g.put("maxTotalUsd",inspected.get("maxTotalUsd"));g.put("maxTotalUsdMicros",inspected.get("maxTotalUsdMicros"));g.put("maxRounds",1);g.put("maxRequests",2);g.put("maxRunSeconds",600);g.put("automaticRetries",false);g.put("fallback",false);g.put("authorizePaidInference",true);g.put("confirmSourceAuthority",true);g.put("idempotencyKey",UUID.randomUUID().toString());return g;}
   Map<String,Object> start(){var g=grant();var first=service.start(g,owner);run=uuid(first.get("runId"));assertThat(service.start(g,owner).get("runId")).isEqualTo(run.toString());return first;}
   Map<String,Object> view(){return service.view(run,owner);}
   List<Map<String,Object>> receipts(){return rows(view().get("events")).stream().filter(e->"PROVIDER_RECEIPT".equals(e.get("state"))).map(e->map(e.get("envelope"))).toList();}
@@ -145,9 +149,52 @@ class StoryExperimentContractTest {
   Map<String,Object> assessmentGrant(){
     service.assessmentEvidenceRoot=ROOT.resolve("intelligence/docs").toString();var checked=service.inspectAssessment(Map.of(),owner);
     var grant=new LinkedHashMap<String,Object>();grant.put("assessmentOnlyPolicy",StoryEvolutionService.ASSESSMENT);
-    for(String key:List.of("scopeSha256","operations","maxTotalUsd"))grant.put(key,checked.get(key));
+    for(String key:List.of("scopeSha256","operations","maxTotalUsd","maxTotalUsdMicros"))grant.put(key,checked.get(key));
     grant.put("authorizePaidInference",true);grant.put("confirmAssessmentOnly",true);grant.put("automaticRetries",false);grant.put("fallback",false);
     grant.put("maxRequests",1);grant.put("maxRounds",1);grant.put("maxRunSeconds",600);grant.put("idempotencyKey",UUID.randomUUID().toString());return grant;
+  }
+  @Test void assessmentMoneyUsesExactMicroDollarBoundaries(){
+    assertThat(StoryEvolutionService.usdMicros(new java.math.BigDecimal("0.170046"))).isEqualByComparingTo("170046");
+    assertThat(StoryEvolutionService.usdMicros(new java.math.BigDecimal("0.170045"))).isEqualByComparingTo("170045");
+    assertThat(StoryEvolutionService.usdMicros(new java.math.BigDecimal("0.170047"))).isEqualByComparingTo("170047");
+    assertThat(StoryEvolutionService.usdMicros(new java.math.BigDecimal("0.1700460001"))).isEqualByComparingTo("170047");
+  }
+  @Test void assessmentAuthorizationMustContainExactMicrosAndRejectOverCeilingBeforeRun(){
+    var over=assessmentGrant();over.put("maxTotalUsdMicros",170047L);
+    assertThatThrownBy(()->service.start(over,owner)).hasMessageContaining("binding changed");
+    var missing=assessmentGrant();missing.remove("maxTotalUsdMicros");
+    assertThatThrownBy(()->service.start(missing,owner)).hasMessageContaining("Exact USD micro-unit");
+    assertThat(transports).isZero();
+  }
+  @Test void assessmentModelTokenAndPriceDriftRejectBeforeRun(){
+    for(String field:List.of("model","maxCompletionTokens","outputUsdPerMillion")){
+      var changed=assessmentGrant();var operation=new LinkedHashMap<>(rows(changed.get("operations")).getFirst());
+      operation.put(field,field.equals("model")?"different-model":field.equals("maxCompletionTokens")?4000:999.0);
+      changed.put("operations",List.of(operation));
+      assertThatThrownBy(()->service.start(changed,owner)).hasMessageContaining("binding changed");
+    }
+    assertThat(transports).isZero();
+  }
+  @Test void assessmentReservationIsDurableBeforeProviderTransportAndCannotBeReplayed(){
+    var grant=assessmentGrant();run=uuid(service.start(grant,owner).get("runId"));
+    service.processNext();
+    assertThat(transports).isEqualTo(1);
+    assertThat(rows(view().get("events")).stream().filter(e->"REQUEST_RESERVED".equals(e.get("state"))).count()).isEqualTo(1);
+    var savedProgress=map(view().get("progress"));
+    assertThat(((Number)savedProgress.get("reservedUsdMicros")).longValue()).isEqualTo(StoryEvolutionService.integerMicros(rows(map(service.load(run).get("authorization")).get("operations")).getFirst().get("maxCostUsdMicros")));
+    assertThat(savedProgress).containsEntry("requestCount",1);
+    service.processNext();assertThat(transports).isEqualTo(1);
+  }
+  @Test void priorAssessmentReservationBlocksBeforeAnyProviderTransport(){
+    var grant=assessmentGrant();run=uuid(service.start(grant,owner).get("runId"));
+    service.event(run,Map.of("state","REQUEST_RESERVED","assessmentOnlyPolicy",StoryEvolutionService.ASSESSMENT,"role","STORY_REVIEW","requestId","prior-reservation"));
+    service.processNext();
+    assertThat(transports).isZero();assertThat(view().get("state")).isEqualTo("STOPPED");
+  }
+  @Test void failedDurableReservationTransactionBlocksBeforeProviderTransport(){
+    var grant=assessmentGrant();run=uuid(service.start(grant,owner).get("runId"));service.transactionManager=null;
+    service.processNext();
+    assertThat(transports).isZero();assertThat(rows(view().get("events")).stream().noneMatch(e->"REQUEST_RESERVED".equals(e.get("state")))).isTrue();
   }
   @Test void assessmentOnlyAuthenticCrossRunReviewCompletesWithoutProductionAuthority() throws Exception {
     var g=assessmentGrant();var started=service.start(g,owner);run=uuid(started.get("runId"));

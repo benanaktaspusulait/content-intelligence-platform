@@ -25,8 +25,8 @@ class QualityMlAssessmentTimeoutTest {
     client.workflow("cpq-pilot/capabilities",Map.of());
     var capture=org.mockito.ArgumentCaptor.forClass(HttpRequest.class);
     verify(transport,times(6)).send(capture.capture(),any(HttpResponse.BodyHandler.class));
-    assertThat(capture.getAllValues().stream().map(r->r.timeout().orElseThrow().toSeconds()).toList()).containsExactly(90L,25L,25L,25L,25L,130L);
-    assertThat(QualityMlClient.assessmentTransportPolicy()).containsEntry("readSeconds",60).containsEntry("backendHttpSeconds",90).containsEntry("workflowDeadlineSeconds",600);
+    assertThat(capture.getAllValues().stream().map(r->r.timeout().orElseThrow().toSeconds()).toList()).containsExactly(300L,25L,25L,25L,25L,130L);
+    assertThat(QualityMlClient.assessmentTransportPolicy()).containsEntry("readSeconds",240).containsEntry("backendHttpSeconds",300).containsEntry("workflowDeadlineSeconds",600);
   }
 
   @Test void outerTimeoutAndInterruptionRetainCauseWithoutHttpRetry() throws Exception {

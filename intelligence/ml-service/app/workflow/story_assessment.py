@@ -6,12 +6,12 @@ same durable ledger; this adapter compiles/checks one independently granted revi
 from copy import deepcopy
 from datetime import datetime, timezone
 import json
-import math
 import os
 from pathlib import Path
 import hashlib
 import uuid
 import time
+from decimal import Decimal, ROUND_CEILING
 from openai import Timeout
 from .story_experiment import sha, encoded, model_identity
 from .story_evidence import derive_source_evidence, review_evidence_catalog, verify_review_evidence_catalog
@@ -19,7 +19,7 @@ from .creative_reconstruction import DIMENSIONS
 
 POLICY='ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1'
 SCHEMA='assessment-only-story-review-v4-derived-verdict'
-TIMEOUT_POLICY={'version':'assessment-story-review-timeouts-v1','connectSeconds':5,'poolSeconds':5,'writeSeconds':10,'readSeconds':60,'backendHttpSeconds':90,'workflowDeadlineSeconds':600}
+TIMEOUT_POLICY={'version':'assessment-story-review-timeouts-v2','connectSeconds':5,'poolSeconds':5,'writeSeconds':10,'readSeconds':240,'backendHttpSeconds':300,'workflowDeadlineSeconds':600}
 LEGACY_MODEL='gpt-4o-mini-2024-07-18'
 REVIEW_MODEL='gpt-6.1-sol'
 REVIEW_PROFILES={LEGACY_MODEL:{'reasoningEffort':None,'maxCompletionTokens':4000,'temperature':0,'tokenParameter':'max_tokens','maximumInputBytes':24000},
@@ -27,6 +27,11 @@ REVIEW_PROFILES={LEGACY_MODEL:{'reasoningEffort':None,'maxCompletionTokens':4000
 
 def sdk_timeout():
     return Timeout(TIMEOUT_POLICY['readSeconds'],connect=TIMEOUT_POLICY['connectSeconds'],pool=TIMEOUT_POLICY['poolSeconds'],write=TIMEOUT_POLICY['writeSeconds'])
+
+
+def usd_micros(value):
+    """Conservative exact USD ceiling in integer micro-dollars."""
+    return int((Decimal(str(value))*Decimal(1_000_000)).to_integral_value(rounding=ROUND_CEILING))
 SELECTED={
  'A':('50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088','34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1'),
  'B':('4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739','10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3')}
@@ -196,13 +201,17 @@ def preview(text, context):
     w=wire(text,context);model=os.getenv('WORKFLOW_STORY_REVIEW_MODEL','')
     profile=REVIEW_PROFILES.get(model)
     if profile is None:raise ValueError('Exact configured OpenAI STORY_REVIEW model required')
-    rates=[float(os.getenv('WORKFLOW_STORY_REVIEW_'+s+'_USD_PER_MILLION','nan')) for s in ('INPUT','OUTPUT')]
-    if not all(math.isfinite(v) and v>0 for v in rates):raise ValueError('Explicit configured review prices required')
+    rate_text=[os.getenv('WORKFLOW_STORY_REVIEW_'+s+'_USD_PER_MILLION','') for s in ('INPUT','OUTPUT')]
+    try: rates=[Decimal(v) for v in rate_text]
+    except Exception as error:raise ValueError('Explicit configured review prices required') from error
+    if not all(v.is_finite() and v>0 for v in rates):raise ValueError('Explicit configured review prices required')
     size=len(encoded(w['payload']).encode());sys_size=len(w['system'].encode())
     request_bytes=len(encoded(request_body(text,context)).encode())
     maximum_input_bytes=profile['maximumInputBytes']
     if request_bytes>maximum_input_bytes:raise ValueError('Assessment complete request exceeds model-specific byte envelope')
-    max_tokens=profile['maxCompletionTokens'];bound=((request_bytes+1000)*rates[0]+max_tokens*rates[1])/1e6
+    max_tokens=profile['maxCompletionTokens']
+    bound=(Decimal(request_bytes+1000)*rates[0]+Decimal(max_tokens)*rates[1])/Decimal(1_000_000)
+    bound_micros=usd_micros(bound)
     root=Path(__file__).resolve().parents[1]
     implementation=sha({str(p):hashlib.sha256((root/p).read_bytes()).hexdigest() for p in (
             'workflow/story_assessment.py','workflow/story_evidence.py','workflow/story_quality.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})
@@ -214,7 +223,8 @@ def preview(text, context):
         'reasoningEffort':profile['reasoningEffort'],'temperature':profile['temperature'],
         'completionTokenParameter':profile['tokenParameter'],'maxCompletionTokens':max_tokens,
         'maximumInputBytes':profile['maximumInputBytes'],'requestFramingAllowanceBytes':1000,'maxRequests':1,
-        'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
+        'inputUsdPerMillion':float(rates[0]),'outputUsdPerMillion':float(rates[1]),'maximumCalculatedUsd':bound_micros/1_000_000,
+        'maximumCalculatedUsdMicros':bound_micros,
         'timeoutPolicy':TIMEOUT_POLICY,'implementationSha256':implementation}
     return {'policy':POLICY,'role':'STORY_REVIEW','provider':'openai','model':model,
         'sourceStorySha256':sha(text),'scopeSha256':sha(context['assessmentScope']),
@@ -231,7 +241,8 @@ def preview(text, context):
         'schemaVersion':SCHEMA,'maxRequests':1,'maximumInputBytes':maximum_input_bytes,
         'payloadBytes':size,'systemBytes':sys_size,'serializedRequestBytes':request_bytes,
         'schemaBytes':len(encoded(w['responseFormat']['json_schema']['schema']).encode()),'maxOutputTokens':max_tokens,
-        'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
+        'inputUsdPerMillion':float(rates[0]),'outputUsdPerMillion':float(rates[1]),'maximumCalculatedUsd':bound_micros/1_000_000,
+        'maximumCalculatedUsdMicros':bound_micros,
         'automaticRetries':False,'fallback':False,'assessmentOnly':True,
         'clientRequestIdPolicy':'application-request-uuid-v1','timeoutPolicy':deepcopy(TIMEOUT_POLICY),
         'outboundTransportMetadataSha256':sha({'timeoutPolicy':TIMEOUT_POLICY,'clientHeader':'X-Client-Request-Id','valuePolicy':'application-request-uuid-v1','valueAsciiBytes':36}),
@@ -387,7 +398,8 @@ def execute(text,context,cap):
     from .creative_roles import _optimization_cost
     current=preview(text,context);authorized=context.get('assessmentDispatch') or {}
     if not context.get('assessmentSpendingAuthorized') or any(authorized.get(k)!=v for k,v in current.items()):raise ValueError('Fresh exact assessment spending grant required')
-    if cap<current['maximumCalculatedUsd'] or cap>authorized.get('maxCostUsd',0):raise ValueError('Assessment reservation mismatch')
+    cap_micros=usd_micros(cap)
+    if cap_micros<current['maximumCalculatedUsdMicros'] or cap_micros>authorized.get('maxCostUsdMicros',-1):raise ValueError('Assessment reservation mismatch')
     if os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED','false').lower()!='true' or os.getenv('CPQ_PILOT_REAL_ENABLED','false').lower()!='true':raise ValueError('Real assessment dispatch disabled')
     if any(os.getenv(k) for k in ('POMPOM_ISOLATED_FIXTURE_DIR','POMPOM_ISOLATED_FIXTURE_TOKEN')) or os.getenv('POMPOM_ISOLATED_ACCEPTANCE')=='true':raise ValueError('Fixture fallback forbidden')
     request_id=str(uuid.UUID(str(context.get('storyRequestId'))))

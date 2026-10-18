@@ -40,9 +40,8 @@ def test_v61_preview_exact_model_params_scope_and_cost(monkeypatch):
     assert body["response_format"]["json_schema"]["strict"] is True
     assert preview["serializedRequestBytes"] == len(assessment.encoded(body).encode()) <= 24064
     assert preview["maximumInputBytes"] == 24064
-    assert preview["maximumCalculatedUsd"] == pytest.approx(
-        ((preview["serializedRequestBytes"] + 1000) * 2 + 12000 * 10) / 1_000_000
-    )
+    assert preview["maximumCalculatedUsd"] == 0.170046
+    assert preview["maximumCalculatedUsdMicros"] == 170046
     assert (
         preview["reasoningEffort"] == "medium"
         and preview["completionTokenParameter"] == "max_completion_tokens"
@@ -52,11 +51,20 @@ def test_v61_preview_exact_model_params_scope_and_cost(monkeypatch):
     assert preview["timeoutPolicy"] == assessment.TIMEOUT_POLICY
 
 
+def test_exact_usd_micro_units_round_up_conservatively_without_epsilon():
+    assert assessment.usd_micros("0.170046") == 170046
+    assert assessment.usd_micros("0.170045") == 170045
+    assert assessment.usd_micros("0.170047") == 170047
+    assert assessment.usd_micros("0.1700460001") == 170047
+    assert assessment.TIMEOUT_POLICY["readSeconds"] < assessment.TIMEOUT_POLICY["backendHttpSeconds"] < assessment.TIMEOUT_POLICY["workflowDeadlineSeconds"]
+
+
 def test_v61_execute_uses_installed_sdk_mock_transport_and_accounts_reasoning(monkeypatch, tmp_path):
     configure(monkeypatch, tmp_path)
     text, context = assessment_inputs()
     preview = assessment.preview(text, context)
     preview["maxCostUsd"] = preview["maximumCalculatedUsd"]
+    preview["maxCostUsdMicros"] = preview["maximumCalculatedUsdMicros"]
     context.update(
         assessmentDispatch=preview, assessmentSpendingAuthorized=True, storyRequestId=str(uuid.uuid4())
     )
@@ -66,7 +74,7 @@ def test_v61_execute_uses_installed_sdk_mock_transport_and_accounts_reasoning(mo
         body = json.loads(request.content)
         captured.append(body)
         assert request.url == "https://api.openai.com/v1/chat/completions"
-        assert request.extensions["timeout"] == {"connect": 5, "pool": 5, "write": 10, "read": 60}
+        assert request.extensions["timeout"] == {"connect": 5, "pool": 5, "write": 10, "read": 240}
         assert body["model"] == "gpt-6.1-sol"
         assert body["reasoning_effort"] == "medium" and body["max_completion_tokens"] == 12000
         assert "temperature" not in body and "max_tokens" not in body
@@ -113,11 +121,25 @@ def test_v61_execute_uses_installed_sdk_mock_transport_and_accounts_reasoning(mo
     assert receipt["buildPromptAuthorized"] if "buildPromptAuthorized" in receipt else True
 
 
+def test_one_micro_dollar_over_exact_grant_is_blocked_before_sdk_or_reservation(monkeypatch, tmp_path):
+    configure(monkeypatch, tmp_path)
+    text, context = assessment_inputs()
+    preview = assessment.preview(text, context)
+    preview["maxCostUsd"] = preview["maximumCalculatedUsd"]
+    preview["maxCostUsdMicros"] = preview["maximumCalculatedUsdMicros"]
+    context.update(assessmentDispatch=preview, assessmentSpendingAuthorized=True, storyRequestId=str(uuid.uuid4()))
+    with patch("app.llm.openai_provider.OpenAI", side_effect=AssertionError("SDK must not be constructed")):
+        with pytest.raises(ValueError, match="Assessment reservation mismatch"):
+            assessment.execute(text, context, preview["maximumCalculatedUsd"] + 0.000001)
+    assert not (tmp_path / "workflow/story-assessment-receipts").exists()
+
+
 def test_v61_incomplete_response_is_rejected_but_usage_is_accounted(monkeypatch, tmp_path):
     configure(monkeypatch, tmp_path)
     text, context = assessment_inputs()
     preview = assessment.preview(text, context)
     preview["maxCostUsd"] = preview["maximumCalculatedUsd"]
+    preview["maxCostUsdMicros"] = preview["maximumCalculatedUsdMicros"]
     context.update(
         assessmentDispatch=preview, assessmentSpendingAuthorized=True, storyRequestId=str(uuid.uuid4())
     )

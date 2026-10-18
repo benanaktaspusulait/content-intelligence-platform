@@ -306,7 +306,7 @@ def test_installed_sdk_serializes_dynamic_enums_preserves_raw_no_retry(monkeypat
         if mode=='refusal':message.update(content=None,refusal='Offline refusal')
         return httpx.Response(200,json={'id':'MOCK_ONLY','object':'chat.completion','created':0,'model':body['model'],'choices':[{'index':0,'message':message,'finish_reason':'length' if mode=='incomplete' else 'stop'}],'usage':{'prompt_tokens':100,'completion_tokens':200,'total_tokens':300}})
     def client(**kw):
-        assert kw['max_retries']==0 and kw['timeout'].as_dict()=={'connect':5,'pool':5,'write':10,'read':60}
+        assert kw['max_retries']==0 and kw['timeout'].as_dict()=={'connect':5,'pool':5,'write':10,'read':240}
         return openai.OpenAI(**kw,http_client=httpx.Client(transport=httpx.MockTransport(transport)))
     monkeypatch.setenv('OPENAI_API_KEY','offline-not-a-credential')
     with patch('app.llm.openai_provider.OpenAI',side_effect=client):r=a.execute(text,c,.1)

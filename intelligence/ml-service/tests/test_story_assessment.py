@@ -16,7 +16,7 @@ def configuration(monkeypatch,tmp_path):
 
 
 def grant():
-    text,context=assessment_inputs();p=preview(text,context);p['maxCostUsd']=.1
+    text,context=assessment_inputs();p=preview(text,context);p['maxCostUsd']=.1;p['maxCostUsdMicros']=100000
     context.update(assessmentDispatch=p,assessmentSpendingAuthorized=True,storyRequestId=str(uuid.uuid4()))
     return text,context
 

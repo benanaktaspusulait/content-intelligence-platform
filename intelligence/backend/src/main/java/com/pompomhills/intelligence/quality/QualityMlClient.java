@@ -213,7 +213,7 @@ public class QualityMlClient {
   }
 
   public static Map<String,Object> assessmentTransportPolicy() {
-    return Map.of("version","assessment-story-review-timeouts-v1","connectSeconds",5,"poolSeconds",5,"writeSeconds",10,"readSeconds",60,"backendHttpSeconds",90,"workflowDeadlineSeconds",600);
+    return Map.of("version","assessment-story-review-timeouts-v2","connectSeconds",5,"poolSeconds",5,"writeSeconds",10,"readSeconds",240,"backendHttpSeconds",300,"workflowDeadlineSeconds",600);
   }
 
   private static Duration workflowTimeout(String operation, Map<String,Object> request) {

@@ -29,7 +29,7 @@ def test_sdk_primary_error_accounting_correlation_and_nonretry(monkeypatch,mode,
  text,c=grant();calls=[];captured=[]
  monkeypatch.setenv('OPENAI_API_KEY','offline-not-a-credential')
  def transport(request):
-  assert request.extensions['timeout']=={'connect':5,'pool':5,'write':10,'read':60}
+  assert request.extensions['timeout']=={'connect':5,'pool':5,'write':10,'read':240}
   assert json.loads(request.content)==a.request_body(text,c)
   calls.append(request.headers['X-Client-Request-Id'])
   marker=Path(capture_root)/'workflow/story-assessment-receipts'/(c['storyRequestId']+'-reserved.json')
@@ -47,7 +47,7 @@ def test_sdk_primary_error_accounting_correlation_and_nonretry(monkeypatch,mode,
   if mode!='missing-usage':result['usage']=usage
   return httpx.Response(200,headers={'x-request-id':'req-offline-success'},json=result)
  def client(**kw):
-  assert kw['max_retries']==0 and kw['timeout'].as_dict()=={'connect':5,'pool':5,'write':10,'read':60}
+  assert kw['max_retries']==0 and kw['timeout'].as_dict()=={'connect':5,'pool':5,'write':10,'read':240}
   sdk=openai.OpenAI(**kw,http_client=httpx.Client(transport=httpx.MockTransport(transport)))
   captured.append(sdk);return sdk
  import os
@@ -159,6 +159,6 @@ def test_native_installed_sdk_default_transport_has_numeric_phase_limits(monkeyp
  monkeypatch.setenv('OPENAI_API_KEY','offline-not-a-credential')
  provider=OpenAIProvider(request_timeout=a.sdk_timeout())
  try:
-  assert {k:getattr(provider.client._client.timeout,k) for k in ('connect','pool','write','read')}=={'connect':5,'pool':5,'write':10,'read':60}
+  assert {k:getattr(provider.client._client.timeout,k) for k in ('connect','pool','write','read')}=={'connect':5,'pool':5,'write':10,'read':240}
   assert provider.client.max_retries==0
  finally:provider.client.close()

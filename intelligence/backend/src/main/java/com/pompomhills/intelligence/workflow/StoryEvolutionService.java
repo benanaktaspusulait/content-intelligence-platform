@@ -6,6 +6,8 @@ import com.pompomhills.intelligence.content.ContentWorkspaceController;
 import com.pompomhills.intelligence.quality.IntelligenceQualityValidationService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -31,6 +33,22 @@ public class StoryEvolutionService {
   public StoryEvolutionService(JdbcClient db,CpqOwnerPilotService util,WorkflowService workflow,QualityMlClient ml){this.db=db;this.util=util;this.workflow=workflow;this.ml=ml;}
   static int integer(Map<String,Object> b,String k,int min,int max){Object v=b.get(k);if(!(v instanceof Number n)||n.intValue()!=n.doubleValue()||n.intValue()<min||n.intValue()>max)throw new ResponseStatusException(BAD_REQUEST,"Invalid limit: "+k);return n.intValue();}
   static double amount(Object v){if(!(v instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()<=0||n.doubleValue()>20)throw new ResponseStatusException(BAD_REQUEST,"Positive story-evolution USD ceiling <=20 required");return n.doubleValue();}
+  /** Convert USD values to conservative integer micro-dollars without binary epsilon. */
+  static BigDecimal usdMicros(Object value) {
+    if(!(value instanceof Number n))throw new ResponseStatusException(BAD_REQUEST,"USD amount required");
+    try{return new BigDecimal(n.toString()).movePointRight(6).setScale(0,RoundingMode.CEILING);}
+    catch(NumberFormatException invalid){throw new ResponseStatusException(BAD_REQUEST,"Invalid USD amount",invalid);}
+  }
+  static long integerMicros(Object value) {
+    if(!(value instanceof Number n))throw new ResponseStatusException(BAD_REQUEST,"Exact USD micro-unit amount required");
+    try{return new BigDecimal(n.toString()).longValueExact();}
+    catch(ArithmeticException|NumberFormatException invalid){throw new ResponseStatusException(BAD_REQUEST,"Exact USD micro-unit amount required",invalid);}
+  }
+  static BigDecimal reservedMicros(Map<String,Object> progress) {
+    Object units=progress.get("reservedUsdMicros");
+    return units instanceof Number?BigDecimal.valueOf(integerMicros(units)):usdMicros(progress.getOrDefault("reservedUsd",0));
+  }
+  static double usd(BigDecimal micros){return micros.movePointLeft(6).doubleValue();}
   Map<String,Object> load(UUID id){return db.sql("SELECT owner_principal,source_story_record_id,source_story_sha256,authorization_payload::text,scope::text,state,progress::text,cancel_requested,deadline FROM story_evolution_runs WHERE id=:id").param("id",id).query((rs,n)->Map.<String,Object>of("owner",rs.getString(1),"sourceStoryRecordId",rs.getObject(2,UUID.class),"sourceStorySha256",rs.getString(3),"authorization",util.read(rs.getString(4)),"scope",util.read(rs.getString(5)),"state",rs.getString(6),"progress",util.read(rs.getString(7)),"cancel",rs.getBoolean(8),"deadline",rs.getTimestamp(9).toInstant())).single();}
   void owner(UUID id,HttpServletRequest req){if(!util.owner(req).equals(load(id).get("owner")))throw new ResponseStatusException(FORBIDDEN,"Run belongs to another owner");}
   @Transactional public Map<String,Object> start(Map<String,Object> body,HttpServletRequest req){
@@ -297,11 +315,11 @@ public class StoryEvolutionService {
       var checked=new LinkedHashMap<>(ml.workflow("story-experiment/preflight",Map.of("role",input.get("role"),"text",scope.get("sourceStory"),"context",input.get("context"),"maxCostUsd",20)));
       operations.add(checked);
     }
-    double maximum=operations.stream().mapToDouble(x->((Number)x.get("maximumCalculatedUsd")).doubleValue()).max().orElseThrow();
-    double cap=Math.ceil((maximum+1e-12)*1e6)/1e6;
-    operations.forEach(x->x.put("maxCostUsd",cap));
+    BigDecimal capMicros=operations.stream().map(x->usdMicros(x.get("maximumCalculatedUsd"))).max(BigDecimal::compareTo).orElseThrow();
+    double cap=usd(capMicros);
+    operations.forEach(x->{x.put("maxCostUsd",cap);x.put("maxCostUsdMicros",capMicros.longValueExact());});
     return Map.of("experimentVersion",PILOT,"scope",scope,"sourceScopeSha256",scope.get("sourceScopeSha256"),
-        "operations",operations,"maxRequests",2,"maxRounds",1,"maxTotalUsd",cap*2,"providerCalls",0,"persisted",false);
+        "operations",operations,"maxRequests",2,"maxRounds",1,"maxTotalUsd",usd(capMicros.multiply(BigDecimal.valueOf(2))),"maxTotalUsdMicros",capMicros.multiply(BigDecimal.valueOf(2)).longValueExact(),"providerCalls",0,"persisted",false);
   }
   Map<String,Object> pilotScope(Map<String,Object> body) {
     UUID source=uuid(body.get("sourceStoryRecordId")), approval=uuid(body.get("approvalRecordId")),analysis=uuid(body.get("baselineAnalysisId"));
@@ -347,9 +365,11 @@ public class StoryEvolutionService {
       throw new ResponseStatusException(BAD_REQUEST,"Fresh exact owner authorization; retries/fallback disabled required");
     if(integer(body,"maxRequests",2,2)!=2||integer(body,"maxRounds",1,1)!=1||integer(body,"maxRunSeconds",1,600)>600)
       throw new ResponseStatusException(BAD_REQUEST,"Exact one-round two-call limits required");
+    amount(body.get("maxTotalUsd"));
     if(!Objects.equals(body.get("sourceScopeSha256"),inspected.get("sourceScopeSha256"))
         ||!util.encode(body.get("operations")).equals(util.encode(inspected.get("operations")))
-        ||Double.compare(amount(body.get("maxTotalUsd")),((Number)inspected.get("maxTotalUsd")).doubleValue())!=0)
+        ||usdMicros(body.get("maxTotalUsd")).compareTo(usdMicros(inspected.get("maxTotalUsd")))!=0
+        ||integerMicros(body.get("maxTotalUsdMicros"))!=integerMicros(inspected.get("maxTotalUsdMicros")))
       throw new ResponseStatusException(CONFLICT,"SCOPE_OR_INSTRUCTION_MISMATCH");
     if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch disabled; no run created");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
@@ -433,19 +453,22 @@ public class StoryEvolutionService {
   public Map<String,Object> inspectAssessment(Map<String,Object> body,HttpServletRequest request) {
     util.owner(request);if(transactionManager==null)throw new ResponseStatusException(CONFLICT,"Durable ledger unavailable");
     var scope=assessmentScope();var operation=new LinkedHashMap<>(ml.workflow("story-experiment/assessment-preflight",Map.of("role","STORY_REVIEW","text",scope.get("sourceStory"),"context",assessmentContext(scope),"maxCostUsd",20)));
-    double cap=Math.ceil((((Number)operation.get("maximumCalculatedUsd")).doubleValue()+1e-12)*1e6)/1e6;
-    operation.put("maxCostUsd",cap);
-    return Map.of("assessmentOnlyPolicy",ASSESSMENT,"scope",scope,"scopeSha256",hash(util.encode(scope)),"operations",List.of(operation),"maxRequests",1,"maxTotalUsd",cap,"persisted",false,"providerCalls",0);
+    BigDecimal capMicros=usdMicros(operation.get("maximumCalculatedUsd"));
+    double cap=usd(capMicros);
+    operation.put("maxCostUsd",cap);operation.put("maxCostUsdMicros",capMicros.longValueExact());
+    return Map.of("assessmentOnlyPolicy",ASSESSMENT,"scope",scope,"scopeSha256",hash(util.encode(scope)),"operations",List.of(operation),"maxRequests",1,"maxTotalUsd",cap,"maxTotalUsdMicros",capMicros.longValueExact(),"persisted",false,"providerCalls",0);
   }
   Map<String,Object> startAssessment(Map<String,Object> body,HttpServletRequest request) {
     String actor=util.owner(request);var checked=inspectAssessment(body,request);
     if(!Boolean.TRUE.equals(body.get("authorizePaidInference"))||!Boolean.TRUE.equals(body.get("confirmAssessmentOnly"))
         ||!Boolean.FALSE.equals(body.get("automaticRetries"))||!Boolean.FALSE.equals(body.get("fallback")))
       throw new ResponseStatusException(BAD_REQUEST,"Separate exact owner spending authorization required; assessment-only, no retry/fallback");
+    amount(body.get("maxTotalUsd"));
     if(integer(body,"maxRequests",1,1)!=1||integer(body,"maxRounds",1,1)!=1)throw new ResponseStatusException(BAD_REQUEST,"Exactly one review; no generation");
     int seconds=integer(body,"maxRunSeconds",1,600);
     if(!Objects.equals(body.get("scopeSha256"),checked.get("scopeSha256"))||!util.encode(body.get("operations")).equals(util.encode(checked.get("operations")))
-        ||Double.compare(amount(body.get("maxTotalUsd")),((Number)checked.get("maxTotalUsd")).doubleValue())!=0)
+        ||usdMicros(body.get("maxTotalUsd")).compareTo(usdMicros(checked.get("maxTotalUsd")))!=0
+        ||integerMicros(checked.get("maxTotalUsdMicros"))!=integerMicros(body.get("maxTotalUsdMicros")))
       throw new ResponseStatusException(CONFLICT,"Assessment source/model/instruction/budget binding changed");
     if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Paid review dispatch disabled");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable bounded idempotency key required");
@@ -465,16 +488,24 @@ public class StoryEvolutionService {
     if(!"READY".equals(row.get("state"))||Boolean.TRUE.equals(row.get("cancel"))||!((Instant)row.get("deadline")).isAfter(Instant.now()))throw new IllegalStateException("Assessment already started/cancelled/expired; no paid resume");
     if(db.sql("UPDATE story_evolution_runs SET state='RUNNING',updated_at=now() WHERE id=:id AND state='READY' AND cancel_requested=false AND deadline>now()").param("id",id).update()!=1)throw new IllegalStateException("Assessment already claimed");
     if(!realEnabled||!util.encode(scope).equals(util.encode(assessmentScope())))throw new IllegalStateException("Assessment disabled or immutable source changed before dispatch");
+    long priorReservations=db.sql("SELECT count(*) FROM story_evolution_events WHERE run_id=:id AND payload->>'state'='REQUEST_RESERVED' AND payload->>'assessmentOnlyPolicy'=:policy")
+        .param("id",id).param("policy",ASSESSMENT).query(Long.class).single();
+    if(priorReservations!=0)throw new IllegalStateException("Assessment has a prior dispatch reservation; no replay");
     var grant=map(row.get("authorization"));var authorized=rows(grant.get("operations")).getFirst();var context=assessmentContext(scope);
     var current=ml.workflow("story-experiment/assessment-preflight",Map.of("role","STORY_REVIEW","text",scope.get("sourceStory"),"context",context,"maxCostUsd",authorized.get("maxCostUsd")));
     for(var entry:current.entrySet())if(!util.encode(entry.getValue()).equals(util.encode(authorized.get(entry.getKey()))))throw new IllegalStateException("Assessment dispatch binding changed: "+entry.getKey());
-    double cap=((Number)authorized.get("maxCostUsd")).doubleValue();
-    if(((Number)progress.getOrDefault("requestCount",0)).intValue()!=0||cap>((Number)grant.get("maxTotalUsd")).doubleValue()||cap<((Number)current.get("maximumCalculatedUsd")).doubleValue())throw new IllegalStateException("Exactly one reserved assessment request required");
+    BigDecimal capMicros=usdMicros(authorized.get("maxCostUsd"));
+    if(((Number)progress.getOrDefault("requestCount",0)).intValue()!=0
+        ||capMicros.compareTo(usdMicros(grant.get("maxTotalUsd")))>0
+        ||capMicros.compareTo(usdMicros(current.get("maximumCalculatedUsd")))<0
+        ||integerMicros(authorized.get("maxCostUsdMicros"))!=capMicros.longValueExact()
+        ||integerMicros(grant.get("maxTotalUsdMicros"))!=capMicros.longValueExact())throw new IllegalStateException("Exactly one exactly authorized assessment request required");
+    double cap=usd(capMicros);
     UUID requestId=UUID.nameUUIDFromBytes((id+":ASSESSMENT_STORY_REVIEW").getBytes(java.nio.charset.StandardCharsets.UTF_8));
     context.put("assessmentDispatch",authorized);context.put("assessmentSpendingAuthorized",true);context.put("storyRequestId",requestId.toString());
     var input=Map.<String,Object>of("role","STORY_REVIEW","text",scope.get("sourceStory"),"context",context,"maxCostUsd",cap);
-    progress.put("requestCount",1);progress.put("reservedUsd",cap);
-    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"role","STORY_REVIEW","requestId",requestId.toString(),"binding",current,"maxCostUsd",cap));
+    progress.put("requestCount",1);progress.put("reservedUsd",cap);progress.put("reservedUsdMicros",capMicros.longValueExact());
+    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"role","STORY_REVIEW","requestId",requestId.toString(),"binding",current,"maxCostUsd",cap,"maxCostUsdMicros",capMicros.longValueExact()));
     Map<String,Object> receipt;
     long dispatchStarted=System.nanoTime();
     try{receipt=new LinkedHashMap<>(ml.workflow("creative-role",input));}
@@ -515,8 +546,9 @@ public class StoryEvolutionService {
     var compare=new LinkedHashMap<>(current);
     if("STORY_REVIEW".equals(role)){compare.remove("effectiveRequestSha256");compare.remove("payloadBytes");}
     for(var entry:compare.entrySet())if(!util.encode(entry.getValue()).equals(util.encode(authorized.get(entry.getKey()))))throw new IllegalStateException("SCOPE_OR_INSTRUCTION_MISMATCH: "+entry.getKey());
-    double cap=((Number)authorized.get("maxCostUsd")).doubleValue(),reserved=((Number)progress.getOrDefault("reservedUsd",0)).doubleValue();
-    if(cap<((Number)current.get("maximumCalculatedUsd")).doubleValue()||reserved+cap>((Number)grant.get("maxTotalUsd")).doubleValue()+1e-12)throw new IllegalStateException("Budget ceiling exceeded before reservation");
+    BigDecimal capMicros=usdMicros(authorized.get("maxCostUsd")),reservedMicros=reservedMicros(progress);
+    if(capMicros.compareTo(usdMicros(current.get("maximumCalculatedUsd")))<0||reservedMicros.add(capMicros).compareTo(usdMicros(grant.get("maxTotalUsd")))>0)throw new IllegalStateException("Budget ceiling exceeded before reservation");
+    double cap=usd(capMicros),reserved=usd(reservedMicros);
     if("STORY_REVIEW".equals(role)){
       var saved=pilotReceipt(id,"STORY");
       if(!util.encode(context.get("candidates")).equals(util.encode(map(saved.get("result")).get("alternatives"))))throw new IllegalStateException("SCOPE_OR_INSTRUCTION_MISMATCH: persisted candidates");
@@ -525,8 +557,8 @@ public class StoryEvolutionService {
     UUID requestId=UUID.nameUUIDFromBytes((id+":"+role).getBytes(java.nio.charset.StandardCharsets.UTF_8));
     context.put("storyRequestId",requestId.toString());context.put("storyExperimentDispatch",authorized);
     var request=Map.<String,Object>of("role",role,"text",scope.get("sourceStory"),"context",context,"maxCostUsd",cap);
-    progress.put("requestCount",index+1);progress.put("reservedUsd",reserved+cap);progress.put("phase",role+"_RESERVED");
-    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"requestId",requestId.toString(),"role",role,"binding",current,"maxCostUsd",cap));
+    progress.put("requestCount",index+1);progress.put("reservedUsd",reserved+cap);progress.put("reservedUsdMicros",reservedMicros.add(capMicros).longValueExact());progress.put("phase",role+"_RESERVED");
+    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"requestId",requestId.toString(),"role",role,"binding",current,"maxCostUsd",cap,"maxCostUsdMicros",capMicros.longValueExact()));
     Map<String,Object> receipt;
     try {receipt=new LinkedHashMap<>(ml.workflow("creative-role",request));}
     catch(Exception failure){receipt=new LinkedHashMap<>();receipt.put("requestId",requestId.toString());receipt.put("role",role);receipt.put("processingStatus","DISPATCH_UNCERTAIN");receipt.put("billingStatus","USAGE_UNKNOWN");receipt.put("providerDispatched","UNKNOWN");receipt.put("error",Map.of("category",failure.getClass().getSimpleName(),"detail","Transport did not return a durable response; retry forbidden"));}
@@ -574,17 +606,17 @@ public class StoryEvolutionService {
     int index=((Number)progress.getOrDefault("requestCount",0)).intValue()+1;
     int max=((Number)grant.get("maxRequests")).intValue();
     if(index>max)throw new IllegalStateException("Story request limit reached; no retry");
-    double total=((Number)grant.get("maxTotalUsd")).doubleValue();
-    double reserved=((Number)progress.getOrDefault("reservedUsd",0)).doubleValue();
-    double cap=Math.min(total/max,total-reserved);
-    if(cap<=0)throw new IllegalStateException("Story budget exhausted before dispatch");
-    request.put("maxCostUsd",cap);progress.put("requestCount",index);progress.put("reservedUsd",reserved+cap);
-    db.sql("UPDATE story_evolution_runs SET progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id AND state='RUNNING'")
-      .param("p",util.encode(progress)).param("id",id).update();
-    event(id,Map.of("state","REQUEST_RESERVED","role",request.get("role"),"requestIndex",index,"maxCostUsd",cap));
+    BigDecimal totalMicros=usdMicros(grant.get("maxTotalUsd"));
+    BigDecimal reservedMicros=reservedMicros(progress);
+    BigDecimal perRequestMicros=totalMicros.divide(BigDecimal.valueOf(max),0,RoundingMode.DOWN);
+    BigDecimal capMicros=perRequestMicros.min(totalMicros.subtract(reservedMicros));
+    if(capMicros.signum()<=0)throw new IllegalStateException("Story budget exhausted before dispatch");
+    double cap=usd(capMicros),reserved=usd(reservedMicros);
+    request.put("maxCostUsd",cap);progress.put("requestCount",index);progress.put("reservedUsd",reserved+cap);progress.put("reservedUsdMicros",reservedMicros.add(capMicros).longValueExact());
+    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","role",request.get("role"),"requestIndex",index,"maxCostUsd",cap,"maxCostUsdMicros",capMicros.longValueExact()));
     var result=new LinkedHashMap<String,Object>(ml.workflow("creative-role",request));
     double spent=result.get("actualCostUsd") instanceof Number n?n.doubleValue():cap;
-    if(!Double.isFinite(spent)||spent<0||spent>cap)throw new IllegalStateException("Provider cost exceeds reserved story request budget");
+    if(!Double.isFinite(spent)||spent<0||usdMicros(spent).compareTo(capMicros)>0)throw new IllegalStateException("Provider cost exceeds reserved story request budget");
     progress.put("actualCostUsd",((Number)progress.getOrDefault("actualCostUsd",0)).doubleValue()+spent);
     int calls=result.get("calls") instanceof Number n?n.intValue():1;
     progress.put("providerCalls",((Number)progress.getOrDefault("providerCalls",0)).intValue()+calls);
