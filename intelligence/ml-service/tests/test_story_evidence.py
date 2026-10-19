@@ -65,6 +65,18 @@ AMBIGUOUS_ENDING = (
     "The robot stands there looking at the button."
 )
 
+# Regression fixture copied from the flawed Juice beat plan before its story
+# revision: it demonstrates the liquid behavior but states no everyday goal.
+FLAWED_JUICE_STORY = (
+    "At frame zero Kiko already holds a strongly tilted transparent cup containing orange juice. "
+    "One thick ribbon curves upward against gravity and returns through the same opening. "
+    "Kiko tilts the cup a little farther, astonished. "
+    "Kiko rotates the cup toward horizontal; the ribbon climbs into a taller arc. "
+    "Kiko places his free palm underneath the tilted opening, expecting juice to fall, but nothing reaches his hand. "
+    "He rotates the cup fully upside down above his open palm; the ribbon still curls into the cup. "
+    "The stream retracts into the inverted cup, which remains full, and Kiko looks between his dry palm and the cup."
+)
+
 # Story with clear ending but uncertain payoff quality
 CLEAR_ENDING_UNKNOWN_PAYOFF = (
     "The dog chases a ball into the water. "
@@ -215,6 +227,24 @@ class TestCandidateAssessment:
         from app.workflow.story_quality import evaluate_story_candidate
         result = evaluate_story_candidate(MIMI_STICKY_NOTE_1, {}, 'candidate-1')
         assert len(result['unknown']) >= 1, "Story text alone cannot determine visual quality"
+
+    def test_flawed_juice_magic_demo_cannot_pass_without_goal_validation(self):
+        from app.workflow.story_quality import evaluate_story_candidate
+        result = evaluate_story_candidate(FLAWED_JUICE_STORY, {}, 'kiko-and-the-upward-flowing-juice')
+        gate = result['goalMotivationGate']
+        assert gate['status'] == 'PENDING_GOAL_001'
+        assert gate['unverifiedCriteria'] == ['EXPLICIT_OR_OBSERVABLE_EVERYDAY_GOAL']
+        assert gate['renderReady'] is False
+        assert gate['creativePassEligible'] is False
+        assert any(item['dimension'] == 'goalMotivation' and item['outcome'] == 'NOT_EVALUATED'
+                   for item in result['unknown'])
+
+    def test_stated_goal_stays_pending_until_beats_and_ending_are_validated(self):
+        from app.workflow.story_quality import evaluate_story_candidate
+        story = 'Kiko is thirsty and wants to drink. He tips the cup but the juice returns to it.'
+        result = evaluate_story_candidate(story, {}, 'juice-with-goal-only')
+        assert result['goalMotivationGate']['status'] == 'PENDING_GOAL_001'
+        assert result['goalMotivationGate']['creativePassEligible'] is False
 
     def test_repetitive_story_has_risks(self):
         """Repetitive story should have repetition risk."""

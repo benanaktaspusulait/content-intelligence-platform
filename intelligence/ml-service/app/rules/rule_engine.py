@@ -2203,12 +2203,14 @@ class RuleEngine:
         A concept can pass CONCEPT_006/007/ATTEMPT_001/002 — enough consequence
         capacity, a single verified mechanic, enough distinct attempts — and
         still fail the most basic creative question: does the character have
-        a natural, believable reason to keep trying? "Character deliberately
+        a natural, believable reason to keep trying, do all beats pursue it,
+        and does the ending address it? "Character deliberately
         drops a pencil to see if it floats" can pass every structural check
         while being a magic-demo setup, not a sympathetic problem. This is a
         semantic judgment a deterministic rule cannot make — delegated to an
-        LLM check (check_goal_is_natural), fail-closed to SERVICE_ERROR on any
-        parsing/provider failure, never a silent PASS/FAIL guess.
+        LLM check (check_goal_is_natural) evaluates the explicit everyday goal,
+        direct obstruction, goal-aligned actions, and ending as one hard gate.
+        It fails closed to SERVICE_ERROR on parsing/provider failure.
         """
         character_name = video_plan_ir.get("characters", {}).get("primary", "")
         physical_rule = video_plan_ir.get("coreMechanic", {}).get("physicalRule", "")

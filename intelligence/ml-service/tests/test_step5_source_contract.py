@@ -76,7 +76,8 @@ def test_saved_live_fixture_reproduces_mismatch_and_corrected_five_beat_contract
     assert before_claim['state']=='INFERRED'
     before_reasons=before_validation['family8']['renderAuthorization']['reasons']
     assert not any(r['code']=='ASSESSMENT_TECHNICAL_FAILURE' for r in before_reasons)
-    assert before_validation['family8']['renderAuthorization']['status']=='BLOCKED_PENDING_EVIDENCE'
+    assert before_validation['family8']['renderAuthorization']['status']=='BLOCKED_CREATIVE_FAILURE'
+    assert any(row['source']=='GOAL_001' for row in before_reasons)
 
     projection=source_plan_evidence(value['prompt'],value['sourceId'],value['sourceVersion'])
     beats=projection['videoPlanIR']['beats'];assert len(beats)==5

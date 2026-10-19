@@ -72,8 +72,8 @@ class TestF8FirstRender:
         )
         f8 = result.get("family8", {})
         auth = f8.get("renderAuthorization", {})
-        assert auth.get("status") == "BLOCKED_PENDING_EVIDENCE", (
-            "F8 status must be BLOCKED when character reference is missing"
+        assert auth.get("status") != "AUTHORIZED", (
+            "F8 must stay blocked when character reference and mandatory story gates are missing"
         )
 
     def test_first_render_missing_start_frame_blocked(self):

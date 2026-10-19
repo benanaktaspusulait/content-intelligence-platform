@@ -37,6 +37,19 @@ def _first(text: str, terms: tuple[str, ...]) -> str | None:
             return sentence[:400]
     return None
 
+def _explicit_goal_statement(text: str) -> str | None:
+    """Locate an explicitly stated intention; actions/situation alone are not a goal."""
+    goal_pattern = re.compile(
+        r"\b(?:wants?|needs?|tries?|attempts?|plans?|hopes?)\s+(?:to\s+)?\w+"
+        r"|\bgoal(?:\s+throughout)?\s+is\s+to\s+\w+"
+        r"|\b(?:is|feels)\s+(?:thirsty|hungry|tired|cold|sleepy)\b",
+        re.IGNORECASE,
+    )
+    for sentence in _sentences(text)[:3]:
+        if goal_pattern.search(sentence):
+            return sentence[:400]
+    return None
+
 def _signature(text: str, context: dict[str, Any]) -> dict[str, Any]:
     lower = text.lower()
     rules = sorted({label for term, label in _RULE_TERMS.items() if term in lower})
@@ -97,23 +110,38 @@ def evaluate_story_candidate(text: str, context: dict[str, Any], candidate_id: s
     risks: list[dict[str, Any]] = []
     unknown: list[dict[str, Any]] = []
 
-    # ── Character goal ──
-    if ev['characterGoal']:
-        strengths.append({
-            'dimension': 'characterGoal',
-            'family': 'concept_strength',
-            'outcome': 'PASS',
-            'severity': 'INFO',
-            'message': 'The story describes a character situation or goal.',
-            'evidence': ev['characterGoal'][:150],
-        })
-    else:
-        unknown.append({
-            'dimension': 'characterGoal',
-            'family': 'concept_strength',
-            'outcome': 'UNKNOWN',
-            'message': 'Character goal or situation cannot be confidently extracted from the text.',
-        })
+    # ── Hard goal-motivation gate ──
+    # A character action or situation is not evidence of an everyday goal.
+    # Even an explicit goal statement remains pending until GOAL_001 semantically
+    # verifies obstruction, every beat's alignment, and the ending.
+    goal_statement = _explicit_goal_statement(text)
+    goal_gate = {
+        'status': 'PENDING_GOAL_001',
+        'renderReady': False,
+        'creativePassEligible': False,
+        'unverifiedCriteria': (
+            ['EXPLICIT_OR_OBSERVABLE_EVERYDAY_GOAL']
+            if goal_statement is None
+            else [
+                'BELIEVABLE_EVERYDAY_GOAL',
+                'DIRECT_RULE_OBSTRUCTION',
+                'EVERY_MAJOR_ACTION_SAME_GOAL',
+                'ENDING_ADDRESSES_GOAL',
+            ]
+        ),
+        'evidence': goal_statement,
+    }
+    unknown.append({
+        'dimension': 'goalMotivation',
+        'family': 'concept_strength',
+        'outcome': 'NOT_EVALUATED',
+        'message': (
+            'No explicit goal statement was found; canonical GOAL_001 must determine whether a concrete everyday goal is observable.'
+            if goal_statement is None
+            else 'A goal statement exists, but its believability, obstruction, alignment across every beat, and ending require GOAL_001 validation.'
+        ),
+        'evidence': goal_statement,
+    })
 
     # ── Obstacle ──
     if ev['obstacle']:
@@ -286,6 +314,7 @@ def evaluate_story_candidate(text: str, context: dict[str, Any], candidate_id: s
     return {
         'candidateId': candidate_id,
         'fingerprint': ev['fingerprint'],
+        'goalMotivationGate': goal_gate,
         'strengths': strengths,
         'risks': risks,
         'unknown': unknown,
@@ -475,6 +504,7 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
                     'strengths': a['strengths'],
                     'risks': a['risks'],
                     'unknown': a['unknown'],
+                    'goalMotivationGate': a['goalMotivationGate'],
                 },
             }
             for e, pf, a in zip(evidence, preflight, assessments)

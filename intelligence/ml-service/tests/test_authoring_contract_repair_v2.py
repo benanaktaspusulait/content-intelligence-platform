@@ -159,7 +159,8 @@ def test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authore
     with patch('app.llm.semantic_checks.get_provider',side_effect=AssertionError('No real providers')):compiled['review']=canonical_review(f,compiled)
     assert compiled['review']['canonicalRuleEvaluation']['rulesetVersion']=='1.11'
     assert compiled['review']['canonicalRuleEvaluation']['score']==pytest.approx(f['baselineScore'])
-    assert compiled['review']['family8']['renderAuthorization']['status']=='BLOCKED_PENDING_EVIDENCE'
+    assert compiled['review']['family8']['renderAuthorization']['status']=='BLOCKED_CREATIVE_FAILURE'
+    assert any(reason['source']=='GOAL_001' for reason in compiled['review']['family8']['renderAuthorization']['reasons'])
 
 
 def test_reference_validity_and_new_camera_words_do_not_establish_materiality():

@@ -58,7 +58,11 @@ def test_story_review_canonicalizes_ordinal_candidate_aliases() -> None:
     assert [item['candidateId'] for item in review['candidateReviews']] == [
         'uuid-candidate-1', 'uuid-candidate-2', 'uuid-candidate-3'
     ]
-    assert review['recommendedCandidateId'] == 'uuid-candidate-2'
+    assert review['recommendedCandidateId'] is None
+    assert {row['candidateId'] for row in review['mandatoryStoryGate']} == {
+        'uuid-candidate-1', 'uuid-candidate-2', 'uuid-candidate-3'
+    }
+    assert all(row['status'] != 'PASS' for row in review['mandatoryStoryGate'])
 
 
 def _canonical_context():
@@ -102,7 +106,8 @@ def test_merit_review_rejects_label_only_and_fabricated_dimension_evidence():
          'supportingTextEvidence': text, 'severity': 'ADVISORY', 'confidenceOrEvidenceStatus': 'TEXT_SUPPORTED',
          'suggestedMinimalImprovement': 'Review rendered continuity separately.'} for dim in DIMENSIONS]
     result = perform_role('STORY_REVIEW', text, context, Provider(), 'offline')
-    assert result['result']['recommendedCandidateId'] == 'candidate-1'
+    assert result['result']['recommendedCandidateId'] is None
+    assert result['result']['mandatoryStoryGate'][0]['status'] != 'PASS'
     value['candidateReviews'][0]['materialFindings'][0]['supportingTextEvidence'] = 'Invented scene.'
     with pytest.raises(ValueError, match='exact candidate'):
         perform_role('STORY_REVIEW', text, context, Provider(), 'offline')

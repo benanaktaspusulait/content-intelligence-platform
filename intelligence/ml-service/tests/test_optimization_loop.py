@@ -49,7 +49,7 @@ def test_real_mimi_control_scores_and_integrity_no_grade_mocks():
     for version in ['original','V2','V3']:
         text=s['baselinePrompt'] if version=='original' else (doc/f'CPQ_V1_MIMI_CREATIVE_IMPROVEMENT_{version}.txt').read_text().split('PROMPT BODY\n\n',1)[1].rstrip('\n')
         e=loop.evaluate(dict(scope=s,prompt=text));actual.append(e)
-    assert [e['canonical']['score'] for e in actual]==pytest.approx([88.40625,80.25520833333334,88.40625])
+    assert [e['canonical']['score'] for e in actual]==pytest.approx([88.40625,76.40104166666667,88.40625])
     assert [e['integrity']['recognizedAttempts'] for e in actual]==[2,0,2]
     assert actual[1]['integrity']['status']=='POTENTIALLY_UNRELIABLE'
     assert actual[1]['integrity']['warnings'][0]['sourceQuote']
@@ -159,7 +159,7 @@ def test_mimi_parser_recovery_not_certified_as_creative_gain():
     s=scope();doc=Path(__file__).resolve().parents[2]/'docs'
     v2=(doc/'CPQ_V1_MIMI_CREATIVE_IMPROVEMENT_V2.txt').read_text().split('PROMPT BODY\n\n',1)[1].rstrip('\n')
     e=loop.evaluate(dict(scope=s,prompt=v2))
-    assert e['canonical']['score']==pytest.approx(80.25520833333334)
+    assert e['canonical']['score']==pytest.approx(76.40104166666667)
     assert e['integrity']['status']=='POTENTIALLY_UNRELIABLE'
     # No synthetic canonical A or invented source verdict is used here.
 

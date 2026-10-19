@@ -316,7 +316,11 @@ def test_runtime_authorization_does_not_retain_speculative_critic_block():
     )["models"]
     r = review_prompt(p, registry)
     assert r["executionReview"]["status"] == "REWRITE"
-    assert r["family8"]["renderAuthorization"] == {"status": "AUTHORIZED", "reasons": []}
+    assert r["family8"]["renderAuthorization"]["status"] != "AUTHORIZED"
+    assert any(
+        reason["source"] in {"GOAL_001", "MINI_STORY_LOCK", "GOAL_VISIBLE_EARLY"}
+        for reason in r["family8"]["renderAuthorization"]["reasons"]
+    )
 
 
 def test_full_rerender_requires_grounded_essential_benefit_and_smaller_intervention_reason():

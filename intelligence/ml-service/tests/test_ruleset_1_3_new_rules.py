@@ -76,6 +76,30 @@ class TestGoal001GoalObstructionClarity:
         assert evaluation.outcome is RuleOutcome.SERVICE_ERROR
         assert evaluation.configured_severity is Severity.BLOCKER
 
+    def test_flawed_juice_mechanic_demo_fails_as_missing_motivation(self) -> None:
+        engine = _engine()
+        from app.parser.prompt_parser import parse_prompt
+        flawed_juice_story = """Title: Juice Physics
+
+11-second video
+
+## Characters
+- Kiko
+
+## Timeline
+0.0-2.0 SEC: At frame zero Kiko already holds a strongly tilted transparent cup containing orange juice. One thick ribbon curves upward against gravity and returns through the same opening. Kiko tilts the cup a little farther, astonished.
+2.0-4.0 SEC: Kiko rotates the cup toward horizontal. Instead of falling, the same unbroken orange ribbon climbs into a taller arc before returning to the cup.
+4.0-6.0 SEC: Kiko places his free open palm underneath the tilted opening, expecting juice to fall. Nothing reaches his hand.
+6.0-8.5 SEC: Kiko rotates the cup completely upside down above his open palm; the juice curls back into the cup.
+8.5-11.0 SEC: The stream retracts into the inverted cup, which remains full, and Kiko looks between the cup and his dry palm."""
+        ir = parse_prompt(flawed_juice_story).video_plan_ir
+        assert ir["goalEvidence"]["goalExplicitness"] == "UNSUPPORTED"
+        with patch("app.rules.rule_engine.check_goal_is_natural", side_effect=AssertionError("must fail before semantic PASS")):
+            evaluation = engine._evaluate_goal_001(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.BLOCKER
+        assert "No believable local goal" in evaluation.message
+
 
 class TestConcept008RuleReadability:
     def test_pass_when_llm_confirms_predictable_rule(self) -> None:

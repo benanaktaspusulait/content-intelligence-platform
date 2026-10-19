@@ -164,7 +164,7 @@ def test_complete_mock_provider_source_canonical_critic_and_comparison_gates():
     assert evidence['creativeAssessment']['executionRiskReviewRequired'] is True
     assert evidence['approvalEligible'] is False
     assert evidence['creativeAssessment']['executionCritic']['findings']
-    assert c['review']['family8']['renderAuthorization']['status']=='BLOCKED_PENDING_EVIDENCE'
+    assert c['review']['family8']['renderAuthorization']['status']=='BLOCKED_CREATIVE_FAILURE'
 
 
 def test_different_provider_authored_decisions_are_preserved_not_replaced_by_templates():

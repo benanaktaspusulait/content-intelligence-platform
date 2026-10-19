@@ -368,17 +368,15 @@ def check_goal_is_natural(
     goal_evidence: dict[str, Any] | None = None,
     llm_provider: str | None = None,
 ) -> tuple[bool, str]:
-    """Judge whether the character has an immediately understandable, natural
-    physical goal that the established abnormal rule genuinely obstructs.
+    """Judge the complete goal-motivation chain as a hard creative gate.
 
     Distinguishes a believable reason to keep trying (the character wants
     something ordinary and ought to want it) from an arbitrary or
     magic-demo setup invented only to showcase the mechanic (the character
     could simply walk away with no believable reason to continue).
 
-    Returns (is_natural, reasoning). Raises SemanticCheckServiceError if the
-    LLM response cannot be parsed into the expected shape, or if the LLM
-    provider is unavailable (e.g. missing credentials).
+    Returns (all_conditions_pass, reasoning). Missing/invalid criteria raise
+    SemanticCheckServiceError so callers fail closed.
     """
     try:
         llm = get_provider(llm_provider)
@@ -396,8 +394,17 @@ Canonical local-goal evidence (may be implicit, not a performance signal): {goal
 Beat-by-beat actions/consequences across the timeline (0-indexed):
 {numbered_beats}
 
-Determine whether the character has an immediately understandable, natural physical
-goal, and whether the abnormal rule genuinely obstructs that goal.
+Evaluate this as a HARD creative gate. All four conditions must be true:
+1. The character's everyday-life goal is explicit, concrete, and believable.
+2. The established abnormal rule directly prevents or frustrates that goal.
+3. Every major action/attempt in the supplied beat sequence is a logical attempt
+   to achieve the SAME goal; do not accept a goal field that the actual beats ignore.
+4. The ending meaningfully addresses the goal (achieved, clearly failed, or
+   deliberately left unresolved with a visible consequence).
+
+Return false if any condition is false or unsupported. A sequence that merely
+demonstrates unusual physics with no ordinary motivation must fail. Judge the
+actual beat sequence, not a declared goal label alone.
 
 PASS example: a character wants to put on a slipper, straighten a picture frame, or
 pick up a dropped pencil — an ordinary, believable thing to want — and the abnormal
@@ -409,24 +416,34 @@ could simply walk away with no believable reason to keep trying.
 
 Respond in strict JSON format:
 {{
-  "is_natural": true or false,
+  "everyday_goal_explicit_and_believable": true or false,
+  "rule_directly_obstructs_goal": true or false,
+  "every_major_action_pursues_same_goal": true or false,
+  "ending_meaningfully_addresses_goal": true or false,
   "reasoning": "brief explanation of your decision"
 }}"""
 
     response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
-    required_fields = ["is_natural", "reasoning"]
+    criteria = (
+        "everyday_goal_explicit_and_believable",
+        "rule_directly_obstructs_goal",
+        "every_major_action_pursues_same_goal",
+        "ending_meaningfully_addresses_goal",
+    )
+    required_fields = [*criteria, "reasoning"]
     for field in required_fields:
         if field not in parsed:
             raise SemanticCheckServiceError(f"LLM response missing required field: {field}")
 
-    if not isinstance(parsed["is_natural"], bool):
-        raise SemanticCheckServiceError("is_natural must be a boolean")
+    for field in criteria:
+        if not isinstance(parsed[field], bool):
+            raise SemanticCheckServiceError(f"{field} must be a boolean")
     if not isinstance(parsed["reasoning"], str):
         raise SemanticCheckServiceError("reasoning must be a string")
 
-    return parsed["is_natural"], parsed["reasoning"]
+    return all(parsed[field] for field in criteria), parsed["reasoning"]
 
 
 def check_rule_is_predictable(

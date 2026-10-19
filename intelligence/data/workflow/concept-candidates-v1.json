@@ -72,14 +72,14 @@
       "characterId": "00000000-0000-0000-0000-000000000002",
       "characterVisualReferenceStatus": "VERIFIED_ASSET_FOR_PROMPT_PREPARATION",
       "object": "one juice cup",
-      "impossibleRule": "The orange juice flows upward against gravity and returns through the opening into the same cup, even when tilted or fully inverted; it never spills.",
-      "extraordinaryOpening": "At frame zero Kiko already holds a strongly tilted transparent cup as one thick orange ribbon curves upward against gravity and returns through the same opening.",
+      "impossibleRule": "Whenever Kiko tilts the cup to drink or pour a sip, the orange juice flows upward against gravity and returns to that same cup instead of reaching him.",
+      "extraordinaryOpening": "Kiko is thirsty and already tipping his transparent orange-juice cup toward his mouth when the juice curves upward and returns to the cup instead of reaching him.",
       "shortBeatSummary": [
-        "0–2s: Impossible opening: At frame zero Kiko already holds a strongly tilted transparent cup containing orange juice. One thick ribbon curves upward against gravity and returns through the same opening. Kiko tilts it a little farther, astonished.",
-        "2–4s: Bigger impossibility: Kiko rotates the cup toward horizontal. The same unbroken orange ribbon climbs into a taller arc before returning to the cup, clearly escalating the anomaly.",
-        "4–6s: Failed attempt: Kiko places his free open palm under the tilted opening, expecting juice to fall. Nothing reaches his hand; the same ribbon curves upward and returns into the cup. He looks at his completely dry palm in disbelief. The juice follows the same gravity-defying rule; it does not act intelligently or evade his hand.",
-        "6–8.5s: Big reversal: Determined, Kiko rotates the cup completely upside down above his open palm. The same juice ribbon still curls upward through the opening into the inverted cup. Nothing spills. Make the inverted cup and returning ribbon the clearest, strongest impossible image.",
-        "8.5–11s: Payoff: The continuous stream rapidly retracts upward into the completely inverted cup. The transparent cup remains visibly full upside down. Kiko looks from his empty palm to the inverted full cup in astonishment. Hard cut while the impossible inverted-cup silhouette remains clear; no idle or smiling hold."
+        "0–2s: Thirsty Kiko immediately tries to drink; the juice rises away from his mouth and returns to the tilted cup.",
+        "2–4s: He tips the cup farther to get a sip; the ribbon rises into a taller arc and returns.",
+        "4–6s: He adjusts the cup toward his lips and tries again, but the same rule sends the juice back into the cup.",
+        "6–8.5s: He tries to pour a sip into his open palm as another way to drink; the inverted cup still pulls the juice back upward.",
+        "8.5–11s: The inverted cup remains full and his palm dry. Kiko is still thirsty; he turns the cup back to his mouth for one last attempt as the juice returns to the cup. Hard cut."
       ],
       "strength": "A strong, immediately visible visual anomaly.",
       "mainRisk": "Liquid simulation may look inconsistent or obscure the simple rule.",
@@ -89,39 +89,39 @@
       "productionApproved": false,
       "productionPackage": {
         "packageVersion": "selection-preparation-v1",
-        "conceptSummary": "Kiko discovers that orange juice flows against gravity in one continuous ribbon and returns to its cup. He tests the same rule with a dry palm and a fully inverted cup; the juice still returns upward, and the final inverted cup remains full.",
-        "singleImpossibleRule": "The orange juice flows upward against gravity and returns through the opening into the same cup, even when the cup is tilted or fully inverted; it never spills.",
+        "conceptSummary": "Thirsty Kiko wants to drink his orange juice, but every time he tips the cup to sip or pour, the juice flows upward against gravity back into the same cup. He tries different ways to get a sip, ending with an inverted cup that remains full and Kiko still thirsty.",
+        "singleImpossibleRule": "Whenever Kiko tilts the cup to drink or pour a sip, the orange juice flows upward against gravity and returns to that same cup instead of reaching him.",
         "objectConvention": "One transparent cup with its juice; the liquid stream is part of that cup/object action, not a second prop.",
         "beatPlan": [
           {
             "time": "0–2s",
-            "beat": "Impossible opening: At frame zero Kiko already holds a strongly tilted transparent cup containing orange juice. One thick ribbon curves upward against gravity and returns through the same opening. Kiko tilts it a little farther, astonished."
+            "beat": "IMMEDIATE SIP ATTEMPT: Kiko is thirsty and wants to drink his orange juice. At frame zero he is already bringing the tilted transparent cup to his mouth for a sip. The juice instead curves upward against gravity and returns through the same cup opening, away from his lips. He pauses, surprised, still trying to drink."
           },
           {
             "time": "2–4s",
-            "beat": "Bigger impossibility: Kiko rotates the cup toward horizontal. The same unbroken orange ribbon climbs into a taller arc before returning to the cup, clearly escalating the anomaly."
+            "beat": "TRY A BIGGER TILT: To get a sip, Kiko tips the cup farther toward his mouth. The same juice ribbon rises into a taller arc and returns to the cup instead of reaching him. The attempt clearly escalates but still serves the same goal."
           },
           {
             "time": "4–6s",
-            "beat": "Failed attempt: Kiko places his free open palm under the tilted opening, expecting juice to fall. Nothing reaches his hand; the same ribbon curves upward and returns into the cup. He looks at his completely dry palm in disbelief. The juice follows the same gravity-defying rule; it does not act intelligently or evade his hand."
+            "beat": "REALIGN FOR A SIP: Kiko adjusts the cup opening directly toward his lips and tries again. The same ribbon climbs upward and returns into the cup; no juice reaches his mouth. He reacts with thirsty disbelief."
           },
           {
             "time": "6–8.5s",
-            "beat": "Big reversal: Determined, Kiko rotates the cup completely upside down above his open palm. The same juice ribbon still curls upward through the opening into the inverted cup. Nothing spills. Make the inverted cup and returning ribbon the clearest, strongest impossible image."
+            "beat": "TRY TO CATCH A SIP: As another way to drink, Kiko places his open palm under the opening and turns the cup completely upside down above it, expecting to catch juice in his hand. The juice still curls upward into the same inverted cup; his palm stays dry."
           },
           {
             "time": "8.5–11s",
-            "beat": "Payoff: The continuous stream rapidly retracts upward into the completely inverted cup. The transparent cup remains visibly full upside down. Kiko looks from his empty palm to the inverted full cup in astonishment. Hard cut while the impossible inverted-cup silhouette remains clear; no idle or smiling hold."
+            "beat": "GOAL-RELATED PAYOFF: The continuous ribbon rapidly retracts into the inverted cup, which remains visibly full. Kiko sees his dry palm and realizes he still has not had a sip. Still thirsty, he turns the cup back toward his mouth for one last attempt; the juice curls back into the cup again. Hard cut on the full cup and Kiko’s still-thirsty, astonished face."
           }
         ],
         "firstFrameImagePromptModel": "OpenAI gpt-image-2; images.edit with the approved official Kiko visual reference; medium quality; vertical 9:16 (1024x1792); exactly one image.",
-        "firstFrameImagePrompt": "0-2s: At frame zero, Kiko is already holding one transparent cup strongly tilted, its opening pointing partly downward. The cup visibly contains orange juice. One single thick, glossy orange liquid ribbon is already visibly underway: it curves out from the lower portion of the cup opening, bends sharply UPWARD against gravity, then returns through the same cup opening. Make the path asymmetrical, with the upward return especially prominent. The visual must clearly show that the juice refuses to fall downward; avoid a decorative fountain appearance. Kiko's face shows wide-eyed curiosity and surprise. Preserve the official Kiko appearance, face, hairstyle and clothes exactly from the supplied approved visual reference; do not redesign him. Keep his face, the entire cup and the complete continuous liquid ribbon prominent and readable on a phone screen. Vertical 9:16 polished family-friendly 3D animation, simple brightly lit playroom. Exactly one child, one transparent cup and one continuous juice ribbon. No extra objects, splashes, droplets, words, logos or additional characters. No cropping or occlusion of the cup-to-juice relationship.",
+        "firstFrameImagePrompt": "0-2s: Create one polished family-friendly 3D animated first frame in vertical 9:16. Use the supplied approved Kiko visual reference and preserve his official face, hairstyle, proportions and clothes exactly. Kiko is thirsty and is already bringing one transparent cup of orange juice toward his mouth to take a sip. The cup is visibly tilted for drinking. At frame zero, one thick, glossy, asymmetric ribbon of orange juice is already visibly curving UPWARD against gravity away from his lips and returning through the opening into the same cup. Make it obvious the juice refuses to reach him. Show the complete cup-to-ribbon path clearly beside Kiko’s eager, surprised face. Bright, simple playroom, locked close-medium composition, phone-screen readability. Exactly one child, one transparent cup, and one continuous juice ribbon. No additional props, people, text, logos, splashes, droplets, closed ring or fountain shape.",
         "motionVideoPromptModel": "OpenArt Seedance 2.0 Mini; image-to-video; 11s; 480p; 9:16; one locked camera; no generation requested.",
-        "motionVideoPrompt": "Create an 11-second vertical 9:16 family-friendly polished 3D animated short, beginning from the supplied first-frame image. Preserve the official Kiko appearance and the same transparent cup, orange juice, playroom, scale and camera throughout. Use one stable locked close-medium shot; keep Kiko's face, both hands, the whole cup and the complete ribbon visible and readable together. Exactly one character, one primary object (the cup), and one impossible rule: the juice flows upward against gravity and returns through the opening into the same cup, even when tilted or fully inverted. The juice is not intelligent and does not evade Kiko. Keep exactly one thick, glossy, continuous ribbon; no splashing, droplets, broken streams, extra liquid behavior, text, extra props, characters, cuts or camera moves. Escalate visually and keep reactions brief and alive.\n\n0.0–2.0s — IMPOSSIBLE OPENING: At frame zero Kiko already holds a strongly tilted transparent cup containing orange juice. One thick ribbon curves upward against gravity and returns through the same opening. Kiko tilts the cup a little farther, astonished. The impossible relationship is visible immediately.\n2.0–4.0s — BIGGER IMPOSSIBILITY: Kiko rotates the cup toward horizontal. Instead of falling, the same orange ribbon climbs into a taller arc before returning to the cup. Make the increase in arc height clearly readable.\n4.0–6.0s — FAILED ATTEMPT: Kiko places his free open palm underneath the tilted opening, expecting juice to fall onto it. Nothing reaches his hand. The same continuous ribbon visibly curves upward and returns into the cup. Kiko looks at his completely dry palm in disbelief. This is the same gravity-defying rule, not intelligent or evasive juice.\n6.0–8.5s — BIG REVERSAL: Determined, Kiko rotates the cup completely upside down above his open palm. The same ribbon still curls upward through the opening into the inverted cup. Nothing spills. Make this the strongest impossible visual of the story.\n8.5–11.0s — PAYOFF: The continuous stream rapidly retracts upward into the completely inverted cup. The transparent cup remains visibly full despite being upside down. Kiko looks from his empty palm to the inverted full cup in astonishment. Hard cut while the impossible inverted-cup silhouette remains clear. No extended smile or idle ending.",
+        "motionVideoPrompt": "Create an 11-second vertical 9:16 family-friendly polished 3D animated short. Preserve Kiko’s official appearance, one transparent cup of orange juice, the simple playroom and a stable close-medium camera. Kiko’s clear everyday goal throughout is to drink his orange juice. Exactly one impossible rule: whenever he tilts the cup to drink or pour a sip, the juice flows upward against gravity and returns into that same cup instead of reaching his mouth or hand. Every major action must be a logical attempt to get a sip; do not stage physics demonstrations unrelated to drinking. Keep the orange ribbon continuous, fluid and visibly connected to the cup. No additional magic, objects, characters, splashes, text or camera cuts.\n\n0.0–2.0s — OPENING: Kiko is thirsty and wants to drink his juice. Start already mid-action with the tilted cup at his mouth and the orange juice visibly rising away from his lips before returning through the same opening into the cup. He pauses in surprise but keeps trying.\n2.0–4.0s — BIGGER ATTEMPT: Kiko tips the cup farther toward his mouth to get a sip. The same ribbon rises into a taller arc and returns to the cup, still out of reach.\n4.0–6.0s — REALIGN: He adjusts the opening directly toward his lips and tries again. The same rule sends the juice upward back into the cup; no sip reaches him. His thirsty disbelief grows.\n6.0–8.5s — ALTERNATE WAY TO DRINK: Kiko places his open palm under the opening and turns the cup completely upside down, hoping to catch a sip in his hand. The same ribbon curls back upward into the inverted cup; his palm remains dry.\n8.5–11.0s — PAYOFF: The stream rapidly retracts into the inverted cup, which remains visibly full. Kiko sees his dry palm and realizes he is still thirsty. He turns the cup toward his mouth for one last attempt; the juice returns into the cup again. Hard cut on his thirsty, astonished face and the full cup. The ending directly shows the unresolved consequence of his goal.",
         "storyRevision": {
-          "revision": "owner-directed-final-creative-fix",
+          "revision": "owner-directed-goal-motivation-fix",
           "date": "2026-10-19",
-          "summary": "Replaced the mouth-escaping liquid gag with a dry-palm test and a fully inverted, still-full cup payoff. Preserved the original selected concept and selection assessment provenance."
+          "summary": "Reframed every beat as Kiko’s attempt to drink; the unchanged single gravity-defying rule obstructs that goal, and the ending shows he remains thirsty."
         },
         "characterReference": {
           "officialSource": "library/01-CHARACTERS/drawings/kiko.png",
@@ -3137,7 +3137,26 @@
             }
           },
           "firstFrameGenerationStatus": "PROVIDER_TIMEOUT_AFTER_DISPATCH",
-          "verdict": "STORY_PROMPT_REVISED; FIRST_FRAME_UNAVAILABLE"
+          "verdict": "STORY_PROMPT_REVISED; FIRST_FRAME_UNAVAILABLE",
+          "goalMotivationGate": {
+            "workflow": "GOAL_001 plus story-structure-v1",
+            "regressionTests": "PASS",
+            "storyQualityStageStatus": "PENDING_GOAL_001",
+            "parsedGoalExplicitness": "EXPLICIT",
+            "parsedTimedBeatCount": 5,
+            "textEvidenceChecks": {
+              "everydayGoal": "SUPPORTED_BY_TEXT",
+              "directObstruction": "SUPPORTED_BY_TEXT",
+              "majorActionsSameGoal": "SUPPORTED_BY_TEXT",
+              "endingAddressesGoal": "SUPPORTED_BY_TEXT",
+              "canonicalGOAL001": "NOT_RUN_NO_PAID_REVIEW",
+              "creativePassEligible": false,
+              "renderReady": false
+            },
+            "paidReviewExecuted": false,
+            "verdict": "PENDING_CANONICAL_GOAL_001",
+            "note": "Four goal-motivation conditions are explicit in the revised story text. No provider semantic review was run; fail-closed GOAL_001 must verify the complete beat sequence before creative PASS or render-ready status."
+          }
         },
         "historicalValidationBeforeStoryRevision": {
           "scope": "Historical assessment of the superseded 12-second draft; retained for provenance.",

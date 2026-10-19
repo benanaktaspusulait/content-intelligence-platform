@@ -646,14 +646,18 @@ class PromptParser:
             }
         else:
             goal_words = (
-                "retrieve", "remove", "pull", "catch", "control", "use", "free",
+                "retrieve", "remove", "pull", "catch", "control", "use",
                 "get", "restore", "normal", "unstick", "inspect", "fix",
             )
             obstruction_words = (
                 "stuck", "will not", "won't", "cannot", "can't", "instead of",
                 "remains", "resists", "impossible",
             )
-            has_goal_action = any(word in all_text for word in goal_words)
+            has_goal_action = any(re.search(rf"\b{re.escape(word)}\b", all_text) for word in goal_words)
+            # The word free is a useful goal verb ("free the stuck toy") but is
+            # also a common adjective ("his free hand/palm"). Do not infer a
+            # goal from the adjective alone.
+            has_goal_action = has_goal_action or bool(re.search(r"\bfree\s+(?:the|a|an)\b", all_text))
             has_obstruction = any(word in all_text for word in obstruction_words) or bool(
                 mechanic.get("abnormalProperty")
             )

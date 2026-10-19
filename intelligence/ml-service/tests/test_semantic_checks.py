@@ -11,10 +11,67 @@ import pytest
 
 from app.llm.semantic_checks import (
     SemanticCheckServiceError,
+    check_goal_is_natural,
     check_twist_matches_rule,
     count_independent_mechanics,
     find_duplicate_strategy_pairs,
 )
+
+
+class TestGoalMotivationHardGate:
+    def test_requires_everyday_goal_obstruction_all_attempts_and_ending(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps({
+            'everyday_goal_explicit_and_believable': True,
+            'rule_directly_obstructs_goal': True,
+            'every_major_action_pursues_same_goal': True,
+            'ending_meaningfully_addresses_goal': True,
+            'reasoning': 'Kiko wants a drink; each attempt is to sip and the ending shows whether he succeeds.',
+        })
+        with patch('app.llm.semantic_checks.get_provider', return_value=mock_llm):
+            passed, _ = check_goal_is_natural('Kiko', 'juice returns to the cup', [
+                'Kiko tries to drink', 'Kiko tilts the cup farther to sip', 'Kiko ends thirsty beside the full cup'
+            ])
+        assert passed is True
+        prompt = mock_llm.complete.call_args.args[0]
+        assert 'Every major action/attempt' in prompt
+        assert 'ending meaningfully addresses' in prompt
+
+    @pytest.mark.parametrize('failed_criterion', [
+        'everyday_goal_explicit_and_believable',
+        'rule_directly_obstructs_goal',
+        'every_major_action_pursues_same_goal',
+        'ending_meaningfully_addresses_goal',
+    ])
+    def test_goal_field_alone_cannot_pass_when_any_criterion_fails(self, failed_criterion: str) -> None:
+        mock_llm = Mock()
+        response = {
+            'everyday_goal_explicit_and_believable': True,
+            'rule_directly_obstructs_goal': True,
+            'every_major_action_pursues_same_goal': True,
+            'ending_meaningfully_addresses_goal': True,
+            'reasoning': f'{failed_criterion} is unsupported in this story.',
+        }
+        response[failed_criterion] = False
+        mock_llm.complete.return_value = json.dumps(response)
+        with patch('app.llm.semantic_checks.get_provider', return_value=mock_llm):
+            passed, reasoning = check_goal_is_natural('Kiko', 'juice returns to the cup', [
+                'Kiko wants a drink', 'Kiko tilts the cup to show the fountain effect', 'Kiko watches it loop'
+            ])
+        assert passed is False
+        assert failed_criterion in reasoning
+
+    def test_missing_criterion_fails_closed(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps({
+            'everyday_goal_explicit_and_believable': True,
+            'rule_directly_obstructs_goal': True,
+            'every_major_action_pursues_same_goal': True,
+            'reasoning': 'No ending decision supplied.',
+        })
+        with patch('app.llm.semantic_checks.get_provider', return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError, match='ending_meaningfully_addresses_goal'):
+                check_goal_is_natural('Kiko', 'juice returns to the cup', ['Kiko wants a drink'])
 
 
 class TestFindDuplicateStrategyPairs:

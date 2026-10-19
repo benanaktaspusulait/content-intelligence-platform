@@ -940,6 +940,55 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                               if item.get('ruleId') in required_rules)
                 if selected_creative.get('status') != 'CREATIVELY_STRONG' or selected_structural.get('status') != 'STRUCTURALLY_PROMISING' or blocked:
                     raise ValueError('STORY_REVIEW cannot recommend a structurally ineligible candidate')
+        # STORY_REVIEW used to choose among candidates using only the review
+        # model's verdict and structural rows. Run the same local canonical
+        # story rules before any candidate recommendation; a model judgment
+        # cannot turn a failed or unevaluated mandatory gate into PASS.
+        from .review import _run_canonical_evaluation
+        mandatory_story_rules = (
+            'GOAL_001', 'MINI_STORY_LOCK', 'GOAL_VISIBLE_EARLY', 'CONCEPT_007',
+            'CONCEPT_008', 'PROGRESSION_006', 'ESCALATION_005', 'PAYOFF_001',
+        )
+        story_gate_rows = []
+        for candidate in candidates:
+            candidate_id = str(candidate.get('candidateId'))
+            evaluation = _run_canonical_evaluation({
+                'prompt': str(candidate.get('text') or ''),
+                'canonicalRulesetVersion': '1.11',
+                'contentProfile': str(context.get('contentProfile') or 'ABSURD_PHYSICS'),
+            })
+            rows = {
+                row.get('ruleId'): row
+                for group in ('passedRules', 'failedRules', 'unknownRules', 'notApplicableRules')
+                for row in evaluation.get(group, [])
+            }
+            selected_rows = {rule: rows.get(rule) for rule in mandatory_story_rules}
+            if any(row and row.get('outcome') == 'FAIL' for row in selected_rows.values()):
+                gate_status = 'FAIL'
+            elif all(row and row.get('outcome') == 'PASS' for row in selected_rows.values()):
+                gate_status = 'PASS'
+            else:
+                gate_status = 'NOT_EVALUATED'
+            story_gate_rows.append({
+                'candidateId': candidate_id,
+                'status': gate_status,
+                'rules': {
+                    rule: (row.get('outcome') if row else 'NOT_EVALUATED')
+                    for rule, row in selected_rows.items()
+                },
+            })
+        value['mandatoryStoryGate'] = story_gate_rows
+        recommendation = value.get('recommendedCandidateId')
+        if recommendation is not None:
+            selected_gate = next((row for row in story_gate_rows if row['candidateId'] == str(recommendation)), None)
+            if not selected_gate or selected_gate['status'] != 'PASS':
+                value['recommendedCandidateId'] = None
+                value['recommendationReason'] = (
+                    'No candidate can advance: the existing mandatory story rules failed or were not evaluated.'
+                )
+                concerns = value.get('overallConcerns')
+                if isinstance(concerns, list):
+                    concerns.append('A story-review recommendation cannot override a failed or NOT_EVALUATED mandatory story gate.')
     elif role == 'STORY':
         alternatives = value.get('alternatives')
         if isinstance(alternatives, list) and len(alternatives) > 3:

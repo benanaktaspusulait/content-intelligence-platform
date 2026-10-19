@@ -56,7 +56,7 @@ def test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result():
     assert row(baseline_result, "HOOK_002")["outcome"] == "PASS"
     assert row(candidate_result, "HOOK_002")["outcome"] == "PASS"
     assert candidate_result["score"] == pytest.approx(baseline_result["score"])
-    assert candidate_result["score"] == pytest.approx(93.42708333333334)
+    assert candidate_result["score"] == pytest.approx(84.98958333333334)
 
 
 @pytest.mark.parametrize("later_edit", [
@@ -102,7 +102,7 @@ def test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence
     assert not decision['generationAllowed']
     assert not decision['researchGenerationEligibility']['allowed']
     assert decision['creativeOpportunity']['nextAction'] == 'OWNER_APPROVED_STORY_EVOLUTION'
-    assert decision['currentScore'] == pytest.approx(93.42708333333334)
+    assert decision['currentScore'] == pytest.approx(84.98958333333334)
     assert json.dumps(canonical, sort_keys=True) == before
 
 

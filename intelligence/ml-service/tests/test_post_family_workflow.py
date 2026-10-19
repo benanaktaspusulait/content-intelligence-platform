@@ -65,6 +65,36 @@ def test_opening_strategy_does_not_replace_content_family():
     assert result["opening"]["strategy"] == "CURIOSITY_DISCOVERY"
 
 
+def test_juice_story_gates_fail_closed_for_unmotivated_and_unverified_openings():
+    flawed = """11-second video
+0.0-2.0 SEC: At frame zero Kiko holds a tilted cup and watches orange juice curve upward back into it. Kiko tilts the cup farther.
+2.0-4.0 SEC: Kiko rotates the cup toward horizontal; the juice climbs into a taller arc.
+4.0-6.0 SEC: Kiko puts an open palm under the cup, expecting the juice to fall, but it returns to the cup.
+6.0-8.5 SEC: Kiko turns the cup upside down; the juice still curls into it.
+8.5-11.0 SEC: The stream retracts, leaving the inverted cup full. Kiko looks at his dry palm."""
+    positive = """11-second video
+Kiko is thirsty and wants to drink his juice.
+0.0-2.0 SEC: Already trying to drink at frame zero, Kiko holds the cup to his mouth, but the orange juice ribbon curves away and returns to the cup before it can reach his lips.
+2.0-4.0 SEC: Still trying to drink, Kiko tips the cup farther over his mouth; the same ribbon climbs higher and returns inside instead of reaching him.
+4.0-6.0 SEC: Kiko takes a careful sip from the rim, but the juice again flows upward into the cup, leaving his mouth dry.
+6.0-8.5 SEC: Kiko turns the cup upside down over his mouth to empty it; the juice still curls back into the cup.
+8.5-11.0 SEC: Kiko turns the cup upright and drinks normally as the ribbon finally settles inside; his thirst is relieved."""
+
+    for prompt, expected_goal in ((flawed, "FAIL"), (positive, "UNKNOWN")):
+        result = review_prompt(request(prompt, contentProfile="CURIOSITY_ADVENTURE"))
+        rows = result["canonicalRuleEvaluation"]
+        gate_rows = {
+            row["ruleId"]: row
+            for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+            for row in rows[group]
+        }
+        assert gate_rows["GOAL_001"]["outcome"] == expected_goal
+        assert result["family8"]["renderAuthorization"]["status"] != "AUTHORIZED"
+        reasons = result["family8"]["renderAuthorization"]["reasons"]
+        assert any(row["source"] == "FIRST_FRAME_VISUAL_LEGIBILITY" for row in reasons)
+        assert any(row["source"] == "GOAL_001" for row in reasons)
+
+
 @pytest.mark.parametrize(
     ("seconds", "quality", "expected"),
     [(5, False, "SEEDANCE_2_0_MINI"), (12, True, "SEEDANCE_2_0"), (27, False, "SEEDANCE_2_5")],

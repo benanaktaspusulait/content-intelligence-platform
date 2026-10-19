@@ -910,6 +910,17 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
         engine = RuleEngine(str(settings.rules_dir / f"RULESET_{requested_version}.yaml"))
         if requested_version in {"1.8", "1.9", "1.10", "1.11"}:
             video_plan_ir["metadata"]["contentProfile"] = request.get("contentProfile", "UNKNOWN")
+        # These are the existing universal Pompom Hills story gates. RULESET_1.8
+        # scoped several out for curiosity/educational profiles; that made
+        # mandatory creative requirements appear NOT_APPLICABLE. Enforce the
+        # existing evaluators here without changing the saved rulesets.
+        universal_gates = {
+            "GOAL_001", "HOOK_004", "PROGRESSION_006", "ESCALATION_005",
+            "CONCEPT_007", "CONCEPT_008", "PAYOFF_001",
+        }
+        for configured_rule in engine.ruleset.get("rules", []):
+            if configured_rule.get("id") in universal_gates:
+                configured_rule.pop("excludedContentProfiles", None)
         report = engine.evaluate(video_plan_ir)
 
         # Categorize results
@@ -1074,6 +1085,47 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
                     "references": [finding["rawResult"]["sourceQuote"]],
                 }
             )
+    # A canonical report is diagnostic unless every required creative gate is
+    # evaluated. In particular, UNKNOWN/NOT_APPLICABLE must never be treated as
+    # a pass by the post-family render-admission projection.
+    required_creative_gates = {
+        "GOAL_001": "Everyday goal, frame-zero obstruction, motivated actions and payoff",
+        "MINI_STORY_LOCK": "Goal, obstacle, attempts, progression and payoff",
+        "GOAL_VISIBLE_EARLY": "Goal legibility in the opening",
+        "INSTANT_VISUAL_ABSURDITY_GATE": "Instant, history-free visual comprehension",
+        "HOOK_004": "The opening problem is immediately legible",
+        "CONCEPT_007": "One consistent impossible rule",
+        "CONCEPT_008": "The rule is learnable and predictable",
+        "PROGRESSION_006": "Meaningful, distinct progression",
+        "ESCALATION_005": "Consequences materially escalate",
+        "PAYOFF_001": "A payoff that develops the established conflict",
+    }
+    gate_rows = {
+        row.get("ruleId"): row
+        for row in (canonical_evaluation.get("passedRules", [])
+                    + canonical_evaluation.get("failedRules", [])
+                    + canonical_evaluation.get("unknownRules", [])
+                    + canonical_evaluation.get("notApplicableRules", []))
+    }
+    for rule_id, purpose in required_creative_gates.items():
+        row = gate_rows.get(rule_id)
+        outcome = row.get("outcome") if row else None
+        if outcome == "FAIL":
+            reasons.append({
+                "code": "CREATIVE_BLOCKER", "source": rule_id,
+                "message": row.get("message") or f"{purpose} failed.", "references": [],
+            })
+        elif outcome != "PASS":
+            pending(
+                f"{purpose} is {outcome or 'NOT_EVALUATED'}; no creative PASS is available.",
+                rule_id,
+            )
+    # An accepted/generated image is not evidence that its opening is legible.
+    # Reuse the existing visual-evidence contract when one is bound to the
+    # request; otherwise keep render authorization pending.
+    actual_first_frame = opening_review(request, evidence, routing).get("actualFirstFrame", {})
+    if actual_first_frame.get("status") != "PASS":
+        pending("The actual first frame has not passed visual-legibility review.", "FIRST_FRAME_VISUAL_LEGIBILITY")
     # FINAL_VIDEO_INTEGRITY is a POST-RENDER gate.
     # It requires evidence from a completed render (renderAuthorization, finalVideoEligible,
     # independentRevalidationId). For the FIRST render of a new prompt, no such evidence
