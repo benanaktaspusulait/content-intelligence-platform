@@ -41,12 +41,11 @@ public class PostRenderEvaluationService {
           evidence.videoId(), evidence.variantId(), evidence.evidenceVersion(), evidence.capturedAt(),
           evidence.analyzerVersions(), Map.copyOf(enriched));
       String status = String.valueOf(qc.get("status"));
-      boolean passed = "STORY_QC_PASS".equals(qc.get("storyStatus")) && "VIDEO_QC_PASS".equals(status) && Boolean.FALSE.equals(qc.get("approvalBlocked"));
-      results.add(new PostRenderRuleResult("STORY_VISUAL_CONTRACT", "1", ruleEngine.rulesetVersion(),
-          "POST_RENDER", "STORY_VISUAL", PostRenderSeverity.BLOCKER,
-          passed ? PostRenderOutcome.PASS : "VIDEO_QC_FAIL".equals(status) ? PostRenderOutcome.FAIL : PostRenderOutcome.UNKNOWN,
-          qc.getOrDefault("storyStatus", "STORY_QC_NOT_EVALUATED") + " / " + status + ": inspect videoQc.checks for timestamps and reasons", qc,
-          Map.of("status", "VIDEO_QC_PASS"), Map.of("source", "videoQc"), "story-video-qc-v1", !passed, Instant.now()));
+      results.replaceAll(PostRenderEvaluationService::audiencePolicy);
+      results.add(new PostRenderRuleResult("CREATIVE_REVIEW_ADVICE", "3", ruleEngine.rulesetVersion(),
+          "POST_RENDER", "CREATIVE_VIEWER_EXPERIENCE", PostRenderSeverity.INFO, PostRenderOutcome.NOT_APPLICABLE,
+          qc.getOrDefault("creativeRecommendation", "NOT_EVALUATED") + ": creative review is decision support; owner chooses publication", qc,
+          Map.of("role", "OWNER_DECISION_SUPPORT"), Map.of("source", "videoQc"), "audience-first-simple-v1", true, Instant.now()));
     }
     PostRenderDecision decision = new PostRenderDecisionAggregator().aggregate(results);
     PostRenderAssessment assessment = assessmentAggregator.aggregate(evidence, results);
@@ -104,6 +103,16 @@ public class PostRenderEvaluationService {
             .build());
 
     return new EvaluationResult(evaluation, evidence, results);
+  }
+
+  static PostRenderRuleResult audiencePolicy(PostRenderRuleResult r) {
+    // Keep heuristic/plan findings visible, without imposing a loop or planned payoff.
+    if (java.util.Set.of("TECHNICAL_INTEGRITY", "MEDIA_VALIDITY").contains(r.family())
+        && !"TECH_QA_EVIDENCE_SERVICE".equals(r.ruleId())) return r;
+    return new PostRenderRuleResult(r.ruleId(), r.ruleVersion(), r.rulesetVersion(), r.stage(), r.family(),
+        PostRenderSeverity.INFO, PostRenderOutcome.NOT_APPLICABLE,
+        "Diagnostic only (" + r.outcome() + "): " + r.message(), r.actualValue(), r.expectedCondition(),
+        r.evidenceReferences(), r.evaluator(), false, r.evaluatedAt());
   }
 
   private String write(Object value) {

@@ -54,6 +54,6 @@ public class StoryVideoQcClient {
   }
 
   private Map<String, Object> unavailable(String reason) {
-    return Map.of("status", "VIDEO_QC_NOT_EVALUATED", "storyStatus", "STORY_QC_NOT_EVALUATED", "approvalBlocked", true, "reason", reason);
+    return Map.of("status", "VIDEO_QC_NOT_EVALUATED", "storyStatus", "STORY_QC_NOT_EVALUATED", "creativeStatus", "CREATIVE_REVIEW_NOT_EVALUATED", "approvalBlocked", false, "reason", reason);
   }
 }

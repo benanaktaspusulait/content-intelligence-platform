@@ -240,18 +240,24 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
       </section>
 
       <section class="section-band creative-analysis-panel" aria-labelledby="creative-analysis-heading">
-        <div class="section-heading"><div><span class="eyebrow">VISUAL MOTION ANALYSIS</span><h2 id="creative-analysis-heading">Sampled visual-motion evidence</h2></div>
+        <div class="section-heading"><div><span class="eyebrow">VIDEO QUALITY</span><h2 id="creative-analysis-heading">Creative video review</h2></div>
           <div class="header-actions"><button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze' : 'Run analysis' }}</button><button class="button button--secondary analysis-pdf-button" type="button" [disabled]="!analysisStatus()?.hasCompletedAnalysis || exportingAnalysisPdf()" (click)="exportAnalysisPdf()">{{ exportingAnalysisPdf() ? 'Generating PDF…' : 'Export analysis PDF' }}</button></div>
         </div>
         @if (analysisFeedback()) { <p class="analysis-feedback" [class.analysis-feedback--error]="analysisFeedbackKind() === 'error'" role="status">{{ analysisFeedback() }}</p> }
-        <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
-        <div class="assessment-notice" role="status">
-          <strong>{{ storyQcStatus() }}</strong>
-          <span>{{ storyQcBlocked() ? 'Automatic creative approval blocked. Motion score does not establish story fidelity.' : 'Bound story evidence passed.' }}</span>
-        </div>
+        <div class="assessment-notice"><strong>Audience data</strong><span>Creative judgments are qualitative. Retention, completion, rewatch and sharing have not been measured.</span></div>
+        <section class="assessment-notice" aria-label="Creative video review">
+          <strong>CREATIVE VIDEO REVIEW · {{ creativeReview()['recommendation'] || 'NOT_EVALUATED' }}</strong>
+          <dl>
+            @for (d of creativeReview()['dimensions'] || []; track d.id) { <div><dt>{{ d.id }}</dt><dd>{{ d.rating }}</dd></div> }
+          </dl>
+          @for (o of creativeReview()['observations'] || []; track $index) { <p>{{ o.timestampsSeconds.join(', ') }}s · {{ o.description }}</p> }
+          <p>Biggest weakness: {{ creativeReview()['biggestWeakness'] || 'UNKNOWN' }}</p>
+          <p>One action: {{ creativeReview()['actionableRecommendation'] || 'Review the video or authorize one visual review.' }}</p>
+          <small>Decision support only. Owner chooses publishing; automatic publishing is disabled.</small>
+        </section>
         @if (analysisStatus()?.hasCompletedAnalysis) {
           <section class="creative-evidence-summary" aria-labelledby="creative-evidence-summary-heading">
-            <div class="section-heading"><div><span class="eyebrow">WHAT THE EVIDENCE SAYS</span><h3 id="creative-evidence-summary-heading">Human-readable motion interpretation</h3></div><span class="data-freshness">Motion evidence only</span></div>
+            <div class="section-heading"><div><span class="eyebrow">WHAT THE EVIDENCE SAYS</span><h3 id="creative-evidence-summary-heading">Secondary: motion measurements</h3></div><span class="data-freshness">Motion evidence only</span></div>
             <div class="creative-evidence-cards">
               <div><span>Visual activity</span><strong>{{ motionSummary() }}</strong><small>Sampled visual change through the timeline.</small></div>
               <div><span>Motion variation</span><strong>{{ variationSummary() }}</strong><small>This describes motion, not story progression.</small></div>
@@ -1388,13 +1394,14 @@ export class VideoDetailPage implements OnDestroy {
     this.variantsError.set('');
     this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: response => { this.videoVariants.set([]); this.variantsError.set(response.error?.message || 'Variant history could not be loaded.'); } });
   }
-  protected storyQcStatus(): string {
-    const qc = this.analysisStatus()?.temporalProfile?.['storyQc'] as Record<string, unknown> | undefined;
-    return String(qc?.['storyStatus'] || 'STORY_QC_NOT_EVALUATED');
-  }
-  protected storyQcBlocked(): boolean {
-    const qc = this.analysisStatus()?.temporalProfile?.['storyQc'] as Record<string, unknown> | undefined;
-    return qc?.['storyStatus'] !== 'STORY_QC_PASS' || qc?.['status'] !== 'VIDEO_QC_PASS' || qc?.['approvalBlocked'] !== false;
+  protected creativeReview(): Record<string, any> {
+    const qc = this.analysisStatus()?.temporalProfile?.['storyQc'] as Record<string, any> | undefined;
+    const review = qc?.['creativeAssessment'];
+    return review?.['dimensions']?.length === 4 ? review : {
+      recommendation: 'NOT_EVALUATED', status: 'CREATIVE_REVIEW_NOT_EVALUATED',
+      dimensions: ['hook', 'engagement', 'payoff', 'rewatch'].map(id => ({id, rating: 'UNKNOWN'})),
+      observations: [], biggestWeakness: 'UNKNOWN', actionableRecommendation: 'Review the video or authorize one visual review.'
+    };
   }
   protected pollAnalysisStatus(videoId: string): void {
     this.analysisPollSubscription?.unsubscribe();

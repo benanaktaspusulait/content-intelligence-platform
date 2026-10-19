@@ -146,14 +146,7 @@ public class PublicationService {
     if (canonical.isPresent()) {
       PostRenderEvaluation evaluation = canonical.get();
       VideoQcGate.requirePass(evaluation);
-      if (evaluation.getOverallDecision() == PostRenderDecision.FAIL
-          || evaluation.getOverallDecision() == PostRenderDecision.SYSTEM_ERROR) {
-        throw new IllegalStateException("Post-render QA has not accepted this asset");
-      }
-      if (evaluation.getOverallDecision() == PostRenderDecision.HUMAN_REVIEW
-          && !"APPROVED".equals(evaluation.getHumanDecision())) {
-        throw new IllegalStateException("Required human review has not approved this asset");
-      }
+
     } else {
       throw new IllegalStateException("Story-aware video QC evidence is missing; legacy technical acceptance cannot authorize publication");
     }

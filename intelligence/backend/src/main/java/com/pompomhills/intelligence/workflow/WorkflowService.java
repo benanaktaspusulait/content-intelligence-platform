@@ -2735,8 +2735,9 @@ public class WorkflowService {
     var sourcePlan = map(map(review.get("productionEvidence")).get("videoPlanIR"));
     var qc = sourcePlan.isEmpty() ? videos.videoQc(video.id()) : videos.inspectVideoQc(video.id(), sourcePlan);
     qa.put("videoQc", qc);
-    qa.put("productionApprovalBlocked", !"STORY_QC_PASS".equals(qc.get("storyStatus"))
-        || !"VIDEO_QC_PASS".equals(qc.get("status")) || !Boolean.FALSE.equals(qc.get("approvalBlocked")));
+    qa.put("productionApprovalBlocked", Boolean.TRUE.equals(qc.get("approvalBlocked")));
+    qa.put("automaticPublishingAllowed", false);
+    qa.put("ownerDecisionRequired", true);
     qa.put("recordId", save("ACTUAL_RENDER_QA", String.valueOf(review.get("bindingHash")), qa));
     return qa;
   }

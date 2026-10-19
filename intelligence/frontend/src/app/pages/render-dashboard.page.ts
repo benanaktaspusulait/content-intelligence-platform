@@ -270,7 +270,7 @@ interface VisualEvidenceResponse {
                         </button>
                         @if (postRenderDetails()?.id === job.qaResult.id) {
                           @if (postRenderDetails()?.assessment; as assessment) {
-                            <section class="post-render-assessment">
+                            <details><summary>Secondary technical assessment</summary><section class="post-render-assessment">
                               <div class="assessment-heading">
                                 <div><span class="metric-label">Post-render assessment</span><strong>{{ assessment.label }}</strong><small>{{ assessment.decision }} · risk {{ assessment.risk }} · {{ assessment.recommendedAction }}</small></div>
                                 <span class="assessment-grade grade-{{ assessment.grade.toLowerCase() }}">Grade {{ assessment.grade }}</span>
@@ -285,23 +285,25 @@ interface VisualEvidenceResponse {
                                 <div class="assessment-recommendation"><h5>Recommended experiment</h5><strong>{{ recommendation.experiment }}</strong><p>{{ recommendation.hypothesis }}</p></div>
                               }
                               <div class="assessment-insights">@for (insight of assessment.snapshot.insights ?? []; track insight.title) { <div><strong>{{ insight.title }}</strong><p>{{ insight.detail }}</p></div> }</div>
-                            </section>
+                            </section></details>
                           }
                           @if (postRenderDetails()?.evidence; as evidence) {
                             <section class="post-render-assessment">
-                              <h4>Rendered video QC: {{ evidence.videoQc?.storyStatus || 'STORY_QC_NOT_EVALUATED' }} / {{ evidence.videoQc?.status || 'VIDEO_QC_NOT_EVALUATED' }}</h4>
-                              @if (evidence.videoQc?.approvalBlocked !== false) {
-                                <p>Production approval is blocked until every mandatory visual check passes.</p>
+                              <h4>CREATIVE VIDEO REVIEW · {{ creativeReview(evidence.videoQc).recommendation || 'NOT_EVALUATED' }}</h4>
+                              @for (d of creativeReview(evidence.videoQc).dimensions ?? []; track d.id) {
+                                <p><strong>{{ d.id }}: {{ d.rating }}</strong></p>
                               }
-                              @for (check of evidence.videoQc?.checks ?? []; track check.id) {
-                                <p><strong>{{ check.id }} · {{ check.status }}</strong>
-                                  @if (check.timestampsSeconds?.length) { <span> · {{ check.timestampsSeconds.join(', ') }}s</span> }
-                                  @else if (check.window) { <span> · {{ check.window[0] }}–{{ check.window[1] }}s</span> }
-                                  <br>{{ check.reason }}</p>
+                              @for (o of creativeReview(evidence.videoQc).observations ?? []; track $index) {
+                                <p>{{ o.timestampsSeconds.join(', ') }}s · {{ o.description }}</p>
                               }
-                              @if (evidence.videoQc?.reason) { <p>{{ evidence.videoQc.reason }}</p> }
+                              <p>Biggest weakness: {{ creativeReview(evidence.videoQc).biggestWeakness || 'UNKNOWN' }}</p>
+                              <p>One action: {{ creativeReview(evidence.videoQc).actionableRecommendation || 'Review the video or authorize one visual review.' }}</p>
+                              <p>Owner decides publishing. Creative advice is optional; technical restrictions remain independent.</p>
+                              <details><summary>Optional source-plan diagnostics</summary>
+                                @for (check of evidence.videoQc?.storyChecks ?? []; track check.id) { <p>{{ check.id }} · {{ check.status }} · {{ check.reason }}</p> }
+                              </details>
                             </section>
-                            <section class="evidence-structure">
+                            <details><summary>Optional motion and plan evidence</summary><section class="evidence-structure">
                               <div class="assessment-heading"><div><span class="metric-label">V4 creative evidence</span><strong>Plan, render and recurrence</strong></div></div>
                               <div class="evidence-structure__grid">
                                 <div><span class="metric-label">Action / beat novelty</span><strong>{{ evidence.temporal?.actionBeatNovelty?.status || evidence.actionBeatNovelty?.status || '—' }}</strong><p>Planned: {{ evidence.temporal?.actionBeatNovelty?.planned || evidence.temporal?.plannedActionNovelty?.status || '—' }} · Observed visually: {{ evidence.temporal?.actionBeatNovelty?.observedVisually || evidence.temporal?.observedVisualBeatNovelty?.status || '—' }}</p><small>Semantic action identity: {{ evidence.temporal?.actionBeatNovelty?.semanticActionStatus || 'NOT_EVALUATED' }}</small></div>
@@ -309,9 +311,9 @@ interface VisualEvidenceResponse {
                                 <div><span class="metric-label">Repetition</span><strong>{{ evidence.temporal?.profile?.repetitiveMotion?.classification || evidence.repetitiveMotion?.classification || '—' }}</strong><p>{{ evidence.temporal?.profile?.repetitiveMotion?.interpretation || evidence.repetitiveMotion?.interpretation || 'No repetition summary available.' }}</p><small>Recurrence: {{ evidence.temporal?.profile?.recurrence?.detected ? 'detected' : 'not established' }}</small></div>
                                 <div><span class="metric-label">Motion measurement</span><strong>{{ evidence.temporal?.profile?.saturationDiagnostics?.warning ? 'Limited discrimination' : 'Available' }}</strong><p>{{ evidence.temporal?.profile?.saturationDiagnostics?.warning ? 'Normalization is saturating across a large part of the timeline.' : 'No widespread normalization saturation was detected.' }}</p><small>Clipped intervals: {{ evidence.temporal?.profile?.saturationDiagnostics?.overallClippedRatio ?? '—' }}</small></div>
                               </div>
-                            </section>
+                            </section></details>
                           }
-                          <h5 class="rule-results-title">Rule results</h5>
+                          <details><summary>Optional rule diagnostics</summary><h5 class="rule-results-title">Rule results</h5>
                           <div class="rule-results">
                             @for (rule of postRenderDetails()?.ruleResults ?? []; track rule.ruleId) {
                               <div class="rule-result" [class.rule-failed]="rule.outcome !== 'PASS'">
@@ -324,7 +326,7 @@ interface VisualEvidenceResponse {
                                 <code>actual={{ formatRuleValue(rule.actualValue) }} · expected={{ formatRuleValue(rule.expectedCondition) }}</code>
                               </div>
                             }
-                          </div>
+                          </div></details>
                         }
                       } @else {
                       <div class="qa-metrics">
@@ -533,7 +535,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
 
   decideQa(job: RenderJob, decision: 'APPROVED' | 'REJECTED' | 'RERENDER_REQUESTED'): void {
     if (decision === 'APPROVED' && !this.canApproveVideoQc(job)) {
-      this.error.set('Inspect the video QC evidence; mandatory visual checks must pass before approval.');
+      this.error.set('Inspect the current asset; a known technical failure must be resolved before approval.');
       return;
     }
     if (!job.qaResult?.id || !this.reviewToken().trim()) {
@@ -554,13 +556,19 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     });
   }
 
+  creativeReview(qc: any): any {
+    const review = qc?.creativeAssessment;
+    return review?.dimensions?.length === 4 ? review : {
+      recommendation: 'NOT_EVALUATED', status: 'CREATIVE_REVIEW_NOT_EVALUATED',
+      dimensions: ['hook', 'engagement', 'payoff', 'rewatch'].map(id => ({id, rating: 'UNKNOWN'})),
+      observations: [], biggestWeakness: 'UNKNOWN', actionableRecommendation: 'Review the video or authorize one visual review.'
+    };
+  }
   canApproveVideoQc(job: RenderJob): boolean {
     if (job.jobType !== 'VIDEO') return true;
     const details = this.postRenderDetails();
     return details?.id === job.qaResult?.id
-      && details?.evidence?.videoQc?.storyStatus === 'STORY_QC_PASS'
-      && details?.evidence?.videoQc?.status === 'VIDEO_QC_PASS'
-      && details?.evidence?.videoQc?.approvalBlocked === false;
+      && details?.evidence?.videoQc?.technicalStatus !== 'TECHNICAL_QC_FAIL';
   }
 
   loadPostRenderDetails(evaluationId: string): void {

@@ -42,27 +42,34 @@ public class VideoAnalysisPdfService {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       Document document = new Document(PageSize.A4, 34, 34, 36, 42);
       PdfWriter.getInstance(document, out);
-      document.addTitle(clean(title) + " - Visual analysis report");
+      document.addTitle(clean(title) + " - Video quality report");
       document.addCreator("Pompom Creative Intelligence");
       document.open();
       document.add(new Paragraph(clean(title), fonts.title));
-      document.add(new Paragraph("VISUAL MOTION ANALYSIS  ·  " + clean(status.analysisVersion()), fonts.kicker));
-      document.add(new Paragraph("A measured, duration-aware view of motion, sampling quality and observed visual structure. Audience performance and retention are not inferred.", fonts.body));
-      section(document, String.valueOf(qc.getOrDefault("storyStatus", "STORY_QC_NOT_EVALUATED")), fonts);
-      boolean passed = "STORY_QC_PASS".equals(qc.get("storyStatus"))
-          && "VIDEO_QC_PASS".equals(qc.get("status")) && Boolean.FALSE.equals(qc.get("approvalBlocked"));
-      document.add(new Paragraph(passed ? "Story evidence passed the bound visual contract." :
-          "AUTOMATIC CREATIVE APPROVAL BLOCKED. Motion score is not a story quality score.", fonts.body));
+      document.add(new Paragraph("AUDIENCE-FIRST VIDEO QUALITY  ·  " + clean(status.analysisVersion()), fonts.kicker));
+      document.add(new Paragraph("Standalone viewer experience is primary. Motion and source-plan fidelity are separate diagnostics. Audience engagement and retention are not measured here.", fonts.body));
+      section(document, "CREATIVE VIDEO REVIEW", fonts);
+      Map<String,Object> review = map(qc.get("creativeAssessment"));
+      document.add(new Paragraph(String.valueOf(review.getOrDefault("status", "CREATIVE_REVIEW_NOT_EVALUATED")), fonts.body));
+      if ("ASSISTANT_VISUAL_REVIEW".equals(review.get("basis")))
+        document.add(new Paragraph("Review basis: assistant inspection of timestamped source frames. Automated provider review was not run; paid provider calls: 0.", fonts.body));
+      document.add(creativeTable(qc, fonts));
+      document.add(new Paragraph("Recommendation: " + review.getOrDefault("recommendation", "NOT_EVALUATED"), fonts.heading));
+      for (var observation : list(review.get("observations")).stream().limit(3).toList())
+        document.add(new Paragraph(String.valueOf(observation.getOrDefault("timestampsSeconds", "—")) + "s: " + value(observation, "description"), fonts.body));
+      document.add(new Paragraph("Biggest weakness: " + review.getOrDefault("biggestWeakness", "UNKNOWN"), fonts.body));
+      document.add(new Paragraph("One action: " + review.getOrDefault("actionableRecommendation", "Review the video or authorize one visual review."), fonts.body));
+      document.add(new Paragraph("Decision support only. The owner may publish despite a weak or unavailable creative review. Automatic publishing is disabled; technical and independent mandatory restrictions remain separate.", fonts.body));
+      document.newPage();
+      section(document, "Secondary: technical motion measurements", fonts);
       document.add(new Paragraph("Source analysis ID: " + (status.analysisId() == null ?
           "NOT_PERSISTED (local inspection only)" : status.analysisId().toString()), fonts.muted));
       Map<String,Object> binding = map(qc.get("storyBinding"));
       document.add(new Paragraph("Source story: " + value(binding, "storyId") + " / revision " + value(binding, "storyRevision"), fonts.muted));
       document.add(new Paragraph("Asset SHA-256: " + value(qc, "assetHash"), fonts.muted));
       document.add(new Paragraph("Timestamped evidence: " + value(qc, "evidencePath"), fonts.muted));
-      document.add(storyTable(qc, fonts));
       document.add(summaryCards(status, fonts));
-      if (!list(qc.get("storyChecks")).isEmpty()) document.newPage();
-      section(document, "Executive reading", fonts);
+      section(document, "Technical motion interpretation", fonts);
       document.add(new Paragraph(clean(orDash(status.reason())), fonts.body));
       document.add(assessmentTable(status, fonts));
       section(document, "Motion profile by time", fonts);
@@ -73,7 +80,7 @@ public class VideoAnalysisPdfService {
       section(document, "Observed visual beats", fonts);
       document.add(beatTable(status, fonts));
       section(document, "Evidence limits", fonts);
-      addBullet(document, "Story plan fidelity: " + qc.getOrDefault("storyStatus", "STORY_QC_NOT_EVALUATED"), fonts);
+      addBullet(document, "Prompt fidelity (diagnostic only): " + qc.getOrDefault("promptFidelityStatus", qc.getOrDefault("storyStatus", "NOT_EVALUATED")), fonts);
       addBullet(document, "Semantic evidence coverage: " + value(map(status.semanticVideoEvidence()), "semanticCoverage"), fonts);
       addBullet(document, "No imported retention curve, audience metric or platform outcome is used.", fonts);
       document.close();
@@ -83,18 +90,15 @@ public class VideoAnalysisPdfService {
     }
   }
 
-  private PdfPTable storyTable(Map<String,Object> qc, Fonts f) throws DocumentException {
-    PdfPTable table = table(4);
-    header(table, List.of("Required story event", "Window / evidence (s)", "Story QC", "Observed evidence / limitation"), f);
-    List<Map<String,Object>> checks = list(qc.get("storyChecks"));
-    if (checks.isEmpty()) {
-      addRow(table, "Story events", "—", "NOT_EVALUATED", "No bound semantic story evaluation exists.", f);
+  private PdfPTable creativeTable(Map<String,Object> qc, Fonts f) throws DocumentException {
+    PdfPTable table = table(2);
+    header(table, List.of("Viewer experience", "Rating"), f);
+    var dimensions = list(map(qc.get("creativeAssessment")).get("dimensions"));
+    for (String id : List.of("hook", "engagement", "payoff", "rewatch")) {
+      var d = dimensions.stream().filter(item -> id.equals(item.get("id"))).findFirst().orElse(Map.of());
+      table.addCell(cell(id.equals("rewatch") ? "Rewatch & sharing potential" : id, f.body));
+      table.addCell(cell(value(d.getOrDefault("rating", "UNKNOWN")), f.body));
     }
-    for (Map<String,Object> check : checks) {
-      addRow(table, value(check, "id"), String.valueOf(check.getOrDefault("window", "—")) + " / "
-          + String.valueOf(check.getOrDefault("timestampsSeconds", "—")), value(check, "status"), value(check, "reason"), f);
-    }
-    table.setHeaderRows(1);
     return table;
   }
 

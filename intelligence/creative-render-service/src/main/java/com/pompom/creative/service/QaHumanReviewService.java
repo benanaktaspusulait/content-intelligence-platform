@@ -64,7 +64,7 @@ public class QaHumanReviewService {
         && qa.getRenderAsset().getAssetType() == com.pompom.creative.domain.RenderAsset.AssetType.VIDEO) {
       var evaluation = postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(qa.getRenderAsset().getId())
           .orElseThrow(() -> new IllegalStateException("Story-aware video QC evidence is missing"));
-      VideoQcGate.requirePass(evaluation);
+      VideoQcGate.requireTechnicalIntegrity(evaluation);
     }
 
     qa.setHumanReviewedAt(Instant.now());
@@ -108,7 +108,7 @@ public class QaHumanReviewService {
             .orElseThrow(() -> new IllegalArgumentException("Post-render evaluation not found"));
     if (decision == QaHumanReview.Decision.APPROVED
         && evaluation.getRenderAsset().getAssetType() == com.pompom.creative.domain.RenderAsset.AssetType.VIDEO)
-      VideoQcGate.requirePass(evaluation);
+      VideoQcGate.requireTechnicalIntegrity(evaluation);
     evaluation.recordHumanDecision(reviewer.trim(), decision.name(), notes);
     postRenderEvaluationRepository.save(evaluation);
     if (decision == QaHumanReview.Decision.RERENDER_REQUESTED)

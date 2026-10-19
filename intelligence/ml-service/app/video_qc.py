@@ -1,6 +1,6 @@
 """Asset-bound post-render QC. Technical inspection never invokes a provider.
 
-Visual requirements are authored with the story, not inferred from a prompt score.
+Viewer experience is primary; source-plan fidelity is a separate diagnostic.
 No semantic evaluator is authorized by default; missing evidence blocks approval.
 """
 from __future__ import annotations
@@ -21,8 +21,65 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .config import settings
 
-VERSION = "story-video-qc-v1"
+VERSION = "story-video-qc-v2"
+EVALUATION_POLICY = "audience-first-simple-v1"
 STATUSES = {"PASS", "FAIL", "UNCERTAIN", "NOT_EVALUATED"}
+
+CREATIVE_DIMENSIONS = {
+    "hook": "Would the first 1-2 seconds stop scrolling? Consider surprise, curiosity, appeal, action and comprehension.",
+    "engagement": "Does interest hold through development and escalation? Consider reactions, suspense, pacing, rhythm and dead time, not constant motion.",
+    "payoff": "Does the ending reward watching through surprise, humor, satisfaction, curiosity or a compelling unresolved moment? Comedy and a happy ending are optional.",
+    "rewatch": "Is there a plausible reason to intentionally rewatch or share, for adults and parent-to-child viewing? Distinguish enjoyment/curiosity from confusion; a seamless loop is optional.",
+}
+
+
+def _creative_result(payload: dict[str, Any], frames: list[dict[str, Any]], duration: float) -> dict[str, Any]:
+    """One four-question owner review; no numerical creative or audience score."""
+    unavailable = dict(status="CREATIVE_REVIEW_NOT_EVALUATED", recommendation="NOT_EVALUATED",
+        reason="No grounded creative review is available", basis="QUALITATIVE_VIEWER_EXPERIENCE",
+        audienceOutcomes="NOT_MEASURED", dimensions=[dict(id=id, rating="UNKNOWN") for id in CREATIVE_DIMENSIONS],
+        observations=[], biggestWeakness="UNKNOWN", actionableRecommendation="Authorize one visual review or make an explicit owner decision")
+    if not isinstance(payload, dict) or payload.get("recommendation") == "NOT_EVALUATED":
+        return unavailable
+    if payload.get("recommendation") not in {"PUBLISH", "REVIEW", "REJECT"}:
+        return unavailable
+    dimensions = payload.get("dimensions", [])
+    if (not isinstance(dimensions, list) or len(dimensions) != 4 or
+        any(not isinstance(d, dict) or d.get("id") not in CREATIVE_DIMENSIONS or
+            d.get("rating") not in {"STRONG", "MODERATE", "WEAK", "UNKNOWN"} for d in dimensions) or
+        len({d["id"] for d in dimensions}) != 4):
+        return unavailable
+    observations = payload.get("observations", [])
+    if not isinstance(observations, list) or not 1 <= len(observations) <= 3:
+        return unavailable
+    known = {f["timestampSeconds"] for f in frames}
+    cited = set()
+    for o in observations:
+        if not isinstance(o, dict) or not isinstance(o.get("description"), str) or not o["description"].strip():
+            return unavailable
+        times = o.get("timestampsSeconds", [])
+        if not isinstance(times, list) or not times or not all(not isinstance(t, bool) and isinstance(t, (int,float))
+                and t in known and 0 <= t <= duration + .05 for t in times):
+            return unavailable
+        cited.update(times)
+    # A full-video recommendation needs opening, middle and ending evidence.
+    if (len(cited) < 3 or not any(t <= min(2, duration / 3) for t in cited)
+        or not any(duration / 3 <= t <= duration * 2 / 3 for t in cited)
+        or not any(t >= duration - min(2, duration / 3) - .05 for t in cited)):
+        return unavailable
+    if any(not isinstance(payload.get(k), str) or not payload[k].strip()
+           for k in ["reason", "biggestWeakness", "actionableRecommendation"]):
+        return unavailable
+    if all(d["rating"] == "UNKNOWN" for d in dimensions):
+        return unavailable
+    recommendation = payload["recommendation"]
+    if recommendation == "PUBLISH" and any(d["rating"] == "UNKNOWN" for d in dimensions):
+        recommendation = "REVIEW"
+    return dict(status="CREATIVE_REVIEW_EVALUATED", recommendation=recommendation, reason=payload["reason"],
+        dimensions=[dict(id=d["id"], rating=d["rating"]) for d in dimensions],
+        observations=[dict(description=o["description"], timestampsSeconds=o["timestampsSeconds"]) for o in observations],
+        biggestWeakness=payload["biggestWeakness"], actionableRecommendation=payload["actionableRecommendation"],
+        basis="QUALITATIVE_VIEWER_EXPERIENCE", audienceOutcomes="NOT_MEASURED")
 
 
 class VisualRequirement(BaseModel):
@@ -121,26 +178,28 @@ def normalize_contract(source: dict[str, Any] | None) -> dict[str, Any] | None:
                 loopIntended=loop_intended, requirements=requirements)
 
 
-def semantic_frames(contract: VisualAcceptanceContract, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def semantic_frames(contract: VisualAcceptanceContract | None, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Bound one existing vision call while retaining before/during/after per timed window.
 
     Full contiguous evidence stays on disk. Sent pixels cover the entire clip at
     roughly 4Hz, with denser authored opening/event anchors, capped at 100 images.
     """
     selected = {}
+    budget = 100 - (len(contract.canonicalReferences) if contract else 0)
     def add(t):
         frame = min(frames, key=lambda f: abs(f["timestampSeconds"] - t))
-        selected[frame["index"]] = frame
+        if len(selected) < budget or frame["index"] in selected:
+            selected[frame["index"]] = frame
     end = frames[-1]["timestampSeconds"]
+    for t in [0, .25, .5, .75, 1]:
+        add(min(t, end))
     for t in np.linspace(0, end, min(65, max(3, math.ceil(end * 4) + 1))):
         add(t)
-    for r in contract.requirements:
+    for r in contract.requirements if contract else []:
         for t in np.linspace(r.startSeconds, r.endSeconds, 3 if r.requiresMotion else 1):
             add(t)
-    for t in contract.sampleTimesSeconds:
-        add(t)
-    if len(selected) + len(contract.canonicalReferences) > 100:
-        raise ValueError("Authored temporal anchors exceed the single-call 100-image budget")
+    for t in (contract.sampleTimesSeconds if contract else [0, .25, .5, .75, 1]):
+        add(min(t, end))
     return sorted(selected.values(), key=lambda f: f["timestampSeconds"])
 
 
@@ -178,10 +237,11 @@ def inspect_video(relative_path: str, contract: dict[str, Any] | None = None) ->
     contract_hash = hashlib.sha256(json.dumps(contract or {}, sort_keys=True).encode()).hexdigest()
     checks: list[dict[str, Any]] = []
     result: dict[str, Any] = {
-        "version": VERSION, "assetHash": asset_hash, "relativePath": relative_path,
+        "version": VERSION, "evaluationPolicy": EVALUATION_POLICY, "assetHash": asset_hash, "relativePath": relative_path,
         "contractHash": contract_hash, "contract": contract or {},
         "capturedAt": datetime.now(timezone.utc).isoformat(), "checks": checks,
         "frames": [], "motionWindows": [], "providerCalls": 0,
+        "creativeAssessment": _creative_result({}, [], 0), "evaluationScope": "FULL_VIDEO",
     }
     authored = None
     try:
@@ -225,9 +285,11 @@ def inspect_video(relative_path: str, contract: dict[str, Any] | None = None) ->
                 targets.update([r.startSeconds, r.endSeconds])
                 if r.requiresMotion:
                     windows.append((r.id, r.startSeconds, r.endSeconds))
-        # Generic imports still retain a contiguous opening for later story-bound evaluation.
+        # Viewer evaluation covers the actual duration even when the source plan ends earlier.
         if not windows:
-            windows = [("opening", 0, min(1, pts[-1]))]
+            windows = [("viewer-experience", 0, pts[-1])]
+        elif authored:
+            windows.append(("viewer-experience", 0, pts[-1]))
         selected = {min(range(len(pts)), key=lambda i: abs(pts[i] - t)) for t in targets if t <= duration}
         for _, start, end in windows:
             selected.update(i for i, t in enumerate(pts) if start <= t <= end)
@@ -284,7 +346,7 @@ def inspect_video(relative_path: str, contract: dict[str, Any] | None = None) ->
         if authored:
             if authored.scope == "FULL_VIDEO" and max(r.endSeconds for r in authored.requirements if r.mandatory) < duration - .15:
                 checks.append(_check("full_video_coverage", "NOT_EVALUATED", "Mandatory story requirements do not cover the ending of the actual video"))
-            checks.extend(_semantics(authored, result, duration))
+        checks.extend(_semantics(authored, result, duration))
     except subprocess.CalledProcessError:
         checks.append(_check("stream_decode", "FAIL", "Actual media could not be parsed/decoded by local video tools"))
     except (ValueError, KeyError, OSError, subprocess.SubprocessError, StopIteration) as error:
@@ -294,23 +356,32 @@ def inspect_video(relative_path: str, contract: dict[str, Any] | None = None) ->
     story_checks = [c for c in checks if c["id"] not in {"stream_decode", "timestamped_pixels", "pixel_inspection", "asset_unchanged"}]
     result["storyStatus"] = decision(story_checks).replace("VIDEO_QC_", "STORY_QC_")
     result["storyChecks"] = story_checks
-    result["status"] = decision(checks)
-    result["approvalBlocked"] = result["status"] != "VIDEO_QC_PASS" or authored is None or authored.scope != "FULL_VIDEO"
+    result["promptFidelityStatus"] = result["storyStatus"].replace("STORY_QC_", "PROMPT_FIDELITY_")
+    result["creativeStatus"] = result["creativeAssessment"]["status"]
+    technical = [c for c in checks if c["id"] in {"stream_decode", "timestamped_pixels", "pixel_inspection", "asset_unchanged"}]
+    result["technicalStatus"] = decision(technical).replace("VIDEO_QC_", "TECHNICAL_QC_")
+    result["creativeRecommendation"] = result["creativeAssessment"]["recommendation"]
+    result["status"] = decision(technical)
+    result["approvalBlocked"] = result["technicalStatus"] == "TECHNICAL_QC_FAIL"
+    result["automaticPublishingAllowed"] = False
+    result["ownerDecisionRequired"] = True
     if authored and authored.scope == "OPENING_PROOF":
-        result["approvalBlockReason"] = "Opening proofs do not evaluate the complete story and cannot authorize production"
+        result["scopeNote"] = "Source plan describes an opening proof; creative advice reviews the actual supplied clip"
     result["evidencePath"] = str(output / "result.json")
     Path(result["evidencePath"]).write_text(json.dumps(result, indent=2))
     return result
 
 
-def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], duration: float) -> list[dict[str, Any]]:
+def _semantics(contract: VisualAcceptanceContract | None, result: dict[str, Any], duration: float) -> list[dict[str, Any]]:
     checks = [_check(r.id, "NOT_EVALUATED", "Story-aware visual evaluator is not authorized/configured",
-                     mandatory=r.mandatory, window=[r.startSeconds, r.endSeconds]) for r in contract.requirements]
-    for r, check in zip(contract.requirements, checks):
+                     mandatory=r.mandatory, window=[r.startSeconds, r.endSeconds],
+                     viewerImpact="UNCERTAIN", departureKind="UNCERTAIN") for r in contract.requirements] if contract else []
+    for r, check in zip(contract.requirements if contract else [], checks):
         if r.endSeconds > duration + .05:
-            check.update(status="FAIL", reason="Required story event window exceeds actual rendered duration")
+            check.update(status="FAIL", timingDeviation=True, reason="Source-plan event window exceeds actual rendered duration; viewer impact is evaluated separately")
     # Server/operator opt-in, independent from possession of API credentials or caller input.
     if os.getenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "false").lower() != "true":
+        result["creativeAssessment"]["reason"] = "Semantic viewer-experience evaluation is not authorized/configured; no creative verdict inferred from motion or fidelity"
         return checks
     for check in checks:
         if check["status"] != "FAIL":
@@ -327,23 +398,38 @@ def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], durat
         selection = SemanticModelRoutingPolicy.from_environment().primary
         provider = get_provider(selection.provider, selection.model)
         references = []
-        for ref in contract.canonicalReferences:
+        for ref in contract.canonicalReferences if contract else []:
             root = settings.data_root.resolve()
-            image = (root / ref["relativePath"]).resolve()
-            if root not in image.parents or not image.is_file() or _digest(image) != ref["sha256"]:
-                raise ValueError("Canonical image reference is unavailable or changed")
+            image = (root / ref.get("relativePath", "")).resolve()
+            if root not in image.parents or not image.is_file() or _digest(image) != ref.get("sha256"):
+                result.setdefault("referenceLimitations", []).append("Source-plan reference unavailable; canonical fidelity cannot be verified")
+                continue
             references.append(str(image))
         prompt = (
-            "Inspect these actual rendered frames IN TIMESTAMP ORDER against the authored visual contract. "
-            "Use the timestamped sequences within EACH temporal window to judge events and causality, not just counts. "
-            "These are sampled sequences, not all consecutive frames. Use UNCERTAIN for transitions hidden between samples. "
-            "Do not infer success from instructions. If ambiguous use UNCERTAIN; if not observable use NOT_EVALUATED. "
-            "Return JSON {checks:[{id,status:PASS|FAIL|UNCERTAIN|NOT_EVALUATED,reason,timestampsSeconds:[number,...]}]}. "
-            "For each mandatory event establish its before, transition and after states inside its deadline. "
-            "Preserve source-object identity, attachment, temporal order, prohibited alternatives and visibility. "
-            "No story-specific requirement may be assumed. Canonical reference images follow all timed video frames. "
-            + json.dumps({"contract": contract.model_dump(), "assetHash": result["assetHash"],
-                          "motionWindows": result["semanticMotionWindows"],
+            "Evaluate the actual video as a standalone viewer experience FIRST. The audience never sees its prompt. "
+            "Assess scroll-stop impact, immediate comprehension, curiosity, meaningful escalation, reactions, pacing/dead time, "
+            "surprise/satisfaction, intentional replay potential, animation and parent-to-child shareability. "
+            "These are qualitative creative hypotheses, NOT measured engagement, retention, completion, rewatches or shares. "
+            "Do not invent audience data, numeric creative scores or success probabilities. "
+            "Do not require comedy, a traditional resolution or a seamless loop. "
+            "An engaging departure can be better than boring compliance. Judge the overall experience holistically; "
+            "one weak or inapplicable dimension does not automatically fail it. "
+            "SECOND, compare source-plan requirements diagnostically. Counts, timing, ordering and changed endings are not creative failures by themselves. "
+            "For each deviation describe its viewer impact as IMPROVES, HARMS, NEUTRAL or UNCERTAIN and "
+            "its kind as CREATIVE_DEPARTURE, GENERATION_DEFECT or UNCERTAIN. Do not infer author intention from pixels alone. "
+            "Use timestamped sequences within each window, not isolated counts. Samples are not every consecutive frame; "
+            "use UNCERTAIN for hidden transitions. References follow timed video frames. "
+            "Return JSON {creativeAssessment:{recommendation:PUBLISH|REVIEW|REJECT|NOT_EVALUATED,reason,biggestWeakness,actionableRecommendation,"
+            "observations:[{description,timestampsSeconds:[number,...]}],dimensions:[{id,rating:STRONG|MODERATE|WEAK|UNKNOWN}]},"
+            "checks:[{id,status:PASS|FAIL|UNCERTAIN|NOT_EVALUATED,reason,timestampsSeconds:[number,...],"
+            "viewerImpact:IMPROVES|HARMS|NEUTRAL|UNCERTAIN,departureKind:CREATIVE_DEPARTURE|GENERATION_DEFECT|UNCERTAIN}]}. "
+            "Answer only FOUR core creative questions. Give at most THREE concrete observations with supplied timestamps covering opening, development/escalation and ending, "
+            "the biggest creative weakness and ONE actionable recommendation. Hook concerns 0-2 seconds. "
+            "A recommendation is decision support, never publishing authorization. Use NOT_EVALUATED when scene understanding is unavailable. "
+            "Source-plan checks are optional diagnostics; incomplete diagnostics must not prevent useful creative feedback. "
+            + json.dumps({"creativeDimensions": CREATIVE_DIMENSIONS,
+                          "sourcePlanForDiagnosticsOnly": contract.model_dump() if contract else None,
+                          "assetHash": result["assetHash"], "motionWindows": result["semanticMotionWindows"],
                           "frames": [{"timestampSeconds": f["timestampSeconds"], "frameHash": f["frameHash"]} for f in frames]})
         )
         result["providerCalls"] = 1
@@ -352,13 +438,12 @@ def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], durat
         result["semanticProvenance"] = {"provider": selection.provider, "model": selection.model, "usage": usage,
                                          "framesSent": len(frames), "contractHash": result["contractHash"]}
         payload = json.loads(raw)
-        observations = payload["checks"]
+        result["creativeAssessment"] = _creative_result(payload.get("creativeAssessment", {}), frames, duration)
+        observations = payload.get("checks", [])
         if len({o["id"] for o in observations}) != len(observations):
             raise ValueError("Duplicate semantic requirement IDs")
         known = {f["timestampSeconds"] for f in frames}
-        for r, c in zip(contract.requirements, checks):
-            if c["status"] == "FAIL":
-                continue
+        for r, c in zip(contract.requirements if contract else [], checks):
             if r.referenceRequired and not references:
                 c["reason"] = "Required canonical reference pixels are unavailable"
                 continue
@@ -367,13 +452,17 @@ def _semantics(contract: VisualAcceptanceContract, result: dict[str, Any], durat
                 continue
             timestamps = o.get("timestampsSeconds", [])
             valid = (isinstance(timestamps, list) and bool(timestamps)
-                     and all(not isinstance(t, bool) and isinstance(t, (int, float)) and t in known and r.startSeconds - .05 <= t <= r.endSeconds + .05 for t in timestamps))
+                     and all(not isinstance(t, bool) and isinstance(t, (int, float)) and t in known and 0 <= t <= duration + .05 for t in timestamps))
             if o["status"] in {"PASS", "FAIL", "UNCERTAIN"} and (not valid or (r.requiresMotion and len(set(timestamps)) < 3)):
                 c["reason"] = "Evaluator did not supply enough valid time-aligned motion evidence"
                 continue
-            c.update(status=o["status"], reason=o["reason"], timestampsSeconds=timestamps)
+            c.update(status="FAIL" if c.get("timingDeviation") else o["status"], reason=o["reason"], timestampsSeconds=timestamps,
+                     viewerImpact=o.get("viewerImpact") if o.get("viewerImpact") in {"IMPROVES", "HARMS", "NEUTRAL"} else "UNCERTAIN",
+                     departureKind=o.get("departureKind") if o.get("departureKind") in {"CREATIVE_DEPARTURE", "GENERATION_DEFECT"} else "UNCERTAIN")
     except Exception as error:
         result["semanticError"] = type(error).__name__  # Never persist provider exception text/credentials.
+        if result["creativeAssessment"]["status"] == "CREATIVE_REVIEW_NOT_EVALUATED":
+            result["creativeAssessment"]["reason"] = "Creative evaluator unavailable: " + type(error).__name__
         for check in checks:
             if check["status"] == "NOT_EVALUATED":
                 check["reason"] = "Story-aware visual evaluator unavailable: " + type(error).__name__

@@ -31,11 +31,24 @@ def contract():
                               "category": "causality", "startSeconds": 0, "endSeconds": .5}]}
 
 
+def response_payload(plan_status="PASS", creative_status="PASS"):
+    """Synthetic adapter fixture; never a finding about real Mimi pixels."""
+    recommendation = {"PASS":"PUBLISH", "FAIL":"REJECT", "UNCERTAIN":"REVIEW"}.get(creative_status,"NOT_EVALUATED")
+    return {"checks": [{"id": "event", "status": plan_status,
+        "reason": "Synthetic prompt diagnostic only", "timestampsSeconds": [0, .25, .5],
+        "viewerImpact": "NEUTRAL", "departureKind": "CREATIVE_DEPARTURE"}],
+        "creativeAssessment": {"recommendation": recommendation, "reason": "Synthetic qualitative judgment only",
+            "biggestWeakness": "Synthetic weakness", "actionableRecommendation": "One synthetic action",
+            "observations": [{"description": "Synthetic opening, middle and ending observation", "timestampsSeconds": [0, .75, 1]}],
+            "dimensions": [{"id": id, "rating": "MODERATE"} for id in video_qc.CREATIVE_DIMENSIONS]}}
+
+
 def test_local_decode_does_not_authorize_semantics_or_approval(clip):
     with patch("app.llm.get_provider", side_effect=AssertionError("No provider may be constructed")):
         result = video_qc.inspect_video(clip.name, contract())
-    assert result["status"] == "VIDEO_QC_NOT_EVALUATED"
-    assert result["approvalBlocked"] is True
+    assert result["status"] == "VIDEO_QC_PASS"
+    assert result["approvalBlocked"] is False
+    assert result["automaticPublishingAllowed"] is False
     assert result["providerCalls"] == 0
     assert result["technicalObservations"]["decodedFrames"] == 36
     assert result["motionWindows"][0]["contiguous"] is True
@@ -49,7 +62,7 @@ def test_local_decode_does_not_authorize_semantics_or_approval(clip):
 
 def test_missing_story_contract_cannot_pass(clip):
     result = video_qc.inspect_video(clip.name)
-    assert result["status"] == "VIDEO_QC_NOT_EVALUATED"
+    assert result["status"] == "VIDEO_QC_PASS"
     assert result["checks"][0]["id"] == "visual_contract"
     assert result["frames"]
 
@@ -58,8 +71,9 @@ def test_short_render_contradicts_required_story_timing(clip):
     c = contract()
     c["requirements"][0]["endSeconds"] = 15
     result = video_qc.inspect_video(clip.name, c)
-    assert result["status"] == "VIDEO_QC_FAIL"
-    assert "exceeds" in result["checks"][-1]["reason"]
+    assert result["status"] == "VIDEO_QC_PASS"
+    assert result["storyStatus"] == "STORY_QC_FAIL"
+    assert "exceeds" in result["storyChecks"][-1]["reason"]
 
 
 def test_unreadable_pixels_are_not_a_valid_format_pass(clip):
@@ -79,11 +93,11 @@ def test_inspection_cannot_escape_media_root(clip, bad):
 def test_authorized_adapter_status_is_bound_to_actual_frame_evidence(clip, monkeypatch, status):
     monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
     provider = Mock()
-    provider.complete_images.return_value = (json.dumps({"checks": [{"id": "event", "status": status,
-        "reason": "Mock adapter response, not a real visual conclusion", "timestampsSeconds": [0, .25, .5]}]}), {})
+    provider.complete_images.return_value = (json.dumps(response_payload(status, status)), {})
     with patch("app.llm.get_provider", return_value=provider):
         result = video_qc.inspect_video(clip.name, contract())
-    assert result["status"] == f"VIDEO_QC_{status}"
+    assert result["status"] == "VIDEO_QC_PASS"
+    assert result["creativeStatus"] == "CREATIVE_REVIEW_EVALUATED"
     assert result["providerCalls"] == 1
     provider.complete_images.assert_called_once()
 
@@ -95,7 +109,7 @@ def test_fabricated_or_insufficient_motion_timestamps_cannot_pass(clip, monkeypa
         "reason": "Unsubstantiated claim", "timestampsSeconds": [0, .12345, .5]}]}), {})
     with patch("app.llm.get_provider", return_value=provider):
         result = video_qc.inspect_video(clip.name, contract())
-    assert result["status"] == "VIDEO_QC_NOT_EVALUATED"
+    assert result["status"] == "VIDEO_QC_PASS"
 
 
 def test_mimi_contract_is_data_not_a_special_case_in_engine():
@@ -142,19 +156,18 @@ def test_unavailable_story_is_prominent_and_never_motion_pass(clip):
     assert result["storyStatus"] == "STORY_QC_NOT_EVALUATED"
     assert result["storyChecks"][0]["id"] == "event"
     assert result["storyBinding"]["storyId"] == "unit-transport-only"
-    assert result["approvalBlocked"]
+    assert not result["approvalBlocked"] and result["ownerDecisionRequired"]
 
 
 def test_ambiguous_or_contradictory_temporal_pixels_propagate_story_verdict(clip, monkeypatch):
     monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
     for status in ("FAIL", "UNCERTAIN"):
         provider = Mock()
-        provider.complete_images.return_value = (json.dumps({"checks": [{"id": "event", "status": status,
-            "reason": "Adapter transport test, not a real visual finding", "timestampsSeconds": [0, .25, .5]}]}), {})
+        provider.complete_images.return_value = (json.dumps(response_payload(status, status)), {})
         with patch("app.llm.get_provider", return_value=provider):
             result = video_qc.inspect_video(clip.name, contract())
         assert result["storyStatus"] == f"STORY_QC_{status}"
-        assert result["approvalBlocked"]
+        assert not result["approvalBlocked"] and result["automaticPublishingAllowed"] is False
         assert result["semanticFrames"]
         assert result["semanticMotionWindows"][0]["sampling"] == "TIMESTAMPED_WINDOW_SEQUENCE"
 
@@ -182,7 +195,119 @@ def test_actual_mimi_import_http_retains_all_story_windows_without_paid_calls(tm
     assert result["assetHash"] == video_qc._digest(source)
     assert result["technicalObservations"]["decodedFrames"] == 361
     assert result["storyStatus"] == "STORY_QC_NOT_EVALUATED"
-    assert result["approvalBlocked"] and result["providerCalls"] == 0
-    assert len(result["motionWindows"]) == 11
+    assert not result["approvalBlocked"] and result["providerCalls"] == 0
+    assert result["creativeStatus"] == "CREATIVE_REVIEW_NOT_EVALUATED"
+    assert len(result["motionWindows"]) == sum(r["requiresMotion"] for r in c["requirements"]) + 1
     assert {c["id"] for c in result["storyChecks"]} == {r["id"] for r in c["requirements"]}
     assert len(video_qc.semantic_frames(video_qc.VisualAcceptanceContract.model_validate(c), result["frames"])) + len(c["canonicalReferences"]) <= 100
+
+
+@pytest.mark.parametrize("plan,creative,expected", [("FAIL", "PASS", "PUBLISH"), ("PASS", "FAIL", "REJECT")])
+def test_prompt_compliance_cannot_determine_creative_quality(clip, monkeypatch, plan, creative, expected):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(response_payload(plan, creative)), {})
+    # No plan is needed to evaluate a standalone clip; with a plan its diagnostic remains separate.
+    c = contract()
+    c["scope"] = "OPENING_PROOF"
+    with patch("app.llm.get_provider", return_value=provider):
+        r = video_qc.inspect_video(clip.name, c)
+    assert r["creativeRecommendation"] == expected
+    assert r["creativeStatus"] == "CREATIVE_REVIEW_EVALUATED"
+    assert r["storyStatus"] == "STORY_QC_" + plan
+    assert r["automaticPublishingAllowed"] is False  # Advice never authorizes automatic publishing.
+
+
+def test_engaging_standalone_video_needs_no_prompt_or_seamless_loop(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    payload = response_payload("FAIL", "PASS")
+    payload["checks"] = []
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(payload), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        r = video_qc.inspect_video(clip.name)
+    assert r["status"] == "VIDEO_QC_PASS"
+    assert r["storyStatus"] == "STORY_QC_NOT_EVALUATED"
+    assert r["creativeStatus"] == "CREATIVE_REVIEW_EVALUATED" and not r["approvalBlocked"]
+    assert r["automaticPublishingAllowed"] is False
+    assert r["creativeAssessment"]["audienceOutcomes"] == "NOT_MEASURED"
+
+
+def test_motion_and_fidelity_cannot_replace_missing_creative_evidence(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    provider = Mock()
+    payload = response_payload()
+    payload.pop("creativeAssessment")
+    provider.complete_images.return_value = (json.dumps(payload), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        r = video_qc.inspect_video(clip.name, contract())
+    assert r["storyStatus"] == "STORY_QC_PASS"
+    assert r["creativeStatus"] == "CREATIVE_REVIEW_NOT_EVALUATED" and not r["approvalBlocked"]
+    assert r["automaticPublishingAllowed"] is False
+
+
+def test_fabricated_creative_timestamps_do_not_support_a_pass(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    payload = response_payload()
+    payload["creativeAssessment"]["observations"][0]["timestampsSeconds"] = [0, .123456, 1]
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(payload), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        r = video_qc.inspect_video(clip.name, contract())
+    assert r["creativeStatus"] == "CREATIVE_REVIEW_NOT_EVALUATED" and not r["approvalBlocked"]
+    assert r["automaticPublishingAllowed"] is False
+
+
+def test_incomplete_diagnostics_do_not_veto_grounded_creative_judgment(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    payload = response_payload("FAIL", "PASS")
+    payload["checks"] *= 2  # Malformed fidelity response cannot erase independently validated creative evidence.
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(payload), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        r = video_qc.inspect_video(clip.name, contract())
+    assert r["creativeStatus"] == "CREATIVE_REVIEW_EVALUATED"
+    assert r["storyStatus"] == "STORY_QC_NOT_EVALUATED"
+
+
+def test_missing_plan_reference_does_not_prevent_viewer_assessment(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    c = contract()
+    c["canonicalReferences"] = [{"relativePath": "missing.png", "sha256": "missing"}]
+    c["requirements"][0]["referenceRequired"] = True
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(response_payload()), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        r = video_qc.inspect_video(clip.name, c)
+    assert r["creativeStatus"] == "CREATIVE_REVIEW_EVALUATED"
+    assert r["storyStatus"] == "STORY_QC_NOT_EVALUATED" and r["referenceLimitations"]
+
+
+@pytest.mark.parametrize("plan,creative,blocked", [("FAIL", "PASS", "PUBLISH"), ("PASS", "FAIL", "REJECT")])
+def test_full_video_approval_follows_viewer_experience_not_source_compliance(clip, monkeypatch, plan, creative, blocked):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    c = video_qc.normalize_contract({"promptVersion": "fixture", "intent": {"timingIntent": [
+        {"startTime": 0, "endTime": 1.5, "action": "Synthetic source expectation"}]}})
+    payload = response_payload(plan, creative)
+    payload["checks"] = [{"id": r["id"], "status": plan, "reason": "Synthetic diagnostic only",
+        "timestampsSeconds": [0, .25, .5], "viewerImpact": "NEUTRAL", "departureKind": "CREATIVE_DEPARTURE"} for r in c["requirements"]]
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(payload), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        result = video_qc.inspect_video(clip.name, c)
+    assert result["storyStatus"] == "STORY_QC_" + plan
+    assert result["creativeRecommendation"] == blocked
+    assert not result["approvalBlocked"] and result["automaticPublishingAllowed"] is False
+
+
+def test_four_core_questions_and_at_most_three_observations(clip, monkeypatch):
+    monkeypatch.setenv("POMPOM_VIDEO_QC_SEMANTIC_AUTHORIZED", "true")
+    payload = response_payload()
+    payload["creativeAssessment"]["observations"] *= 4
+    provider = Mock()
+    provider.complete_images.return_value = (json.dumps(payload), {})
+    with patch("app.llm.get_provider", return_value=provider):
+        result = video_qc.inspect_video(clip.name)
+    assert result["creativeStatus"] == "CREATIVE_REVIEW_NOT_EVALUATED"
+    assert len(result["creativeAssessment"]["dimensions"]) == 4
+    assert not result["automaticPublishingAllowed"]

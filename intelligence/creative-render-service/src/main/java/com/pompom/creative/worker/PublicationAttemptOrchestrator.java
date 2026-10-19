@@ -150,11 +150,7 @@ public class PublicationAttemptOrchestrator {
         } catch (java.io.IOException | java.security.NoSuchAlgorithmException error) {
           throw new IllegalStateException("Queued video bytes cannot be verified", error);
         }
-        if (qc.getOverallDecision() == com.pompom.creative.postrender.PostRenderDecision.FAIL
-            || qc.getOverallDecision() == com.pompom.creative.postrender.PostRenderDecision.SYSTEM_ERROR
-            || (qc.getOverallDecision() == com.pompom.creative.postrender.PostRenderDecision.HUMAN_REVIEW
-                && !"APPROVED".equals(qc.getHumanDecision())))
-          throw new IllegalStateException("Post-render policy has not approved this video");
+
       } catch (IllegalStateException blocked) {
         attempt.setStage(PublicationExecutionStage.CANCELLED);
         attempt.setErrorCode("VIDEO_QC_BLOCKED");

@@ -76,7 +76,7 @@ class PublicationServiceTest {
             .requiresHumanReview(false)
             .build();
     when(renderAssetRepository.findById(assetId)).thenReturn(Optional.of(asset));
-    var evaluation = com.pompom.creative.postrender.VideoQcGateTest.evaluation("VIDEO_QC_PASS", "checksum");
+    var evaluation = com.pompom.creative.postrender.VideoQcGateTest.evaluation("PUBLISH", true, "TECHNICAL_QC_PASS");
     when(postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(assetId))
         .thenReturn(Optional.of(evaluation));
     when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(videoPath);

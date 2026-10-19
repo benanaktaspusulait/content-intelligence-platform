@@ -77,8 +77,6 @@ public class PostRenderEvaluation {
   private Integer entityVersion = 1;
 
   public void recordHumanDecision(String reviewer, String decision, String notes) {
-    if (!humanReviewRequired)
-      throw new IllegalStateException("This evaluation does not require human review");
     if (humanReviewedAt != null)
       throw new IllegalStateException("This evaluation has already been reviewed");
     humanReviewedAt = Instant.now();
