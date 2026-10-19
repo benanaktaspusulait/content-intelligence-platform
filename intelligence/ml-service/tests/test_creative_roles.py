@@ -77,6 +77,101 @@ def test_creative_role_accepts_json_fenced_by_configured_text_endpoint():
     assert response['result']['alternatives'] == ['A grounded story']
 
 
+def _structured_long_form_candidate():
+    lines = [
+        'Duration: 20 seconds.',
+        'Goal: Kiko wants to flatten her paper drawing so she can show it proudly.',
+        'Why: She has worked carefully on it and wants to share the finished picture.',
+        'Rule: Whenever Kiko smooths one crease flat, the paper makes a new crease on the opposite side.',
+        '0.0-4.0 SEC: At frame zero Kiko is already smoothing the drawing, but the opposite edge buckles upward before she can flatten it.',
+        '4.0-8.0 SEC: Kiko presses the buckled edge with both palms; the crease shifts across the page and traps one corner underneath.',
+        '8.0-12.0 SEC: Kiko turns the page around and smooths from the other side; the new crease appears diagonally and the drawing still will not lie flat.',
+        '12.0-16.0 SEC: Kiko notices the crease always appears opposite her hand, then aligns the existing folds into a neat accordion instead of chasing each one.',
+        '16.0-20.0 SEC: Kiko opens the accordion into a tidy fan-shaped display of the drawing and proudly holds it up; the far edge starts to buckle again.',
+    ]
+    text = '\n'.join(lines)
+    beats = []
+    for index, (start, end) in enumerate(((0, 4), (4, 8), (8, 12), (12, 16), (16, 20))):
+        beats.append({
+            'startSeconds': start, 'endSeconds': end,
+            'development': ['Opening obstruction', 'First consequence', 'Changed strategy', 'Discovery and reversal', 'Goal payoff and loop'][index],
+            'action': ['Kiko smooths the page', 'Kiko presses the opposite edge', 'Kiko turns and smooths from the other side', 'Kiko aligns the new folds', 'Kiko opens the accordion display'][index],
+            'consequence': ['A far edge buckles', 'A corner is trapped', 'A diagonal crease appears', 'The creases form an accordion', 'The drawing is displayed and the edge starts to buckle'][index],
+            'stateChange': ['Flat page becomes buckled', 'Page stays folded at one corner', 'Page changes orientation but stays creased', 'Kiko stops chasing the crease', 'Kiko shows the drawing before the rule recurs'][index],
+            'sourceQuote': lines[index + 4],
+        })
+    plan = {
+        'character': 'Kiko',
+        'everydayGoal': {'task': 'Flatten her paper drawing to show it proudly', 'why': 'She wants to share a picture she worked on', 'sourceQuote': lines[1]},
+        'frameZeroTrouble': {'description': 'The opposite edge buckles while Kiko is already smoothing the drawing', 'sourceQuote': lines[4]},
+        'impossiblePhysicalRule': {'rule': 'Smoothing one crease creates a new crease on the opposite side', 'sourceQuote': lines[3], 'targetObject': 'paper drawing'},
+        'causalRelationship': 'The opposite crease prevents Kiko from flattening the drawing she wants to show.',
+        'attempts': [
+            {'beatId': 'beat-1', 'strategy': 'smooth the page', 'action': 'Kiko smooths the drawing', 'consequence': 'The far edge buckles', 'stateChange': 'Flat page becomes buckled', 'sourceQuote': lines[4]},
+            {'beatId': 'beat-2', 'strategy': 'press the other edge with both palms', 'action': 'Kiko presses the buckled edge', 'consequence': 'A corner is trapped', 'stateChange': 'Page stays folded at one corner', 'sourceQuote': lines[5]},
+            {'beatId': 'beat-3', 'strategy': 'turn the page and smooth from the other side', 'action': 'Kiko turns and smooths from the other side', 'consequence': 'A diagonal crease appears', 'stateChange': 'Page changes orientation but stays creased', 'sourceQuote': lines[6]},
+        ],
+        'discovery': {'description': 'Kiko notices the crease appears opposite her hand', 'strategyChange': 'She aligns the folds instead of chasing them', 'sourceQuote': lines[7]},
+        'payoff': {'description': 'The drawing becomes a neat fan-shaped display', 'goalOutcome': 'Kiko can proudly show the drawing', 'sourceQuote': lines[8]},
+        'loopMechanism': {'description': 'The far edge begins to buckle again under the same rule', 'sourceQuote': lines[8]},
+        'timecodedBeats': beats,
+        'recommendedRuntimeSeconds': 20,
+        'durationJustification': {'eightSecondRemovalTest': 'Removing the failed strategies or discovery loses the reason Kiko changes from flattening to arranging the creases.', 'meaningfulLossIfShortened': True, 'sourceQuotes': [lines[5], lines[6], lines[7]]},
+        'productionComplexity': {'level': 'MODERATE', 'seedanceRisks': ['Paper fold continuity may be difficult to maintain'], 'segmentStrategy': 'SINGLE_GENERATION'},
+    }
+    return {'candidateId': 'candidate-1', 'title': 'The Crease That Moves', 'protagonistCharacterId': 'kiko-id', 'text': text, 'storyPlan': plan}
+
+
+def test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates(monkeypatch):
+    import app.workflow.review as review
+
+    captured = {}
+    all_pass = {'status': 'EVALUATED', 'rulesEvaluated': 10, 'passedRules': [
+        {'ruleId': rule, 'outcome': 'PASS'} for rule in (
+            'GOAL_001', 'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK', 'ATTEMPT_001', 'ATTEMPT_002',
+            'PROGRESSION_006', 'ESCALATION_005', 'PAYOFF_001', 'CONCEPT_007', 'CONCEPT_008',
+        )
+    ], 'failedRules': [], 'unknownRules': [], 'notApplicableRules': []}
+
+    def evaluate(value):
+        captured.update(value)
+        return all_pass
+
+    monkeypatch.setattr(review, 'review_prompt', lambda value: {
+        'canonicalRuleEvaluation': evaluate(value),
+        'generalProducibility': {'status': 'SUPPORTED'},
+        'family8': {'creativeQuality': {'status': 'NOT_EVALUATED'}},
+    })
+    provider = FixtureProvider({'alternatives': [_structured_long_form_candidate()]})
+    response = perform_role('STORY', 'Find one new 20-second Pompom Hills story.', {
+        'targetDuration': 20, 'requestedAlternativeCount': 1,
+        'characterRecord': {'id': 'kiko-id', 'name': 'Kiko'},
+        'canonicalCharacterRegistry': [{'id': 'kiko-id', 'name': 'Kiko'}],
+    }, provider, 'configured-model')
+    candidate = response['result']['alternatives'][0]
+    assert 'LONG-FORM STORY CONTRACT' in provider.calls[0][1]
+    assert captured['goalEvidence']['sourceQuote'] == candidate['storyPlan']['everydayGoal']['sourceQuote']
+    assert captured['goalEvidence']['sourceQuote'] in captured['prompt']
+    assert candidate['storyPlanValidation']['status'] == 'PASS'
+    assert candidate['mandatoryStoryGate']['status'] == 'PASS'
+    assert candidate['storyStageStatus'] == 'STORY_GATES_PASS_CREATIVE_REVIEW_PENDING'
+    assert candidate['durationReview']['automaticCreativePass'] is False
+    assert candidate['postFamilyReview']['generalProducibility']['status'] == 'SUPPORTED'
+    quality_candidate = response['result']['storyQuality']['candidates'][0]['assessment']
+    assert quality_candidate['goalMotivationGate']['status'] == 'PASS'
+    assert next(row for row in quality_candidate['unknown'] if row['dimension'] == 'goalMotivation')['outcome'] == 'PASS'
+
+
+def test_long_form_story_contract_failure_stays_not_evaluated_and_cannot_advance():
+    provider = FixtureProvider({'alternatives': [{'candidateId': 'candidate-1', 'title': 'Unstructured', 'text': 'Kiko wants to do an everyday task.'}]})
+    response = perform_role('STORY', 'Find one new 20-second story.', {'targetDuration': 20}, provider, 'configured-model')
+    candidate = response['result']['alternatives'][0]
+    assert candidate['storyPlanValidation']['status'] == 'FAIL'
+    assert candidate['canonicalStoryEvaluation']['status'] == 'NOT_EVALUATED'
+    assert candidate['mandatoryStoryGate']['status'] == 'NOT_EVALUATED'
+    assert candidate['storyStageStatus'] == 'STORY_PLAN_INCOMPLETE'
+
+
 def test_creative_role_reports_empty_provider_response():
     provider = FixtureProvider({})
     provider.complete = lambda prompt, system='', temperature=0, image=None: ''

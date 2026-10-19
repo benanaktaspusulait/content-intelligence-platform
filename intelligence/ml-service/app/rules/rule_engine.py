@@ -128,6 +128,7 @@ class RuleEngine:
 
         self.ruleset_path = Path(resolved_path)
         self.ruleset = self._load_ruleset()
+        self._active_rule_id: str | None = None
 
         # Rule evaluator registry
         self.evaluators = {
@@ -226,8 +227,13 @@ class RuleEngine:
         return {**base, **child, "rules": list(rules.values())}
 
     def _semantic_check(self, check: Any, *args: Any, **kwargs: Any) -> Any:
-        if self.ruleset.get("semanticPolicy") == "EXISTING_EVIDENCE_ONLY":
+        policy = self.ruleset.get("semanticPolicy")
+        if policy == "EXISTING_EVIDENCE_ONLY":
             raise SemanticEvidenceUnavailable("Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.")
+        if policy == "TARGETED_STORY_GATES" and self._active_rule_id not in {"GOAL_001", "ATTEMPT_002"}:
+            raise SemanticEvidenceUnavailable(
+                f"Semantic provider dispatch is disabled for {self._active_rule_id or 'this rule'} by TARGETED_STORY_GATES."
+            )
         return check(*args, **kwargs)
 
     def _engine_profile(self, ir: dict[str, Any]) -> Any:
@@ -287,13 +293,17 @@ class RuleEngine:
 
             if rule_id in self.evaluators:
                 try:
-                    evaluation = self.evaluators[rule_id](video_plan_ir, rule)
-                except SemanticEvidenceUnavailable as error:
-                    evaluation = RuleEvaluation(
-                        rule_id=rule_id, rule_name=rule.get("name", rule_id),
-                        family=rule["family"], severity=rule["severity"], result="UNKNOWN",
-                        message=str(error), details={"requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT", "providerDispatch": False},
-                    )
+                    self._active_rule_id = rule_id
+                    try:
+                        evaluation = self.evaluators[rule_id](video_plan_ir, rule)
+                    except SemanticEvidenceUnavailable as error:
+                        evaluation = RuleEvaluation(
+                            rule_id=rule_id, rule_name=rule.get("name", rule_id),
+                            family=rule["family"], severity=rule["severity"], result="UNKNOWN",
+                            message=str(error), details={"requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT", "providerDispatch": False},
+                        )
+                finally:
+                    self._active_rule_id = None
                 details = dict(evaluation.details)
                 details.setdefault("evaluation_stage", rule_stage)
                 details.setdefault("recommendation", str(rule.get("description", "")).strip())

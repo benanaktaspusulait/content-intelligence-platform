@@ -877,8 +877,10 @@ def opening_review(
 def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
     """Run the canonical Rule Engine evaluation on the prompt.
 
-    This is provider-free and deterministic. Results are clearly separated
-    from LocalExecutionCritic output so the UI can distinguish them.
+    The canonical engine is deterministic except for its explicitly configured
+    semantic story gates. Structured goal evidence may be supplied by the
+    STORY role when its exact source quote is present in the prompt; it is
+    mapped onto the existing Video Plan IR rather than re-inferred from prose.
     """
     try:
         from app.parser.prompt_parser import ParserConfig, parse_prompt
@@ -901,6 +903,34 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
         requested_version = request.get("canonicalRulesetVersion") or "1.11"
         parse_result = parse_prompt(prompt_text, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if requested_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if requested_version in {"1.10", "1.11"} else "HISTORICAL_V1"))
         video_plan_ir = parse_result.video_plan_ir
+
+        supplied_goal = request.get("goalEvidence")
+        if isinstance(supplied_goal, dict):
+            source_quote = str(supplied_goal.get("sourceQuote") or "")
+            if not source_quote or source_quote not in prompt_text:
+                raise ValueError("Structured everyday-goal evidence must quote the exact evaluated story text")
+            start = prompt_text.index(source_quote)
+            description = str(supplied_goal.get("description") or "").strip()
+            if not description:
+                raise ValueError("Structured everyday-goal evidence requires a concrete goal description")
+            existing_goal = dict(video_plan_ir.get("goalEvidence") or {})
+            video_plan_ir["goalEvidence"] = {
+                **existing_goal,
+                **supplied_goal,
+                "goalExplicitness": "EXPLICIT",
+                "description": description,
+                "source": "STORY_ROLE_STRUCTURED_EVIDENCE",
+                "sourceQuote": source_quote,
+                "sourceSpan": [start, start + len(source_quote)],
+                "primaryGoal": {
+                    "description": description,
+                    "state": "OBSERVED",
+                    "sourceQuote": source_quote,
+                    "sourceSpan": [start, start + len(source_quote)],
+                    "method": "STORY_ROLE_STRUCTURED_EVIDENCE",
+                    "semanticVerification": "PENDING_GOAL_001",
+                },
+            }
 
         # Run canonical Rule Engine
         from app.config import settings
@@ -976,6 +1006,7 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
                 "coreMechanic": video_plan_ir.get("coreMechanic"),
                 "goalEvidence": video_plan_ir.get("goalEvidence"),
                 "recurrence": (video_plan_ir.get("coreMechanic") or {}).get("recurrence"),
+                "producibility": video_plan_ir.get("producibility"),
             },
             "storyDensityEvidence": density.__dict__ if hasattr(density, '__dict__') else {},
         }
@@ -1012,7 +1043,8 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     execution = LocalExecutionCritic().review(request, evidence, generation)
     intent = intent_requirements(request, evidence)
     quality = plan_quality(request, evidence)
-    # Canonical Rule Engine evaluation (provider-free, deterministic)
+    # Canonical Rule Engine evaluation: deterministic checks plus only the
+    # semantic story gates explicitly enabled by the active ruleset.
     canonical_input = request if request.get("canonicalRulesetVersion") == "1.7" else {**request, "contentProfile": routing["contentProfile"]}
     canonical_evaluation = _run_canonical_evaluation(canonical_input)
     execution_risk = execution_decision(execution)

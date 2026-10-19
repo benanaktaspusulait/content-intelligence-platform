@@ -4,6 +4,7 @@ extends: RULESET_1.10.yaml
 inheritancePolicy: RECURSIVE_V1
 visualStateEvidencePolicy: SOURCE_PROGRESSION_V2
 aftermathEvidencePolicy: ACTIVE_PAYOFF_V2
+semanticPolicy: TARGETED_STORY_GATES
 description: Source-changing states require actual substate timing for static dominance;
   active payoff is separate from passive aftermath. No threshold or weight change.
 rules: []

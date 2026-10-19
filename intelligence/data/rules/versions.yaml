@@ -845,3 +845,9 @@ versions:
     change_type: modified
     breaking_change: true
     reason: Do not infer static substate durations or classify active payoff as aftermath.
+  - rule_id: TARGETED_STORY_GATE_SEMANTICS_1_11
+    change_type: modified
+    breaking_change: true
+    reason: Enable configured provider evidence only for mandatory everyday-goal and distinct-attempt gates; preserve provider-free behavior for other semantic checks and video analysis.
+    new_value:
+      semanticPolicy: TARGETED_STORY_GATES

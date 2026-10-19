@@ -65,7 +65,13 @@ def test_opening_strategy_does_not_replace_content_family():
     assert result["opening"]["strategy"] == "CURIOSITY_DISCOVERY"
 
 
-def test_juice_story_gates_fail_closed_for_unmotivated_and_unverified_openings():
+def test_juice_story_gates_fail_closed_for_unmotivated_and_unverified_openings(monkeypatch):
+    from app.rules import rule_engine
+
+    def unavailable_goal_evaluator(*args, **kwargs):
+        raise rule_engine.SemanticCheckServiceError('test-only provider unavailable')
+
+    monkeypatch.setattr(rule_engine, 'check_goal_is_natural', unavailable_goal_evaluator)
     flawed = """11-second video
 0.0-2.0 SEC: At frame zero Kiko holds a tilted cup and watches orange juice curve upward back into it. Kiko tilts the cup farther.
 2.0-4.0 SEC: Kiko rotates the cup toward horizontal; the juice climbs into a taller arc.
@@ -80,7 +86,7 @@ Kiko is thirsty and wants to drink his juice.
 6.0-8.5 SEC: Kiko turns the cup upside down over his mouth to empty it; the juice still curls back into the cup.
 8.5-11.0 SEC: Kiko turns the cup upright and drinks normally as the ribbon finally settles inside; his thirst is relieved."""
 
-    for prompt, expected_goal in ((flawed, "FAIL"), (positive, "UNKNOWN")):
+    for prompt, expected_goal in ((flawed, "FAIL"), (positive, "SERVICE_ERROR")):
         result = review_prompt(request(prompt, contentProfile="CURIOSITY_ADVENTURE"))
         rows = result["canonicalRuleEvaluation"]
         gate_rows = {
