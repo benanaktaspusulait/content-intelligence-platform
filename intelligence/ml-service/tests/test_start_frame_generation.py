@@ -50,7 +50,7 @@ class TestOpenAIProviderGenerateImage:
 
         mock_client = MagicMock()
         mock_response = MagicMock()
-        mock_response.data = [MagicMock(url="https://example.com/img.png")]
+        mock_response.data = [MagicMock(url="https://example.com/img.png", b64_json=None)]
         mock_response.id = "req_123"
         mock_client.images.generate.return_value = mock_response
 
@@ -70,7 +70,7 @@ class TestOpenAIProviderGenerateImage:
         call_kwargs = mock_client.images.generate.call_args[1]
         assert call_kwargs["model"] == "gpt-image-2"
         assert call_kwargs["n"] == 1
-        assert call_kwargs["response_format"] == "url"
+        assert "response_format" not in call_kwargs
         assert "1024" in call_kwargs["size"]
         assert result["referenceImages"] == 0
 
@@ -80,7 +80,7 @@ class TestOpenAIProviderGenerateImage:
 
         mock_client = MagicMock()
         mock_response = MagicMock()
-        mock_response.data = [MagicMock(url="https://example.com/img.png")]
+        mock_response.data = [MagicMock(url="https://example.com/img.png", b64_json=None)]
         mock_response.id = "req_456"
         mock_client.images.edit.return_value = mock_response
 
@@ -107,7 +107,7 @@ class TestOpenAIProviderGenerateImage:
             call_kwargs = mock_client.images.edit.call_args[1]
             assert call_kwargs["model"] == "gpt-image-2"
             assert call_kwargs["n"] == 1
-            assert call_kwargs["response_format"] == "url"
+            assert "response_format" not in call_kwargs
             assert len(call_kwargs["image"]) == 1
             assert result["referenceImages"] == 1
         finally:
@@ -119,7 +119,7 @@ class TestOpenAIProviderGenerateImage:
 
         mock_client = MagicMock()
         mock_response = MagicMock()
-        mock_response.data = [MagicMock(url="https://example.com/img.png")]
+        mock_response.data = [MagicMock(url="https://example.com/img.png", b64_json=None)]
         mock_response.id = "req_789"
         mock_client.images.edit.return_value = mock_response
 

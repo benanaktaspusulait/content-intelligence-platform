@@ -400,6 +400,32 @@ class StartFrameRequest(BaseModel):
     sourceRevisionId: str = ""
 
 
+class IdeaExplorationRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    draftId: str = Field(pattern=r'^[0-9a-f-]{36}$')
+    explorationId: str = Field(pattern=r'^[0-9a-f-]{36}$')
+    ideaRevision: int = Field(gt=0)
+    sourceFirstFrame: str = Field(min_length=1, max_length=4000)
+    contentProfile: Literal['AUTO', 'ABSURD_PHYSICS', 'CURIOSITY_ADVENTURE', 'EDUCATIONAL']
+    characterId: str
+    characterName: str
+    referenceId: str
+    referenceImagePath: str
+    referenceSha256: str = Field(pattern=r'^[0-9a-f]{64}$')
+    maxCostUsd: float = Field(gt=0, le=5)
+
+
+@router.post('/idea-exploration/generate')
+async def idea_exploration(request: IdeaExplorationRequest, http_request: Request) -> dict[str, Any]:
+    import hashlib, hmac, os
+    token = os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN', '')
+    expected = hmac.new(token.encode(), await http_request.body(), hashlib.sha256).hexdigest()
+    if len(token) < 32 or not hmac.compare_digest(expected, http_request.headers.get('X-Adaptive-Dispatch', '')):
+        raise HTTPException(403, 'Exploration requires the saved-IDEA backend boundary')
+    from .start_frame_generation import generate_idea_exploration
+    return generate_idea_exploration(request.model_dump())
+
+
 @router.post('/start-frame/generate')
 def generate_start_frame_endpoint(request: StartFrameRequest) -> dict[str, Any]:
     """Generate a start-frame candidate image from the saved production prompt.

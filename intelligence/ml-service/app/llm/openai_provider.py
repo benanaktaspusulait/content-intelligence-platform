@@ -216,6 +216,7 @@ class OpenAIProvider(LLMProvider):
         quality: str = "medium",
         reference_image_paths: list[str] | None = None,
         output_dir: str | None = None,
+        size_override: tuple[int, int] | None = None,
     ) -> dict[str, Any]:
         """Generate an image using GPT Image 2 with optional character reference images.
 
@@ -244,8 +245,13 @@ class OpenAIProvider(LLMProvider):
         import urllib.request
 
         model = model or os.getenv("GPT_IMAGE_MODEL", "gpt-image-2")
-        dimensions = _resolve_dimensions(aspect_ratio)
+        dimensions = size_override or _resolve_dimensions(aspect_ratio)
         size = f"{dimensions[0]}x{dimensions[1]}"
+        self.last_image_request = {
+            "model": model, "prompt": prompt, "size": size, "quality": quality, "n": 1,
+            "referenceImages": [{"path": p, "sha256": hashlib.sha256(Path(p).read_bytes()).hexdigest()}
+                                for p in reference_image_paths or []],
+        }
 
         # Open the reference image file handles for images.edit()
         image_files = None
@@ -253,6 +259,7 @@ class OpenAIProvider(LLMProvider):
             image_files = [open(p, "rb") for p in reference_image_paths]
 
         try:
+            self.last_request_started = True
             if image_files:
                 # Image-to-image: use images.edit with reference image(s)
                 response = self.client.images.edit(
@@ -273,6 +280,16 @@ class OpenAIProvider(LLMProvider):
                     n=1,
                 )
 
+            self.last_image_usage = getattr(response, "usage", None)
+            if hasattr(self.last_image_usage, "model_dump"):
+                self.last_image_usage = self.last_image_usage.model_dump()
+            if not isinstance(self.last_image_usage, dict):
+                self.last_image_usage = None
+            self.last_image_response = response.model_dump(exclude={"data": {"__all__": {"b64_json"}}}) if hasattr(response, "model_dump") else None
+            self.last_image_metadata = {
+                "httpRequestId": getattr(response, "_request_id", None),
+                "returnedModel": getattr(response, "model", None),
+            }
             image_data = response.data[0]
             image_url = getattr(image_data, "url", None)
             image_b64 = getattr(image_data, "b64_json", None)
@@ -340,4 +357,8 @@ class OpenAIProvider(LLMProvider):
             "model": model,
             "prompt": prompt,
             "referenceImages": len(reference_image_paths) if reference_image_paths else 0,
+            "usage": self.last_image_usage,
+            "providerRequest": self.last_image_request,
+            "providerResponse": self.last_image_response,
+            "providerResponseMetadata": self.last_image_metadata,
         }

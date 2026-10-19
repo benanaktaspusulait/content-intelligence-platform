@@ -22,6 +22,7 @@ public class IdeaDraftService {
       List.of(
           "inputMode",
           "idea",
+          "firstFrameDescription",
           "storyText",
           "promptText",
           "sourceTexts",
