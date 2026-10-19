@@ -230,7 +230,7 @@ class OpenAIProvider(LLMProvider):
 
         Returns a dict with:
         - image_path: path to the saved image file
-        - image_url: URL of the generated image (from OpenAI)
+        - image_url: URL of the generated image when the model returns one
         - sha256: SHA-256 hash of the saved image bytes
         - width, height: actual image dimensions
         - requestId: OpenAI request ID
@@ -260,7 +260,6 @@ class OpenAIProvider(LLMProvider):
                     size=size,
                     quality=quality,
                     n=1,
-                    response_format="url",
                 )
             else:
                 # Text-only: use images.generate
@@ -270,10 +269,11 @@ class OpenAIProvider(LLMProvider):
                     size=size,
                     quality=quality,
                     n=1,
-                    response_format="url",
                 )
 
-            image_url = response.data[0].url
+            image_data = response.data[0]
+            image_url = getattr(image_data, "url", None)
+            image_b64 = getattr(image_data, "b64_json", None)
             request_id = getattr(response, "id", None)
 
         finally:
@@ -289,8 +289,15 @@ class OpenAIProvider(LLMProvider):
         filename = f"start-frame-{uuid.uuid4().hex}.png"
         image_path = os.path.join(output_dir, filename)
 
-        # Download image
-        urllib.request.urlretrieve(image_url, image_path)
+        # GPT Image models return base64 image bytes; older image models may
+        # return a temporary URL. GPT Image 2 rejects the legacy
+        # response_format parameter and always returns b64_json.
+        if image_b64:
+            Path(image_path).write_bytes(base64.b64decode(image_b64, validate=True))
+        elif image_url:
+            urllib.request.urlretrieve(image_url, image_path)
+        else:
+            raise ValueError("Image provider returned neither base64 data nor a URL")
 
         # Calculate SHA-256 and get actual dimensions
         image_bytes = Path(image_path).read_bytes()

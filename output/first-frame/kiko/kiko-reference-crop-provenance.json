@@ -1,0 +1,29 @@
+{
+  "source": {
+    "applicationRelativePath": "library/01-CHARACTERS/drawings/kiko.png",
+    "configuredHostPath": "/Users/benanaktas/project/video/yuvarlak-dunya/01-CHARACTERS/drawings/kiko.png",
+    "configuredContainerPath": "/data/library/01-CHARACTERS/drawings/kiko.png",
+    "sha256": "8b9e643660722d5c00bd0d25ebef066ea868f52d8a57aa1e4a2b0eb9b55747fc",
+    "dimensions": "1402x1122",
+    "retrieval": "Read directly from the host directory mounted read-only as /data/library. The API endpoint is implemented but no local backend was listening at 127.0.0.1:8080 during retrieval."
+  },
+  "derivative": {
+    "path": "output/first-frame/kiko/kiko-reference-front-crop.png",
+    "operation": "Non-generative pixel crop of the front turnaround character view; source pixels unchanged.",
+    "cropPixels": {
+      "x": 435,
+      "y": 60,
+      "width": 165,
+      "height": 330
+    },
+    "sha256": "9b7eaa1063a64259cad9dd39a605cceac35dc6f9f19455ca6d8b04f96dbf799e"
+  },
+  "ownerApproval": {
+    "status": "APPROVED_IN_CHAT",
+    "scope": "Canonical Kiko visual reference for the Bouncing Drum first-frame test only",
+    "sourceSha256": "8b9e643660722d5c00bd0d25ebef066ea868f52d8a57aa1e4a2b0eb9b55747fc",
+    "derivativeSha256": "9b7eaa1063a64259cad9dd39a605cceac35dc6f9f19455ca6d8b04f96dbf799e",
+    "generationAuthorized": false,
+    "recordedDate": "2026-10-19"
+  }
+}
