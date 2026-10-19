@@ -6,6 +6,8 @@ import logging
 import math
 import os
 import re
+from uuid import uuid4
+from openai import Timeout
 from pathlib import Path
 from difflib import SequenceMatcher
 from hashlib import sha256
@@ -573,7 +575,12 @@ def _parse_role_json_response(raw_response: Any, role: str, provider: LLMProvide
 
 def role_readiness() -> dict[str, Any]:
     enabled = os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'false').lower() == 'true'
-    return {'enabled': enabled, 'liveVerified': False, 'roles': [
+    return {'enabled': enabled, 'liveVerified': False,
+        'storyProviders': [
+            {'provider': 'DEEPSEEK', 'model': os.getenv('WORKFLOW_STORY_MODEL', ''),
+             'configured': bool(os.getenv('DEEPSEEK_API_KEY') and os.getenv('WORKFLOW_STORY_MODEL'))},
+            {'provider': 'OPENAI', 'model': 'gpt-6-sol', 'reasoningEffort': 'none',
+             'configured': bool(os.getenv('OPENAI_API_KEY'))}], 'roles': [
         {'role': role, 'provider': provider, 'model': os.getenv(f'WORKFLOW_{role}_MODEL', ''),
          'configured': bool(os.getenv(f'{provider.upper()}_API_KEY') and os.getenv(f'WORKFLOW_{role}_MODEL')),
          'modality': 'TEXT_ONLY', 'automaticFallback': False}
@@ -1827,11 +1834,17 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         raise ValueError('Unknown creative role')
     if os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'false').lower() != 'true':
         raise ValueError('Paid creative roles are disabled; explicit scope and budget required')
+    story_provider = context.get('storyProvider', 'DEEPSEEK') if role == 'STORY' else None
+    if role == 'STORY' and story_provider not in {'DEEPSEEK', 'OPENAI'}:
+        raise ValueError('STORY provider must be DEEPSEEK or OPENAI')
+    openai_story = role == 'STORY' and story_provider == 'OPENAI'
     if context.get('assessmentOnlyPolicy'):
         if role != 'STORY_REVIEW': raise ValueError('Assessment-only scope cannot generate')
         from .story_assessment import execute
         return execute(text, context, max_cost_usd)
     if context.get('storyExperiment'):
+        if openai_story:
+            raise ValueError('OpenAI STORY uses the standard workflow, not the legacy DeepSeek experiment contract')
         from .story_experiment import execute
         return execute(role, text, context, max_cost_usd)
     # Test-only transport. It is deliberately opt-in, requires a disposable
@@ -1848,10 +1861,15 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         if capability != binding:
             raise ValueError('Provider capability configuration changed after authorization')
     model = capability['model'] if adaptive else os.getenv(f'WORKFLOW_{role}_MODEL', '')
+    if openai_story:
+        model = 'gpt-6-sol'
     if not model:
         raise ValueError('Explicit server model configuration required; no fallback')
     input_rate = capability['inputUsdPerMillion'] if adaptive else float(os.getenv(f'WORKFLOW_{role}_INPUT_USD_PER_MILLION', 'nan'))
     output_rate = capability['outputUsdPerMillion'] if adaptive else float(os.getenv(f'WORKFLOW_{role}_OUTPUT_USD_PER_MILLION', 'nan'))
+    if openai_story:
+        # Standard short-context cache-write upper bound, not an invoice claim.
+        input_rate, output_rate = 2.5, 10.0
     if not all(math.isfinite(v) and v > 0 for v in (input_rate, output_rate, max_cost_usd)):
         raise ValueError('Verified server price configuration and explicit positive budget required')
     if role == 'PROMPT_OPTIMIZATION':
@@ -1895,17 +1913,42 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         if payload_bytes + schema_bytes + system_bytes + output_token_limit > min(capability['contextTokens'], 100000):
             raise ValueError('Creative request exceeds configured context limit')
         provider = CreativeCapabilityProvider(capability,output_token_limit,min(20,context.get('authorizedTimeoutSeconds',20)))
+    elif openai_story:
+        provider = OpenAIProvider(model=model, request_timeout=Timeout(60, connect=10))
+        provider.max_completion_tokens = output_token_limit
+        provider.reasoning_effort = 'none'
+        provider.omit_temperature = True
+        provider.client_request_id = context.get('attemptId') or uuid4().hex
     else:
         provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
     provider.max_output_tokens = output_token_limit
     provider.json_output = True
     try:
         result = perform_role(role, text, context, provider, model)
+        if role == 'STORY':
+            result['provider'] = story_provider.lower()
+            result['storyRevisions'] = [
+                {'candidateId': item.get('candidateId'),
+                 'textSha256': sha256(str(item.get('text', '')).encode('utf-8')).hexdigest(),
+                 'sourceIdeaDraftId': context.get('sourceIdeaDraftId'),
+                 'sourceIdeaRevision': context.get('sourceIdeaRevision'),
+                 'sourceSessionId': context.get('sourceSessionId')}
+                for item in result['result']['alternatives'] if isinstance(item, dict)]
         if role in {'PROMPT_OPTIMIZATION', 'STORY', 'STORY_REVIEW'}:
             result['actualCostUsd'] = _verified_optimization_cost(result.get('usage'), input_rate, output_rate, max_cost_usd)
             if role in {'STORY', 'STORY_REVIEW'}:
                 result.update(providerDispatched=True, evidenceType='MACHINE_REVIEW' if role == 'STORY_REVIEW' else 'MODEL_GENERATION',
-                              rawProviderResponse=getattr(provider, 'last_raw_response', None))
+                              rawProviderResponse=getattr(provider, 'last_raw_response', None),
+                              providerRequest=getattr(provider, 'last_request', None),
+                              providerApiResponse=getattr(provider, 'last_provider_response', None),
+                              requestedModel=model,
+                              returnedModel=(result.get('providerResponseMetadata') or {}).get('model'))
+                if role == 'STORY' and openai_story:
+                    result['costBasis'] = 'CONFIGURED_CONSERVATIVE_RATES: input $2.50/M, output $10/M; not invoice'
+                    if result['returnedModel'] != model:
+                        raise ValueError('OpenAI STORY returned an unexpected model identity')
+                    if result['providerResponseMetadata'].get('finishReason') != 'stop':
+                        raise ValueError('OpenAI STORY response is incomplete; no automatic retry')
                 if result['usage'].get('completion_tokens', result['usage'].get('output_tokens', 0)) > output_token_limit:
                     raise ValueError('Story role exceeded the configured output-token limit')
             if reconstruction:
@@ -1928,7 +1971,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
             detail = usage_error or (str(error) if isinstance(error, ValueError) else 'Provider response processing failed.')
             diagnostics = {
                 'category': 'PROVIDER_RESULT_REJECTED' if response_returned else _provider_failure_category(error),
-                'provider': ROLES[role], 'model': model,
+                'provider': story_provider.lower() if role == 'STORY' else ROLES[role], 'model': model,
                 'providerDispatched': bool(getattr(provider, 'last_request_started', False)),
                 'providerResponseReturned': response_returned,
                 'providerRequestId': response_metadata.get('requestId'),
@@ -1940,6 +1983,8 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
                 'validationError': detail, 'usageError': usage_error,
                 'rawProviderResponse': raw,
                 'providerApiResponse': getattr(provider, 'last_provider_response', None),
+                'providerRequest': getattr(provider, 'last_request', None),
+                'providerError': getattr(provider, 'last_error', None),
                 'attemptId': context.get('attemptId'),
             }
             logger.warning(

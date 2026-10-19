@@ -11,6 +11,17 @@ import org.junit.jupiter.api.Test;
 
 class IdeaDraftServiceTest {
   @Test
+  void storyProviderSelectionSurvivesDraftSaveAndRejectsUnknownValues() {
+    assertThat(IdeaDraftService.normalizedState(
+        Map.of("inputMode", "IDEA", "storyProvider", "OPENAI")))
+        .containsEntry("storyProvider", "OPENAI");
+    assertThat(IdeaDraftService.normalizedState(Map.of("inputMode", "IDEA")))
+        .doesNotContainKey("storyProvider");
+    assertThatThrownBy(() -> IdeaDraftService.normalizedState(
+        Map.of("inputMode", "IDEA", "storyProvider", "UNKNOWN")))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+  @Test
   void clientCannotSupplyApprovalsOrPaidConsentAsSavedState() {
     var state =
         IdeaDraftService.normalizedState(

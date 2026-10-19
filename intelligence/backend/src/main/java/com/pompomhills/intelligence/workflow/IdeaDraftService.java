@@ -30,6 +30,7 @@ public class IdeaDraftService {
           "mainCharacterId",
           "profile",
           "storyMode",
+          "storyProvider",
           "preferences",
           "lockedRequirements",
           "duration",
@@ -61,6 +62,9 @@ public class IdeaDraftService {
         && !List.of("AUTO", "ABSURD_PHYSICS", "CURIOSITY_ADVENTURE", "EDUCATIONAL")
             .contains(profile)) throw new IllegalArgumentException("Unsupported content profile");
     String strategy = text(state, "storyMode");
+    if (state.containsKey("storyProvider")
+        && !List.of("DEEPSEEK", "OPENAI").contains(text(state, "storyProvider")))
+      throw new IllegalArgumentException("Unsupported STORY provider");
     if (!strategy.isBlank()
         && !List.of("EXPLORE_DIFFERENT_STORIES", "IMPROVE_EXISTING_STORY").contains(strategy))
       throw new IllegalArgumentException("Unsupported generation strategy");

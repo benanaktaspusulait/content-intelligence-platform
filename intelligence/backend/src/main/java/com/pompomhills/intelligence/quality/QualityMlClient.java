@@ -219,7 +219,9 @@ public class QualityMlClient {
   private static Duration workflowTimeout(String operation, Map<String,Object> request) {
     boolean assessment="creative-role".equals(operation)&&"STORY_REVIEW".equals(request.get("role"))
         &&request.get("context") instanceof Map<?,?> c&&"ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1".equals(c.get("assessmentOnlyPolicy"));
-    return Duration.ofSeconds(assessment?(Integer)assessmentTransportPolicy().get("backendHttpSeconds"):operation.startsWith("cpq-pilot/")?130:25);
+    boolean openaiStory="creative-role".equals(operation)&&"STORY".equals(request.get("role"))
+        &&request.get("context") instanceof Map<?,?> c&&"OPENAI".equals(c.get("storyProvider"));
+    return Duration.ofSeconds(assessment?(Integer)assessmentTransportPolicy().get("backendHttpSeconds"):openaiStory?75:operation.startsWith("cpq-pilot/")?130:25);
   }
 
   public Map<String, Object> workflow(String operation, Map<String, Object> request) {

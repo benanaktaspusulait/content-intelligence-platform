@@ -4,6 +4,7 @@ import json
 import uuid
 import time
 import re
+from copy import deepcopy
 
 import httpx
 from openai import APITimeoutError, APIConnectionError, APIStatusError
@@ -114,6 +115,7 @@ class OpenAIProvider(LLMProvider):
                 request["response_format"] = self.response_format
             elif getattr(self, "json_output", False):
                 request["response_format"] = {"type": "json_object"}
+            self.last_request = deepcopy(request)
             response = self.client.chat.completions.create(**request)  # type: ignore[arg-type]
         except Exception as error:
             self.last_error = safe_provider_error(error, time.monotonic() - started)
