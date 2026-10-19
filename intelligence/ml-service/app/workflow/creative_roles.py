@@ -31,26 +31,14 @@ _NAMED_CHARACTER_SPECIES = re.compile(
 
 _LONG_FORM_STORY_CONTRACT = '''
 LONG-FORM STORY CONTRACT (one complete story, not a premise or a list of odd events):
+EXACT JSON ENVELOPE: Return exactly one root JSON object shaped as {"alternatives":[{"candidateId":"candidate-1","title":"short title","protagonistCharacterId":"registered-id-from-context","text":"complete story"}]}. Return one complete root object only. Do not include a `storyPlan`, duplicate fields, other root keys, Markdown, commentary, or any characters after the root object closes. The application derives evidence from the story text; do not repeat the same evidence in a second schema.
+CONCEPT SELECTION GATE: Before expanding the story, compare the proposed object's visual engine and causal progression with context.establishedWinnerMechanisms and context.rejectedCandidates. Do not reuse or cosmetically rename a winner or rejected concept. Reject chair/cushion escape, door shrinking/inversion, missing-shoe reveals, simple chase/return loops, oversized-object spectacle, sticky attachment/multiplication, and observation-dependent object state unless the causal engine is materially different. Prefer a fresh mechanism whose consequences create new story information. Any provider-authored comparison is only a generation rationale, not verified originality evidence. If no strong distinct concept emerges, do not falsely claim novelty.
 The story begins with the established character pursuing one believable ordinary task and already visibly blocked at frame zero by one impossible physical rule. The first timed beat must show the goal, attempted action, abnormal result, and immediate reaction together. State the goal and why it matters in the story text itself.
 Build one coherent causal rule. Every later action must try to achieve the same goal. Give each major attempt a different strategy and a different visible consequence that changes the situation. Include a discovery or reversal that changes the character's strategy, then a meaningful payoff to the original goal. A replay ending is optional; use one only if the same physical rule naturally brings the opening problem back.
-Do not count repeated force, a camera change, another direction of the same movement, waiting, or a longer reaction as progression. Do not add props, characters, magic rules, or dense hand-object choreography to fill time. Prefer large, simple, continuous actions suitable for Seedance image-to-video. Report concrete continuity risks and whether controlled segments would help; this is a planning estimate, not a guarantee.
-The requested duration is context.targetDuration (normally 20 seconds). A 20-second story is valid. Recommend a shorter duration when removing roughly 8 seconds would preserve the same meaningful progression. For 20–22 seconds, usually use about 5–6 distinct developments; for 25–30 seconds, about 6–8. These are creative guidance, not a beat-count score. Include a specific removal test in the plan.
-Return every requested structured field below and keep every sourceQuote as an exact substring of `text`. `text` itself must be the complete story, with a duration declaration, explicit Goal and Rule lines, and chronological non-overlapping lines formatted `0.0-3.0 SEC: ...` that cover the full recommended runtime. The quoted first-frame trouble must occur in the 0.0 beat. Do not claim that text-only analysis proves visual legibility or Seedance success.
-Each alternative must include:
-- storyPlan.character (canonical character name)
-- storyPlan.everydayGoal: {task, why, sourceQuote}
-- storyPlan.frameZeroTrouble: {description, sourceQuote}
-- storyPlan.impossiblePhysicalRule: {rule, sourceQuote}
-- storyPlan.causalRelationship (one concise goal-to-obstacle explanation)
-- storyPlan.attempts: [{beatId, strategy, action, consequence, stateChange, sourceQuote}]
-- storyPlan.discovery: {description, strategyChange, sourceQuote}
-- storyPlan.payoff: {description, goalOutcome, sourceQuote}
-- storyPlan.loopMechanism: {description, sourceQuote} (use an empty description/quote if a loop is not natural)
-- storyPlan.timecodedBeats: [{startSeconds, endSeconds, development, action, consequence, stateChange, sourceQuote}]
-- storyPlan.recommendedRuntimeSeconds
-- storyPlan.durationJustification: {eightSecondRemovalTest, meaningfulLossIfShortened, sourceQuotes}
-- storyPlan.productionComplexity: {level: LOW|MODERATE|HIGH, seedanceRisks, segmentStrategy: SINGLE_GENERATION|CONTROLLED_SEGMENTS|UNKNOWN}
-Do not return self-awarded creative PASS, render readiness, or an approval.
+Do not count repeated force, a camera change, another direction of the same movement, waiting, or a longer reaction as progression. Do not add props, characters, magic rules, or dense hand-object choreography to fill time. Prefer large, simple, continuous actions suitable for Seedance image-to-video.
+The requested duration is context.targetDuration (normally 20 seconds). A 20-second story is valid. Recommend a shorter runtime when the progression does not earn the requested duration. For 20–22 seconds, usually use about 5–6 distinct developments; for 25–30 seconds, about 6–8. These are creative guidance, not a beat-count score.
+Current Ruleset 1.12 evaluates active character attempts separately from distinct story developments. The seven-attempt long-form requirement is historical and no longer applies. Preserve sufficient motivated attempts to show the character pursuing the goal, but do not add an arbitrary attempt quota or relabel consequences, discoveries, reversals, payoff, or loop as attempts. Never pad or repeat actions to satisfy a count. The application evaluates runtime and production feasibility from source evidence; absent independent evidence stays NOT_EVALUATED. Do not award itself a pass.
+`text` must contain the actual concept, an explicit everyday Goal, one explicit Rule, a duration declaration and chronological, non-overlapping timed story beats formatted `0.0-3.0 SEC: ...` that cover the whole story. Its first beat must show the character's trouble already happening. Keep every fact needed for creative evaluation in this text. The application parses only evidence present in the text into its canonical IR; missing content remains missing and fails or stays unknown. Do not claim that text analysis proves visual legibility, duration value or Seedance success. Do not return self-awarded creative PASS, render readiness, or an approval.
 '''
 
 
@@ -72,6 +60,10 @@ def _story_plan_errors(candidate: dict[str, Any], target_duration: Any) -> list[
     for field in ('character', 'causalRelationship'):
         if not isinstance(plan.get(field), str) or not plan[field].strip():
             errors.append(f'{field.upper()}_MISSING')
+    # Selection rationale and duration-value judgment are metadata about a
+    # story, not source evidence for the story itself. Missing/unsupported
+    # metadata is recorded separately and must never prevent canonical
+    # evaluation of otherwise source-bound story content.
     goal = plan.get('everydayGoal')
     if not isinstance(goal, dict) or not all(isinstance(goal.get(key), str) and goal[key].strip() for key in ('task', 'why')):
         errors.append('EVERYDAY_GOAL_INCOMPLETE')
@@ -152,14 +144,138 @@ def _story_plan_errors(candidate: dict[str, Any], target_duration: Any) -> list[
             errors.append('EVERYDAY_GOAL_NOT_IN_STORY')
 
     justification = plan.get('durationJustification')
-    if not isinstance(justification, dict) or not isinstance(justification.get('eightSecondRemovalTest'), str) or not justification['eightSecondRemovalTest'].strip() or not isinstance(justification.get('meaningfulLossIfShortened'), bool) or not isinstance(justification.get('sourceQuotes'), list):
+    if not isinstance(justification, dict) or not isinstance(justification.get('eightSecondRemovalTest'), str) or not justification['eightSecondRemovalTest'].strip() or not isinstance(justification.get('sourceQuotes'), list):
         errors.append('DURATION_JUSTIFICATION_INCOMPLETE')
-    elif justification['meaningfulLossIfShortened'] and (not justification['sourceQuotes'] or any(not isinstance(q, str) or not q or q not in text for q in justification['sourceQuotes'])):
+    elif not isinstance(justification.get('meaningfulLossIfShortened'), bool):
+        errors.append('DURATION_VERDICT_NOT_BOOLEAN')
+    elif isinstance(justification.get('meaningfulLossIfShortened'), bool) and not justification['meaningfulLossIfShortened']:
+        errors.append('LONG_FORM_DURATION_NOT_JUSTIFIED')
+    elif not justification['sourceQuotes'] or any(not isinstance(q, str) or not q or q not in text for q in justification['sourceQuotes']):
         errors.append('DURATION_JUSTIFICATION_QUOTES_NOT_IN_STORY')
     complexity = plan.get('productionComplexity')
     if not isinstance(complexity, dict) or complexity.get('level') not in {'LOW', 'MODERATE', 'HIGH'} or complexity.get('segmentStrategy') not in {'SINGLE_GENERATION', 'CONTROLLED_SEGMENTS', 'UNKNOWN'} or not isinstance(complexity.get('seedanceRisks'), list):
         errors.append('PRODUCTION_COMPLEXITY_INCOMPLETE')
     return errors
+
+
+def _bind_story_source_evidence(candidate: dict[str, Any], context: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Bind plan citations to exact text/parser spans; never create story content."""
+    from app.parser.prompt_parser import ParserConfig, parse_prompt
+
+    text = str(candidate.get('text') or '')
+    plan = candidate.get('storyPlan')
+    result = {'goal': 'NOT_EVALUATED', 'frameZero': 'NOT_EVALUATED', 'duration': 'NOT_EVALUATED'}
+    if not isinstance(plan, dict) or not text.strip():
+        return result
+    parsed = parse_prompt(text, ParserConfig(attempt_evidence_policy='ACTOR_SOURCE_BOUND_V3'))
+    ir = parsed.video_plan_ir
+    goal = plan.get('everydayGoal')
+    parsed_goal = (ir.get('goalEvidence') or {}).get('primaryGoal') or {}
+    span = parsed_goal.get('sourceSpan')
+    quote = parsed_goal.get('sourceQuote')
+    if (isinstance(goal, dict) and parsed_goal.get('state') == 'OBSERVED'
+            and isinstance(span, list) and len(span) == 2
+            and text[span[0]:span[1]] == quote and quote):
+        goal['sourceQuote'] = quote
+        result['goal'] = 'SOURCE_BOUND'
+    else:
+        result['goal'] = 'MISSING'
+
+    beats = ir.get('beats') or []
+    planned_beats = plan.get('timecodedBeats')
+    if isinstance(planned_beats, list):
+        for planned in planned_beats:
+            if not isinstance(planned, dict):
+                continue
+            matches = [b for b in beats if b.get('startTime') == planned.get('startSeconds')
+                       and b.get('endTime') == planned.get('endSeconds')]
+            if len(matches) == 1:
+                b = matches[0]
+                source_span = b.get('sourceSpan')
+                source_quote = b.get('sourceQuote')
+                if (isinstance(source_span, list) and len(source_span) == 2
+                        and text[source_span[0]:source_span[1]] == source_quote):
+                    planned['sourceQuote'] = source_quote
+    if isinstance(planned_beats, list):
+        valid_quotes = [b.get('sourceQuote') for b in planned_beats if isinstance(b, dict)
+                        and isinstance(b.get('sourceQuote'), str) and b['sourceQuote'] in text]
+        rule_match = re.search(r'(?im)^\s*(?:impossible\s+)?rule\s*:\s*[^\n]+', text)
+        rule = plan.get('impossiblePhysicalRule')
+        if isinstance(rule, dict) and rule_match:
+            rule['sourceQuote'] = rule_match.group(0).strip()
+        for field, labels in (('discovery', ('discover', 'reversal', 'realiz', 'understand')),
+                              ('payoff', ('payoff', 'ending', 'success', 'resolution'))):
+            item = plan.get(field)
+            if not isinstance(item, dict):
+                continue
+            selected = next((b for b in planned_beats if isinstance(b, dict)
+                             and any(label in str(b.get('development', '')).lower() for label in labels)
+                             and isinstance(b.get('sourceQuote'), str) and b['sourceQuote'] in text), None)
+            if selected is None and field == 'payoff' and planned_beats:
+                selected = planned_beats[-1]
+            if selected and isinstance(selected.get('sourceQuote'), str) and selected['sourceQuote'] in text:
+                item['sourceQuote'] = selected['sourceQuote']
+        loop = plan.get('loopMechanism')
+        if isinstance(loop, dict) and loop.get('description') and planned_beats:
+            last = planned_beats[-1]
+            if isinstance(last, dict) and isinstance(last.get('sourceQuote'), str) and last['sourceQuote'] in text:
+                loop['sourceQuote'] = last['sourceQuote']
+        justification = plan.get('durationJustification')
+        if isinstance(justification, dict) and valid_quotes:
+            # Citations identify the actual timed source material. The separate
+            # duration assessment below still decides whether it supports the claim.
+            justification['sourceQuotes'] = valid_quotes
+    first = beats[0] if beats else {}
+    hook = ir.get('hook') or {}
+    first_span, first_quote = first.get('sourceSpan'), first.get('sourceQuote')
+    trouble = plan.get('frameZeroTrouble')
+    if (isinstance(trouble, dict) and hook.get('textualFirstFrameIntent', {}).get('status') == 'PASS'
+            and isinstance(first_span, list) and len(first_span) == 2
+            and text[first_span[0]:first_span[1]] == first_quote):
+        trouble['sourceQuote'] = first_quote
+        result['frameZero'] = 'SOURCE_BOUND'
+    else:
+        result['frameZero'] = 'MISSING'
+
+    # Structured attempt quotes are mapped only to their referenced timed beat.
+    attempts = plan.get('attempts')
+    if isinstance(attempts, list) and isinstance(planned_beats, list):
+        by_index = {i + 1: beat for i, beat in enumerate(planned_beats) if isinstance(beat, dict)}
+        for attempt in attempts:
+            if not isinstance(attempt, dict):
+                continue
+            match = re.search(r'(\d+)$', str(attempt.get('beatId') or ''))
+            beat = by_index.get(int(match.group(1))) if match else None
+            if beat and isinstance(beat.get('sourceQuote'), str) and beat['sourceQuote'] in text:
+                attempt['sourceQuote'] = beat['sourceQuote']
+
+    # Keep the provider's natural-language removal test, but its boolean is a
+    # claim. No existing evaluator independently establishes this duration
+    # verdict, so it remains NOT_EVALUATED unless a real boolean is supplied;
+    # even then the claim is not treated as an evaluated duration PASS.
+    justification = plan.get('durationJustification')
+    if isinstance(justification, dict):
+        result['duration'] = 'PROVIDER_BOOLEAN_CLAIM' if isinstance(justification.get('meaningfulLossIfShortened'), bool) else 'NOT_EVALUATED'
+    candidate['storySourceEvidenceStatus'] = result
+    candidate['durationAssessment'] = {
+        'status': 'NOT_EVALUATED',
+        'reason': 'No existing independent duration-value evaluator produced a source-bound verdict.',
+        'providerClaim': justification.get('meaningfulLossIfShortened') if isinstance(justification, dict) else None,
+    }
+    selection = plan.get('conceptSelection')
+    if not isinstance(selection, dict) or any(not isinstance(selection.get(k), str) or not selection[k].strip()
+                                               for k in ('mechanism', 'nearestComparison', 'distinction')):
+        persisted = (context or {}).get('conceptSelection') if isinstance(context, dict) else None
+        if isinstance(persisted, dict) and all(isinstance(persisted.get(k), str) and persisted[k].strip()
+                                               for k in ('mechanism', 'nearestComparison', 'distinction')):
+            plan['conceptSelection'] = deepcopy(persisted)
+            candidate['conceptSelectionStatus'] = 'MAPPED_FROM_PERSISTED_WORKFLOW'
+        else:
+            plan.pop('conceptSelection', None)
+            candidate['conceptSelectionStatus'] = 'NOT_EVALUATED_MISSING_SELECTION_RATIONALE'
+    else:
+        candidate['conceptSelectionStatus'] = 'PROVIDER_RATIONALE_UNVERIFIED'
+    return result
 
 
 def _goal_evidence_from_story_plan(candidate: dict[str, Any]) -> dict[str, Any] | None:
@@ -254,10 +370,198 @@ def _validate_canonical_story_identity(alternatives: list[Any], context: dict[st
     return validations
 
 
+def _evaluate_long_form_story_text(candidate: dict[str, Any], context: dict[str, Any], target_duration: float, index: int) -> dict[str, Any]:
+    """Send the source narrative through canonical parsing without provider-authored plan metadata."""
+    from app.parser.prompt_parser import ParserConfig, parse_prompt
+    from .review import review_prompt
+
+    story = str(candidate.get('text') or '')
+    parsed = parse_prompt(story, ParserConfig(attempt_evidence_policy='ACTOR_SOURCE_BOUND_V3'))
+    ir = parsed.video_plan_ir
+    beats = ir.get('beats') or []
+    goal = ir.get('goalEvidence') or {}
+    primary_goal = goal.get('primaryGoal') or {}
+    hook = ir.get('hook') or {}
+    mechanic = ir.get('coreMechanic') or {}
+    rule_evidence = mechanic.get('physicalRuleEvidence') or {}
+    duration = (ir.get('metadata') or {}).get('duration')
+    if duration is None and beats:
+        duration = max(float(beat.get('endTime') or 0) for beat in beats)
+
+    source_errors = []
+    if primary_goal.get('state') != 'OBSERVED' or not primary_goal.get('sourceQuote'):
+        source_errors.append('EVERYDAY_GOAL_NOT_SOURCE_ESTABLISHED')
+    if not beats:
+        source_errors.append('TIMECODED_STORY_NOT_SOURCE_ESTABLISHED')
+    if hook.get('textualFirstFrameIntent', {}).get('status') != 'PASS':
+        source_errors.append('FRAME_ZERO_TROUBLE_NOT_SOURCE_ESTABLISHED')
+    if rule_evidence.get('state') != 'OBSERVED' or not rule_evidence.get('sourceQuote'):
+        source_errors.append('PHYSICAL_RULE_NOT_SOURCE_ESTABLISHED')
+    if duration is None or not 20 <= float(duration) <= 30:
+        source_errors.append('LONG_FORM_RUNTIME_NOT_SOURCE_ESTABLISHED')
+
+    # A provider's detailed storyPlan remains available in the saved result for
+    # diagnostics, but it is neither required nor accepted as source evidence.
+    if isinstance(candidate.get('storyPlan'), dict):
+        provider_errors = _story_plan_errors(candidate, target_duration)
+        candidate['providerStoryPlanDiagnostics'] = {
+            'status': 'PASS' if not provider_errors else 'FAIL',
+            'errors': provider_errors,
+            'usedForCanonicalEvidence': False,
+        }
+    candidate['storyPlanValidation'] = {
+        'status': 'SOURCE_TEXT_MAPPED' if not source_errors else 'SOURCE_CONTENT_INCOMPLETE',
+        'errors': source_errors,
+        'version': 'canonical-video-plan-ir-1.12',
+        'canonicalEvaluationEligible': bool(story.strip()),
+        'sourceBoundGoal': primary_goal if primary_goal.get('state') == 'OBSERVED' else None,
+        'sourceBoundPhysicalRule': rule_evidence if rule_evidence.get('state') == 'OBSERVED' else None,
+        'parsedBeatCount': len(beats),
+        'sourceBoundFrameZero': hook.get('textualFirstFrameIntent', {}).get('status') == 'PASS',
+    }
+
+    evaluation_input = {
+        'prompt': story,
+        'sourceId': str(context.get('sourceRequestId') or 'creative-role-story'),
+        'sourceVersion': str(candidate.get('candidateId') or index),
+        'profile': 'post-family-v1',
+        'canonicalRulesetVersion': '1.12',
+        'contentProfile': str(context.get('profile') or 'ABSURD_PHYSICS'),
+        'desiredDuration': duration,
+        'plannedEditedDuration': duration,
+        'generator': str(
+            (context.get('targetConfiguration') or {}).get('selectedGenerator')
+            if isinstance(context.get('targetConfiguration'), dict)
+            else context.get('selectedGenerator') or 'SEEDANCE_2_5'
+        ),
+        'settings': {'aspectRatio': str(
+            (context.get('targetConfiguration') or {}).get('aspectRatio')
+            if isinstance(context.get('targetConfiguration'), dict)
+            else context.get('aspectRatio') or '9:16'
+        )},
+        'references': [],
+    }
+    candidate['storyEvaluationInput'] = evaluation_input
+    review = review_prompt(evaluation_input)
+    candidate['postFamilyReview'] = review
+    evaluation = review.get('canonicalRuleEvaluation') or {}
+    candidate['canonicalStoryEvaluation'] = evaluation
+    mandatory_rules = (
+        'GOAL_001', 'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK',
+        'ATTEMPT_001', 'ATTEMPT_002', 'PROGRESSION_006',
+        'ESCALATION_005', 'PAYOFF_001', 'CONCEPT_007', 'CONCEPT_008',
+        'HOOK_002', 'INSTANT_VISUAL_ABSURDITY_GATE', 'CONTINUOUS_ACTION_MOMENTUM',
+    )
+    rows = {
+        row.get('ruleId'): row
+        for group in ('passedRules', 'failedRules', 'unknownRules', 'notApplicableRules')
+        for row in evaluation.get(group, [])
+    }
+    statuses = {rule_id: rows.get(rule_id, {}).get('outcome', 'NOT_EVALUATED') for rule_id in mandatory_rules}
+    gate_status = (
+        'FAIL' if any(status == 'FAIL' for status in statuses.values()) else
+        'PASS' if all(status == 'PASS' for status in statuses.values()) else
+        'UNKNOWN' if any(status in {'UNKNOWN', 'SERVICE_ERROR'} for status in statuses.values()) else
+        'NOT_EVALUATED'
+    )
+    candidate['mandatoryStoryGate'] = {'status': gate_status, 'rules': statuses}
+    candidate['storyStageStatus'] = (
+        'STORY_GATES_FAIL' if gate_status == 'FAIL' else
+        'STORY_GATES_NOT_EVALUATED' if gate_status != 'PASS' else
+        'STORY_GATES_PASS_CREATIVE_REVIEW_PENDING'
+    )
+    candidate['durationAssessment'] = {
+        'status': 'NOT_EVALUATED',
+        'reason': 'No independent source-bound duration-value evaluator ran.',
+        'parsedRuntimeSeconds': duration,
+        'requestedRuntimeSeconds': target_duration,
+    }
+    candidate['durationReview'] = {
+        'status': 'NOT_EVALUATED',
+        'recommendedRuntimeSeconds': duration,
+        'requestedRuntimeSeconds': target_duration,
+        'assessment': candidate['durationAssessment'],
+        'storyDensityEvidence': evaluation.get('storyDensityEvidence'),
+        'productionFeasibility': (evaluation.get('videoPlanIR') or {}).get('producibility'),
+        'generalProducibility': review.get('generalProducibility'),
+        'creativeQuality': (review.get('family8') or {}).get('creativeQuality'),
+        'automaticCreativePass': False,
+    }
+    return {'evaluation': evaluation, 'gateStatus': gate_status, 'rules': statuses}
+
+
 class CreativeRoleFailure(ValueError):
     def __init__(self, detail: str, diagnostics: dict[str, Any]):
         super().__init__(detail)
         self.diagnostics = diagnostics
+
+
+def _parse_role_json_response(raw_response: Any, role: str, provider: LLMProvider) -> dict[str, Any]:
+    """Parse one provider JSON object while retaining its response for recovery."""
+    # Preserve the exact completion before any normalization or parsing can fail.
+    provider.last_raw_response = raw_response
+    if not isinstance(raw_response, str) or not raw_response.strip():
+        raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
+    metadata = getattr(provider, 'last_response_metadata', None) or {}
+    finish_reason = metadata.get('finishReason')
+    if finish_reason == 'length':
+        raise ValueError(f'{ROLES[role].title()} response was truncated (finish_reason=length)')
+
+    candidate = raw_response.strip().lstrip('\ufeff')
+    # Accept a complete Markdown JSON fence, but do not guess at an object
+    # embedded in arbitrary prose or repair a partial response.
+    fenced = re.fullmatch(r'```(?:json)?[ \t]*\r?\n?(.*?)\r?\n?```[ \t]*', candidate,
+                          flags=re.IGNORECASE | re.DOTALL)
+    if fenced:
+        candidate = fenced.group(1).strip()
+
+    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        value: dict[str, Any] = {}
+        for key, item in pairs:
+            if key in value:
+                raise ValueError(f'Duplicate JSON key: {key}')
+            value[key] = item
+        return value
+
+    try:
+        value = json.loads(candidate, object_pairs_hook=unique_object)
+    except json.JSONDecodeError as error:
+        # DeepSeek has occasionally emitted one extra candidate-closing brace
+        # immediately before the alternatives array closes. Recover only that
+        # exact, provably redundant delimiter: the remaining suffix must be
+        # precisely `]}`, and the corrected document must pass strict JSON
+        # parsing (including duplicate-key rejection). Keep raw bytes intact.
+        recoverable = (
+            error.msg in {'Extra data', "Expecting ',' delimiter"}
+            and error.pos < len(candidate)
+            and candidate[error.pos] == '}'
+            and candidate[error.pos + 1:].strip() == ']}'
+            and candidate[:error.pos].rstrip().endswith('}')
+        )
+        if not recoverable:
+            raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from error
+        corrected = candidate[:error.pos] + candidate[error.pos + 1:]
+        try:
+            value = json.loads(corrected, object_pairs_hook=unique_object)
+        except (json.JSONDecodeError, ValueError) as recovery_error:
+            raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from recovery_error
+        if not isinstance(value, dict) or not isinstance(value.get('alternatives'), list):
+            raise ValueError(f'{ROLES[role].title()} response did not contain one complete alternatives object')
+        provider.last_json_recovery = {
+            'status': 'RECOVERED_ONE_REDUNDANT_CANDIDATE_CLOSER',
+            'rawPreserved': True,
+            'removedCharacterOffset': error.pos,
+            'correctedDocumentStrictlyParsed': True,
+        }
+    except ValueError as error:
+        # object_pairs_hook rejects duplicate keys with ValueError. Preserve the
+        # source completion and fail closed instead of silently selecting one.
+        if str(error).startswith(f'{ROLES[role].title()} returned'):
+            raise
+        raise ValueError(f'{ROLES[role].title()} returned invalid JSON: {error}') from error
+    if not isinstance(value, dict):
+        raise ValueError('Role result must be an object')
+    return value
 
 
 def role_readiness() -> dict[str, Any]:
@@ -879,9 +1183,9 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         from .optimization_plans import perform_plan_first
         return perform_plan_first(text, context, provider, model)
     system = {
-        'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
+        'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings and context.establishedWinnerMechanisms, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For originality, compare causal visual mechanisms, not object names alone; cite exact candidate evidence and identify the nearest known mechanism. Winner labels are text context, not verified visual-similarity evidence. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
         'PROMPT_OPTIMIZATION': '''Return ONLY JSON with exactly {"candidates":[{"candidateId":"candidate-a","title":"...","hypothesis":"...","prompt":"complete prompt text"},{"candidateId":"candidate-b","title":"...","hypothesis":"...","prompt":"complete prompt text"}]}. Produce exactly two complete prompt revisions, both materially different from the original and from each other; never return the original prompt unchanged or duplicate one candidate. Candidate A must focus on first-frame visual clarity, immediate physical anomaly visibility and opening-second curiosity; its TIMED SHOT PLAN must change first-beat framing or camera focus to make the existing anomaly legible in the opening two seconds, without moving a story event earlier. Candidate B must focus on beat progression clarity, escalation pacing and execution feasibility for Seedance; its TIMED SHOT PLAN must rebalance the timing or camera decisions of the existing mid-section beats for readable escalation. Preserve every source event and its order. An existing explicit multiplication progression may be divided into contiguous camera shots only when each shot repeats the exact source action, staging and consequence and the concatenated progression edges equal the complete original chain. Never invent, omit or reorder progression steps; other beat rewrites are unsupported. The first timed beat framing/camera decision in Candidate A must differ materially from Candidate B; the protected narrative action stays unchanged. The hypothesis field for each candidate must name a concrete structural change that is actually implemented in the prompt body. Use explicit camera terms: extreme close-up, close-up, medium shot or wide shot; camera motion may be static/locked-off, pan, tracking or push-in. Implement camera/framing instructions in square brackets inside the relevant timed beats, or rebalance adjacent beat boundaries while preserving total duration and event order. Use context.baselineExecution to compare actual baseline decisions. Do not propose the same existing shot or merely move its bracket to the start of the beat. Synonyms, titles, hypotheses and appended commentary alone are not material changes. Preserve narrative text outside camera annotations and protected identity/mechanic/ending sections. Use source-supported subjects; camera proposals are hypotheses, not verified observations. Preserve the source character, physical rule, primary goal, every essential event and the exact ending. Every `essentialEvents` phrase supplied in context must remain verbatim and unchanged in both prompts. Do not add narrative outcomes, characters, objects, or mechanics. Keep the selected context.targetConfiguration profile, generator, duration and aspect ratio. If the baseline contains a stale production-settings label, replace only that label with the selected target value; this does not permit a story change. Keep the approved story unchanged. Do not assert image/video observation, audience retention, rewatch success, or renderability. Treat first-frame, pacing, and execution claims as hypotheses. Do not recommend, rank or auto-select either candidate; never grant render authorization.''',
-        'STORY': '''Return ONLY one JSON object matching this schema: {"alternatives":[{"candidateId":"candidate-1","title":"short title","protagonistCharacterId":"registered-id-from-context","text":"complete story"}]}. Return exactly the number of alternatives requested in context.requestedAlternativeCount (between 1 and 3). Each candidate must include a non-empty candidateId, title and text string. When context.characterRecord and context.canonicalCharacterRegistry are supplied, protagonistCharacterId MUST exactly equal context.characterRecord.id and the story must use context.characterRecord.name as its protagonist; do not substitute, rename, or introduce an unregistered named character. Registry validation is independent from source-fidelity review and does not prove visual identity or source fidelity. When returning multiple alternatives, each must have a meaningfully different narrative body — do not reuse the same story text with only a different title. Vary at least one of: action/progression strategy, how the central physical rule causes consequences, escalation structure, visual discovery, or permitted payoff. The user supplied input in mode context.inputMode (IDEA = short concept, DETAILED_STORY = complete narrative). Respect context.storyGenerationMode: for EXPLORE_DIFFERENT_STORIES generate meaningfully different narrative directions from the supplied idea; for IMPROVE_EXISTING_STORY refine the supplied narrative while preserving only the explicitly locked requirements listed in context.lockedRequirements. The locked requirements are: PRESERVE_CORE_PREMISE (keep the central concept), PRESERVE_KEY_EVENTS (keep the major events in order), PRESERVE_ENDING (keep the final outcome). Only the requirements present in context.lockedRequirements are binding; do not silently lock requirements that are absent. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
+        'STORY': '''Return ONLY one root JSON object with an `alternatives` array. For standard short-form candidates, each alternative contains candidateId, title, protagonistCharacterId and text. For a 20–30 second request, the LONG-FORM STORY CONTRACT below replaces the short-form candidate requirements; it does not require a nested storyPlan. Return exactly the number of alternatives requested in context.requestedAlternativeCount (between 1 and 3); do not add root keys. Each candidate must include a non-empty candidateId, title and text string. When context.characterRecord and context.canonicalCharacterRegistry are supplied, protagonistCharacterId MUST exactly equal context.characterRecord.id and the story must use context.characterRecord.name as its protagonist; do not substitute, rename, or introduce an unregistered named character. Registry validation is independent from source-fidelity review and does not prove visual identity or source fidelity. When returning multiple alternatives, each must have a meaningfully different narrative body — do not reuse the same story text with only a different title. Vary at least one of: action/progression strategy, how the central physical rule causes consequences, escalation structure, visual discovery, or permitted payoff. The user supplied input in mode context.inputMode (IDEA = short concept, DETAILED_STORY = complete narrative). Respect context.storyGenerationMode: for EXPLORE_DIFFERENT_STORIES generate meaningfully different narrative directions from the supplied idea; for IMPROVE_EXISTING_STORY refine the supplied narrative while preserving only the explicitly locked requirements listed in context.lockedRequirements. The locked requirements are: PRESERVE_CORE_PREMISE (keep the central concept), PRESERVE_KEY_EVENTS (keep the major events in order), PRESERVE_ENDING (keep the final outcome). Only the requirements present in context.lockedRequirements are binding; do not silently lock requirements that are absent. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
         'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence; time, framing, action, staging and consequence are REQUIRED non-empty JSON strings; additionally supply sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
@@ -890,7 +1194,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         requested_duration = context['targetConfiguration'].get('duration')
     if role == 'STORY' and isinstance(requested_duration, (int, float)) and 20 <= requested_duration <= 30:
         system += _LONG_FORM_STORY_CONTRACT
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'sourceStoryRecordId', 'mainCharacter', 'mainCharacterId', 'character', 'characterRecord', 'canonicalCharacterRegistry', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'establishedWinnerMechanisms', 'sourceStoryRecordId', 'mainCharacter', 'mainCharacterId', 'character', 'characterRecord', 'canonicalCharacterRegistry', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
     if context.get('storyExperiment'):
         from .story_experiment import contract, SCHEMA
         experiment = contract(text, context)
@@ -950,10 +1254,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         ]
         wire_feasibility['evidenceProjection'] = 'COMPACT_FINDINGS; contextSha256 binds the complete saved source context'
         safe_context['canonicalStoryFeasibilityContext'] = wire_feasibility
-        if story_feasibility.get('version') != 'canonical-story-feasibility-context-v1' or story_feasibility.get('rulesetVersion') != '1.11':
+        if story_feasibility.get('version') != 'canonical-story-feasibility-context-v1' or story_feasibility.get('rulesetVersion') not in {'1.11', '1.12'}:
             raise ValueError('Unsupported canonical story feasibility context')
         if role == 'STORY':
-            system += (' Design observable narrative events that can later be expressed as source-bound production beats under Ruleset 1.11. '
+            system += (' Design observable narrative events that can later be expressed as source-bound production beats under Ruleset 1.12. '
                        'The objective is a genuinely coherent story, not a manufactured numeric score. For short ABSURD_PHYSICS work, '
                        'use distinct character problem-solving strategies only when they naturally advance the same central mechanic; '
                        'pulling harder, repeating a pull, relabeling an action, or changing the camera are not distinct story strategies. '
@@ -1018,27 +1322,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     wire_payload = (json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
                     if context.get('storyExperiment') else json.dumps(payload, ensure_ascii=False))
     raw_response = provider.complete(wire_payload, system=system, temperature=0)
-    provider.last_raw_response = raw_response
-    if not isinstance(raw_response, str) or not raw_response.strip():
-        raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
-    candidate_response = raw_response.strip()
-    if candidate_response.startswith('```'):
-        candidate_response = re.sub(r'^```(?:json)?\s*|\s*```$', '', candidate_response, flags=re.IGNORECASE | re.DOTALL).strip()
-    try:
-        value = json.loads(candidate_response)
-    except json.JSONDecodeError as error:
-        # Some configured text endpoints wrap an otherwise valid object in a
-        # short preamble. Recover only a complete object; never invent fields.
-        start, end = candidate_response.find('{'), candidate_response.rfind('}')
-        if start >= 0 and end > start:
-            try:
-                value = json.loads(candidate_response[start:end + 1])
-            except json.JSONDecodeError:
-                raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from error
-        else:
-            raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from error
-    if not isinstance(value, dict):
-        raise ValueError('Role result must be an object')
+    value = _parse_role_json_response(raw_response, role, provider)
     if role == 'PROMPT_OPTIMIZATION':
         provider.last_role_result = deepcopy(value)
     if role == 'STORY_REVIEW':
@@ -1149,7 +1433,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             candidate_id = str(candidate.get('candidateId'))
             evaluation = _run_canonical_evaluation({
                 'prompt': str(candidate.get('text') or ''),
-                'canonicalRulesetVersion': '1.11',
+                'canonicalRulesetVersion': '1.12',
                 'contentProfile': str(context.get('contentProfile') or 'ABSURD_PHYSICS'),
             })
             rows = {
@@ -1212,98 +1496,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             else:
                 raise ValueError('Story alternatives must contain bounded text')
         if isinstance(requested_duration, (int, float)) and 20 <= requested_duration <= 30:
-            from .review import review_prompt
-
-            mandatory_rules = (
-                'GOAL_001', 'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK',
-                'ATTEMPT_001', 'ATTEMPT_002', 'PROGRESSION_006',
-                'ESCALATION_005', 'PAYOFF_001', 'CONCEPT_007', 'CONCEPT_008',
-            )
             for index, candidate in enumerate(alternatives, start=1):
                 if not isinstance(candidate, dict):
-                    raise ValueError('Long-form STORY candidates must use the structured story-plan contract')
-                plan_errors = _story_plan_errors(candidate, requested_duration)
-                candidate['storyPlanValidation'] = {
-                    'status': 'PASS' if not plan_errors else 'FAIL',
-                    'errors': plan_errors,
-                    'version': 'long-form-story-plan-v1',
-                }
-                goal_evidence = _goal_evidence_from_story_plan(candidate)
-                if not plan_errors and goal_evidence:
-                    evaluation_input = {
-                        'prompt': candidate['text'],
-                        'sourceId': str(context.get('sourceRequestId') or 'creative-role-story'),
-                        'sourceVersion': str(candidate.get('candidateId') or index),
-                        'profile': 'post-family-v1',
-                        'goalEvidence': goal_evidence,
-                        'canonicalRulesetVersion': '1.11',
-                        'contentProfile': str(context.get('profile') or 'ABSURD_PHYSICS'),
-                        'desiredDuration': candidate['storyPlan']['recommendedRuntimeSeconds'],
-                        'plannedEditedDuration': candidate['storyPlan']['recommendedRuntimeSeconds'],
-                        'generator': str(
-                            (context.get('targetConfiguration') or {}).get('selectedGenerator')
-                            if isinstance(context.get('targetConfiguration'), dict)
-                            else context.get('selectedGenerator') or 'SEEDANCE_2_5'
-                        ),
-                        'settings': {'aspectRatio': str(
-                            (context.get('targetConfiguration') or {}).get('aspectRatio')
-                            if isinstance(context.get('targetConfiguration'), dict)
-                            else context.get('aspectRatio') or '9:16'
-                        )},
-                        'references': [],
-                    }
-                    candidate['storyEvaluationInput'] = evaluation_input
-                    review = review_prompt(evaluation_input)
-                    candidate['postFamilyReview'] = review
-                    evaluation = review.get('canonicalRuleEvaluation') or {}
-                    candidate['canonicalStoryEvaluation'] = evaluation
-                    rows = {
-                        row.get('ruleId'): row
-                        for group in ('passedRules', 'failedRules', 'unknownRules', 'notApplicableRules')
-                        for row in evaluation.get(group, [])
-                    }
-                    statuses = {rule_id: rows.get(rule_id, {}).get('outcome', 'NOT_EVALUATED') for rule_id in mandatory_rules}
-                    if any(status == 'FAIL' for status in statuses.values()):
-                        gate_status = 'FAIL'
-                    elif all(status == 'PASS' for status in statuses.values()):
-                        gate_status = 'PASS'
-                    else:
-                        gate_status = 'NOT_EVALUATED'
-                    candidate['mandatoryStoryGate'] = {'status': gate_status, 'rules': statuses}
-                    candidate['storyStageStatus'] = (
-                        'STORY_GATES_FAIL' if gate_status == 'FAIL' else
-                        'STORY_GATES_NOT_EVALUATED' if gate_status != 'PASS' else
-                        'STORY_GATES_PASS_CREATIVE_REVIEW_PENDING'
-                    )
-                else:
-                    candidate['storyEvaluationInput'] = {
-                        'prompt': candidate['text'],
-                        'goalEvidence': goal_evidence,
-                        'canonicalRulesetVersion': '1.11',
-                        'contentProfile': str(context.get('profile') or 'ABSURD_PHYSICS'),
-                    }
-                    candidate['canonicalStoryEvaluation'] = {
-                        'status': 'NOT_EVALUATED',
-                        'reason': 'Structured source evidence is incomplete; canonical semantic gates were not run.',
-                        'rulesEvaluated': 0,
-                        'passedRules': [], 'failedRules': [], 'unknownRules': [], 'notApplicableRules': [],
-                    }
-                    candidate['mandatoryStoryGate'] = {
-                        'status': 'NOT_EVALUATED',
-                        'rules': {rule_id: 'NOT_EVALUATED' for rule_id in mandatory_rules},
-                    }
-                    candidate['storyStageStatus'] = 'STORY_PLAN_INCOMPLETE'
-                candidate['durationReview'] = {
-                    'status': 'EDITORIAL_REVIEW_REQUIRED',
-                    'recommendedRuntimeSeconds': (candidate.get('storyPlan') or {}).get('recommendedRuntimeSeconds'),
-                    'requestedRuntimeSeconds': requested_duration,
-                    'durationJustification': (candidate.get('storyPlan') or {}).get('durationJustification'),
-                    'storyDensityEvidence': (candidate.get('canonicalStoryEvaluation') or {}).get('storyDensityEvidence'),
-                    'productionFeasibility': (((candidate.get('canonicalStoryEvaluation') or {}).get('videoPlanIR') or {}).get('producibility')),
-                    'generalProducibility': ((candidate.get('postFamilyReview') or {}).get('generalProducibility')),
-                    'creativeQuality': ((((candidate.get('postFamilyReview') or {}).get('family8') or {}).get('creativeQuality'))),
-                    'automaticCreativePass': False,
-                }
+                    raise ValueError('Long-form STORY candidates must be structured objects')
+                _evaluate_long_form_story_text(candidate, context, float(requested_duration), index)
         if context.get('characterRecord') is not None:
             value['canonicalIdentityValidation'] = _validate_canonical_story_identity(alternatives, context)
         value['storyQuality'] = analyse_story_candidates(alternatives, context)
@@ -1705,6 +1901,43 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
             if reconstruction:
                 result['result']['improvementMetrics']['providerCostUsd'] = result['actualCostUsd']
     except Exception as error:
+        if role in {'STORY', 'STORY_REVIEW'}:
+            response_metadata = getattr(provider, 'last_response_metadata', None) or {}
+            raw = getattr(provider, 'last_raw_response', None)
+            usage = getattr(provider, 'last_usage', None)
+            response_returned = raw is not None or getattr(provider, 'last_provider_response', None) is not None
+            actual_cost = None
+            usage_error = None
+            if response_returned:
+                try:
+                    actual_cost = _optimization_cost(usage, input_rate, output_rate)
+                    if actual_cost > max_cost_usd:
+                        usage_error = 'Actual provider cost exceeded the authorized cost ceiling'
+                except ValueError as cost_error:
+                    usage_error = str(cost_error)
+            detail = usage_error or (str(error) if isinstance(error, ValueError) else 'Provider response processing failed.')
+            diagnostics = {
+                'category': 'PROVIDER_RESULT_REJECTED' if response_returned else _provider_failure_category(error),
+                'provider': ROLES[role], 'model': model,
+                'providerDispatched': bool(getattr(provider, 'last_request_started', False)),
+                'providerResponseReturned': response_returned,
+                'providerRequestId': response_metadata.get('requestId'),
+                'finishReason': response_metadata.get('finishReason'),
+                'usage': usage, 'tokenUsage': _safe_usage_summary(usage),
+                'actualCostUsd': actual_cost, 'approvedCostCeilingUsd': max_cost_usd,
+                'candidatesSaved': False, 'retrySafe': False,
+                'retryRequiresOperatorAuthorization': False,
+                'validationError': detail, 'usageError': usage_error,
+                'rawProviderResponse': raw,
+                'providerApiResponse': getattr(provider, 'last_provider_response', None),
+                'attemptId': context.get('attemptId'),
+            }
+            logger.warning(
+                'Creative story role rejected role=%s attempt_id=%s provider_dispatched=%s response_returned=%s request_id=%s',
+                role, context.get('attemptId', 'unassigned'), diagnostics['providerDispatched'],
+                response_returned, diagnostics['providerRequestId'] or 'unavailable',
+            )
+            raise CreativeRoleFailure(detail, diagnostics) from error
         if role == 'PROMPT_OPTIMIZATION':
             response_metadata = getattr(provider, 'last_response_metadata', None)
             provider_response_returned = (

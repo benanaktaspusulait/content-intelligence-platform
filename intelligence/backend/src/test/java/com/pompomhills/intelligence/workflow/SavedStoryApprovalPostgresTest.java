@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pompomhills.intelligence.quality.MlWorkflowException;
 import com.pompomhills.intelligence.quality.QualityMlClient;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -52,6 +54,45 @@ class SavedStoryApprovalPostgresTest {
             new ObjectMapper().findAndRegisterModules(),
             jdbc,
             null);
+    ReflectionTestUtils.setField(service, "attemptTransactions", new org.springframework.jdbc.datasource.DataSourceTransactionManager(dataSource));
+  }
+
+  @Test
+  void rejectedStoryProviderResponseIsDurablySavedBeforeRequestFailureRollsBack() throws Exception {
+    var diagnostics = Map.<String, Object>ofEntries(
+        Map.entry("category", "PROVIDER_RESULT_REJECTED"),
+        Map.entry("provider", "deepseek"),
+        Map.entry("model", "deepseek-chat"),
+        Map.entry("providerDispatched", true),
+        Map.entry("providerResponseReturned", true),
+        Map.entry("providerRequestId", "fixture-request-1"),
+        Map.entry("finishReason", "stop"),
+        Map.entry("usage", Map.of("prompt_tokens", 100, "completion_tokens", 40, "total_tokens", 140)),
+        Map.entry("actualCostUsd", 0.001),
+        Map.entry("approvedCostCeilingUsd", 0.02),
+        Map.entry("rawProviderResponse", "{\"alternatives\":"),
+        Map.entry("validationError", "Deepseek returned invalid JSON"));
+    var envelope = new java.util.LinkedHashMap<String, Object>();
+    envelope.put("detail", "Deepseek returned invalid JSON");
+    envelope.putAll(diagnostics);
+    when(ml.workflow(eq("creative-role"), anyMap()))
+        .thenThrow(new MlWorkflowException(409, envelope));
+
+    assertThatThrownBy(() -> tx.execute(status -> service.creativeRole(Map.of(
+        "role", "STORY_REVIEW", "text", "Review this story.", "maxCostUsd", 0.02,
+        "context", Map.of()))))
+        .hasMessageContaining("Deepseek returned invalid JSON");
+
+    var stored = jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE' ORDER BY created_at DESC LIMIT 1")
+        .query(String.class).single();
+    var payload = new ObjectMapper().readValue(stored, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+    assertThat(payload).containsEntry("attemptState", "PROVIDER_RESULT_REJECTED");
+    var savedDiagnostics = (Map<?, ?>) payload.get("attemptDiagnostics");
+    assertThat(savedDiagnostics.get("rawProviderResponse")).isEqualTo("{\"alternatives\":");
+    assertThat(savedDiagnostics.get("finishReason")).isEqualTo("stop");
+    assertThat(savedDiagnostics.get("providerRequestId")).isEqualTo("fixture-request-1");
+    assertThat(savedDiagnostics.get("usage")).isInstanceOf(Map.class);
+    verify(ml, times(1)).workflow(eq("creative-role"), anyMap());
   }
 
   @Test

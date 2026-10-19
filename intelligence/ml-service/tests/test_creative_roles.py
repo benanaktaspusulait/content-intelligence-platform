@@ -102,6 +102,11 @@ def _structured_long_form_candidate():
         })
     plan = {
         'character': 'Kiko',
+        'conceptSelection': {
+            'mechanism': 'An opposite-side crease replaces every fold Kiko smooths.',
+            'nearestComparison': 'Upside-Down Chair spatial inversion.',
+            'distinction': 'The conflict comes from changes in a paper surface rather than an object repeatedly flipping.',
+        },
         'everydayGoal': {'task': 'Flatten her paper drawing to show it proudly', 'why': 'She wants to share a picture she worked on', 'sourceQuote': lines[1]},
         'frameZeroTrouble': {'description': 'The opposite edge buckles while Kiko is already smoothing the drawing', 'sourceQuote': lines[4]},
         'impossiblePhysicalRule': {'rule': 'Smoothing one crease creates a new crease on the opposite side', 'sourceQuote': lines[3], 'targetObject': 'paper drawing'},
@@ -130,6 +135,7 @@ def test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gat
         {'ruleId': rule, 'outcome': 'PASS'} for rule in (
             'GOAL_001', 'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK', 'ATTEMPT_001', 'ATTEMPT_002',
             'PROGRESSION_006', 'ESCALATION_005', 'PAYOFF_001', 'CONCEPT_007', 'CONCEPT_008',
+            'HOOK_002', 'INSTANT_VISUAL_ABSURDITY_GATE', 'CONTINUOUS_ACTION_MOMENTUM',
         )
     ], 'failedRules': [], 'unknownRules': [], 'notApplicableRules': []}
 
@@ -143,16 +149,29 @@ def test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gat
         'family8': {'creativeQuality': {'status': 'NOT_EVALUATED'}},
     })
     provider = FixtureProvider({'alternatives': [_structured_long_form_candidate()]})
+    winner_context = [{
+        'title': 'Upside-Down Chair',
+        'mechanismFamily': 'spatial_inversion_recurrence',
+        'causalSummary': 'A chair repeatedly flips between normal and upside-down states.',
+        'source': 'POMPOM_GOLDEN_V1',
+    }]
     response = perform_role('STORY', 'Find one new 20-second Pompom Hills story.', {
         'targetDuration': 20, 'requestedAlternativeCount': 1,
+        'establishedWinnerMechanisms': winner_context,
         'characterRecord': {'id': 'kiko-id', 'name': 'Kiko'},
         'canonicalCharacterRegistry': [{'id': 'kiko-id', 'name': 'Kiko'}],
     }, provider, 'configured-model')
     candidate = response['result']['alternatives'][0]
     assert 'LONG-FORM STORY CONTRACT' in provider.calls[0][1]
-    assert captured['goalEvidence']['sourceQuote'] == candidate['storyPlan']['everydayGoal']['sourceQuote']
-    assert captured['goalEvidence']['sourceQuote'] in captured['prompt']
-    assert candidate['storyPlanValidation']['status'] == 'PASS'
+    assert 'EXACT JSON ENVELOPE' in provider.calls[0][1]
+    assert 'application derives evidence from the story text' in provider.calls[0][1]
+    assert 'does not require a nested storyPlan' in provider.calls[0][1]
+    assert provider.calls[0][0]['context']['establishedWinnerMechanisms'] == winner_context
+    assert 'Do not reuse or cosmetically rename a winner' in provider.calls[0][1]
+    assert 'goalEvidence' not in captured
+    assert 'storyPlanEvidence' not in captured
+    assert candidate['storyPlanValidation']['status'] == 'SOURCE_TEXT_MAPPED'
+    assert candidate['providerStoryPlanDiagnostics']['usedForCanonicalEvidence'] is False
     assert candidate['mandatoryStoryGate']['status'] == 'PASS'
     assert candidate['storyStageStatus'] == 'STORY_GATES_PASS_CREATIVE_REVIEW_PENDING'
     assert candidate['durationReview']['automaticCreativePass'] is False
@@ -162,14 +181,213 @@ def test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gat
     assert next(row for row in quality_candidate['unknown'] if row['dimension'] == 'goalMotivation')['outcome'] == 'PASS'
 
 
-def test_long_form_story_contract_failure_stays_not_evaluated_and_cannot_advance():
+def test_long_form_story_without_provider_plan_maps_only_text_evidence_and_reaches_canonical(monkeypatch):
+    import app.workflow.review as review
+    candidate_source = _structured_long_form_candidate()
+    candidate_source.pop('storyPlan')
+    captured = {}
+    monkeypatch.setattr(review, 'review_prompt', lambda value: captured.update(value) or {
+        'canonicalRuleEvaluation': {'status': 'EVALUATED', 'rulesEvaluated': 1, 'passedRules': [],
+            'failedRules': [], 'unknownRules': [{'ruleId': 'GOAL_001', 'outcome': 'UNKNOWN'}], 'notApplicableRules': []},
+        'generalProducibility': {'status': 'UNKNOWN'},
+        'family8': {'creativeQuality': {'status': 'NOT_EVALUATED'}},
+    })
+    provider = FixtureProvider({'alternatives': [candidate_source]})
+    response = perform_role('STORY', 'Generate a 20-second story.', {'targetDuration': 20}, provider, 'configured-model')
+    candidate = response['result']['alternatives'][0]
+    assert captured['prompt'] == candidate_source['text']
+    assert 'goalEvidence' not in captured and 'storyPlanEvidence' not in captured
+    assert candidate['storyPlanValidation']['canonicalEvaluationEligible'] is True
+    assert candidate['storyPlanValidation']['sourceBoundGoal']['sourceQuote'].startswith('Goal: Kiko wants')
+    assert candidate['canonicalStoryEvaluation']['status'] == 'EVALUATED'
+    assert candidate['mandatoryStoryGate']['rules']['GOAL_001'] == 'UNKNOWN'
+    assert candidate['mandatoryStoryGate']['status'] == 'UNKNOWN'
+
+
+def test_opening_and_momentum_failures_block_long_form_story_stage(monkeypatch):
+    import app.workflow.review as review
+    candidate_source = _structured_long_form_candidate()
+    candidate_source.pop('storyPlan')
+    failed = {'status': 'EVALUATED', 'rulesEvaluated': 3, 'passedRules': [],
+        'failedRules': [
+            {'ruleId': 'HOOK_002', 'outcome': 'FAIL'},
+            {'ruleId': 'INSTANT_VISUAL_ABSURDITY_GATE', 'outcome': 'FAIL'},
+        ], 'unknownRules': [], 'notApplicableRules': []}
+    monkeypatch.setattr(review, 'review_prompt', lambda value: {
+        'canonicalRuleEvaluation': failed,
+        'generalProducibility': {'status': 'UNKNOWN'},
+        'family8': {'creativeQuality': {'status': 'NOT_EVALUATED'}},
+    })
+    provider = FixtureProvider({'alternatives': [candidate_source]})
+    response = perform_role('STORY', 'Generate a 20-second story.', {'targetDuration': 20}, provider, 'configured-model')
+    candidate = response['result']['alternatives'][0]
+    assert candidate['mandatoryStoryGate']['rules']['HOOK_002'] == 'FAIL'
+    assert candidate['mandatoryStoryGate']['rules']['INSTANT_VISUAL_ABSURDITY_GATE'] == 'FAIL'
+    assert candidate['mandatoryStoryGate']['status'] == 'FAIL'
+    assert candidate['storyStageStatus'] == 'STORY_GATES_FAIL'
+
+
+def test_long_form_story_plan_keeps_missing_selection_rationale_separate_from_story_evidence():
+    from app.workflow.creative_roles import _bind_story_source_evidence, _story_plan_errors
+
+    candidate = _structured_long_form_candidate()
+    candidate['storyPlan'].pop('conceptSelection')
+    _bind_story_source_evidence(candidate, {'establishedWinnerMechanisms': [{'title': 'Upside-Down Chair'}]})
+    assert candidate['conceptSelectionStatus'] == 'NOT_EVALUATED_MISSING_SELECTION_RATIONALE'
+    assert 'CONCEPT_SELECTION_INCOMPLETE' not in _story_plan_errors(candidate, 20)
+    persisted = {'mechanism': 'paper crease migration', 'nearestComparison': 'Upside-Down Chair', 'distinction': 'surface state changes rather than object inversion'}
+    _bind_story_source_evidence(candidate, {'conceptSelection': persisted})
+    assert candidate['storyPlan']['conceptSelection'] == persisted
+    assert candidate['conceptSelectionStatus'] == 'MAPPED_FROM_PERSISTED_WORKFLOW'
+
+
+def test_long_form_story_binds_goal_and_opening_quotes_from_actual_parser_spans():
+    from app.workflow.creative_roles import _bind_story_source_evidence, _story_plan_errors
+
+    candidate = _structured_long_form_candidate()
+    candidate['storyPlan']['everydayGoal']['sourceQuote'] = 'provider paraphrase of the goal'
+    candidate['storyPlan']['frameZeroTrouble']['sourceQuote'] = 'provider paraphrase of the opening'
+    _bind_story_source_evidence(candidate)
+    assert candidate['storyPlan']['everydayGoal']['sourceQuote'].startswith('Goal: Kiko wants')
+    assert candidate['storyPlan']['frameZeroTrouble']['sourceQuote'] == candidate['storyPlan']['timecodedBeats'][0]['sourceQuote']
+    assert _story_plan_errors(candidate, 20) == []
+
+
+def test_long_form_source_mapping_does_not_invent_missing_goal_or_opening_trouble():
+    from app.workflow.creative_roles import _bind_story_source_evidence, _story_plan_errors
+
+    candidate = _structured_long_form_candidate()
+    candidate['text'] = candidate['text'].replace('Goal: Kiko wants to flatten her paper drawing so she can show it proudly.', 'Kiko stands beside the paper drawing.')
+    candidate['text'] = candidate['text'].replace('Why: She has worked carefully on it and wants to share the finished picture.\n', '')
+    candidate['text'] = candidate['text'].replace('At frame zero Kiko is already smoothing the drawing, but the opposite edge buckles upward before she can flatten it', 'Kiko looks at the drawing')
+    _bind_story_source_evidence(candidate)
+    errors = _story_plan_errors(candidate, 20)
+    assert candidate['storySourceEvidenceStatus']['goal'] == 'MISSING'
+    assert candidate['storySourceEvidenceStatus']['frameZero'] == 'MISSING'
+    assert 'EVERYDAY_GOAL_QUOTE_NOT_IN_STORY' in errors
+    assert 'FRAME_ZERO_TROUBLE_QUOTE_NOT_IN_STORY' in errors
+
+
+def test_unverified_duration_claim_is_not_evaluated_and_does_not_block_story_content_review(monkeypatch):
+    import app.workflow.review as review
+
+    provider = FixtureProvider({'alternatives': [_structured_long_form_candidate()]})
+    provider.result['alternatives'][0]['storyPlan']['durationJustification']['meaningfulLossIfShortened'] = 'removing eight seconds loses the discovery'
+    called = {}
+    def review_prompt(value):
+        called.update(value)
+        return {'canonicalRuleEvaluation': {'status': 'EVALUATED', 'rulesEvaluated': 1, 'passedRules': [],
+                'failedRules': [{'ruleId': 'GOAL_001', 'outcome': 'FAIL'}], 'unknownRules': [], 'notApplicableRules': []},
+                'generalProducibility': {'status': 'UNKNOWN'}, 'family8': {'creativeQuality': {'status': 'NOT_EVALUATED'}}}
+    monkeypatch.setattr(review, 'review_prompt', review_prompt)
+    result = perform_role('STORY', 'Find one new 20-second story.', {
+        'targetDuration': 20, 'requestedAlternativeCount': 1,
+        'characterRecord': {'id': 'kiko-id', 'name': 'Kiko'},
+        'canonicalCharacterRegistry': [{'id': 'kiko-id', 'name': 'Kiko'}],
+    }, provider, 'configured-model')
+    candidate = result['result']['alternatives'][0]
+    assert called['prompt'] == candidate['text']
+    assert candidate['storyPlanValidation']['status'] == 'SOURCE_TEXT_MAPPED'
+    assert candidate['providerStoryPlanDiagnostics']['status'] == 'FAIL'
+    assert candidate['storyPlanValidation']['canonicalEvaluationEligible'] is True
+    assert candidate['durationReview']['status'] == 'NOT_EVALUATED'
+    assert candidate['durationReview']['assessment']['status'] == 'NOT_EVALUATED'
+    assert candidate['mandatoryStoryGate']['status'] == 'FAIL'
+
+
+def test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts(monkeypatch):
+    from types import SimpleNamespace
+    import app.parser.prompt_parser as parser
+    import app.rules.rule_engine as rules
+    from app.config import settings
+    from app.rules.rule_engine import RuleEngine as CanonicalRuleEngine
+    from app.workflow.review import _run_canonical_evaluation
+
+    candidate = _structured_long_form_candidate()
+    parsed = parser.parse_prompt(candidate['text'], parser.ParserConfig(
+        attempt_evidence_policy='ACTOR_SOURCE_BOUND_V2'
+    ))
+    captured = {}
+
+    class CapturingEngine:
+        ruleset = {'rules': []}
+
+        def __init__(self, _path):
+            pass
+
+        def evaluate(self, video_plan_ir):
+            captured['ir'] = video_plan_ir
+            return SimpleNamespace(evaluations=[], overall_score=100, ruleset_version='1.11')
+
+    monkeypatch.setattr(parser, 'parse_prompt', lambda *_args, **_kwargs: parsed)
+    monkeypatch.setattr(rules, 'RuleEngine', CapturingEngine)
+    result = _run_canonical_evaluation({
+        'prompt': candidate['text'],
+        'storyPlanEvidence': candidate['storyPlan'],
+        'goalEvidence': {
+            'description': candidate['storyPlan']['everydayGoal']['task'],
+            'sourceQuote': candidate['storyPlan']['everydayGoal']['sourceQuote'],
+        },
+        'canonicalRulesetVersion': '1.11',
+    })
+    assert result['status'] == 'EVALUATED'
+    mapped = [beat for beat in captured['ir']['beats'] if beat.get('isAttempt')]
+    assert len(mapped) == 3
+    assert all(beat['attemptSource'] == 'STRUCTURED_PLAN_ROLE' for beat in mapped)
+    assert all(beat['sourceAttemptQuote'] in candidate['text'] for beat in mapped)
+    captured['ir']['metadata']['duration'] = 24
+    attempt_count = CanonicalRuleEngine(
+        str(settings.rules_dir / 'RULESET_1.11.yaml')
+    )._evaluate_attempt_001(captured['ir'], {})
+    assert attempt_count.outcome.value == 'FAIL'
+    assert attempt_count.actual_value == 3
+    assert attempt_count.required_value == 7
+
+    broken_plan = dict(candidate['storyPlan'])
+    broken_plan['attempts'] = [dict(candidate['storyPlan']['attempts'][0], sourceQuote='not in source')]
+    rejected = _run_canonical_evaluation({
+        'prompt': candidate['text'], 'storyPlanEvidence': broken_plan,
+        'canonicalRulesetVersion': '1.11',
+    })
+    assert rejected['status'] == 'ERROR'
+    assert 'not source-bound' in rejected['reason']
+
+
+def test_story_review_receives_known_winner_mechanisms_for_originality_comparison():
+    winner_context = [{'title': 'Upside-Down Chair', 'mechanismFamily': 'spatial_inversion_recurrence'}]
+    review = {
+        'reviewId': 'review-1', 'sourceRequestId': None, 'sourceFingerprint': None,
+        'reviewModel': 'fixture', 'reviewModelVersion': 'fixture', 'reviewPolicyVersion': 'v1',
+        'reviewTimestamp': 'fixture', 'reviewStatus': 'PARTIAL', 'diversityAssessment': {},
+        'comparativeFindings': [], 'candidateReviews': [{'candidateId': 'candidate-1'}],
+        'recommendedCandidateId': None, 'recommendationReason': 'Insufficient evidence',
+        'overallConcerns': [], 'usageAndCost': {}, 'evidenceLimitations': [], 'revisionComparison': {},
+    }
+    provider = FixtureProvider(review)
+    perform_role('STORY_REVIEW', 'Review the candidate.', {
+        'establishedWinnerMechanisms': winner_context,
+        'candidates': [{'candidateId': 'candidate-1', 'title': 'A distinct story', 'text': 'Kiko acts.'}],
+    }, provider, 'configured-model')
+    assert provider.calls[0][0]['context']['establishedWinnerMechanisms'] == winner_context
+    assert 'originality against siblings and context.establishedWinnerMechanisms' in provider.calls[0][1]
+
+
+def test_minimal_long_form_story_reaches_canonical_evaluation_but_missing_content_stays_blocked(monkeypatch):
+    import app.workflow.review as review
+    monkeypatch.setattr(review, 'review_prompt', lambda value: {
+        'canonicalRuleEvaluation': {'status': 'EVALUATED', 'rulesEvaluated': 2, 'passedRules': [],
+            'failedRules': [{'ruleId': 'GOAL_001', 'outcome': 'FAIL'}], 'unknownRules': [], 'notApplicableRules': []},
+        'generalProducibility': {'status': 'UNKNOWN'},
+        'family8': {'creativeQuality': {'status': 'NOT_EVALUATED'}},
+    })
     provider = FixtureProvider({'alternatives': [{'candidateId': 'candidate-1', 'title': 'Unstructured', 'text': 'Kiko wants to do an everyday task.'}]})
     response = perform_role('STORY', 'Find one new 20-second story.', {'targetDuration': 20}, provider, 'configured-model')
     candidate = response['result']['alternatives'][0]
-    assert candidate['storyPlanValidation']['status'] == 'FAIL'
-    assert candidate['canonicalStoryEvaluation']['status'] == 'NOT_EVALUATED'
-    assert candidate['mandatoryStoryGate']['status'] == 'NOT_EVALUATED'
-    assert candidate['storyStageStatus'] == 'STORY_PLAN_INCOMPLETE'
+    assert candidate['storyPlanValidation']['canonicalEvaluationEligible'] is True
+    assert 'FRAME_ZERO_TROUBLE_NOT_SOURCE_ESTABLISHED' in candidate['storyPlanValidation']['errors']
+    assert candidate['canonicalStoryEvaluation']['status'] == 'EVALUATED'
+    assert candidate['mandatoryStoryGate']['rules']['GOAL_001'] == 'FAIL'
+    assert candidate['storyStageStatus'] == 'STORY_GATES_FAIL'
 
 
 def test_creative_role_reports_empty_provider_response():

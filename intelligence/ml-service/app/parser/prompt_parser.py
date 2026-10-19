@@ -112,9 +112,12 @@ class PromptParser:
 
         # Step 5: Parse timeline beats (most complex step)
         beats = self._parse_timeline_beats(prompt_text, metadata["duration"])
-        if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V2":
+        if self.config.attempt_evidence_policy in {"ACTOR_SOURCE_BOUND_V2", "ACTOR_SOURCE_BOUND_V3"}:
             from .actor_attempts import bind_beats
-            bind_beats(prompt_text, beats, self._primary_actor)
+            bind_beats(
+                prompt_text, beats, self._primary_actor,
+                attached_participles=self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V3",
+            )
 
         # Step 6: Add structured central-mechanic and local-goal evidence. These are
         # additive parser evidence fields; they do not use performance history.
@@ -165,14 +168,16 @@ class PromptParser:
                     "semanticVerification": "NOT_PERFORMED",
                     "visualVerification": "NOT_PERFORMED",
                 }
-        if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V2":
+        if self.config.attempt_evidence_policy in {"ACTOR_SOURCE_BOUND_V2", "ACTOR_SOURCE_BOUND_V3"}:
             video_plan_ir["evidenceVersions"]["attemptExtractor"] = "actor-source-bound-v2"
+            if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V3":
+                video_plan_ir["evidenceVersions"]["attemptExtractor"] = "actor-source-bound-v3"
             for beat in beats:
                 actions = beat.get("characterActions") or []
                 if actions and not beat.get("sourceAction"):
                     selected = actions[0]
                     beat["sourceAction"] = selected["action"]
-                    beat["fieldEvidence"]["action"] = {"state": "OBSERVED", "value": selected["action"], "sourceSpan": selected.get("sourceSpan"), "sourceQuote": selected["action"], "method": "ACTOR_SOURCE_BOUND_V2", "semanticVerification": "NOT_PERFORMED"}
+                    beat["fieldEvidence"]["action"] = {"state": "OBSERVED", "value": selected["action"], "sourceSpan": selected.get("sourceSpan"), "sourceQuote": selected["action"], "method": "ACTOR_SOURCE_BOUND_V3" if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V3" else "ACTOR_SOURCE_BOUND_V2", "semanticVerification": "NOT_PERFORMED"}
                 if actions and any(a["actorQuote"].lower() in {"she", "he", "they"} for a in actions) and not beat.get("actor"):
                     beat["actor"] = actions[0]["actor"]
                     beat["fieldEvidence"]["actor"] = {"state": "INFERRED", "value": actions[0]["actor"], "sourceQuote": actions[0]["actorQuote"], "sourceSpan": actions[0].get("actorSourceSpan"), "method": "SINGLE_ACTOR_PRONOUN_CONTEXT", "semanticVerification": "NOT_PERFORMED"}
@@ -291,7 +296,7 @@ class PromptParser:
 
     def _find_primary_character(self, text: str) -> str:
         """Find main character name"""
-        if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V2":
+        if self.config.attempt_evidence_policy in {"ACTOR_SOURCE_BOUND_V2", "ACTOR_SOURCE_BOUND_V3"}:
             from .actor_attempts import establish_actor
             established = establish_actor(text)
             if established:
@@ -415,6 +420,33 @@ class PromptParser:
             return {
                 "physicalRule": rule_text,
                 "causeEffect": "Extracted from prompt",
+                "consistency": consistency,
+                "mechanicCount": None,
+                "primaryObject": None,
+                "mechanicCarrier": "UNKNOWN",
+                "causalParticipants": None,
+            }
+
+        # The compact STORY response may place Goal and Rule on one header
+        # line ("Goal: ... Rule: ..."). Bind the text after that explicit
+        # label through the line end/paragraph boundary, preserving exact span.
+        simple_rule = re.search(
+            r"(?im)(?:^|(?<=\.\s))RULE\s*:\s*(?P<body>[^\n]+?)\s*$",
+            text,
+        )
+        if simple_rule:
+            rule_text = simple_rule.group('body').strip()[:200]
+            start = simple_rule.start('body')
+            return {
+                "physicalRule": rule_text,
+                "physicalRuleEvidence": {
+                    "state": "OBSERVED",
+                    "sourceQuote": rule_text,
+                    "sourceSpan": [start, start + len(rule_text)],
+                    "method": "EXPLICIT_RULE_LINE",
+                    "semanticVerification": "NOT_PERFORMED",
+                },
+                "causeEffect": "Extracted from explicit Rule line",
                 "consistency": consistency,
                 "mechanicCount": None,
                 "primaryObject": None,
@@ -1239,9 +1271,12 @@ class PromptParser:
         a narrative ESCALATION/REACTION/TWIST beat must not inflate active or distinct
         attempt counts merely because it says ``grabs`` or ``leans``.
         """
-        if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V2":
+        if self.config.attempt_evidence_policy in {"ACTOR_SOURCE_BOUND_V2", "ACTOR_SOURCE_BOUND_V3"}:
             from .actor_attempts import classify_content
-            evidence = classify_content(content, getattr(self, "_primary_actor", None), role)
+            evidence = classify_content(
+                content, getattr(self, "_primary_actor", None), role,
+                attached_participles=self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V3",
+            )
             attempt = next((a for a in evidence["actions"] if a["classification"] == "CHARACTER_ATTEMPT"), None)
             return (True, attempt["primaryVerb"], "ACTOR_SOURCE_BOUND", None) if attempt else (False, "", "NONE", None)
         marked, marked_verb = self._extract_attempt_marker(description)
@@ -1755,12 +1790,13 @@ def parse_prompt(prompt_text: str, config: ParserConfig | None = None) -> ParseR
     )
 
 
-def source_plan_evidence(prompt: str, source_id: str, source_version: str, ruleset_version: str = "1.11") -> dict[str, Any]:
+def source_plan_evidence(prompt: str, source_id: str, source_version: str, ruleset_version: str = "1.12") -> dict[str, Any]:
     """Read-only parser projection; never runs rules, providers, persistence or authorization."""
     import hashlib
-    version = "source-plan-display-v3" if ruleset_version in {"1.10", "1.11"} else "source-plan-display-v2" if ruleset_version == "1.9" else "source-plan-display-v1"
+    version = "source-plan-display-v3" if ruleset_version in {"1.10", "1.11", "1.12"} else "source-plan-display-v2" if ruleset_version == "1.9" else "source-plan-display-v1"
     source_hash = hashlib.sha256(prompt.encode()).hexdigest()
-    parsed = parse_prompt(prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if ruleset_version in {"1.10", "1.11"} else "HISTORICAL_V1")).video_plan_ir
+    attempt_policy = "ACTOR_SOURCE_BOUND_V3" if ruleset_version == "1.12" else "ACTOR_SOURCE_BOUND_V2" if ruleset_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1"
+    parsed = parse_prompt(prompt, ParserConfig(attempt_evidence_policy=attempt_policy, motion_evidence_policy="TOKEN_MOTION_V2" if ruleset_version in {"1.10", "1.11", "1.12"} else "HISTORICAL_V1")).video_plan_ir
     identity = hashlib.sha256((version + "\n" + source_id + "\n" + source_version + "\n" + source_hash).encode()).hexdigest()
     return {"resultId": version + ":" + identity, "kind": "READ_ONLY_SOURCE_EXTRACTION", "parserVersion": version,
             "source": {"artifact": source_id, "version": source_version, "sha256": source_hash},

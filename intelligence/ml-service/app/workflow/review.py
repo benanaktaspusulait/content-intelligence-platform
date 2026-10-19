@@ -120,6 +120,7 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
         "protectedIntent",
         "qualityJustification",
         "structuredPlan",
+        "storyPlanEvidence",
         "viewerQuestion",
         "plannedEditedDuration",
         "intentRequirements",
@@ -128,7 +129,7 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
     )
     return sha256(
         json.dumps(
-            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.11"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
+            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.12"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
             sort_keys=True,
             ensure_ascii=False,
         )
@@ -878,9 +879,9 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
     """Run the canonical Rule Engine evaluation on the prompt.
 
     The canonical engine is deterministic except for its explicitly configured
-    semantic story gates. Structured goal evidence may be supplied by the
-    STORY role when its exact source quote is present in the prompt; it is
-    mapped onto the existing Video Plan IR rather than re-inferred from prose.
+    semantic story gates. Structured goal and attempt evidence may be supplied
+    by the STORY role only when its exact source quote maps to the evaluated text
+    and a parsed timeline beat; it is bound to the existing Video Plan IR.
     """
     try:
         from app.parser.prompt_parser import ParserConfig, parse_prompt
@@ -900,9 +901,68 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
             }
 
         # Parse prompt into Video Plan IR
-        requested_version = request.get("canonicalRulesetVersion") or "1.11"
-        parse_result = parse_prompt(prompt_text, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if requested_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if requested_version in {"1.10", "1.11"} else "HISTORICAL_V1"))
+        requested_version = request.get("canonicalRulesetVersion") or "1.12"
+        attempt_policy = "ACTOR_SOURCE_BOUND_V3" if requested_version == "1.12" else "ACTOR_SOURCE_BOUND_V2" if requested_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1"
+        parse_result = parse_prompt(prompt_text, ParserConfig(attempt_evidence_policy=attempt_policy, motion_evidence_policy="TOKEN_MOTION_V2" if requested_version in {"1.10", "1.11", "1.12"} else "HISTORICAL_V1"))
         video_plan_ir = parse_result.video_plan_ir
+
+        supplied_story_plan = request.get("storyPlanEvidence")
+        if isinstance(supplied_story_plan, dict):
+            attempts = supplied_story_plan.get("attempts")
+            if not isinstance(attempts, list):
+                raise ValueError("Structured STORY attempt evidence must be an array")
+            from app.parser.actor_attempts import classify_content
+
+            characters = video_plan_ir.get("characters") or {}
+            actor = characters.get("primary") or supplied_story_plan.get("character")
+            beats = video_plan_ir.get("beats") or []
+            used_beat_ids: set[str] = set()
+            for index, attempt in enumerate(attempts, start=1):
+                if not isinstance(attempt, dict):
+                    raise ValueError(f"Structured STORY attempt {index} must be an object")
+                quote = attempt.get("sourceQuote")
+                action = attempt.get("action")
+                if (
+                    not isinstance(quote, str) or not quote or quote not in prompt_text
+                    or not isinstance(action, str) or not action
+                ):
+                    raise ValueError(f"Structured STORY attempt {index} is not source-bound")
+                start = prompt_text.index(quote)
+                end = start + len(quote)
+                matches = [
+                    beat for beat in beats
+                    if isinstance(beat.get("sourceSpan"), list)
+                    and len(beat["sourceSpan"]) == 2
+                    and beat["sourceSpan"][0] <= start and end <= beat["sourceSpan"][1]
+                ]
+                if len(matches) != 1:
+                    raise ValueError(f"Structured STORY attempt {index} does not map to exactly one parsed beat")
+                beat = matches[0]
+                beat_id = str(beat.get("id", ""))
+                if beat_id in used_beat_ids:
+                    raise ValueError(f"Structured STORY attempts {index} duplicate a parsed beat")
+                resolved = classify_content(quote, actor, "ATTEMPT")
+                character_attempts = [
+                    row for row in resolved.get("actions", [])
+                    if row.get("classification") == "CHARACTER_ATTEMPT"
+                ]
+                if not character_attempts:
+                    raise ValueError(f"Structured STORY attempt {index} has no source-bound character action")
+                chosen = character_attempts[0]
+                used_beat_ids.add(beat_id)
+                beat.update({
+                    "isAttempt": True,
+                    "primaryVerb": chosen.get("primaryVerb", ""),
+                    "attemptSource": "STRUCTURED_PLAN_ROLE",
+                    "attemptConfidence": 0.95,
+                    "attemptReason": "The STORY plan declares an attempt whose action and quote are bound to this exact source beat.",
+                    "sourceAttemptQuote": quote,
+                    "sourceAttemptSpan": [start, end],
+                    "action": chosen.get("action", ""),
+                    "primaryAction": chosen.get("action", ""),
+                    "actor": chosen.get("actor") or actor,
+                    "attemptStrategyLabel": attempt.get("strategy"),
+                })
 
         supplied_goal = request.get("goalEvidence")
         if isinstance(supplied_goal, dict):
@@ -934,11 +994,11 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
 
         # Run canonical Rule Engine
         from app.config import settings
-        requested_version = request.get("canonicalRulesetVersion") or "1.11"
-        if requested_version not in {"1.7", "1.8", "1.9", "1.10", "1.11"}:
+        requested_version = request.get("canonicalRulesetVersion") or "1.12"
+        if requested_version not in {"1.7", "1.8", "1.9", "1.10", "1.11", "1.12"}:
             raise ValueError("Unsupported canonical ruleset version")
         engine = RuleEngine(str(settings.rules_dir / f"RULESET_{requested_version}.yaml"))
-        if requested_version in {"1.8", "1.9", "1.10", "1.11"}:
+        if requested_version in {"1.8", "1.9", "1.10", "1.11", "1.12"}:
             video_plan_ir["metadata"]["contentProfile"] = request.get("contentProfile", "UNKNOWN")
         # These are the existing universal Pompom Hills story gates. RULESET_1.8
         # scoped several out for curiosity/educational profiles; that made

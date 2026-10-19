@@ -851,3 +851,17 @@ versions:
     reason: Enable configured provider evidence only for mandatory everyday-goal and distinct-attempt gates; preserve provider-free behavior for other semantic checks and video analysis.
     new_value:
       semanticPolicy: TARGETED_STORY_GATES
+- version: '1.12'
+  release_date: '2026-10-19'
+  ruleset_path: RULESET_1.12.yaml
+  description: Replaces the seven-attempt long-form threshold with distinct story-development and duration-value guidance; historical rulesets remain reproducible.
+  is_breaking: true
+  deprecated_rules: []
+  learned_from: [LONG_FORM_DURATION_POLICY_REVISION]
+  changes:
+  - rule_id: LONG_FORM_ATTEMPT_POLICY_1_12
+    change_type: modified
+    breaking_change: true
+    reason: Seven attempts and seven strategies encouraged repetition; attempt count is separate from meaningful progression and duration value.
+    old_value: {activeAttempts: 7, distinctStrategies: 7}
+    new_value: {activeAttemptsByTier: {short: 3, long: 3}, distinctStrategiesByTier: {short: 3, long: 3}, developmentGuidance: {20-22s: 5-6, 25-30s: 6-8}}

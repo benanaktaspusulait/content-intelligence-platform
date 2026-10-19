@@ -1436,7 +1436,11 @@ public class WorkflowService {
       if (Boolean.TRUE.equals(diagnostic.get("providerResponseReturned"))) failed.put("attemptState","PROVIDER_RESULT_REJECTED");
       attemptLog.warn("Optimization attempt={} category={} dispatched={} returned={}",context.get("attemptId"),diagnostic.get("category"),diagnostic.get("providerDispatched"),diagnostic.get("providerResponseReturned"));
       try {
-        failed.put("recordId", "PROMPT_OPTIMIZATION".equals(role) ? saveCreativeAttempt(failed) : save("CREATIVE_ROLE", null, failed));
+        // The request is rethrown below, so the surrounding @Transactional
+        // boundary rolls back. Persist the provider receipt independently so
+        // malformed story JSON, token usage, finish reason, and raw output
+        // remain available for diagnosis without replaying a paid request.
+        failed.put("recordId", saveCreativeAttempt(failed));
       } catch (RuntimeException persistenceError) {
         // Preserve the provider error as the user-facing outcome even if the
         // diagnostic append itself cannot be written.

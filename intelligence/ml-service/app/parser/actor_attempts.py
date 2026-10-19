@@ -6,6 +6,7 @@ import re
 from typing import Any
 
 VERSION = "actor-source-bound-v2"
+ATTACHED_PARTICIPLE_VERSION = "actor-source-bound-v3"
 # Physical action vocabulary is a positive grammar contract, not a stopword filter.
 FORMS = {
     "PULL": ("pull", "pulls", "pulling", "pulled"),
@@ -24,6 +25,7 @@ FORMS = {
     "TWIST": ("twist", "twists", "twisting", "twisted"),
     "PIN": ("pin", "pins", "pinning", "pinned"),
     "PRESS": ("press", "presses", "pressing", "pressed"),
+    "SMOOTH": ("smooth", "smooths", "smoothing", "smoothed"),
     "SQUEEZE": ("squeeze", "squeezes", "squeezing", "squeezed"),
     "FOLD": ("fold", "folds", "folding", "folded"),
     "TAP": ("tap", "taps", "tapping", "tapped"),
@@ -38,6 +40,15 @@ FORMS = {
     "WRAP": ("wrap", "wraps", "wrapping", "wrapped"),
 }
 ROOTS = {form: root for root, forms in FORMS.items() for form in forms}
+ATTACHED_PARTICIPLE_FORMS = {
+    "CUP": ("cup", "cups", "cupping", "cupped"),
+    "DIP": ("dip", "dips", "dipping", "dipped"),
+    "SCOOP": ("scoop", "scoops", "scooping", "scooped"),
+    "LOWER": ("lower", "lowers", "lowering", "lowered"),
+}
+ATTACHED_PARTICIPLE_ROOTS = {
+    form: root for root, forms in ATTACHED_PARTICIPLE_FORMS.items() for form in forms
+}
 PRODUCTION = re.compile(
     r"\b(?:camera|shot|framing|close-up|wide|tracking|static|pan|tilt|zoom|visible)\b|\bin (?:the )?frame\b",
     re.I,
@@ -47,9 +58,10 @@ RELATION = re.compile(
     r"\bto (?:open|stop|free|remove|release|keep|control|catch|block)\b",
     re.I,
 )
+ATTACHED_RELATION = re.compile(r"\btoward\b|\bto (?:fill|scoop)\b", re.I)
 
 
-def classify_content(content: str, actor: str | None, role: str = "") -> dict[str, Any]:
+def classify_content(content: str, actor: str | None, role: str = "", *, attached_participles: bool = False) -> dict[str, Any]:
     instructions = [
         {
             "classification": "CAMERA_INSTRUCTION" if PRODUCTION.search(m.group()) else "VISUAL_COMPOSITION",
@@ -88,13 +100,17 @@ def classify_content(content: str, actor: str | None, role: str = "") -> dict[st
             "reason": "No source-established actor.",
         }
     subjects = rf"(?P<actor>{re.escape(actor)}|she|he|they)"
+    roots = ROOTS | ATTACHED_PARTICIPLE_ROOTS if attached_participles else ROOTS
+    has_relation = lambda quote: bool(RELATION.search(quote) or (attached_participles and ATTACHED_RELATION.search(quote)))
     prefix = r"(?P<intent>tries?\s+to\s+|attempts?\s+to\s+|continues?\s+to\s+|keeps?(?:\s+on)?\s+)?"
     pattern = re.compile(
-        rf"\b{subjects}\s+(?:(?:has|have|is)\s+)?(?:just\s+)?{prefix}(?:\w+ly\s+)*(?P<verb>[a-z]+)\b", re.I
+        rf"\b{subjects}\s+(?:(?:has|have|is)\s+)?(?:just\s+)?{prefix}"
+        rf"(?:(?:\w+ly|already|still)\s+)*(?P<verb>[a-z]+)\b",
+        re.I,
     )
     actions = []
     for match in pattern.finditer(content):
-        root = ROOTS.get(match.group("verb").lower())
+        root = roots.get(match.group("verb").lower())
         if not root:
             continue
         # End at a clause boundary, retaining the exact source action (including bracket actions).
@@ -106,12 +122,12 @@ def classify_content(content: str, actor: str | None, role: str = "") -> dict[st
         quote = content[match.start() : end]
         intent = (match.group("intent") or "").strip()
         marker = re.search(r"\[ATTEMPT:\s*([A-Za-z]+)(?:[^\]]*)\]", content, re.I)
-        marker_role = bool(marker and ROOTS.get(marker.group(1).lower()) == root)
+        marker_role = bool(marker and roots.get(marker.group(1).lower()) == root)
         relation = (
             "EXPLICIT_INTENT_OR_CONTINUATION"
             if intent
             else "EXPLICIT_RECOVERY_OR_CONTROL"
-            if RELATION.search(quote)
+            if has_relation(quote)
             else "STRUCTURED_ATTEMPT_ROLE"
             if role == "ATTEMPT" or marker_role
             else None
@@ -132,6 +148,45 @@ def classify_content(content: str, actor: str | None, role: str = "") -> dict[st
                 "semanticVerification": "NOT_PERFORMED",
             }
         )
+
+    if attached_participles:
+        # Preserve the actor on a source-attached participle clause ("Kiko
+        # kneels ..., holding the can toward the puddle" / "Kiko changes
+        # approach, lowering the can sideways"). Ruleset 1.12 opts into this
+        # grammar; historical parser versions retain their frozen behavior.
+        participle_pattern = re.compile(
+            rf"\b(?P<actor>{re.escape(actor)}|she|he|they)\b[^.;!?\n]{{0,120}}?,\s+"
+            r"(?P<verb>[a-z]+ing)\b",
+            re.I,
+        )
+        for match in participle_pattern.finditer(content):
+            root = roots.get(match.group('verb').lower())
+            if not root or any(action['localSpan'][0] <= match.start('verb') < action['localSpan'][1] for action in actions):
+                continue
+            tail = content[match.end():]
+            boundary = re.search(r";|\]|\[|->|[.!?](?:\s|$)", tail)
+            end = match.end() + (boundary.start() if boundary else len(tail))
+            while end > match.start('actor') and content[end - 1].isspace():
+                end -= 1
+            quote = content[match.start('actor'):end]
+            relation = (
+                "EXPLICIT_RECOVERY_OR_CONTROL" if has_relation(quote) else
+                "STRUCTURED_ATTEMPT_ROLE" if role == "ATTEMPT" else None
+            )
+            actions.append({
+                "classification": "CHARACTER_ATTEMPT" if relation else "CHARACTER_ACTION",
+                "actor": actor,
+                "actorQuote": match.group('actor'),
+                "actorLocalSpan": list(match.span('actor')),
+                "action": quote,
+                "localSpan": [match.start('actor'), end],
+                "primaryVerb": root,
+                "verbQuote": match.group('verb'),
+                "verbLocalSpan": list(match.span('verb')),
+                "relationship": relation,
+                "confidence": 0.8 if relation else None,
+                "semanticVerification": "NOT_PERFORMED",
+            })
     return {
         "actions": actions,
         "instructions": instructions,
@@ -141,7 +196,7 @@ def classify_content(content: str, actor: str | None, role: str = "") -> dict[st
     }
 
 
-def bind_beats(prompt: str, beats: list[dict[str, Any]], actor: str | None) -> None:
+def bind_beats(prompt: str, beats: list[dict[str, Any]], actor: str | None, *, attached_participles: bool = False) -> None:
     seen: set[tuple[Any, ...]] = set()
     for beat in beats:
         quote, span = beat.get("sourceQuote"), beat.get("sourceSpan")
@@ -151,7 +206,7 @@ def bind_beats(prompt: str, beats: list[dict[str, Any]], actor: str | None) -> N
             and len(span) == 2
             and prompt[span[0] : span[1]] == quote
         )
-        resolved = classify_content(quote or "", actor, beat.get("beatRole", ""))
+        resolved = classify_content(quote or "", actor, beat.get("beatRole", ""), attached_participles=attached_participles)
         attempts = [a for a in resolved["actions"] if a["classification"] == "CHARACTER_ATTEMPT"]
         chosen = attempts[0] if valid and attempts else None
         key = (
@@ -236,7 +291,7 @@ def bind_beats(prompt: str, beats: list[dict[str, Any]], actor: str | None) -> N
             }
             if actor_reference
             else None,
-            "contractVersion": VERSION,
+            "contractVersion": ATTACHED_PARTICIPLE_VERSION if attached_participles else VERSION,
             "classification": "DUPLICATE_SOURCE_EVENT"
             if duplicate
             else "SOURCE_BOUND_ATTEMPT"

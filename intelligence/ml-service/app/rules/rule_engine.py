@@ -124,7 +124,7 @@ class RuleEngine:
             ruleset_path: Path to ruleset YAML file (defaults to RULESET_1.0.yaml)
         """
         from app.config import settings
-        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.11.yaml"
+        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.12.yaml"
 
         self.ruleset_path = Path(resolved_path)
         self.ruleset = self._load_ruleset()
@@ -1292,7 +1292,7 @@ class RuleEngine:
         """ATTEMPT_001: Attempt Count"""
         duration = video_plan_ir.get("metadata", {}).get("duration", 15.0)
         tier = self._get_duration_tier(duration)
-        minimum = 3 if tier == "short" else 7
+        minimum = self._attempt_minimum(rule, tier)
 
         attempt_count = attempt_evidence(video_plan_ir).count
 
@@ -1486,7 +1486,7 @@ class RuleEngine:
         """ATTEMPT_002: distinct canonical strategy families, not verb-bearing beats."""
         duration = video_plan_ir.get("metadata", {}).get("duration", 15.0)
         tier = self._get_duration_tier(duration)
-        minimum = 3 if tier == "short" else 7
+        minimum = self._attempt_minimum(rule, tier)
         attempts = attempt_beats(video_plan_ir)
         evidence = attempt_evidence(video_plan_ir)
         profile = self._engine_profile(video_plan_ir)
@@ -1588,6 +1588,14 @@ class RuleEngine:
             required_value=minimum,
             details=details,
         )
+
+    @staticmethod
+    def _attempt_minimum(rule: dict[str, Any], tier: str) -> int:
+        """Use versioned attempt policy; legacy rules retain their original thresholds."""
+        policy = rule.get("minimumAttemptsByTier")
+        if isinstance(policy, dict) and isinstance(policy.get(tier), int):
+            return policy[tier]
+        return 3 if tier == "short" else 7
 
     def _evaluate_payoff_003(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         """PAYOFF_003: Rule-Consistent Twist (LLM semantic check)"""

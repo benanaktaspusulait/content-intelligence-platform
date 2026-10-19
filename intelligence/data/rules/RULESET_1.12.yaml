@@ -1,0 +1,15 @@
+version: '1.12'
+created: '2026-10-19'
+extends: RULESET_1.11.yaml
+inheritancePolicy: RECURSIVE_V1
+semanticPolicy: TARGETED_STORY_GATES
+description: Long-form duration is justified by meaningful progression; attempts remain a separate measure.
+rules:
+  - id: ATTEMPT_001
+    overrides: true
+    description: Active character attempts remain a separate gate; long-form stories use the established three-attempt floor, not seven.
+    minimumAttemptsByTier: {short: 3, long: 3}
+  - id: ATTEMPT_002
+    overrides: true
+    description: Distinct motivated strategies are evaluated separately from story developments; long-form stories do not require seven attempts.
+    minimumAttemptsByTier: {short: 3, long: 3}

@@ -252,6 +252,33 @@ The rule breaks halfway through on purpose for the twist.
     assert ir["coreMechanic"]["consistency"] == "breaking"
 
 
+def test_simple_rule_line_is_bound_to_canonical_mechanic_source_span() -> None:
+    prompt = (
+        "Title: Echoing Puddle\nDuration: 22 seconds\n"
+        "Rule: The puddle returns any object dipped into it as a solid echo.\n"
+        "0-22s: Kiko dips the watering can into the puddle."
+    )
+    ir = parse_prompt(prompt).video_plan_ir
+    evidence = ir['coreMechanic']['physicalRuleEvidence']
+    assert ir['coreMechanic']['physicalRule'] == 'The puddle returns any object dipped into it as a solid echo.'
+    assert evidence['state'] == 'OBSERVED'
+    assert prompt[slice(*evidence['sourceSpan'])] == evidence['sourceQuote']
+    assert evidence['method'] == 'EXPLICIT_RULE_LINE'
+
+
+def test_inline_goal_and_rule_header_binds_rule_source_span() -> None:
+    prompt = (
+        "Duration: 22 seconds. Goal: Kiko wants to water a seedling. "
+        "Rule: the puddle returns any dipped object as a solid echo.\n\n"
+        "0-22s: Kiko dips the watering can into the puddle."
+    )
+    ir = parse_prompt(prompt).video_plan_ir
+    evidence = ir['coreMechanic']['physicalRuleEvidence']
+    assert evidence['sourceQuote'] == 'the puddle returns any dipped object as a solid echo.'
+    assert prompt[slice(*evidence['sourceSpan'])] == evidence['sourceQuote']
+    assert evidence['method'] == 'EXPLICIT_RULE_LINE'
+
+
 def test_core_mechanic_consistency_unrelated_breaks_in_same_sentence_is_not_misread() -> None:
     """A prop event ("pencil tip breaks off") sharing a sentence with an
     unrelated mention of "rule" must not be misread as a rule-consistency

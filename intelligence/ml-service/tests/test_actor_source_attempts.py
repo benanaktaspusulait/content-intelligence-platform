@@ -12,6 +12,7 @@ from app.quality.canonical_evidence import attempt_evidence
 from app.workflow.review import _run_canonical_evaluation
 
 CONFIG = ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2")
+CONFIG_V3 = ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V3")
 
 
 def parse(body):
@@ -65,6 +66,27 @@ def test_distinct_attempts_and_duplicate_same_event():
     bind_beats(text, repeated, "Zed")
     assert sum(b["isAttempt"] for b in repeated) == 3
     assert repeated[-1]["attemptEvidence"]["classification"] == "DUPLICATE_SOURCE_EVENT"
+
+
+def test_attached_participle_attempts_in_echoing_puddle_story_are_source_bound():
+    text = (
+        "CHARACTER\nKiko\nDuration: 22s\nGoal: Water a wilting seedling.\n"
+        "Rule: The puddle returns any object dipped into it.\n"
+        "0.0-3.5 SEC: Kiko kneels at a round puddle, holding a small watering can toward the water to fill it for the drooping seedling beside her. The spout echo knocks it away.\n"
+        "3.5-7.5 SEC: Kiko tries a new strategy: she cups her hands and dips them in to scoop water. The echo slaps her palms.\n"
+        "7.5-11.5 SEC: Kiko changes approach again, lowering the can sideways so only its rim touches. The echo tips it over.\n"
+        "11.5-15.5 SEC: Kiko lifts the seedling's drooping leaf and dips its tip into the water. The echo rises.\n"
+        "15.5-19.0 SEC: Kiko gently lowers the root ball toward the puddle edge, letting the roots touch the water. The seedling straightens.\n"
+        "19.0-22.0 SEC: The seedling stands upright. Kiko pulls her hands back."
+    )
+    ir = parse_prompt(text, CONFIG_V3).video_plan_ir
+    attempts = [beat for beat in ir['beats'] if beat['isAttempt']]
+    assert [beat['primaryVerb'] for beat in attempts] == ['HOLD', 'CUP', 'LOWER', 'LIFT', 'LOWER']
+    for beat in attempts:
+        evidence = beat['attemptEvidence']
+        assert evidence['sourceBound'] is True
+        assert evidence['contractVersion'] == 'actor-source-bound-v3'
+        assert text[slice(*evidence['sourceSpan'])] == evidence['sourceQuote']
 
 
 def test_bracket_action_camera_and_consequence_spans():
