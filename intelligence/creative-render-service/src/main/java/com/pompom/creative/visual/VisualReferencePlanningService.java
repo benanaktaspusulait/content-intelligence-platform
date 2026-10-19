@@ -317,6 +317,17 @@ public class VisualReferencePlanningService {
     }
   }
 
+  public void validateForRender(UUID planId, Long contentId, Long promptVersionId,
+      String firstFramePath, String model, Map<String, Object> params, String expectedSha256) {
+    validateForRender(planId, contentId, promptVersionId, firstFramePath, model, params);
+    var accepted = planAssets.findByPlanIdOrderByCreatedAtAsc(planId).stream()
+        .filter(a -> a.isAccepted() && "FIRST_FRAME".equals(a.getRole())
+            && samePath(firstFramePath, a.getRelativePath()))
+        .findFirst().orElseThrow(() -> new IllegalStateException("Accepted first frame binding is missing"));
+    if (expectedSha256 == null || !expectedSha256.equals(accepted.getSha256()))
+      throw new IllegalStateException("Accepted first frame does not match the canonical validation evidence");
+  }
+
   private String extension(String contentType) { return switch (contentType) { case "image/jpeg" -> "jpg"; case "image/webp" -> "webp"; case "image/gif" -> "gif"; default -> "png"; }; }
   private boolean samePath(String left, String right) { if (left == null || right == null) return false; String a = left.replace('\\', '/'); String b = right.replace('\\', '/'); if (a.startsWith("/data/")) a = a.substring(6); if (b.startsWith("/data/")) b = b.substring(6); return a.equals(b) || a.equals("data/" + b) || b.equals("data/" + a); }
   private String readJsonValue(String json, String field) { try { var node = mapper.readTree(json == null ? "{}" : json).get(field); return node == null ? "" : node.asText(); } catch (JsonProcessingException ignored) { return ""; } }

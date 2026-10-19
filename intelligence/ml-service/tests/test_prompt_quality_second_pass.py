@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from app.assessment.pre_render_assessment import build_pre_render_assessment
+from app.assessment.pre_render_assessment import build_pre_render_assessment, STORY_STAGE_REQUIRED_RULES
 from app.config import settings
 from app.parser.prompt_parser import parse_prompt
 from app.quality.canonical_evidence import attempt_evidence, escalation_evidence, story_density_evidence
@@ -168,7 +168,7 @@ def test_textual_first_frame_pass_is_not_visual_verification() -> None:
         parse_prompt(FIXTURE.read_text(encoding="utf-8")).metadata,
         _report(
             ir,
-            (
+            tuple(_passing_story_gates()) + (
                 RuleEvaluation(
                     rule_id="INSTANT_VISUAL_ABSURDITY_GATE",
                     rule_name="Instant Visual Absurdity Gate",
@@ -186,6 +186,46 @@ def test_textual_first_frame_pass_is_not_visual_verification() -> None:
     assert assessment["first_frame"]["visual_verification"]["status"] == "PENDING"
     assert assessment["render_authorization"]["status"] == "BLOCKED_PENDING_EVIDENCE"
     assert assessment["prompt_stage"] == "READY_FOR_FIRST_FRAME"
+
+
+def _passing_story_gates():
+    return [
+        RuleEvaluation(
+            rule_id=rule_id, rule_name=rule_id, family="story",
+            outcome=RuleOutcome.PASS, configured_severity=Severity.BLOCKER,
+            message="passed",
+        )
+        for rule_id in STORY_STAGE_REQUIRED_RULES
+    ]
+
+
+def test_missing_or_unknown_critical_story_gate_blocks_first_frame_generation() -> None:
+    parsed = parse_prompt(FIXTURE.read_text(encoding="utf-8"))
+    ir = parsed.video_plan_ir
+    rows = _passing_story_gates()
+    rows = [row for row in rows if row.rule_id != "GOAL_001"]
+    rows.append(RuleEvaluation(
+        rule_id="GOAL_001", rule_name="Everyday Goal", family="story",
+        outcome=RuleOutcome.UNKNOWN, configured_severity=Severity.BLOCKER,
+        message="semantic goal evidence unavailable",
+    ))
+    rows.append(RuleEvaluation(
+        rule_id="INSTANT_VISUAL_ABSURDITY_GATE", rule_name="Visual hook", family="hook_strength",
+        outcome=RuleOutcome.FAIL, configured_severity=Severity.BLOCKER,
+        message="image not generated yet", details={"failureBasis": "EVIDENCE_INCOMPLETE"},
+    ))
+    assessment = build_pre_render_assessment(ir, parsed.metadata, _report(ir, tuple(rows)), "1.5")
+    assert assessment["story_validation"]["status"] == "UNKNOWN"
+    assert assessment["prompt_stage"] == "BLOCKED_STORY_UNKNOWN"
+
+
+def test_missing_critical_story_rule_is_not_silently_passed() -> None:
+    parsed = parse_prompt(FIXTURE.read_text(encoding="utf-8"))
+    ir = parsed.video_plan_ir
+    rows = [row for row in _passing_story_gates() if row.rule_id != "MINI_STORY_LOCK"]
+    assessment = build_pre_render_assessment(ir, parsed.metadata, _report(ir, tuple(rows)), "1.5")
+    assert assessment["story_validation"]["required_rules"]["MINI_STORY_LOCK"] == "NOT_EVALUATED"
+    assert assessment["prompt_stage"] == "BLOCKED_STORY_NOT_EVALUATED"
 
 
 def test_vague_first_frame_text_fails_textual_precheck() -> None:

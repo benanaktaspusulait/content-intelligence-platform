@@ -2097,6 +2097,25 @@ public class WorkflowService {
     Object maxCost = request.getOrDefault("maxCostUsd", 0);
     if (!(maxCost instanceof Number) || ((Number) maxCost).doubleValue() <= 0)
       throw new IllegalArgumentException("maxCostUsd must be positive");
+
+    // First-frame generation is the first paid production action. Require a completed,
+    // source-bound story validation, while leaving image-dependent review for after generation.
+    if (authorization == null)
+      throw new IllegalStateException("Canonical story validation is unavailable; first-frame generation is blocked");
+    long contentId = Long.parseLong(String.valueOf(request.get("contentId")));
+    long promptVersionId = Long.parseLong(String.valueOf(request.get("promptVersionId")));
+    var promptSnapshot = prompts.load(contentId, promptVersionId);
+    Long validationId = jdbc.sql(
+            "SELECT id FROM quality_validations WHERE content_id=:content AND prompt_version_id=:prompt ORDER BY id DESC LIMIT 1")
+        .param("content", contentId).param("prompt", promptVersionId)
+        .query(Long.class).optional()
+        .orElseThrow(() -> new IllegalStateException("Complete story validation is required before first-frame generation"));
+    var storyEvidence = authorization.getEvidence(validationId);
+    if (storyEvidence.contentId() != contentId
+        || storyEvidence.promptVersionId() != promptVersionId
+        || !promptSnapshot.promptSha256().equals(storyEvidence.promptSha256())
+        || !storyEvidence.firstFrameEligible())
+      throw new IllegalStateException("Source-matched STORY validation must pass before first-frame generation");
     
     // Resolve character reference image path from verified reference
     String characterId = String.valueOf(request.getOrDefault("characterId", ""));

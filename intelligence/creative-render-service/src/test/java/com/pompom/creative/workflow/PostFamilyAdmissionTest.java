@@ -38,7 +38,7 @@ class PostFamilyAdmissionTest {
     var frozen =
         new QueueRenderJobRequest(1, 2, 3, RenderJob.JobType.VIDEO, "model", Map.of(), null);
     assertThatCode(() -> client.validate(first)).doesNotThrowAnyException();
-    assertThatCode(() -> client.validate(frozen)).doesNotThrowAnyException();
+    assertThatThrownBy(() -> client.validate(frozen)).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

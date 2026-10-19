@@ -76,6 +76,10 @@ class RenderJobQueueServiceTest {
             creditTrackingService,
             budgetAlertService,
             new NoOpTransactionManager());
+    org.springframework.test.util.ReflectionTestUtils.setField(
+        service, "workflowAdmission", mock(com.pompom.creative.workflow.PostFamilyAdmissionClient.class));
+    org.springframework.test.util.ReflectionTestUtils.setField(
+        service, "visualReferencePlanning", mock(com.pompom.creative.visual.VisualReferencePlanningService.class));
     lenient().when(contentClient.fetch(10L, 11L)).thenReturn(promptSnapshot());
     lenient().when(creditTrackingService.canAffordRender(any())).thenReturn(true);
     lenient().when(creditTrackingService.getEstimatedCost(any())).thenReturn(BigDecimal.TEN);
@@ -97,7 +101,7 @@ class RenderJobQueueServiceTest {
     var admission=mock(com.pompom.creative.workflow.PostFamilyAdmissionClient.class);
     var field=RenderJobQueueService.class.getDeclaredField("workflowAdmission");field.setAccessible(true);field.set(service,admission);
     var parent=UUID.randomUUID().toString();var handoff=UUID.randomUUID().toString();
-    var request=new QueueRenderJobRequest(10,11,42,RenderJob.JobType.VIDEO,"fixture-model",Map.of("workflowProfile","post-family-v1","workflowReviewId",UUID.randomUUID().toString(),"workflowBindingHash","a".repeat(64),"regenerationHandoffId",handoff,"parentVideoId",parent),null);
+    var request=new QueueRenderJobRequest(10,11,42,RenderJob.JobType.VIDEO,"fixture-model",videoParams("fixture-model", "regenerationHandoffId", handoff, "parentVideoId", parent),null);
     when(repository.findByIdempotencyKey(handoff)).thenReturn(Optional.empty());
     when(evidenceClient.getEvidence(42L)).thenReturn(withRenderAuthorization(renderReadyEvidence(),"AUTHORIZED"));
     var response=service.queue(handoff,request);
@@ -163,6 +167,31 @@ class RenderJobQueueServiceTest {
   }
 
   @Test
+  void videoCannotSkipPostFamilyAdmissionOrReviewedFirstFrameBinding() {
+    when(repository.findByIdempotencyKey("no-admission")).thenReturn(Optional.empty());
+    when(evidenceClient.getEvidence(42L)).thenReturn(renderReadyEvidence());
+    org.springframework.test.util.ReflectionTestUtils.setField(service, "workflowAdmission", null);
+    assertThatThrownBy(() -> service.queue("no-admission", request()))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("POST_FAMILY_ADMISSION_UNAVAILABLE");
+    verify(repository, never()).save(any());
+
+    org.springframework.test.util.ReflectionTestUtils.setField(
+        service, "workflowAdmission", mock(com.pompom.creative.workflow.PostFamilyAdmissionClient.class));
+    when(repository.findByIdempotencyKey("no-frame")).thenReturn(Optional.empty());
+    var missingFrame = new QueueRenderJobRequest(
+        10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x",
+        Map.of("workflowProfile", "post-family-v1", "workflowReviewId", UUID.randomUUID().toString(),
+            "workflowBindingHash", "a".repeat(64)), null);
+    assertThatThrownBy(() -> service.queue("no-frame", missingFrame))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("FIRST_FRAME_REVIEW_REQUIRED");
+    verify(repository, never()).save(any());
+  }
+
+  @Test
   void rejectsAndCreatesNoRowWhenEvidenceIsNotRenderReady() {
     when(repository.findByIdempotencyKey("key-1")).thenReturn(Optional.empty());
     when(evidenceClient.getEvidence(42L)).thenReturn(withStatus(renderReadyEvidence(), "BLOCKED"));
@@ -204,10 +233,11 @@ class RenderJobQueueServiceTest {
 
   @Test
   void replaysTheExistingJobWhenKeyAndPayloadMatch() {
-    RenderJob existing = existingJobFor("key-1", request());
+    QueueRenderJobRequest replayRequest = request();
+    RenderJob existing = existingJobFor("key-1", replayRequest);
     when(repository.findByIdempotencyKey("key-1")).thenReturn(Optional.of(existing));
 
-    QueueRenderJobResponse response = service.queue("key-1", request());
+    QueueRenderJobResponse response = service.queue("key-1", replayRequest);
 
     assertThat(response.replay()).isTrue();
     assertThat(response.renderJobId()).isEqualTo(existing.getId());
@@ -282,7 +312,21 @@ class RenderJobQueueServiceTest {
 
   private QueueRenderJobRequest request() {
     return new QueueRenderJobRequest(
-        10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x", Map.of("seed", 1), null);
+        10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x", videoParams("model-x"), null);
+  }
+
+  private Map<String, Object> videoParams(String model, Object... extras) {
+    var params = new java.util.HashMap<String, Object>();
+    params.put("workflowProfile", "post-family-v1");
+    params.put("workflowReviewId", UUID.randomUUID().toString());
+    params.put("workflowBindingHash", "a".repeat(64));
+    params.put("visualReferencePlanId", UUID.randomUUID().toString());
+    params.put("firstFrameImageId", "frame.png");
+    params.put("aspectRatio", "9:16");
+    params.put("characterReferenceAssetId", "character-ref");
+    params.put("mode", "IMAGE_TO_VIDEO");
+    for (int i = 0; i < extras.length; i += 2) params.put(String.valueOf(extras[i]), extras[i + 1]);
+    return params;
   }
 
   private ValidationEvidenceDto renderReadyEvidence() {

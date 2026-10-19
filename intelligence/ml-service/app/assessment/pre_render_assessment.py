@@ -28,6 +28,40 @@ from ..quality.canonical_evidence import (
 )
 
 
+# Existing canonical story, progression and executability rules that must finish
+# before a first-frame provider call. Image-dependent visual gates are deliberately
+# excluded; those run after an image exists.
+STORY_STAGE_REQUIRED_RULES = (
+    "GOAL_001", "MINI_STORY_LOCK", "GOAL_VISIBLE_EARLY", "CONCEPT_007",
+    "CONCEPT_008", "ATTEMPT_001", "ATTEMPT_002", "PROGRESSION_006",
+    "ESCALATION_005", "PAYOFF_001", "BEAT_DENSITY_RULE",
+    "TEMPORAL_COMPLEXITY_SPLIT_GATE", "GENERATION_EXECUTABLE_ATTEMPTS",
+    "PRODUCIBILITY_001", "PRODUCIBILITY_002", "PRODUCIBILITY_003",
+)
+
+
+def _story_validation(evaluations: Iterable[Any]) -> dict[str, Any]:
+    by_id = {item.rule_id: item for item in evaluations}
+    outcomes: dict[str, str] = {}
+    for rule_id in STORY_STAGE_REQUIRED_RULES:
+        item = by_id.get(rule_id)
+        if item is None or item.outcome is None or item.evaluation_state.value != "EVALUATED":
+            outcomes[rule_id] = "NOT_EVALUATED"
+        else:
+            outcomes[rule_id] = item.outcome.value
+    if "FAIL" in outcomes.values():
+        status = "FAIL"
+    elif "SERVICE_ERROR" in outcomes.values():
+        status = "NOT_EVALUATED"
+    elif "UNKNOWN" in outcomes.values():
+        status = "UNKNOWN"
+    elif "NOT_EVALUATED" in outcomes.values() or "NOT_APPLICABLE" in outcomes.values():
+        status = "NOT_EVALUATED"
+    else:
+        status = "PASS"
+    return {"status": status, "required_rules": outcomes}
+
+
 
 def _family8_authorization_reasons(render_authorization: dict[str, Any]) -> list[dict[str, Any]]:
     reasons: list[dict[str, Any]] = []
@@ -111,7 +145,8 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     render_authorization = _render_authorization(
         report, creative_grade, evidence_completeness, first_frame
     )
-    prompt_stage = _prompt_stage(creative_grade, first_frame, render_authorization)
+    story_validation = _story_validation(evaluations)
+    prompt_stage = _prompt_stage(creative_grade, first_frame, render_authorization, story_validation)
     readiness = {
         "A": "READY_TO_RENDER", "B": "READY_TO_RENDER", "C": "EDIT_PLAN",
         "D": "EDIT_PLAN", "F": "BLOCKED", "INCOMPLETE": "INCOMPLETE",
@@ -192,6 +227,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         "creative_score": report.overall_score,
         "readiness": readiness,
         "prompt_stage": prompt_stage,
+        "story_validation": story_validation,
         "assessment_coverage_percent": coverage,
         "evidence_completeness": evidence_completeness,
         "first_frame": first_frame,
@@ -558,12 +594,19 @@ def _first_frame_assessment(ir: dict[str, Any]) -> dict[str, Any]:
 
 
 def _prompt_stage(
-    creative_grade: str, first_frame: dict[str, Any], render_authorization: dict[str, Any]
+    creative_grade: str, first_frame: dict[str, Any], render_authorization: dict[str, Any],
+    story_validation: dict[str, Any],
 ) -> str:
     if render_authorization.get("status") in {"BLOCKED_CREATIVE_FAILURE", "BLOCKED_TECHNICAL_FAILURE"}:
         return render_authorization["status"]
     if first_frame["textual_intent"]["status"] != "PASS":
         return "BLOCKED_CREATIVE_FAILURE"
+    if story_validation.get("status") != "PASS":
+        return {
+            "FAIL": "BLOCKED_STORY_VALIDATION",
+            "UNKNOWN": "BLOCKED_STORY_UNKNOWN",
+            "NOT_EVALUATED": "BLOCKED_STORY_NOT_EVALUATED",
+        }.get(story_validation.get("status"), "BLOCKED_STORY_NOT_EVALUATED")
     return "READY_FOR_FIRST_FRAME"
 
 

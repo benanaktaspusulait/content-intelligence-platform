@@ -14,6 +14,7 @@ import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.BudgetAlertService;
 import com.pompom.creative.service.CreditTrackingService;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,10 +135,12 @@ public class RenderJobQueueService {
     // must create zero rows and never even starts a database transaction.
     ValidationEvidenceDto evidence = evidenceClient.getEvidence(request.validationRecordId());
     policy.validate(request, evidence, Instant.now());
-    if (workflowAdmission != null) workflowAdmission.validate(request);
-    else if (request.jobType() != RenderJob.JobType.FIRST_FRAME
-        && request.openartParams() != null && request.openartParams().containsKey("workflowProfile"))
-      throw new IllegalStateException("Post-family admission client unavailable");
+    if (request.jobType() == RenderJob.JobType.VIDEO) {
+      if (workflowAdmission == null)
+        throw new ValidationEvidenceRejectedException(
+            "POST_FAMILY_ADMISSION_UNAVAILABLE", "Post-family review admission is unavailable; video render is blocked");
+      workflowAdmission.validate(request);
+    }
     ContentPromptSnapshot prompt =
         contentClient.fetch(request.contentId(), request.promptVersionId());
     if (prompt.contentId() != evidence.contentId()
@@ -156,9 +159,13 @@ public class RenderJobQueueService {
       throw new ValidationEvidenceRejectedException(
           "PROMPT_TEXT_EMPTY", "Canonical approved prompt text is empty");
     }
-    if (request.jobType() == RenderJob.JobType.VIDEO
-        && request.openartParams() != null
-        && request.openartParams().get("visualReferencePlanId") != null) {
+    if (request.jobType() == RenderJob.JobType.VIDEO) {
+      if (request.openartParams() == null
+          || request.openartParams().get("visualReferencePlanId") == null
+          || request.openartParams().get("firstFrameImageId") == null
+          || String.valueOf(request.openartParams().get("firstFrameImageId")).isBlank())
+        throw new ValidationEvidenceRejectedException(
+            "FIRST_FRAME_REVIEW_REQUIRED", "A reviewed, accepted first frame is required before video rendering");
       UUID planId;
       try {
         planId = UUID.fromString(String.valueOf(request.openartParams().get("visualReferencePlanId")));
@@ -171,11 +178,17 @@ public class RenderJobQueueService {
             "VISUAL_REFERENCE_PLANNER_UNAVAILABLE",
             "Visual reference admission is unavailable; no render job was created");
       }
+      var firstFrameEvidence = evidence.visualEvidence().get("firstFrame");
+      String expectedFirstFrameSha = firstFrameEvidence instanceof Map<?, ?> frame
+          ? String.valueOf(frame.get("assetSha256")) : "";
+      if (!expectedFirstFrameSha.matches("[0-9a-f]{64}"))
+        throw new ValidationEvidenceRejectedException(
+            "FIRST_FRAME_REVIEW_REQUIRED", "Canonical validation has no verified first-frame hash");
       visualReferencePlanning.validateForRender(
           planId,
           request.contentId(),
           request.promptVersionId(),
-          String.valueOf(request.openartParams().get("firstFrameImageId")), request.openartModel(), request.openartParams());
+          String.valueOf(request.openartParams().get("firstFrameImageId")), request.openartModel(), request.openartParams(), expectedFirstFrameSha);
     }
     CreativeProductionContractService.ContractCompilation contract =
         contractService.compile(prompt, evidence.deterministicRulesetVersion());
