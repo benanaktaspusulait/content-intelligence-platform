@@ -65,6 +65,39 @@ def test_opening_strategy_does_not_replace_content_family():
     assert result["opening"]["strategy"] == "CURIOSITY_DISCOVERY"
 
 
+def test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates():
+    story = """15-second visual mystery. Kiko wants to find her missing red mitten. At frame zero, she sees three painted footprints and a small red mitten shadow beneath the third one, but looks at the other two trails. She follows the first trail to a puddle and finds nothing. She notices the shadow points toward the gap behind the bench, changes direction, and finds the mitten tucked there. She picks it up and the final view returns to the footprints with the shadow clue visible."""
+    result = review_prompt(request(story, contentProfile="CURIOSITY_ADVENTURE"))
+    evaluation = result["canonicalRuleEvaluation"]
+    assert evaluation["profileAdmissionVersion"] == "profile-admission-v2"
+    assert evaluation["contentProfile"] == "CURIOSITY_ADVENTURE"
+    rows = {
+        row["ruleId"]: row
+        for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+        for row in evaluation[group]
+    }
+    assert evaluation["rulesetVersion"] == "1.12"
+    for physics_rule in ("GOAL_001", "CONCEPT_007", "CONCEPT_008"):
+        assert rows[physics_rule]["outcome"] == "NOT_APPLICABLE"
+    for shared_rule in ("MINI_STORY_LOCK", "GOAL_VISIBLE_EARLY", "INSTANT_VISUAL_ABSURDITY_GATE", "HOOK_004", "PROGRESSION_006", "PAYOFF_001"):
+        assert rows[shared_rule]["outcome"] != "NOT_APPLICABLE"
+    # This deliberately incomplete first-frame fixture must remain blocked/pending.
+    assert result["family8"]["renderAuthorization"]["status"] != "AUTHORIZED"
+
+
+def test_absurd_physics_canonical_review_keeps_physics_specific_gates():
+    story = """15-second absurd-physics story. Kiko wants to drink her juice. At frame zero, the juice rises straight upward from the tilted cup instead of reaching her mouth. She turns the cup sideways and the stream still rises vertically. Kiko puts the cup below her mouth; the stream reaches her lips and she takes a sip."""
+    result = review_prompt(request(story, contentProfile="ABSURD_PHYSICS"))
+    rows = {
+        row["ruleId"]: row
+        for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+        for row in result["canonicalRuleEvaluation"][group]
+    }
+    assert rows["CONCEPT_007"]["outcome"] != "NOT_APPLICABLE"
+    assert rows["GOAL_001"]["outcome"] != "NOT_APPLICABLE"
+    assert rows["CONCEPT_008"]["outcome"] != "NOT_APPLICABLE"
+
+
 def test_juice_story_gates_fail_closed_for_unmotivated_and_unverified_openings(monkeypatch):
     from app.rules import rule_engine
 
@@ -87,7 +120,7 @@ Kiko is thirsty and wants to drink his juice.
 8.5-11.0 SEC: Kiko turns the cup upright and drinks normally as the ribbon finally settles inside; his thirst is relieved."""
 
     for prompt, expected_goal in ((flawed, "FAIL"), (positive, "SERVICE_ERROR")):
-        result = review_prompt(request(prompt, contentProfile="CURIOSITY_ADVENTURE"))
+        result = review_prompt(request(prompt, contentProfile="ABSURD_PHYSICS"))
         rows = result["canonicalRuleEvaluation"]
         gate_rows = {
             row["ruleId"]: row

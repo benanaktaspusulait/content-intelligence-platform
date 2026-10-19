@@ -251,7 +251,8 @@ public class Step6GovernanceService {
       if(!Objects.equals(ctx.get("promptSha256"),promptHash) || !Objects.equals(ctx.get("rulesetVersion"),ruleset.split("\\+",2)[0])) return Map.of();
       var report=read(reportJson);
       var profileBinding=map(map(report.get("preRenderAssessment")).get("canonicalProfileAdmission"));
-      if(!"profile-admission-v1".equals(profileBinding.get("version")) || !Objects.equals(ctx.get("analysisBindingHash"),profileBinding.get("workflowBindingHash"))) return Map.of();
+      String profileVersion=String.valueOf(profileBinding.get("version"));
+      if(!("profile-admission-v1".equals(profileVersion)||"profile-admission-v2".equals(profileVersion)) || !Objects.equals(ctx.get("analysisBindingHash"),profileBinding.get("workflowBindingHash"))) return Map.of();
       var failures=rows(report.get("failedRules"));
       int actualBlockers=0,actualCriticals=0,remainingBlockers=0,remainingCriticals=0;
       var ledger=new ArrayList<Map<String,Object>>();var exception=effectiveException(ctx);

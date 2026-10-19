@@ -100,8 +100,8 @@ public class ValidationEvidenceService {
     var assessment = QualityReportSnapshots.preRenderAssessment(entity.getReportJson());
     if (assessment != null
         && assessment.get("canonicalProfileAdmission") instanceof java.util.Map<?, ?> projection
-        && "profile-admission-v1".equals(projection.get("version"))
-        && entity.getDeterministicRulesetVersion().contains("+profile-admission-v1:")
+        && supportedProfileAdmission(projection.get("version"))
+        && entity.getDeterministicRulesetVersion().contains("+" + projection.get("version") + ":")
         && Boolean.TRUE.equals(projection.get("requiredEvidencePreserved"))) {
       return status == ValidationDecisionStatus.RENDER_READY
               && ValidationVisualEvidenceProjection.finalVideoEligible(rows)
@@ -112,6 +112,10 @@ public class ValidationEvidenceService {
         && ValidationVisualEvidenceProjection.finalVideoEligible(rows)
         && Boolean.TRUE.equals(governedAdmission(entity).get("eligible"))) return "AUTHORIZED";
     return QualityReportSnapshots.renderAuthorizationStatus(entity.getReportJson());
+  }
+
+  private boolean supportedProfileAdmission(Object version) {
+    return "profile-admission-v1".equals(version) || "profile-admission-v2".equals(version);
   }
 
   private boolean isFirstFrameEligible(QualityValidationEntity entity) {

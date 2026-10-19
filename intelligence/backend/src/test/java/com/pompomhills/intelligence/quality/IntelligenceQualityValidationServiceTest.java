@@ -235,6 +235,74 @@ class IntelligenceQualityValidationServiceTest {
   }
 
   @Test
+  void workflowCanonicalValidationPersistsTheProfileAwareBlockedVerdict() {
+    String prompt = "A source-bound visual mystery prompt with enough content for validation.";
+    var snapshot =
+        new ContentPromptSnapshot(
+            "v1", 10L, "Mystery", "EPISODE", "DRAFT", 11L, 1, prompt, null, "ab".repeat(32));
+    when(contentPrompts.load(10L, 11L)).thenReturn(snapshot);
+    var context =
+        Map.<String, Object>of(
+            "prompt", prompt,
+            "profile", "post-family-v1",
+            "sourceId", "fixture:mystery",
+            "sourceVersion", "1",
+            "contentProfile", "CURIOSITY_ADVENTURE",
+            "canonicalRulesetVersion", "1.12");
+    var base = sampleReport();
+    var profileReport =
+        new QualityReportDto(
+            61.0,
+            "BLOCKED",
+            "1.12+profile-admission-v2:" + "a".repeat(64),
+            1,
+            0,
+            0,
+            Map.of(),
+            base.passedRules(),
+            base.failedRules(),
+            base.unknownRules(),
+            base.notApplicableRules(),
+            base.serviceErrors(),
+            base.priorityFixes(),
+            base.scoreCard(),
+            base.timelineData(),
+            base.parserConfidence(),
+            base.parserWarnings(),
+            base.parserAssumptions(),
+            base.topStrengths(),
+            base.topWeaknesses(),
+            base.evidenceMissing(),
+            base.scoreBreakdowns(),
+            base.familyRadar(),
+            base.provenance(),
+            Map.of(
+                "canonicalProfileAdmission",
+                Map.of(
+                    "version", "profile-admission-v2",
+                    "contentProfile", "CURIOSITY_ADVENTURE",
+                    "requiredEvidencePreserved", true)),
+            base.videoPlanIr(),
+            base.familyAssessments(),
+            base.canonicalEvidenceConfidence());
+    when(mlClient.validatePromptForWorkflow(prompt, "latest", null, context)).thenReturn(profileReport);
+
+    var response =
+        service.validateWorkflowProfile(
+            Map.of("contentId", 10L, "promptVersionId", 11L, "boundRequest", context));
+
+    assertThat(response.report()).isEqualTo(profileReport);
+    ArgumentCaptor<QualityValidationEntity> saved =
+        ArgumentCaptor.forClass(QualityValidationEntity.class);
+    verify(repository).save(saved.capture());
+    assertThat(saved.getValue().getStatus()).isEqualTo("BLOCKED");
+    assertThat(saved.getValue().getDeterministicRulesetVersion())
+        .startsWith("1.12+profile-admission-v2:");
+    assertThat(saved.getValue().getReportJson())
+        .contains("profile-admission-v2", "CURIOSITY_ADVENTURE", "BLOCKED");
+  }
+
+  @Test
   void unlinkedRequestWithTooShortPromptBodyIsRejected() {
     IntelligenceValidateRequest request =
         new IntelligenceValidateRequest("too short", "1.0", null, null);

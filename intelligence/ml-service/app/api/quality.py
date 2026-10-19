@@ -160,6 +160,7 @@ class PreRenderAssessmentResponse(BaseModel):
     creative_score: float | None = None
     prompt_stage: str | None = None
     first_frame: dict[str, Any] | None = None
+    story_validation: dict[str, Any] | None = None
     render_authorization: dict[str, Any] | None = None
     readiness: str
     assessment_coverage_percent: int
@@ -370,6 +371,12 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
         ir = parse_result.video_plan_ir
         if request.visual_evidence is not None:
             ir["visualEvidence"] = request.visual_evidence
+    if request.workflow_context is not None:
+        from app.workflow.review import apply_profile_rule_exclusions
+        profile = request.workflow_context.get("contentProfile", "UNKNOWN")
+        if profile in {"CURIOSITY_ADVENTURE", "EDUCATIONAL"}:
+            ir.setdefault("metadata", {})["contentProfile"] = profile
+            apply_profile_rule_exclusions(engine, profile)
     # Evaluate
     report = engine.evaluate(ir, evaluation_stage=request.evaluation_stage)
 

@@ -88,7 +88,7 @@ class Step6GovernancePostgresTest {
   @Test void incompleteEvidenceOrUnacceptedRiskNeverGainsEffectiveAdmission() throws Exception {
     provideSupport();service.command(id,"exception",exception(),approver);
     var report=new LinkedHashMap<>((Map<String,Object>)analysis.get("canonicalRuleEvaluation"));
-    report.put("preRenderAssessment",Map.of("canonicalProfileAdmission",Map.of("version","profile-admission-v1","workflowBindingHash",analysis.get("bindingHash"))));
+    report.put("preRenderAssessment",Map.of("canonicalProfileAdmission",Map.of("version","profile-admission-v2","workflowBindingHash",analysis.get("bindingHash"))));
     report.put("overallScore",95); // synthetic admission fixture only; never persisted as analysis or a production score
     var proof=service.validationAdmission(1,10,10,Step6GovernanceService.sha(String.valueOf(analysis.get("originalPrompt"))),"1.11",json.writeValueAsString(report),3,1);
     assertThat(proof).containsEntry("eligible",false);

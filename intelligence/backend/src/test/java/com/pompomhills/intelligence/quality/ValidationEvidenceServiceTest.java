@@ -56,6 +56,23 @@ class ValidationEvidenceServiceTest {
   }
 
   @Test
+  void profileAdmissionV2KeepsTheSameEvidenceBoundary() {
+    var entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setDeterministicRulesetVersion("1.12+profile-admission-v2:" + "a".repeat(64));
+    entity.setReportJson(
+        "{\"preRenderAssessment\":{\"canonicalProfileAdmission\":{\"version\":\"profile-admission-v2\",\"requiredEvidencePreserved\":true}}}");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+    stubMatchingIndependentRevalidation(entity);
+    var visuals = mock(ValidationVisualEvidenceRepository.class);
+    var profileService = new ValidationEvidenceService(repository, visuals);
+    when(visuals.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(42L))
+        .thenReturn(java.util.List.of());
+    assertThat(profileService.getEvidence(42L).renderAuthorization())
+        .isEqualTo("BLOCKED_PENDING_EVIDENCE");
+  }
+
+  @Test
   void returnsCompleteRecordAsRenderReady() {
     QualityValidationEntity entity = completeEntity();
     entity.setStatus("RENDER_READY");

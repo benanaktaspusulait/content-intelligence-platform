@@ -14,7 +14,36 @@ from app.quality.general_producibility import general_producibility_evidence
 VERSION = "post-family-v1"
 DECISION_POLICY_VERSION = "impact-review-v1"
 EXTRACTION_VERSION = "source-span-production-evidence-v1"
+PROFILE_ADMISSION_VERSION = "profile-admission-v2"
 PROFILES = ("ABSURD_PHYSICS", "CURIOSITY_ADVENTURE", "EDUCATIONAL", "MIXED", "UNKNOWN")
+# These checks are templates for stories whose central engine is an impossible
+# physical rule. The general goal, opening, progression, payoff, visual-safety,
+# and production gates remain applicable to every format.
+PROFILE_OPTIONAL_RULES = frozenset({
+    "CONCEPT_006", "CONCEPT_007", "CONCEPT_008", "ATTEMPT_001", "ATTEMPT_002",
+    "CHAR_002", "HOOK_002", "ESCALATION_004", "ESCALATION_005", "PAYOFF_002",
+    "PAYOFF_003", "PAYOFF_004", "PAYOFF_005", "PAYOFF_006", "PROGRESSION_005",
+    "REPETITION_004", "GOAL_001",
+})
+PROFILE_SHARED_RULES = frozenset({"HOOK_004", "PROGRESSION_006", "PAYOFF_001"})
+
+
+def apply_profile_rule_exclusions(engine: Any, profile: str) -> None:
+    """Apply the versioned profile policy before semantic evaluators can dispatch."""
+    if profile not in {"CURIOSITY_ADVENTURE", "EDUCATIONAL"}:
+        return
+    for rule in engine.ruleset.get("rules", []):
+        if rule.get("id") in PROFILE_OPTIONAL_RULES:
+            excluded = set(rule.get("excludedContentProfiles") or [])
+            excluded.add(profile)
+            rule["excludedContentProfiles"] = sorted(excluded)
+        elif rule.get("id") in PROFILE_SHARED_RULES:
+            excluded = set(rule.get("excludedContentProfiles") or [])
+            excluded.discard(profile)
+            if excluded:
+                rule["excludedContentProfiles"] = sorted(excluded)
+            else:
+                rule.pop("excludedContentProfiles", None)
 GENERATORS = ("SEEDANCE_2_0_MINI", "SEEDANCE_2_0", "SEEDANCE_2_5")
 MODEL_IDS = dict(
     zip(
@@ -1000,17 +1029,8 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
         engine = RuleEngine(str(settings.rules_dir / f"RULESET_{requested_version}.yaml"))
         if requested_version in {"1.8", "1.9", "1.10", "1.11", "1.12"}:
             video_plan_ir["metadata"]["contentProfile"] = request.get("contentProfile", "UNKNOWN")
-        # These are the existing universal Pompom Hills story gates. RULESET_1.8
-        # scoped several out for curiosity/educational profiles; that made
-        # mandatory creative requirements appear NOT_APPLICABLE. Enforce the
-        # existing evaluators here without changing the saved rulesets.
-        universal_gates = {
-            "GOAL_001", "HOOK_004", "PROGRESSION_006", "ESCALATION_005",
-            "CONCEPT_007", "CONCEPT_008", "PAYOFF_001",
-        }
-        for configured_rule in engine.ruleset.get("rules", []):
-            if configured_rule.get("id") in universal_gates:
-                configured_rule.pop("excludedContentProfiles", None)
+        profile = request.get("contentProfile", "UNKNOWN")
+        apply_profile_rule_exclusions(engine, profile)
         report = engine.evaluate(video_plan_ir)
 
         # Categorize results
@@ -1107,6 +1127,9 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     # semantic story gates explicitly enabled by the active ruleset.
     canonical_input = request if request.get("canonicalRulesetVersion") == "1.7" else {**request, "contentProfile": routing["contentProfile"]}
     canonical_evaluation = _run_canonical_evaluation(canonical_input)
+    canonical_evaluation["contentProfile"] = routing["contentProfile"]
+    if (request.get("canonicalRulesetVersion") or "1.12") != "1.7":
+        canonical_evaluation["profileAdmissionVersion"] = PROFILE_ADMISSION_VERSION
     execution_risk = execution_decision(execution)
     references = request.get("references") or []
     named = set(re.findall(r"(?i)\b(Luca|Zipo|Kiko|Mimi|Pompom)\b", request["prompt"]))
@@ -1181,17 +1204,19 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     # evaluated. In particular, UNKNOWN/NOT_APPLICABLE must never be treated as
     # a pass by the post-family render-admission projection.
     required_creative_gates = {
-        "GOAL_001": "Everyday goal, frame-zero obstruction, motivated actions and payoff",
         "MINI_STORY_LOCK": "Goal, obstacle, attempts, progression and payoff",
         "GOAL_VISIBLE_EARLY": "Goal legibility in the opening",
         "INSTANT_VISUAL_ABSURDITY_GATE": "Instant, history-free visual comprehension",
         "HOOK_004": "The opening problem is immediately legible",
-        "CONCEPT_007": "One consistent impossible rule",
-        "CONCEPT_008": "The rule is learnable and predictable",
         "PROGRESSION_006": "Meaningful, distinct progression",
-        "ESCALATION_005": "Consequences materially escalate",
         "PAYOFF_001": "A payoff that develops the established conflict",
     }
+    if routing["contentProfile"] in {"ABSURD_PHYSICS", "MIXED", "UNKNOWN"}:
+        required_creative_gates.update({
+            "GOAL_001": "Everyday goal is obstructed by the impossible rule",
+            "CONCEPT_007": "One consistent impossible rule",
+            "CONCEPT_008": "The physical rule is learnable and predictable",
+        })
     gate_rows = {
         row.get("ruleId"): row
         for row in (canonical_evaluation.get("passedRules", [])
@@ -1232,7 +1257,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
             and canonical.get("finalVideoEligible") is True
             and canonical.get("independentRevalidationId") is not None
             and canonical.get("fresh") is True
-            and ("+profile-admission-v1:" not in str(canonical.get("deterministicRulesetVersion", "")) or str(canonical["deterministicRulesetVersion"]).endswith(":" + binding_fingerprint(request)))
+            and (not any(f"+{version}:" in str(canonical.get("deterministicRulesetVersion", "")) for version in ("profile-admission-v1", PROFILE_ADMISSION_VERSION)) or str(canonical["deterministicRulesetVersion"]).endswith(":" + binding_fingerprint(request)))
         )
         if not integrity:
             pending(

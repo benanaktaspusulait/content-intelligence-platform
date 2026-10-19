@@ -436,7 +436,7 @@ class DisposableOwnerHttpAcceptanceTest {
     // Read-only persistence verification; all writes above went through HTTP business operations.
     assertThat(jdbc.queryForObject("SELECT prompt_version_id FROM quality_validations WHERE id=?",Long.class,validationId)).isEqualTo(prompt);
     String persistedVersion=jdbc.queryForObject("SELECT ruleset_version FROM quality_validations WHERE id=?",String.class,validationId);
-    assertThat(persistedVersion).startsWith("1.11+profile-admission-v1:").hasSizeGreaterThan(10);
+    assertThat(persistedVersion).startsWith("1.11+profile-admission-v2:").hasSizeGreaterThan(10);
     JsonNode validationReport=JSON.readTree(jdbc.queryForObject("SELECT report_json FROM quality_validations WHERE id=?",String.class,validationId));
     assertThat(validationReport.path("rulesetVersion").asText()).isEqualTo(persistedVersion);
     assertThat(jdbc.queryForObject("SELECT count(*) FROM quality_validation_stats WHERE ruleset_version=?",Long.class,persistedVersion)).isEqualTo(1);

@@ -3,16 +3,14 @@ from dataclasses import replace
 from typing import Any
 
 from app.quality.contracts import QualityStatus, RuleEvaluation, RuleOutcome, Severity
-from .review import review_prompt, binding_fingerprint
+from .review import (
+    PROFILE_ADMISSION_VERSION,
+    PROFILE_OPTIONAL_RULES,
+    binding_fingerprint,
+    review_prompt,
+)
 
-VERSION = "profile-admission-v1"
-# Only mechanics-specific templates. Source, identity, safety, visual and producibility gates remain.
-OPTIONAL_MECHANIC_RULES = frozenset({
-    "CONCEPT_006", "ATTEMPT_001", "ATTEMPT_002", "CHAR_002", "HOOK_002", "HOOK_004",
-    "ESCALATION_004", "ESCALATION_005", "PAYOFF_001", "PAYOFF_002", "PAYOFF_003",
-    "PAYOFF_004", "PAYOFF_005", "PAYOFF_006", "PROGRESSION_005", "PROGRESSION_006",
-    "REPETITION_004", "GOAL_001", "CONCEPT_008",
-})
+VERSION = PROFILE_ADMISSION_VERSION
 
 
 def project_admission(report: Any, engine: Any, request: dict[str, Any], capabilities: dict[str, Any]):
@@ -22,9 +20,9 @@ def project_admission(report: Any, engine: Any, request: dict[str, Any], capabil
     profile = reviewed["routing"]["contentProfile"]
     rows = []
     for original in report.evaluations:
-        if profile in {"CURIOSITY_ADVENTURE", "EDUCATIONAL"} and original.rule_id in OPTIONAL_MECHANIC_RULES:
+        if profile in {"CURIOSITY_ADVENTURE", "EDUCATIONAL"} and original.rule_id in PROFILE_OPTIONAL_RULES:
             rows.append(replace(original, outcome=RuleOutcome.NOT_APPLICABLE,
-                message=f"{VERSION}: physical-attempt template is not mandatory for {profile}",
+                message=f"{VERSION}: physical-rule template is not mandatory for {profile}",
                 details={**original.details, "profileAdmission": {
                     "version": VERSION, "contentProfile": profile, "originalOutcome": original.outcome.value,
                     "originalMessage": original.message, "bindingFingerprint": binding_fingerprint(request),

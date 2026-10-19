@@ -40,10 +40,15 @@ STORY_STAGE_REQUIRED_RULES = (
 )
 
 
-def _story_validation(evaluations: Iterable[Any]) -> dict[str, Any]:
+def _story_validation(evaluations: Iterable[Any], profile: str = "UNKNOWN") -> dict[str, Any]:
     by_id = {item.rule_id: item for item in evaluations}
     outcomes: dict[str, str] = {}
-    for rule_id in STORY_STAGE_REQUIRED_RULES:
+    required_rules = STORY_STAGE_REQUIRED_RULES
+    if profile in {"CURIOSITY_ADVENTURE", "EDUCATIONAL"}:
+        from app.workflow.review import PROFILE_OPTIONAL_RULES
+
+        required_rules = tuple(rule_id for rule_id in required_rules if rule_id not in PROFILE_OPTIONAL_RULES)
+    for rule_id in required_rules:
         item = by_id.get(rule_id)
         if item is None or item.outcome is None or item.evaluation_state.value != "EVALUATED":
             outcomes[rule_id] = "NOT_EVALUATED"
@@ -59,7 +64,7 @@ def _story_validation(evaluations: Iterable[Any]) -> dict[str, Any]:
         status = "NOT_EVALUATED"
     else:
         status = "PASS"
-    return {"status": status, "required_rules": outcomes}
+    return {"status": status, "content_profile": profile, "required_rules": outcomes}
 
 
 
@@ -145,7 +150,9 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     render_authorization = _render_authorization(
         report, creative_grade, evidence_completeness, first_frame
     )
-    story_validation = _story_validation(evaluations)
+    story_validation = _story_validation(
+        evaluations, str((ir.get("metadata") or {}).get("contentProfile", "UNKNOWN"))
+    )
     prompt_stage = _prompt_stage(creative_grade, first_frame, render_authorization, story_validation)
     readiness = {
         "A": "READY_TO_RENDER", "B": "READY_TO_RENDER", "C": "EDIT_PLAN",

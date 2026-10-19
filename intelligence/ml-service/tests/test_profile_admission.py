@@ -2,6 +2,7 @@ from unittest.mock import patch
 from app.quality.contracts import QualityReport, QualityStatus, RuleEvaluation, RuleOutcome, Severity
 from app.rules.rule_engine import RuleEngine
 from app.workflow.admission import project_admission
+from app.workflow.review import PROFILE_ADMISSION_VERSION, PROFILE_OPTIONAL_RULES, PROFILE_SHARED_RULES, apply_profile_rule_exclusions
 
 
 def row(rule, outcome=RuleOutcome.FAIL):
@@ -28,7 +29,7 @@ def test_curiosity_optional_attempts_do_not_erase_frozen_results():
     assert projected.evaluations[0].outcome == RuleOutcome.NOT_APPLICABLE
     assert projected.status == QualityStatus.RENDER_READY
     assert metadata["frozenBlockerCount"] == 1 and metadata["requiredEvidencePreserved"]
-    assert "+profile-admission-v1:" in projected.ruleset_version
+    assert f"+{PROFILE_ADMISSION_VERSION}:" in projected.ruleset_version
 
 
 def test_actual_safety_and_visual_failures_remain_blocked():
@@ -50,3 +51,41 @@ def test_absurd_and_unknown_profiles_do_not_waive_required_attempt_template():
         _, projected, _ = project([row("ATTEMPT_001")], source_review(profile))
         assert projected.evaluations[0].outcome == RuleOutcome.FAIL
         assert projected.status == QualityStatus.BLOCKED
+
+
+def test_curiosity_waives_physics_mechanic_but_keeps_shared_story_gates():
+    original, projected, _ = project([
+        row("CONCEPT_007", RuleOutcome.FAIL),
+        row("HOOK_004", RuleOutcome.FAIL),
+        row("PROGRESSION_006", RuleOutcome.FAIL),
+        row("PAYOFF_001", RuleOutcome.FAIL),
+    ])
+    outcomes = {item.rule_id: item.outcome for item in projected.evaluations}
+    assert outcomes["CONCEPT_007"] == RuleOutcome.NOT_APPLICABLE
+    assert outcomes["HOOK_004"] == RuleOutcome.FAIL
+    assert outcomes["PROGRESSION_006"] == RuleOutcome.FAIL
+    assert outcomes["PAYOFF_001"] == RuleOutcome.FAIL
+    assert projected.status == QualityStatus.BLOCKED
+    assert original.evaluations[0].outcome == RuleOutcome.FAIL
+
+
+def test_profile_specific_physics_checks_are_excluded_before_dispatch_only_for_mystery():
+    from app.config import settings
+
+    curiosity = RuleEngine(settings.rules_dir / "RULESET_1.12.yaml")
+    apply_profile_rule_exclusions(curiosity, "CURIOSITY_ADVENTURE")
+    concept_rule = next(rule for rule in curiosity.ruleset["rules"] if rule["id"] == "CONCEPT_007")
+    shared_rule = next(rule for rule in curiosity.ruleset["rules"] if rule["id"] == "HOOK_004")
+    assert not curiosity._rule_applies(concept_rule, {"metadata": {"contentProfile": "CURIOSITY_ADVENTURE"}})
+    assert curiosity._rule_applies(shared_rule, {"metadata": {"contentProfile": "CURIOSITY_ADVENTURE"}})
+
+    physics = RuleEngine(settings.rules_dir / "RULESET_1.12.yaml")
+    apply_profile_rule_exclusions(physics, "ABSURD_PHYSICS")
+    physics_rule = next(rule for rule in physics.ruleset["rules"] if rule["id"] == "CONCEPT_007")
+    assert physics._rule_applies(physics_rule, {"metadata": {"contentProfile": "ABSURD_PHYSICS"}})
+
+
+def test_shared_legibility_goal_and_progression_gates_are_not_profile_optional():
+    assert {"HOOK_004", "PROGRESSION_006", "PAYOFF_001"} == PROFILE_SHARED_RULES
+    assert not PROFILE_SHARED_RULES & PROFILE_OPTIONAL_RULES
+    assert {"CONCEPT_007", "CONCEPT_008", "GOAL_001"} <= PROFILE_OPTIONAL_RULES

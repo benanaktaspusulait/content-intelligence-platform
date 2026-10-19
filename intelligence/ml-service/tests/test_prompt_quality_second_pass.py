@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from app.assessment.pre_render_assessment import build_pre_render_assessment, STORY_STAGE_REQUIRED_RULES
+from app.assessment.pre_render_assessment import build_pre_render_assessment, STORY_STAGE_REQUIRED_RULES, _story_validation
 from app.config import settings
 from app.parser.prompt_parser import parse_prompt
 from app.quality.canonical_evidence import attempt_evidence, escalation_evidence, story_density_evidence
@@ -197,6 +197,45 @@ def _passing_story_gates():
         )
         for rule_id in STORY_STAGE_REQUIRED_RULES
     ]
+
+
+def test_pre_render_story_gate_set_uses_profile_without_waiving_shared_creative_gates() -> None:
+    from app.workflow.review import PROFILE_OPTIONAL_RULES
+
+    rows = _passing_story_gates()
+    rows = [
+        RuleEvaluation(
+            rule_id=row.rule_id,
+            rule_name=row.rule_name,
+            family=row.family,
+            outcome=RuleOutcome.NOT_APPLICABLE if row.rule_id in PROFILE_OPTIONAL_RULES else row.outcome,
+            configured_severity=row.configured_severity,
+            message="profile-specific physics rule does not apply" if row.rule_id in PROFILE_OPTIONAL_RULES else row.message,
+        )
+        for row in rows
+    ]
+    curiosity = _story_validation(rows, "CURIOSITY_ADVENTURE")
+    assert curiosity["status"] == "PASS"
+    assert curiosity["content_profile"] == "CURIOSITY_ADVENTURE"
+    assert "CONCEPT_007" not in curiosity["required_rules"]
+    assert curiosity["required_rules"]["MINI_STORY_LOCK"] == "PASS"
+    assert curiosity["required_rules"]["GOAL_VISIBLE_EARLY"] == "PASS"
+    assert curiosity["required_rules"]["PROGRESSION_006"] == "PASS"
+    assert curiosity["required_rules"]["PAYOFF_001"] == "PASS"
+    assert _story_validation(rows, "ABSURD_PHYSICS")["status"] == "NOT_EVALUATED"
+
+    rows = [
+        RuleEvaluation(
+            rule_id=row.rule_id,
+            rule_name=row.rule_name,
+            family=row.family,
+            outcome=RuleOutcome.FAIL if row.rule_id == "PROGRESSION_006" else row.outcome,
+            configured_severity=row.configured_severity,
+            message="shared progression failed" if row.rule_id == "PROGRESSION_006" else row.message,
+        )
+        for row in rows
+    ]
+    assert _story_validation(rows, "CURIOSITY_ADVENTURE")["status"] == "FAIL"
 
 
 def test_missing_or_unknown_critical_story_gate_blocks_first_frame_generation() -> None:
