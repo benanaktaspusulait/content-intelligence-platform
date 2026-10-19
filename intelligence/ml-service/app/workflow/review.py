@@ -23,7 +23,8 @@ PROFILE_OPTIONAL_RULES = frozenset({
     "CONCEPT_006", "CONCEPT_007", "CONCEPT_008", "ATTEMPT_001", "ATTEMPT_002",
     "CHAR_002", "HOOK_002", "ESCALATION_004", "ESCALATION_005", "PAYOFF_002",
     "PAYOFF_003", "PAYOFF_004", "PAYOFF_005", "PAYOFF_006", "PROGRESSION_005",
-    "REPETITION_004", "GOAL_001",
+    "REPETITION_004", "GOAL_001", "INSTANT_VISUAL_ABSURDITY_GATE", "CONCEPT_009",
+    "STUBBORN_RETURN_LOOP", "STUBBORN_RETURN_HOOK", "STUBBORN_RETURN_PAYOFF",
 })
 PROFILE_SHARED_RULES = frozenset({"HOOK_004", "PROGRESSION_006", "PAYOFF_001"})
 
@@ -934,6 +935,9 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
         attempt_policy = "ACTOR_SOURCE_BOUND_V3" if requested_version == "1.12" else "ACTOR_SOURCE_BOUND_V2" if requested_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1"
         parse_result = parse_prompt(prompt_text, ParserConfig(attempt_evidence_policy=attempt_policy, motion_evidence_policy="TOKEN_MOTION_V2" if requested_version in {"1.10", "1.11", "1.12"} else "HISTORICAL_V1"))
         video_plan_ir = parse_result.video_plan_ir
+        # Preserve the exact reviewed source for source-bound local evidence
+        # checks; this is analysis provenance, not semantic verification.
+        video_plan_ir.setdefault("metadata", {})["sourceText"] = prompt_text
 
         supplied_story_plan = request.get("storyPlanEvidence")
         if isinstance(supplied_story_plan, dict):
@@ -943,7 +947,9 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
             from app.parser.actor_attempts import classify_content
 
             characters = video_plan_ir.get("characters") or {}
-            actor = characters.get("primary") or supplied_story_plan.get("character")
+            actor = characters.get("primary")
+            if not isinstance(actor, str) or not actor.strip() or actor.strip().casefold() in {"unknown", "none", "n/a"}:
+                actor = supplied_story_plan.get("character")
             beats = video_plan_ir.get("beats") or []
             used_beat_ids: set[str] = set()
             for index, attempt in enumerate(attempts, start=1):
@@ -971,6 +977,18 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
                 if beat_id in used_beat_ids:
                     raise ValueError(f"Structured STORY attempts {index} duplicate a parsed beat")
                 resolved = classify_content(quote, actor, "ATTEMPT")
+                if (
+                    isinstance(actor, str) and actor.strip()
+                    and str(characters.get("primary") or "").strip().casefold() in {"unknown", "none", "n/a", ""}
+                    and re.search(rf"\b{re.escape(actor.strip())}\b", quote, re.IGNORECASE)
+                ):
+                    # A source-bound generic group (e.g. “children”) is an
+                    # observable actor, not an invented personal identity.
+                    characters["primary"] = actor.strip()
+                    characters["primaryEvidence"] = {
+                        "value": actor.strip(), "sourceQuote": quote,
+                        "method": "SOURCE_BOUND_OBSERVABLE_GROUP", "semanticVerification": "NOT_PERFORMED",
+                    }
                 character_attempts = [
                     row for row in resolved.get("actions", [])
                     if row.get("classification") == "CHARACTER_ATTEMPT"
@@ -999,14 +1017,31 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
             if not source_quote or source_quote not in prompt_text:
                 raise ValueError("Structured everyday-goal evidence must quote the exact evaluated story text")
             start = prompt_text.index(source_quote)
+            beats = video_plan_ir.get("beats") or []
+            first = beats[0] if beats else {}
+            first_span = first.get("sourceSpan")
+            if (
+                not isinstance(first_span, list)
+                or len(first_span) != 2
+                or start < first_span[0]
+                or start + len(source_quote) > first_span[1]
+                or float(first.get("startTime", 0.0) or 0.0) > 0.8
+            ):
+                raise ValueError("Structured everyday-goal evidence must be source-bound to the opening beat")
             description = str(supplied_goal.get("description") or "").strip()
             if not description:
                 raise ValueError("Structured everyday-goal evidence requires a concrete goal description")
+            explicitness = str(supplied_goal.get("goalExplicitness") or "IMPLICIT_BUT_OBSERVABLE")
+            if explicitness not in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"}:
+                raise ValueError("Structured everyday-goal evidence must declare explicit or observable-implied evidence")
+            obstruction = str(supplied_goal.get("obstruction") or "").strip()
+            if obstruction and obstruction.casefold() not in source_quote.casefold():
+                raise ValueError("Structured goal obstruction must be quoted within the opening evidence")
             existing_goal = dict(video_plan_ir.get("goalEvidence") or {})
             video_plan_ir["goalEvidence"] = {
                 **existing_goal,
                 **supplied_goal,
-                "goalExplicitness": "EXPLICIT",
+                "goalExplicitness": explicitness,
                 "description": description,
                 "source": "STORY_ROLE_STRUCTURED_EVIDENCE",
                 "sourceQuote": source_quote,
@@ -1020,6 +1055,11 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
                     "semanticVerification": "PENDING_GOAL_001",
                 },
             }
+
+        viewer_question = request.get("viewerQuestion")
+        if isinstance(viewer_question, str) and viewer_question.strip() and viewer_question.casefold() in prompt_text.casefold():
+            video_plan_ir.setdefault("hook", {})["viewerQuestion"] = viewer_question.strip()
+            video_plan_ir["hook"]["viewerQuestionSource"] = "SOURCE_TEXT"
 
         # Run canonical Rule Engine
         from app.config import settings
@@ -1206,13 +1246,13 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     required_creative_gates = {
         "MINI_STORY_LOCK": "Goal, obstacle, attempts, progression and payoff",
         "GOAL_VISIBLE_EARLY": "Goal legibility in the opening",
-        "INSTANT_VISUAL_ABSURDITY_GATE": "Instant, history-free visual comprehension",
         "HOOK_004": "The opening problem is immediately legible",
         "PROGRESSION_006": "Meaningful, distinct progression",
         "PAYOFF_001": "A payoff that develops the established conflict",
     }
     if routing["contentProfile"] in {"ABSURD_PHYSICS", "MIXED", "UNKNOWN"}:
         required_creative_gates.update({
+            "INSTANT_VISUAL_ABSURDITY_GATE": "Instant, history-free physical absurdity",
             "GOAL_001": "Everyday goal is obstructed by the impossible rule",
             "CONCEPT_007": "One consistent impossible rule",
             "CONCEPT_008": "The physical rule is learnable and predictable",

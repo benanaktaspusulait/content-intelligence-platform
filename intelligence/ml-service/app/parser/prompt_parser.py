@@ -680,11 +680,16 @@ class PromptParser:
             goal_words = (
                 "retrieve", "remove", "pull", "catch", "control", "use",
                 "get", "restore", "normal", "unstick", "inspect", "fix",
+                "open", "unlock",
             )
             obstruction_words = (
                 "stuck", "will not", "won't", "cannot", "can't", "instead of",
-                "remains", "resists", "impossible",
+                "remains", "resists", "impossible", "locked", "does not open",
+                "doesn't open", "stays shut", "will not open", "won't open",
             )
+            opening_text = " ".join(
+                str(beat.get(key, "")) for beat in beats[:1] for key in ("sourceAction", "action", "consequence")
+            ).lower()
             has_goal_action = any(re.search(rf"\b{re.escape(word)}\b", all_text) for word in goal_words)
             # The word free is a useful goal verb ("free the stuck toy") but is
             # also a common adjective ("his free hand/palm"). Do not infer a
@@ -693,8 +698,15 @@ class PromptParser:
             has_obstruction = any(word in all_text for word in obstruction_words) or bool(
                 mechanic.get("abnormalProperty")
             )
+            # Historical visual-mystery footage may establish a goal without
+            # naming a protagonist: only infer opening a locked object when
+            # the opening itself shows an opening action and its obstruction.
+            opening_goal = (
+                any(re.search(rf"\b{re.escape(word)}\b", opening_text) for word in ("open", "unlock", "pull"))
+                and any(word in opening_text for word in obstruction_words)
+            )
             target = mechanic.get("primaryObject")
-            if has_goal_action and has_obstruction:
+            if opening_goal or (has_goal_action and has_obstruction):
                 description = (
                     f"Control or retrieve {target} despite the established abnormal behavior."
                     if target

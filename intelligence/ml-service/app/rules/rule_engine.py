@@ -2602,6 +2602,49 @@ class RuleEngine:
         semantic judgment, fail-closed to SERVICE_ERROR.
         """
         hook = video_plan_ir.get("hook", {})
+        content_profile = str((video_plan_ir.get("metadata") or {}).get("contentProfile") or "").upper()
+        if content_profile == "CURIOSITY_ADVENTURE":
+            beats = video_plan_ir.get("beats") or []
+            first = beats[0] if beats else {}
+            goal = video_plan_ir.get("goalEvidence") or {}
+            question = str(hook.get("viewerQuestion") or "").strip()
+            quote = str(goal.get("sourceQuote") or "")
+            description = str(goal.get("description") or "")
+            obstruction = str(goal.get("obstruction") or "")
+            early = float(first.get("startTime", 0.0) or 0.0) <= 0.8
+            first_span = first.get("sourceSpan")
+            # Parser source spans are authoritative where available; retain an
+            # exact full-story quote check for the parsed source text.
+            source_text = str(video_plan_ir.get("metadata", {}).get("sourceText") or "")
+            quote_in_source = bool(quote and quote in source_text)
+            quote_in_opening = (
+                isinstance(first_span, list) and len(first_span) == 2
+                and bool(quote) and source_text[first_span[0]:first_span[1]].find(quote) >= 0
+            )
+            opening_problem = quote_in_opening and bool(obstruction and obstruction.casefold() in quote.casefold())
+            question_tokens = set(re.findall(r"[a-z]+", question.lower()))
+            goal_tokens = set(re.findall(r"[a-z]+", f"{description} {obstruction}".lower()))
+            question_connected = bool(question_tokens & goal_tokens) and "?" in question
+            if not early or not quote_in_source or not opening_problem or not question:
+                return RuleEvaluation(
+                    rule_id="HOOK_004", rule_name="Opening Problem Legibility", family="hook_strength",
+                    severity="BLOCKER", result="UNKNOWN",
+                    message="Curiosity opening evaluation lacks source-bound early goal, obstruction, or viewer question evidence.",
+                    details={"evidenceStatus": "INCOMPLETE", "early": early, "goalQuoteInSource": quote_in_source, "openingProblem": opening_problem, "viewerQuestionProvided": bool(question)},
+                )
+            if not question_connected:
+                return RuleEvaluation(
+                    rule_id="HOOK_004", rule_name="Opening Problem Legibility", family="hook_strength",
+                    severity="CRITICAL", result="FAIL",
+                    message="The viewer question is not meaningfully connected to the visible goal and obstacle.",
+                    details={"viewerQuestion": question, "goal": description, "obstruction": obstruction},
+                )
+            return RuleEvaluation(
+                rule_id="HOOK_004", rule_name="Opening Problem Legibility", family="hook_strength",
+                severity="BLOCKER", result="PASS",
+                message="The opening establishes an observable problem and a source-grounded viewer question; the solution may be revealed later.",
+                details={"format": "CURIOSITY_ADVENTURE", "viewerQuestion": question, "goalEvidence": goal, "solutionVisibleAtFrameZeroRequired": False},
+            )
         anomaly = hook.get("anomaly", "")
         beats = video_plan_ir.get("beats", [])
         opening_beats = beats[:2]
@@ -3050,12 +3093,11 @@ class RuleEngine:
                 rule_name="Engine Silhouette Duplicate",
                 family="visual_novelty",
                 severity="BLOCKER",
-                result="FAIL",
+                result="UNKNOWN",
                 message=(
-                    "No first-frame/final-silhouette comparison evidence was supplied; "
-                    "the concept is blocked before render."
+                    "No first-frame/final-silhouette comparison evidence was supplied; duplication cannot be established."
                 ),
-                details={"failureBasis": EVIDENCE_INCOMPLETE_FAILURE},
+                details={"evidenceStatus": "MISSING_COMPARISON", "failureBasis": EVIDENCE_INCOMPLETE_FAILURE},
             )
         family_duplicate = family is not None and family in known_families
         numeric_duplicate = similarity is not None and float(similarity) >= 0.80
@@ -3315,12 +3357,19 @@ class RuleEngine:
     def _evaluate_mini_story_lock(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         evidence = story_density_evidence(video_plan_ir)
         profile = self._engine_profile(video_plan_ir)
+        content_profile = str((video_plan_ir.get("metadata") or {}).get("contentProfile") or "").upper()
+        required_attempts = 1 if content_profile == "CURIOSITY_ADVENTURE" else 2
+        viewer_discovery = content_profile == "CURIOSITY_ADVENTURE" and any(
+            re.search(r"\b(reveal|reveals|revealed|discover|discovers|discovered|find|finds|found|spot|spots|spotted|clue)\b",
+                      " ".join(str(beat.get(key, "")) for key in ("action", "consequence", "result")), re.I)
+            for beat in (video_plan_ir.get("beats") or [])
+        )
         required = {
             "goal": evidence.goal_status in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"},
             "obstruction": evidence.obstruction_status == "AVAILABLE",
-            "attempts": len(attempt_beats(video_plan_ir)) >= 2,
+            "attempts": len(attempt_beats(video_plan_ir)) >= required_attempts,
             "progression": evidence.strategy_change_count >= 1 or evidence.state_transition_count >= 3,
-            "realization": evidence.realization_status == "AVAILABLE" or profile.active,
+            "realization": evidence.realization_status == "AVAILABLE" or profile.active or viewer_discovery,
             "payoff": evidence.payoff_status == "AVAILABLE",
         }
         missing = [key for key, present in required.items() if not present]

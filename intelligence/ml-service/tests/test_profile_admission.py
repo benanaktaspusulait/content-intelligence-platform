@@ -33,7 +33,7 @@ def test_curiosity_optional_attempts_do_not_erase_frozen_results():
 
 
 def test_actual_safety_and_visual_failures_remain_blocked():
-    for rule in ("CONSISTENCY_001", "PRODUCIBILITY_001", "INSTANT_VISUAL_ABSURDITY_GATE", "ENGINE_SILHOUETTE_DUPLICATE"):
+    for rule in ("CONSISTENCY_001", "PRODUCIBILITY_001", "ENGINE_SILHOUETTE_DUPLICATE"):
         _, projected, _ = project([row("ATTEMPT_001"), row(rule)])
         assert projected.status == QualityStatus.BLOCKED
         assert projected.blocker_count >= 1
@@ -75,17 +75,28 @@ def test_profile_specific_physics_checks_are_excluded_before_dispatch_only_for_m
     curiosity = RuleEngine(settings.rules_dir / "RULESET_1.12.yaml")
     apply_profile_rule_exclusions(curiosity, "CURIOSITY_ADVENTURE")
     concept_rule = next(rule for rule in curiosity.ruleset["rules"] if rule["id"] == "CONCEPT_007")
+    absurdity_rule = next(rule for rule in curiosity.ruleset["rules"] if rule["id"] == "INSTANT_VISUAL_ABSURDITY_GATE")
     shared_rule = next(rule for rule in curiosity.ruleset["rules"] if rule["id"] == "HOOK_004")
     assert not curiosity._rule_applies(concept_rule, {"metadata": {"contentProfile": "CURIOSITY_ADVENTURE"}})
+    assert not curiosity._rule_applies(absurdity_rule, {"metadata": {"contentProfile": "CURIOSITY_ADVENTURE"}})
+    for rule_id in ("CONCEPT_009", "STUBBORN_RETURN_LOOP", "STUBBORN_RETURN_HOOK", "STUBBORN_RETURN_PAYOFF"):
+        profile_rule = next(rule for rule in curiosity.ruleset["rules"] if rule["id"] == rule_id)
+        assert not curiosity._rule_applies(profile_rule, {"metadata": {"contentProfile": "CURIOSITY_ADVENTURE", "seriesType": "social_reel"}})
     assert curiosity._rule_applies(shared_rule, {"metadata": {"contentProfile": "CURIOSITY_ADVENTURE"}})
 
     physics = RuleEngine(settings.rules_dir / "RULESET_1.12.yaml")
     apply_profile_rule_exclusions(physics, "ABSURD_PHYSICS")
     physics_rule = next(rule for rule in physics.ruleset["rules"] if rule["id"] == "CONCEPT_007")
+    physics_absurdity_rule = next(rule for rule in physics.ruleset["rules"] if rule["id"] == "INSTANT_VISUAL_ABSURDITY_GATE")
     assert physics._rule_applies(physics_rule, {"metadata": {"contentProfile": "ABSURD_PHYSICS"}})
+    assert physics._rule_applies(physics_absurdity_rule, {"metadata": {"contentProfile": "ABSURD_PHYSICS"}})
+    for rule_id in ("CONCEPT_009", "STUBBORN_RETURN_LOOP", "STUBBORN_RETURN_HOOK", "STUBBORN_RETURN_PAYOFF"):
+        profile_rule = next(rule for rule in physics.ruleset["rules"] if rule["id"] == rule_id)
+        assert physics._rule_applies(profile_rule, {"metadata": {"contentProfile": "ABSURD_PHYSICS", "seriesType": "social_reel"}})
 
 
 def test_shared_legibility_goal_and_progression_gates_are_not_profile_optional():
     assert {"HOOK_004", "PROGRESSION_006", "PAYOFF_001"} == PROFILE_SHARED_RULES
     assert not PROFILE_SHARED_RULES & PROFILE_OPTIONAL_RULES
-    assert {"CONCEPT_007", "CONCEPT_008", "GOAL_001"} <= PROFILE_OPTIONAL_RULES
+    assert {"CONCEPT_007", "CONCEPT_008", "GOAL_001", "CONCEPT_009", "INSTANT_VISUAL_ABSURDITY_GATE"} <= PROFILE_OPTIONAL_RULES
+    assert {"STUBBORN_RETURN_LOOP", "STUBBORN_RETURN_HOOK", "STUBBORN_RETURN_PAYOFF"} <= PROFILE_OPTIONAL_RULES

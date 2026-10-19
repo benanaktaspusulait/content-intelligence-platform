@@ -446,12 +446,16 @@ def _evaluate_long_form_story_text(candidate: dict[str, Any], context: dict[str,
     candidate['postFamilyReview'] = review
     evaluation = review.get('canonicalRuleEvaluation') or {}
     candidate['canonicalStoryEvaluation'] = evaluation
-    mandatory_rules = (
-        'GOAL_001', 'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK',
-        'ATTEMPT_001', 'ATTEMPT_002', 'PROGRESSION_006',
-        'ESCALATION_005', 'PAYOFF_001', 'CONCEPT_007', 'CONCEPT_008',
-        'HOOK_002', 'INSTANT_VISUAL_ABSURDITY_GATE', 'CONTINUOUS_ACTION_MOMENTUM',
-    )
+    content_profile = str(evaluation_input.get('contentProfile') or 'UNKNOWN').upper()
+    mandatory_rules = [
+        'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK', 'PROGRESSION_006',
+        'PAYOFF_001', 'HOOK_004', 'CONTINUOUS_ACTION_MOMENTUM',
+    ]
+    if content_profile in {'ABSURD_PHYSICS', 'MIXED', 'UNKNOWN'}:
+        mandatory_rules.extend([
+            'GOAL_001', 'ATTEMPT_001', 'ATTEMPT_002', 'ESCALATION_005',
+            'CONCEPT_007', 'CONCEPT_008', 'HOOK_002', 'INSTANT_VISUAL_ABSURDITY_GATE',
+        ])
     rows = {
         row.get('ruleId'): row
         for group in ('passedRules', 'failedRules', 'unknownRules', 'notApplicableRules')
