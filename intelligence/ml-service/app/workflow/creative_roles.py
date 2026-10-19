@@ -33,8 +33,9 @@ _LONG_FORM_STORY_CONTRACT = '''
 LONG-FORM STORY CONTRACT (one complete story, not a premise or a list of odd events):
 EXACT JSON ENVELOPE: Return exactly one root JSON object shaped as {"alternatives":[{"candidateId":"candidate-1","title":"short title","protagonistCharacterId":"registered-id-from-context","text":"complete story"}]}. Return one complete root object only. Do not include a `storyPlan`, duplicate fields, other root keys, Markdown, commentary, or any characters after the root object closes. The application derives evidence from the story text; do not repeat the same evidence in a second schema.
 CONCEPT SELECTION GATE: Before expanding the story, compare the proposed object's visual engine and causal progression with context.establishedWinnerMechanisms and context.rejectedCandidates. Do not reuse or cosmetically rename a winner or rejected concept. Reject chair/cushion escape, door shrinking/inversion, missing-shoe reveals, simple chase/return loops, oversized-object spectacle, sticky attachment/multiplication, and observation-dependent object state unless the causal engine is materially different. Prefer a fresh mechanism whose consequences create new story information. Any provider-authored comparison is only a generation rationale, not verified originality evidence. If no strong distinct concept emerges, do not falsely claim novelty.
-The story begins with the established character pursuing one believable ordinary task and already visibly blocked at frame zero by one impossible physical rule. The first timed beat must show the goal, attempted action, abnormal result, and immediate reaction together. State the goal and why it matters in the story text itself.
-Build one coherent causal rule. Every later action must try to achieve the same goal. Give each major attempt a different strategy and a different visible consequence that changes the situation. Include a discovery or reversal that changes the character's strategy, then a meaningful payoff to the original goal. A replay ending is optional; use one only if the same physical rule naturally brings the opening problem back.
+The opening begins with the established character pursuing one believable ordinary task and already visibly blocked at frame zero. The first timed beat must show the goal, visible problem, and immediate reaction together. State the goal and why it matters in the story text itself. Follow the selected creative profile: ABSURD_PHYSICS requires one coherent impossible physical rule; CURIOSITY_ADVENTURE does not require impossible physics and may use a grounded visual mystery. Do not add magic merely to satisfy a generic story template.
+For CURIOSITY_ADVENTURE, make the unresolved problem and viewer-facing question concrete and understandable from the opening image. Place a visible clue or contradiction where viewers can notice it before the character does. The character's motivated discovery must change the strategy or interpretation, and that discovery must cause a genuinely new consequence or development before a rewarding resolution of the original goal. Do not substitute repeated inspection, movement, or the same failed attempt for new information. For other profiles, preserve their selected creative objective and use only the mechanism that profile requires.
+Build one coherent causal mechanism. Every later action must try to achieve the same goal. Give each major attempt a different strategy and a different visible consequence that changes the situation. Include a discovery or reversal that changes the character's strategy, then a meaningful payoff to the original goal. A replay ending is optional; use one only if the established mechanism naturally brings the opening problem back.
 Do not count repeated force, a camera change, another direction of the same movement, waiting, or a longer reaction as progression. Do not add props, characters, magic rules, or dense hand-object choreography to fill time. Prefer large, simple, continuous actions suitable for Seedance image-to-video.
 The requested duration is context.targetDuration (normally 20 seconds). A 20-second story is valid. Recommend a shorter runtime when the progression does not earn the requested duration. For 20–22 seconds, usually use about 5–6 distinct developments; for 25–30 seconds, about 6–8. These are creative guidance, not a beat-count score.
 Current Ruleset 1.12 evaluates active character attempts separately from distinct story developments. The seven-attempt long-form requirement is historical and no longer applies. Preserve sufficient motivated attempts to show the character pursuing the goal, but do not add an arbitrary attempt quota or relabel consequences, discoveries, reversals, payoff, or loop as attempts. Never pad or repeat actions to satisfy a count. The application evaluates runtime and production feasibility from source evidence; absent independent evidence stays NOT_EVALUATED. Do not award itself a pass.
@@ -384,6 +385,7 @@ def _evaluate_long_form_story_text(candidate: dict[str, Any], context: dict[str,
     hook = ir.get('hook') or {}
     mechanic = ir.get('coreMechanic') or {}
     rule_evidence = mechanic.get('physicalRuleEvidence') or {}
+    content_profile = str(context.get('profile') or 'ABSURD_PHYSICS').upper()
     duration = (ir.get('metadata') or {}).get('duration')
     if duration is None and beats:
         duration = max(float(beat.get('endTime') or 0) for beat in beats)
@@ -395,7 +397,9 @@ def _evaluate_long_form_story_text(candidate: dict[str, Any], context: dict[str,
         source_errors.append('TIMECODED_STORY_NOT_SOURCE_ESTABLISHED')
     if hook.get('textualFirstFrameIntent', {}).get('status') != 'PASS':
         source_errors.append('FRAME_ZERO_TROUBLE_NOT_SOURCE_ESTABLISHED')
-    if rule_evidence.get('state') != 'OBSERVED' or not rule_evidence.get('sourceQuote'):
+    if content_profile in {'ABSURD_PHYSICS', 'MIXED', 'UNKNOWN'} and (
+        rule_evidence.get('state') != 'OBSERVED' or not rule_evidence.get('sourceQuote')
+    ):
         source_errors.append('PHYSICAL_RULE_NOT_SOURCE_ESTABLISHED')
     if duration is None or not 20 <= float(duration) <= 30:
         source_errors.append('LONG_FORM_RUNTIME_NOT_SOURCE_ESTABLISHED')
@@ -446,7 +450,6 @@ def _evaluate_long_form_story_text(candidate: dict[str, Any], context: dict[str,
     candidate['postFamilyReview'] = review
     evaluation = review.get('canonicalRuleEvaluation') or {}
     candidate['canonicalStoryEvaluation'] = evaluation
-    content_profile = str(evaluation_input.get('contentProfile') or 'UNKNOWN').upper()
     mandatory_rules = [
         'GOAL_VISIBLE_EARLY', 'MINI_STORY_LOCK', 'PROGRESSION_006',
         'PAYOFF_001', 'HOOK_004', 'CONTINUOUS_ACTION_MOMENTUM',
@@ -1198,6 +1201,9 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         requested_duration = context['targetConfiguration'].get('duration')
     if role == 'STORY' and isinstance(requested_duration, (int, float)) and 20 <= requested_duration <= 30:
         system += _LONG_FORM_STORY_CONTRACT
+        target_configuration = context.get('targetConfiguration') if isinstance(context.get('targetConfiguration'), dict) else {}
+        profile = str(target_configuration.get('contentProfile') or context.get('profile') or 'UNKNOWN').upper()
+        system += f' EFFECTIVE CREATIVE PROFILE: {profile}. This profile is supplied by the application and governs the story engine; do not default to ABSURD_PHYSICS.'
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'establishedWinnerMechanisms', 'sourceStoryRecordId', 'mainCharacter', 'mainCharacterId', 'character', 'characterRecord', 'canonicalCharacterRegistry', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
     if context.get('storyExperiment'):
         from .story_experiment import contract, SCHEMA

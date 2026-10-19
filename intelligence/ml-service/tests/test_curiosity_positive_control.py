@@ -93,6 +93,23 @@ def test_review_api_contract_accepts_source_bound_goal_evidence():
     assert request.model_dump()["goalEvidence"]["sourceQuote"] == OPENING_QUOTE
 
 
+def test_story_role_source_checks_are_profile_aware_without_waiving_shared_gates():
+    from app.workflow.creative_roles import _evaluate_long_form_story_text
+
+    candidate = {
+        "candidateId": "format-routing-fixture",
+        "text": """20 seconds. Kiko wants to find the missing picture.\n0-4 seconds: Kiko searches beside the shelf while a colored corner peeks out beneath a rug.\n4-8 seconds: Kiko checks behind the curtain and the colored corner remains visible.\n8-12 seconds: Kiko notices the corner and follows its edge.\n12-16 seconds: Kiko lifts the rug and finds the picture.\n16-20 seconds: Kiko displays the picture, then a new corner appears under the rug.""",
+    }
+    curiosity_candidate = dict(candidate)
+    physics_candidate = dict(candidate)
+    curiosity = _evaluate_long_form_story_text(curiosity_candidate, {"profile": "CURIOSITY_ADVENTURE"}, 20, 1)
+    physics = _evaluate_long_form_story_text(physics_candidate, {"profile": "ABSURD_PHYSICS"}, 20, 1)
+    assert "PHYSICAL_RULE_NOT_SOURCE_ESTABLISHED" not in curiosity_candidate["storyPlanValidation"]["errors"]
+    assert "PHYSICAL_RULE_NOT_SOURCE_ESTABLISHED" in physics_candidate["storyPlanValidation"]["errors"]
+    assert "EVERYDAY_GOAL_NOT_SOURCE_ESTABLISHED" in curiosity_candidate["storyPlanValidation"]["errors"] or curiosity_candidate["storyPlanValidation"]["sourceBoundGoal"]
+    assert "FRAME_ZERO_TROUBLE_NOT_SOURCE_ESTABLISHED" in curiosity_candidate["storyPlanValidation"]["errors"] or curiosity_candidate["storyPlanValidation"]["sourceBoundFrameZero"]
+
+
 def test_absurd_physics_keeps_its_instant_absurdity_gate():
     engine = RuleEngine(settings.rules_dir / "RULESET_1.12.yaml")
     apply_profile_rule_exclusions(engine, "ABSURD_PHYSICS")

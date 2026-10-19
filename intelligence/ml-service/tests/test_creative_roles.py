@@ -204,6 +204,33 @@ def test_long_form_story_without_provider_plan_maps_only_text_evidence_and_reach
     assert candidate['mandatoryStoryGate']['status'] == 'UNKNOWN'
 
 
+def test_long_form_generation_prompt_routes_curiosity_and_absurd_physics_separately():
+    from app.workflow.creative_roles import preview_story_request
+
+    base = {
+        'targetDuration': 22,
+        'targetConfiguration': {'duration': 22, 'contentProfile': 'CURIOSITY_ADVENTURE'},
+        'requestedAlternativeCount': 1,
+    }
+    curiosity = preview_story_request('STORY', 'Create one story.', base)
+    curiosity_system = curiosity['system']
+    assert curiosity['providerDispatched'] is False
+    assert 'EFFECTIVE CREATIVE PROFILE: CURIOSITY_ADVENTURE' in curiosity_system
+    assert 'viewer-facing question' in curiosity_system
+    assert 'visible clue or contradiction' in curiosity_system
+    assert 'genuinely new consequence or development' in curiosity_system
+    assert 'does not require impossible physics' in curiosity_system
+    assert 'blocked at frame zero by one impossible physical rule' not in curiosity_system
+
+    absurd = preview_story_request('STORY', 'Create one story.', {
+        **base,
+        'profile': 'ABSURD_PHYSICS',
+        'targetConfiguration': {'duration': 22, 'contentProfile': 'ABSURD_PHYSICS'},
+    })
+    assert 'EFFECTIVE CREATIVE PROFILE: ABSURD_PHYSICS' in absurd['system']
+    assert 'ABSURD_PHYSICS requires one coherent impossible physical rule' in absurd['system']
+
+
 def test_opening_and_momentum_failures_block_long_form_story_stage(monkeypatch):
     import app.workflow.review as review
     candidate_source = _structured_long_form_candidate()
