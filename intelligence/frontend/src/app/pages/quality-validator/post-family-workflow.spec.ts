@@ -36,6 +36,27 @@ describe('post-family operator workflow', () => {
     setupHttp.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=2').flush({});
     return fixture;
   }
+  it('opens Repair without a workflow record and binds local preparation to the exact blocked analysis', async () => {
+    const f = await setup(); const c = f.componentInstance; const http = TestBed.inject(HttpTestingController);
+    c.prompt = 'Kiko tidies his teddy into a box. A creative brief with no timed execution plan.';
+    c.profile = 'post-family-v1'; c.sourceValidationId = 19; c.canonicalValidationId = 19;
+    c.selectStage(6);
+    expect(c.activeStage).toBe(6);
+    f.changeDetectorRef.markForCheck(); f.detectChanges();
+    expect(f.nativeElement.textContent).toContain('Prepare Repair for saved analysis #19');
+    expect(f.nativeElement.textContent).toContain('Brief-to-motion conversion is not supported by this repair tool');
+    c.runReview(6);
+    const req = http.expectOne('/api/v1/intelligence/workflow/review');
+    expect(req.request.body.options.canonicalValidationId).toBe(19);
+    expect(req.request.body.options.structuredPlan.beats).toEqual([]);
+    req.flush({recordId:'local-review-19',originalPrompt:c.prompt,repairPasses:0});
+    expect(c.activeStage).toBe(6);
+    expect(c.isCurrent()).toBe(true);
+    c.startRepairSession();
+    http.expectNone('/api/v1/intelligence/workflow/repair-sessions');
+    http.expectNone('/api/v1/intelligence/workflow/creative-role');
+    http.verify(); f.destroy(); TestBed.resetTestingModule();
+  });
   it('keeps exact canonical values while displaying readable fractional deltas', async () => {
     const f = await setup(); const c = f.componentInstance;
     const original = 82.80208333333336; const improved = 86.96875000000003;
@@ -68,6 +89,8 @@ describe('post-family operator workflow', () => {
     c.confirmIntent();expect(c.intentConfirmed).toBe(false);
     const post=http.expectOne('/api/v1/intelligence/workflow/production-review/decisions');
     expect(post.request.body).toMatchObject({contentId:'1',promptVersionId:'2',decisionType:'CREATIVE_INTENT',sourceQuote:c.prompt});
+    expect(post.request.body.protectedIntent).toBe(c.prompt.split(/\r?\n/).find(Boolean));
+    expect(c.protectedIntent).toBe(c.prompt.split(/\r?\n/).find(Boolean));
     const decision={...post.request.body,provenance:'OPERATOR_CONFIRMED',recordId:'explicit-action'};
     post.flush(decision);expect(c.intentConfirmed).toBe(true);
     c.ngOnChanges({promptVersionId:{currentValue:'2'} as any});

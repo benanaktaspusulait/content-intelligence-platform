@@ -25,7 +25,7 @@ describe('Step 3 prompt editor and immutable revision save', () => {
       const editor = {
         input, model, getValue: () => input.value,
         setValue: (value: string) => { input.value = value; changed(); },
-        getModel: () => model, layout: vi.fn(),
+        getModel: () => model, layout: vi.fn(), updateOptions: vi.fn((options: any) => { input.readOnly = options.readOnly; }),
         onDidChangeModelContent: (listener: () => void) => { changed = listener; return { dispose: vi.fn() }; },
         dispose: vi.fn(() => input.remove()),
       };
@@ -42,7 +42,7 @@ describe('Step 3 prompt editor and immutable revision save', () => {
     http = TestBed.inject(HttpTestingController);
   });
   afterEach(() => { try { http.verify(); } finally { TestBed.resetTestingModule(); } });
-  function flushSaved() {
+  function flushSaved(stored: any = null) {
     http.expectOne(r => r.url.startsWith('/api/v1/videos/prompt-workspaces?')).flush([]);
     http.expectOne('/api/v1/intelligence/contents/quality-summary').flush([]);
     http.expectOne('/api/v1/intelligence/contents/13/prompt-versions').flush([{ id: 18, versionNumber: 2, rawText: saved }]);
@@ -50,7 +50,7 @@ describe('Step 3 prompt editor and immutable revision save', () => {
     http.expectOne('/api/v1/intelligence/contents/13/prompt-versions/18/videos').flush([]);
     http.expectOne('/api/v1/intelligence/contents/13').flush({ title: 'Kiko and the Teddy Bear Rejecting Box', type: 'SHORT' });
     // Retrieves stored analysis only; no new analysis.
-    http.expectOne('/api/v1/intelligence/quality/validations/latest').flush(null);
+    http.expectOne('/api/v1/intelligence/quality/validations/latest').flush(stored);
   }
   it('opens stage=3 and hydrates saved text arriving after editor creation', async () => {
     const fixture = TestBed.createComponent(QualityValidatorComponent);
@@ -99,4 +99,91 @@ describe('Step 3 prompt editor and immutable revision save', () => {
     fixture.componentInstance.studioStage = 4; fixture.changeDetectorRef.markForCheck(); fixture.detectChanges(); flushSaved(); await vi.dynamicImportSettled(); await fixture.whenStable();
     expect(monaco.create).not.toHaveBeenCalled(); fixture.destroy();
   });
+  const report = {
+    status: 'BLOCKED', rulesetVersion: '1.12',
+    passedRules: [{ ruleId: 'PAYOFF_001', outcome: 'PASS', message: 'Recorded pass' }],
+    failedRules: [{ ruleId: 'ATTEMPT_001', outcome: 'FAIL', severity: 'BLOCKER', message: 'No source-backed attempts extracted' }],
+    unknownRules: [{ ruleId: 'HOOK_002', outcome: 'UNKNOWN', message: 'Hook start could not be extracted' }],
+    notApplicableRules: [{ ruleId: 'OTHER', outcome: 'NOT_APPLICABLE' }], serviceErrors: [],
+    evidenceMissing: ['beats'], parserWarnings: ['No explicit timeline beats found'],
+    parserAssumptions: ['Duration not explicit, using default: 15.0s'], videoPlanIr: { beats: [] },
+  };
+  async function openPrompt(stored: any = null) {
+    const fixture = TestBed.createComponent(QualityValidatorComponent);
+    fixture.detectChanges(); flushSaved(stored); await vi.dynamicImportSettled(); await fixture.whenStable();
+    return fixture;
+  }
+  function button(fixture: any, text: string): HTMLButtonElement {
+    return [...fixture.nativeElement.querySelectorAll('button')].find((b: any) => b.textContent.trim() === text) as HTMLButtonElement;
+  }
+  it('shows the successful BLOCKED response and exact revision instead of silently ending loading', async () => {
+    const fixture = await openPrompt();
+    button(fixture, 'Analyze prompt').click();
+    const req = http.expectOne('/api/v1/intelligence/quality/validate');
+    expect(req.request.body).toEqual({ prompt: '', rulesetVersion: 'latest', contentId: 13, promptVersionId: 18 });
+    req.flush({ validationRecordId: 15, report });
+    await fixture.whenStable();
+    const result = fixture.nativeElement.querySelector('[aria-label="Prompt validation results"]');
+    expect(result.textContent).toContain('Saved analysis #15');
+    expect(result.textContent).toContain('Prompt ID 18');
+    expect(result.textContent).toContain('Analysis completed');
+    expect(result.textContent).toContain('PASS 1 · FAIL 1 · UNKNOWN 1 · NOT_APPLICABLE 1 · SERVICE_ERROR 0');
+    expect(result.textContent).toContain('No source-backed timecoded beats were extracted');
+    expect(fixture.componentInstance.report?.videoPlanIr['beats']).toEqual([]);
+    expect(fixture.componentInstance.loading).toBe(false);
+    expect(monaco.editors[0].input.readOnly).toBe(false);
+    const editorHost = fixture.nativeElement.querySelector('#prompt-editor');
+    editorHost.scrollIntoView = vi.fn(); // jsdom has no scrolling implementation.
+    button(fixture, 'Edit prompt and save a new revision').click();
+    expect(editorHost.scrollIntoView).toHaveBeenCalled();
+    expect(fixture.componentInstance.studioStage).toBe(3);
+    expect(button(fixture, 'Save revision').disabled).toBe(false);
+    http.expectNone(r => r.method === 'POST'); fixture.destroy();
+  });
+  it('shows backend ProblemDetail and a supported retry without fabricating a report', async () => {
+    const fixture = await openPrompt();
+    button(fixture, 'Analyze prompt').click();
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    http.expectOne('/api/v1/intelligence/quality/validate').flush({ detail: 'ML validation service unavailable' }, { status: 503, statusText: 'Service Unavailable' });
+    await fixture.whenStable(); log.mockRestore();
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('ML validation service unavailable');
+    expect(fixture.nativeElement.querySelector('[aria-label="Prompt validation results"]')).toBeNull();
+    expect(button(fixture, 'Retry analysis').disabled).toBe(false);
+    expect(monaco.editors[0].input.readOnly).toBe(false);
+    button(fixture, 'Retry analysis').click();
+    http.expectOne('/api/v1/intelligence/quality/validate').flush({ validationRecordId: 16, report });
+    await fixture.whenStable();
+    expect(fixture.nativeElement.textContent).toContain('Saved analysis #16'); fixture.destroy();
+  });
+  it('restores a persisted legacy result and links it without rerunning analysis', async () => {
+    const fixture = await openPrompt({ validationRecordId: 15, report, analyzedAt: '2026-10-20T09:17:39Z' });
+    expect(fixture.nativeElement.textContent).toContain('Saved analysis #15');
+    expect(button(fixture, 'View saved analysis')).toBeTruthy();
+    expect(fixture.componentInstance.missingExecutionTimeline).toBe(true);
+    http.expectNone(r => r.method === 'POST'); fixture.destroy();
+  });
+  it('blocks unsaved edits with the save action before dispatching the immutable old revision', async () => {
+    const fixture = await openPrompt(); const input = monaco.editors[0].input;
+    input.value += ' An unsaved correction.'; input.dispatchEvent(new Event('input'));
+    await fixture.whenStable(); button(fixture, 'Analyze prompt').click(); await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('Choose Save revision');
+    expect(button(fixture, 'Save revision').disabled).toBe(false);
+    http.expectNone('/api/v1/intelligence/quality/validate'); fixture.destroy();
+  });
+  it('reports partial workspace linkage and offers the existing create action', async () => {
+    const fixture = await openPrompt(); fixture.componentInstance.promptVersionId = '';
+    fixture.changeDetectorRef.markForCheck(); fixture.detectChanges(); button(fixture, 'Analyze prompt').click();
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('workspace link is incomplete');
+    expect(button(fixture, 'Create workspace version').disabled).toBe(false);
+    http.expectNone('/api/v1/intelligence/quality/validate'); fixture.destroy();
+  });
+  it('turns an empty success response into a visible contract error and restores editing', async () => {
+    const fixture = await openPrompt(); button(fixture, 'Analyze prompt').click();
+    http.expectOne('/api/v1/intelligence/quality/validate').flush(null); await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('no usable report');
+    expect(button(fixture, 'Retry analysis').disabled).toBe(false);
+    expect(monaco.editors[0].input.readOnly).toBe(false); fixture.destroy();
+  });
+
 });

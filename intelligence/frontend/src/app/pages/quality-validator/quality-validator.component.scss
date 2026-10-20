@@ -801,3 +801,7 @@
 
 @media(max-width:1100px){.quality-step-nav--comparison{position:static}}
 @media(min-width:901px) and (max-width:1100px){.quality-step-nav--comparison{grid-template-columns:repeat(4,minmax(0,1fr))}.quality-step-nav--comparison .quality-step{min-width:0}}
+
+.saved-validation-result, #prompt-editor { scroll-margin-top: 140px; }
+.saved-validation-result:focus { outline: 2px solid #8fbd36; outline-offset: 3px; }
+.validation-counts { font-weight: 700; }

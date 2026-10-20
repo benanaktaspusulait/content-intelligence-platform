@@ -1,3 +1,4 @@
+import { CanonicalFindingsComponent } from '../canonical-findings.component';
 import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
@@ -32,6 +33,7 @@ interface QualityReport {
   warningCount: number;
   familyScores: { [key: string]: number | null };
   familyAssessments: { [key: string]: FamilyAssessment };
+  passedRules: RuleEvaluation[];
   failedRules: RuleEvaluation[];
   unknownRules: RuleEvaluation[];
   notApplicableRules: RuleEvaluation[];
@@ -200,7 +202,7 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
 @Component({
   selector: 'app-quality-validator',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent],
+  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent, CanonicalFindingsComponent],
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
@@ -218,7 +220,12 @@ export class QualityValidatorComponent implements OnDestroy {
   }
   @ViewChild('workspaceFolderCombobox') private workspaceFolderCombobox?: ElementRef<HTMLElement>;
   @ViewChild(TimelineChartComponent, { read: ElementRef }) private timelineChart?: ElementRef<HTMLElement>;
-  @ViewChild(PostFamilyWorkflowComponent) postFamilyWorkflow?: PostFamilyWorkflowComponent;
+  private workflowComponent?: PostFamilyWorkflowComponent;
+  @ViewChild(PostFamilyWorkflowComponent) set postFamilyWorkflow(value: PostFamilyWorkflowComponent | undefined) {
+    this.workflowComponent = value;
+    value?.selectStage(this.studioStage);
+  }
+  get postFamilyWorkflow(): PostFamilyWorkflowComponent | undefined { return this.workflowComponent; }
   private promptEditor: PromptEditorInstance | null = null;
   private updatingPromptEditor = false;
   exportingPdf = false;
@@ -226,6 +233,8 @@ export class QualityValidatorComponent implements OnDestroy {
   reportAnalyzedAt: string | null = null;
   private restoreRequestId = 0;
   prompt: string = '';
+  private savedPromptText: string | null = null;
+  analysisFailed = false;
   contentTitle: string = '';
   contentType: string = 'SHORT';
   contentId: string = '';
@@ -345,6 +354,7 @@ Intensity: 4`;
         const version = versions.find(item => item.id === promptVersionId);
         if (!version) { this.error = 'Prompt version could not be found.'; this.selectedPromptLoading = false; return; }
         this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.promptVersionNumber = Number.isInteger(version.versionNumber) ? Number(version.versionNumber) : null; this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
+        this.savedPromptText = version.rawText || '';
         this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptDirectory=version.sourcePath ? this.promptFolder(version.sourcePath,this.promptLibraryRoot) : ''; this.selectedPromptLoading = false;
         this.creativeDraftRecordId=null;
         this.http.get<any>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`).subscribe({next: provenance => {if(this.contentId!==String(contentId)||this.promptVersionId!==String(promptVersionId))return;this.creativeProvenance=provenance;this.changeDetector.markForCheck();},error: () => {this.creativeProvenance=null;this.changeDetector.markForCheck();}});
@@ -465,13 +475,28 @@ Intensity: 4`;
       return;
     }
     const stage = ({'production-review': 4, 'analysis-report': 5, 'priority-fixes': 6, 'render-readiness': 7, 'video-qa': 8} as Record<string, number>)[id];
-    if (stage && this.postFamilyWorkflow) {
+    if (stage) {
       this.studioStage = stage;
-      this.postFamilyWorkflow.selectStage(stage);
+      this.changeDetector.detectChanges();
+      this.postFamilyWorkflow?.selectStage(stage);
       document.getElementById('production-review')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  continueToRepair(): void {
+    if (!this.validationRecordId || !this.report || !this.contentId || !this.promptVersionId) {
+      this.error = 'Analyze the saved prompt revision before opening Repair.';
+      return;
+    }
+    this.studioMode = true; // Explicit Repair action enters the existing approved workflow from library links too.
+    this.scrollToQualityStep('priority-fixes');
+    void this.router.navigate([], {queryParams:{studio:1,stage:6,repairAnalysisId:this.validationRecordId},queryParamsHandling:'merge',replaceUrl:true});
+  }
+
+  get disabledSemanticFindings(): RuleEvaluation[] {
+    return (this.report?.unknownRules || []).filter(row => /disabled|dispatch|not configured|TARGETED_STORY_GATES/i.test(JSON.stringify(row)));
   }
 
   private async initializePromptEditor(host: HTMLDivElement): Promise<void> {
@@ -521,8 +546,9 @@ Intensity: 4`;
     this.disposePromptEditor();
   }
   useAcceptedRepair(value: {contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}): void {
+    this.studioStage = 3;
     this.contentId = String(value.contentId); this.promptVersionId = String(value.promptVersionId);
-    this.setPromptText(value.rawText); this.syncSavedVersionRoute(value.repairSessionId);
+    this.savedPromptText = value.rawText; this.setPromptText(value.rawText); this.syncSavedVersionRoute(value.repairSessionId);
   }
 
   creativeDraftRecordId: string | null = null;
@@ -656,6 +682,7 @@ Intensity: 4`;
     this.selectedPromptLoading = true;
     this.error = null;
     if (file.rawText && file.contentId && file.promptVersionId) {
+        this.savedPromptText = file.rawText;
         this.setPromptText(file.rawText);
           this.contentTitle = this.futureVideoName.trim() || file.title || this.titleFromFolder(file.folder);
       this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
@@ -672,6 +699,7 @@ Intensity: 4`;
       next: records => {
         const linked = records.find(record => record.sourcePath === file.relativePath);
         if (linked?.rawText && linked.contentId && linked.promptVersionId) {
+          this.savedPromptText = linked.rawText;
           this.setPromptText(linked.rawText);
           this.contentTitle = this.futureVideoName.trim() || linked.title || this.titleFromFolder(file.folder);
           this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
@@ -728,7 +756,11 @@ Intensity: 4`;
         this.reportAnalyzedAt = stored.analyzedAt;
         this.changeDetector.detectChanges();
       },
-      error: err => console.warn('Previous analysis could not be loaded:', err),
+      error: () => {
+        if (requestId !== this.restoreRequestId || this.loading) return;
+        this.error = 'Saved analysis could not be loaded. Reload the page to retrieve it, or choose Analyze prompt to run validation again.';
+        this.changeDetector.markForCheck();
+      },
     });
   }
 
@@ -803,7 +835,17 @@ Intensity: 4`;
 
 
   validatePrompt(): void {
+    if (this.loading) return;
+    this.analysisFailed = false;
     const linked = Boolean(this.contentId.trim() && this.promptVersionId.trim());
+    if (Boolean(this.contentId.trim()) !== Boolean(this.promptVersionId.trim())) {
+      this.error = 'The workspace link is incomplete. Use Create workspace version to save and link this prompt before analysis.';
+      return;
+    }
+    if (linked && this.savedPromptText !== null && this.prompt !== this.savedPromptText) {
+      this.error = 'Unsaved prompt edits are not part of the stored revision. Choose Save revision, then Analyze prompt.';
+      return;
+    }
     if (!linked && (!this.prompt || this.prompt.length < 100)) {
       this.error = 'Prompt must be at least 100 characters';
       return;
@@ -830,6 +872,13 @@ Intensity: 4`;
 
     this.http.post<QualityReport | LinkedValidationResponse>(apiUrl, payload).subscribe({
       next: (response) => {
+        const report = linked ? (response as LinkedValidationResponse)?.report : response as QualityReport;
+        if (!report?.status || (linked && !Number.isInteger((response as LinkedValidationResponse)?.validationRecordId))) {
+          this.analysisFailed = true;
+          this.error = 'Validation returned no usable report. No successful analysis is established. Retry analysis; if this continues, check validation service availability.';
+          this.finishValidation();
+          return;
+        }
         if (linked) {
           const linkedResponse = response as LinkedValidationResponse;
           this.validationRecordId = linkedResponse.validationRecordId;
@@ -839,13 +888,36 @@ Intensity: 4`;
           this.report = response as QualityReport;
         }
         this.finishValidation();
+        this.showValidationResult();
       },
       error: (err) => {
-        this.error = err.error?.message || 'Validation failed. Please try again.';
+        this.analysisFailed = true;
+        this.error = err.error?.detail || err.error?.message || (err.status === 0
+          ? 'The validation service could not be reached. Check the connection, then retry analysis.'
+          : `Analysis request failed (HTTP ${err.status}). Retry analysis when the validation service is available.`);
         this.finishValidation();
         console.error('Validation error:', err);
       }
     });
+  }
+
+  showValidationResult(): void {
+    window.setTimeout(() => {
+      if (this.destroyed) return;
+      const panel = document.getElementById('saved-validation-result');
+      panel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      panel?.focus({ preventScroll: true });
+    });
+  }
+
+  editAnalyzedPrompt(): void {
+    this.studioStage = 3;
+    this.changeDetector.detectChanges();
+    document.getElementById('prompt-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  get missingExecutionTimeline(): boolean {
+    return Boolean(this.report?.evidenceMissing?.includes('beats'));
   }
 
   private finishValidation(): void {
@@ -1007,7 +1079,7 @@ Intensity: 4`;
       title: this.contentTitle.trim(), type: this.contentType, description: 'Pompom Hills local production content',
     }).subscribe({
       next: content => this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${content.id}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', creativeRoleRecordId:this.creativeDraftRecordId }).subscribe({
-        next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.syncSavedVersionRoute(); this.validationRecordId = null; this.loading = false; this.changeDetector.markForCheck(); },
+        next: promptVersion => { this.savedPromptText = this.prompt; this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.syncSavedVersionRoute(); this.validationRecordId = null; this.loading = false; this.changeDetector.markForCheck(); },
         error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt version could not be created'; this.loading = false; },
       }),
       error: response => { this.error = response.error?.detail || response.error?.message || 'Content could not be created'; this.loading = false; },
@@ -1015,6 +1087,7 @@ Intensity: 4`;
   }
 
   saveWorkflowFinalPrompt(finalPrompt: string): void {
+    this.studioStage = 3;
     this.setPromptText(finalPrompt);
     if (this.contentId) this.createRevisionPromptVersion();
     else this.createContentAndPrompt();
@@ -1027,7 +1100,7 @@ Intensity: 4`;
     }
     this.loading = true; this.error = null; this.report = null; this.validationRecordId = null;
     this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', creativeRoleRecordId:this.creativeDraftRecordId, parentPromptVersionId: Number(this.promptVersionId) || null }).subscribe({
-      next: version => { this.promptVersionId = String(version.id); this.syncSavedVersionRoute(); this.loading = false; this.changeDetector.markForCheck(); },
+      next: version => { this.savedPromptText = this.prompt; this.promptVersionId = String(version.id); this.syncSavedVersionRoute(); this.loading = false; this.changeDetector.markForCheck(); },
       error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
     });
   }
@@ -1045,7 +1118,7 @@ Intensity: 4`;
 
   private syncSavedVersionRoute(repairSessionId?: string): void {
     this.router.navigate(['/quality/detail'], {
-      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId, repairSessionId: repairSessionId || null },
+      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId, repairSessionId: repairSessionId || null, repairAnalysisId: null, stage: this.studioStage },
       replaceUrl: true,
       queryParamsHandling: 'merge',
     });

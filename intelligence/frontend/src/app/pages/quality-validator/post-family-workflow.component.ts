@@ -50,6 +50,22 @@ import { GeneralProducibilityComponent } from './general-producibility.component
     <p class="error" role="alert" *ngIf="error">{{ error }}</p>
         <footer class="stage-action-bar" aria-label="Production Review actions"><button type="button" class="button button--secondary" (click)="selectStage(3)">← Back to Prompt</button><div><span class="card-kicker">NEXT ACTION</span><strong>{{ analysisReady ? 'Continue to Quality Analysis' : 'Complete the saved prompt requirements' }}</strong><small>{{ analysisReady ? (isCurrent() ? 'Reuses this exact saved review without another evaluation call; render authorization remains separate.' : 'Evaluates this saved content and prompt version; no render authorization is granted.') : 'Content ID, prompt version and prompt text are required.' }}</small></div><button type="button" class="button button--primary" (click)="continueToQualityAnalysis()" [disabled]="busy || !analysisReady || profile !== 'post-family-v1'">{{ busy ? 'Preparing evidence…' : 'Continue to Quality Analysis →' }}</button></footer>
   </section>
+<section *ngIf="activeStage === 6 && !review" class="review-card" aria-label="Prepare repair workflow">
+  <h3>Prepare Repair for saved analysis #{{ sourceValidationId || 'not linked' }}</h3>
+  <p>The canonical result exists, but this revision has no matching saved workflow review. Prepare the existing local review to unlock supported repair actions. This does not call an AI provider, change your prompt, or clear any gate.</p>
+  <button type="button" class="button button--primary" (click)="runReview(6)" [disabled]="busy || !analysisReady || !sourceValidationId">{{ busy ? 'Preparing…' : 'Prepare Repair · no provider call' }}</button>
+  <p *ngIf="error" class="error" role="alert">{{ error }}</p>
+</section>
+<section *ngIf="activeStage === 6 && !timedRanges.length" class="review-card" aria-label="Legacy brief repair limitation">
+  <h3>Brief-to-motion conversion is not supported by this repair tool</h3>
+  <p>Bounded reconstruction preserves existing source beat windows; this brief has none. The existing Creative Studio Build Prompt screen requires an operator-approved STORY source; this legacy brief has no such workflow binding. AI reconstruction here cannot invent a source-backed timeline.</p>
+  <p>Supported AI path: copy this saved brief, open New Video, paste it as an IDEA, then generate, review and approve a STORY before Build Prompt. Those screens disclose provider budget and require explicit consent. No paid call occurs here.</p>
+  <button type="button" class="button button--secondary" (click)="copySavedPrompt()" [disabled]="!isCurrent()">Copy saved brief</button>
+  <a class="button button--secondary" href="/quality/new">Open New Video · IDEA → STORY → Build Prompt</a>
+  <p *ngIf="copyStatus" role="status">{{ copyStatus }}</p>
+  <button type="button" class="button button--secondary" (click)="openRepairTools()" [disabled]="!isCurrent()">AI minimal repair · review budget and consent</button>
+  <button type="button" class="button button--secondary" (click)="selectStage(4)">Review source intent before a manual patch</button>
+</section>
 <ng-container *ngIf="review as r"><ng-container *ngIf="activeStage >= 5"><ng-container *ngIf="activeStage === 5">
         <nav class="stage-subtabs analysis-tabs" aria-label="Quality Analysis sections" role="tablist">
           <button *ngFor="let tab of analysisTabs" type="button" role="tab" [attr.aria-selected]="activeAnalysisTab === tab.id" [class.is-active]="activeAnalysisTab === tab.id" (click)="selectAnalysisTab(tab.id)">{{ tab.title }}<small>{{ tab.description }}</small></button>
@@ -525,7 +541,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         </details>
         <details class="repair-tools-details"><summary>Optional Repair Tools</summary>
           <div class="repair-tools-group">
-            <h3>Bounded AI Repair</h3>
+            <h3>Bounded AI Repair</h3><p *ngIf="!timedRanges.length">This capability proposes at most three minimal exact text patches; it cannot rewrite the entire brief as a motion prompt. A provider call requires the explicit budget and approval below. Full conversion uses the New Video path above.</p>
             <p>A provider call happens only after you explicitly approve the budget and start this session.</p>
             <div class="repair-fields">
               <label class="repair-field">
@@ -1017,6 +1033,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   @Input() sourcePath = '';
   @Input() videoPath = '';
   @Input() workflowProfile = 'FROZEN';
+  @Input() sourceValidationId: number | null = null;
   @Output() saveFinal = new EventEmitter<string>();
   @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}>();
   @Output() stageChanged = new EventEmitter<number>();
@@ -1048,7 +1065,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   private readonly preparationRouter = inject(Router, {optional:true});
   selectStage(stage: number) {
     if (stage === 7 && this.review) { void this.preparationRouter?.navigateByUrl(this.renderPreparationLink()); return; }
-    if (stage > 4 && !this.review) return;
+    if (stage > 4 && stage !== 6 && !this.review) { this.error = 'Prepare a saved workflow review before opening this stage.'; return; }
     this.activeStage = stage;
     if(stage===5)this.loadSourcePlan();
     if(stage===6 && this.review && !this.creativeOptimizationHistory.length)this.loadLatestCreativeOptimization();
@@ -1812,7 +1829,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   private get timedRangesRaw():Array<{start:number;end:number;quote:string;quoteStart:number;quoteEnd:number}>{const text=this.prompt||'';const ranges:Array<{start:number;end:number;quote:string;quoteStart:number;quoteEnd:number}>=[];const add=(start:number,end:number,index:number,matchEnd:number)=>{if(end<=start)return;const rest=text.slice(matchEnd);const nextTimed=rest.search(/(?:\\n|\n)\s*(?:(?:\d{1,2}:\d{2})\s*(?:-|–|—|to)\s*(?:\d{1,2}:\d{2})|(?:\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(?:\d+(?:\.\d+)?)\s*(?:s|sec|secs|seconds)?\s*:)/i);const nextSection=rest.search(/(?:\\n|\n)\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT|REFERENCES|CHARACTER|VISUAL STYLE)\s*:?(?:\s*\n|\s*$)/i);const offsets=[text.length];if(nextTimed>=0)offsets.push(matchEnd+nextTimed);if(nextSection>=0)offsets.push(matchEnd+nextSection);const quoteEnd=Math.min(...offsets);if(!ranges.some(range=>range.start===start&&range.end===end))ranges.push({start,end,quote:text.slice(index,quoteEnd).trim(),quoteStart:index,quoteEnd});};let match:RegExpExecArray|null;const clock=/((?:\d{1,2}):(?:\d{2}))\s*(?:-|–|—|to)\s*((?:\d{1,2}):(?:\d{2}))\s*:?[ \t]*/gi;while((match=clock.exec(text))){const parse=(value:string)=>{const parts=value.split(':').map(Number);return parts[0]*60+parts[1];};add(parse(match[1]),parse(match[2]),match.index,clock.lastIndex);}const seconds=/(\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(\d+(?:\.\d+)?)\s*(?:s|sec|secs|seconds)?\s*:/gi;while((match=seconds.exec(text))){add(Number(match[1]),Number(match[2]),match.index,seconds.lastIndex);}return ranges.sort((a,b)=>a.start-b.start||a.end-b.end);}
   get timedRanges(){ let previousEnd=-Infinity; return this.timedRangesRaw.filter(range=>{ const withinDuration=this.promptDuration == null || range.end <= this.promptDuration; const chronological=range.start >= previousEnd; if(withinDuration && chronological) previousEnd=range.end; return withinDuration && chronological; }); }
   get extractedIntent():string{const text=this.prompt||'';const heading=/(TITLE\s*\/\s*FORMAT|VISUAL STYLE|CHARACTER\s*\/\s*CONTINUITY|TIMED SHOT PLAN|AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[ \t]*/gi;const matches=Array.from(text.matchAll(heading));const useful:string[]=[];for(let index=0;index<matches.length;index++){const label=matches[index][1].toUpperCase();if(!/CHARACTER|TIMED SHOT PLAN/.test(label))continue;const start=(matches[index].index||0)+matches[index][0].length;const end=index+1<matches.length?(matches[index+1].index||text.length):text.length;const body=text.slice(start,end).trim();if(body)useful.push(body);}if(useful.length)return useful.join(' ').slice(0,520);return text.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).filter(line=>!/(TITLE|FORMAT|VISUAL STYLE|AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[ \t]*/i.test(line)).join(' ').slice(0,520);}
-  confirmIntent(){if(!this.intentAvailable||this.busy||!this.contentId||!this.promptVersionId)return;this.saveDecision({decisionType:'CREATIVE_INTENT',decisionId:'creative-intent',decision:'CONFIRMED',sourceQuote:this.prompt,protectedIntent:this.protectedIntent.trim(),reviewedMechanism:this.intentMechanism,reviewedEnding:this.intentEnding,storyRevisionId:this.creativeProvenance?.storyRevisionId||null});}
+  confirmIntent(){if(!this.intentAvailable||this.busy||!this.contentId||!this.promptVersionId)return;const protectedIntent=this.protectedIntent.trim()||this.prompt.split(/\r?\n/).map(line=>line.trim()).find(Boolean)||this.extractedIntent.trim();if(!protectedIntent)return;this.protectedIntent=protectedIntent;this.saveDecision({decisionType:'CREATIVE_INTENT',decisionId:'creative-intent',decision:'CONFIRMED',sourceQuote:this.prompt,protectedIntent,reviewedMechanism:this.intentMechanism,reviewedEnding:this.intentEnding,storyRevisionId:this.creativeProvenance?.storyRevisionId||null});}
   trackSourceEvent(_index:number,event:any){return event.id;}
 
 
@@ -2289,7 +2306,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if(changes['prompt'] && this.eventDecision('creative-intent','CREATIVE_INTENT')?.sourceQuote !== this.prompt)this.intentConfirmed=false;
     if(changes['creativeProvenance']) { const decision=this.eventDecision('creative-intent','CREATIVE_INTENT'); if(decision && decision.storyRevisionId !== (this.creativeProvenance?.storyRevisionId||null))this.intentConfirmed=false; }
     if (changes['workflowProfile']) this.profile = changes['workflowProfile'].currentValue || 'FROZEN';
-    if (!changes['contentId'] && !changes['promptVersionId'] && !changes['workflowProfile']) return;
+    if (!changes['contentId'] && !changes['promptVersionId'] && !changes['workflowProfile'] && !changes['sourceValidationId']) return;
+    this.canonicalValidationId = this.sourceValidationId;
     this.review = null;
     this.sourcePlanEvidence=null;this.sourcePlanStatus='NOT_LOADED';this.sourcePlanRun='';
     this.qa = null;
@@ -2343,7 +2361,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=REVIEW', { params: { contentId: this.contentId, promptVersionId: this.promptVersionId } }).subscribe({
       next: rows => {
         if (sequence !== this.restoreSequence) return;
-        const saved = rows.find(row => String(row.contentId) === this.contentId && String(row.promptVersionId) === this.promptVersionId);
+        const saved = rows.find(row => String(row.contentId) === this.contentId && String(row.promptVersionId) === this.promptVersionId && (!this.sourceValidationId || Number(row.boundRequest?.canonicalValidationId) === this.sourceValidationId));
         if (!saved) { this.restorePersistedSettings(sequence); return; }
         this.review = saved;
         this.restoreUiLocation();
@@ -2537,7 +2555,12 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     ];
     this.referencePath = '';
   }
-  runReview() {
+  openRepairTools(): void {
+    const tools = document.querySelector<HTMLDetailsElement>('details.repair-tools-details');
+    if (tools) { tools.open = true; tools.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+
+  runReview(targetStage = 5) {
     if (this.profile !== 'post-family-v1') {
       this.error = 'Select the approved Production Review workflow before continuing.';
       return;
@@ -2576,7 +2599,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
           if (!this.reviewedInputs) this.error = 'Save the edited text as a new immutable version; the server reviewed the saved source version.';
           this.busy = false;
           this.analysisJustCompleted = true;
-          this.activeStage = 5;
+          this.activeStage = targetStage;
+          this.stageChanged.emit(targetStage);
           this.persistUiLocation();
           this.changeDetector.markForCheck();
           setTimeout(() => document.getElementById('analysis-report')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);

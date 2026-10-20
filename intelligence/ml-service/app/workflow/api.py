@@ -177,6 +177,14 @@ class OptimizationRecoveryRequest(BaseModel):
     diagnostics: dict[str, Any]
 
 
+class StoryRecoveryRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str = Field(min_length=1, max_length=16000)
+    context: dict[str, Any]
+    rawProviderResponse: str = Field(min_length=1, max_length=50000)
+    diagnostics: dict[str, Any] = Field(default_factory=dict)
+
+
 class OptimizationAssessmentRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     text: str = Field(min_length=1, max_length=16000)
@@ -262,6 +270,32 @@ def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any
     result.update(calls=0, provider='saved-response',
                   rawProviderResult=deepcopy(request.providerResult),
                   providerResponseMetadata=deepcopy(request.diagnostics))
+    return result
+
+
+@router.post('/creative-role/recover')
+def recover_story_response(request: StoryRecoveryRequest) -> dict[str, Any]:
+    """Revalidate one retained STORY completion without a provider or network call."""
+    from .creative_roles import perform_role
+
+    class SavedResponse:
+        saved_result_recovery = True
+        last_response_metadata: dict[str, Any] = {}
+        last_usage = None
+        def complete(self, *args: Any, **kwargs: Any) -> str:
+            return request.rawProviderResponse
+
+    provider = SavedResponse()
+    try:
+        result = perform_role('STORY', request.text, dict(request.context), provider,
+                              str(request.diagnostics.get('model') or 'saved-response'))
+    except ValueError as error:
+        raise HTTPException(409, {'detail': str(error), 'providerDispatched': False,
+                                  'providerCallsThisOperation': 0}) from error
+    result.update(calls=0, provider='saved-response', providerDispatched=False,
+                  rawProviderResponse=request.rawProviderResponse,
+                  providerResponseMetadata=dict(request.diagnostics),
+                  recoveredProviderResponse=True)
     return result
 
 

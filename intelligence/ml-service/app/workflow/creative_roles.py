@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 _NAMED_CHARACTER_SPECIES = re.compile(
     r"(?u)\b([A-Z][A-Za-zÀ-ÖØ-öø-ÿ’'-]{1,40})\s*,?\s+(?:the\s+)?(rabbit|bunny|bear|cat|dog|fox|hedgehog|crocodile)\b"
 )
+_CHARACTER_DETERMINERS = frozenset({'the', 'a', 'an'})
 
 _LONG_FORM_STORY_CONTRACT = '''
 LONG-FORM STORY CONTRACT (one complete story, not a premise or a list of odd events):
@@ -368,6 +369,11 @@ def _validate_canonical_story_identity(alternatives: list[Any], context: dict[st
             raise ValueError(f'Story candidate {index + 1} does not use the selected canonical protagonist name')
         for match in _NAMED_CHARACTER_SPECIES.finditer(story):
             declared_name = match.group(1)
+            # The matcher recognizes a name shape followed by a species.
+            # A sentence-initial determiner in "The bear" is a common noun,
+            # not a character declaration.
+            if declared_name.casefold() in _CHARACTER_DETERMINERS:
+                continue
             if declared_name.casefold() not in registered:
                 raise ValueError(f'Story candidate {index + 1} names an unregistered character: {declared_name}')
         validations.append({'candidateId': str(candidate.get('candidateId', index + 1)), 'status': 'REGISTRY_PASS', 'characterId': expected_id, 'characterName': expected_name})

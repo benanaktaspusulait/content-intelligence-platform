@@ -13,6 +13,30 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class WorkflowServiceTest {
+  @Test void manualRepairExcludesUiRecommendationsFromMlContractAndRetainsSourceBinding() {
+    var ml=mock(QualityMlClient.class);
+    var jdbc=mock(org.springframework.jdbc.core.simple.JdbcClient.class, RETURNS_DEEP_STUBS);
+    var id=java.util.UUID.randomUUID();
+    when(jdbc.sql(anyString()).param(eq("parent"),eq(id.toString())).query(Long.class).single()).thenReturn(0L);
+    var bound=new java.util.LinkedHashMap<String,Object>();
+    bound.put("profile","post-family-v1");bound.put("prompt","Original brief");bound.put("canonicalValidationId",19);
+    for(var key:java.util.List.of("contentProfileRecommendation","openingStrategyRecommendation","generatorRecommendation"))bound.put(key,Map.of("value","UNKNOWN"));
+    var baseline=Map.<String,Object>of("repairPasses",0,"boundRequest",bound,"contentId",13,"promptVersionId",21);
+    var service=spy(new WorkflowService(null,ml,null,null,new ObjectMapper(),jdbc,null));
+    doReturn(baseline).when(service).get(id);
+    when(ml.workflow(eq("repair"),anyMap())).thenAnswer(call->{
+      Map<?,?> wire=(Map<?,?>)((Map<?,?>)call.getArgument(1)).get("request");
+      assertThat(wire.get("canonicalValidationId")).isEqualTo(19);
+      assertThat(wire.get("prompt")).isEqualTo("Original brief");
+      for(var key:java.util.List.of("contentProfileRecommendation","openingStrategyRecommendation","generatorRecommendation"))assertThat(wire.containsKey(key)).isFalse();
+      return Map.of("finalPrompt","Revised brief","bindingHash","fixture","repairPasses",1);
+    });
+    var result=service.repair(id,java.util.List.of(Map.of("start",0,"end",8,"sourceQuote","Original","replacement","Revised")));
+    assertThat(((Map<?,?>)result.get("boundRequest")).containsKey("generatorRecommendation")).isTrue();
+    assertThat(bound.get("prompt")).isEqualTo("Original brief");
+    assertThat(result.get("promptVersionId")).isEqualTo(21);
+  }
+
   @Test void savedStoryValidationUsesExactSavedCandidateAndRetainsProfileWithoutProductionIds() {
     var id=java.util.UUID.randomUUID();var service=spy(new WorkflowService(null,null,null,null,new ObjectMapper(),null,null));
     var story=Map.<String,Object>of("role","STORY","sourceRequest",Map.of("context",Map.of("targetConfiguration",Map.of("contentProfile","CURIOSITY_ADVENTURE","duration",15,"selectedGenerator","SEEDANCE_2_5","aspectRatio","9:16"))),"result",Map.of("alternatives",java.util.List.of(Map.of("candidateId","candidate-1","text","Arda prepares the picnic."))));

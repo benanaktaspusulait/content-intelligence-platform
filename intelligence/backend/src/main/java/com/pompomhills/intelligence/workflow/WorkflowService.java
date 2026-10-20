@@ -1281,6 +1281,56 @@ public class WorkflowService {
     return creativeRole(request, false);
   }
 
+  /** Finds one retained failed repair response; it never calls a provider. */
+  public Map<String, Object> recoverableStoryResponse(UUID sourceStoryId) {
+    for (var record : list("CREATIVE_ROLE")) {
+      if (!"STORY".equals(record.get("role"))
+          || !"PROVIDER_RESULT_REJECTED".equals(record.get("attemptState"))
+          || !sourceStoryId.toString().equals(String.valueOf(record.get("sourceStoryRecordId")))) continue;
+      var diagnostics = map(record.get("attemptDiagnostics"));
+      if (Boolean.TRUE.equals(diagnostics.get("providerResponseReturned"))
+          && diagnostics.get("rawProviderResponse") instanceof String raw && !raw.isBlank())
+        return Map.of("recoverable", true, "failedRecordId", String.valueOf(record.get("recordId")),
+            "provider", diagnostics.getOrDefault("provider", "UNKNOWN"),
+            "model", diagnostics.getOrDefault("model", "UNKNOWN"),
+            "actualCostUsd", diagnostics.get("actualCostUsd"));
+    }
+    return Map.of("recoverable", false);
+  }
+
+  /** Replays exactly one retained provider completion through normal STORY validation. */
+  @Transactional
+  public Map<String, Object> recoverStoryProviderResponse(UUID failedId) {
+    var failed = getByKind(failedId, "CREATIVE_ROLE");
+    if (!"STORY".equals(failed.get("role")) || !"PROVIDER_RESULT_REJECTED".equals(failed.get("attemptState")))
+      throw new IllegalArgumentException("Only a retained rejected STORY response can be recovered");
+    var request = map(failed.get("sourceRequest"));
+    var diagnostics = new LinkedHashMap<String,Object>(map(failed.get("attemptDiagnostics")));
+    String raw = String.valueOf(diagnostics.getOrDefault("rawProviderResponse", ""));
+    if (raw.isBlank() || !Boolean.TRUE.equals(diagnostics.get("providerResponseReturned")))
+      throw new IllegalStateException("Saved response is not recoverable; no provider retry is performed");
+    String text = String.valueOf(request.getOrDefault("text", ""));
+    var context = map(request.get("context"));
+    if (text.isBlank() || context.isEmpty())
+      throw new IllegalStateException("Saved request provenance is incomplete; no provider retry is performed");
+    var replayRequest = new LinkedHashMap<String,Object>();
+    replayRequest.put("text", text); replayRequest.put("context", context);
+    replayRequest.put("rawProviderResponse", raw); replayRequest.put("diagnostics", diagnostics);
+    var replay = new LinkedHashMap<String,Object>(ml.workflow("creative-role/recover", replayRequest));
+    replay.put("role", "STORY"); replay.put("provider", diagnostics.get("provider"));
+    replay.put("model", diagnostics.get("model")); replay.put("requestedModel", diagnostics.get("model"));
+    replay.put("returnedModel", map(diagnostics.get("providerResponseMetadata")).getOrDefault("model", failed.get("returnedModel")));
+    replay.put("usage", diagnostics.get("usage")); replay.put("actualCostUsd", diagnostics.get("actualCostUsd"));
+    replay.put("sourceStoryRecordId", failed.get("sourceStoryRecordId"));
+    replay.put("sourceRequest", request); replay.put("recoveredFromAttemptId", failedId.toString());
+    replay.put("attemptState", "RECOVERED_PROVIDER_RESPONSE");
+    replay.put("calls", 0); replay.put("providerDispatched", true);
+    replay.put("attemptDiagnostics", Map.of("category", "RECOVERED_PROVIDER_RESPONSE", "providerCallsThisOperation", 0,
+        "originalProviderAttemptId", failedId.toString(), "actualCostUsd", diagnostics.get("actualCostUsd")));
+    replay.put("recordId", save("CREATIVE_ROLE", null, replay));
+    return replay;
+  }
+
   @Transactional
   private Map<String, Object> creativeRole(Map<String, Object> request, boolean sourceBoundOptimization) {
     String role = String.valueOf(request.get("role"));
@@ -2538,13 +2588,18 @@ public class WorkflowService {
       throw new IllegalArgumentException(
           "Only one repair is allowed for this review; save the final revision before a new"
               + " review");
+    // Keep UI recommendation provenance in the saved binding, outside the strict ML contract.
+    var repairInput = new LinkedHashMap<>(map(previous.get("boundRequest")));
+    repairInput.remove("contentProfileRecommendation");
+    repairInput.remove("openingStrategyRecommendation");
+    repairInput.remove("generatorRecommendation");
     var result =
         new LinkedHashMap<>(
             ml.workflow(
                 "repair",
                 Map.of(
                     "request",
-                    previous.get("boundRequest"),
+                    repairInput,
                     "patches",
                     patches,
                     "repairPasses",

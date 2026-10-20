@@ -42,6 +42,23 @@ def test_canonical_story_identity_is_registry_gated_separately_from_story_fideli
             'canonicalCharacterRegistry': [{'id': 'other-id', 'name': 'Mimi'}],
         })
 
+
+def test_story_identity_uses_structured_protagonist_and_never_treats_titles_or_determiners_as_names():
+    from app.workflow.creative_roles import _validate_canonical_story_identity
+    context = {'characterRecord': {'id': 'kiko-id', 'name': 'Kiko'},
+               'canonicalCharacterRegistry': [{'id': 'kiko-id', 'name': 'Kiko'}]}
+    base = {'candidateId': 'kiko-shy-box-01', 'title': 'The Shy Storage Box',
+            'protagonistCharacterId': 'kiko-id',
+            'text': 'Kiko watches the bear slowly sink inside the storage box.'}
+    assert _validate_canonical_story_identity([base], context)[0]['characterName'] == 'Kiko'
+    assert _validate_canonical_story_identity([{**base, 'title': 'An Ordinary English Title'}], context)[0]['status'] == 'REGISTRY_PASS'
+    assert _validate_canonical_story_identity([{**base, 'text': 'Kiko and Mimi the rabbit wave. The bear stays put.'}],
+                                              {**context, 'canonicalCharacterRegistry': [{'id': 'kiko-id', 'name': 'Kiko'}, {'id': 'mimi-id', 'name': 'Mimi'}]})[0]['status'] == 'REGISTRY_PASS'
+    with pytest.raises(ValueError, match='unregistered character: Zuzu'):
+        _validate_canonical_story_identity([{**base, 'text': 'Kiko meets Zuzu the rabbit.'}], context)
+    with pytest.raises(ValueError, match='does not bind the selected canonical protagonist ID'):
+        _validate_canonical_story_identity([{**base, 'protagonistCharacterId': ''}], context)
+
 class FixtureProvider:
     def __init__(self, result): self.result = result; self.calls = []
     def complete(self, prompt, system='', temperature=0, image=None):

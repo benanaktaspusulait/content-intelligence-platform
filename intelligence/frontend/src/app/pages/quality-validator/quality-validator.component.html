@@ -63,10 +63,19 @@
     <div><span class="eyebrow">CREATIVE STUDIO</span><h2>Want to create something new?</h2><p>Start with an idea and let DeepSeek develop a story before OpenAI creates your production prompt.</p></div>
     <div class="actions"><a class="btn btn-primary btn-sm" routerLink="/quality/new">Create New Video</a><a class="btn btn-outline-secondary btn-sm" routerLink="/quality/detail">I Have an Existing Prompt</a></div>
   </section>
-  <nav *ngIf="detailMode" class="quality-step-nav quality-step-nav--full" [class.quality-step-nav--comparison]="postFamilyWorkflow?.activeStage === 6" aria-label="Quality workflow steps"><a class="quality-step" routerLink="/quality/new"><span>1</span><strong>Idea</strong><small>Create or reuse</small></a><a class="quality-step" routerLink="/quality/new"><span>2</span><strong>Story</strong><small>Select and approve</small></a><button type="button" class="quality-step" (click)="scrollToQualityStep('prompt-editor')"><span>3</span><strong>Prompt</strong><small>Review and edit</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 4" (click)="scrollToQualityStep('production-review')"><span>4</span><strong>Production Review</strong><small>Validate workflow</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 5" (click)="scrollToQualityStep('analysis-report')"><span>5</span><strong>Quality Analysis</strong><small>Quality evidence</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 6" (click)="scrollToQualityStep('priority-fixes')"><span>6</span><strong>Repair</strong><small>Priority fixes</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 7" (click)="scrollToQualityStep('render-readiness')"><span>7</span><strong>Render Preparation</strong><small>Prepare visual inputs</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 8" (click)="scrollToQualityStep('video-qa')"><span>8</span><strong>Video QA</strong><small>Final evidence</small></button></nav>
+  <nav *ngIf="detailMode" class="quality-step-nav quality-step-nav--full" [class.quality-step-nav--comparison]="postFamilyWorkflow?.activeStage === 6" aria-label="Quality workflow steps"><a class="quality-step" routerLink="/quality/new"><span>1</span><strong>Idea</strong><small>Create or reuse</small></a><a class="quality-step" routerLink="/quality/new"><span>2</span><strong>Story</strong><small>Select and approve</small></a><button type="button" class="quality-step" (click)="scrollToQualityStep('prompt-editor')"><span>3</span><strong>Prompt</strong><small>Review and edit</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 4" (click)="scrollToQualityStep('production-review')"><span>4</span><strong>Production Review</strong><small>Validate workflow</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 5" (click)="scrollToQualityStep('analysis-report')"><span>5</span><strong>Quality Analysis</strong><small>Quality evidence</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 6" (click)="validationRecordId ? continueToRepair() : scrollToQualityStep('priority-fixes')"><span>6</span><strong>Repair</strong><small>Priority fixes</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 7" (click)="scrollToQualityStep('render-readiness')"><span>7</span><strong>Render Preparation</strong><small>Prepare visual inputs</small></button><button type="button" class="quality-step" [class.is-active]="postFamilyWorkflow?.activeStage === 8" (click)="scrollToQualityStep('video-qa')"><span>8</span><strong>Video QA</strong><small>Final evidence</small></button></nav>
   <details *ngIf="creativeProvenance as provenance" class="source-details"><summary>Source details</summary><p>Prompt origin: {{ provenance.origin }}<ng-container *ngIf="provenance.origin === 'BUILD_PROMPT'"> · {{ provenance.provider }} {{ provenance.model }} · {{ provenance.creativeRoleRecordId }} · story {{ provenance.sourceStoryRecordId || 'manual source' }} · {{ provenance.operatorEdited ? 'Operator edited draft' : 'Original saved draft' }} · {{ provenance.validationStatus }}</ng-container></p></details>
   <label *ngIf="detailMode && linkedVideos.length">Exact linked video<select [(ngModel)]="selectedWorkspaceVideoPath"><option value="">Select exact video…</option><option *ngFor="let video of linkedVideos" [value]="video.relativePath">{{video.relativePath}} · {{video.videoId}}</option></select></label>
-  <div *ngIf="detailMode && studioStage !== 3" id="production-review" class="quality-step-anchor production-review-shell"><div class="production-review-heading"><span class="eyebrow">{{ workflowStageHeading.eyebrow }}</span><h2>{{ workflowStageHeading.title }}</h2><p>{{ workflowStageHeading.description }}</p></div><app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [promptVersionNumber]="promptVersionNumber" [creativeProvenance]="creativeProvenance" [contentTitle]="contentTitle" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" [workflowProfile]="studioMode ? 'post-family-v1' : 'FROZEN'" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)" (stageChanged)="studioStage = $event"></app-post-family-workflow></div>
+  <section *ngIf="studioStage === 6 && report" class="card" aria-label="Repair source analysis"><div class="card-body">
+    <h2>Repair · Saved analysis #{{ validationRecordId }} · Prompt ID {{ promptVersionId }}</h2>
+    <p>{{ report.status }} · {{ report.failedRules.length }} recorded FAIL · {{ report.unknownRules.length }} UNKNOWN. Original evidence is preserved; this screen grants no render authorization.</p>
+    <p *ngIf="missingExecutionTimeline"><strong>Missing execution timeline:</strong> This source is a creative brief. No source-backed timed beats exist; no plan will be invented by navigating to Repair.</p>
+    <p><strong>Creative-rule findings:</strong> {{ report.failedRules.length }} recorded failures require source review; missing execution data and parser assumptions must be considered separately.</p>
+    <p><strong>Disabled semantic evaluation:</strong> {{ disabledSemanticFindings.length }} unresolved findings. Rewording cannot enable a disabled evaluator.</p>
+    <p><strong>Visual evidence:</strong> Text edits cannot verify character appearance, first frame or motion. These gates remain pending until actual visual review.</p>
+    <details><summary>Original rule outcomes and evidence</summary><app-canonical-findings [evaluation]="report" [editable]="false"></app-canonical-findings></details>
+  </div></section>
+  <div *ngIf="detailMode && studioStage !== 3" id="production-review" class="quality-step-anchor production-review-shell"><div class="production-review-heading"><span class="eyebrow">{{ workflowStageHeading.eyebrow }}</span><h2>{{ workflowStageHeading.title }}</h2><p>{{ workflowStageHeading.description }}</p></div><app-post-family-workflow *ngIf="detailMode" [sourceValidationId]="validationRecordId" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [promptVersionNumber]="promptVersionNumber" [creativeProvenance]="creativeProvenance" [contentTitle]="contentTitle" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" [workflowProfile]="studioMode ? 'post-family-v1' : 'FROZEN'" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)" (stageChanged)="studioStage = $event"></app-post-family-workflow></div>
 
   <div id="video-qa" class="quality-step-anchor"></div>
 
@@ -103,20 +112,42 @@
       </div>
     </div>
     <div class="card-footer">
+      <div *ngIf="error" role="alert" class="alert alert-danger"><strong>Analysis needs attention:</strong> {{ error }}<p>Use Save revision for unsaved edits, or Create workspace version for a missing link. A service error can be retried below.</p></div>
+      <p *ngIf="loading" role="status">Analyzing {{ contentId && promptVersionId ? 'stored prompt ID ' + promptVersionId : 'draft text' }}…</p>
       <button 
         class="btn btn-primary btn-lg"
         (click)="validatePrompt()"
         [disabled]="loading || ((!contentId || !promptVersionId) && prompt.length < 100)">
-        <span *ngIf="!loading">Analyze prompt</span>
+        <span *ngIf="!loading">{{ analysisFailed ? 'Retry analysis' : 'Analyze prompt' }}</span>
         <span *ngIf="loading">
           <span class="spinner"></span> Analyzing...
         </span>
       </button>
+      <button *ngIf="report" type="button" class="btn btn-outline-secondary" (click)="showValidationResult()">{{ validationRecordId ? 'View saved analysis' : 'View draft analysis' }}</button>
     </div>
   </div>
 
+  <section *ngIf="report && (!detailMode || studioStage === 3)" id="saved-validation-result" class="card saved-validation-result" role="region" aria-label="Prompt validation results" tabindex="-1">
+    <div class="card-header"><div><span class="eyebrow">QUALITY ANALYSIS · PROMPT VALIDATION</span><h2>{{ report.status }}</h2>
+      <p *ngIf="validationRecordId">Saved analysis #{{ validationRecordId }} · Content {{ contentId }} · Prompt ID {{ promptVersionId }}<span *ngIf="reportAnalyzedAt"> · {{ reportAnalyzedAt | date:'medium' }}</span></p>
+      <p *ngIf="!validationRecordId">Draft analysis only. Use Create workspace version for a persistent, linked result.</p>
+    </div></div>
+    <div class="card-body">
+      <p role="status">{{ report.status === 'SERVICE_ERROR' ? 'Analysis reported an execution/service error. This is not a creative-rule verdict.' : 'Analysis completed. The outcomes below are the actual rule and evidence results; they do not authorize rendering.' }}</p>
+      <p class="validation-counts">PASS {{ report.passedRules.length || 0 }} · FAIL {{ report.failedRules.length || 0 }} · UNKNOWN {{ report.unknownRules.length || 0 }} · NOT_APPLICABLE {{ report.notApplicableRules.length || 0 }} · SERVICE_ERROR {{ report.serviceErrors.length || 0 }}</p>
+      <div *ngIf="missingExecutionTimeline" class="alert alert-warning"><strong>Missing execution evidence:</strong> No source-backed timecoded beats were extracted. A creative premise is not a complete motion prompt. Add an explicit execution timeline in a new revision before production review. Parser assumptions are not source evidence; no timeline has been created for you. Recorded FAIL and UNKNOWN outcomes are preserved below.</div>
+      <div *ngIf="report.evidenceMissing.length"><h3>Missing evidence</h3><ul><li *ngFor="let item of report.evidenceMissing">{{ item }}</li></ul></div>
+      <div *ngIf="report.serviceErrors.length"><h3>Analysis execution errors</h3><p *ngFor="let item of report.serviceErrors">{{ item.ruleId }} · {{ item.message }}</p></div>
+      <p>Next action: correct the cited source or missing evidence, save a new revision, then analyze that saved revision. Original versions remain unchanged.</p>
+      <button *ngIf="validationRecordId" type="button" class="btn btn-primary" (click)="continueToRepair()">Continue to Repair</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="editAnalyzedPrompt()">Edit prompt and save a new revision</button>
+      <app-canonical-findings [evaluation]="report" (correct)="editAnalyzedPrompt()"></app-canonical-findings>
+      <details *ngIf="report.parserWarnings.length || report.parserAssumptions.length"><summary>Extraction warnings and assumptions · not source-backed facts</summary><p *ngFor="let item of report.parserWarnings">{{ item }}</p><p *ngFor="let item of report.parserAssumptions">{{ item }}</p></details>
+    </div>
+  </section>
+
   <!-- Error Message -->
-  <div *ngIf="error" class="alert alert-danger">
+  <div *ngIf="error && (!detailMode || studioStage !== 3)" role="alert" class="alert alert-danger">
     <strong>Error:</strong> {{ error }}
   </div>
 

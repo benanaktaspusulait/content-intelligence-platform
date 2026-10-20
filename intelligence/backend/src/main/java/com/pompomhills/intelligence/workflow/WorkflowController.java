@@ -111,6 +111,16 @@ public class WorkflowController {
     return service.creativeRole(request);
   }
 
+  @GetMapping("/creative-role/{id}/recoverable-response")
+  public Map<String, Object> recoverableStoryResponse(@PathVariable UUID id) {
+    return service.recoverableStoryResponse(id);
+  }
+
+  @PostMapping("/records/{id}/recover-provider-response")
+  public Map<String, Object> recoverStoryProviderResponse(@PathVariable UUID id) {
+    return service.recoverStoryProviderResponse(id);
+  }
+
   @PostMapping("/records/{id}/revalidate-production-spec")
   public Map<String, Object> revalidateProductionSpec(@PathVariable UUID id) {
     return service.revalidateProductionSpec(id);
