@@ -28,7 +28,7 @@ describe('creative studio idea-first workflow', () => {
     const approval=http.expectOne('/api/v1/intelligence/workflow/creative-role/story-1/approve-story'); expect(approval.request.body.approvedText).toContain('kalemiyle'); approval.flush({recordId:'approval-1'});
     await fixture.whenStable(); page.promptConsent=true; page.buildPrompt();
     const build=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(build.request.body.role).toBe('BUILD_PROMPT'); expect(build.request.body.context.sourceStoryRecordId).toBe('story-1'); expect(build.request.body.context.candidateId).toBe(page.selectedCandidateId); expect(build.request.body.context.approvalRecordId).toBe('approval-1'); expect(build.request.body.context.storyRevisionId).toContain('candidate-1-revision-'); expect(build.request.body.text).toContain('kalemiyle'); build.flush({recordId:'builder-1',result:{prompt:'Kiko enters a classroom and the pencil moves.'}});
-    expect(page.builderRecordId).toBe('builder-1'); http.match(r=>r.method==='PUT').forEach(r=>r.flush({})); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    expect(page.builderRecordId).toBe('builder-1'); http.match(r=>r.method==='PUT').forEach(r=>r.flush({})); http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 });
 
@@ -55,7 +55,7 @@ describe('saved story reuse', () => {
     expect(page.storyCandidates(page.savedStories[0])).toHaveLength(1);
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 });
 
@@ -86,7 +86,7 @@ describe('step 1 journey safety', () => {
     expect(page.idea).toBe('A new unsubmitted idea');
     expect(page.title).toBe('Unsaved title');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
   it('persists input type and generation strategy independently and removes the empty advanced section', async () => {
     const {fixture,page,http}=await createPage();
@@ -97,7 +97,7 @@ describe('step 1 journey safety', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Advanced Settings / Destination');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
   it('keeps reusable work collapsed until the operator explicitly starts a new story', async () => {
     const {fixture,page,http}=await createPage();
@@ -118,7 +118,7 @@ describe('step 1 journey safety', () => {
     expect(page.newStoryOpen).toBe(false);
     expect(fixture.nativeElement.querySelector('.new-story-form')).toBeNull();
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
   it('keeps summary fields tied to the active draft after leaving a saved story', async () => {
     const {fixture,page,http}=await createPage();
@@ -134,7 +134,7 @@ describe('step 1 journey safety', () => {
     expect(page.activeContextProfile).toBe('AUTO');
     expect(page.activeContextAspectRatio).toBe('9:16');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
   it('falls back to the exact persisted studio session for summary identity and settings', async () => {
     const {fixture,page,http}=await createPage();
@@ -147,7 +147,7 @@ describe('step 1 journey safety', () => {
     expect(page.activeContextDuration).toBe(15);
     expect(page.activeContextAspectRatio).toBe('9:16');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
   it('does not mark a saved story approved when the stored candidate identity does not match', async () => {
     const {fixture,page,http}=await createPage();
@@ -157,7 +157,7 @@ describe('step 1 journey safety', () => {
     expect(page.approvalRecordId).toBe('');
     expect(page.storyApprovalStatus).toBe('REVIEW_REQUIRED');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
   it('does not expose technical workspace paths in the ordinary option label', async () => {
     const {fixture,page,http}=await createPage();
@@ -168,7 +168,7 @@ describe('step 1 journey safety', () => {
     expect(option.textContent?.trim()).toBe('Mimi Studio');
     expect(option.title).toContain('library/POMPOM_HILLS_PRODUCTION');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('keeps saved-project actions unavailable until story, approval and session indexes are loaded', async () => {
@@ -194,7 +194,7 @@ describe('step 1 journey safety', () => {
     expect(fixture.nativeElement.textContent).toContain('Continue to Prompt');
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('keeps similar generation sessions separate and uses their stored canonical title', async () => {
@@ -213,7 +213,7 @@ describe('step 1 journey safety', () => {
     expect(page.storySessionLabel(page.savedStories[0])).not.toBe(page.storySessionLabel(page.savedStories[1]));
     expect(page.storyTitle({...page.savedStories[0],title:undefined})).not.toContain('Mimi stands');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('marks only exact candidate, revision, text and fingerprint evidence approved', async () => {
@@ -228,7 +228,7 @@ describe('step 1 journey safety', () => {
     expect(page.savedLifecycle(story)).toBe('IN_REVIEW');
     expect(page.savedPrimaryAction(story)).toBe('Review Story');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('keeps project review separate from exact story approval and does not retain a stale approval on selection', async () => {
@@ -252,7 +252,7 @@ describe('step 1 journey safety', () => {
     expect(page.storyApprovalStatus).toBe('REVIEW_REQUIRED');
     expect(page.nextAction).toBe('Review Story');
     expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('keeps the explicitly selected candidate in review and persists approval only after the operator action', async () => {
@@ -279,7 +279,7 @@ describe('step 1 journey safety', () => {
     expect(page.stage).toBe('PROMPT');
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('explains a missing compatible saved prompt while preserving the approved story and paid-call gate', async () => {
@@ -299,7 +299,7 @@ describe('step 1 journey safety', () => {
     expect(page.promptConsent).toBe(false);
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('does not let a stale session candidate replace the approved immutable revision', async () => {
@@ -318,7 +318,7 @@ describe('step 1 journey safety', () => {
     expect(page.selectedStory).toBe(approvedText);
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('ignores a stale server-session response after switching to a different saved project', async () => {
@@ -330,7 +330,7 @@ describe('step 1 journey safety', () => {
     expect(page.builderRecordId).toBe('');
     expect(page.sessionId).not.toBe('shared-session');
     expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('restores exact prompt settings and editor for a same-title project without sharing its session identity', async () => {
@@ -361,7 +361,7 @@ describe('step 1 journey safety', () => {
     expect(page.targetGenerator).toBe('SEEDANCE_2_5');
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('opens only the selected saved prompt and makes no provider call', async () => {
@@ -382,7 +382,7 @@ describe('step 1 journey safety', () => {
     expect(page.draftPrompt).toContain('Exact saved prompt');
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('restores an archived approved story using the backend returned status', async () => {
@@ -397,7 +397,7 @@ describe('step 1 journey safety', () => {
     restore.flush({status:'APPROVED',changedAt:'2026-10-10T12:00:00Z'});
     expect(page.savedLifecycle(story)).toBe('APPROVED');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('saves edits to an approved story as a separate unapproved revision', async () => {
@@ -417,7 +417,7 @@ describe('step 1 journey safety', () => {
     expect(page.storySessionLabel(page.savedStories[0])).toContain('parent story-p');
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('initializes the saved draft editor after the prompt host appears and replaces a removed host', async () => {
@@ -430,7 +430,7 @@ describe('step 1 journey safety', () => {
     page.ngAfterViewChecked();
     expect(dispose).toHaveBeenCalledOnce();expect(internals.promptEditor).toBeNull();
     expect(initialize).toHaveBeenCalledOnce();expect(page.draftPrompt).toBe('Corrected prompt bytes');
-    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));http.verify();fixture.destroy();TestBed.resetTestingModule();
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify();fixture.destroy();TestBed.resetTestingModule();
   });
 
   it('saves an unchanged first draft once, preserves corrected bytes, and reloads its identity', async () => {
@@ -454,7 +454,7 @@ describe('step 1 journey safety', () => {
     expect(reloaded.componentInstance.draftPrompt).toBe(raw);
     reloaded.componentInstance.savePrompt();
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
-    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));http.verify();reloaded.destroy();TestBed.resetTestingModule();
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify();reloaded.destroy();TestBed.resetTestingModule();
   });
 
   it('saves a changed prompt as an immutable child version and routes to Production Review', async () => {
@@ -474,7 +474,7 @@ describe('step 1 journey safety', () => {
     expect(page.stage).toBe('PRODUCTION_REVIEW');
     expect(router.navigateByUrl).toHaveBeenCalledWith('/quality/detail?contentId=12&promptVersionId=4&studio=1');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('marks a built prompt incompatible when target settings change', async () => {
@@ -487,7 +487,7 @@ describe('step 1 journey safety', () => {
     page.aspectRatio='9:16'; page.builderResult.productionPlan.builderContractVersion='legacy';
     expect(page.builderInputMismatch).toBe(true);
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('revalidates a legacy saved prompt locally and exposes preliminary review without a paid role call', async () => {
@@ -518,7 +518,7 @@ describe('step 1 journey safety', () => {
     expect(fixture.nativeElement.textContent).toContain('Refresh Local Evidence — No AI Call');
     expect(fixture.nativeElement.textContent).toContain('Identity: CATALOG CONFIRMED');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('keeps downstream stage tabs locked until their own evidence milestone exists', async () => {
@@ -534,7 +534,7 @@ describe('step 1 journey safety', () => {
     expect(analysis.disabled).toBe(true);
     expect(analysis.title).toContain('Production Review');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
   it('reuses an unchanged prompt version without creating another revision', async () => {
@@ -545,6 +545,6 @@ describe('step 1 journey safety', () => {
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     expect(router.navigateByUrl).toHaveBeenCalledWith('/quality/detail?contentId=12&promptVersionId=3&studio=1');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
-    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+    http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 });

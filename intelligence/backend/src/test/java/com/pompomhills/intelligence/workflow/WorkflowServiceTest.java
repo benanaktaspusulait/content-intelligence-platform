@@ -13,6 +13,16 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class WorkflowServiceTest {
+  @Test void savedStoryValidationUsesExactSavedCandidateAndRetainsProfileWithoutProductionIds() {
+    var id=java.util.UUID.randomUUID();var service=spy(new WorkflowService(null,null,null,null,new ObjectMapper(),null,null));
+    var story=Map.<String,Object>of("role","STORY","sourceRequest",Map.of("context",Map.of("targetConfiguration",Map.of("contentProfile","CURIOSITY_ADVENTURE","duration",15,"selectedGenerator","SEEDANCE_2_5","aspectRatio","9:16"))),"result",Map.of("alternatives",java.util.List.of(Map.of("candidateId","candidate-1","text","Arda prepares the picnic."))));
+    doReturn(story).when(service).getByKind(id,"CREATIVE_ROLE");
+    doReturn(Map.of()).when(service).canonicalStoryIdentity(id,"Arda prepares the picnic.");
+    doAnswer(call->{WorkflowService.ReviewRequest r=call.getArgument(0);assertThat(r.prompt()).isEqualTo("Arda prepares the picnic.");assertThat(r.contentId()).isNull();assertThat(r.promptVersionId()).isNull();assertThat(r.sourcePath()).startsWith("story:"+id+"/candidate-1/");assertThat(r.options()).containsEntry("canonicalRulesetVersion","1.12").containsEntry("desiredDuration",15).containsEntry("contentProfile","CURIOSITY_ADVENTURE");return Map.of("status","UNKNOWN");}).when(service).runReview(any(),eq(true));
+    assertThat(service.validateSavedStory(id,Map.of("candidateId","candidate-1","text","Injected replacement"))).containsEntry("status","UNKNOWN");
+    assertThatThrownBy(()->service.validateSavedStory(id,Map.of("candidateId","missing"))).hasMessageContaining("exact story candidate");
+  }
+
   @Test
   void linkedReviewUsesStoredPromptAndCannotBeOverriddenByOptions() {
     var content = mock(ContentPromptQueryService.class);

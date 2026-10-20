@@ -175,6 +175,15 @@ describe('Render Preparation separation and immutable input safety', () => {
       expect(http.post).not.toHaveBeenCalled();
     },
   );
+  it('requires fresh explicit render consent bound to the exact inputs and visible estimate', () => {
+    const http={post:vi.fn()};const page=new RenderPreparationPage(http as any,{} as any,{} as any);
+    page.workflowReviewId='review';page.workflowReview={bindingHash:'original'};
+    vi.spyOn(page,'canQueue').mockReturnValue(true);vi.spyOn(page,'renderFrameIsCanonicallyVerified').mockReturnValue(true);
+    page.queueContentId.set('8');page.queuePromptVersionId.set('8');page.queueValidationId.set('12');
+    page.queueRender();expect(http.post).not.toHaveBeenCalled();expect(page.queueError()).toContain('explicitly authorize');
+    page.renderEstimate.set({estimatedCredits:15});page.onRenderConsent(true);page.workflowReview.bindingHash='changed';
+    page.queueRender();expect(http.post).not.toHaveBeenCalled();
+  });
   it('rejects stale first-frame contract after a settings, character, mode or prompt change', () => {
     const component = new RenderPreparationPage({} as any, {} as any, {} as any);
     component.workflowReview = review;

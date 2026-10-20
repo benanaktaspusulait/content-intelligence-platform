@@ -20,7 +20,7 @@ public class IdeaDraftService {
   private final ContentWorkspaceController contents;
   private static final List<String> FIELDS =
       List.of(
-          "inputMode",
+          "inputMode", "originIdeaDraftId", "originIdeaRevision", "revisionParentId",
           "idea",
           "firstFrameDescription",
           "storyText",

@@ -51,9 +51,56 @@ public class IdeaExplorationService {
 
   public List<Map<String,Object>> list(UUID draft, String workspace) {
     drafts.get(draft,workspace);
+    var selection=selection(draft,workspace);
     return jdbc.sql("SELECT DISTINCT ON (payload->>'explorationId') payload::text FROM post_family_workflow_events WHERE kind='IDEA_VISUAL_EXPLORATION' AND binding_sha256=:draft ORDER BY payload->>'explorationId',created_at DESC,id DESC")
         .param("draft",draft.toString()).query((rs,i)->read(rs.getString(1))).list().stream()
-        .<Map<String,Object>>map(row->{ var out=new LinkedHashMap<>(row); out.put("editorialDecision",latestDecision(String.valueOf(row.get("explorationId")))); return out; }).toList();
+        .<Map<String,Object>>map(row->{ var out=new LinkedHashMap<>(row); out.put("editorialDecision",latestDecision(String.valueOf(row.get("explorationId")))); out.put("selectedDirection",Objects.equals(selection.get("explorationId"),row.get("explorationId"))); try { image(draft,UUID.fromString(String.valueOf(row.get("explorationId"))),workspace); out.put("assetStatus","AVAILABLE"); } catch(IllegalArgumentException error) { out.put("assetStatus","UNAVAILABLE"); out.put("assetError",error.getMessage()); } return out; }).toList();
+  }
+
+  /** Operator supplied bytes have their own immutable identity, never provider provenance. */
+  public Map<String,Object> upload(UUID draft,String workspace,int revision,
+      org.springframework.web.multipart.MultipartFile file,String sourceNote) {
+    var saved=drafts.get(draft,workspace);
+    if (!"IDEA".equals(saved.get("checkpoint")) || !"IDEA".equals(map(saved.get("state")).get("inputMode"))
+        || ((Number)saved.get("revision")).intValue()!=revision)
+      throw new IllegalArgumentException("Reopen the exact saved IDEA revision before uploading");
+    if(file==null||file.isEmpty()||file.getSize()>15*1024*1024) throw new IllegalArgumentException("Choose an image smaller than 15 MB");
+    if(sourceNote==null||sourceNote.isBlank()||sourceNote.length()>2000) throw new IllegalArgumentException("Describe the external image source (up to 2000 characters)");
+    try {
+      byte[] data=file.getBytes();
+      String format; int width,height;
+      try(var stream=javax.imageio.ImageIO.createImageInputStream(new java.io.ByteArrayInputStream(data))) {
+        var readers=javax.imageio.ImageIO.getImageReaders(stream);
+        if(!readers.hasNext()) throw new IllegalArgumentException("Use a valid PNG or JPEG image");
+        var reader=readers.next();try {reader.setInput(stream);format=reader.getFormatName().toLowerCase(Locale.ROOT);width=reader.getWidth(0);height=reader.getHeight(0);
+          if(!Set.of("png","jpeg","jpg").contains(format)||width<1||height<1||width>8192||height>8192||reader.read(0)==null) throw new IllegalArgumentException("Use a valid PNG or JPEG up to 8192 pixels");
+        } finally {reader.dispose();}
+      }
+      UUID operation=UUID.randomUUID();String sha=hash(data);String extension=format.equals("png")?"png":"jpg";
+      Path folder=root.resolve("exploratory-frames").resolve(draft.toString()).resolve(String.valueOf(revision)).resolve(operation.toString());
+      Files.createDirectories(folder);Path target=folder.resolve(sha+"."+extension);Files.write(target,data,StandardOpenOption.CREATE_NEW);
+      var row=new LinkedHashMap<String,Object>();row.put("draftId",draft.toString());row.put("ideaRevision",revision);row.put("explorationId",operation.toString());
+      row.put("sourceType","OPERATOR_UPLOAD");row.put("originalFilename",Path.of(file.getOriginalFilename()==null?"image":file.getOriginalFilename()).getFileName().toString());row.put("sourceNote",sourceNote.strip());
+      row.put("sourceFirstFrame",opening(map(saved.get("state")),json));row.put("contentProfile",map(saved.get("state")).get("profile"));row.put("characterId",map(saved.get("state")).get("mainCharacterId"));
+      row.put("imagePath",target.toString());row.put("sha256",sha);row.put("width",width);row.put("height",height);row.put("imageContentType","image/"+(extension.equals("jpg")?"jpeg":"png"));
+      row.put("status","UPLOADED");row.put("provider","OPERATOR_UPLOAD");row.put("providerDispatched",false);row.put("calculatedCostUsd",0);row.put("costBasis","NO_PROVIDER_CALL");isolate(row);
+      tx.executeWithoutResult(status->append(row,"IDEA_VISUAL_EXPLORATION",draft.toString()));return row;
+    } catch(java.io.IOException error) {throw new IllegalArgumentException("Image could not be imported",error);}
+  }
+
+  public Map<String,Object> selection(UUID draft,String workspace) {
+    drafts.get(draft,workspace);
+    return jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='IDEA_VISUAL_SELECTION' AND binding_sha256=:draft ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("draft",draft.toString()).query(String.class).optional().map(this::read).orElse(Map.of());
+  }
+
+  public Map<String,Object> select(UUID draft,UUID exploration,Map<String,Object> input) {
+    String workspace=String.valueOf(input.getOrDefault("workspacePath",""));var saved=drafts.get(draft,workspace);
+    var row=find(draft,exploration).orElseThrow(()->new IllegalArgumentException("Exploration not found"));
+    if(!Objects.equals(row.get("ideaRevision"),saved.get("revision"))) throw new IllegalArgumentException("Choose an image from the current IDEA revision");
+    image(draft,exploration,workspace);
+    var selection=new LinkedHashMap<String,Object>();for(var key:List.of("draftId","ideaRevision","explorationId","sha256","sourceType","originalFilename","sourceNote","imagePath")) if(row.containsKey(key))selection.put(key,row.get(key));
+    isolate(selection);tx.executeWithoutResult(status->append(selection,"IDEA_VISUAL_SELECTION",draft.toString()));return selection;
   }
 
   public Map<String,Object> generate(UUID draft, Map<String,Object> input) {
@@ -125,9 +172,9 @@ public class IdeaExplorationService {
   public Map<String,Object> decide(UUID draft,UUID exploration,Map<String,Object> input) {
     drafts.get(draft,String.valueOf(input.getOrDefault("workspacePath","")));
     var image=find(draft,exploration).orElseThrow(()->new IllegalArgumentException("Exploration not found"));
-    if (!"GENERATED".equals(image.get("status"))) throw new IllegalArgumentException("Inspect a generated image before recording an editorial decision");
+    if (!Set.of("GENERATED","UPLOADED").contains(image.get("status"))) throw new IllegalArgumentException("Inspect a generated or uploaded image before recording an editorial decision");
     String decision=String.valueOf(input.get("decision"));
-    if (!Set.of("PROMISING_HOOK","WEAK_HOOK","NEEDS_VISUAL_REVISION").contains(decision))
+    if (!Set.of("PROMISING_HOOK","WEAK_HOOK","NEEDS_VISUAL_REVISION","REJECT").contains(decision))
       throw new IllegalArgumentException("Unsupported editorial visual decision");
     var row=new LinkedHashMap<String,Object>();row.put("explorationId",exploration.toString());row.put("draftId",draft.toString());
     row.put("ideaRevision",image.get("ideaRevision"));row.put("decision",decision);
@@ -138,7 +185,7 @@ public class IdeaExplorationService {
   public Resource image(UUID draft,UUID exploration,String workspace) {
     drafts.get(draft,workspace);
     var row=find(draft,exploration).orElseThrow(()->new IllegalArgumentException("Exploration not found"));
-    if (!"GENERATED".equals(row.get("status"))) throw new IllegalArgumentException("No generated exploratory image");
+    if (!Set.of("GENERATED","UPLOADED").contains(row.get("status"))) throw new IllegalArgumentException("No exploratory image");
     Path file=checkedFile(Path.of(String.valueOf(row.get("imagePath"))),root.resolve("exploratory-frames").resolve(draft.toString()).resolve(String.valueOf(row.get("ideaRevision"))).resolve(exploration.toString()));
     if (!hash(bytes(file)).equals(row.get("sha256"))) throw new IllegalArgumentException("Exploratory image integrity check failed");
     return new FileSystemResource(file);

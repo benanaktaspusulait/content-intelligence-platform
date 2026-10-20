@@ -388,6 +388,10 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
       });
   }
 
+  renderConsent=false; renderConsentBinding=''; renderEstimate=signal<any>(null);
+  renderConsentIdentity(){return JSON.stringify([this.workflowReview?.bindingHash,this.queueContentId(),this.queuePromptVersionId(),this.queueFirstFramePath(),this.queueModel(),this.settings,this.renderEstimate()]);}
+  onRenderConsent(value:boolean){this.renderConsent=value;this.renderConsentBinding=value?this.renderConsentIdentity():'';}
+  loadRenderEstimate(){this.renderConsent=false;this.renderEstimate.set(null);this.http.get<any>('/api/v1/budget/render-estimate').subscribe({next:r=>{this.renderEstimate.set(r);},error:()=>this.queueError.set('Render cost estimate is unavailable. No paid call was made.')});}
   queueRender(): void {
     if (this.queueLoading()) return;
     if (!this.workflowReviewId || !this.workflowReview) {
@@ -414,6 +418,10 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
       );
       return;
     }
+    if(!this.renderConsent || this.renderConsentBinding!==this.renderConsentIdentity() || !(Number(this.renderEstimate()?.estimatedCredits)>0)) {
+      this.queueError.set('Load the cost estimate, inspect the full motion prompt and selected first frame, then explicitly authorize this one paid render.');return;
+    }
+    this.renderConsent=false;
     const contentId = Number(this.queueContentId());
     const promptVersionId = Number(this.queuePromptVersionId());
     const validationRecordId = Number(this.queueValidationId());
@@ -1201,6 +1209,7 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
       this.visualReferenceLoading.set(null);
       this.visualPreparationSaving.set(false);
       this.queueLoading.set(false);
+      this.renderConsent=false;this.renderEstimate.set(null);
       this.queuedJobId.set('');
       this.workflowReview = null;
       this.characterBinding = null;
@@ -1502,6 +1511,13 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
     event.preventDefault();
     this.selectTab(this.tabs[next].id);
     document.getElementById(`tab-${this.tabs[next].id}`)?.focus();
+  }
+  renderDecision():string {
+    if(this.canQueue())return 'GO_TO_RENDER';
+    const status=String(this.workflowReview?.family8?.renderAuthorization?.status||'UNKNOWN');
+    if(status==='BLOCKED_CREATIVE_FAILURE'||status==='BLOCKED_TECHNICAL_FAILURE')return 'BLOCKED';
+    if(status==='NEEDS_REVISION')return 'NEEDS_REVISION';
+    return 'PENDING_EVIDENCE';
   }
   authorizationLabel(): string {
     const status = this.workflowReview?.family8?.renderAuthorization?.status;

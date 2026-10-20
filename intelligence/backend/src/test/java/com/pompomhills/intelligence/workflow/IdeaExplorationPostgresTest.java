@@ -52,6 +52,37 @@ class IdeaExplorationPostgresTest {
       return Map.of("status","GENERATED","imagePath",image.toString(),"sha256",sha(Files.readAllBytes(image)),"model","gpt-image-2","calculatedCostUsd",.053,"firstFrameEligible",true,"renderAuthorized",true);
     });
   }
+  byte[] actualPng() throws Exception {
+    var out=new java.io.ByteArrayOutputStream();javax.imageio.ImageIO.write(new java.awt.image.BufferedImage(9,16,java.awt.image.BufferedImage.TYPE_INT_RGB),"png",out);return out.toByteArray();
+  }
+  @Test void uploadsAreSeparateImmutableVersionsAndSelectionNeverApprovesProduction() throws Exception {
+    var file=new org.springframework.mock.web.MockMultipartFile("file","owner-scene.png","image/png",actualPng());
+    var first=service.upload(draft,"library/work",1,file,"Owner supplied original garden scene");
+    var second=service.upload(draft,"library/work",1,file,"Owner supplied another direction");
+    assertThat(first.get("explorationId")).isNotEqualTo(second.get("explorationId"));
+    assertThat(first).containsEntry("sourceType","OPERATOR_UPLOAD").containsEntry("providerDispatched",false).containsEntry("calculatedCostUsd",0).doesNotContainKey("providerRequest");
+    var operation=UUID.fromString(String.valueOf(first.get("explorationId")));
+    var direction=service.select(draft,operation,Map.of("workspacePath","library/work"));
+    assertThat(direction).containsEntry("firstFrameEligible",false).containsEntry("renderAuthorized",false).containsEntry("publishAuthorized",false);
+    assertThat(service.selection(draft,"library/work").get("sha256")).isEqualTo(first.get("sha256"));
+    assertThat(service.list(draft,"library/work")).hasSize(2);
+    assertThat(service.image(draft,operation,"library/work").getContentAsByteArray()).isEqualTo(actualPng());
+    assertThat(drafts.get(draft,"library/work").get("revision")).isEqualTo(1);verifyNoInteractions(ml);
+  }
+  @Test void uploadsRejectBadBytesStaleRevisionAndMissingProvenanceBeforeStorage() throws Exception {
+    var file=new org.springframework.mock.web.MockMultipartFile("file","fake.png","image/png","NOT_AN_IMAGE".getBytes());
+    assertThatThrownBy(()->service.upload(draft,"library/work",1,file,"Owner supplied")).hasMessageContaining("valid PNG");
+    assertThatThrownBy(()->service.upload(draft,"library/work",2,file,"Owner supplied")).hasMessageContaining("exact saved IDEA");
+    assertThatThrownBy(()->service.upload(draft,"library/work",1,file,"")).hasMessageContaining("source");
+    assertThat(service.list(draft,"library/work")).isEmpty();verifyNoInteractions(ml);
+  }
+  @Test void removedProviderFileStaysInHistoryButCannotBeSelected() {
+    generated();var request=request();var row=service.generate(draft,request);
+    try {Files.delete(Path.of(String.valueOf(row.get("imagePath"))));}catch(Exception e){throw new RuntimeException(e);}
+    assertThat(service.list(draft,"library/work").getFirst()).containsEntry("assetStatus","UNAVAILABLE").containsEntry("calculatedCostUsd",.053);
+    assertThatThrownBy(()->service.select(draft,UUID.fromString(String.valueOf(request.get("explorationId"))),Map.of("workspacePath","library/work"))).hasMessageContaining("missing");
+    verify(ml,times(1)).workflow(anyString(),anyMap());
+  }
   @Test void savedIdeaGeneratesAndRetrievesExactRevisionWithoutAnyStoryOrProductionIds() throws Exception {
     generated();var input=request();var result=service.generate(draft,input);
     assertThat(result).containsEntry("ideaRevision",1).containsEntry("label",IdeaExplorationService.LABEL)

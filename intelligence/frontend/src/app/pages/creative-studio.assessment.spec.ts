@@ -26,7 +26,7 @@ describe('Step 2 assessment transport and saved-session restoration', () => {
     await TestBed.configureTestingModule({imports:[CreativeStudioPage],providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([])]}).compileComponents();
     http=TestBed.inject(HttpTestingController);
   });
-  afterEach(()=>{http.verify();localStorage.clear();TestBed.resetTestingModule();});
+  afterEach(()=>{http.match(r=>r.method==='GET' && r.url.endsWith('/story-validation')).forEach(r=>r.flush([])); http.verify();localStorage.clear();TestBed.resetTestingModule();});
   function open(saved=false,serverFirst=false){
     if(saved)localStorage.setItem(key,JSON.stringify(state));
     const fixture=TestBed.createComponent(CreativeStudioPage);

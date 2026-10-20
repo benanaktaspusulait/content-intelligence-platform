@@ -50,13 +50,27 @@ public class IdeaDraftController {
     return explorations.decide(id,explorationId,request);
   }
 
+  @PostMapping(value="/{id}/explorations/upload",consumes="multipart/form-data")
+  public Map<String,Object> upload(@PathVariable UUID id,@RequestParam String workspacePath,
+      @RequestParam int expectedRevision,@RequestParam String sourceNote,
+      @RequestPart("file") org.springframework.web.multipart.MultipartFile file) {
+    return explorations.upload(id,workspacePath,expectedRevision,file,sourceNote);
+  }
+
+  @GetMapping("/{id}/explorations/selection")
+  public Map<String,Object> selection(@PathVariable UUID id,@RequestParam String workspacePath) {return explorations.selection(id,workspacePath);}
+
+  @PostMapping("/{id}/explorations/{explorationId}/select")
+  public Map<String,Object> select(@PathVariable UUID id,@PathVariable UUID explorationId,@RequestBody Map<String,Object> request) {return explorations.select(id,explorationId,request);}
+
   @GetMapping("/{id}/explorations/{explorationId}/image")
   public org.springframework.http.ResponseEntity<org.springframework.core.io.Resource> image(
       @PathVariable UUID id,@PathVariable UUID explorationId,@RequestParam String workspacePath) {
+    var resource=explorations.image(id,explorationId,workspacePath);
     return org.springframework.http.ResponseEntity.ok()
-        .contentType(org.springframework.http.MediaType.IMAGE_PNG)
+        .contentType(org.springframework.http.MediaTypeFactory.getMediaType(resource).orElse(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM))
         .header("Cache-Control","private, no-store")
         .header("X-Exploratory-Asset","NOT_PRODUCTION_APPROVED")
-        .body(explorations.image(id,explorationId,workspacePath));
+        .body(resource);
   }
 }

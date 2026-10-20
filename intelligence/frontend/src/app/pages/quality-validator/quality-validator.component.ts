@@ -1,7 +1,7 @@
 import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +18,7 @@ interface PromptEditorInstance {
   updateOptions(options: { readOnly: boolean }): void;
   layout(): void;
   onDidChangeModelContent(listener: () => void): { dispose(): void };
+  getModel(): { dispose(): void } | null;
   dispose(): void;
 }
 
@@ -203,8 +204,18 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
-export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('promptMonaco') private promptMonaco?: ElementRef<HTMLDivElement>;
+export class QualityValidatorComponent implements OnDestroy {
+  private promptEditorHost?: HTMLDivElement;
+  private destroyed = false;
+
+  // Step 3 is conditional: initialize each newly attached host, not only the initial view.
+  @ViewChild('promptMonaco') private set promptMonaco(ref: ElementRef<HTMLDivElement> | undefined) {
+    const host = ref?.nativeElement;
+    if (host === this.promptEditorHost) return;
+    this.disposePromptEditor();
+    this.promptEditorHost = host;
+    if (host) void this.initializePromptEditor(host);
+  }
   @ViewChild('workspaceFolderCombobox') private workspaceFolderCombobox?: ElementRef<HTMLElement>;
   @ViewChild(TimelineChartComponent, { read: ElementRef }) private timelineChart?: ElementRef<HTMLElement>;
   @ViewChild(PostFamilyWorkflowComponent) postFamilyWorkflow?: PostFamilyWorkflowComponent;
@@ -317,7 +328,7 @@ Intensity: 4`;
     this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
     this.studioMode = this.route.snapshot.queryParamMap.get('studio') === '1';
     const requestedStage = Number(this.route.snapshot.queryParamMap.get('stage'));
-    if (this.studioMode && Number.isInteger(requestedStage) && requestedStage >= 4 && requestedStage <= 8) this.studioStage = requestedStage;
+    if (this.studioMode && Number.isInteger(requestedStage) && requestedStage >= 3 && requestedStage <= 8) this.studioStage = requestedStage;
     this.sourceReconciliationRequested = this.route.snapshot.queryParamMap.get('reconcile') === '1';
     this.loadPromptWorkspaces();
     this.loadQualityRecords();
@@ -463,12 +474,13 @@ Intensity: 4`;
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  ngAfterViewInit(): void {
-    if (!this.promptMonaco) return;
-    import('monaco-editor/esm/vs/editor/editor.api').then(monaco => {
-      if (!this.promptMonaco) return;
+  private async initializePromptEditor(host: HTMLDivElement): Promise<void> {
+    try {
+      const monaco = await import('monaco-editor/esm/vs/editor/editor.api');
+      // A navigation or component destruction may finish before the lazy import.
+      if (this.destroyed || this.promptEditorHost !== host) return;
       monaco.editor.defineTheme('pompom-production-dark', { base: 'vs-dark', inherit: true, rules: [{ token: '', foreground: 'F8FAFC' }, { token: 'comment', foreground: '94A3B8' }, { token: 'string', foreground: 'E2E8F0' }, { token: 'keyword', foreground: 'C4B5FD' }], colors: { 'editor.background': '#0B0D12', 'editor.foreground': '#F8FAFC', 'editorGutter.background': '#0B0D12', 'editorLineNumber.foreground': '#B5C1D3', 'editorLineNumber.activeForeground': '#FFFFFF', 'editorCursor.foreground': '#FFFFFF', 'editor.selectionBackground': '#24476B', 'editor.inactiveSelectionBackground': '#1A344F', 'editor.lineHighlightBackground': '#151A24', 'editorWidget.background': '#111827', 'editorWidget.border': '#334155', 'scrollbarSlider.background': '#47556988', 'scrollbarSlider.hoverBackground': '#64748Baa' } });
-      this.promptEditor = monaco.editor.create(this.promptMonaco.nativeElement, {
+      this.promptEditor = monaco.editor.create(host, {
         value: this.prompt,
         language: 'markdown',
         theme: 'pompom-production-dark',
@@ -482,13 +494,32 @@ Intensity: 4`;
         scrollBeyondLastLine: false,
       });
       this.promptEditor.onDidChangeModelContent(() => {
-        if (!this.updatingPromptEditor) this.prompt = this.promptEditor?.getValue() || '';
+        if (!this.updatingPromptEditor) {
+          this.prompt = this.promptEditor?.getValue() || '';
+          this.changeDetector.markForCheck();
+        }
       });
       window.setTimeout(() => this.promptEditor?.layout(), 0);
-    });
+    } catch {
+      if (!this.destroyed && this.promptEditorHost === host) {
+        this.error = 'Prompt editor could not be loaded. Reload the page to try again.';
+        this.changeDetector.markForCheck();
+      }
+    }
   }
 
-  ngOnDestroy(): void { this.promptEditor?.dispose(); }
+  private disposePromptEditor(): void {
+    const model = this.promptEditor?.getModel();
+    this.promptEditor?.dispose();
+    model?.dispose();
+    this.promptEditor = null;
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed = true;
+    this.promptEditorHost = undefined;
+    this.disposePromptEditor();
+  }
   useAcceptedRepair(value: {contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}): void {
     this.contentId = String(value.contentId); this.promptVersionId = String(value.promptVersionId);
     this.setPromptText(value.rawText); this.syncSavedVersionRoute(value.repairSessionId);

@@ -28,6 +28,15 @@ public class BudgetController {
     return ResponseEntity.ok(status);
   }
 
+  /** Existing budget reservation estimate, not a model-specific provider quote. No paid call. */
+  @GetMapping("/render-estimate")
+  public java.util.Map<String,Object> renderEstimate() {
+    return java.util.Map.of("estimatedCredits",creditTrackingService.getEstimatedCost(com.pompom.creative.domain.RenderJob.JobType.VIDEO),
+        "remainingCredits",creditTrackingService.getRemainingCredits(),
+        "basis","CONFIGURED_VIDEO_BUDGET_ESTIMATE_NOT_PROVIDER_QUOTE",
+        "providerCallPerformed",false);
+  }
+
   /** Get usage statistics. */
   @GetMapping("/usage-statistics")
   public ResponseEntity<CreditTrackingService.UsageStatistics> getUsageStatistics() {

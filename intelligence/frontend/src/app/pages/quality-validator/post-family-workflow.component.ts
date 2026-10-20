@@ -1,3 +1,4 @@
+import { CanonicalFindingsComponent } from '../canonical-findings.component';
 import { CommonModule } from '@angular/common';
 import { afterNextRender, ChangeDetectorRef, Component, ElementRef, EventEmitter, Injector, Input, Output, OnChanges, OnDestroy, QueryList, SimpleChanges, ViewChild, ViewChildren, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -10,8 +11,9 @@ import { GeneralProducibilityComponent } from './general-producibility.component
 @Component({
   selector: 'app-post-family-workflow',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent, CpqOwnerPilotComponent],
+  imports: [CanonicalFindingsComponent, CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent, CpqOwnerPilotComponent],
   template: `
+  <section *ngIf="review?.canonicalRuleEvaluation"><app-canonical-findings [evaluation]="review.canonicalRuleEvaluation" [visualReviewUrl]="renderPreparationLink()" (correct)="openSourceEditor()"></app-canonical-findings></section>
   <p *ngIf="settingsSavedAt && contentProfile !== evaluationProfile" class="missing-state">Existing analysis remains linked to its recorded profile ({{ evaluationProfile }}). Selected profile {{ contentProfile }} has not been evaluated by that historical score; a new evaluation is required before dependent evidence can be reused.</p>
   <section *ngIf="activeStage === 4" class="workflow production-review" aria-label="Production review">
     <div *ngIf="creativeProvenance?.productionSpecificationStatus === 'STALE'" class="missing-state" role="alert"><strong>Production Specification is STALE</strong><p>The original provider plan predates this edited prompt. Its beats and source traceability are not current verified evidence for prompt version {{ promptVersionId }}. This legacy status does not invalidate a separately saved evaluation of the current prompt.</p></div>
@@ -945,6 +947,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   ],
 })
 export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
+  openSourceEditor(){document.getElementById('prompt-editor')?.scrollIntoView({block:'start'});}
+
   private promptPreviewHost?: ElementRef<HTMLDivElement>;
   private promptPreviewEditor: {
     dispose(): void;

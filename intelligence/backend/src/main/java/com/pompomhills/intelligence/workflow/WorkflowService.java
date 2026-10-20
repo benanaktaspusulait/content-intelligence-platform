@@ -1284,11 +1284,11 @@ public class WorkflowService {
   @Transactional
   private Map<String, Object> creativeRole(Map<String, Object> request, boolean sourceBoundOptimization) {
     String role = String.valueOf(request.get("role"));
-    if (!List.of("STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR", "PROMPT_OPTIMIZATION").contains(role))
+    if (!List.of("IDEA", "STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR", "PROMPT_OPTIMIZATION").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
     if ("PROMPT_OPTIMIZATION".equals(role) && !sourceBoundOptimization)
       throw new IllegalArgumentException("Creative optimization must use the source-bound Step 6 workflow");
-    if ("STORY".equals(role) || "PROMPT_OPTIMIZATION".equals(role)) {
+    if ("IDEA".equals(role) || "STORY".equals(role) || "PROMPT_OPTIMIZATION".equals(role)) {
       if (!Boolean.TRUE.equals(request.get("generationAuthorized")))
         throw new IllegalArgumentException("Explicit authorization for this paid creative operation is required");
       if (!(request.get("maxCostUsd") instanceof Number ceiling)
@@ -1318,7 +1318,7 @@ public class WorkflowService {
     // Authorization is enforced here; the strict provider contract accepts only role/text/context/budget.
     verifiedRequest.remove("generationAuthorized");
     var context = new LinkedHashMap<>(map(request.get("context")));
-    if ("STORY".equals(role)) {
+    if ("IDEA".equals(role) || "STORY".equals(role)) {
       var identity = new CanonicalCharacterIdentity(jdbc);
       var target = new LinkedHashMap<String, Object>(map(context.get("targetConfiguration")));
       String id = String.valueOf(context.getOrDefault("mainCharacterId", target.getOrDefault("mainCharacterId", "")));
@@ -1667,6 +1667,7 @@ public class WorkflowService {
     Object rawRequest = source.get("sourceRequest");
     if (rawRequest instanceof Map<?, ?> requestMap && requestMap.get("context") instanceof Map<?, ?> contextMap)
       contextMap.forEach((key, value) -> context.put(String.valueOf(key), value));
+    if(request.get("visualDirection") instanceof Map<?,?> direction) context.put("visualDirection",direction);
     context.put("parentStoryRecordId", storyRecordId.toString());
     context.put("parentCandidateId", parentCandidateId);
     context.put("parentRevisionId", parentRevisionId);
@@ -1696,6 +1697,32 @@ public class WorkflowService {
     revision.put("result", result);
     revision.put("recordId", save("CREATIVE_ROLE", null, revision));
     return revision;
+  }
+
+  /** Validate saved narrative text; this is not linked production/render evidence. */
+  public Map<String,Object> validateSavedStory(UUID id,Map<String,Object> request) {
+    var story=getByKind(id,"CREATIVE_ROLE");
+    if(!"STORY".equals(story.get("role"))) throw new IllegalArgumentException("Choose a saved STORY");
+    String candidate=String.valueOf(request.getOrDefault("candidateId",""));
+    String text=storyCandidateText(story,id,candidate);
+    if(text==null) throw new IllegalArgumentException("Save and select an exact story candidate before validation");
+    canonicalStoryIdentity(id,text);
+    var context=map(map(story.get("sourceRequest")).get("context"));
+    var target=map(context.get("targetConfiguration"));
+    var options=new LinkedHashMap<String,Object>();options.put("profile","post-family-v1");
+    options.put("contentProfile",target.getOrDefault("contentProfile",context.getOrDefault("profile","CURIOSITY_ADVENTURE")));
+    options.put("canonicalRulesetVersion","1.12");
+    options.put("desiredDuration",target.getOrDefault("duration",context.getOrDefault("duration",15)));
+    options.put("plannedEditedDuration",options.get("desiredDuration"));
+    options.put("generator",target.getOrDefault("selectedGenerator",context.getOrDefault("targetGenerator","SEEDANCE_2_5")));
+    options.put("settings",Map.of("aspectRatio",target.getOrDefault("aspectRatio",context.getOrDefault("aspectRatio","9:16")),"mode","image2video","resolution","480p"));
+    return runReview(new ReviewRequest(null,null,text,"story:"+id+"/"+candidate+"/"+storyFingerprint(text.trim()),options),true);
+  }
+
+  public List<Map<String,Object>> savedStoryValidations(UUID id) {
+    getByKind(id,"CREATIVE_ROLE");
+    return jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->'boundRequest'->>'sourceId' LIKE :source ORDER BY created_at DESC,id DESC")
+        .param("source","draft:story:"+id+"/%").query((rs,i)->read(rs.getString(1))).list();
   }
 
   /** Persist an already validated autonomous evolution candidate as a normal STORY record. */

@@ -19,6 +19,7 @@ from .deepseek import DeepSeekTextProvider
 from .story_quality import analyse_story_candidates
 
 ROLES = {
+    'IDEA': 'openai',
     'STORY': 'deepseek',
     'STORY_REVIEW': 'openai',
     'BUILD_PROMPT': 'openai',
@@ -581,8 +582,8 @@ def role_readiness() -> dict[str, Any]:
              'configured': bool(os.getenv('DEEPSEEK_API_KEY') and os.getenv('WORKFLOW_STORY_MODEL'))},
             {'provider': 'OPENAI', 'model': 'gpt-6-sol', 'reasoningEffort': 'none',
              'configured': bool(os.getenv('OPENAI_API_KEY'))}], 'roles': [
-        {'role': role, 'provider': provider, 'model': os.getenv(f'WORKFLOW_{role}_MODEL', ''),
-         'configured': bool(os.getenv(f'{provider.upper()}_API_KEY') and os.getenv(f'WORKFLOW_{role}_MODEL')),
+        {'role': role, 'provider': provider, 'model': 'gpt-6-sol' if role == 'IDEA' else os.getenv(f'WORKFLOW_{role}_MODEL', ''),
+         'configured': bool(os.getenv(f'{provider.upper()}_API_KEY') and (role == 'IDEA' or os.getenv(f'WORKFLOW_{role}_MODEL'))),
          'modality': 'TEXT_ONLY', 'automaticFallback': False}
         for role, provider in ROLES.items()]}
 
@@ -1197,6 +1198,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         from .optimization_plans import perform_plan_first
         return perform_plan_first(text, context, provider, model)
     system = {
+        'IDEA': 'Invent ONE original Pompom Hills IDEA, not a timecoded story. Return ONLY JSON with title, concept, firstStaticFrame, viewerQuestion, discovery, payoff and productionRisk strings. One canonical main character from context.characterRecord. Use a concrete visual question, everyday motivation, a meaning-changing discovery and visible payoff. Warm lived-in 3D cartoon environment appropriate to the premise; preserve outdoor or indoor intent. No white void or generic studio. No automatic PASS or production approval.',
         'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings and context.establishedWinnerMechanisms, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For originality, compare causal visual mechanisms, not object names alone; cite exact candidate evidence and identify the nearest known mechanism. Winner labels are text context, not verified visual-similarity evidence. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
         'PROMPT_OPTIMIZATION': '''Return ONLY JSON with exactly {"candidates":[{"candidateId":"candidate-a","title":"...","hypothesis":"...","prompt":"complete prompt text"},{"candidateId":"candidate-b","title":"...","hypothesis":"...","prompt":"complete prompt text"}]}. Produce exactly two complete prompt revisions, both materially different from the original and from each other; never return the original prompt unchanged or duplicate one candidate. Candidate A must focus on first-frame visual clarity, immediate physical anomaly visibility and opening-second curiosity; its TIMED SHOT PLAN must change first-beat framing or camera focus to make the existing anomaly legible in the opening two seconds, without moving a story event earlier. Candidate B must focus on beat progression clarity, escalation pacing and execution feasibility for Seedance; its TIMED SHOT PLAN must rebalance the timing or camera decisions of the existing mid-section beats for readable escalation. Preserve every source event and its order. An existing explicit multiplication progression may be divided into contiguous camera shots only when each shot repeats the exact source action, staging and consequence and the concatenated progression edges equal the complete original chain. Never invent, omit or reorder progression steps; other beat rewrites are unsupported. The first timed beat framing/camera decision in Candidate A must differ materially from Candidate B; the protected narrative action stays unchanged. The hypothesis field for each candidate must name a concrete structural change that is actually implemented in the prompt body. Use explicit camera terms: extreme close-up, close-up, medium shot or wide shot; camera motion may be static/locked-off, pan, tracking or push-in. Implement camera/framing instructions in square brackets inside the relevant timed beats, or rebalance adjacent beat boundaries while preserving total duration and event order. Use context.baselineExecution to compare actual baseline decisions. Do not propose the same existing shot or merely move its bracket to the start of the beat. Synonyms, titles, hypotheses and appended commentary alone are not material changes. Preserve narrative text outside camera annotations and protected identity/mechanic/ending sections. Use source-supported subjects; camera proposals are hypotheses, not verified observations. Preserve the source character, physical rule, primary goal, every essential event and the exact ending. Every `essentialEvents` phrase supplied in context must remain verbatim and unchanged in both prompts. Do not add narrative outcomes, characters, objects, or mechanics. Keep the selected context.targetConfiguration profile, generator, duration and aspect ratio. If the baseline contains a stale production-settings label, replace only that label with the selected target value; this does not permit a story change. Keep the approved story unchanged. Do not assert image/video observation, audience retention, rewatch success, or renderability. Treat first-frame, pacing, and execution claims as hypotheses. Do not recommend, rank or auto-select either candidate; never grant render authorization.''',
         'STORY': '''Return ONLY one root JSON object with an `alternatives` array. For standard short-form candidates, each alternative contains candidateId, title, protagonistCharacterId and text. For a 20–30 second request, the LONG-FORM STORY CONTRACT below replaces the short-form candidate requirements; it does not require a nested storyPlan. Return exactly the number of alternatives requested in context.requestedAlternativeCount (between 1 and 3); do not add root keys. Each candidate must include a non-empty candidateId, title and text string. When context.characterRecord and context.canonicalCharacterRegistry are supplied, protagonistCharacterId MUST exactly equal context.characterRecord.id and the story must use context.characterRecord.name as its protagonist; do not substitute, rename, or introduce an unregistered named character. Registry validation is independent from source-fidelity review and does not prove visual identity or source fidelity. When returning multiple alternatives, each must have a meaningfully different narrative body — do not reuse the same story text with only a different title. Vary at least one of: action/progression strategy, how the central physical rule causes consequences, escalation structure, visual discovery, or permitted payoff. The user supplied input in mode context.inputMode (IDEA = short concept, DETAILED_STORY = complete narrative). Respect context.storyGenerationMode: for EXPLORE_DIFFERENT_STORIES generate meaningfully different narrative directions from the supplied idea; for IMPROVE_EXISTING_STORY refine the supplied narrative while preserving only the explicitly locked requirements listed in context.lockedRequirements. The locked requirements are: PRESERVE_CORE_PREMISE (keep the central concept), PRESERVE_KEY_EVENTS (keep the major events in order), PRESERVE_ENDING (keep the final outcome). Only the requirements present in context.lockedRequirements are binding; do not silently lock requirements that are absent. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
@@ -1211,7 +1213,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         target_configuration = context.get('targetConfiguration') if isinstance(context.get('targetConfiguration'), dict) else {}
         profile = str(target_configuration.get('contentProfile') or context.get('profile') or 'UNKNOWN').upper()
         system += f' EFFECTIVE CREATIVE PROFILE: {profile}. This profile is supplied by the application and governs the story engine; do not default to ABSURD_PHYSICS.'
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'establishedWinnerMechanisms', 'sourceStoryRecordId', 'mainCharacter', 'mainCharacterId', 'character', 'characterRecord', 'canonicalCharacterRegistry', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'establishedWinnerMechanisms', 'sourceStoryRecordId', 'mainCharacter', 'mainCharacterId', 'character', 'characterRecord', 'canonicalCharacterRegistry', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext', 'visualDirection') if key in context}
     if context.get('storyExperiment'):
         from .story_experiment import contract, SCHEMA
         experiment = contract(text, context)
@@ -1342,7 +1344,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     value = _parse_role_json_response(raw_response, role, provider)
     if role == 'PROMPT_OPTIMIZATION':
         provider.last_role_result = deepcopy(value)
-    if role == 'STORY_REVIEW':
+    if role == 'IDEA':
+        if any(not isinstance(value.get(k), str) or not value[k].strip() for k in ('title','concept','firstStaticFrame','viewerQuestion','discovery','payoff','productionRisk')):
+            raise ValueError('IDEA response requires a complete concept and static opening')
+    elif role == 'STORY_REVIEW':
         required = ('reviewId', 'sourceRequestId', 'sourceFingerprint', 'reviewModel', 'reviewModelVersion', 'reviewPolicyVersion', 'reviewTimestamp', 'reviewStatus', 'diversityAssessment', 'comparativeFindings', 'candidateReviews', 'recommendedCandidateId', 'recommendationReason', 'overallConcerns', 'usageAndCost', 'evidenceLimitations', 'revisionComparison')
         if any(key not in value for key in required):
             raise ValueError('Structured STORY_REVIEW contract is incomplete')
@@ -1811,7 +1816,7 @@ def _isolated_fixture_role(role: str, text: str, context: dict[str, Any], max_co
 
 def preview_story_request(role: str, text: str, context: dict[str, Any]) -> dict[str, Any]:
     """Compile the existing STORY request without constructing a provider."""
-    if role not in {'STORY', 'STORY_REVIEW'}:
+    if role not in {'IDEA', 'STORY', 'STORY_REVIEW'}:
         raise ValueError('Story role required')
     class Captured(Exception):
         pass
@@ -1837,7 +1842,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     story_provider = context.get('storyProvider', 'DEEPSEEK') if role == 'STORY' else None
     if role == 'STORY' and story_provider not in {'DEEPSEEK', 'OPENAI'}:
         raise ValueError('STORY provider must be DEEPSEEK or OPENAI')
-    openai_story = role == 'STORY' and story_provider == 'OPENAI'
+    openai_story = (role == 'STORY' and story_provider == 'OPENAI') or role == 'IDEA'
     if context.get('assessmentOnlyPolicy'):
         if role != 'STORY_REVIEW': raise ValueError('Assessment-only scope cannot generate')
         from .story_assessment import execute
@@ -1863,6 +1868,8 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     model = capability['model'] if adaptive else os.getenv(f'WORKFLOW_{role}_MODEL', '')
     if openai_story:
         model = 'gpt-6-sol'
+    if context.get('storyModel') and context['storyModel'] != model:
+        raise ValueError('Selected model does not match the configured supported model')
     if not model:
         raise ValueError('Explicit server model configuration required; no fallback')
     input_rate = capability['inputUsdPerMillion'] if adaptive else float(os.getenv(f'WORKFLOW_{role}_INPUT_USD_PER_MILLION', 'nan'))
@@ -1892,7 +1899,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         plan_system = generation_system(context)
         plan_payload = request_payload(text, context)
         payload_bytes = len(json.dumps(plan_payload, ensure_ascii=False).encode('utf-8'))
-    output_token_limit = 4000 if role in {'STORY', 'STORY_REVIEW'} or plan_first or reconstruction else 2000
+    output_token_limit = 4000 if role in {'IDEA', 'STORY', 'STORY_REVIEW'} or plan_first or reconstruction else 2000
     if adaptive:
         output_token_limit = context['authorizedOutputTokens']
         if type(output_token_limit) is not int or not 1 <= output_token_limit <= min(4000, capability['maxOutputTokens']):
@@ -1901,7 +1908,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     if plan_first: schema_bytes = len(json.dumps(response_format(options=plan_payload['executionOptions'])).encode('utf-8'))
     if reconstruction: schema_bytes = len(json.dumps(response_format(context,text)).encode('utf-8'))
     system_bytes = len(plan_system.encode('utf-8')) if plan_first or reconstruction else 2000
-    if role in {'STORY', 'STORY_REVIEW'}:
+    if role in {'IDEA', 'STORY', 'STORY_REVIEW'}:
         preview = preview_story_request(role, text, context)
         payload_bytes = preview['payloadBytes']
         system_bytes = preview['systemBytes'] + 1000  # framing/accounting safety margin
@@ -1925,6 +1932,8 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     provider.json_output = True
     try:
         result = perform_role(role, text, context, provider, model)
+        if role == 'IDEA':
+            result['costBasis'] = 'CONFIGURED_CONSERVATIVE_RATES: input $2.50/M, output $10/M; not invoice'
         if role == 'STORY':
             result['provider'] = story_provider.lower()
             result['storyRevisions'] = [
@@ -1934,9 +1943,9 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
                  'sourceIdeaRevision': context.get('sourceIdeaRevision'),
                  'sourceSessionId': context.get('sourceSessionId')}
                 for item in result['result']['alternatives'] if isinstance(item, dict)]
-        if role in {'PROMPT_OPTIMIZATION', 'STORY', 'STORY_REVIEW'}:
+        if role in {'IDEA', 'PROMPT_OPTIMIZATION', 'STORY', 'STORY_REVIEW'}:
             result['actualCostUsd'] = _verified_optimization_cost(result.get('usage'), input_rate, output_rate, max_cost_usd)
-            if role in {'STORY', 'STORY_REVIEW'}:
+            if role in {'IDEA', 'STORY', 'STORY_REVIEW'}:
                 result.update(providerDispatched=True, evidenceType='MACHINE_REVIEW' if role == 'STORY_REVIEW' else 'MODEL_GENERATION',
                               rawProviderResponse=getattr(provider, 'last_raw_response', None),
                               providerRequest=getattr(provider, 'last_request', None),
@@ -1954,7 +1963,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
             if reconstruction:
                 result['result']['improvementMetrics']['providerCostUsd'] = result['actualCostUsd']
     except Exception as error:
-        if role in {'STORY', 'STORY_REVIEW'}:
+        if role in {'IDEA', 'STORY', 'STORY_REVIEW'}:
             response_metadata = getattr(provider, 'last_response_metadata', None) or {}
             raw = getattr(provider, 'last_raw_response', None)
             usage = getattr(provider, 'last_usage', None)

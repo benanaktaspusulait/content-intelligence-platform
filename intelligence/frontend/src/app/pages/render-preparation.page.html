@@ -21,10 +21,10 @@
     <div>
       <span class="eyebrow">CREATIVE STUDIO · STEP 7</span>
       <h1>Render Preparation</h1>
-      <p>Prepare the visual inputs for your approved production prompt.</p>
+      <p>Review the exact first frame, canonical identity, saved motion prompt, model, duration and cost. Only GO_TO_RENDER permits an explicit paid render. Technical completion does not approve a video or publish it.</p>
     </div>
     <span class="status" [class.ready]="canQueue()">{{
-      canQueue() ? 'Rendering authorized' : 'Rendering not authorized'
+      renderDecision()
     }}</span>
   </header>
   @if (contextLoading()) {
@@ -824,6 +824,11 @@
             Review and canonical analysis for this exact contract.
           </p>
         }
+        <section aria-label="Paid render confirmation"><h3>Exact motion prompt and first frame</h3><pre style="white-space:pre-wrap">{{ workflowReview?.boundRequest?.prompt || 'No saved motion prompt available' }}</pre>
+        @for (ref of visualReferencePlan()?.referenceBindings || []; track ref.assetId) {@if(ref.role === 'FIRST_FRAME' && ref.accepted) {<img [src]="imageUrl(ref,true)" alt="Accepted production first frame" style="max-width:240px" />}}
+        <button class="button" type="button" (click)="loadRenderEstimate()">Load render cost estimate — no paid call</button>
+        @if(renderEstimate()){<p>Estimated {{ renderEstimate()?.estimatedCredits }} OpenArt credits · remaining budget {{ renderEstimate()?.remainingCredits }} credits. Configured video budget estimate; the model-specific provider charge may differ.</p>}
+        <label><input type="checkbox" [ngModel]="renderConsent" (ngModelChange)="onRenderConsent($event)" /> I authorize one paid render with this exact image, prompt, model and duration.</label></section>
         <h3>Unresolved warnings and blocking reasons</h3>
         <p>
           {{
@@ -851,7 +856,7 @@
               Resolve Outstanding Requirements
             </button>
           } @else if (canQueue()) {
-            <button class="button primary" [disabled]="queueLoading()" (click)="queueRender()">
+            <button class="button primary" [disabled]="queueLoading() || !renderConsent || !renderEstimate()" (click)="queueRender()">
               {{ queueLoading() ? 'Queueing…' : 'Queue Video Render' }}
             </button>
           } @else {

@@ -22,6 +22,17 @@ from typing import Any
 from ..llm.openai_provider import OpenAIProvider
 
 
+
+SCENE_DIRECTION = (
+    'Pompom Hills visual identity: warm, believable lived-in premium cute 3D cartoon environments. '
+    'Soft rounded shapes, pastel colors and matte clay-plush materials consistent with the existing v2.1 style guide. '
+    'Choose a cozy furnished room, garden, park or village only as appropriate to the source scene; '
+    'preserve its indoor/outdoor location. Natural surfaces, wood, greenery and environmental depth '
+    'where appropriate; warm sunlight, soft cinematic lighting, clear foreground/midground/background. '
+    'No featureless white void, isolated studio backdrop, unrelated decorative clutter or props enlarged '
+    'only by extreme perspective. Keep the story relationship and canonical character phone-readable. '
+)
+
 def _extract_first_beat(prompt_text: str) -> str:
     """Extract the first beat/opening from a production prompt.
     
@@ -96,7 +107,7 @@ def _build_image_prompt(
     """
     # Base prompt
     prompt_parts = [
-        "First frame of a short 3D animated video.",
+        "First frame of a short 3D animated video.", SCENE_DIRECTION,
     ]
     
     if has_reference_image:
@@ -118,7 +129,7 @@ def _build_image_prompt(
         "Clear readable composition with the character and central object clearly visible."
     )
     prompt_parts.append(
-        "The impossible physical relationship must be immediately understandable."
+        "The source scene's central visual relationship must be immediately understandable; do not invent impossible physics."
     )
     
     # Aspect ratio framing
@@ -312,7 +323,7 @@ def generate_idea_exploration(request: dict[str, Any]) -> dict[str, Any]:
     prompt = (
         'EXPLORATORY concept image, not an approved production frame. '
         f'Use the supplied verified reference to preserve the exact canonical identity of {request["characterName"]}. '
-        'Premium cute 3D animation. Vertical 9:16; large phone-readable elements. '
+        + SCENE_DIRECTION + 'Vertical 9:16; large phone-readable elements. '
         'Show this exact SINGLE STATIC opening composition; preserve its objects, scale, placement and visual relationship: '
         + request['sourceFirstFrame']
         + '\nDo not illustrate the ending, invent a different story, add decorations or extra characters. '
