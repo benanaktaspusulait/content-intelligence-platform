@@ -1179,6 +1179,14 @@ interface SavedStoryRecord {
                 Previous validation is stale for this selected text. Save and validate this
                 revision.
               </p>
+              <p
+                *ngIf="canonicalStoryResult?.canonicalRuleEvaluation?.validationStage === 'STORY'"
+                class="context-note"
+              >
+                Narrative evidence is assessed here. Attempt counts, active-time percentages, beat
+                density and execution timing remain pending until a source-backed motion prompt is
+                saved; they are not failures of this STORY.
+              </p>
               <app-canonical-findings
                 [evaluation]="canonicalStoryResult?.canonicalRuleEvaluation"
                 (correct)="focusStoryEditor()"

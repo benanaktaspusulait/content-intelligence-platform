@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 from copy import deepcopy
+from dataclasses import replace
 from typing import Any
 
 from app.assessment.family8_projection import project_family8
@@ -1072,6 +1073,57 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
         profile = request.get("contentProfile", "UNKNOWN")
         apply_profile_rule_exclusions(engine, profile)
         report = engine.evaluate(video_plan_ir)
+        story_stage = request.get("validationStage") == "STORY"
+        narrative_evidence = None
+        if story_stage:
+            from app.quality.contracts import RuleOutcome
+            from app.workflow.story_evidence import extract_story_evidence
+            narrative_evidence = extract_story_evidence(prompt_text, {
+                "mainCharacter": (video_plan_ir.get("characters") or {}).get("primary"),
+                "profile": request.get("contentProfile"),
+            })
+            # A prose STORY has no source-backed timing or shot plan. A zero
+            # parsed beat count is therefore not evidence of zero attempts,
+            # consequences, active time, or major beats. Keep these execution
+            # gates for the motion prompt, without turning their absence into a
+            # creative failure at the STORY stage.
+            execution_only = {"CONCEPT_006", "ATTEMPT_001", "ATTEMPT_002", "CHAR_002", "BEAT_DENSITY_RULE", "TEMPORAL_COMPLEXITY_SPLIT_GATE", "GENERATION_EXECUTABLE_ATTEMPTS"}
+            # These gates make a statement about either a *visible* first
+            # frame or a formally ordered sequence.  Narrative prose can
+            # explicitly describe an opening and still cannot prove either
+            # property.  In particular, an empty timecode parser must not
+            # turn that lack of execution evidence into a creative FAIL.
+            narrative_unknown = {
+                "INSTANT_VISUAL_ABSURDITY_GATE": (
+                    "The STORY can describe its opening anomaly, but only a generated first-frame review can establish whether it is instantly legible visually.",
+                    "Create an eligible first-frame candidate and inspect it visually after the required prompt and approval gates pass.",
+                ),
+                "MINI_STORY_LOCK": (
+                    "The STORY contains narrative action and an ending, but no source-backed timing plan establishes the formal visual sequence required by this gate.",
+                    "Use the STORY narrative evidence for editorial review; create a motion prompt to evaluate formal beat sequencing.",
+                ),
+                "GOAL_VISIBLE_EARLY": (
+                    "The STORY describes an opening action, but its early visual goal cannot be verified without a source-backed motion plan or inspected first frame.",
+                    "Create a motion prompt for execution evidence, or inspect an eligible first frame when visual review becomes available.",
+                ),
+            }
+            if not video_plan_ir.get("beats"):
+                report = replace(report, evaluations=tuple(
+                    replace(evaluation,
+                        outcome=RuleOutcome.NOT_APPLICABLE,
+                        message="Not evaluated at STORY stage: this rule requires a source-backed, timecoded motion plan. Create or save the motion prompt to evaluate execution timing.",
+                        details={**dict(evaluation.details or {}), "analysisStage": "STORY_NARRATIVE", "requiredEvidence": "TIMECODED_MOTION_PLAN", "nextAction": "Approve the STORY only when its creative evidence is satisfactory; then create a motion prompt for execution validation."}
+                    ) if evaluation.rule_id in execution_only else evaluation
+                    for evaluation in report.evaluations
+                ))
+                report = replace(report, evaluations=tuple(
+                    replace(evaluation,
+                        outcome=RuleOutcome.UNKNOWN,
+                        message=narrative_unknown[evaluation.rule_id][0],
+                        details={**dict(evaluation.details or {}), "analysisStage": "STORY_NARRATIVE", "requiredEvidence": "MOTION_PLAN_OR_VISUAL_REVIEW", "nextAction": narrative_unknown[evaluation.rule_id][1]}
+                    ) if evaluation.rule_id in narrative_unknown else evaluation
+                    for evaluation in report.evaluations
+                ))
 
         # Categorize results
         passed = []
@@ -1129,6 +1181,8 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
                 "producibility": video_plan_ir.get("producibility"),
             },
             "storyDensityEvidence": density.__dict__ if hasattr(density, '__dict__') else {},
+            "storyNarrativeEvidence": narrative_evidence,
+            "validationStage": "STORY" if story_stage else "VIDEO_PROMPT",
         }
     except Exception as exc:
         return {

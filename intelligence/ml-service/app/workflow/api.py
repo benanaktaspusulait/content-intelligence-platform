@@ -53,6 +53,7 @@ class ReviewRequest(BaseModel):
     canonicalValidationId: int | None = None
     authorizationEvidence: dict[str, Any] = Field(default_factory=dict)
     acceptedStartFrame: bool = False
+    validationStage: Literal["STORY", "VIDEO_PROMPT"] = "VIDEO_PROMPT"
 
 
 def capabilities() -> dict[str, Any]:

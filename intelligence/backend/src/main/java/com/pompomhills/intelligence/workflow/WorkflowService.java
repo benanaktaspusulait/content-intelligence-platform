@@ -1766,6 +1766,7 @@ public class WorkflowService {
     options.put("plannedEditedDuration",options.get("desiredDuration"));
     options.put("generator",target.getOrDefault("selectedGenerator",context.getOrDefault("targetGenerator","SEEDANCE_2_5")));
     options.put("settings",Map.of("aspectRatio",target.getOrDefault("aspectRatio",context.getOrDefault("aspectRatio","9:16")),"mode","image2video","resolution","480p"));
+    options.put("validationStage", "STORY");
     return runReview(new ReviewRequest(null,null,text,"story:"+id+"/"+candidate+"/"+storyFingerprint(text.trim()),options),true);
   }
 
