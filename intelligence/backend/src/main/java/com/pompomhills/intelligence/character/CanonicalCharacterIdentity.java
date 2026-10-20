@@ -2,6 +2,7 @@ package com.pompomhills.intelligence.character;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 
 /** Resolves a selected protagonist against the canonical character registry. */
 public final class CanonicalCharacterIdentity {
+  private static final Set<String> CHARACTER_DETERMINERS = Set.of("the", "a", "an");
   private static final Pattern NAMED_SPECIES =
       Pattern.compile(
           "(?u)\\b([\\p{Lu}][\\p{L}’'-]{1,40})\\s*,?\\s+(?:the\\s+)?(?i:rabbit|bunny|bear|cat|dog|fox|hedgehog|crocodile)\\b");
@@ -66,6 +68,7 @@ public final class CanonicalCharacterIdentity {
     Matcher declared = NAMED_SPECIES.matcher(text);
     while (declared.find()) {
       String name = declared.group(1);
+      if (CHARACTER_DETERMINERS.contains(name.toLowerCase(java.util.Locale.ROOT))) continue;
       if (!known.contains(name.toLowerCase(java.util.Locale.ROOT)))
         throw new IllegalArgumentException("Unregistered named protagonist or character in story: " + name);
     }

@@ -1864,6 +1864,19 @@ public class WorkflowService {
   public Map<String, Object> saveStudioSession(Map<String, Object> request) {
     String sessionId = String.valueOf(request.getOrDefault("sessionId", "")).trim();
     if (sessionId.isBlank()) sessionId = UUID.randomUUID().toString();
+    String storyId = String.valueOf(request.getOrDefault("storyRecordId", "")).trim();
+    if (!storyId.isBlank()) {
+      UUID storyUuid;
+      try { storyUuid = UUID.fromString(storyId); }
+      catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Creative Studio session requires a valid saved STORY ID"); }
+      var story = getByKind(storyUuid, "CREATIVE_ROLE");
+      if (!"STORY".equals(story.get("role")))
+        throw new IllegalArgumentException("Creative Studio session must be bound to a saved STORY");
+      Boolean reusedForAnotherStory = jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'sessionId'=:session AND COALESCE(payload->>'storyRecordId','')<>:story)")
+          .param("session", sessionId).param("story", storyId).query(Boolean.class).single();
+      if (Boolean.TRUE.equals(reusedForAnotherStory))
+        throw new IllegalArgumentException("Creative Studio session ID is already bound to another STORY; reopen the project before saving");
+    }
     var payload = new LinkedHashMap<String, Object>(request);
     payload.put("sessionId", sessionId);
     payload.put("updatedAt", java.time.Instant.now().toString());
