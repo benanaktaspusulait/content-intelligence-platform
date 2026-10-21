@@ -2040,9 +2040,29 @@ interface SavedStoryRecord {
                 {{ buildAttemptState === 'REUSED_SAVED_RESULT' ? 'yes' : 'no' }} · Persisted:
                 {{ buildAttemptDiagnostics.persisted ? 'yes' : 'no' }}</small
               >
+              <small *ngIf="buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE'"
+                >The paid response is open as an editable draft. Its original contract rejection is
+                preserved; add only source-supported missing execution details before saving a new
+                prompt version.</small
+              >
+              <small
+                *ngIf="buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE' && builderResult?.productionPlan?.recovery?.storyFidelity?.status === 'STORY_FIDELITY_FAIL'"
+                >STORY_FIDELITY_FAIL: {{ builderResult.productionPlan.recovery.storyFidelity.detail }}</small
+              >
+              <ul
+                *ngIf="buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE' && builderResult?.productionPlan?.recovery?.missingEvidence?.length"
+                class="recovery-missing-evidence"
+              >
+                <li *ngFor="let missing of builderResult.productionPlan.recovery.missingEvidence">
+                  MISSING_EVIDENCE: {{ missing }}
+                </li>
+              </ul>
+              <small *ngIf="buildAttemptDiagnostics?.error"
+                >Original build result: {{ buildAttemptDiagnostics.error }}</small
+              >
             </div>
             <label class="field generator-field"
-              >Target generator<select [(ngModel)]="targetGenerator" (ngModelChange)="persist()">
+              >Target generator<select [(ngModel)]="targetGenerator" (ngModelChange)="onPromptTargetGeneratorChange()">
                 <option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option>
                 <option value="SEEDANCE_2_0">Seedance 2.0</option>
                 <option value="SEEDANCE_2_5">Seedance 2.5</option></select
@@ -2616,7 +2636,9 @@ interface SavedStoryRecord {
                 [disabled]="
                   busy ||
                   draftPrompt.trim().length < 20 ||
-                  (builderInputMismatch && !builderMigration)
+                  (builderInputMismatch &&
+                    !builderMigration &&
+                    buildAttemptState !== 'RECOVERED_REJECTED_PROVIDER_RESPONSE')
                 "
                 (click)="savePrompt()"
               >
@@ -6629,7 +6651,7 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
       const failed = (rows || []).find((row) => {
         const context = row.sourceRequest?.context || row.payload?.sourceRequest?.context || {};
         return (
-          row.attemptState === 'FAILED' &&
+          (row.attemptState === 'FAILED' || row.attemptState === 'PROVIDER_RESULT_REJECTED') &&
           String(context.sourceStoryRecordId || '') === storyId &&
           String(context.storyRevisionId || '') === revision
         );
@@ -6660,14 +6682,88 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
         this.persistLocal();
         this.changeDetector.markForCheck();
       } else if (!match && failed && !this.builderRecordId && !this.draftPrompt) {
-        this.buildAttemptState = 'PREVIOUS_ATTEMPT_FAILED';
-        this.buildAttemptDiagnostics = failed.attemptDiagnostics || null;
-        this.technicalError = String(failed.attemptDiagnostics?.error || '');
-        this.error =
-          'A previous prompt build failed. The saved story is preserved; retry requires explicit authorization.';
+        const recovered = this.recoverRejectedBuildPrompt(failed);
+        if (recovered) {
+          const recoveredTarget =
+            failed.sourceRequest?.context?.targetConfiguration ||
+            failed.payload?.sourceRequest?.context?.targetConfiguration ||
+            {};
+          if (recoveredTarget.duration != null) this.duration = Number(recoveredTarget.duration);
+          if (recoveredTarget.aspectRatio) this.aspectRatio = String(recoveredTarget.aspectRatio);
+          if (recoveredTarget.selectedGenerator)
+            this.targetGenerator = String(recoveredTarget.selectedGenerator);
+          if (recoveredTarget.contentProfile) this.profile = String(recoveredTarget.contentProfile);
+          this.builderRecordId = String(failed.recordId || failed.id);
+          this.builderResult = recovered.result;
+          this.draftPrompt = recovered.prompt;
+          this.savedPromptBaseline = recovered.prompt;
+          this.savedPromptTargetSnapshot = this.currentPromptTarget();
+          this.buildAttemptState = 'RECOVERED_REJECTED_PROVIDER_RESPONSE';
+          this.buildAttemptDiagnostics = {
+            ...(failed.attemptDiagnostics || {}),
+            calls: failed.calls || 1,
+            persisted: true,
+            recoveredFrom: String(failed.recordId || failed.id),
+            providerCallsThisOperation: 0,
+          };
+          this.error = '';
+          this.persistLocal();
+        } else {
+          this.buildAttemptState = 'PREVIOUS_ATTEMPT_FAILED';
+          this.buildAttemptDiagnostics = failed.attemptDiagnostics || null;
+          this.technicalError = String(failed.attemptDiagnostics?.error || '');
+          this.error =
+            'A previous prompt build failed. The saved story is preserved; retry requires explicit authorization.';
+        }
         this.changeDetector.markForCheck();
       }
     }
+  }
+  private recoverRejectedBuildPrompt(record: any) {
+    const raw = String(record?.rejectedProviderResponse || record?.payload?.rejectedProviderResponse || '');
+    if (!raw.trim()) return null;
+    try {
+      const response = JSON.parse(raw);
+      const prompt = response?.prompt;
+      if (!prompt || typeof prompt !== 'object' || Array.isArray(prompt)) return null;
+      const sections = Object.entries(prompt).map(([heading, value]) =>
+        `${heading}\n${typeof value === 'string' ? value : JSON.stringify(value, null, 2)}`,
+      );
+      const text = sections.join('\n\n').trim();
+      if (!text) return null;
+      const containsUnsupportedMirror = /\bmirror\b/i.test(JSON.stringify(prompt));
+      return {
+        prompt: text,
+        result: {
+          prompt: text,
+          productionPlan: {
+            ...(response?.productionPlan || {}),
+            recovery: {
+              status: 'RECOVERED_REJECTED_PROVIDER_RESPONSE',
+              source: 'SAVED_PROVIDER_RESPONSE',
+              originalRecordId: String(record.recordId || record.id),
+              missingEvidence: [
+                'Explicit camera direction was not recovered as a contract field.',
+                'First-frame and object-position continuity remain unverified.',
+              ],
+              storyFidelity: containsUnsupportedMirror
+                ? {
+                    status: 'STORY_FIDELITY_FAIL',
+                    detail:
+                      'The saved provider response introduces a mirror that is absent from the approved STORY. Remove it in this draft before saving if it is unsupported.',
+                  }
+                : { status: 'UNKNOWN', detail: 'No automatic story-fidelity conclusion was recovered.' },
+            },
+          },
+        },
+      };
+    } catch {
+      return null;
+    }
+  }
+  onPromptTargetGeneratorChange() {
+    this.persist();
+    this.loadSavedBuilder();
   }
   storyCandidates(story: SavedStoryRecord): any[] {
     return story.result?.alternatives || story.result?.candidates || story.result?.stories || [];

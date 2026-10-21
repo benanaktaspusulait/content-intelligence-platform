@@ -1097,6 +1097,7 @@ public class WorkflowService {
       throw new IllegalArgumentException("Only a saved BUILD_PROMPT record can be migrated");
     var savedResult = map(source.get("result"));
     String prompt = String.valueOf(savedResult.getOrDefault("prompt", ""));
+    if (prompt.isBlank()) prompt = recoveredRejectedPromptText(source);
     if (prompt.isBlank()) throw new IllegalArgumentException("The saved prompt is empty; it cannot be revalidated");
     var sourceRequest = map(source.get("sourceRequest"));
     var context = map(sourceRequest.get("context"));
@@ -1241,6 +1242,27 @@ public class WorkflowService {
     migration.put("providerCalls", 0);
     migration.put("recordId", save("PRODUCTION_SPEC_MIGRATION", fingerprint, migration));
     return migration;
+  }
+
+  /** Reads, but never changes, the original provider response retained on a rejected BUILD_PROMPT. */
+  private String recoveredRejectedPromptText(Map<String, Object> source) {
+    Object raw = source.get("rejectedProviderResponse");
+    if (raw == null || String.valueOf(raw).isBlank()) return "";
+    try {
+      var response = read(String.valueOf(raw));
+      var sections = map(response.get("prompt"));
+      if (sections.isEmpty()) return "";
+      var text = new StringBuilder();
+      for (var section : sections.entrySet()) {
+        if (text.length() > 0) text.append("\n\n");
+        text.append(section.getKey()).append("\n");
+        Object value = section.getValue();
+        text.append(value instanceof String ? value : json.writeValueAsString(value));
+      }
+      return text.toString().trim();
+    } catch (Exception ignored) {
+      return "";
+    }
   }
 
   private Map<String, Object> findExactStoryApproval(UUID storyId, String candidateId, String revisionId, String candidateText) {
