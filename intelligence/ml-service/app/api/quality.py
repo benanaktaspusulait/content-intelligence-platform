@@ -145,6 +145,8 @@ class PreRenderDimensionResponse(BaseModel):
 
 
 class PreRenderAssessmentResponse(BaseModel):
+    story_premise_engine: dict[str, Any] | None = Field(default=None, exclude_if=lambda value: value is None)
+    short_form_engine: dict[str, Any] | None = Field(default=None, exclude_if=lambda value: value is None)
     canonicalProfileAdmission: dict[str, Any] | None = Field(default=None, exclude_if=lambda value: value is None)
     name: str
     general_producibility: dict[str, Any] | None = None
@@ -366,8 +368,9 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
         ) from error
 
     # The chosen immutable ruleset owns parser semantics; old versions stay reproducible.
-    if engine.ruleset.get("attemptEvidencePolicy") == "ACTOR_SOURCE_BOUND_V2":
-        parse_result = parse_prompt(request.prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2", motion_evidence_policy=engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1")))
+    attempt_evidence_policy = engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1")
+    if attempt_evidence_policy in {"ACTOR_SOURCE_BOUND_V2", "ACTOR_SOURCE_BOUND_V3"}:
+        parse_result = parse_prompt(request.prompt, ParserConfig(attempt_evidence_policy=attempt_evidence_policy, motion_evidence_policy=engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1")))
         ir = parse_result.video_plan_ir
         if request.visual_evidence is not None:
             ir["visualEvidence"] = request.visual_evidence
@@ -396,7 +399,8 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
     enhanced = scorer.create_enhanced_report(report, ir, parse_result.metadata)
 
     # Convert to response model
-    response = convert_quality_report(enhanced, ruleset_version, request.evaluation_stage, ir)
+    response = convert_quality_report(enhanced, ruleset_version, request.evaluation_stage, ir,
+                                      source_text=request.prompt, story_context=request.workflow_context)
     if projection is not None:
         response.pre_render_assessment.canonicalProfileAdmission = projection
     return response
@@ -426,8 +430,9 @@ async def compare_versions(request: CompareVersionsRequest) -> RegressionReportR
             detail="Active ruleset is not available",
         ) from error
 
-    if engine.ruleset.get("attemptEvidencePolicy") == "ACTOR_SOURCE_BOUND_V2":
-        config = ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2", motion_evidence_policy=engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1"))
+    attempt_evidence_policy = engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1")
+    if attempt_evidence_policy in {"ACTOR_SOURCE_BOUND_V2", "ACTOR_SOURCE_BOUND_V3"}:
+        config = ParserConfig(attempt_evidence_policy=attempt_evidence_policy, motion_evidence_policy=engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1"))
         ir_before = parse_prompt(request.prompt_before, config).video_plan_ir
         ir_after = parse_prompt(request.prompt_after, config).video_plan_ir
     report_before = engine.evaluate(ir_before)
@@ -488,6 +493,7 @@ async def auto_fix_prompt(request: AutoFixRequest) -> AutoFixResultResponse:
         result.final_enhanced_report,
         ruleset_version,
         video_plan_ir=final_parse.video_plan_ir,
+        source_text=result.final_prompt,
     )
 
     applied_fixes_response = [
@@ -612,6 +618,7 @@ def _as_optional_float(value: Any) -> float | None:
 def convert_quality_report(
     enhanced: EnhancedQualityReport, ruleset_version: str, evaluation_stage: str = "PRE_RENDER",
     video_plan_ir: dict[str, Any] | None = None,
+    *, source_text: str = "", story_context: dict[str, Any] | None = None,
 ) -> QualityReportResponse:
     """Convert an :class:`EnhancedQualityReport` to the API response model.
 
@@ -687,7 +694,8 @@ def convert_quality_report(
 
     semantic_provider, semantic_model_version = get_provider_identity()
     plan_ir = video_plan_ir or {}
-    assessment = build_pre_render_assessment(plan_ir, enhanced.parser_metadata, report, ruleset_version)
+    assessment = build_pre_render_assessment(plan_ir, enhanced.parser_metadata, report, ruleset_version,
+                                             source_text=source_text, story_context=story_context)
     canonical_confidence = (
         assessment.get("evidence_completeness", {})
         .get("canonical_evidence", {})

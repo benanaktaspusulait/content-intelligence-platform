@@ -184,6 +184,177 @@ interface SavedStoryRecord {
         <ng-container [ngSwitch]="stage">
           <section *ngSwitchCase="'IDEA'" class="stage-panel">
             <span class="stage-kicker">1 · IDEA</span>
+            <section
+              *ngIf="ideaCandidates.length || ideaBatches.length"
+              aria-label="Saved IDEA candidates"
+              class="stage-panel"
+            >
+              <h2>Compare IDEA candidates</h2>
+              <p *ngIf="noIdeaApproved" role="status">
+                {{ ideaOverallStatus }} — no eligible IDEA is selected. Missing evaluation is not creative rejection.
+              </p>
+              <p>
+                Each concept retains its original receipt. Selection stays in IDEA; STORY requires a
+                separate later action.
+              </p>
+              <article *ngFor="let batch of ideaBatches">
+                <small
+                  >Request {{ batch.requestId }} · {{ batch.status }} ·
+                  {{ batch.candidateCount }} saved</small
+                >
+                <button
+                  *ngIf="batch.recoverable"
+                  type="button"
+                  [disabled]="ideaCandidateBusy"
+                  (click)="recoverIdeaBatch(batch)"
+                >
+                  Recover saved response (no provider call)
+                </button>
+                <p *ngIf="batch.error">{{ batch.error }}</p>
+              </article>
+              <section aria-label="Independent IDEA semantic review" class="stage-panel">
+                <h3>Independent semantic creative review</h3>
+                <p>Review the three saved sources in one request. No new content is generated. Text judgments do not verify images, rendered motion or audience performance.</p>
+                <button type="button" (click)="prepareIdeaReview()" [disabled]="ideaCandidates.length !== 3 || ideaReviewBusy">Review 3 Existing IDEAs</button>
+                <p *ngIf="ideaReviewError" role="alert">{{ ideaReviewError }}</p>
+                <p *ngIf="ideaReviewResult" role="status">{{ ideaReviewResult.status }} · receipt {{ ideaReviewResult.receiptId }}</p>
+                <div *ngIf="ideaReviewQuote as quote">
+                  <p>Reviewer: {{ quote.provider }} · {{ quote.model }} · {{ quote.policyVersion }}.<br>
+                    Maximum one provider call, no retries. Estimated upper bound: {{ quote.estimatedUpperBoundUsd | number:'1.4-6' }} USD.<br>{{ quote.estimateBasis }}</p>
+                  <strong *ngIf="quote.fixture">ISOLATED TEST FIXTURE — zero provider calls; synthetic results cannot approve production candidates.</strong>
+                  <p *ngFor="let source of quote.sources">{{ source.candidateId }} · source SHA256 {{ source.sourcePayloadSha256 }} · original evaluation {{ source.originalEvaluationRevision }}</p>
+                  <label>Maximum review budget (USD)
+                    <input type="number" min="0" step="0.01" aria-label="Maximum IDEA review budget USD" [(ngModel)]="ideaReviewBudget" (ngModelChange)="ideaReviewConsent = false">
+                  </label>
+                  <label><input type="checkbox" aria-label="Authorize one IDEA semantic review" [(ngModel)]="ideaReviewConsent">
+                    {{ quote.fixture ? 'Simulate owner authorization in this isolated test environment' : 'I authorize exactly one semantic review of these sources with the disclosed reviewer and my maximum budget' }}
+                  </label>
+                  <button type="button" (click)="runIdeaReview()" [disabled]="ideaReviewBusy || !ideaReviewConsent || ideaReviewBudget <= 0 || ideaReviewBudget < quote.estimatedUpperBoundUsd || (!quote.configured && !quote.fixture)">
+                    {{ quote.fixture ? 'Run isolated review fixture' : 'Run authorized semantic review' }}
+                  </button>
+                </div>
+                <details *ngIf="ideaReviewHistory.length"><summary>Semantic review receipt and result history</summary><pre>{{ ideaReviewHistory | json }}</pre></details>
+              </section>
+              <div class="story-candidates">
+                <article
+                  *ngFor="let candidate of ideaCandidates"
+                  class="stage-panel"
+                  [attr.data-idea-candidate]="candidate.candidateId"
+                >
+                  <h3>{{ candidate.payload.title }}</h3>
+                  <strong
+                    >Decision: {{ candidate.state }} · Evaluation:
+                    {{ candidate.evaluation?.status || 'NOT_EVALUATED' }}</strong
+                  >
+                  <dl>
+                    <dt>Concept</dt>
+                    <dd>{{ candidate.payload.concept }}</dd>
+                    <dt>Everyday goal</dt>
+                    <dd>
+                      {{
+                        candidate.payload.everydayGoal || 'UNKNOWN — explicit goal evidence absent'
+                      }}
+                    </dd>
+                    <dt>Frame-zero problem</dt>
+                    <dd>
+                      {{ candidate.payload.frameZeroProblem || candidate.payload.firstStaticFrame }}
+                    </dd>
+                    <dt>Impossible rule</dt>
+                    <dd>
+                      {{
+                        candidate.payload.impossibleRule ||
+                          'UNKNOWN — explicit rule evidence absent'
+                      }}
+                    </dd>
+                    <dt>Proposed progression</dt>
+                    <dd>
+                      {{ candidate.payload.proposedProgression || candidate.payload.discovery }}
+                    </dd>
+                    <dt>Final payoff</dt>
+                    <dd>{{ candidate.payload.payoff }}</dd>
+                  </dl>
+                  <details>
+                    <summary>Inspect evaluation and evidence gaps</summary>
+                    <p *ngIf="candidate.evaluation?.summary as summary">
+                      Mandatory creative checks: {{ summary.mandatoryChecks }} ·
+                      Creative PASS: {{ summary.creativeOutcomes?.PASS }} · FAIL: {{ summary.creativeOutcomes?.FAIL }} ·
+                      UNKNOWN: {{ summary.creativeOutcomes?.UNKNOWN }} · N/A: {{ summary.creativeOutcomes?.NOT_APPLICABLE }}<br>
+                      Exact source bindings verified: {{ summary.sourceBindingPasses }}/{{ summary.sourceBindingChecksExecuted }} (source presence only; not creative PASS).<br>
+                      Existing evaluator invocations: {{ summary.canonicalEvaluatorsInvoked }} · completed diagnostics: {{ summary.canonicalEvaluatorsCompleted }} ·
+                      unable to complete: {{ summary.canonicalChecksUnableToComplete }}.<br>
+                      Source IDEA revision {{ candidate.evaluation.sourceIdeaRevision }} · Evaluation revision {{ candidate.evaluation.revision }} ·
+                      {{ candidate.evaluation.policyVersion }} · canonical rules {{ candidate.evaluation.canonicalRulesetVersion }}.
+                    </p>
+                    <article *ngFor="let gate of candidate.evaluation?.gates" class="idea-rule-evidence" [attr.data-idea-gate]="gate.gate">
+                      <strong>{{ gate.gate }} · {{ gate.status === 'NOT_APPLICABLE' ? 'N/A' : gate.status }}</strong>
+                      <p>{{ gate.reason }}</p>
+                      <small>{{ gate.policy }} · {{ gate.category }} · {{ gate.reasonCode }}<br>
+                        Evaluator {{ gate.evaluator?.registered ? 'registered' : 'not registered' }} ·
+                        {{ gate.evaluator?.invoked ? 'invoked' : 'not invoked' }} ·
+                        {{ gate.evaluator?.completed ? 'diagnostic completed' : 'judgment not completed' }} · Provider calls: {{ gate.evaluator?.providerCalls || 0 }}</small>
+                      <p *ngIf="gate.sourceCheck">Source binding: {{ gate.sourceCheck.status }} — {{ gate.sourceCheck.reason }}</p>
+                      <p *ngIf="!gate.sourceSpans?.length">{{ gate.evidence || 'No source evidence' }}</p>
+                      <blockquote *ngFor="let span of gate.sourceSpans">
+                        <small>{{ span.path }} [{{ span.start }}, {{ span.end }}) · {{ span.offsetUnit }}</small><br>{{ span.quote }}
+                      </blockquote>
+                      <p *ngIf="gate.applicability">{{ gate.applicability.stage }} · {{ gate.applicability.profile }} · {{ gate.applicability.status }}.
+                        Canonical contract: {{ gate.applicability.declaredRuleStage }}.</p>
+                      <p *ngFor="let requirement of gate.laterStageEvidence">Later-stage evidence: {{ requirement }}</p>
+                      <p *ngIf="gate.visualEvidenceRequirement">Visual evidence: {{ gate.visualEvidenceRequirement }}</p>
+                      <details *ngIf="gate.concerns?.length"><summary>Heuristic concerns — not confirmed creative failures</summary>
+                        <p *ngFor="let concern of gate.concerns">{{ concern.kind }} · {{ concern.riskTag }} · {{ concern.reason }}</p>
+                      </details>
+                    </article>
+                    <p>{{ candidate.evaluation?.smallestSupportedNextStep }}</p>
+                    <details><summary>Original immutable IDEA source</summary><pre>{{ candidate.payload | json }}</pre></details>
+                  </details>
+                  <details *ngIf="candidate.semanticReview || candidate.fixtureSemanticReview">
+                    <summary>Independent semantic findings{{ candidate.fixtureSemanticReview && !candidate.semanticReview ? ' — ISOLATED FIXTURE ONLY' : '' }}</summary>
+                    <ng-container *ngIf="candidate.semanticReview || candidate.fixtureSemanticReview as review">
+                      <p>{{ review.semanticStatus }} · reviewer {{ review.reviewerModel }} · {{ review.reviewerVersion }} · receipt {{ review.receiptId }} · original evaluation {{ review.originalEvaluationRevision }}</p>
+                      <strong *ngIf="review.fixture">SYNTHETIC TEST FINDINGS — not production judgments or approval</strong>
+                      <strong *ngIf="review.stale">STALE SOURCE — this review is not applicable</strong>
+                      <p>Text-supported judgments only. Actual visual legibility, silhouette comparison and motion execution remain unverified. Decision: {{ candidate.state }}. Eligible: {{ eligibleIdeaCandidate(candidate) }}.</p>
+                      <article *ngFor="let judgment of review.judgments" [attr.data-idea-semantic-dimension]="judgment.dimension">
+                        <strong>{{ judgment.dimension }} · {{ judgment.ruleId }} · {{ judgment.verdict }}</strong>
+                        <p>{{ judgment.reason }} · Confidence: {{ judgment.confidence }}</p>
+                        <blockquote *ngFor="let span of judgment.sourceSpans"><small>{{ span.path }} [{{ span.start }}, {{ span.end }})</small><br>{{ span.quote }}</blockquote>
+                      </article>
+                    </ng-container>
+                  </details>
+                  <small
+                    >Candidate {{ candidate.candidateId }} · index {{ candidate.candidateIndex }} ·
+                    draft {{ candidate.draftId }} · revision {{ candidate.sourceIdeaRevision }} ·
+                    request {{ candidate.requestId }} · provider request
+                    {{ candidate.providerRequestId }} · receipt {{ candidate.receiptId }}</small
+                  >
+                  <div class="stage-actions">
+                    <button
+                      type="button"
+                      [disabled]="ideaCandidateBusy"
+                      (click)="evaluateIdeaCandidate(candidate)"
+                    >
+                      Evaluate IDEA
+                    </button>
+                    <button
+                      type="button"
+                      [disabled]="ideaCandidateBusy || !eligibleIdeaCandidate(candidate)"
+                      (click)="decideIdeaCandidate(candidate, 'SELECTED')"
+                    >
+                      {{ candidate.state === 'SELECTED' ? 'Selected IDEA' : 'Select IDEA' }}
+                    </button>
+                    <button
+                      type="button"
+                      [disabled]="ideaCandidateBusy || candidate.state === 'REJECTED'"
+                      (click)="decideIdeaCandidate(candidate, 'REJECTED')"
+                    >
+                      Reject IDEA
+                    </button>
+                  </div>
+                </article>
+              </div>
+            </section>
+
             <h2>What would you like to create?</h2>
             <details>
               <summary>Generate one idea</summary>
@@ -714,16 +885,26 @@ interface SavedStoryRecord {
                       <option>1:1</option>
                     </select></label
                   ><label class="field"
-                    >Story Provider<select
-                      [(ngModel)]="storyProvider"
-                      (ngModelChange)="cancelStoryGeneration(); persist()"
+                    >{{ inputMode === 'IDEA' ? 'IDEA Provider' : 'Story Provider'
+                    }}<select
+                      [ngModel]="generationProvider"
+                      [disabled]="inputMode === 'IDEA'"
+                      (ngModelChange)="storyProvider = $event; cancelStoryGeneration(); persist()"
                     >
                       <option value="DEEPSEEK">DeepSeek</option>
                       <option value="OPENAI">OpenAI · GPT-6 Sol</option>
                     </select></label
                   ><label *ngIf="inputMode === 'IDEA' || generationDialogOpen" class="field"
-                    ><span>Story Candidate Count</span
-                    ><select [(ngModel)]="candidateCount" (ngModelChange)="persist()">
+                    ><span>{{
+                      inputMode === 'IDEA'
+                        ? 'IDEA Candidate Count (exactly 3)'
+                        : 'Story Candidate Count'
+                    }}</span
+                    ><select
+                      [ngModel]="inputMode === 'IDEA' ? 3 : candidateCount"
+                      [disabled]="inputMode === 'IDEA'"
+                      (ngModelChange)="candidateCount = $event; persist()"
+                    >
                       <option [ngValue]="1">1</option>
                       <option [ngValue]="2">2</option>
                       <option [ngValue]="3">3</option>
@@ -854,9 +1035,9 @@ interface SavedStoryRecord {
                     (click)="prepareStoryGeneration()"
                   >
                     {{
-                      storyMode === 'IMPROVE_EXISTING_STORY'
+                      inputMode !== 'IDEA' && storyMode === 'IMPROVE_EXISTING_STORY'
                         ? 'Refine Story →'
-                        : 'Generate Story Alternatives →'
+                        : 'Generate 3 IDEA Candidates →'
                     }}</button
                   ><button
                     *ngIf="inputMode === 'DETAILED_STORY' && !generationDialogOpen"
@@ -1092,10 +1273,12 @@ interface SavedStoryRecord {
                 <section
                   *ngIf="generationDialogOpen"
                   class="generation-authorization"
-                  aria-label="Authorize one story generation"
+                  aria-label="Authorize one creative generation"
                 >
                   <div class="provider-note">
-                    <strong>STORY · {{ storyProvider }}</strong
+                    <strong
+                      >{{ inputMode === 'IDEA' ? 'IDEA' : 'STORY' }} ·
+                      {{ generationProvider }}</strong
                     ><span
                       >{{ storyModel || 'Model unavailable' }} ·
                       {{ storyReady ? 'Connection configured' : 'Unavailable' }}</span
@@ -1109,28 +1292,33 @@ interface SavedStoryRecord {
                     {{
                       inputMode === 'DETAILED_STORY'
                         ? 'Optionally refine your story in one paid request. Your original story remains unchanged.'
-                        : 'One paid request proposes story alternatives. Approval is a separate step.'
+                        : 'One OpenAI IDEA request returns exactly 3 concepts. Each is saved and evaluated independently. No automatic retry.'
                     }}
                   </p>
                   <p>
                     Final request cost is checked by the server against your ceiling. No call is
                     made until you authorize and confirm.
                   </p>
-                  <div class="guidance" *ngIf="budget <= 0 || !storyConsent || !storyReady">
+                  <div class="guidance" *ngIf="budget <= 0 || !generationConsent || !storyReady">
                     <span *ngIf="budget <= 0"
                       >Enter an authorised budget greater than $0 to enable this call.</span
-                    ><span *ngIf="budget > 0 && !storyConsent"
-                      >Confirm this single story-generation request.</span
+                    ><span *ngIf="budget > 0 && !generationConsent"
+                      >Confirm this single generation request.</span
                     ><span *ngIf="!storyReady"
-                      >The selected provider is unavailable for story generation.</span
+                      >The selected provider is unavailable for this creative role.</span
                     >
                   </div>
                   <div class="stage-actions">
                     <label class="consent"
-                      ><input type="checkbox" [(ngModel)]="storyConsent" />
+                      ><input type="checkbox" [(ngModel)]="generationConsent" />
                       <span
-                        >I authorise one {{ storyProvider }} story-generation request within this
-                        budget.</span
+                        >I authorise one {{ generationProvider }}
+                        {{
+                          inputMode === 'IDEA'
+                            ? 'IDEA-generation request for exactly 3 candidates'
+                            : 'story-generation request'
+                        }}
+                        within this budget.</span
                       ></label
                     ><label class="budget"
                       >Maximum authorised spend (USD)<input
@@ -1142,7 +1330,7 @@ interface SavedStoryRecord {
                       class="button button--primary"
                       type="button"
                       [disabled]="
-                        busy || !idea.trim() || !storyConsent || budget <= 0 || !storyReady
+                        busy || !idea.trim() || !generationConsent || budget <= 0 || !storyReady
                       "
                       (click)="requestStories()"
                     >
@@ -2046,11 +2234,19 @@ interface SavedStoryRecord {
                 prompt version.</small
               >
               <small
-                *ngIf="buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE' && builderResult?.productionPlan?.recovery?.storyFidelity?.status === 'STORY_FIDELITY_FAIL'"
-                >STORY_FIDELITY_FAIL: {{ builderResult.productionPlan.recovery.storyFidelity.detail }}</small
+                *ngIf="
+                  buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE' &&
+                  builderResult?.productionPlan?.recovery?.storyFidelity?.status ===
+                    'STORY_FIDELITY_FAIL'
+                "
+                >STORY_FIDELITY_FAIL:
+                {{ builderResult.productionPlan.recovery.storyFidelity.detail }}</small
               >
               <ul
-                *ngIf="buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE' && builderResult?.productionPlan?.recovery?.missingEvidence?.length"
+                *ngIf="
+                  buildAttemptState === 'RECOVERED_REJECTED_PROVIDER_RESPONSE' &&
+                  builderResult?.productionPlan?.recovery?.missingEvidence?.length
+                "
                 class="recovery-missing-evidence"
               >
                 <li *ngFor="let missing of builderResult.productionPlan.recovery.missingEvidence">
@@ -2062,7 +2258,10 @@ interface SavedStoryRecord {
               >
             </div>
             <label class="field generator-field"
-              >Target generator<select [(ngModel)]="targetGenerator" (ngModelChange)="onPromptTargetGeneratorChange()">
+              >Target generator<select
+                [(ngModel)]="targetGenerator"
+                (ngModelChange)="onPromptTargetGeneratorChange()"
+              >
                 <option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option>
                 <option value="SEEDANCE_2_0">Seedance 2.0</option>
                 <option value="SEEDANCE_2_5">Seedance 2.5</option></select
@@ -2277,9 +2476,7 @@ interface SavedStoryRecord {
                     </p>
                     <small
                       >Source record and revision:
-                      {{
-                        builderResult.productionPlan.sourceIdentity?.storyRecordId || 'UNKNOWN'
-                      }}
+                      {{ builderResult.productionPlan.sourceIdentity?.storyRecordId || 'UNKNOWN' }}
                       ·
                       {{
                         builderResult.productionPlan.sourceIdentity?.storyRevisionId || 'UNKNOWN'
@@ -2369,9 +2566,7 @@ interface SavedStoryRecord {
                           builderResult.productionPlan.storyPromptFidelity.traceableSentenceCount
                         }}
                         /
-                        {{
-                          builderResult.productionPlan.storyPromptFidelity.sourceSentenceCount
-                        }}
+                        {{ builderResult.productionPlan.storyPromptFidelity.sourceSentenceCount }}
                         source sentences traceable</ng-container
                       >
                     </p>
@@ -5058,10 +5253,9 @@ interface SavedStoryRecord {
       }
       .draft-library-row {
         display: grid;
-        grid-template-columns: minmax(145px, 1.35fr) minmax(72px, 0.65fr) minmax(
-            96px,
-            0.9fr
-          ) minmax(112px, 1fr) minmax(230px, 1.7fr);
+        grid-template-columns:
+          minmax(145px, 1.35fr) minmax(72px, 0.65fr) minmax(96px, 0.9fr)
+          minmax(112px, 1fr) minmax(230px, 1.7fr);
         gap: 0.55rem;
         align-items: center;
         width: 100%;
@@ -5169,10 +5363,9 @@ interface SavedStoryRecord {
       }
       @media (max-width: 900px) {
         .draft-library-row {
-          grid-template-columns: minmax(135px, 1.35fr) minmax(72px, 0.65fr) minmax(
-              95px,
-              0.9fr
-            ) minmax(230px, 1.7fr);
+          grid-template-columns:
+            minmax(135px, 1.35fr) minmax(72px, 0.65fr) minmax(95px, 0.9fr)
+            minmax(230px, 1.7fr);
         }
         .draft-library-row > time {
           display: none;
@@ -5593,6 +5786,10 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
   mainCharacterId = '';
   workspacePath = '';
   durationPreset = '15';
+  ideaCandidates: any[] = [];
+  ideaBatches: any[] = [];
+  ideaCandidateBusy = false;
+  ideaBatchConsent = false;
   candidateCount = 3;
   storyProvider: 'DEEPSEEK' | 'OPENAI' = 'DEEPSEEK';
   preferences: string[] = [];
@@ -5697,6 +5894,7 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
     this.loadSavedApprovals();
     this.loadSavedStudioSessions();
     this.loadIdeaDrafts();
+    this.loadIdeaCandidates();
     if (this.sessionId && !this.ideaDraftId && this.storyRecordId)
       this.http
         .get<any>(`/api/v1/intelligence/workflow/studio-sessions/${this.sessionId}`)
@@ -5818,12 +6016,44 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
       .replace(/([a-z])([A-Z])/g, '$1 $2');
   }
   get storyRole() {
+    if (this.inputMode === 'IDEA')
+      return this.readiness?.roles?.find((role: any) => role.role === 'IDEA') || null;
     return (
       this.readiness?.storyProviders?.find((item: any) => item.provider === this.storyProvider) ||
       (this.storyProvider === 'DEEPSEEK'
         ? this.readiness?.roles?.find((role: any) => role.role === 'STORY')
         : null) ||
       null
+    );
+  }
+  get generationConsent() {
+    return this.inputMode === 'IDEA' ? this.ideaBatchConsent : this.storyConsent;
+  }
+  set generationConsent(value: boolean) {
+    if (this.inputMode === 'IDEA') this.ideaBatchConsent = value;
+    else this.storyConsent = value;
+  }
+  get generationProvider() {
+    return this.inputMode === 'IDEA' ? 'OPENAI' : this.storyProvider;
+  }
+  get noIdeaApproved() {
+    return (
+      this.ideaCandidates.length > 0 &&
+      !this.ideaCandidates.some((c) => this.eligibleIdeaCandidate(c))
+    );
+  }
+  get ideaOverallStatus() {
+    if (this.ideaCandidates.some(c => c.state === 'SELECTED' && this.eligibleIdeaCandidate(c))) return 'IDEA_SELECTED';
+    return this.ideaCandidates.length && this.ideaCandidates.every(c => c.state === 'REJECTED' || c.evaluation?.status === 'REJECTED') ? 'NO_IDEA_APPROVED' : 'PENDING_EVIDENCE';
+  }
+  eligibleIdeaCandidate(c: any) {
+    return (
+      c.state !== 'REJECTED' &&
+      c.sourceIdeaRevision === this.ideaDraftRevision &&
+      c.evaluation?.eligible === true &&
+      c.evaluation?.status === 'EVALUATED' &&
+      c.evaluation?.gates?.length > 0 &&
+      c.evaluation.gates.every((g: any) => !g.mandatory || g.status === 'PASS' || (g.status === 'NOT_APPLICABLE' && g.applicability?.policyExcluded === true))
     );
   }
   get storyModel() {
@@ -6000,7 +6230,9 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
           ? 'Save and review your production prompt.'
           : this.inputMode === 'DETAILED_STORY'
             ? 'Save and review your story.'
-            : 'Save your idea or generate story alternatives.';
+            : this.ideaCandidates.length
+              ? 'Compare saved IDEA candidates and resolve admission evidence.'
+              : 'Save your idea or explicitly authorize three IDEA candidates.';
       return 'Choose a workflow';
     }
     return this.stage === 'STORY'
@@ -6292,6 +6524,8 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
     };
   }
   private clearSavedContext() {
+    this.ideaCandidates = [];
+    this.ideaBatches = [];
     this.restoredCharacterName = '';
     this.storyRecordId = '';
     this.approvalRecordId = '';
@@ -6401,7 +6635,7 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
       this.busy ||
       !this.generationDialogOpen ||
       !this.idea.trim() ||
-      !this.storyConsent ||
+      !this.generationConsent ||
       !Number.isFinite(Number(this.budget)) ||
       Number(this.budget) <= 0 ||
       !this.storyReady ||
@@ -6415,6 +6649,10 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
     if (!this.workspacePath) {
       this.generationDialogOpen = false;
       this.error = 'Select a workspace before requesting story generation.';
+      return;
+    }
+    if (this.inputMode === 'IDEA' && (!this.ideaDraftId || this.draftDirty)) {
+      this.error = 'Save the exact IDEA draft before authorizing generation.';
       return;
     }
     this.generationDialogOpen = false;
@@ -6720,14 +6958,17 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
     }
   }
   private recoverRejectedBuildPrompt(record: any) {
-    const raw = String(record?.rejectedProviderResponse || record?.payload?.rejectedProviderResponse || '');
+    const raw = String(
+      record?.rejectedProviderResponse || record?.payload?.rejectedProviderResponse || '',
+    );
     if (!raw.trim()) return null;
     try {
       const response = JSON.parse(raw);
       const prompt = response?.prompt;
       if (!prompt || typeof prompt !== 'object' || Array.isArray(prompt)) return null;
-      const sections = Object.entries(prompt).map(([heading, value]) =>
-        `${heading}\n${typeof value === 'string' ? value : JSON.stringify(value, null, 2)}`,
+      const sections = Object.entries(prompt).map(
+        ([heading, value]) =>
+          `${heading}\n${typeof value === 'string' ? value : JSON.stringify(value, null, 2)}`,
       );
       const text = sections.join('\n\n').trim();
       if (!text) return null;
@@ -6752,7 +6993,10 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
                     detail:
                       'The saved provider response introduces a mirror that is absent from the approved STORY. Remove it in this draft before saving if it is unsupported.',
                   }
-                : { status: 'UNKNOWN', detail: 'No automatic story-fidelity conclusion was recovered.' },
+                : {
+                    status: 'UNKNOWN',
+                    detail: 'No automatic story-fidelity conclusion was recovered.',
+                  },
             },
           },
         },
@@ -7396,26 +7640,141 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
     this.router.navigateByUrl(this.detailUrl);
   }
 
+  ideaReviewQuote: any = null;
+  ideaReviewBudget = 0;
+  ideaReviewConsent = false;
+  ideaReviewBusy = false;
+  ideaReviewError = '';
+  ideaReviewResult: any = null;
+  ideaReviewHistory: any[] = [];
+
+  prepareIdeaReview() {
+    this.ideaReviewConsent = false;
+    this.ideaReviewQuote = null;
+    this.ideaReviewError = '';
+    this.ideaReviewBusy = true;
+    const id = this.ideaDraftId;
+    this.http.post<any>(`/api/v1/intelligence/workflow/idea-drafts/${id}/semantic-review/preview`, { workspacePath: this.workspacePath }).subscribe({
+      next: quote => { if (id === this.ideaDraftId) this.ideaReviewQuote = quote; this.ideaReviewBusy = false; this.changeDetector.markForCheck(); },
+      error: e => { this.ideaReviewError = e.error?.message || 'Review preview unavailable; no provider call was made.'; this.ideaReviewBusy = false; this.changeDetector.markForCheck(); }
+    });
+  }
+
+  runIdeaReview() {
+    if (!this.ideaReviewConsent || !this.ideaReviewQuote || this.ideaReviewBudget <= 0 || this.ideaReviewBudget < this.ideaReviewQuote.estimatedUpperBoundUsd) return;
+    const id = this.ideaDraftId;
+    const payload = { workspacePath: this.workspacePath, quoteId: this.ideaReviewQuote.quoteId, ownerAuthorized: true,
+      maxCostUsd: this.ideaReviewBudget, maximumProviderCalls: 1, model: this.ideaReviewQuote.model };
+    this.ideaReviewConsent = false;
+    this.ideaReviewBusy = true;
+    this.ideaReviewError = '';
+    this.http.post<any>(`/api/v1/intelligence/workflow/idea-drafts/${id}/semantic-review`,payload).subscribe({
+      next: result => { this.ideaReviewBusy = false; if(id===this.ideaDraftId) {this.ideaReviewResult=result; this.ideaReviewQuote=null; this.loadIdeaCandidates();} this.changeDetector.markForCheck(); },
+      error: e => { this.ideaReviewBusy = false; this.ideaReviewQuote=null; this.ideaReviewError=e.error?.message || 'Review failed. Inspect receipt history before any further action; no automatic retry.'; this.changeDetector.markForCheck(); }
+    });
+  }
+
+  loadIdeaCandidates() {
+    this.ideaReviewQuote = null;
+    this.ideaReviewConsent = false;
+    this.ideaReviewHistory = [];
+    this.ideaCandidates = [];
+    this.ideaBatches = [];
+    if (!this.ideaDraftId || !this.workspacePath) return;
+    const id = this.ideaDraftId;
+    const params = { workspacePath: this.workspacePath };
+    this.http.get<any[]>(`/api/v1/intelligence/workflow/idea-drafts/${id}/semantic-reviews`,{params}).subscribe({
+      next: rows => {if(id===this.ideaDraftId) this.ideaReviewHistory=rows; this.changeDetector.markForCheck();},
+      error: () => {this.ideaReviewError='Semantic review history unavailable.';this.changeDetector.markForCheck();}
+    });
+    this.http
+      .get<any[]>(`/api/v1/intelligence/workflow/idea-drafts/${id}/candidates`, { params })
+      .subscribe({
+        next: (rows) => {
+          if (id === this.ideaDraftId) {
+            this.ideaCandidates = rows;
+            this.changeDetector.markForCheck();
+          }
+        },
+        error: (e) => {
+          this.error = 'Saved IDEA candidates could not be loaded. Reload before generation.';
+          this.changeDetector.markForCheck();
+        },
+      });
+    this.http
+      .get<any[]>(`/api/v1/intelligence/workflow/idea-drafts/${id}/batches`, { params })
+      .subscribe({
+        next: (rows) => {
+          if (id === this.ideaDraftId) {
+            this.ideaBatches = rows;
+            this.changeDetector.markForCheck();
+          }
+        },
+        error: () => {
+          this.error = 'IDEA receipt history unavailable. Reload before generation.';
+          this.changeDetector.markForCheck();
+        },
+      });
+  }
+  private ideaAction(url: string, body: any) {
+    const id = this.ideaDraftId;
+    this.ideaCandidateBusy = true;
+    this.http
+      .post<any>(`/api/v1/intelligence/workflow/idea-drafts/${id}/${url}`, {
+        workspacePath: this.workspacePath,
+        ...body,
+      })
+      .subscribe({
+        next: () => {
+          this.ideaCandidateBusy = false;
+          if (id === this.ideaDraftId) this.loadIdeaCandidates();
+          this.changeDetector.markForCheck();
+        },
+        error: (e) => {
+          this.ideaCandidateBusy = false;
+          this.fail(e, 'IDEA action failed; saved receipt remains available. No provider retry.');
+        },
+      });
+  }
+  decideIdeaCandidate(candidate: any, state: string) {
+    this.ideaAction(`candidates/${candidate.candidateId}/decision`, {
+      state,
+      expectedRevision: candidate.decisionRevision || 0,
+    });
+  }
+  evaluateIdeaCandidate(candidate: any) {
+    this.ideaAction(`candidates/${candidate.candidateId}/evaluate`, {});
+  }
+  recoverIdeaBatch(batch: any) {
+    this.ideaAction('candidates/recover', { requestId: batch.requestId });
+  }
+
   private runStoryRole() {
     const epoch = this.editorEpoch;
     const snapshot = JSON.stringify(this.captureDraft());
     this.busy = true;
     this.error = '';
     const authorizedCost = this.budget;
-    this.storyConsent = false;
+    this.generationConsent = false;
     this.http
       .post<any>('/api/v1/intelligence/workflow/creative-role', {
-        role: 'STORY',
+        role: this.inputMode === 'IDEA' ? 'IDEA' : 'STORY',
         text: this.idea.trim(),
         generationAuthorized: true,
         maxCostUsd: authorizedCost,
         context: {
-          storyProvider: this.storyProvider,
+          storyProvider: this.generationProvider,
           storyModel: this.storyModel,
           sourceStoryRecordId: this.revisionParentId || null,
           visualDirection: this.visualDirection,
-          sourceIdeaDraftId: this.originIdeaDraftId || this.ideaDraftId || null,
-          sourceIdeaRevision: this.originIdeaRevision || this.ideaDraftRevision || null,
+          sourceIdeaDraftId:
+            this.inputMode === 'IDEA'
+              ? this.ideaDraftId
+              : this.originIdeaDraftId || this.ideaDraftId || null,
+          sourceIdeaRevision:
+            this.inputMode === 'IDEA'
+              ? this.ideaDraftRevision
+              : this.originIdeaRevision || this.ideaDraftRevision || null,
           sourceSessionId: this.sessionId,
           constraints: this.constraints,
           mainCharacter: this.selectedCharacterName || null,
@@ -7438,7 +7797,7 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
                 ]
               : [],
           workspacePath: this.workspacePath,
-          requestedAlternativeCount: this.candidateCount,
+          requestedAlternativeCount: this.inputMode === 'IDEA' ? 3 : this.candidateCount,
           targetConfiguration: {
             aspectRatio: this.aspectRatio,
             duration: this.duration,
@@ -7461,6 +7820,15 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
           if (epoch !== this.editorEpoch || snapshot !== JSON.stringify(this.captureDraft())) {
             this.busy = false;
             this.changeDetector.markForCheck();
+            return;
+          }
+          if (this.inputMode === 'IDEA') {
+            this.ideaCandidates = r.ideaCandidates || [];
+            this.stage = 'IDEA';
+            this.ideaBatchConsent = false;
+            this.loadIdeaCandidates();
+            this.persistLocal();
+            this.done();
             return;
           }
           this.storyRecordId = r.recordId;
@@ -7498,7 +7866,13 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
           this.persist();
           this.done();
         },
-        error: (e) => this.fail(e, 'The selected provider could not generate story ideas.'),
+        error: (e) => {
+          this.loadIdeaCandidates();
+          this.fail(
+            e,
+            'Generation or persistence failed. Inspect saved IDEA receipts and recover without a provider retry.',
+          );
+        },
       });
   }
   selectStory(candidate: StoryCandidate) {
@@ -9349,10 +9723,12 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
     if (!this.idea.trim() || !this.workspacePath || this.draftSaving || this.busy) return;
     this.storyConsent = false;
     this.budget = 0;
+    this.ideaBatchConsent = false;
     this.generationDialogOpen = true;
   }
   cancelStoryGeneration() {
     this.generationDialogOpen = false;
+    this.ideaBatchConsent = false;
     this.storyConsent = false;
     this.budget = 0;
   }
@@ -9476,6 +9852,10 @@ export class CreativeStudioPage implements AfterViewInit, AfterViewChecked, OnDe
           this.ideaDraftId = r.draftId;
           this.sessionId = r.draftId;
           this.ideaDraftRevision = r.revision;
+          this.ideaBatchConsent = false;
+          this.budget = 0;
+          this.stage = 'IDEA';
+          this.loadIdeaCandidates();
           this.sourceTexts = {
             IDEA: '',
             DETAILED_STORY: '',

@@ -1,7 +1,8 @@
 """Human-readable pre-render assessment projection.
 
-This module is deliberately a read model: it consumes the canonical parser IR and
-existing rule results. It does not invent a second rule engine or rewrite prompts.
+This read model projects canonical parser IR and rule results, with an additive
+duration-scoped premise policy delegated to story_premise_engine. Canonical
+rules and scores remain unchanged; this module never rewrites prompts.
 """
 
 from __future__ import annotations
@@ -95,7 +96,8 @@ def _family8_authorization_reasons(render_authorization: dict[str, Any]) -> list
     return reasons
 
 
-def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ruleset_version: str) -> dict[str, Any]:
+def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ruleset_version: str,
+                                *, source_text: str = "", story_context: dict[str, Any] | None = None) -> dict[str, Any]:
     evaluations = tuple(report.evaluations)
     aggregation = summarize_aggregation(
         AggregationRow(
@@ -153,11 +155,26 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     story_validation = _story_validation(
         evaluations, str((ir.get("metadata") or {}).get("contentProfile", "UNKNOWN"))
     )
+    from app.workflow.story_premise_engine import assess as assess_premise
+    premise = assess_premise(source_text, {"metadata": ir.get("metadata") or {}, **(story_context or {})})
+    premise_blocked = premise and premise["status"] == "STORY_REVISION_REQUIRED"
+    if premise_blocked:
+        # Add a separate creative gate; never rewrite canonical rules/grades or
+        # remove existing evidence and technical blockers.
+        story_validation = {**story_validation, "status": "FAIL", "storyPremiseStatus": premise["status"]}
+        render_authorization["creative_failures"].append("STORY_PREMISE_ENGINE")
+        if render_authorization["status"] != "BLOCKED_TECHNICAL_FAILURE":
+            render_authorization.update(status="BLOCKED_CREATIVE_FAILURE", final_video_render="BLOCKED_CREATIVE_FAILURE")
+        render_authorization["reason"] += " " + premise["humanReadableReport"]
+        concerns.insert(0, premise["humanReadableReport"])
+        recommendations.insert(0, "Revise the story premise, preserving approved source locks; execution polish cannot supply the missing arc.")
     prompt_stage = _prompt_stage(creative_grade, first_frame, render_authorization, story_validation)
     readiness = {
         "A": "READY_TO_RENDER", "B": "READY_TO_RENDER", "C": "EDIT_PLAN",
         "D": "EDIT_PLAN", "F": "BLOCKED", "INCOMPLETE": "INCOMPLETE",
     }[grade]
+    if premise_blocked:
+        readiness = "STORY_REVISION_REQUIRED"
     family8 = project_family8({
         "creativeQuality": {
             "creativeScore": report.overall_score,
@@ -183,7 +200,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     else:
         verdict = "The plan is understandable but meaningful creative changes are recommended before rendering."
 
-    return {
+    result = {
         "name": "PRE_RENDER_CREATIVE_READINESS",
         "general_producibility": general_producibility_from_parse(ir, parser),
         "family8": family8,
@@ -255,6 +272,15 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
             "evaluationStage": "PRE_RENDER",
         },
     }
+    if premise:
+        result["story_premise_engine"] = premise
+        if premise_blocked:
+            result["verdict"] = premise["humanReadableReport"] + " Canonical diagnostic grades and existing evidence gates remain unchanged."
+    from app.workflow.short_form_engine import assess as assess_short_form
+    short_form = assess_short_form(source_text, story_context)
+    if short_form:
+        result["short_form_engine"] = short_form
+    return result
 
 
 def _dimension(key: str, title: str, status: str, summary: str, observed: str, recommendation: str, evidence: str = "AVAILABLE") -> dict[str, str]:

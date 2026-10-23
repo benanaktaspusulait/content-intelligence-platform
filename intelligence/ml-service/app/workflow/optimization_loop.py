@@ -68,7 +68,7 @@ def evaluate(data):
         if r['outcome'] == 'PASS' and r['severity'] != 'PASS': category = 'FIXED_POLICY_CONSTRAINT'
         findings.append(dict(ruleId=r['ruleId'], classification=category, message=r['message']))
     context = generation_context(scope, prompt, result, data.get('feedback', {}))
-    validity=assess_creative_validity(prompt,result,data.get('provenance'))
+    validity=assess_creative_validity(prompt,result,data.get('provenance'),context=scope['request'])
     return dict(canonical=result, integrity=integrity(prompt, result), diagnosis=diagnose(prompt, {**context,'creativeValidityDiagnosis':validity}),
                 creativeValidity=validity, findings=findings, promptSha256=fingerprint(prompt), renderAuthorized=False)
 
@@ -83,7 +83,7 @@ def generation_context(scope, prompt, result, feedback):
     from .optimization_distinctness import _beats
     feedback=dict(rejectionReason=feedback.get('rejectionReason'), sourceFidelity=feedback.get('sourceFidelity','UNKNOWN'), rejectedFailureModes=[dict(classification=r.get('classification'),reasons=r.get('reasons',[])) for r in feedback.get('rejectedProposals',[])], remainingFindings=[dict(ruleId=r['ruleId'],outcome=r['outcome'],severity=r['severity'],message=r['message']) for r in rows(result).values() if r['outcome'] in ('FAIL','UNKNOWN')][:20])
     anchors=[re.sub(r'^\d+(?:\.\d+)?-\d+(?:\.\d+)?s:\s*','',b['sourceQuote']).split('[',1)[0].split('->',1)[0].strip() for b in _beats(prompt)]
-    creative_validity=assess_creative_validity(prompt,result,{'origin':'UNKNOWN_ORIGIN','reviewerIndependent':False})
+    creative_validity=assess_creative_validity(prompt,result,{'origin':'UNKNOWN_ORIGIN','reviewerIndependent':False},context=request)
     return dict(optimizationGenerationContractVersion='creative-reconstruction-v2', optimizationGenerationInstructionsVersion='model-authored-production-v2',
                 adaptiveVersion='adaptive-creative-optimization-v3', openingStrategy=scope['request'].get('openingStrategy', 'AUTO'),
                 baselineCanonicalEvaluation=result, baselineCanonicalFailures=result.get('failedRules', []), approvedStoryText=scope['approvedStory']['text'],

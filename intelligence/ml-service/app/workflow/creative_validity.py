@@ -65,7 +65,7 @@ def _timed_beats(prompt: str) -> list[tuple[float, float, str]]:
 
 
 def assess(prompt: str, canonical: dict[str, Any], provenance: dict[str, Any] | None = None,
-           reviewer: dict[str, Any] | None = None) -> dict[str, Any]:
+           reviewer: dict[str, Any] | None = None, context: dict[str, Any] | None = None) -> dict[str, Any]:
     """Return bounded textual evidence; never a creative grade or canonical override."""
     prov = provenance_contract(provenance)
     reviewer = reviewer or {}
@@ -127,7 +127,7 @@ def assess(prompt: str, canonical: dict[str, Any], provenance: dict[str, Any] | 
                   "Fixture labels and numeric canonical grades do not establish distinctive creative value."),
     ]
     material_risk = any(r["severity"] in ("MATERIAL", "CRITICAL", "BLOCKER") for r in risks)
-    return {
+    result = {
         "version": VERSION, "scope": "PROVISIONAL_TEXT_AND_EVIDENCE_VALIDITY",
         "canonicalRulesetUnchanged": True,
         "canonicalScore": canonical.get("score", canonical.get("overallScore")),
@@ -148,3 +148,24 @@ def assess(prompt: str, canonical: dict[str, Any], provenance: dict[str, Any] | 
         "realProviderCapabilityClaimAllowed": prov["realCapabilityStatisticsEligible"] and prov["reviewerIndependent"] and not material_risk,
         "renderAuthorized": False,
     }
+    from .story_premise_engine import assess as assess_premise
+    premise = assess_premise(prompt, context)
+    if premise:
+        result['storyPremiseEngine'] = premise
+        if premise['status'] == 'STORY_REVISION_REQUIRED':
+            result['creativeQualityStatus'] = 'CREATIVE_RISK_DETECTED'
+            result['realProviderCapabilityClaimAllowed'] = False
+            result['risks'].append({'code': 'STORY_PREMISE_ENGINE', 'severity': 'MATERIAL',
+                                    'finding': premise['humanReadableReport'], 'evidence': premise['storyEngineSummary']})
+            result['creativeWeaknesses'].append({'code': 'STORY_PREMISE_ENGINE',
+                                                 'finding': premise['humanReadableReport'], 'evidence': premise['storyEngineSummary']})
+    from .short_form_engine import assess as assess_short_form
+    short_form = assess_short_form(prompt, context)
+    if short_form:
+        result['shortFormEngine'] = short_form
+        if short_form['status'] in {'REVISION_REQUIRED', 'REJECT'}:
+            result['creativeQualityStatus'] = 'CREATIVE_RISK_DETECTED'
+            result['realProviderCapabilityClaimAllowed'] = False
+            result['risks'].append({'code': 'SHORT_FORM_ENGINE', 'severity': 'MATERIAL',
+                                    'finding': short_form['humanReadableReport'], 'evidence': short_form['findings']})
+    return result

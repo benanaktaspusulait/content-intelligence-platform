@@ -1,0 +1,84 @@
+{
+  "origin": "REAL_PROVIDER_SOURCE_COPY_FOR_DETERMINISTIC_TEST_ONLY",
+  "context": {
+    "mainCharacter": "Arda",
+    "mainCharacterId": "00000000-0000-0000-0000-000000000004",
+    "characterRecord": {
+      "id": "00000000-0000-0000-0000-000000000004",
+      "name": "Arda",
+      "notes": "Season 1 canonical character",
+      "active": true,
+      "status": "UNTESTED"
+    },
+    "targetConfiguration": {
+      "duration": 15,
+      "aspectRatio": "9:16",
+      "mainCharacter": "Arda",
+      "contentProfile": "ABSURD_PHYSICS",
+      "mainCharacterId": "00000000-0000-0000-0000-000000000004",
+      "selectedGenerator": "SEEDANCE_2_5"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "583a9164-336f-3ba7-8158-89b4d084ab4f",
+      "draftId": "7455a67e-1d39-4b91-9101-2df227ee3dc0",
+      "sourceIdeaRevision": 1,
+      "revision": 1,
+      "payload": {
+        "title": "The Blanket Has a Corner",
+        "payoff": "Arda lifts the hidden fold and the blanket opens into a neat, unmistakable star shape across the sofa; its star-shaped shadow finally matches.",
+        "concept": "Visual discovery: Arda tries to fold a blanket, but its shadow reveals a shape the blanket itself does not seem to have.",
+        "discovery": "The pointed shadow is cast by a real fold tucked beneath the blanket, changing the apparent impossibility into a clue about its shape.",
+        "candidateId": "arda-visual-discovery",
+        "everydayGoal": "Fold the sofa blanket.",
+        "impossibleRule": "Only the blanket’s shadow accurately shows its concealed folded shape.",
+        "productionRisk": "Keep the shadow aligned with the blanket and rug; avoid extra folds that obscure the single visual clue.",
+        "viewerQuestion": "Where is the pointed corner coming from?",
+        "firstStaticFrame": "In a warm, lived-in 3D cartoon living room, Arda holds a rumpled blanket over a sofa. Its shadow on the patterned rug has one sharply pointed corner, though every visible blanket corner is rounded.",
+        "frameZeroProblem": "The blanket’s shadow shows a pointed corner Arda cannot see on the blanket.",
+        "proposedProgression": "Arda turns the blanket, but the pointed shadow stays tied to one concealed fold; following the shadow directs Arda’s hand beneath the fabric; opening that fold reveals the full star shape."
+      }
+    },
+    {
+      "candidateId": "18ae8b38-7a8f-3e64-b47b-ae6c7da0926d",
+      "draftId": "7455a67e-1d39-4b91-9101-2df227ee3dc0",
+      "sourceIdeaRevision": 1,
+      "revision": 1,
+      "payload": {
+        "title": "The Heavy Feather Pillow",
+        "payoff": "With the pillow resting in place, the sofa cushions curl up around it into a tall, snug throne; Arda perches visibly above the original seat height.",
+        "concept": "Expectation reversal: Arda expects a pillow to sink into a sofa cushion, but the sofa sinks away from the pillow.",
+        "discovery": "The pillow is not unusually heavy: its presence makes nearby upholstery rise toward it, reversing the expected direction of a cushion’s dip.",
+        "candidateId": "arda-expectation-reversal",
+        "everydayGoal": "Make a comfortable place to sit.",
+        "impossibleRule": "Sofa upholstery moves toward this pillow rather than compressing away from it.",
+        "productionRisk": "Limit deformation to the sofa cushions and keep the pillow’s position clear so the reversed motion reads immediately.",
+        "viewerQuestion": "Why is the sofa moving toward a pillow that has not touched it?",
+        "firstStaticFrame": "In a cozy 3D cartoon home with a knitted throw and a worn sofa, Arda holds one plump pillow above an empty seat whose cushion is already dipping upward toward it.",
+        "frameZeroProblem": "The seat deforms before Arda can put the pillow down.",
+        "proposedProgression": "The empty cushion bulges toward the hovering pillow; the armrests lean inward as Arda lowers it; the settled pillow draws the upholstery into an elevated seat."
+      }
+    },
+    {
+      "candidateId": "a19a4e69-2a23-3fb9-9f63-866b946049fd",
+      "draftId": "7455a67e-1d39-4b91-9101-2df227ee3dc0",
+      "sourceIdeaRevision": 1,
+      "revision": 1,
+      "payload": {
+        "title": "One Small Tablecloth",
+        "payoff": "Arda chooses to wrap the cloth around the chair; it unfolds into a generous, plush seat, while the uncovered table remains plain and intact. Arda sits comfortably in the transformed chair.",
+        "concept": "Consequential choice: Arda must decide whether to keep a table neatly set or give its cloth to a chilly-looking chair.",
+        "discovery": "Wherever the tablecloth rests, the furniture beneath it visibly relaxes and rounds out; the chair’s hunched shape is not damage but a response to being uncovered.",
+        "candidateId": "arda-consequential-choice",
+        "everydayGoal": "Prepare a comfortable spot for a quiet meal.",
+        "impossibleRule": "Furniture covered by this tablecloth becomes plush and relaxed; uncovered furniture keeps its ordinary shape.",
+        "productionRisk": "Keep the furniture deformation simple and the cloth as the only transferring object; avoid making the chair appear alive.",
+        "viewerQuestion": "Why does the chair seem cold beside a neatly dressed table?",
+        "firstStaticFrame": "In a warm, lived-in 3D cartoon dining nook, Arda stands beside a set table. One tablecloth drapes neatly over it, while a bare chair beside the table curls its back inward like a shivering shoulder.",
+        "frameZeroProblem": "The table looks ready, but the only chair is tightly curled and unusable.",
+        "proposedProgression": "Arda notices the chair’s inward curl while the covered table appears unusually cushioned; lifting one cloth edge makes the table firm as the chair’s nearest edge softens; moving the cloth fully onto the chair restores a usable seat at the cost of the dressed table."
+      }
+    }
+  ]
+}

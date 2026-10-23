@@ -104,7 +104,7 @@ def assess(payload: dict[str, Any]) -> dict[str, Any]:
     # Requests cannot self-assert independent evidence. The trusted backend
     # may attach a validated immutable review after this assessment is made.
     fidelity_state = "UNKNOWN"
-    return {
+    result = {
         "contractVersion": VERSION, "rubricVersion": VERSION, "calibrationCorpusVersion": CORPUS_VERSION,
         "gradingStatus": "CALIBRATION_INCOMPLETE", "absoluteQuality": {
             "status": "NOT_QUALIFIED", "grade": None, "aggregateScore": None,
@@ -129,6 +129,13 @@ def assess(payload: dict[str, Any]) -> dict[str, Any]:
         "renderAuthorized": False, "automaticApproval": False,
         "fingerprints": {"originalPromptSha256": fingerprint(original), "candidatePromptSha256": fingerprint(candidate)},
     }
+
+    if payload.get('shortFormEvaluation') is True:
+        from .short_form_engine import assess as assess_short_form
+        context = {'shortFormEvaluation': True, 'desiredDuration': duration}
+        result['shortFormEngine'] = {'original': assess_short_form(original, context),
+                                     'candidate': assess_short_form(candidate, context)}
+    return result
 
 
 def validate_calibration(records: list[dict[str, Any]]) -> dict[str, Any]:

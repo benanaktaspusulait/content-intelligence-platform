@@ -49,6 +49,8 @@ class ReviewRequest(BaseModel):
     structuredPlan: dict[str, Any] | None = None
     storyPlanEvidence: dict[str, Any] | None = None
     goalEvidence: dict[str, Any] | None = None
+    storyType: str | None = Field(default=None, exclude_if=lambda value: value is None)
+    shortFormEvaluation: bool | None = Field(default=None, exclude_if=lambda value: value is None)
     canonicalRulesetVersion: Literal["1.7", "1.8", "1.9", "1.10", "1.11", "1.12"] | None = None
     canonicalValidationId: int | None = None
     authorizationEvidence: dict[str, Any] = Field(default_factory=dict)
@@ -64,6 +66,35 @@ def capabilities() -> dict[str, Any]:
 @router.post("/review")
 def review(request: ReviewRequest) -> dict[str, Any]:
     return review_prompt(request.model_dump(), capabilities())
+
+
+class StoryPremiseRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str = Field(min_length=1, max_length=50000)
+    desiredDuration: float | None = Field(None, gt=0, le=600)
+    storyType: str | None = None
+
+
+@router.post('/story-premise/evaluate')
+def evaluate_story_premise(request: StoryPremiseRequest) -> dict[str, Any]:
+    """Offline concept-only screening; no canonical or provider execution."""
+    from .story_premise_engine import assess
+    result = assess(request.text, request.model_dump(exclude={'text'}))
+    return result if result is not None else {'status': 'NOT_APPLICABLE', 'renderAuthorized': False,
+                                              'reason': 'Existing short-form validation is unchanged.'}
+
+
+class ShortFormRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str = Field(min_length=1, max_length=50000)
+    desiredDuration: float | None = Field(None, gt=0, le=600)
+
+
+@router.post('/short-form/evaluate')
+def evaluate_short_form(request: ShortFormRequest) -> dict[str, Any]:
+    """Explicit new scoring surface: offline, no canonical/provider execution."""
+    from .short_form_engine import assess
+    return assess(request.text, {**request.model_dump(exclude={'text'}), 'shortFormEvaluation': True})
 
 
 class SourcePlanRequest(BaseModel):
@@ -204,6 +235,7 @@ class CreativePromptQualityRequest(BaseModel):
     diagnosis: dict[str, Any] = Field(default_factory=dict)
     canonicalFindings: dict[str, Any] = Field(default_factory=dict)
     executionCritic: dict[str, Any] = Field(default_factory=dict)
+    shortFormEvaluation: bool | None = Field(default=None, exclude_if=lambda value: value is None)
 
 
 @router.post('/optimization-assessment')
@@ -317,6 +349,8 @@ def creative_role_readiness() -> dict[str, Any]:
 @router.post('/creative-role')
 async def creative_role(request: CreativeRoleRequest, http_request: Request) -> dict[str, Any]:
     from .creative_roles import CreativeRoleFailure, run_paid_role
+    if request.role == 'IDEA_REVIEW':
+        raise HTTPException(403, 'Use the source-bound IDEA semantic-review endpoint')
     if request.role == 'PROMPT_OPTIMIZATION' or request.context.get('storyExperiment') or request.context.get('assessmentOnlyPolicy'):
         import hashlib, hmac, os
         token=os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN','')
@@ -507,7 +541,7 @@ def adaptive_optimization_policy(request: AdaptivePolicyRequest) -> dict[str, An
         return optimization_metrics(request.context.get('runs',[]))
     if request.action == 'CREATIVE_VALIDITY':
         from .creative_validity import assess
-        return assess(request.source, request.canonical, request.context.get('provenance'), request.context.get('reviewer'))
+        return assess(request.source, request.canonical, request.context.get('provenance'), request.context.get('reviewer'), request.context)
     decision = stage_decision(request.comparison, request.canonical)
     if request.action == 'ESCALATION_BRIEF':
         return escalation_brief(request.source, request.context, request.comparison, decision)
@@ -585,3 +619,47 @@ async def optimization_loop_execute(request: Request) -> dict[str, Any]:
     try: return execute_request(json.loads(raw))
     except (ValueError,KeyError,TypeError):
         raise HTTPException(422,'Invalid bounded request before dispatch; no retry')
+
+
+class IdeaEvaluationRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    candidate: dict[str, Any]
+    batch: list[dict[str, Any]] = Field(default_factory=list)
+    context: dict[str, Any] = Field(default_factory=dict)
+
+
+@router.post('/idea-evaluation')
+def idea_evaluation(request: IdeaEvaluationRequest) -> dict[str, Any]:
+    from .idea_evaluation import evaluate_idea
+    return evaluate_idea(request.candidate, request.batch, request.context)
+
+
+class IdeaSemanticReviewRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    candidates: list[dict[str, Any]]
+    context: dict[str, Any] = Field(default_factory=dict)
+    action: Literal['PREVIEW', 'REVIEW'] = 'PREVIEW'
+    ownerAuthorized: bool = False
+    maxCostUsd: float = 0
+    maximumProviderCalls: int = 1
+    model: str = 'gpt-6-sol'
+
+
+@router.post('/idea-semantic-review')
+def idea_semantic_review(request: IdeaSemanticReviewRequest) -> dict[str, Any]:
+    from .idea_review import preview
+    from .creative_roles import run_paid_role, CreativeRoleFailure
+    try:
+        quote = preview(request.candidates, request.context)
+        if request.action == 'PREVIEW': return quote
+        import math
+        if request.ownerAuthorized is not True or request.maximumProviderCalls != 1 or request.model != quote['model']:
+            raise ValueError('Explicit owner authorization for disclosed model and one call required')
+        if not math.isfinite(request.maxCostUsd) or request.maxCostUsd <= 0 or request.maxCostUsd < quote['estimatedUpperBoundUsd']:
+            raise ValueError('Positive owner budget covering displayed estimate required')
+        context = {**request.context, 'candidates': request.candidates, 'ownerAuthorized': True, 'maximumProviderCalls': 1, 'storyModel': request.model}
+        return run_paid_role('IDEA_REVIEW', 'Review the saved IDEA sources independently.', context, request.maxCostUsd)
+    except CreativeRoleFailure as error:
+        return {'status': 'REVIEW_REJECTED', 'diagnostics': error.diagnostics, 'rawProviderResponse': error.diagnostics.get('rawProviderResponse'), 'retrySafe': False}
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error

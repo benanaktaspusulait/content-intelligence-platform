@@ -217,6 +217,7 @@ public class QualityMlClient {
   }
 
   private static Duration workflowTimeout(String operation, Map<String,Object> request) {
+    if ("idea-semantic-review".equals(operation)) return Duration.ofSeconds(75);
     if ("idea-exploration/generate".equals(operation)) return Duration.ofSeconds(210);
     boolean assessment="creative-role".equals(operation)&&"STORY_REVIEW".equals(request.get("role"))
         &&request.get("context") instanceof Map<?,?> c&&"ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1".equals(c.get("assessmentOnlyPolicy"));
@@ -226,7 +227,7 @@ public class QualityMlClient {
   }
 
   public Map<String, Object> workflow(String operation, Map<String, Object> request) {
-    if (!List.of("idea-exploration/generate",
+    if (!List.of("short-form/evaluate", "idea-semantic-review", "idea-evaluation", "idea-exploration/generate",
             "story-experiment/preflight", "story-experiment/validate", "story-experiment/assessment-preflight", "optimization-loop/local", "cpq-pilot/optimization-loop-execute", "cpq-pilot/capabilities", "cpq-pilot/draft-preflight", "cpq-pilot/execute", "cpq-pilot/revalidate-source", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/recover", "creative-role/readiness", "creative-role/revalidate-production-spec")
         .contains(operation)) {
       throw new IllegalArgumentException("Unsupported workflow operation");

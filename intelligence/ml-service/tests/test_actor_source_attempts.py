@@ -89,6 +89,20 @@ def test_attached_participle_attempts_in_echoing_puddle_story_are_source_bound()
         assert text[slice(*evidence['sourceSpan'])] == evidence['sourceQuote']
 
 
+def test_inline_character_only_constraint_is_not_an_actor_declaration():
+    text = (
+        "TITLE / FORMAT\nOne canonical Pompom Hills character only: Kiko.\n"
+        "0-3s: Kiko tries to pull the brush toward his teeth.\n"
+        "3-6s: Kiko rotates the handle to control the brush."
+    )
+    ir = parse_prompt(text, CONFIG).video_plan_ir
+    assert ir["characters"]["primary"] == "Kiko"
+    assert [(beat["actor"], beat["primaryVerb"]) for beat in ir["beats"] if beat["isAttempt"]] == [
+        ("Kiko", "PULL"),
+        ("Kiko", "ROTATE"),
+    ]
+
+
 def test_bracket_action_camera_and_consequence_spans():
     text, ir = parse(
         "0-3s: [tracking shot: Zed tries to peel the card; keep Zed in frame] -> the card splits.\n"

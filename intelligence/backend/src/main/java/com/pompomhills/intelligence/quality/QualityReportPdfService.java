@@ -115,6 +115,8 @@ public class QualityReportPdfService {
       document.open();
       addWorkflowHeader(document, snapshot, fonts);
       addWorkflowSummary(document, snapshot, fonts);
+      addStoryPremise(document, snapshot.get("storyPremiseEngine"), fonts);
+      addShortForm(document, snapshot.get("shortFormEngine"), fonts);
       addWorkflowDimensions(document, snapshot, fonts);
       addWorkflowEvidence(document, snapshot, fonts);
       addWorkflowBeats(document, snapshot, fonts);
@@ -153,6 +155,8 @@ public class QualityReportPdfService {
 
       // SECTION 5: Creative Quality
       addCreativeQuality(document, review, fonts);
+      addStoryPremise(document, review == null ? null : review.get("storyPremiseEngine"), fonts);
+      addShortForm(document, review == null ? null : review.get("shortFormEngine"), fonts);
 
       // SECTION 6: LocalExecutionCritic
       addLocalExecutionCritic(document, review, fonts);
@@ -1059,6 +1063,88 @@ public class QualityReportPdfService {
     }
   }
 
+  /** Pure text projection also used by offline tests; historical reports have no section. */
+  static List<String> storyPremiseLines(Object value) {
+    if (!(value instanceof Map<?, ?> engine) || engine.isEmpty()) return List.of();
+    List<String> lines = new ArrayList<>();
+    lines.add("Story premise: " + engine.get("status") + " | " + engine.get("score")
+        + "/100 (separate from canonical scoring)");
+    lines.add(String.valueOf(engine.get("humanReadableReport")));
+    if (engine.get("storyEngineSummary") instanceof Map<?, ?> summary) {
+      summary.forEach((key, item) -> lines.add(key + ": " + (item == null ? "Not established" : item)));
+    }
+    if (engine.get("checks") instanceof List<?> checks) {
+      for (Object item : checks) {
+        if (!(item instanceof Map<?, ?> check)) continue;
+        lines.add(check.get("checkId") + " | " + check.get("outcome") + ": " + check.get("reason"));
+        if (check.get("evidence") instanceof List<?> evidence) {
+          for (Object entry : evidence) {
+            if (entry instanceof Map<?, ?> source) lines.add("Source: " + source.get("quote"));
+          }
+        }
+      }
+    }
+    if (engine.get("durationSuitability") instanceof Map<?, ?> durations) {
+      durations.forEach((key, item) -> {
+        if (item instanceof Map<?, ?> suitability) {
+          lines.add(key + ": " + suitability.get("status") + " - " + suitability.get("reason"));
+        }
+      });
+    }
+    if (engine.get("findings") instanceof List<?> findings) {
+      for (Object entry : findings) {
+        if (entry instanceof Map<?, ?> finding) lines.add(finding.get("severity") + ": " + finding.get("message"));
+      }
+    }
+    lines.add("Textual support only. Visual execution and audience response remain unverified.");
+    return List.copyOf(lines);
+  }
+
+  /** Pure text projection: absence adds no content to historical exports. */
+  static List<String> shortFormLines(Object value) {
+    if (!(value instanceof Map<?, ?> engine) || engine.isEmpty()) return List.of();
+    List<String> lines = new ArrayList<>();
+    lines.add("Short form: " + engine.get("status") + " | " + engine.get("shortFormScore")
+        + "/100 (independent of canonical and long-form scoring)");
+    lines.add(String.valueOf(engine.get("humanReadableReport")));
+    for (String key : List.of("hookScore", "goalScore", "ruleClarityScore", "beatDensityScore",
+        "progressDensityScore", "escalationScore", "payoffScore", "rewatchScore",
+        "silentLegibilityScore", "productionFeasibilityScore", "duplicateEngineRisk", "rewatchType")) {
+      lines.add(key + ": " + engine.get(key));
+    }
+    if (engine.get("findings") instanceof List<?> findings) {
+      for (Object entry : findings) {
+        if (entry instanceof Map<?, ?> finding) lines.add(finding.get("code") + ": " + finding.get("message"));
+      }
+    }
+    if (engine.get("beats") instanceof List<?> beats) {
+      for (Object entry : beats) {
+        if (entry instanceof Map<?, ?> beat) {
+          lines.add(beat.get("id") + " | " + beat.get("progressTypes") + " | Source: " + beat.get("quote"));
+        }
+      }
+    }
+    lines.add("Source SHA-256: " + engine.get("sourceSha256"));
+    if (engine.get("evidenceLimitations") instanceof List<?> limitations) {
+      for (Object item : limitations) lines.add(String.valueOf(item));
+    }
+    return List.copyOf(lines);
+  }
+
+  private void addShortForm(Document document, Object value, Fonts fonts) throws DocumentException {
+    List<String> lines = shortFormLines(value);
+    if (lines.isEmpty()) return;
+    section(document, "Independent short-form engine", fonts);
+    for (String line : lines) document.add(new Paragraph(clean(line), fonts.body));
+  }
+
+  private void addStoryPremise(Document document, Object value, Fonts fonts) throws DocumentException {
+    List<String> lines = storyPremiseLines(value);
+    if (lines.isEmpty()) return;
+    section(document, "Long-form story premise engine", fonts);
+    for (String line : lines) document.add(new Paragraph(clean(line), fonts.body));
+  }
+
   private void addPreRenderAssessment(Document document, QualityReportDto report, Fonts fonts)
       throws DocumentException {
     Map<String, Object> assessment = report.preRenderAssessment();
@@ -1066,6 +1152,8 @@ public class QualityReportPdfService {
       return;
     }
     section(document, "Pre-render creative readiness", fonts);
+    addStoryPremise(document, assessment.get("story_premise_engine"), fonts);
+    addShortForm(document, assessment.get("short_form_engine"), fonts);
 
     String grade = str(assessment.get("grade"));
     String readiness = str(assessment.get("readiness")).replace('_', ' ');

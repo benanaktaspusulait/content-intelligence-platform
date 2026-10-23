@@ -302,7 +302,15 @@ class PromptParser:
             if established:
                 return established
         # Look for explicit markers
-        main_match = re.search(r"(?:MAIN CHARACTER|CHARACTER(?:\s*/\s*CONTINUITY)?)\s*:?[ \t]*\n?[ \t]*([A-Z][a-zA-Z0-9_-]+)", text, re.IGNORECASE)
+        # A character declaration is a heading, never an inline phrase.  Without
+        # the line anchor, prose such as "one canonical character only: Kiko"
+        # made the word "Only" look like an actor and prevented source-bound
+        # action extraction for the actual named character.
+        main_match = re.search(
+            r"(?im)^[ \t]*(?:MAIN CHARACTER|CHARACTER(?:\s*/\s*CONTINUITY)?)[ \t]*"
+            r"(?::[ \t]*(?:\n[ \t]*)?|\n[ \t]*)([A-Z][a-zA-Z0-9_-]+)\b",
+            text,
+        )
         if main_match:
             return main_match.group(1).capitalize()
 

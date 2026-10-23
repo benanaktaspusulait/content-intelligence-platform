@@ -142,6 +142,8 @@
       <button *ngIf="validationRecordId" type="button" class="btn btn-primary" (click)="continueToRepair()">Continue to Repair</button>
       <button type="button" class="btn btn-outline-secondary" (click)="editAnalyzedPrompt()">Edit prompt and save a new revision</button>
       <app-canonical-findings [evaluation]="report" (correct)="editAnalyzedPrompt()"></app-canonical-findings>
+      <app-short-form-report [sourceText]="prompt" [assessment]="$any(report.preRenderAssessment)?.short_form_engine"></app-short-form-report>
+      <app-story-premise-report [premise]="$any(report.preRenderAssessment)?.story_premise_engine"></app-story-premise-report>
       <details *ngIf="report.parserWarnings.length || report.parserAssumptions.length"><summary>Extraction warnings and assumptions · not source-backed facts</summary><p *ngFor="let item of report.parserWarnings">{{ item }}</p><p *ngFor="let item of report.parserAssumptions">{{ item }}</p></details>
     </div>
   </section>

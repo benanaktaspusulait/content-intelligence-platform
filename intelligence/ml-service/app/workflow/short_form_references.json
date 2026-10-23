@@ -1,0 +1,44 @@
+[
+  {
+    "referenceId": "upside-chair-01",
+    "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/upside-chair-01.md",
+    "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+    "provenance": "Existing frozen real-production prompt; no new footage or performance verification",
+    "signature": {
+      "opening": [
+        "INVERSION"
+      ],
+      "progression": [
+        "GRAB_HOLD",
+        "INVERT",
+        "BREAK_GAZE",
+        "OBSERVE",
+        "BACKWARD_APPROACH"
+      ],
+      "ending": [
+        "INVERTED_RIDER",
+        "RECREATED_PROBLEM"
+      ]
+    }
+  },
+  {
+    "referenceId": "sticky-ball-01",
+    "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+    "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01",
+    "provenance": "Existing frozen real-production prompt; no new footage or performance verification",
+    "signature": {
+      "opening": [
+        "ADHESION"
+      ],
+      "progression": [
+        "PULL",
+        "GRAB_HOLD",
+        "SQUEEZE",
+        "THROW_TOSS"
+      ],
+      "ending": [
+        "NEW_ATTACHMENT_TARGET"
+      ]
+    }
+  }
+]

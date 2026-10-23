@@ -1,4 +1,6 @@
 import { CanonicalFindingsComponent } from '../canonical-findings.component';
+import { ShortFormReportComponent } from '../short-form-report.component';
+import { StoryPremiseReportComponent } from '../story-premise-report.component';
 import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
@@ -202,7 +204,7 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
 @Component({
   selector: 'app-quality-validator',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent, CanonicalFindingsComponent],
+  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent, CanonicalFindingsComponent, StoryPremiseReportComponent, ShortFormReportComponent],
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })

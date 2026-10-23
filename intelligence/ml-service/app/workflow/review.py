@@ -160,7 +160,7 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
     )
     return sha256(
         json.dumps(
-            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.12"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
+            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"shortFormEvaluation": True} if request.get("shortFormEvaluation") is True else {}), **({"storyType": request['storyType']} if request.get('storyType') else {}), **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.12"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
             sort_keys=True,
             ensure_ascii=False,
         )
@@ -1221,6 +1221,10 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     # semantic story gates explicitly enabled by the active ruleset.
     canonical_input = request if request.get("canonicalRulesetVersion") == "1.7" else {**request, "contentProfile": routing["contentProfile"]}
     canonical_evaluation = _run_canonical_evaluation(canonical_input)
+    from .story_premise_engine import assess as assess_premise
+    story_premise = assess_premise(request['prompt'], request)
+    from .short_form_engine import assess as assess_short_form
+    short_form = assess_short_form(request['prompt'], request)
     canonical_evaluation["contentProfile"] = routing["contentProfile"]
     if (request.get("canonicalRulesetVersion") or "1.12") != "1.7":
         canonical_evaluation["profileAdmissionVersion"] = PROFILE_ADMISSION_VERSION
@@ -1242,6 +1246,11 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         )
     )
     reasons: list[dict[str, Any]] = []
+
+    if story_premise and story_premise['status'] == 'STORY_REVISION_REQUIRED':
+        reasons.append({'code': 'CREATIVE_BLOCKER', 'source': 'STORY_PREMISE_ENGINE',
+                        'message': story_premise['humanReadableReport'],
+                        'references': [r['code'] for r in story_premise['findings'] if r['severity'] == 'STORY_REVISION_REQUIRED']})
 
     def pending(message: str, source: str) -> None:
         reasons.append(
@@ -1392,7 +1401,9 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     if execution_risk["findings"] and quality["recommendation"] == "PROCEED_NEXT_EVIDENCE_STEP":
         quality["recommendation"] = "MINIMAL_PROMPT_REPAIR"
     return {
-        "decisionPolicyVersion": DECISION_POLICY_VERSION,
+        "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"shortFormEvaluation": True} if request.get("shortFormEvaluation") is True else {}),
+        **({'storyPremiseEngine': story_premise} if story_premise else {}),
+        **({'shortFormEngine': short_form} if short_form else {}),
         "planQuality": quality,
         "executionRisk": execution_risk,
         "intentRequirements": intent,
@@ -1405,7 +1416,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
             "audienceDistributionOutcome": {"status": "NOT_JOINED"},
         },
         "canonicalRuleEvaluation": canonical_evaluation,
-        "operatorReport": operator_report(quality, execution_risk),
+        "operatorReport": operator_report(quality, execution_risk) + ([{'label': 'SHORT FORM', 'text': short_form['humanReadableReport']}] if short_form else []) + ([{'label': 'STORY PREMISE', 'text': story_premise['humanReadableReport']}] if story_premise else []),
         "workflowVersion": VERSION,
         "bindingHash": sha256(
             binding_fingerprint(request) + json.dumps(generation.get("capabilityProvenance"), sort_keys=True)

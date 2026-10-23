@@ -3,6 +3,8 @@ package com.pompomhills.intelligence.content;
 import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
 import com.pompomhills.intelligence.video.api.VideoDtos.PromptFile;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HexFormat;
@@ -341,10 +343,13 @@ public class ContentWorkspaceController {
       roleSource =
           jdbc.sql(
                   "SELECT payload->'result'->>'prompt' prompt, "
+                      + "payload->>'rejectedProviderResponse' rejected_response, "
                       + "COALESCE(payload->'result'->'productionPlan'->>'promptTextEdited','false')='true' edited "
                       + "FROM post_family_workflow_events WHERE id=:id AND kind='CREATIVE_ROLE' AND payload->>'role'='BUILD_PROMPT'")
               .param("id", roleId)
-              .query((rs, ignored) -> new CreativePromptSource(rs.getString("prompt"), rs.getBoolean("edited")))
+              .query((rs, ignored) -> new CreativePromptSource(
+                  recoveredRejectedPrompt(rs.getString("prompt"), rs.getString("rejected_response")),
+                  rs.getBoolean("edited")))
               .optional()
               .filter(value -> value.rawText() != null && !value.rawText().isBlank())
               .orElseThrow(() -> new IllegalArgumentException("Draft provenance requires a saved BUILD_PROMPT record"));
@@ -676,6 +681,28 @@ public class ContentWorkspaceController {
   }
 
   private record CreativePromptSource(String rawText, boolean operatorEdited) {}
+
+  /** Reads the immutable provider receipt when a rejected BUILD_PROMPT has no canonical result. */
+  private static String recoveredRejectedPrompt(String savedPrompt, String rejectedResponse) {
+    if (savedPrompt != null && !savedPrompt.isBlank()) return savedPrompt;
+    if (rejectedResponse == null || rejectedResponse.isBlank()) return "";
+    try {
+      var json = new ObjectMapper();
+      Map<String, Object> response = json.readValue(rejectedResponse, new TypeReference<>() {});
+      Object promptValue = response.get("prompt");
+      if (!(promptValue instanceof Map<?, ?> prompt) || prompt.isEmpty()) return "";
+      var text = new StringBuilder();
+      for (var section : prompt.entrySet()) {
+        if (text.length() > 0) text.append("\n\n");
+        text.append(section.getKey()).append("\n");
+        Object value = section.getValue();
+        text.append(value instanceof String ? value : json.writeValueAsString(value));
+      }
+      return text.toString().trim();
+    } catch (Exception ignored) {
+      return "";
+    }
+  }
 
   public record CreatePromptRequest(
       String rawText,

@@ -311,7 +311,7 @@ def evaluate_story_candidate(text: str, context: dict[str, Any], candidate_id: s
         'message': 'Pacing and beat timing cannot be assessed without a production plan.',
     })
 
-    return {
+    result = {
         'candidateId': candidate_id,
         'fingerprint': ev['fingerprint'],
         'goalMotivationGate': goal_gate,
@@ -320,6 +320,23 @@ def evaluate_story_candidate(text: str, context: dict[str, Any], candidate_id: s
         'unknown': unknown,
         'evidence': ev,
     }
+    from .story_premise_engine import assess as assess_premise
+    premise = assess_premise(text, context)
+    if premise:
+        result['storyPremiseEngine'] = premise
+        if premise['status'] == 'STORY_REVISION_REQUIRED':
+            risks.append({'dimension': 'storyPremise', 'family': 'concept_strength',
+                          'outcome': 'FAIL', 'severity': 'BLOCKING',
+                          'message': premise['humanReadableReport']})
+    from .short_form_engine import assess as assess_short_form
+    short_form = assess_short_form(text, context)
+    if short_form:
+        result['shortFormEngine'] = short_form
+        if short_form['status'] in {'REVISION_REQUIRED', 'REJECT'}:
+            risks.append({'dimension': 'shortForm', 'family': 'concept_strength',
+                          'outcome': 'FAIL', 'severity': 'BLOCKING',
+                          'message': short_form['humanReadableReport'], 'evidence': short_form['findings']})
+    return result
 
 
 def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> dict[str, Any]:
@@ -499,6 +516,8 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
                 'structuralEvidence': {k: v for k, v in e.items() if not k.startswith('_')},
                 'preflight': pf,
                 'assessment': {
+                    **({'storyPremiseEngine': a['storyPremiseEngine']} if a.get('storyPremiseEngine') else {}),
+                    **({'shortFormEngine': a['shortFormEngine']} if a.get('shortFormEngine') else {}),
                     'candidateId': a['candidateId'],
                     'fingerprint': a['fingerprint'],
                     'strengths': a['strengths'],
@@ -516,7 +535,7 @@ def _recommend_candidate(assessments: list[dict[str, Any]], pairs: list[dict[str
     """Produce a deterministic preliminary recommendation from existing assessment evidence.
 
     Rules:
-    1. No numeric scores — only comparative evidence.
+    1. Short-form uses comparative evidence; long-form uses its separate premise screen.
     2. UNKNOWN does not count as FAIL.
     3. A candidate is preferred only when supported comparative evidence exists.
     4. If candidates are tied, report the tie.
@@ -537,6 +556,34 @@ def _recommend_candidate(assessments: list[dict[str, Any]], pairs: list[dict[str
             'stillUnknown': [],
             'isTied': False,
         }
+
+    # Long-form premise preference is an editorial comparison, never approval.
+    # Keep the legacy short-form comparator exactly as it was.
+    if any(a.get('shortFormEngine') for a in assessments):
+        eligible = [a for a in assessments if a.get('shortFormEngine', {}).get('status') in {'PASS', 'PASS_WITH_WARNINGS'}
+                    and not any(r.get('severity') in {'BLOCKING', 'BLOCKER', 'CRITICAL'} for r in a.get('risks', []))]
+        highest = max((a['shortFormEngine']['shortFormScore'] for a in eligible), default=None)
+        best = [a for a in eligible if a['shortFormEngine']['shortFormScore'] == highest]
+        return {'bestCandidateId': best[0]['candidateId'] if len(best) == 1 else None,
+                'reason': 'Independent short-form editorial comparison; ties/blocked candidates require review.',
+                'whyNot': [{'candidateId': a['candidateId'], 'reason': a['shortFormEngine']['humanReadableReport']}
+                           for a in assessments if a.get('shortFormEngine') and (len(best) != 1 or a['candidateId'] != best[0]['candidateId'])],
+                'stillUnknown': ['Rendered execution and audience response'], 'isTied': len(best) > 1,
+                'editorialOnly': True, 'renderAuthorized': False}
+    engines = [a.get('storyPremiseEngine') for a in assessments]
+    if any(engines):
+        eligible = [a for a in assessments if a.get('storyPremiseEngine', {}).get('status') in {'PASS', 'PASS_WITH_WARNINGS'}
+                    and not any(r.get('severity') in {'BLOCKING', 'BLOCKER', 'CRITICAL'} for r in a.get('risks', []))]
+        best_score = max((a['storyPremiseEngine']['score'] for a in eligible), default=None)
+        best = [a for a in eligible if a['storyPremiseEngine']['score'] == best_score]
+        selected = best[0]['candidateId'] if len(best) == 1 and all(engines) else None
+        return {'bestCandidateId': selected,
+                'reason': 'Prefer the supported active moral arc; canonical and visual gates remain pending.' if selected else
+                          'No unique eligible long-form premise; revise missing arcs or retain the tie.',
+                'whyNot': [{'candidateId': a['candidateId'], 'candidateIndex': index + 1, 'reason': a['storyPremiseEngine']['humanReadableReport']}
+                           for index, a in enumerate(assessments) if a.get('storyPremiseEngine') and a['candidateId'] != selected],
+                'stillUnknown': sorted({r['dimension'] for a in assessments for r in a.get('unknown', [])}),
+                'isTied': len(best) > 1, 'editorialOnly': True, 'renderAuthorized': False}
 
     # Build per-candidate risk, strength, and unknown profiles
     candidate_risks: list[set[str]] = []

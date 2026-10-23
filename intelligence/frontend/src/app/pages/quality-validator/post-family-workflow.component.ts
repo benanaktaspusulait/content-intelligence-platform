@@ -1,4 +1,6 @@
 import { CanonicalFindingsComponent } from '../canonical-findings.component';
+import { ShortFormReportComponent } from '../short-form-report.component';
+import { StoryPremiseReportComponent } from '../story-premise-report.component';
 import { CommonModule } from '@angular/common';
 import { afterNextRender, ChangeDetectorRef, Component, ElementRef, EventEmitter, Injector, Input, Output, OnChanges, OnDestroy, QueryList, SimpleChanges, ViewChild, ViewChildren, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -11,8 +13,10 @@ import { GeneralProducibilityComponent } from './general-producibility.component
 @Component({
   selector: 'app-post-family-workflow',
   standalone: true,
-  imports: [CanonicalFindingsComponent, CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent, CpqOwnerPilotComponent],
+  imports: [CanonicalFindingsComponent, StoryPremiseReportComponent, ShortFormReportComponent, CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent, CpqOwnerPilotComponent],
   template: `
+  <app-short-form-report [sourceText]="prompt" [assessment]="review?.shortFormEngine"></app-short-form-report>
+  <app-story-premise-report [premise]="review?.storyPremiseEngine"></app-story-premise-report>
   <section *ngIf="review?.canonicalRuleEvaluation"><app-canonical-findings [evaluation]="review.canonicalRuleEvaluation" [visualReviewUrl]="renderPreparationLink()" (correct)="openSourceEditor()"></app-canonical-findings></section>
   <p *ngIf="settingsSavedAt && contentProfile !== evaluationProfile" class="missing-state">Existing analysis remains linked to its recorded profile ({{ evaluationProfile }}). Selected profile {{ contentProfile }} has not been evaluated by that historical score; a new evaluation is required before dependent evidence can be reused.</p>
   <section *ngIf="activeStage === 4" class="workflow production-review" aria-label="Production review">

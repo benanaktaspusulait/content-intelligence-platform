@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 /** Append-only operational adapters over existing prompt, media and ML services. */
 @Service
 public class WorkflowService {
+  @Autowired(required=false) IdeaCandidateService ideaCandidates;
   @Autowired(required=false) private org.springframework.transaction.PlatformTransactionManager attemptTransactions;
   private static final org.slf4j.Logger attemptLog = org.slf4j.LoggerFactory.getLogger(WorkflowService.class);
   private static final String BUILD_PROMPT_CONTRACT_VERSION = "openart-production-prompt-v2";
@@ -1377,6 +1378,13 @@ public class WorkflowService {
           throw new IllegalArgumentException("Source analysis and essential events are required");
       }
     }
+    boolean nativeIdea = "IDEA".equals(role) && !String.valueOf(map(request.get("context")).getOrDefault("sourceIdeaDraftId", "")).isBlank();
+    if ("IDEA".equals(role) && map(request.get("context")).get("requestedAlternativeCount") instanceof Number n && n.intValue() > 1 && !nativeIdea)
+      throw new IllegalArgumentException("Save an IDEA draft before requesting a native IDEA batch");
+    if (nativeIdea) {
+      if (ideaCandidates == null) throw new IllegalStateException("Native IDEA persistence unavailable; provider dispatch blocked");
+      ideaCandidates.validateSource(request);
+    }
     if ("STORY".equals(role)) {
       videos.requirePromptWorkspace(String.valueOf(map(request.get("context")).getOrDefault("workspacePath", "")));
     }
@@ -1436,6 +1444,10 @@ public class WorkflowService {
     // configuration form the request identity; a changed budget must never
     // turn the same request into another paid provider call.
     String requestFingerprint = creativeRoleFingerprint(role, verifiedRequest);
+    if (nativeIdea) {
+      if (!ideaCandidates.reserve(requestFingerprint, verifiedRequest)) return ideaCandidates.recover(requestFingerprint);
+      context.put("attemptId", requestFingerprint);
+    }
     if ("BUILD_PROMPT".equals(role) || "PROMPT_OPTIMIZATION".equals(role)) {
       // Serialize identical requests across tabs/processes while the provider
       // call is in progress. The first transaction commits the durable result;
@@ -1517,8 +1529,13 @@ public class WorkflowService {
         // Preserve the provider error as the user-facing outcome even if the
         // diagnostic append itself cannot be written.
       }
+      if (nativeIdea) ideaCandidates.receipt(requestFingerprint, failed);
       if ("PROMPT_OPTIMIZATION".equals(role)) return failed;
       throw new IllegalStateException("Creative role request failed: " + detail, error);
+    }
+    if (nativeIdea) {
+      var receipt = ideaCandidates.receipt(requestFingerprint, workflowResponse);
+      return ideaCandidates.materialize(requestFingerprint, verifiedRequest, receipt);
     }
     var result = new LinkedHashMap<>(workflowResponse);
     result.put("retrievedLessons", lessons);
@@ -1565,6 +1582,12 @@ public class WorkflowService {
       canonical.put("role", role);
       canonical.put("text", request.get("text"));
       canonical.put("context", request.get("context"));
+      if ("IDEA".equals(role) && map(request.get("context")).containsKey("sourceIdeaDraftId")) {
+        var c = map(request.get("context"));
+        var stable = new LinkedHashMap<String,Object>();
+        for (String field : List.of("sourceIdeaDraftId","sourceIdeaRevision","requestedAlternativeCount","targetConfiguration","mainCharacterId","storyModel")) stable.put(field,c.get(field));
+        canonical.put("context", stable);
+      }
       if ("BUILD_PROMPT".equals(role)) {
         canonical.put("builderContractVersion", BUILD_PROMPT_CONTRACT_VERSION);
         canonical.put("builderModel", buildPromptModel == null ? "" : buildPromptModel);
@@ -1572,7 +1595,7 @@ public class WorkflowService {
       if ("PROMPT_OPTIMIZATION".equals(role))
         canonical.put("optimizationModel", System.getenv().getOrDefault("WORKFLOW_PROMPT_OPTIMIZATION_MODEL", ""));
       return HexFormat.of().formatHex(
-          MessageDigest.getInstance("SHA-256").digest(json.writeValueAsBytes(canonical)));
+          MessageDigest.getInstance("SHA-256").digest("IDEA".equals(role) ? json.writer().with(com.fasterxml.jackson.databind.SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS).writeValueAsBytes(canonical) : json.writeValueAsBytes(canonical)));
     } catch (Exception error) {
       throw new IllegalStateException("Creative role request identity unavailable", error);
     }
