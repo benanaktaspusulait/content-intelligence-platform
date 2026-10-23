@@ -14,6 +14,8 @@ from app.config import settings
 from .feedback import compare_cohort, match_publication, measure_observation, review_render
 from .repair import repair_prompt
 from .review import review_prompt
+from .concept_ranking import ConceptBatchRequest, ConceptInput
+from .short_concept_generation import GenerationRequest
 from .start_frame_generation import generate_start_frame
 
 router = APIRouter(prefix="/api/v1/workflow", tags=["post-family-workflow"])
@@ -95,6 +97,34 @@ def evaluate_short_form(request: ShortFormRequest) -> dict[str, Any]:
     """Explicit new scoring surface: offline, no canonical/provider execution."""
     from .short_form_engine import assess
     return assess(request.text, {**request.model_dump(exclude={'text'}), 'shortFormEvaluation': True})
+
+
+
+@router.post('/concepts/validate')
+def validate_concept_candidate(request: ConceptInput) -> dict[str, Any]:
+    from .concept_ranking import rank_concepts
+    try:
+        return rank_concepts([request])
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+
+
+@router.post('/concepts/rank')
+def rank_concept_candidates(request: ConceptBatchRequest) -> dict[str, Any]:
+    from .concept_ranking import rank_concepts
+    try:
+        return rank_concepts(request.candidates)
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+
+
+@router.post('/concepts/generate')
+def generate_short_concept_candidates(request: GenerationRequest) -> dict[str, Any]:
+    from .short_concept_generation import generate_and_rank
+    try:
+        return generate_and_rank(request)
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
 
 
 class SourcePlanRequest(BaseModel):

@@ -2,6 +2,7 @@ import { Routes, Router } from '@angular/router';
 import { inject } from '@angular/core';
 
 export const routes: Routes = [
+  { path: 'concept-ranking', loadComponent: () => import('./pages/concept-ranking.page').then(m => m.ConceptRankingPage), title: 'Concept Ranking · Pompom CI' },
   { path: 'overview', loadComponent: () => import('./pages/overview.page').then((m) => m.OverviewPage), title: 'Overview · Pompom CI' },
   { path: 'render-preparation', loadComponent: () => import('./pages/render-preparation.page').then(m => m.RenderPreparationPage), title: 'Render Preparation · Pompom CI' },
   { path: 'render-jobs', loadComponent: () => import('./pages/render-dashboard.page').then(m => m.RenderDashboardPage), title: 'Render Jobs · Pompom CI' },

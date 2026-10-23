@@ -1,0 +1,731 @@
+{
+  "version": "short-concept-engine-catalog-v1",
+  "provenance": "LOCAL_AUTHORED_CAUSAL_BLUEPRINTS_NOT_PRODUCTION_OR_AUDIENCE_RESULTS",
+  "recipes": [
+    {
+      "id": "runaway-lid",
+      "title": "Runaway Lid",
+      "engineFamily": "containment_failure",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "objectCategory": "container",
+      "impossibleRule": "The lid springs open whenever closing pressure is released.",
+      "goalRuleRelationship": "Releasing the lid directly prevents keeping the container closed.",
+      "interactionType": "RELEASE_PRESSURE",
+      "trigger": "RELEASE_PRESSURE",
+      "transformationDirection": "REOPEN",
+      "escalationTopology": "CONSTRAINT_LADDER",
+      "resolutionTopology": "FAKE_SUCCESS_BROKEN",
+      "finalSilhouetteTopology": "CONTAINER_BECOMES_USER_TRAP",
+      "loopTopology": "RECREATED_PROBLEM",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to close the lid, but it pops open against both palms. Eyes widen at the visible gap.",
+        "{character} pushes harder with both hands; the lid springs open and pins the forearms against the table.",
+        "{character} wedges the lid underneath an elbow; it pops open and lifts the elbow higher.",
+        "{character} changes to leaning sideways across the lid; it stays normal under broad body pressure.",
+        "{character} finally closes the lid and relaxes. It pops open again and scoops the character into the opening."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "spoon-outgrows-breakfast",
+      "title": "Spoon Outgrows Breakfast",
+      "engineFamily": "progressive_growth",
+      "everydayGoal": "eat a snack",
+      "primaryObject": "spoon",
+      "objectCategory": "eating_tool",
+      "impossibleRule": "Every lift makes the spoon grow larger.",
+      "goalRuleRelationship": "Lifting a bite makes the eating tool too large to bring to the mouth.",
+      "interactionType": "OBJECT_LIFT",
+      "trigger": "OBJECT_LIFT",
+      "transformationDirection": "INCREASE",
+      "escalationTopology": "MAGNITUDE_RATCHET",
+      "resolutionTopology": "LOGICAL_EXTREME",
+      "finalSilhouetteTopology": "TOOL_DOMINATES_USER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to eat a snack, but the spoon is already huge beside the mouth. Eyes widen.",
+        "{character} lifts the spoon with both hands; it grows bigger and blocks the bowl.",
+        "{character} braces the spoon against the table and lifts from underneath; it grows larger across the table.",
+        "{character} changes to lifting with a shoulder; the spoon grows bigger and pins the character beside the bowl.",
+        "The giant spoon fills the frame. {character} is seated inside its scoop beside the tiny snack, unable to take a bite."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "brush-shrinks-away",
+      "title": "Brush Shrinks Away",
+      "engineFamily": "progressive_shrinking",
+      "everydayGoal": "brush hair",
+      "primaryObject": "brush",
+      "objectCategory": "grooming_tool",
+      "impossibleRule": "The brush becomes smaller whenever the character changes gripping strategy.",
+      "goalRuleRelationship": "Every new way of holding the brush makes it less able to reach the hair.",
+      "interactionType": "STRATEGY_CHANGE",
+      "trigger": "STRATEGY_CHANGE",
+      "transformationDirection": "DECREASE",
+      "escalationTopology": "CAPABILITY_LOSS",
+      "resolutionTopology": "GOAL_REVERSAL",
+      "finalSilhouetteTopology": "USER_GROOMS_TOOL",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to brush hair with a visibly tiny brush that barely reaches one curl. Eyes narrow at the size mismatch.",
+        "{character} switches to a broad palm grip; the brush shrinks and slips through the palm.",
+        "{character} braces it against the shoulder instead; it shrinks to the width of a single curl.",
+        "{character} brings the hair toward the brush rather than moving the brush; the final grip change shrinks it again.",
+        "The brush is now a single little bristle. {character} uses a broad curl to brush the brush, reversing who is grooming whom."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "drawer-repels-the-pull",
+      "title": "Drawer Repels The Pull",
+      "engineFamily": "repulsion",
+      "everydayGoal": "open the drawer",
+      "primaryObject": "drawer",
+      "objectCategory": "storage",
+      "impossibleRule": "Pulling the handle drives the drawer away from the hands.",
+      "goalRuleRelationship": "The opening action moves the drawer farther inside the cabinet.",
+      "interactionType": "PULL_CONTACT",
+      "trigger": "PULL_CONTACT",
+      "transformationDirection": "INWARD",
+      "escalationTopology": "COUNTER_FORCE",
+      "resolutionTopology": "FAKE_SUCCESS_BROKEN",
+      "finalSilhouetteTopology": "USER_DRAWN_INTO_CABINET",
+      "loopTopology": "RECREATED_PROBLEM",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to open the drawer, but it slides back into the cabinet as the handle is pulled. Eyes widen.",
+        "{character} pulls with both hands; the drawer slides back farther and draws both arms straight.",
+        "{character} pushes the handle with a forearm instead; the drawer reverses direction and opens toward the body.",
+        "{character} braces the open drawer with a shoulder and changes position sideways to reach inside.",
+        "{character} finally opens it and relaxes. The drawer slides back again, pulling the character into a broad crouch against the cabinet."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "chair-marks-its-spot",
+      "title": "Chair Marks Its Spot",
+      "engineFamily": "position_reset",
+      "everydayGoal": "sit down",
+      "primaryObject": "chair",
+      "objectCategory": "seating",
+      "impossibleRule": "Whenever a foot changes position, the chair slides back to its first spot.",
+      "goalRuleRelationship": "Approaching the seat resets it out from under the sitting movement.",
+      "interactionType": "FOOTSTEP",
+      "trigger": "FOOTSTEP",
+      "transformationDirection": "RETURN",
+      "escalationTopology": "DISTANCE_RESET",
+      "resolutionTopology": "FAKE_SUCCESS_BROKEN",
+      "finalSilhouetteTopology": "SEAT_BEHIND_USER_AGAIN",
+      "loopTopology": "RECREATED_PROBLEM",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to sit, but the chair slides back across the floor before the body reaches the seat. Eyes widen.",
+        "{character} pushes the chair closer with both hands; one step makes it slide back to its marked starting place.",
+        "{character} holds the chair underneath the body; shifting a foot makes it slide back and leaves the body crouched.",
+        "{character} changes to reaching backward while keeping both feet planted; the chair stays normal under the hands.",
+        "{character} finally sits and relaxes. One foot lifts and the chair slides back again, recreating the opening crouch."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "brush-will-not-let-go",
+      "title": "Brush Will Not Let Go",
+      "engineFamily": "adhesion",
+      "everydayGoal": "brush hair",
+      "primaryObject": "brush",
+      "objectCategory": "grooming_tool",
+      "impossibleRule": "Each attempted brush stroke sticks another part of the brush to the hair.",
+      "goalRuleRelationship": "The grooming stroke progressively fixes the tool in place instead of moving through the hair.",
+      "interactionType": "GROOMING_CONTACT",
+      "trigger": "GROOMING_CONTACT",
+      "transformationDirection": "SPREAD",
+      "escalationTopology": "CONTACT_SPREAD",
+      "resolutionTopology": "TRANSFER_PROBLEM",
+      "finalSilhouetteTopology": "TOOL_FIXED_TO_FOREHEAD",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to brush hair, but the brush is stuck halfway through a curl. Eyes widen.",
+        "{character} pulls with both hands; more of the brush sticks along the curl.",
+        "{character} pushes from underneath; the hair bends into a broad arch but the brush stays stuck.",
+        "{character} braces the handle against the shoulder and rolls sideways; the brush comes free while the curl springs away.",
+        "The released brush lands across the forehead and sticks there. {character} can no longer move the grooming tool at all."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "wall-borrows-the-stretch",
+      "title": "Wall Borrows The Stretch",
+      "engineFamily": "elastic_extension",
+      "everydayGoal": "retrieve the ball",
+      "primaryObject": "ball",
+      "objectCategory": "play_equipment",
+      "impossibleRule": "A stuck ball stretches the surface supporting it whenever tension changes direction.",
+      "goalRuleRelationship": "Pulling the ball free deforms its support instead of releasing the ball.",
+      "interactionType": "CHANGE_PULL_DIRECTION",
+      "trigger": "CHANGE_PULL_DIRECTION",
+      "transformationDirection": "STRETCH",
+      "escalationTopology": "DEFORMATION_TRANSFER",
+      "resolutionTopology": "TRANSFER_PROBLEM",
+      "finalSilhouetteTopology": "FACE_BECOMES_ANCHOR",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to retrieve the ball, but it is stuck flat against a low play wall. Eyes widen.",
+        "{character} pulls with both hands; the wall flexes into a shallow curve while the ball stays stuck.",
+        "{character} pushes sideways instead; the flexible wall bends underneath the ball and blocks the next reach.",
+        "{character} holds the wall steady with a shoulder and changes the pull direction upward; the ball finally releases.",
+        "The ball rebounds onto the cheek and sticks there; the cheek stretches with the next broad pull instead of the wall."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "soap-lends-its-stick",
+      "title": "Soap Lends Its Stick",
+      "engineFamily": "property_transfer",
+      "everydayGoal": "wash hands",
+      "primaryObject": "soap",
+      "objectCategory": "washing",
+      "impossibleRule": "Stickiness transfers from the soap to whatever it last touches.",
+      "goalRuleRelationship": "Trying to remove the soap shifts the sticking problem onto the next contact surface.",
+      "interactionType": "CONTACT_RELEASE",
+      "trigger": "CONTACT_RELEASE",
+      "transformationDirection": "TRANSFER",
+      "escalationTopology": "PROPERTY_HANDOFF",
+      "resolutionTopology": "REINTERPRETATION",
+      "finalSilhouetteTopology": "CLEAN_OBJECT_TRAPS_USER",
+      "loopTopology": "OPTIONAL_REINTERPRETATION",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to wash hands, but the soap sticks between both palms. Eyes widen.",
+        "{character} pushes the soap against the broad sink rim; it releases the palms but sticks to the rim.",
+        "{character} lifts it with a forearm; the rim releases and the soap sticks to the sleeve.",
+        "{character} changes to rolling the soap onto the dry counter; the sleeve releases and the soap stays normal.",
+        "{character} reveals the clean palms and rests a cheek on one. The cheek sticks to the palm: the last contact, not the soap, has been carrying the rule."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "backward-brush-stroke",
+      "title": "Backward Brush Stroke",
+      "engineFamily": "opposite_effect",
+      "everydayGoal": "brush hair",
+      "primaryObject": "brush",
+      "objectCategory": "grooming_tool",
+      "impossibleRule": "Every forward brush stroke makes the brush slide backward over the same path.",
+      "goalRuleRelationship": "The intended grooming movement undoes its own progress.",
+      "interactionType": "FORWARD_STROKE",
+      "trigger": "FORWARD_STROKE",
+      "transformationDirection": "REVERSE",
+      "escalationTopology": "UNDOING_PROGRESS",
+      "resolutionTopology": "FAKE_SUCCESS_BROKEN",
+      "finalSilhouetteTopology": "GROOMING_PATH_RECREATED",
+      "loopTopology": "RECREATED_PROBLEM",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to brush hair, but the brush slides back toward the first curl during the stroke. Eyes widen.",
+        "{character} pushes harder with both hands; the brush slides back and gathers a larger curl in front of it.",
+        "{character} pulls the brush from underneath instead; it reverses direction and piles the curl over the forehead.",
+        "{character} changes to moving the head while holding the brush still; the brush stays normal and the curl clears.",
+        "{character} finally brushes the hair and relaxes. The brush slides back again, drawing the same curl over the eyes."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "chair-answers-the-armrest",
+      "title": "Chair Answers The Armrest",
+      "engineFamily": "rotation_reversal",
+      "everydayGoal": "sit down",
+      "primaryObject": "chair",
+      "objectCategory": "seating",
+      "impossibleRule": "Pressing one side of the chair flips that side upward.",
+      "goalRuleRelationship": "Using the armrest for sitting support turns the seat away from the body.",
+      "interactionType": "SIDE_PRESSURE",
+      "trigger": "SIDE_PRESSURE",
+      "transformationDirection": "INVERT",
+      "escalationTopology": "LEVER_REVERSAL",
+      "resolutionTopology": "ATTEMPT_BECOMES_PROBLEM",
+      "finalSilhouetteTopology": "INVERTED_RIDER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to sit on a visibly upside-down chair while pressing one armrest. Eyes widen at the raised legs.",
+        "{character} pushes the opposite armrest with both hands; the chair flips upright but lifts the first hand.",
+        "{character} clamps the chair between broad knees; the seat flips sideways and traps the sitting position in a crouch.",
+        "{character} lifts the seat from underneath instead; it stays normal while the body moves over it.",
+        "{character} finally sits and rests an arm on the armrest. The entire chair flips upside down with the character on it."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "chair-refuses-the-weight",
+      "title": "Chair Refuses The Weight",
+      "engineFamily": "balance_contradiction",
+      "everydayGoal": "sit down",
+      "primaryObject": "chair",
+      "objectCategory": "seating",
+      "impossibleRule": "The loaded side of the seat rises instead of sinking.",
+      "goalRuleRelationship": "Putting weight onto the seat tips the usable surface away.",
+      "interactionType": "WEIGHT_SHIFT",
+      "trigger": "WEIGHT_SHIFT",
+      "transformationDirection": "RISE",
+      "escalationTopology": "BALANCE_RATCHET",
+      "resolutionTopology": "GOAL_REVERSAL",
+      "finalSilhouetteTopology": "USER_SUPPORTS_SEAT",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to sit on a chair whose loaded seat edge is already raised against the body.",
+        "{character} leans farther onto the seat; that edge rises higher and slides the body to the opposite side.",
+        "{character} shifts to the other side; the new loaded edge rises and leaves the seat nearly vertical.",
+        "{character} changes to holding the seat down with both forearms while lowering onto the floor.",
+        "The chair balances above the seated character, supported by the character rather than supporting the character."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "cup-will-not-be-heavy",
+      "title": "Cup Will Not Be Heavy",
+      "engineFamily": "weight_contradiction",
+      "everydayGoal": "carry a cup",
+      "primaryObject": "cup",
+      "objectCategory": "drinkware",
+      "impossibleRule": "The cup rises whenever the character tries to bear its weight.",
+      "goalRuleRelationship": "Carrying support makes the cup lift away from the carrying surface.",
+      "interactionType": "LOAD_SUPPORT",
+      "trigger": "LOAD_SUPPORT",
+      "transformationDirection": "UPWARD",
+      "escalationTopology": "LIFT_RATCHET",
+      "resolutionTopology": "LOGICAL_EXTREME",
+      "finalSilhouetteTopology": "TOOL_CARRIES_USER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to carry a cup, but it floats above the open palms instead of resting on them.",
+        "{character} cups both hands underneath it; the cup floats higher and straightens the arms.",
+        "{character} changes to supporting it against a shoulder; the cup rises and lifts the shoulder.",
+        "{character} crouches below it with both arms broad around its base; the upward force straightens the crouch.",
+        "The cup floats overhead with the character suspended underneath, visibly carrying the carrier."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "drawer-keeps-the-echo",
+      "title": "Drawer Keeps The Echo",
+      "engineFamily": "delayed_response",
+      "everydayGoal": "open the drawer",
+      "primaryObject": "drawer",
+      "objectCategory": "storage",
+      "impossibleRule": "Every handle movement is replayed by the drawer after the hand stops.",
+      "goalRuleRelationship": "A delayed closing echo interrupts the next opening attempt.",
+      "interactionType": "STOP_MOVEMENT",
+      "trigger": "STOP_MOVEMENT",
+      "transformationDirection": "DELAY",
+      "escalationTopology": "DELAYED_ECHO",
+      "resolutionTopology": "FAKE_SUCCESS_BROKEN",
+      "finalSilhouetteTopology": "USER_OUTPACED_BY_OLD_ACTION",
+      "loopTopology": "RECREATED_PROBLEM",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to open the drawer, but it is already closing in response to the previous pull. Eyes follow the delayed movement.",
+        "{character} pulls farther, stops, and waits; the drawer repeats the larger movement after the hand leaves.",
+        "{character} changes to a short push; the later push response closes the opening against the forearm.",
+        "{character} holds still until every queued movement finishes, then opens the drawer with one broad pull.",
+        "The character finally reaches inside, but that last pull replays and moves the drawer past the reaching body."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "brush-keeps-the-second-stroke",
+      "title": "Brush Keeps The Second Stroke",
+      "engineFamily": "action_duplication",
+      "everydayGoal": "brush hair",
+      "primaryObject": "brush",
+      "objectCategory": "grooming_tool",
+      "impossibleRule": "Each brush stroke repeats itself once after the tool is lifted away.",
+      "goalRuleRelationship": "A second automatic stroke ruins the position the first stroke established.",
+      "interactionType": "END_STROKE",
+      "trigger": "END_STROKE",
+      "transformationDirection": "DUPLICATE_ACTION",
+      "escalationTopology": "ACTION_ECHO",
+      "resolutionTopology": "ATTEMPT_BECOMES_PROBLEM",
+      "finalSilhouetteTopology": "CURL_BECOMES_TOOL_HANDLE",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to brush hair, but the lifted brush is already making an extra stroke without a hand on it.",
+        "{character} makes one short stroke; the repeated stroke sweeps a curl over the eyes.",
+        "{character} changes to holding the brush against the shoulder; its extra stroke moves the shoulder and lifts the curl.",
+        "{character} uses the repeated motion to bring the curl neatly backward and lets go.",
+        "The final repeated stroke wraps the curl around the handle, leaving the hair holding the brush instead of the hand."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "shoe-keeps-changing-address",
+      "title": "Shoe Keeps Changing Address",
+      "engineFamily": "disappearance_reappearance",
+      "everydayGoal": "put a shoe on",
+      "primaryObject": "shoe",
+      "objectCategory": "clothing",
+      "impossibleRule": "The shoe vanishes from the approaching foot and reappears above it.",
+      "goalRuleRelationship": "Every attempt to place the foot into the shoe relocates the shoe beyond the foot.",
+      "interactionType": "FOOT_APPROACH",
+      "trigger": "FOOT_APPROACH",
+      "transformationDirection": "RELOCATE",
+      "escalationTopology": "POSITION_LEAP",
+      "resolutionTopology": "GOAL_REVERSAL",
+      "finalSilhouetteTopology": "SHOE_WORN_ON_HEAD",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to put a shoe on while the shoe is visibly reappearing above the raised foot.",
+        "{character} lifts the foot higher; the shoe disappears and reappears on the bent knee.",
+        "{character} changes to lowering the knee toward the floor; the shoe reappears on the shoulder.",
+        "{character} crouches with the foot beside the shoulder, bringing foot and shoe nearly together.",
+        "The shoe reappears on top of the head as the foot arrives, completing a hat-like silhouette instead of footwear."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "lid-folds-the-wrong-dimension",
+      "title": "Lid Folds The Wrong Dimension",
+      "engineFamily": "progressive_transformation",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "objectCategory": "container",
+      "impossibleRule": "Pressure folds the lid into deeper accordion pleats instead of flattening it.",
+      "goalRuleRelationship": "Closing pressure increases the height of the open gap.",
+      "interactionType": "CLOSING_PRESSURE",
+      "trigger": "CLOSING_PRESSURE",
+      "transformationDirection": "FOLD",
+      "escalationTopology": "TOPOLOGY_FOLD",
+      "resolutionTopology": "ATTEMPT_BECOMES_PROBLEM",
+      "finalSilhouetteTopology": "LID_BECOMES_TOWER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to close the lid, but its accordion pleats already stand above the container.",
+        "{character} pushes with both palms; a deeper pleat raises the center higher.",
+        "{character} changes to leaning an elbow across the lid; the pleat shifts underneath the elbow and lifts the arm.",
+        "{character} presses the far edge with a shoulder, leaving one last pleat under the body.",
+        "The final closing press stacks the lid into a tall accordion under the character, turning the closing effort into a perch."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "box-passes-the-buckle",
+      "title": "Box Passes The Buckle",
+      "engineFamily": "chain_reaction",
+      "everydayGoal": "put the box away",
+      "primaryObject": "box",
+      "objectCategory": "storage",
+      "impossibleRule": "Each flattened side pushes the next side outward.",
+      "goalRuleRelationship": "Making the box fit in one direction makes it fail to fit in the next.",
+      "interactionType": "SIDE_COMPRESSION",
+      "trigger": "SIDE_COMPRESSION",
+      "transformationDirection": "PROPAGATE",
+      "escalationTopology": "CYCLIC_PROPAGATION",
+      "resolutionTopology": "FAKE_SUCCESS_BROKEN",
+      "finalSilhouetteTopology": "USER_ENCIRCLED_BY_BOX",
+      "loopTopology": "RECREATED_PROBLEM",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to put the box away, but squeezing one side makes the next side bulge against the shelf.",
+        "{character} pushes the bulge flat with both hands; the next side bows outward and blocks the shelf.",
+        "{character} changes to a broad shoulder squeeze; the bulge travels around the box and lifts the opposite edge.",
+        "{character} braces the last edge against the shelf and brings the box nearly inside.",
+        "The last squeeze sends the bulge back to the first side, enclosing the broad arms in the expanded box instead of storing it."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "drawer-borrows-the-room",
+      "title": "Drawer Borrows The Room",
+      "engineFamily": "elastic_containment",
+      "everydayGoal": "open the drawer",
+      "primaryObject": "drawer",
+      "objectCategory": "storage",
+      "impossibleRule": "The drawer front stretches outward while its back stays fixed.",
+      "goalRuleRelationship": "Pulling makes a longer empty reach instead of bringing the contents closer.",
+      "interactionType": "PULL_EXTENSION",
+      "trigger": "PULL_EXTENSION",
+      "transformationDirection": "STRETCH",
+      "escalationTopology": "DISTANCE_EXTENSION",
+      "resolutionTopology": "LOGICAL_EXTREME",
+      "finalSilhouetteTopology": "DRAWER_SURROUNDS_USER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to open the drawer, but the front stretches outward like a long sleeve while the back stays stuck.",
+        "{character} pulls with both hands; the stretched drawer reaches across the knees.",
+        "{character} pushes from underneath instead; the drawer flexes upward and blocks the torso.",
+        "{character} braces its front against the floor and changes to leaning into the opening.",
+        "The drawer stretches around the character and sticks to the cheek at its rim, making the reaching body the new contents."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "cloth-returns-the-dust",
+      "title": "Cloth Returns The Dust",
+      "engineFamily": "position_transfer",
+      "everydayGoal": "wipe the table",
+      "primaryObject": "cloth",
+      "objectCategory": "cleaning",
+      "impossibleRule": "Every wipe relocates the same dust patch onto the last clean contact area.",
+      "goalRuleRelationship": "Cleaning a patch moves the obstacle onto the next intended wiping surface.",
+      "interactionType": "WIPE_CONTACT",
+      "trigger": "WIPE_CONTACT",
+      "transformationDirection": "TRANSFER",
+      "escalationTopology": "OBSTACLE_TRANSFER",
+      "resolutionTopology": "REINTERPRETATION",
+      "finalSilhouetteTopology": "CLEANER_BECOMES_DIRTY_SURFACE",
+      "loopTopology": "OPTIONAL_REINTERPRETATION",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to wipe the table while the same broad dust patch is already appearing beneath the clean palm.",
+        "{character} wipes with both hands on the cloth; the patch relocates underneath the elbows.",
+        "{character} changes to leaning sideways and wiping with a broad forearm; the dust relocates onto the sleeve.",
+        "{character} lifts every other contact point and makes one final sweep over the table.",
+        "The clean table reveals the full dust patch across the character, who has become the surface being cleaned."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "hanger-repels-the-coat",
+      "title": "Hanger Repels The Coat",
+      "engineFamily": "object_refuses_use",
+      "everydayGoal": "hang a coat",
+      "primaryObject": "hanger",
+      "objectCategory": "clothing",
+      "impossibleRule": "The hanger opens its arms outward whenever the coat settles onto it.",
+      "goalRuleRelationship": "Settling the coat removes the support that would hold it up.",
+      "interactionType": "LOAD_SETTLING",
+      "trigger": "LOAD_SETTLING",
+      "transformationDirection": "OPEN",
+      "escalationTopology": "SUPPORT_LOSS",
+      "resolutionTopology": "GOAL_REVERSAL",
+      "finalSilhouetteTopology": "USER_BECOMES_HANGER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to hang a coat on a hanger whose arms are already spread flat away from the coat.",
+        "{character} pulls the arms back together; the settling coat spreads them wider.",
+        "{character} changes to bracing the hanger against the chest; the coat settles and lifts both arms outward.",
+        "{character} holds the hanger still with a shoulder and spreads the coat across the broad forearms.",
+        "The coat hangs neatly across the character as the empty hanger falls free: the character has become the hanger."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "blanket-reverses-the-fold",
+      "title": "Blanket Reverses The Fold",
+      "engineFamily": "fold_reversal",
+      "everydayGoal": "fold a blanket",
+      "primaryObject": "blanket",
+      "objectCategory": "textile",
+      "impossibleRule": "Each fold unfolds the opposite edge by the same distance.",
+      "goalRuleRelationship": "Reducing one side of the blanket extends the other side out of reach.",
+      "interactionType": "EDGE_FOLD",
+      "trigger": "EDGE_FOLD",
+      "transformationDirection": "UNFOLD",
+      "escalationTopology": "OPPOSITE_EDGE_UNDO",
+      "resolutionTopology": "LOGICAL_EXTREME",
+      "finalSilhouetteTopology": "USER_WRAPPED_BY_OWN_FOLD",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to fold a blanket whose opposite edge is already unfolding across the floor.",
+        "{character} makes a larger fold with both arms; the far edge unfolds farther behind the body.",
+        "{character} changes to kneeling on the far edge; the nearer edge unfolds up the knees.",
+        "{character} braces the blanket around the shoulders and folds both edges inward together.",
+        "The opposing folds wrap the character into a broad blanket roll while the last untouched corner remains spread flat."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "shoe-stretches-the-step",
+      "title": "Shoe Stretches The Step",
+      "engineFamily": "distance_contradiction",
+      "everydayGoal": "put a shoe on",
+      "primaryObject": "shoe",
+      "objectCategory": "clothing",
+      "impossibleRule": "The shoe opening stretches away as the foot approaches.",
+      "goalRuleRelationship": "Bringing the foot closer lengthens the remaining gap rather than closing it.",
+      "interactionType": "FOOT_APPROACH",
+      "trigger": "FOOT_APPROACH",
+      "transformationDirection": "STRETCH",
+      "escalationTopology": "ASYMPTOTIC_DISTANCE",
+      "resolutionTopology": "ATTEMPT_BECOMES_PROBLEM",
+      "finalSilhouetteTopology": "SHOE_ENCLOSES_LOWER_BODY",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to put a shoe on while its opening visibly stretches away from the approaching foot.",
+        "{character} reaches with both hands to hold the shoe; the stretched opening moves beyond the knee.",
+        "{character} changes to pushing the heel against the floor; the shoe flexes into a broad arch under the leg.",
+        "{character} sits down and brings the entire bent leg toward the opening at once.",
+        "The stretched shoe springs around both knees, leaving the lower body inside one shoe while neither foot is properly dressed."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "tray-loses-its-bottom",
+      "title": "Tray Loses Its Bottom",
+      "engineFamily": "containment_inversion",
+      "everydayGoal": "pack a snack",
+      "primaryObject": "tray",
+      "objectCategory": "container",
+      "impossibleRule": "Tilting the tray toward an item makes its bottom roll upward toward that item.",
+      "goalRuleRelationship": "The packing surface becomes a wall wherever the snack should land.",
+      "interactionType": "TILT_TOWARD_LOAD",
+      "trigger": "TILT_TOWARD_LOAD",
+      "transformationDirection": "INVERT",
+      "escalationTopology": "SURFACE_INVERSION",
+      "resolutionTopology": "GOAL_REVERSAL",
+      "finalSilhouetteTopology": "CONTAINER_COVERS_PACKER",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to pack a snack onto a tray whose bottom is already curling upright against the approaching snack.",
+        "{character} tilts it farther with both palms; the bottom rolls into a taller wall.",
+        "{character} changes to bracing the tray against the waist; the wall curves around the snack.",
+        "{character} leans underneath to keep the snack level while lowering the tray.",
+        "The bottom rolls over the character like a broad cover, leaving the snack outside and the packer contained."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "spoon-delays-the-bite",
+      "title": "Spoon Delays The Bite",
+      "engineFamily": "delayed_release",
+      "everydayGoal": "eat a snack",
+      "primaryObject": "spoon",
+      "objectCategory": "eating_tool",
+      "impossibleRule": "The spoon drops its bite only after the character turns the spoon away.",
+      "goalRuleRelationship": "Moving the loaded spoon toward the mouth postpones the release until the mouth is elsewhere.",
+      "interactionType": "TURN_AWAY",
+      "trigger": "TURN_AWAY",
+      "transformationDirection": "DELAY",
+      "escalationTopology": "MISALIGNED_DELAY",
+      "resolutionTopology": "REINTERPRETATION",
+      "finalSilhouetteTopology": "USER_FOLLOWS_EMPTY_TOOL",
+      "loopTopology": "OPTIONAL_REINTERPRETATION",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to eat a snack while a bite remains visibly fixed above the spoon beside the open mouth.",
+        "{character} lifts the spoon closer; the bite stays suspended until the spoon turns away.",
+        "{character} changes to moving the head around the spoon; the delayed drop lands back in the bowl.",
+        "{character} holds the spoon still and turns the whole body away before swinging the face back.",
+        "The final turn releases the snack behind the moving mouth and back into the bowl. {character} arrives at the empty spoon, recreating the opening missed bite."
+      ],
+      "productionNotes": [
+        "One character, one primary interaction, one stable location.",
+        "Broad movements; keep contact and the changing state visible."
+      ]
+    },
+    {
+      "id": "box-multiplies-the-task",
+      "title": "Box Multiplies The Task",
+      "engineFamily": "multiplication",
+      "everydayGoal": "put the toy away",
+      "primaryObject": "toy",
+      "objectCategory": "play_equipment",
+      "impossibleRule": "Each completed placement makes another copy at the place it was picked up.",
+      "goalRuleRelationship": "Finishing one put-away action recreates more of the task behind the character.",
+      "interactionType": "PLACEMENT_COMPLETE",
+      "trigger": "PLACEMENT_COMPLETE",
+      "transformationDirection": "INCREASE_COUNT",
+      "escalationTopology": "QUANTITY_RATCHET",
+      "resolutionTopology": "LOGICAL_EXTREME",
+      "finalSilhouetteTopology": "USER_SURROUNDED_BY_TASK",
+      "loopTopology": "NONE",
+      "environment": "One uncluttered playroom work area",
+      "beats": [
+        "{character} tries to put the toy away while a broad pile of matching toys already fills the starting spot.",
+        "{character} lifts one toy into the open box; another copy appears where it was picked up.",
+        "{character} changes to a broad two-arm scoop; the pile multiplies into a wider mound behind the body.",
+        "{character} braces the box against the pile and rolls the toys into it with the forearms.",
+        "The toy pile fills the frame around the seated character: the storage effort has become the thing that needs storing."
+      ],
+      "productionNotes": [
+        "Multiple similar objects challenge continuity; no exact counting is required for the joke.",
+        "One character and stable location; treat object proliferation as a separate production risk."
+      ]
+    }
+  ]
+}

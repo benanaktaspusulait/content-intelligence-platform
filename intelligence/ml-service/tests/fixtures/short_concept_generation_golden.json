@@ -1,0 +1,47 @@
+{
+  "generatorVersion": "short-concept-generator-v1",
+  "config": {
+    "count": 20,
+    "seed": 42
+  },
+  "candidateDigests": {
+    "local-backward-brush-stroke-005": "cf9ad87373f912d77e06ea39efdec1876b047dbd672d6a74aebe6ee602814783",
+    "local-blanket-reverses-the-fold-014": "de058eb19662c6f4763acbec0c3ea60861129d2959f4a708a8e845fff0c8923e",
+    "local-box-multiplies-the-task-015": "e90062f87134d1d277de2356e4621a2162f053d971f6121ce24fb55a39933e48",
+    "local-box-passes-the-buckle-002": "bbf9fa1620da002529d312e7204c09738fb8bd94e6ef13f05da396b68ab62875",
+    "local-brush-shrinks-away-001": "00c629886fa646249f675f90dd552cd224a1293a3d1dd8b8467e57bc9ab27e3a",
+    "local-brush-will-not-let-go-019": "5f37a9d66a7f1a27eaaf399f21a4036fcd15d120d02084c903f495dbb56cb9b8",
+    "local-chair-answers-the-armrest-011": "798be32f034fdb72d2d75e974a61538bc7d6bec7bf15da436f5efa1aa45eeaf6",
+    "local-chair-marks-its-spot-007": "80c1fa99836692b29ab1ad2c9917e075c31ea59ec3c9faf319e983a3ba293089",
+    "local-cloth-returns-the-dust-016": "3b7acd1d123749f485e5717aa88488b214705293de4ac239cdfdf3a7500b1af5",
+    "local-cup-will-not-be-heavy-004": "9c9e9ea5a63ca3a79c352e83e90fde5b65a7761ccf086f61fb2e93ab7220a937",
+    "local-drawer-borrows-the-room-009": "beaac2f1f63d04c4c40317db1f59763b2d0124155c463a7a65e0a6e56a22b663",
+    "local-drawer-repels-the-pull-017": "b38c59661108b78b2dd6c31c7294f30f6abc75a3278b5346f961920a65008f46",
+    "local-hanger-repels-the-coat-008": "969617cf6bf4d567c575337cdd9ad326d0809c7465ee48aeaac5498cc833d1d3",
+    "local-runaway-lid-018": "7a13ffb8973a45a6187048e0b3461c7e5ad9e56adc21b1329668fd281963bc3b",
+    "local-shoe-stretches-the-step-020": "043c74537dd2e4598102b041cecb0f2cd5cb6c3d0a3e3573a563b7f36b7dd9fc",
+    "local-soap-lends-its-stick-006": "99dd3afb332412d5aad889d9d814f1ecdb8c1d5ce360fe077582d5c8d624e91b",
+    "local-spoon-delays-the-bite-010": "56be3aa2fb7b14f05c614db07f7e4c92d87866796f00cf7cdcaef76e452291ab",
+    "local-spoon-outgrows-breakfast-013": "6f6eeb6a0a00998ce00c735e69a45d35f6896294c0db468182981721b53ca8d6",
+    "local-tray-loses-its-bottom-003": "a9f899fb92d36f4b1581fffcb6fcfd04dc8b62215d5e6f615402aefd0d6ed3aa",
+    "local-wall-borrows-the-stretch-012": "7ea742a25017d504ea440f7625d58762ac9cfbcde4be957b954f7576a6bbfad7"
+  },
+  "summary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "structuralDuplicateCount": 0,
+    "eligibleCount": 8,
+    "revisionCount": 8,
+    "rejectedCount": 4,
+    "deferredCount": 0,
+    "notEvaluatedCount": 0,
+    "rankingAdmissionCount": 20,
+    "catalogExhausted": false
+  },
+  "top3": [
+    "local-chair-answers-the-armrest-011",
+    "local-chair-marks-its-spot-007",
+    "local-runaway-lid-018"
+  ],
+  "first": "local-chair-answers-the-armrest-011"
+}

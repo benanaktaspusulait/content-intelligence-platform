@@ -1,0 +1,6 @@
+{
+  "provenance": "USER_REQUESTED_STRUCTURAL_DUPLICATE_EXAMPLES_NOT_PRODUCTION_RESULTS",
+  "growth_spoon": {"everydayGoal":"eat with a spoon", "primaryObject":"spoon", "engineFamily":"progressive_growth", "impossibleRule":"Every time the spoon is lifted, it doubles in size."},
+  "growth_brush": {"everydayGoal":"brush hair", "primaryObject":"brush", "engineFamily":"unexpected_growth", "impossibleRule":"Every time the brush is lifted, it doubles in size."},
+  "shrinking_strategy": {"everydayGoal":"brush hair", "primaryObject":"brush", "engineFamily":"progressive_shrinking", "impossibleRule":"The brush becomes smaller each time the character changes strategy.", "finalPayoff":"The character uses hair to groom the brush, reversing the goal."}
+}
