@@ -1,0 +1,28 @@
+........................................................................ [ 10%]
+........................................................................ [ 21%]
+........................................................................ [ 31%]
+........................................................................ [ 42%]
+........................................................................ [ 53%]
+........................................................................ [ 63%]
+........................................................................ [ 74%]
+........................................................................ [ 84%]
+........................................................................ [ 95%]
+....................F.........                                           [100%]
+=================================== FAILURES ===================================
+_ test_frozen_accepted_implementations_fixtures_and_all_historical_artifacts_keep_hashes _
+tests/test_concept_ranking.py:341: in test_frozen_accepted_implementations_fixtures_and_all_historical_artifacts_keep_hashes
+    assert hashlib.sha256((workspace / name).read_bytes()).hexdigest() == sha, name
+E   AssertionError: intelligence/ml-service/app/workflow/short_form_engine.py
+E   assert 'a51ae2b9d8e3...84566b22d4f46' == '10c6395871eb...0b1b1d3b14658'
+E     
+E     - 10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658
+E     + a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46
+=============================== warnings summary ===============================
+tests/test_short_form_integration.py::test_same_source_can_return_both_engines_without_one_rewriting_the_other
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:214: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_concept_ranking.py::test_frozen_accepted_implementations_fixtures_and_all_historical_artifacts_keep_hashes
+1 failed, 677 passed, 1 warning in 7.60s

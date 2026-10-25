@@ -1,0 +1,104 @@
+CURRENT HUMAN_REVIEW_SET — 18 CANDIDATES
+
+Stories and all five beat fields are verbatim in HUMAN_REVIEW_SET_FULL.txt. Quick verbatim excerpts are in REVIEW_CARDS_ONLY.txt. Complete validation objects are in review-evidence.json.
+
+ID | TITLE | STRUCTURED SFE | STATUS | CANONICAL RANKING SCORE | FULL-RANKING ELIGIBILITY
+raw-007 | Backward Alarm Clock | 100 | PASS | None | INELIGIBLE
+raw-013 | Tangling Hairbrush | 99 | PASS | 97.6 | ELIGIBLE
+raw-026 | Bending Nail Hammer | 100 | PASS | None | INELIGIBLE
+raw-027 | Opposite-Color Paintbrush | 99 | PASS | None | INELIGIBLE
+raw-005 | Vacuum Blows | 93 | REVISION_REQUIRED | None | INELIGIBLE
+raw-006 | Mirrored Doorway | 93 | REVISION_REQUIRED | None | INELIGIBLE
+raw-018 | Random Fridge Interior | 85 | REVISION_REQUIRED | None | INELIGIBLE
+raw-008 | Neighbor's TV Remote | 83 | REVISION_REQUIRED | None | INELIGIBLE
+raw-004 | Sweep-Back Broom | 78 | REVISION_REQUIRED | None | INELIGIBLE
+raw-019 | Microwave Hot Plate | 77 | REVISION_REQUIRED | None | INELIGIBLE
+raw-020 | Wrong-Room Light Switch | 64 | REVISION_REQUIRED | None | INELIGIBLE
+raw-032 | Delayed Mirror | 63 | REVISION_REQUIRED | None | INELIGIBLE
+raw-003 | Spiraling Shopping Cart | 46 | REVISION_REQUIRED | None | INELIGIBLE
+raw-015 | Bottom-Opening Zipper | 43 | REVISION_REQUIRED | None | INELIGIBLE
+raw-016 | Bottomless Backpack | 42 | REVISION_REQUIRED | None | INELIGIBLE
+raw-001 | The Inward Umbrella | 41 | REVISION_REQUIRED | None | INELIGIBLE
+raw-009 | Ceiling Pancake | 41 | REVISION_REQUIRED | None | INELIGIBLE
+raw-031 | Shadow Flashlight | 26 | REVISION_REQUIRED | None | INELIGIBLE
+
+SFE PASS BUT NOT FULL-RANKING ELIGIBLE
+raw-007, raw-026, raw-027 each have exactly one recorded full-ranking eligibility reason:
+  DECLARED_GOAL_UNSUPPORTED / source SHORT_FORM_ENGINE_GOAL_PATTERN / field protagonistGoal
+  "The declared goal is not a supported visible everyday goal."
+  Stored severity: absent (not invented). Effective result: blocking INELIGIBLE.
+  Stored ranking penalty: none. Ranking score: null/unavailable.
+  This is separate from their SFE PASS result and separate from production preselection gates.
+
+RAW-013: ELIGIBLE, ranking score 97.6; SFE PASS 99.
+Raw rank NOT_ASSIGNED; saved canonicalRanking=null.
+Exact preselection suppression reasons:
+  OPENING_EVIDENCE_INSUFFICIENT — raw-opening naturalness instantCausalLegibility 15.
+  BEAT_GRAMMAR_QUALITY_FLOOR — MECHANICAL; low consequence diversity, beat-role repetition, near-duplicate attempts, non-progressive beat 5.
+  PREMISE_NOT_ADMITTED — BROKEN, admitted=false, UNSUPPORTED_RESPONSE.
+No SFE/ranking quality floor is listed for raw-013. Historical LOW and template HIGH are annotations; no corresponding separate suppression code is recorded. Production risk 100, flags empty; no recorded production-feasibility veto.
+Production slate empty; firstRenderCandidate=null. No final batch rank/slate veto is recorded because preselection suppressed this candidate.
+
+BLOCKER CATEGORIES — OVERLAPPING CANDIDATE COUNTS
+{
+  "ranking threshold": 17,
+  "eligibility gate": 18,
+  "creative-shape issue": 0,
+  "historical territory issue": 0,
+  "production issue": 0,
+  "taxonomy/unclassified issue": 18,
+  "evidence uncertainty": 18,
+  "other": 0,
+  "content quality (existing screen)": 18
+}
+
+RAW STORED GATE COUNTS
+{
+  "OPENING_EVIDENCE_INSUFFICIENT": 18,
+  "ACCEPTED_VALIDATOR_INELIGIBLE": 17,
+  "RANKING_QUALITY_FLOOR": 17,
+  "BEAT_GRAMMAR_QUALITY_FLOOR": 18,
+  "PREMISE_NOT_ADMITTED": 18,
+  "SHORT_FORM_QUALITY_FLOOR": 11
+}
+
+NON-BLOCKING RISK ANNOTATIONS
+{
+  "templateShapeHigh": 18,
+  "historicalHigh": 0,
+  "productionRiskFlags": 3,
+  "unclassifiedEngine": 15,
+  "unclassifiedTrigger": 15,
+  "unclassifiedPayoff": 18
+}
+
+GROUPS
+{
+  "A. SFE PASS + FULL ELIGIBLE": [
+    "raw-013"
+  ],
+  "B. SFE PASS + DOWNSTREAM BLOCKED": [
+    "raw-007",
+    "raw-026",
+    "raw-027"
+  ],
+  "C. SFE REVISION + HUMAN REVIEW": [
+    "raw-005",
+    "raw-006",
+    "raw-018",
+    "raw-008",
+    "raw-004",
+    "raw-019",
+    "raw-020",
+    "raw-032",
+    "raw-003",
+    "raw-015",
+    "raw-016",
+    "raw-001",
+    "raw-009",
+    "raw-031"
+  ],
+  "D. SFE REJECT + HUMAN REVIEW": []
+}
+
+No recommendations, new creative judgments, score changes, code changes, provider calls or renders.

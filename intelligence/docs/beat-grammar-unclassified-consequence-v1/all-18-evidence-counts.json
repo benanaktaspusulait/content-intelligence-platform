@@ -1,0 +1,290 @@
+[
+  {
+    "ideaId": "raw-007",
+    "candidateId": "sem1-bbdb302fefb48bd5",
+    "strategy": {
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-013",
+    "candidateId": "sem1-8d1da895a1fb41af",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 4,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 1,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 3,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 2,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-026",
+    "candidateId": "sem1-23a3c991b8104bee",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-027",
+    "candidateId": "sem1-2ae718e8672f18cc",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-005",
+    "candidateId": "sem1-913bc9ae39a3c15e",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-006",
+    "candidateId": "sem1-d1e9d5ce1154b96b",
+    "strategy": {
+      "STRATEGY_PRESENT_UNCLASSIFIED": 3,
+      "STRATEGY_PRESENT_CLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-018",
+    "candidateId": "sem1-91ea45894fa28d7b",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 1,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 4,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-008",
+    "candidateId": "sem1-8a6fb30b4a11976b",
+    "strategy": {
+      "STRATEGY_PRESENT_UNCLASSIFIED": 3,
+      "STRATEGY_PRESENT_CLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-004",
+    "candidateId": "sem1-11beb05a18d36fdb",
+    "strategy": {
+      "STRATEGY_PRESENT_UNCLASSIFIED": 4,
+      "STRATEGY_PRESENT_CLASSIFIED": 1,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-019",
+    "candidateId": "sem1-63760a23881b08d8",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 2,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 3,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-020",
+    "candidateId": "sem1-c2b6225333ed3cda",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-032",
+    "candidateId": "sem1-cfeed66616185cb0",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 2,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 3,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-003",
+    "candidateId": "sem1-5cf30c7094c804b1",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 5,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 0,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-015",
+    "candidateId": "sem1-90670eeaf4ee0468",
+    "strategy": {
+      "STRATEGY_PRESENT_UNCLASSIFIED": 1,
+      "STRATEGY_PRESENT_CLASSIFIED": 4,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-016",
+    "candidateId": "sem1-6c8721485468a0f0",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-001",
+    "candidateId": "sem1-70ee2b7099c48d36",
+    "strategy": {
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2,
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 4,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 1,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-009",
+    "candidateId": "sem1-dd72ae9a5bebad5a",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 5,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 0,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  },
+  {
+    "ideaId": "raw-031",
+    "candidateId": "sem1-c85a677474d9ed27",
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 5,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 0,
+      "STRATEGY_MISSING": 0,
+      "STRATEGY_AMBIGUOUS": 0
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5,
+      "CONSEQUENCE_PRESENT_CLASSIFIED": 0,
+      "CONSEQUENCE_MISSING": 0,
+      "CONSEQUENCE_AMBIGUOUS": 0
+    }
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "newSourceAndFixtureFiles": [
+    "intelligence/ml-service/app/workflow/creative_shape.py",
+    "intelligence/ml-service/app/workflow/shape_generation.py",
+    "intelligence/ml-service/app/workflow/shape_benchmark.py",
+    "intelligence/ml-service/app/workflow/creative_territories_v1.json",
+    "intelligence/ml-service/tests/test_creative_shape.py",
+    "intelligence/ml-service/tests/test_shape_generation.py",
+    "intelligence/ml-service/tests/fixtures/creative_shape_v1_golden.json"
+  ],
+  "additiveIntegrationFiles": [
+    "intelligence/ml-service/app/workflow/api.py",
+    "intelligence/scripts/generate-short-concepts.py",
+    "intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+    "intelligence/frontend/src/app/pages/concept-generation.page.spec.ts"
+  ],
+  "sourceSha256": {
+    "intelligence/ml-service/app/workflow/creative_shape.py": "0c862af88818e6304dac74b15b62fa559a6276afcac0dcac2f9e2872a5f1727e",
+    "intelligence/ml-service/app/workflow/shape_generation.py": "c07003bc83c2d9eef62d07a5a2ee985ad656c17a6ea4a0edc86be02c6d84e954",
+    "intelligence/ml-service/app/workflow/shape_benchmark.py": "d80c006801b2f63014110cba3266725db5942325bc871f418fecff348a66e50d",
+    "intelligence/ml-service/app/workflow/creative_territories_v1.json": "d15a2ca01be2281a6d90809b59b5c4fc51253a5c418ef135d933b511458d6eac",
+    "intelligence/ml-service/tests/test_creative_shape.py": "b0d05f2f96bd1a359f1e0dd5519da3319beacc2b5881fce473f17b1e753755cb",
+    "intelligence/ml-service/tests/test_shape_generation.py": "fe067331d61b5900f81b4ab7c11030617e9c55814af3fd75b71d00d2fc3078ab",
+    "intelligence/ml-service/tests/fixtures/creative_shape_v1_golden.json": "c57fe3dcd7f51b1dac57e4d206953257ce2355c027d243d7bdd2759015de4418",
+    "intelligence/ml-service/app/workflow/api.py": "60ed5403bcb8ff8e6d1d6162146435fc82275cdd4ec7ab1270ea2ee5a51cd314",
+    "intelligence/scripts/generate-short-concepts.py": "a4d84d1ee546716998325a846ecf8230bea1f874ff148032fdefaa47eabbee82",
+    "intelligence/frontend/src/app/pages/concept-ranking.page.ts": "df0686220da252f251f13d7ac0680d54e30ecf2e70630e8db93b17cc96d63910",
+    "intelligence/frontend/src/app/pages/concept-generation.page.spec.ts": "84bfc4d5ad5cd379bc65e05a5e3b38c1834a7e3f3b693d9d7e9e8265b1abd9b7"
+  }
+}

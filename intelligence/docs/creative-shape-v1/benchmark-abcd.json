@@ -1,0 +1,304 @@
+{
+  "stages": {
+    "A_originalV2": {
+      "candidateDenominator": 20,
+      "meanStoryShapeDistance": 0.250596,
+      "minimumStoryShapeDistance": 0.0,
+      "payoffFamilyDistribution": {
+        "CONTROL_REVERSAL": 4,
+        "OPENING_RECREATED": 3,
+        "UNKNOWN": 13
+      },
+      "payoffConcentrationRate": 0.65,
+      "dominantPayoffWarning": {
+        "code": "PAYOFF_FAMILY_CONCENTRATION",
+        "family": "UNKNOWN",
+        "share": 0.65
+      },
+      "strategySequenceDistribution": {
+        "571786a15ba7f0e96d6b85f34ec70e17cab7d5a48a3db505138001d6222404e4": 11,
+        "83b60455309662c30972ef04c18b38695db4d63ed59488c85f02c4d278e0b697": 1,
+        "a74f89e1db1709329caf48406cb2f51adad31f7bc2a14445e339f214cf643172": 3,
+        "a7f66551b91d8608024b7405291a463f53128c2b9b0d3eca8325bec4e043a7eb": 5
+      },
+      "strategySequenceConcentration": 0.55,
+      "strategySequenceWarning": "STRATEGY_SEQUENCE_CONCENTRATION",
+      "falseSuccessBeat4Rate": 0.0,
+      "temporaryStopTriggerRate": 0.0,
+      "resetPayoffRate": 0.15,
+      "finalRelationshipDistribution": {
+        "OBJECT_CONTROLS_CHARACTER": 4,
+        "OPENING_STATE_RECREATED": 3,
+        "UNKNOWN": 13
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.05,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "meanPairwiseCreativeDistance": 0.839,
+      "minimumPairwiseCreativeDistance": 0.36,
+      "pairCount": 190,
+      "eligibilityYield": 0.3,
+      "averageShortFormScore": 73.7,
+      "finalCandidateCount": 20,
+      "productionSlateDiversity": {
+        "size": 3,
+        "candidateDenominator": 3,
+        "meanStoryShapeDistance": 0.419524,
+        "minimumStoryShapeDistance": 0.397143,
+        "payoffFamilyDistribution": {
+          "CONTROL_REVERSAL": 1,
+          "OPENING_RECREATED": 1,
+          "UNKNOWN": 1
+        },
+        "payoffConcentrationRate": 0.3333333333333333,
+        "dominantPayoffWarning": null,
+        "strategySequenceDistribution": {
+          "571786a15ba7f0e96d6b85f34ec70e17cab7d5a48a3db505138001d6222404e4": 2,
+          "a74f89e1db1709329caf48406cb2f51adad31f7bc2a14445e339f214cf643172": 1
+        },
+        "strategySequenceConcentration": 0.6666666666666666,
+        "strategySequenceWarning": "STRATEGY_SEQUENCE_CONCENTRATION",
+        "falseSuccessBeat4Rate": 0.0,
+        "temporaryStopTriggerRate": 0.0,
+        "resetPayoffRate": 0.3333333333333333,
+        "finalRelationshipDistribution": {
+          "OBJECT_CONTROLS_CHARACTER": 1,
+          "OPENING_STATE_RECREATED": 1,
+          "UNKNOWN": 1
+        },
+        "historicalCreativeTerritoryCollisionRate": 0.3333333333333333,
+        "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+        "meanPairwiseCreativeDistance": 0.97,
+        "minimumPairwiseCreativeDistance": 0.94,
+        "pairCount": 3
+      },
+      "annotationProvenance": "RETROSPECTIVE_NON_CANONICAL_ANNOTATION_ON_FROZEN_RUN"
+    },
+    "B_beatGrammarV2": {
+      "candidateDenominator": 20,
+      "meanStoryShapeDistance": 0.474293,
+      "minimumStoryShapeDistance": 0.0,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 3,
+        "CONTROL_REVERSAL": 12,
+        "FALSE_SUCCESS_COLLAPSE": 2,
+        "OPENING_RECREATED": 3
+      },
+      "payoffConcentrationRate": 0.6,
+      "dominantPayoffWarning": {
+        "code": "PAYOFF_FAMILY_CONCENTRATION",
+        "family": "CONTROL_REVERSAL",
+        "share": 0.6
+      },
+      "strategySequenceDistribution": {
+        "3c18e62fa89188bf8c9d6c1f4da0bd6d4cd0633e71e888b3cd77dcb0c9ea705c": 2,
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 3,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 4,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 4,
+        "abe101127e5ba41190eb340bc443804cb7378808d66a2db8667c7e4f4ad4762a": 4,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 3
+      },
+      "strategySequenceConcentration": 0.2,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.55,
+      "temporaryStopTriggerRate": 0.7,
+      "resetPayoffRate": 0.25,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 3,
+        "OBJECT_CONTROLS_CHARACTER": 12,
+        "OPENING_STATE_RECREATED": 5
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "meanPairwiseCreativeDistance": 0.796211,
+      "minimumPairwiseCreativeDistance": 0.31,
+      "pairCount": 190,
+      "eligibilityYield": 0.2,
+      "averageShortFormScore": 65.7,
+      "finalCandidateCount": 20,
+      "productionSlateDiversity": {
+        "size": 2,
+        "candidateDenominator": 2,
+        "meanStoryShapeDistance": 0.561091,
+        "minimumStoryShapeDistance": 0.561091,
+        "payoffFamilyDistribution": {
+          "CONTROL_REVERSAL": 1,
+          "FALSE_SUCCESS_COLLAPSE": 1
+        },
+        "payoffConcentrationRate": 0.5,
+        "dominantPayoffWarning": null,
+        "strategySequenceDistribution": {
+          "abe101127e5ba41190eb340bc443804cb7378808d66a2db8667c7e4f4ad4762a": 1,
+          "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 1
+        },
+        "strategySequenceConcentration": 0.5,
+        "strategySequenceWarning": "STRATEGY_SEQUENCE_CONCENTRATION",
+        "falseSuccessBeat4Rate": 1.0,
+        "temporaryStopTriggerRate": 1.0,
+        "resetPayoffRate": 0.5,
+        "finalRelationshipDistribution": {
+          "OBJECT_CONTROLS_CHARACTER": 1,
+          "OPENING_STATE_RECREATED": 1
+        },
+        "historicalCreativeTerritoryCollisionRate": 0.0,
+        "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+        "meanPairwiseCreativeDistance": 0.94,
+        "minimumPairwiseCreativeDistance": 0.94,
+        "pairCount": 1
+      },
+      "annotationProvenance": "RETROSPECTIVE_NON_CANONICAL_ANNOTATION_ON_FROZEN_RUN"
+    },
+    "C_premiseNaturalnessV1": {
+      "candidateDenominator": 20,
+      "meanStoryShapeDistance": 0.464769,
+      "minimumStoryShapeDistance": 0.0,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 4,
+        "CONTROL_REVERSAL": 12,
+        "FALSE_SUCCESS_COLLAPSE": 1,
+        "OPENING_RECREATED": 3
+      },
+      "payoffConcentrationRate": 0.6,
+      "dominantPayoffWarning": {
+        "code": "PAYOFF_FAMILY_CONCENTRATION",
+        "family": "CONTROL_REVERSAL",
+        "share": 0.6
+      },
+      "strategySequenceDistribution": {
+        "3c18e62fa89188bf8c9d6c1f4da0bd6d4cd0633e71e888b3cd77dcb0c9ea705c": 2,
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 2,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 4,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 4,
+        "abe101127e5ba41190eb340bc443804cb7378808d66a2db8667c7e4f4ad4762a": 4,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 4
+      },
+      "strategySequenceConcentration": 0.2,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.6,
+      "temporaryStopTriggerRate": 0.7,
+      "resetPayoffRate": 0.2,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 4,
+        "OBJECT_CONTROLS_CHARACTER": 12,
+        "OPENING_STATE_RECREATED": 4
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.05,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "meanPairwiseCreativeDistance": 0.762368,
+      "minimumPairwiseCreativeDistance": 0.31,
+      "pairCount": 190,
+      "eligibilityYield": 0.45,
+      "averageShortFormScore": 70.15,
+      "finalCandidateCount": 20,
+      "productionSlateDiversity": {
+        "size": 3,
+        "candidateDenominator": 3,
+        "meanStoryShapeDistance": 0.610424,
+        "minimumStoryShapeDistance": 0.56,
+        "payoffFamilyDistribution": {
+          "CONTROL_REVERSAL": 1,
+          "FALSE_SUCCESS_COLLAPSE": 1,
+          "OPENING_RECREATED": 1
+        },
+        "payoffConcentrationRate": 0.3333333333333333,
+        "dominantPayoffWarning": null,
+        "strategySequenceDistribution": {
+          "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 1,
+          "abe101127e5ba41190eb340bc443804cb7378808d66a2db8667c7e4f4ad4762a": 1,
+          "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 1
+        },
+        "strategySequenceConcentration": 0.3333333333333333,
+        "strategySequenceWarning": null,
+        "falseSuccessBeat4Rate": 0.6666666666666666,
+        "temporaryStopTriggerRate": 1.0,
+        "resetPayoffRate": 0.6666666666666666,
+        "finalRelationshipDistribution": {
+          "OBJECT_CONTROLS_CHARACTER": 1,
+          "OPENING_STATE_RECREATED": 2
+        },
+        "historicalCreativeTerritoryCollisionRate": 0.3333333333333333,
+        "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+        "meanPairwiseCreativeDistance": 0.79,
+        "minimumPairwiseCreativeDistance": 0.55,
+        "pairCount": 3
+      },
+      "annotationProvenance": "RETROSPECTIVE_NON_CANONICAL_ANNOTATION_ON_FROZEN_RUN"
+    },
+    "D_creativeShapeV1": {
+      "candidateDenominator": 9,
+      "meanStoryShapeDistance": 0.557333,
+      "minimumStoryShapeDistance": 0.238182,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 2,
+        "CONTROL_REVERSAL": 3,
+        "FALSE_SUCCESS_COLLAPSE": 2,
+        "OPENING_RECREATED": 2
+      },
+      "payoffConcentrationRate": 0.3333333333333333,
+      "dominantPayoffWarning": null,
+      "strategySequenceDistribution": {
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 2,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 3,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 2,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 2
+      },
+      "strategySequenceConcentration": 0.3333333333333333,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.4444444444444444,
+      "temporaryStopTriggerRate": 0.6666666666666666,
+      "resetPayoffRate": 0.4444444444444444,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 2,
+        "OBJECT_CONTROLS_CHARACTER": 3,
+        "OPENING_STATE_RECREATED": 4
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "meanPairwiseCreativeDistance": 0.675,
+      "minimumPairwiseCreativeDistance": 0.0,
+      "pairCount": 36,
+      "eligibilityYield": 1.0,
+      "averageShortFormScore": 97.66666666666667,
+      "finalCandidateCount": 9,
+      "productionSlateDiversity": {
+        "size": 3,
+        "candidateDenominator": 3,
+        "meanStoryShapeDistance": 0.645535,
+        "minimumStoryShapeDistance": 0.470182,
+        "payoffFamilyDistribution": {
+          "CONTROL_REVERSAL": 1,
+          "FALSE_SUCCESS_COLLAPSE": 1,
+          "OPENING_RECREATED": 1
+        },
+        "payoffConcentrationRate": 0.3333333333333333,
+        "dominantPayoffWarning": null,
+        "strategySequenceDistribution": {
+          "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 1,
+          "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 1,
+          "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 1
+        },
+        "strategySequenceConcentration": 0.3333333333333333,
+        "strategySequenceWarning": null,
+        "falseSuccessBeat4Rate": 0.3333333333333333,
+        "temporaryStopTriggerRate": 0.6666666666666666,
+        "resetPayoffRate": 0.6666666666666666,
+        "finalRelationshipDistribution": {
+          "OBJECT_CONTROLS_CHARACTER": 1,
+          "OPENING_STATE_RECREATED": 2
+        },
+        "historicalCreativeTerritoryCollisionRate": 0.0,
+        "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+        "meanPairwiseCreativeDistance": 0.66,
+        "minimumPairwiseCreativeDistance": 0.37,
+        "pairCount": 3
+      },
+      "annotationProvenance": "NEW_NON_CANONICAL_RUN"
+    }
+  },
+  "limitations": [
+    "Generator-controlled diagnostic improvements are expected after filtering and are not independent evidence of creative quality.",
+    "A/B/C story-shape and territory metrics are new annotations of saved evidence, not historical canonical results; A uses conservative legacy text approximation.",
+    "D preselects candidates using existing quality validators, while A/B/C retain low-quality outputs. Eligibility yield and mean score are selection-biased, not a controlled causal quality experiment.",
+    "D can return fewer than requested; batch concentration denominators and null pairwise values are explicit.",
+    "No new grammar stories, providers, audience tests, paid evaluations or media renders. Manual inspection remains required."
+  ]
+}

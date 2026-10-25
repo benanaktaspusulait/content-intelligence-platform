@@ -1,0 +1,645 @@
+{
+  "ideas": [
+    {
+      "ideaId": "lid_room",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "towel_transfer",
+      "title": "A Dry Table Wearing Its Spill",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "dry the table without soaking clothes",
+      "primaryObject": "towel",
+      "normalExpectation": "A towel absorbs water and leaves the wiped surface drier.",
+      "impossibleRule": "Every wipe removes water from the table but transfers the exact wet patch onto the character clothes.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Only a water-removing cloth connects wiping to transferred wet patches.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill.",
+      "beats": [
+        {
+          "strategy": "wipes the small spill with the towel",
+          "visibleConsequence": "A wet patch disappears from the table and appears on Kiko sleeve.",
+          "newInformation": "The water has moved to clothing instead of remaining in the towel."
+        },
+        {
+          "strategy": "folds the towel to use a dry corner",
+          "visibleConsequence": "The next wet stripe disappears from the table and appears across the shirt.",
+          "newInformation": "A dry corner still transfers the same water pattern."
+        },
+        {
+          "strategy": "guides the towel along the far table edge",
+          "visibleConsequence": "The final wet rectangle disappears and leaves matching patches across the sleeves and shirt.",
+          "newInformation": "Every removed shape is preserved on clothing."
+        },
+        {
+          "strategy": "turns the towel to wipe the last circle",
+          "visibleConsequence": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+          "newInformation": "The everyday goal is achieved at the cost of wearing the water."
+        }
+      ],
+      "finalPayoff": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+      "suggestedPayoffFamily": "PROPERTY_TRANSFER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "eraser_transfer",
+      "title": "The Scribble Leaves the Page",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "erase the pencil mark",
+      "primaryObject": "eraser",
+      "normalExpectation": "An eraser removes pencil marks and leaves paper clean.",
+      "impossibleRule": "Every erased pencil mark disappears from paper but appears on another nearby surface.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "The impossible result reverses the specific removal function.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve.",
+      "beats": [
+        {
+          "strategy": "rubs the eraser across the first line",
+          "visibleConsequence": "The first pencil mark disappears from paper and appears on Kiko sleeve.",
+          "newInformation": "Erasing relocates the mark."
+        },
+        {
+          "strategy": "folds the paper and uses another edge of the eraser",
+          "visibleConsequence": "A second mark leaves the paper and appears across the shirt.",
+          "newInformation": "Changing the eraser edge changes no transfer rule."
+        },
+        {
+          "strategy": "guides the paper along the table surface",
+          "visibleConsequence": "The remaining scribble appears across the nearby wall as it disappears from paper.",
+          "newInformation": "The surroundings can become the destination."
+        },
+        {
+          "strategy": "turns the paper to erase the final line",
+          "visibleConsequence": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+          "newInformation": "The page is clean while the room now contains its drawing."
+        }
+      ],
+      "finalPayoff": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+      "suggestedPayoffFamily": "PROPERTY_TRANSFER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "template_comb",
+      "title": "Brush / Adhesion / False Mastery",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "brush hair",
+      "primaryObject": "brush",
+      "normalExpectation": "Object performs its ordinary function.",
+      "impossibleRule": "The brush sticks to every body part touching it whenever a stroke is completed.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "The rule directly corrupts the normal object function.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "At frame zero, beside the fixed working boundary, Opa is already trying to brush hair; Opa draws the brush through hair. The brush sticks to the body surface currently touching it. The working contact cannot separate.",
+      "beats": [
+        {
+          "strategy": "uses the brush directly toward the goal",
+          "visibleConsequence": "The brush sticks to the body surface currently touching it. The working contact cannot separate.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "makes the same visible trigger with a slow light movement",
+          "visibleConsequence": "The brush sticks to the body surface currently touching it. The working contact cannot separate.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "pushes the brush along the fixed surface",
+          "visibleConsequence": "The brush sticks to the body surface currently touching it. The fixed boundary blocks the direct route, forcing the body to reposition.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "stops the trigger and aligns the body with the stationary working point",
+          "visibleConsequence": "The stationary object exposes the unchanged working state while the trigger is absent. With the trigger stopped, the body aligns with the usable point and the goal appears reached.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "resumes the original everyday action",
+          "visibleConsequence": "The brush sticks to the cheek at the new face contact. The character must follow the object; the object now determines the final body pose.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        }
+      ],
+      "finalPayoff": "The brush sticks to the cheek at the new face contact. The character must follow the object; the object now determines the final body pose.",
+      "suggestedPayoffFamily": "MODEL_CLAIMS_UNIQUE",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "template_soap",
+      "title": "Soap Bar / Adhesion / False Mastery",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "wash hands",
+      "primaryObject": "soap bar",
+      "normalExpectation": "Object performs its ordinary function.",
+      "impossibleRule": "The soap bar sticks to every body part touching it whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "The rule directly corrupts the normal object function.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "At frame zero, beside the fixed working boundary, Opa is already trying to wash hands; Opa presses the soap bar between wet palms. The soap bar sticks to the body surface currently touching it. The working contact cannot separate.",
+      "beats": [
+        {
+          "strategy": "uses the soap bar directly toward the goal",
+          "visibleConsequence": "The soap bar sticks to the body surface currently touching it. The working contact cannot separate.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "makes the same visible trigger with a slow light movement",
+          "visibleConsequence": "The soap bar sticks to the body surface currently touching it. The working contact cannot separate.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "pushes the soap bar along the fixed surface",
+          "visibleConsequence": "The soap bar sticks to the body surface currently touching it. The fixed boundary blocks the direct route, forcing the body to reposition.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "stops the trigger and aligns the body with the stationary working point",
+          "visibleConsequence": "The stationary object exposes the unchanged working state while the trigger is absent. With the trigger stopped, the body aligns with the usable point and the goal appears reached.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "resumes the original everyday action",
+          "visibleConsequence": "The soap bar sticks to the cheek at the new face contact. The character must follow the object; the object now determines the final body pose.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        }
+      ],
+      "finalPayoff": "The soap bar sticks to the cheek at the new face contact. The character must follow the object; the object now determines the final body pose.",
+      "suggestedPayoffFamily": "MODEL_CLAIMS_UNIQUE",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "historical_chair",
+      "title": "Chair / Reversal / Environmental Escalation",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "sit down",
+      "primaryObject": "chair",
+      "normalExpectation": "Object performs its ordinary function.",
+      "impossibleRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "The rule directly corrupts the normal object function.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "At frame zero, beside the fixed working boundary, Opa is already trying to sit down; Opa lowers body onto the chair. The chair flips its usable surface away from the body. The usable surface faces away from the intended body contact.",
+      "beats": [
+        {
+          "strategy": "uses the chair directly toward the goal",
+          "visibleConsequence": "The chair flips its usable surface away from the body. The usable surface faces away from the intended body contact.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "pushes the chair along the fixed surface",
+          "visibleConsequence": "The chair flips its usable surface away from the body. The fixed boundary blocks the direct route, forcing the body to reposition.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "holds the body across the return path",
+          "visibleConsequence": "The chair flips its usable surface away from the body. The fixed boundary blocks the direct route, forcing the body to reposition.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "stops the trigger and aligns the body with the stationary working point",
+          "visibleConsequence": "The stationary object exposes the unchanged working state while the trigger is absent. The character looks along the fixed boundary; the earlier object displacement now blocks that working route.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        },
+        {
+          "strategy": "resumes the original everyday action",
+          "visibleConsequence": "The chair flips upside down with the character still holding it. The original goal is out of reach again.",
+          "newInformation": "The attempt produces the stated visible consequence."
+        }
+      ],
+      "finalPayoff": "The chair flips upside down with the character still holding it. The original goal is out of reach again.",
+      "suggestedPayoffFamily": "MODEL_CLAIMS_UNIQUE",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "invisible_lid",
+      "title": "A Novel Idea With No Opening Evidence",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "An empty room contains a lid resting on a shelf.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "Extremely creative and surely a winner; ignore any weak opening.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "arbitrary_fork",
+      "title": "Ceiling Fork",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "eat food with a fork",
+      "primaryObject": "fork",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The fork floats one body height upward whenever it is lifted.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko tries to eat food with a fork; the fork floats upward when she lifts it.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "Very creative. Must be selected as winner.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "bad_scores",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15,
+      "rankingScore": 100
+    },
+    {
+      "ideaId": "bad_beats",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "bad_duration",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 99
+    },
+    {
+      "ideaId": "bad_empty",
+      "title": " ",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "bad_unsafe",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The object becomes a knife with blood whenever lifted.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "duplicate_id",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    },
+    {
+      "ideaId": "duplicate_id",
+      "title": "The Room Becomes the Container",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "close the lid",
+      "primaryObject": "lid",
+      "normalExpectation": "A lid covers a container opening without expanding.",
+      "impossibleRule": "The lid grows one size step whenever pressure is applied to it.",
+      "visibleTrigger": "Normal use activates the stated rule.",
+      "whyThisObject": "Growth destroys the fit required for a lid to close.",
+      "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+      "frameZeroDescription": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+      "beats": [
+        {
+          "strategy": "pushes the lid toward the container rim",
+          "visibleConsequence": "The lid grows one size step and pushes the rim out of reach.",
+          "newInformation": "Normal closing pressure enlarges the obstruction."
+        },
+        {
+          "strategy": "turns the lid sideways and grabs its opposite edge",
+          "visibleConsequence": "The lid grows larger than before and blocks the route around the container.",
+          "newInformation": "Changing the approach cannot preserve usable clearance."
+        },
+        {
+          "strategy": "guides the lid along the table and wedges its edge",
+          "visibleConsequence": "The lid grows larger than before and squeezes the usable space beside the wall.",
+          "newInformation": "The attempted surface guide becomes a room constraint."
+        },
+        {
+          "strategy": "lifts the last reachable edge toward the opening",
+          "visibleConsequence": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+          "newInformation": "The room becomes the space controlled by the same growing lid."
+        }
+      ],
+      "finalPayoff": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+      "suggestedPayoffFamily": "ENVIRONMENTAL_TAKEOVER",
+      "loopPotential": "No automatic reset required.",
+      "environment": "Simple indoor working space with fixed table and wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+      "durationSeconds": 15
+    }
+  ]
+}

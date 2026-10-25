@@ -1,0 +1,46 @@
+{
+  "repair": "structured-sfe-integrity-boundary-v1",
+  "originalEightProtectionTestsPassed": 8,
+  "newPolicyTestsPassed": 15,
+  "focusedTestsPassed": 621,
+  "fullRegression": {
+    "passed": 2736,
+    "failed": 36,
+    "skipped": 2,
+    "remainingFailureIdsExactlyMatchAcceptedBaseline": true,
+    "additionalFailures": 0
+  },
+  "protectedFileCount": 1543,
+  "changedProtectedFiles": [],
+  "historicalExperimentsByteIdentical": true,
+  "historicalManifestsRewritten": 0,
+  "runtimeImplementationFilesChangedDuringRepair": [],
+  "approvedPriorArchitecturePaths": {
+    "intelligence/ml-service/app/workflow/short_form_engine.py": {
+      "historicalSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+      "approvedSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46"
+    },
+    "intelligence/ml-service/app/workflow/concept_ranking.py": {
+      "historicalSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+      "approvedSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d"
+    }
+  },
+  "activeIntegrityTestAdaptersUpdated": 9,
+  "reviewedPolicySha256": "6d8389e5cc567d8408e404c3e11294337200fb64970ed30403d92e751661ff57",
+  "policyScope": "Exact reviewed source paths and historical/current hashes; all unlisted evidence/code remains strictly pinned",
+  "structuredAnalysisByteIdentical": true,
+  "structuredAnalysisSha256": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9",
+  "fixtureFullReportsIdentical": true,
+  "creativeBehaviorChanged": false,
+  "evidenceSourceBehaviorChanged": false,
+  "thresholdsChanged": false,
+  "taxonomiesChanged": false,
+  "scoreChanges": 0,
+  "dispositionChanges": 0,
+  "providerCallsDuringTask": 0,
+  "externalProviderCalls": 0,
+  "newCreativeConceptsGenerated": 0,
+  "renders": 0,
+  "productionPrompts": 0,
+  "verificationSafety": "Python tests use existing offline/network-denying harness; stored replay uses existing network/subprocess-denying CLI, with credentials stripped."
+}

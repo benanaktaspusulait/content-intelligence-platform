@@ -1,0 +1,614 @@
+Continue from the current repository state.
+
+Canonical Evidence Propagation V1 is ACCEPTED.
+
+Current important results:
+
+- raw-007 is now ELIGIBLE with ranking 97.6
+- raw-026 is now ELIGIBLE with ranking 97.6
+- raw-027 is now ELIGIBLE with ranking 97.6
+- raw-013 remains SFE 99 PASS / ranking 97.6
+- raw-013 Naturalness opening legibility improved from 15 to 35
+- raw-013 Beat Grammar is now BROKEN because of UNKNOWN_CONSEQUENCE
+- production slate remains empty
+- thresholds and taxonomies were not changed
+- Structured SFE results remain byte-identical
+- historical files remain unchanged
+- provider calls = 0
+
+The next task is NOT to loosen Beat Grammar.
+
+The task is to distinguish:
+
+MISSING CONSEQUENCE
+
+from
+
+EXPLICIT BUT UNCLASSIFIED CONSEQUENCE
+
+inside Beat Grammar.
+
+No provider calls.
+No new concepts.
+No renders.
+No scoring-threshold changes.
+
+======================================================================
+1. PROBLEM
+======================================================================
+
+Beat Grammar currently uses a consequence taxonomy derived largely from deterministic generation.
+
+Semantic candidates may contain clear visible consequences that do not map to existing consequence labels.
+
+Example situation:
+
+semantic beat explicitly says:
+
+"the paint on the wall changes to the opposite color"
+
+or
+
+"the object transfers its state to another surface"
+
+The consequence is clearly present.
+
+But if consequence classification returns UNKNOWN, Beat Grammar may currently treat the beat as unsupported/broken.
+
+This repeats the previously solved evidence problem at a lower layer.
+
+We need:
+
+CONSEQUENCE_PRESENT_CLASSIFIED
+
+CONSEQUENCE_PRESENT_UNCLASSIFIED
+
+CONSEQUENCE_MISSING
+
+CONSEQUENCE_AMBIGUOUS
+
+======================================================================
+2. DO NOT EXPAND TAXONOMY YET
+======================================================================
+
+Do NOT add new canonical consequence types in this task.
+
+Do NOT add:
+
+PROPERTY_TRANSFER
+COLOR_INVERSION
+etc.
+
+yet.
+
+First support explicit unclassified consequence presence.
+
+Taxonomy expansion is a later editorial decision.
+
+======================================================================
+3. BEAT FACTS VS BEAT QUALITY
+======================================================================
+
+Beat Grammar should separate:
+
+FACT:
+
+Does a visible consequence exist?
+
+from
+
+QUALITY:
+
+Does this consequence create meaningful progression?
+
+Example:
+
+Beat consequence exists:
+true
+
+but:
+same consequence repeated with no new state
+
+may still be MECHANICAL.
+
+Therefore:
+
+PRESENT_UNCLASSIFIED
+
+must not automatically earn full progression credit.
+
+But it must not be treated as:
+
+NO CONSEQUENCE.
+
+======================================================================
+4. CANONICAL BEAT EVIDENCE
+======================================================================
+
+For each beat retain:
+
+strategyPresent
+strategyClassificationStatus
+
+consequencePresent
+consequenceClassificationStatus
+
+newInformationPresent
+
+stateChangeSupported
+
+goalStateChangeSupported
+
+bodyStateChangeSupported
+
+spatialChangeSupported
+
+evidenceRefs
+
+Use existing canonical context.
+
+======================================================================
+5. CONSEQUENCE PRESENCE
+======================================================================
+
+If semantic structured evidence explicitly contains a visible consequence:
+
+consequencePresent = true
+
+If taxonomy does not map:
+
+classificationStatus = PRESENT_UNCLASSIFIED
+
+Do not assign:
+
+UNKNOWN_CONSEQUENCE
+
+as equivalent to absent.
+
+======================================================================
+6. PROGRESSION SUPPORT WITHOUT TAXONOMY
+======================================================================
+
+A beat with unclassified consequence may still support progression if structured evidence proves a state difference.
+
+Possible evidence:
+
+- object state changes
+- character state changes
+- goal distance changes
+- environment changes
+- contact relationship changes
+- control relationship changes
+- newInformation explicitly differs
+
+Use source-independent structured state changes where available.
+
+Do not require a named consequence taxonomy class for progression.
+
+======================================================================
+7. NO FREE CREDIT
+======================================================================
+
+Important:
+
+Do NOT say:
+
+unclassified consequence = valid progression.
+
+Require at least one supported difference such as:
+
+objectStateBefore != objectStateAfter
+
+bodyStateBefore != bodyStateAfter
+
+goalStateBefore != goalStateAfter
+
+controlStateBefore != controlStateAfter
+
+environmentState change
+
+newInformationPresent
+
+Otherwise beat remains weak/mechanical.
+
+======================================================================
+8. RAW-013 DEEP CASE
+======================================================================
+
+raw-013 is the primary diagnostic fixture.
+
+Current:
+
+SFE = 99 PASS
+ranking = 97.6
+Beat Grammar = BROKEN
+reason = UNKNOWN_CONSEQUENCE
+
+Perform a beat-by-beat audit.
+
+For every beat show:
+
+raw consequence
+normalized consequence
+canonical projected consequence
+classification status
+state change
+new information
+progression support
+
+Then determine:
+
+A. consequence genuinely absent
+
+B. consequence explicit but unclassified
+
+C. consequence explicit and state-changing
+
+D. consequence repeated / non-progressive
+
+Do NOT force raw-013 to pass.
+
+If it remains BROKEN after correct evidence handling, explain the genuine reason.
+
+======================================================================
+9. RAW-007 / RAW-026 / RAW-027
+======================================================================
+
+Run the same Beat Grammar consequence audit for the other three current SFE PASS + ELIGIBLE candidates.
+
+We need to know whether they also contain unclassified consequences hidden by taxonomy assumptions.
+
+Do not change their SFE/ranking results.
+
+======================================================================
+10. ALL 18 HUMAN REVIEW CANDIDATES
+======================================================================
+
+Replay Beat Grammar for the full existing 18 HUMAN_REVIEW candidates with:
+
+unclassified consequence support enabled.
+
+No new generation.
+
+For each return:
+
+BEFORE Beat Grammar quality
+AFTER Beat Grammar quality
+delta reason
+
+consequence counts:
+
+classified
+present-unclassified
+missing
+ambiguous
+
+======================================================================
+11. STRATEGY SAME PRINCIPLE
+======================================================================
+
+Audit strategy classification too.
+
+If semantic strategy is explicit but not taxonomy-mapped:
+
+PRESENT_UNCLASSIFIED
+
+Do not treat it as missing.
+
+But again:
+
+unclassified strategy does not automatically count as a materially distinct strategy.
+
+Use structured state/action evidence.
+
+======================================================================
+12. BEAT GRAMMAR QUALITY
+======================================================================
+
+Keep existing quality levels:
+
+STRONG
+ACCEPTABLE
+MECHANICAL
+BROKEN
+
+Do not alter thresholds unless architecture requires representation-only changes.
+
+Quality should still depend on:
+
+strategy diversity
+consequence diversity
+state progression
+information gain
+payoff distance
+
+But these should operate on canonical evidence, not only known taxonomy labels.
+
+======================================================================
+13. UNKNOWN_CONSEQUENCE FINDING
+======================================================================
+
+Replace or refine the meaning of UNKNOWN_CONSEQUENCE.
+
+Possible distinction:
+
+CONSEQUENCE_MISSING
+
+CONSEQUENCE_PRESENT_UNCLASSIFIED
+
+CONSEQUENCE_STATE_CHANGE_UNSUPPORTED
+
+Do not remove diagnostics.
+
+Make them more truthful.
+
+======================================================================
+14. PAYOFF BEAT
+======================================================================
+
+Final beat consequence must receive same treatment.
+
+A payoff can be:
+
+present
+state-changing
+rule-linked
+
+even if consequence taxonomy is unclassified.
+
+Do not equate unclassified final consequence with weak payoff automatically.
+
+Existing payoff scoring remains separate.
+
+======================================================================
+15. PRODUCTION PRESELECTION
+======================================================================
+
+After Beat Grammar replay:
+
+run existing preselection unchanged.
+
+Report whether any candidate becomes production-admissible.
+
+Do NOT lower:
+
+Beat Grammar floor
+Naturalness floor
+ranking thresholds
+production thresholds
+
+Any transition must come only from corrected evidence semantics.
+
+======================================================================
+16. RAW-013 PRODUCTION TRACE
+======================================================================
+
+If raw-013 Beat Grammar changes from BROKEN:
+
+run full preselection and report exact remaining blockers.
+
+If it becomes production candidate:
+
+report it.
+
+If not:
+
+show exact blocker.
+
+Do NOT manually promote.
+
+======================================================================
+17. TAXONOMY COVERAGE REPORT
+======================================================================
+
+Across the 18 candidates report:
+
+strategy:
+classified
+present-unclassified
+missing
+ambiguous
+
+consequence:
+classified
+present-unclassified
+missing
+ambiguous
+
+Also identify repeated unclassified patterns that might justify a future taxonomy expansion.
+
+Do NOT expand taxonomy in this task.
+
+======================================================================
+18. PATTERN DISCOVERY
+======================================================================
+
+Group repeated unclassified consequence patterns by structural signature.
+
+Examples conceptually:
+
+- property moves from A to B
+- output becomes inverse property
+- action affects different target
+- delayed duplicate result
+- environment changes instead of object
+
+Do not assign canonical names unless already existing.
+
+Return candidate IDs and source examples.
+
+This will inform the next taxonomy decision.
+
+======================================================================
+19. LEGACY SAFETY
+======================================================================
+
+Existing deterministic Beat Grammar fixtures must remain unchanged.
+
+Legacy deterministic generator behavior must remain stable.
+
+No historical score changes.
+
+Only structured semantic evidence mode should benefit from this new presence/unclassified distinction where applicable.
+
+======================================================================
+20. NO SOURCE BONUS
+======================================================================
+
+Semantic candidates receive no special scoring bonus.
+
+Manual concepts in the future should behave the same if they provide equivalent canonical evidence.
+
+======================================================================
+21. FULL BEFORE/AFTER
+======================================================================
+
+For all 18 return:
+
+ID
+TITLE
+
+BEFORE:
+Beat Grammar quality
+strategy diversity
+consequence diversity
+progression
+key findings
+
+AFTER:
+same fields
+
+DELTA
+CAUSE
+
+======================================================================
+22. GOLDEN TESTS
+======================================================================
+
+Add tests proving:
+
+A. explicit unclassified consequence is not missing
+
+B. explicit unclassified strategy is not missing
+
+C. present-unclassified consequence does not automatically equal progression
+
+D. state-changing unclassified consequence can support progression
+
+E. repeated unclassified consequence with no state difference remains mechanical
+
+F. new information can support progression independently of taxonomy label
+
+G. payoff beat can be present-unclassified
+
+H. missing consequence remains missing
+
+I. ambiguous consequence remains ambiguous
+
+J. raw-013 no longer fails merely because taxonomy label is unknown
+
+K. raw-013 may still fail for genuine progression reasons
+
+L. raw-007 behavior remains consistent
+
+M. raw-026 behavior remains consistent
+
+N. raw-027 behavior remains consistent
+
+O. deterministic Beat Grammar fixtures remain unchanged
+
+P. Structured SFE results remain unchanged
+
+Q. ranking thresholds remain unchanged
+
+R. provider calls remain zero
+
+S. historical evidence remains unchanged
+
+======================================================================
+23. FULL REGRESSION
+======================================================================
+
+Run:
+
+Beat Grammar tests
+canonical evidence tests
+structured semantic tests
+preselection tests
+ranking tests
+legacy parity
+full regression
+
+Target:
+
+only accepted 36 baseline failures
+existing skips
+
+No new failures.
+
+======================================================================
+24. REQUIRED REPORT
+======================================================================
+
+Provide:
+
+1. architecture summary
+2. files changed
+3. consequence evidence-state model
+4. strategy evidence-state model
+5. raw-013 beat-by-beat audit
+6. raw-007 audit
+7. raw-026 audit
+8. raw-027 audit
+9. all 18 before/after Beat Grammar results
+10. strategy taxonomy coverage
+11. consequence taxonomy coverage
+12. repeated unclassified consequence patterns
+13. production preselection before/after
+14. new production candidates if any
+15. remaining blockers
+16. exact test results
+17. provider call count = 0
+18. proof Structured SFE unchanged
+19. proof historical evidence unchanged
+20. proof only accepted baseline failures remain
+
+======================================================================
+25. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+more candidates pass Beat Grammar.
+
+Success is:
+
+Beat Grammar can distinguish:
+
+NO CONSEQUENCE
+
+from
+
+CONSEQUENCE EXISTS BUT TAXONOMY DOES NOT YET HAVE A NAME.
+
+After this, any remaining MECHANICAL/BROKEN status should reflect actual choreography/progression weakness rather than taxonomy blindness.
+
+======================================================================
+26. STOP
+======================================================================
+
+After offline replay:
+
+STOP.
+
+Do NOT:
+
+expand consequence taxonomy
+expand strategy taxonomy
+change thresholds
+change semantic prompt
+call provider
+generate new concepts
+render anything.
+
+Implement Beat Grammar Unclassified Consequence Support V1 and replay only the existing 18 candidates.

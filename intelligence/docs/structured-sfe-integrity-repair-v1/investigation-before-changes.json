@@ -1,0 +1,178 @@
+[
+  {
+    "test": "tests/test_beat_generation.py::test_new_golden_and_old_protected_hashes",
+    "manifest": "intelligence/docs/beat-grammar-v2/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_concept_ranking.py::test_frozen_accepted_implementations_fixtures_and_all_historical_artifacts_keep_hashes",
+    "manifest": "intelligence/docs/concept-ranking-v1/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_premise_generation.py::test_all_protected_files_and_historical_evidence_unchanged",
+    "manifest": "intelligence/docs/premise-naturalness-v1/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_semantic_concept_generation.py::test_all_accepted_sources_and_frozen_evidence_unchanged",
+    "manifest": "intelligence/docs/semantic-concept-v1/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_semantic_evidence_adapter.py::test_immutable_live_and_protected_hashes",
+    "manifest": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/protected-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_shape_generation.py::test_protected_sources_and_all_prior_experiments_unchanged",
+    "manifest": "intelligence/docs/creative-shape-v1/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_short_concept_generation.py::test_accepted_sources_fixtures_history_and_projections_keep_all_hashes",
+    "manifest": "intelligence/docs/short-concept-generation-v1/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  },
+  {
+    "test": "tests/test_short_concept_v2.py::test_protected_sources_and_v1_evidence_unchanged",
+    "manifest": "intelligence/docs/short-concept-generation-v2/immutable-before.json",
+    "expectationType": "MIXED_FROZEN_EVIDENCE_AND_ACTIVE_CODE_PIN",
+    "changedFiles": [
+      {
+        "path": "intelligence/ml-service/app/workflow/concept_ranking.py",
+        "expectedSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "actualSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      },
+      {
+        "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+        "expectedSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "actualSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "classification": "ACTIVE_IMPLEMENTATION",
+        "intentional": true,
+        "reason": "Accepted Structured Evidence Input V1: evidence acquisition boundary / optional evidence forwarding; creative scoring semantics unchanged."
+      }
+    ]
+  }
+]

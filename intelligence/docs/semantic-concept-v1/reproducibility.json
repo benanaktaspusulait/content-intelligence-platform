@@ -1,0 +1,18 @@
+{
+  "seed": 42,
+  "mockSemanticCanonicalSha256": "18f6e721230d0771cee24002aba1f9396e981e23c0149a0198c9b59a42f89794",
+  "mockSemanticFileSha256": "9a988f5d0fff92f8d7cfc9839f8b7bf518ab202695b8c45f2b1d917fc0578b3c",
+  "comparisonRunIds": {
+    "A_deterministic": "concept-run-9f209990208dfc627223",
+    "B_semantic_mock": "concept-run-0441841e5b61f5f06647",
+    "C_hybrid": "concept-run-e76a890691385ea5e41d"
+  },
+  "externalProviderCalls": 0,
+  "paidEvaluations": 0,
+  "networkBlockedDuringEvidenceRun": true,
+  "crossProcessPythonHashSeed": 17,
+  "rawFrameZeroJudgedIndependently": true,
+  "transferContradictionTarget": "absorbs water",
+  "crossProcessCliSha256": "9a988f5d0fff92f8d7cfc9839f8b7bf518ab202695b8c45f2b1d917fc0578b3c",
+  "byteIdenticalCliAndSavedMockRun": true
+}

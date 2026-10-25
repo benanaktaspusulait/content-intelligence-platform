@@ -1,0 +1,16 @@
+{
+  "exactSameQualityExpressions": true,
+  "expressions": {
+    "info": "round(100 * progressive / len(plan), 2)",
+    "body_score": "round(100 * body_changes / len(plan), 2)",
+    "spatial_score": "round(100 * len(observed) / len(spatial_axes), 2)",
+    "mechanical": "unique_s < 3 or unique_c < 3 or info < 60",
+    "quality": "'BROKEN' if broken else 'MECHANICAL' if mechanical else 'STRONG' if body_score >= 60 and payoff['distance'] >= 0.5 and (info >= 80) and (near == 0) else 'ACCEPTABLE'"
+  },
+  "representationChanges": [
+    "Source-local supported action/state keys replace UNKNOWN as a diversity identity; an unclassified label alone supplies no key.",
+    "Unknown axes no longer count as matching in attempt comparisons.",
+    "Payoff distance normalizes over supported axes only; no supported comparison gives0. Threshold0.5 unchanged.",
+    "No body/spatial credit invented; all90 body/spatial support fields remain false."
+  ]
+}

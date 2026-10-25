@@ -1,0 +1,15 @@
+{
+  "version": "short-concept-generator-v2",
+  "candidateHash": "c8bf79e806cd11ad838e1a954e3cc81d2fd8d40c9611c110f115c92845d94ec5",
+  "generationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "structuralDuplicateCount": 0,
+    "eligibleCount": 6,
+    "revisionCount": 13,
+    "rejectedCount": 1,
+    "finalCandidateCount": 20,
+    "capacityStatus": "REQUEST_SATISFIED"
+  },
+  "firstRenderCandidate": "v2-69e8e1f5cbc4a53d"
+}

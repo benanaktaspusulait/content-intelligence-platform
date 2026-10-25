@@ -1,0 +1,2990 @@
+[
+  {
+    "ideaId": "raw-007",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4006fedb01f38b5a731f05e1b997171a0deefc99468a9fc54e95030cc87c2ea7"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-013",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-026",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-027",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-005",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "bfa045607f144ac01a13c584bf48d1db24ee6dcafa5fe908c00ebbec8b7e18eb"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-006",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fd6e949c82bb8d846a7bfccf5f08092d1e5b99aaed639354971cf61d15a93eee"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-018",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "da25315ba869e960a7ee54c211b86afe1e3242c9e1340151c669c6e271386668"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-008",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "9003f08a0e45f8a7655b6d9c5810e21901119ecff2519f87a3737c6e1e55a41d"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-004",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "8b57d39f85a11f2c1ecb42fd643cdf71d894e8b5362727785299e0a0f7f77a59"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-019",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "7ebbcc8624cf30738c133b16473b5692a01cc4f55bc8bfae43d3ccd68bf76131"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-020",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      },
+      "goalVisible": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "a24f6575f875dfded1b2387cb02247089252b764dcc2a4e006df40127eac82a5"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-032",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c9805b12786c2e08eece3b42df547c9eb414d4fe46da84bae2e20c97e34556a9"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-003",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "ebbb638c575379e4be3ee2f10f5c9b427346f104ab6b8cd8092cbd1cec0c8a26"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-015",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "035a68a06b2bac2fe5b13fe0978f96b0d6a11b89aef418d1370b4b4ad1e5a290"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-016",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "fa6d0348510e8cf60b04884e1fe0dac539e0009ef4eab22c86074d67803d0698"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-001",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "c01dea5e9f2e1b92cf44d302b31375654523a534b0c9e9baaa7028c8ca4b2722"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-009",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "f627c2defe5dcca7c3f299b265e653cba47903f1052d98a8766564932b7d495e"
+        }
+      }
+    }
+  },
+  {
+    "ideaId": "raw-031",
+    "facts": {
+      "goalDeclared": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      },
+      "goalVisible": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      },
+      "openingAnomaly": {
+        "canonical": false,
+        "SFE": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": false,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      },
+      "rulePresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      },
+      "triggerPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      },
+      "beatCount": {
+        "canonical": 5,
+        "SFE": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": 5,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      },
+      "payoffPresent": {
+        "canonical": true,
+        "SFE": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "Naturalness": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "BeatGrammar": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        },
+        "RankingAdmission": {
+          "classification": "AGREE",
+          "value": true,
+          "contextSha256": "703a1547ee18599680ee071253e83b4285b60595734b3e3435f04f38c6e6b636"
+        }
+      }
+    }
+  }
+]

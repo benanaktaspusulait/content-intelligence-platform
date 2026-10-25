@@ -1,0 +1,97 @@
+❯ Building...
+✔ Building...
+Initial chunk files                                      | Names                                                 |  Raw size
+chunk-SROZP2FK.js                                        | -                                                     | 909.99 kB | 
+styles.css                                               | styles                                                | 237.88 kB | 
+spec-app-pages-quality-validator-post-family-workflow.js | spec-app-pages-quality-validator-post-family-workflow | 193.88 kB | 
+chunk-PWXBN7QK.js                                        | -                                                     |  54.49 kB | 
+chunk-IYAYJGUL.js                                        | -                                                     |  16.22 kB | 
+chunk-FD3IWFCA.js                                        | -                                                     |  12.94 kB | 
+spec-app-pages-concept-ranking.page.js                   | spec-app-pages-concept-ranking.page                   |  11.37 kB | 
+spec-app-pages-concept-generation.page.js                | spec-app-pages-concept-generation.page                |  11.34 kB | 
+chunk-SESOSYQR.js                                        | -                                                     |   8.82 kB | 
+chunk-JBWBLPNK.js                                        | -                                                     |   5.19 kB | 
+spec-app-pages-short-form-report.component.js            | spec-app-pages-short-form-report.component            |   4.98 kB | 
+spec-app-pages-story-premise-report.component.js         | spec-app-pages-story-premise-report.component         |   2.35 kB | 
+init-testbed.js                                          | init-testbed                                          |   1.21 kB | 
+vitest-mock-patch.js                                     | vitest-mock-patch                                     | 974 bytes | 
+
+                                                         | Initial total                                         |   1.47 MB
+
+Lazy chunk files                                         | Names                                                 |  Raw size
+chunk-INXE7O3E.js                                        | creative-studio-page                                  | 766.01 kB | 
+chunk-7HWGFUVA.js                                        | video-detail-page                                     | 314.52 kB | 
+chunk-524A4P72.js                                        | quality-validator-component                           | 280.80 kB | 
+chunk-RWZANXR3.js                                        | render-preparation-page                               | 225.33 kB | 
+chunk-ACWOQRPV.js                                        | render-dashboard-page                                 | 150.86 kB | 
+chunk-Q3WFEIG3.js                                        | operations-page                                       |  73.06 kB | 
+chunk-5TQQ25JK.js                                        | -                                                     |  69.14 kB | 
+chunk-FR46XUWA.js                                        | prompt-workspace-page                                 |  50.23 kB | 
+chunk-VGIGH55O.js                                        | rule-governance-page                                  |  46.41 kB | 
+chunk-FO5BHKEB.js                                        | import-data-page                                      |  44.84 kB | 
+chunk-GQ3PZ2RP.js                                        | video-analysis-workbench-page                         |  43.38 kB | 
+chunk-AXMZKSMX.js                                        | predictions-page                                      |  39.73 kB | 
+chunk-J2CFMYSX.js                                        | character-lab-page                                    |  35.31 kB | 
+chunk-YM4ORPML.js                                        | meta-connection-page                                  |  35.04 kB | 
+chunk-TQTJ4MSB.js                                        | reach-further-research-page                           |  33.65 kB | 
+...and 14 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [31.286 seconds] - 2026-10-23T23:33:03.992Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:207:39:
+      207 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:207:75:
+      207 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+ ❯ |frontend| src/app/pages/concept-generation.page.spec.ts (12 tests | 1 failed) 196ms
+     × shows optional non-canonical premise evidence 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |frontend| src/app/pages/concept-generation.page.spec.ts > local concept generation controls > shows optional non-canonical premise evidence
+AssertionError: expected 'Concept RankingCompare supplied conce…' to contain 'Object Specificity HIGH'
+
+- Expected
++ Received
+
+- Object Specificity HIGH
++ Concept RankingCompare supplied concepts for approximately 15-second production before writing prompts.Back to Prompt QualitySupplied conceptsPaste a JSON array, one concept object, or labeled text concepts separated by a line containing ---. Include title, protagonist, goal, object/interaction, rule, frame zero, timed escalation plan, payoff and intended duration. Missing details stay missing.Rank supplied conceptsSupplied-concept ranking uses the existing validators. Recommendations require subsequent prompt and render admission checks.Generate local short-form conceptsChoose authored V1 recipes or a V2 compatible causal grammar with planned staging diversity and additive production selection. These are pre-render hypotheses, not measured retention.Generator V1 — authored baselineV2 — causal grammarBeat Grammar Off — accepted V2 baselineV2 — strategy and consequence planCandidate count Seed Generate and rank locallyGeneration stats{
++   "rawCandidateCount": 20,
++   "eligibleCount": 3,
++   "structuralDuplicateCount": 2,
++   "catalogExhausted": true
++ }The finite recipe catalog was exhausted. Repeated engines remain visible as rejected duplicates.Engine distributionprogressive_growth: 2repulsion: 1Diversity 92 · Seed 42 · short-concept-generator-v1Generator diagnostics{
++   "eligibilityYield": 0.15
++ }Every attempt and its failure reasonsPreserved failure · REVISION_REQUIREDWEAK_VISUAL_PAYOFF · Rule-linked payoff missing.Premise Naturalness STRONG · Goal Interference DIRECT · Object Specificity  · Functional Irony HIGH · Physical Payoff Potential 95 · Static-Frame Legibility 85Expected: stays around footRetention fails.[]{
++   "coreHash": "core"
++ }What should we make today?What should we make today?
++ First production candidate: supplied-aProduce first: supplied-aProduction slate: supplied-a. Canonical and validator scores are preserved.Creative ranking score includes named penalties. Production efficiency breaks ties within anchored three-point bands; a lower score can therefore rank first.Eligible concepts only · expand a row for source-backed ranking rationaleRankConceptScoreHookProgressPayoffDuplicate RiskProduction RiskResultRevision / excluded conceptsDiversity adjustments[]Production decision report
+
+ ❯ src/app/pages/concept-generation.page.spec.ts:133:128
+    131|     fixture.detectChanges(); const text = fixture.nativeElement.textCo…
+    132|     for (const value of ['Premise Naturalness STRONG', 'Goal Interfere…
+    133|       'Functional Irony HIGH', 'Physical Payoff Potential 95', 'Static…
+       |                                                                                                                                ^
+    134|     fixture.destroy();
+    135|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 101 passed (102)
+   Start at  00:33:04
+   Duration  3.95s (transform 906ms, setup 1.33s, import 1.67s, tests 2.62s, environment 4.07s)
+

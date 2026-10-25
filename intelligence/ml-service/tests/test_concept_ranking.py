@@ -1,7 +1,6 @@
 """Ranking policy tests over supplied, accepted repository concept fixtures."""
 
 from copy import deepcopy
-import hashlib
 from itertools import permutations
 import json
 from pathlib import Path
@@ -337,5 +336,6 @@ def test_frozen_accepted_implementations_fixtures_and_all_historical_artifacts_k
     workspace = Path(__file__).parents[3]
     before = json.loads((ROOT / "docs/concept-ranking-v1/immutable-before.json").read_text())
     assert len(before) == 68
-    for name, sha in before.items():
-        assert hashlib.sha256((workspace / name).read_bytes()).hexdigest() == sha, name
+    from protected_integrity import assert_manifest_integrity
+
+    assert_manifest_integrity(workspace, before)

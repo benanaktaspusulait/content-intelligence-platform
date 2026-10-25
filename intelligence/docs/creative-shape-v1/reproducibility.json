@@ -1,0 +1,17 @@
+{
+  "configuration": {
+    "generatorVersion": "v2",
+    "beatGrammarVersion": "v2",
+    "premiseNaturalnessGateVersion": "v1",
+    "creativeShapeVersion": "v1",
+    "seed": 42,
+    "count": 20
+  },
+  "canonicalResultSha256": "33785716543a944548db648a4a5411b947fef240d25cc19dc597c221d9c99905",
+  "experimentFileSha256": "34edcc30b89e4d807c102103651ad7425024b00f2f3568f5906021084108228b",
+  "numericDefaultsNormalized": true,
+  "providerCalls": 0,
+  "crossProcessCliFileSha256": "34edcc30b89e4d807c102103651ad7425024b00f2f3568f5906021084108228b",
+  "crossProcessPythonHashSeed": 17,
+  "byteIdenticalCliAndSavedExperiment": true
+}

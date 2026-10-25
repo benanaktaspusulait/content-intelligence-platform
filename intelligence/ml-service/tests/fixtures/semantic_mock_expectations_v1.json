@@ -1,0 +1,33 @@
+{
+  "corpus": "review-v1",
+  "fixtureOnly": true,
+  "categories": {
+    "diverse": [
+      "lid_room",
+      "towel_transfer",
+      "eraser_transfer"
+    ],
+    "repeatedTemplate": [
+      "template_comb",
+      "template_soap"
+    ],
+    "arbitraryMagic": [
+      "arbitrary_fork"
+    ],
+    "historical": [
+      "historical_chair"
+    ],
+    "poorLegibility": [
+      "invisible_lid"
+    ],
+    "malformed": [
+      "bad_scores",
+      "bad_beats",
+      "bad_duration",
+      "bad_empty",
+      "bad_unsafe",
+      "duplicate_id"
+    ]
+  },
+  "notEvidenceOfSemanticSuperiority": true
+}

@@ -1,0 +1,182 @@
+{
+  "seed": 42,
+  "requestedCount": 20,
+  "oldV2": {
+    "strategyDistribution": {
+      "DIRECT_USE": 58,
+      "MOVE_UNDER_OBJECT": 20,
+      "TWO_HAND_FORCE": 22
+    },
+    "consequenceDistribution": {
+      "CHARACTER_MOVES": 20,
+      "GOAL_MOVES_FARTHER": 8,
+      "OBJECT_GROWS": 16,
+      "OBJECT_MOVES": 16,
+      "OBJECT_ROTATES": 8,
+      "OBJECT_SHRINKS": 8,
+      "OBJECT_STICKS": 12,
+      "PROBLEM_RESETS": 12
+    },
+    "progressionShapeDistribution": {
+      "LEGACY_TEMPLATE_TEXT_ANNOTATION": 20
+    },
+    "payoffStateChangeDistribution": {
+      "CHARACTER_ATTEMPTS_CONTROL": 13,
+      "OBJECT_CONTROLS_CHARACTER": 4,
+      "OPENING_PROBLEM_RETURNS": 3
+    },
+    "averageStrategyDiversity": 50.0,
+    "averageConsequenceDiversity": 50.0,
+    "averageBodyStateProgression": 69.0,
+    "nearDuplicateAttemptRate": 0.595,
+    "moveUnderObjectRate": 1.0,
+    "twoHandForceRate": 0.85,
+    "lowPayoffDistanceRate": 0.55,
+    "productionRiskRate": 1.0,
+    "qualityDistribution": {
+      "MECHANICAL": 20
+    },
+    "concentrationWarnings": [
+      {
+        "code": "MOVE_UNDER_OBJECT_CONCENTRATION",
+        "candidateCount": 20,
+        "share": 1.0
+      },
+      {
+        "code": "FORCE_ESCALATION_CONCENTRATION",
+        "candidateCount": 17,
+        "share": 0.85
+      },
+      {
+        "code": "PROGRESSION_SHAPE_CONCENTRATION",
+        "shape": "LEGACY_TEMPLATE_TEXT_ANNOTATION",
+        "share": 1.0
+      }
+    ],
+    "candidateDenominator": 20,
+    "scoreUse": "NON_CANONICAL_BATCH_DIAGNOSTICS",
+    "eligibilityYield": 0.3,
+    "averageShortFormScore": 73.7,
+    "acceptedProductionRiskRate": 0.0,
+    "top3CreativeDistance": {
+      "meanPairwiseCreativeDistance": 0.97,
+      "minimumPairwiseCreativeDistance": 0.94,
+      "pairCount": 3
+    }
+  },
+  "newV2WithBeatGrammar": {
+    "strategyDistribution": {
+      "ANCHOR_TO_ENVIRONMENT": 3,
+      "BLOCK_PATH": 5,
+      "BRACE_BODY": 11,
+      "DIRECT_USE": 20,
+      "FIRST_NORMAL_USE": 20,
+      "MOVE_SELF_NOT_OBJECT": 6,
+      "REDUCE_FORCE": 4,
+      "SWITCH_CONTACT_POINT": 8,
+      "TEMPORARILY_STOP_TRIGGER": 14,
+      "USE_ENVIRONMENT_SURFACE": 9
+    },
+    "consequenceDistribution": {
+      "BODY_PART_TRAPPED": 3,
+      "CHARACTER_IS_DRAGGED": 2,
+      "CHARACTER_IS_LIFTED": 3,
+      "CHARACTER_LOSES_BALANCE": 1,
+      "CHARACTER_MOVES": 14,
+      "ENVIRONMENT_BECOMES_BLOCKED": 3,
+      "GOAL_APPEARS_REACHED": 11,
+      "GOAL_MOVES_FARTHER": 2,
+      "OBJECT_CONTROLS_CHARACTER": 13,
+      "OBJECT_GROWS": 4,
+      "OBJECT_MOVES": 6,
+      "OBJECT_ROTATES": 1,
+      "OBJECT_SHRINKS": 5,
+      "OBJECT_STICKS": 4,
+      "PATH_BLOCKED": 10,
+      "PROBLEM_RESETS": 10,
+      "SPACE_REDUCES": 8
+    },
+    "progressionShapeDistribution": {
+      "BODY_ESCALATION": 4,
+      "CONTROL_TRANSFER": 4,
+      "ENVIRONMENTAL_ESCALATION": 3,
+      "FALSE_MASTERY": 4,
+      "GOAL_DISTANCE_REVERSAL": 3,
+      "SPACE_COLLAPSE": 2
+    },
+    "payoffStateChangeDistribution": {
+      "OBJECT_CONTROLS_CHARACTER": 13,
+      "OPENING_PROBLEM_RETURNS": 7
+    },
+    "averageStrategyDiversity": 100.0,
+    "averageConsequenceDiversity": 96.25,
+    "averageBodyStateProgression": 81.0,
+    "nearDuplicateAttemptRate": 0.025,
+    "moveUnderObjectRate": 0.0,
+    "twoHandForceRate": 0.0,
+    "lowPayoffDistanceRate": 0.0,
+    "productionRiskRate": 0.0,
+    "qualityDistribution": {
+      "STRONG": 14,
+      "ACCEPTABLE": 6
+    },
+    "concentrationWarnings": [],
+    "candidateDenominator": 20,
+    "scoreUse": "NON_CANONICAL_BATCH_DIAGNOSTICS",
+    "eligibilityYield": 0.2,
+    "averageShortFormScore": 65.7,
+    "acceptedProductionRiskRate": 0.0,
+    "top3CreativeDistance": {
+      "meanPairwiseCreativeDistance": 0.94,
+      "minimumPairwiseCreativeDistance": 0.94,
+      "pairCount": 1
+    }
+  },
+  "top3BeatGrammar": {
+    "strategyDistribution": {
+      "ANCHOR_TO_ENVIRONMENT": 1,
+      "BRACE_BODY": 2,
+      "DIRECT_USE": 2,
+      "FIRST_NORMAL_USE": 2,
+      "SWITCH_CONTACT_POINT": 1,
+      "TEMPORARILY_STOP_TRIGGER": 2
+    },
+    "consequenceDistribution": {
+      "CHARACTER_IS_DRAGGED": 1,
+      "CHARACTER_LOSES_BALANCE": 1,
+      "CHARACTER_MOVES": 1,
+      "GOAL_APPEARS_REACHED": 2,
+      "OBJECT_CONTROLS_CHARACTER": 1,
+      "OBJECT_ROTATES": 1,
+      "PATH_BLOCKED": 1,
+      "PROBLEM_RESETS": 2
+    },
+    "progressionShapeDistribution": {
+      "BODY_ESCALATION": 1,
+      "GOAL_DISTANCE_REVERSAL": 1
+    },
+    "payoffStateChangeDistribution": {
+      "OBJECT_CONTROLS_CHARACTER": 1,
+      "OPENING_PROBLEM_RETURNS": 1
+    },
+    "averageStrategyDiversity": 100.0,
+    "averageConsequenceDiversity": 100.0,
+    "averageBodyStateProgression": 90.0,
+    "nearDuplicateAttemptRate": 0.0,
+    "moveUnderObjectRate": 0.0,
+    "twoHandForceRate": 0.0,
+    "lowPayoffDistanceRate": 0.0,
+    "productionRiskRate": 0.0,
+    "qualityDistribution": {
+      "STRONG": 2
+    },
+    "concentrationWarnings": [],
+    "candidateDenominator": 2,
+    "scoreUse": "NON_CANONICAL_BATCH_DIAGNOSTICS"
+  },
+  "limitations": [
+    "Old V2 beat metrics are new conservative annotations of stored text, not historical canonical scores. Coverage differs from structured-first plans.",
+    "High structured diversity can coexist with poor prose, low accepted eligibility or repeated choreography. These metrics do not establish creative success.",
+    "Scores and selections from old V2 are read only. No tuning, provider calls or renders."
+  ]
+}

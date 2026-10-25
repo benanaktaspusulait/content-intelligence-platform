@@ -1,0 +1,424 @@
+{
+  "version": "beat-grammar-v2",
+  "strategies": {
+    "DIRECT_USE": {
+      "family": "DIRECT_FORCE",
+      "action": "uses the object directly toward the goal",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "TWO_HAND_FORCE": {
+      "family": "DIRECT_FORCE",
+      "action": "pulls with both hands",
+      "requires": [
+        "grasp"
+      ],
+      "productionRiskHints": [
+        "MULTIPLE_CONTACT_POINTS"
+      ]
+    },
+    "INCREASE_FORCE": {
+      "family": "DIRECT_FORCE",
+      "action": "pulls harder",
+      "requires": [
+        "grasp"
+      ],
+      "productionRiskHints": []
+    },
+    "WHOLE_BODY_BRACE": {
+      "family": "DIRECT_FORCE",
+      "action": "braces with the whole body",
+      "requires": [
+        "large"
+      ],
+      "productionRiskHints": [
+        "BODY_OBJECT_ENTANGLEMENT"
+      ]
+    },
+    "CHANGE_ANGLE": {
+      "family": "ANGLE_CHANGE",
+      "action": "turns the approach to the other side",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "APPROACH_FROM_SIDE": {
+      "family": "ANGLE_CHANGE",
+      "action": "approaches from the side",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "MOVE_UNDER_OBJECT": {
+      "family": "ANGLE_CHANGE",
+      "action": "moves underneath the object",
+      "requires": [
+        "elevated"
+      ],
+      "productionRiskHints": [
+        "BODY_OBJECT_ENTANGLEMENT"
+      ]
+    },
+    "ANCHOR_TO_ENVIRONMENT": {
+      "family": "ENVIRONMENT_ANCHOR",
+      "action": "wedges the object against the fixed boundary",
+      "requires": [
+        "large"
+      ],
+      "productionRiskHints": []
+    },
+    "USE_ENVIRONMENT_SURFACE": {
+      "family": "SURFACE_GUIDANCE",
+      "action": "pushes the object along the fixed surface",
+      "requires": [
+        "surface"
+      ],
+      "productionRiskHints": []
+    },
+    "USE_BODY_WEIGHT": {
+      "family": "BODY_LOAD",
+      "action": "presses with body weight",
+      "requires": [
+        "load_bearing"
+      ],
+      "productionRiskHints": [
+        "MULTIPLE_CONTACT_POINTS"
+      ]
+    },
+    "BRACE_BODY": {
+      "family": "BODY_ANCHOR",
+      "action": "plants the feet and holds the object at arm length",
+      "requires": [
+        "grasp"
+      ],
+      "productionRiskHints": []
+    },
+    "BLOCK_PATH": {
+      "family": "PATH_INTERCEPTION",
+      "action": "holds the body across the return path",
+      "requires": [
+        "large"
+      ],
+      "productionRiskHints": []
+    },
+    "TRAP_OBJECT": {
+      "family": "CONTAINMENT",
+      "action": "pins the object against the fixed surface",
+      "requires": [
+        "large"
+      ],
+      "productionRiskHints": []
+    },
+    "MOVE_SELF_NOT_OBJECT": {
+      "family": "MOVE_SELF",
+      "action": "holds the object still and moves the body toward the working point",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "REDUCE_FORCE": {
+      "family": "INPUT_MODULATION",
+      "action": "makes the same visible trigger with a slow light movement",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "WAIT_AND_TIME": {
+      "family": "TIMING",
+      "action": "waits for the object to settle before completing the trigger",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "SWITCH_CONTACT_POINT": {
+      "family": "CONTACT_TRANSFER",
+      "action": "grabs the opposite broad contact surface",
+      "requires": [
+        "grasp"
+      ],
+      "productionRiskHints": []
+    },
+    "FREE_ONE_BODY_PART": {
+      "family": "CONTACT_RELEASE",
+      "action": "keeps the object still and peels one body contact free",
+      "requires": [
+        "adhesion"
+      ],
+      "productionRiskHints": [
+        "PRECISE_CONTACT_RELEASE"
+      ]
+    },
+    "TEMPORARILY_STOP_TRIGGER": {
+      "family": "TRIGGER_INHIBITION",
+      "action": "stops the trigger and aligns the body with the stationary working point",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "FIRST_NORMAL_USE": {
+      "family": "DIRECT_FORCE",
+      "action": "resumes the original everyday action",
+      "requires": [],
+      "productionRiskHints": []
+    },
+    "PRECISION_HANDOFF": {
+      "family": "CONTACT_TRANSFER",
+      "action": "passes the object rapidly between fingertips",
+      "requires": [
+        "tiny"
+      ],
+      "productionRiskHints": [
+        "INTRICATE_FINGER_CHOREOGRAPHY",
+        "RAPID_HANDOFF"
+      ]
+    }
+  },
+  "shapes": {
+    "CONTROL_TRANSFER": {
+      "strategies": [
+        "DIRECT_USE",
+        "SWITCH_CONTACT_POINT",
+        "BRACE_BODY",
+        "MOVE_SELF_NOT_OBJECT",
+        "FIRST_NORMAL_USE"
+      ],
+      "roles": [
+        "HOOK_PROBLEM",
+        "TACTIC_CHANGE",
+        "CONTROL_REVERSAL",
+        "TACTIC_CHANGE",
+        "PAYOFF"
+      ]
+    },
+    "SPACE_COLLAPSE": {
+      "strategies": [
+        "DIRECT_USE",
+        "BLOCK_PATH",
+        "USE_ENVIRONMENT_SURFACE",
+        "MOVE_SELF_NOT_OBJECT",
+        "FIRST_NORMAL_USE"
+      ],
+      "roles": [
+        "HOOK_PROBLEM",
+        "FIRST_OBVIOUS_FIX",
+        "CONSTRAINT_ESCALATION",
+        "TACTIC_CHANGE",
+        "PAYOFF"
+      ],
+      "validTransitions": [
+        "SCALE_UP",
+        "EXTEND_CONTACT"
+      ]
+    },
+    "FALSE_MASTERY": {
+      "strategies": [
+        "DIRECT_USE",
+        "REDUCE_FORCE",
+        "USE_ENVIRONMENT_SURFACE",
+        "TEMPORARILY_STOP_TRIGGER",
+        "FIRST_NORMAL_USE"
+      ],
+      "roles": [
+        "HOOK_PROBLEM",
+        "FIRST_OBVIOUS_FIX",
+        "ENVIRONMENTAL_LEVERAGE",
+        "FALSE_SUCCESS",
+        "LOOP_RESET"
+      ]
+    },
+    "BODY_ESCALATION": {
+      "strategies": [
+        "DIRECT_USE",
+        "SWITCH_CONTACT_POINT",
+        "BRACE_BODY",
+        "TEMPORARILY_STOP_TRIGGER",
+        "FIRST_NORMAL_USE"
+      ],
+      "roles": [
+        "HOOK_PROBLEM",
+        "TACTIC_CHANGE",
+        "BODY_LEVERAGE",
+        "FALSE_SUCCESS",
+        "PAYOFF"
+      ]
+    },
+    "GOAL_DISTANCE_REVERSAL": {
+      "strategies": [
+        "DIRECT_USE",
+        "ANCHOR_TO_ENVIRONMENT",
+        "BRACE_BODY",
+        "TEMPORARILY_STOP_TRIGGER",
+        "FIRST_NORMAL_USE"
+      ],
+      "roles": [
+        "HOOK_PROBLEM",
+        "ENVIRONMENTAL_LEVERAGE",
+        "BODY_LEVERAGE",
+        "FALSE_SUCCESS",
+        "LOOP_RESET"
+      ]
+    },
+    "ENVIRONMENTAL_ESCALATION": {
+      "strategies": [
+        "DIRECT_USE",
+        "USE_ENVIRONMENT_SURFACE",
+        "BLOCK_PATH",
+        "TEMPORARILY_STOP_TRIGGER",
+        "FIRST_NORMAL_USE"
+      ],
+      "roles": [
+        "HOOK_PROBLEM",
+        "ENVIRONMENTAL_LEVERAGE",
+        "CONSTRAINT_ESCALATION",
+        "CONSTRAINT_ESCALATION",
+        "PAYOFF"
+      ],
+      "validTransitions": [
+        "SCALE_UP",
+        "EXTEND_CONTACT",
+        "MOVE_AWAY",
+        "RETURN_ORIGIN",
+        "INVERT_ORIENTATION"
+      ]
+    }
+  },
+  "objectProperties": {
+    "lid": [
+      "large",
+      "grasp",
+      "surface",
+      "load_bearing"
+    ],
+    "watering can": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "snack box lid": [
+      "large",
+      "grasp",
+      "surface",
+      "load_bearing"
+    ],
+    "towel": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "ball": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "chair": [
+      "large",
+      "grasp",
+      "surface",
+      "load_bearing"
+    ],
+    "boot": [
+      "large",
+      "grasp",
+      "surface",
+      "load_bearing"
+    ],
+    "shirt": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "shoe": [
+      "large",
+      "grasp",
+      "surface",
+      "load_bearing"
+    ],
+    "hat": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "coat": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "drawer": [
+      "large",
+      "grasp",
+      "surface"
+    ],
+    "stool": [
+      "large",
+      "grasp",
+      "surface",
+      "load_bearing"
+    ],
+    "spoon": [
+      "grasp",
+      "surface"
+    ],
+    "fork": [
+      "grasp",
+      "surface"
+    ],
+    "brush": [
+      "grasp",
+      "surface"
+    ],
+    "comb": [
+      "grasp",
+      "surface"
+    ],
+    "soap bar": [
+      "grasp",
+      "surface"
+    ],
+    "book": [
+      "grasp",
+      "surface"
+    ],
+    "notebook": [
+      "grasp",
+      "surface"
+    ],
+    "crayon": [
+      "grasp",
+      "tiny"
+    ],
+    "pencil": [
+      "grasp",
+      "tiny"
+    ],
+    "eraser": [
+      "grasp",
+      "tiny"
+    ]
+  },
+  "consequences": [
+    "OBJECT_MOVES",
+    "OBJECT_GROWS",
+    "OBJECT_SHRINKS",
+    "OBJECT_ROTATES",
+    "OBJECT_STICKS",
+    "CHARACTER_MOVES",
+    "CHARACTER_IS_DRAGGED",
+    "CHARACTER_IS_LIFTED",
+    "CHARACTER_LOSES_BALANCE",
+    "SPACE_REDUCES",
+    "PATH_BLOCKED",
+    "BODY_PART_TRAPPED",
+    "OBJECT_CONTROLS_CHARACTER",
+    "ENVIRONMENT_BECOMES_BLOCKED",
+    "GOAL_MOVES_FARTHER",
+    "GOAL_APPEARS_REACHED",
+    "PROBLEM_RESETS",
+    "FINAL_STATE_REINTERPRETS_OPENING"
+  ],
+  "roles": [
+    "BODY_LEVERAGE",
+    "CONSTRAINT_ESCALATION",
+    "CONTROL_REVERSAL",
+    "ENVIRONMENTAL_LEVERAGE",
+    "FALSE_SUCCESS",
+    "FIRST_OBVIOUS_FIX",
+    "HOOK_PROBLEM",
+    "LOOP_RESET",
+    "PAYOFF",
+    "TACTIC_CHANGE"
+  ]
+}

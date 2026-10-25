@@ -1,0 +1,797 @@
+{
+  "provenance": "SYNTHETIC_SELECTION_TEST_NOT_PRODUCTION_SCORES",
+  "candidates": [
+    {
+      "candidateId": "chair-a",
+      "title": "Chair-A",
+      "protagonist": "Noah",
+      "protagonistCharacterId": "00000000-0000-0000-0000-000000000006",
+      "everydayGoal": "sit down",
+      "primaryObject": "chair",
+      "engineFamily": "REVERSAL",
+      "goalRuleRelationship": "The invert orientation response to support prevents the chair from reaching or holding the usable state needed to sit down.",
+      "impossibleRule": "The chair flips upside down whenever body weight is placed on it.",
+      "frameZeroDescription": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+      "beats": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upright at the next contact."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the body braces it."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15,
+          "description": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it."
+        }
+      ],
+      "finalPayoff": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+      "escalationCurve": [
+        {
+          "beatIndex": 1,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 1
+        },
+        {
+          "beatIndex": 2,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 2
+        },
+        {
+          "beatIndex": 3,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 4,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 5,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 4
+        }
+      ],
+      "loopPotential": {
+        "type": "NONE",
+        "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+      },
+      "dialogueRequirement": "NONE",
+      "environment": "playroom",
+      "intendedDurationSeconds": 15,
+      "productionNotes": [
+        "One character and one primary object; fixed camera and continuous identity.",
+        "Keep object orientation and body contact readable."
+      ],
+      "composition": {
+        "goalId": "sit",
+        "goalFamily": "HOUSEHOLD",
+        "objectId": "chair",
+        "objectCategory": "furniture",
+        "engineFamily": "REVERSAL",
+        "trigger": "WEIGHT_APPLIED",
+        "escalationTopology": "FALSE_PROGRESS",
+        "payoffTopology": "ROLE_REVERSAL",
+        "environment": "playroom",
+        "stateTransition": "INVERT_ORIENTATION"
+      },
+      "structuralPlan": {
+        "interactionType": "support",
+        "trigger": "WEIGHT_APPLIED",
+        "transformationDirection": "INVERT_ORIENTATION",
+        "escalationTopology": "FALSE_PROGRESS",
+        "resolutionTopology": "ROLE_REVERSAL",
+        "finalSilhouetteTopology": "INVERT_ORIENTATION_ROLE_REVERSAL",
+        "loopTopology": "NONE"
+      },
+      "visualFingerprint": {
+        "characterPoseFamily": "CROUCH",
+        "objectRelativePosition": "BELOW_BODY",
+        "dominantDirection": "INVERT_ORIENTATION",
+        "objectScaleRelation": "STABLE",
+        "characterObjectContact": "SEAT",
+        "finalFrameComposition": "INVERTED_CONTACT",
+        "movementAxis": "VERTICAL",
+        "environmentInteraction": "LOCAL_WORK_AREA"
+      },
+      "provenance": {
+        "generatorVersion": "short-concept-generator-v2",
+        "grammarVersion": "causal-grammar-v2",
+        "grammarSha256": "1282094bc249b18e0bf4e6d8f0a75f5042b1de54c810bd6d6e6e52158f884683",
+        "seed": 42,
+        "characterAssignedAfterEngine": true,
+        "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+      },
+      "structuralFingerprint": {
+        "version": "short-concept-fingerprint-v1",
+        "dimensions": {
+          "goalType": "SIT",
+          "interactionType": "SUPPORT",
+          "engineFamily": "REVERSAL",
+          "transformationDirection": "INVERT_ORIENTATION",
+          "trigger": "WEIGHT_APPLIED",
+          "escalationTopology": "FALSE_PROGRESS",
+          "resolutionTopology": "ROLE_REVERSAL",
+          "finalSilhouetteTopology": "INVERT_ORIENTATION_ROLE_REVERSAL",
+          "loopTopology": "NONE"
+        },
+        "fullHash": "c4425b68cbee629ec64c533bb09d301a96013191963e1ef0a4d811c69c752e71",
+        "coreHash": "64b8e6103831e011473b9ba24fb2fa0e40b28ff4bc4b61e02bb623366e77d9e2",
+        "supportedCoreDimensions": 7,
+        "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+        "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+      }
+    },
+    {
+      "candidateId": "chair-b",
+      "title": "Chair-B",
+      "protagonist": "Noah",
+      "protagonistCharacterId": "00000000-0000-0000-0000-000000000006",
+      "everydayGoal": "sit down",
+      "primaryObject": "chair",
+      "engineFamily": "REVERSAL",
+      "goalRuleRelationship": "The invert orientation response to support prevents the chair from reaching or holding the usable state needed to sit down.",
+      "impossibleRule": "The chair flips upside down whenever body weight is placed on it.",
+      "frameZeroDescription": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+      "beats": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upright at the next contact."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the body braces it."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15,
+          "description": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it."
+        }
+      ],
+      "finalPayoff": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+      "escalationCurve": [
+        {
+          "beatIndex": 1,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 1
+        },
+        {
+          "beatIndex": 2,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 2
+        },
+        {
+          "beatIndex": 3,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 4,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 5,
+          "sourceRule": "The chair flips upside down whenever body weight is placed on it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 4
+        }
+      ],
+      "loopPotential": {
+        "type": "NONE",
+        "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+      },
+      "dialogueRequirement": "NONE",
+      "environment": "playroom",
+      "intendedDurationSeconds": 15,
+      "productionNotes": [
+        "One character and one primary object; fixed camera and continuous identity.",
+        "Keep object orientation and body contact readable."
+      ],
+      "composition": {
+        "goalId": "sit",
+        "goalFamily": "HOUSEHOLD",
+        "objectId": "chair",
+        "objectCategory": "furniture",
+        "engineFamily": "REVERSAL",
+        "trigger": "WEIGHT_APPLIED",
+        "escalationTopology": "FALSE_PROGRESS",
+        "payoffTopology": "SLIGHTLY_DIFFERENT_CHAIR_PAYOFF",
+        "environment": "playroom",
+        "stateTransition": "INVERT_ORIENTATION"
+      },
+      "structuralPlan": {
+        "interactionType": "support",
+        "trigger": "WEIGHT_APPLIED",
+        "transformationDirection": "INVERT_ORIENTATION",
+        "escalationTopology": "FALSE_PROGRESS",
+        "resolutionTopology": "OPENING_RECREATED",
+        "finalSilhouetteTopology": "INVERT_ORIENTATION_ROLE_REVERSAL",
+        "loopTopology": "NONE"
+      },
+      "visualFingerprint": {
+        "characterPoseFamily": "CROUCH",
+        "objectRelativePosition": "BELOW_BODY",
+        "dominantDirection": "INVERT_ORIENTATION",
+        "objectScaleRelation": "STABLE",
+        "characterObjectContact": "SEAT",
+        "finalFrameComposition": "INVERTED_CONTACT",
+        "movementAxis": "VERTICAL",
+        "environmentInteraction": "LOCAL_WORK_AREA"
+      },
+      "provenance": {
+        "generatorVersion": "short-concept-generator-v2",
+        "grammarVersion": "causal-grammar-v2",
+        "grammarSha256": "1282094bc249b18e0bf4e6d8f0a75f5042b1de54c810bd6d6e6e52158f884683",
+        "seed": 42,
+        "characterAssignedAfterEngine": true,
+        "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+      },
+      "structuralFingerprint": {
+        "version": "short-concept-fingerprint-v1",
+        "dimensions": {
+          "goalType": "SIT",
+          "interactionType": "SUPPORT",
+          "engineFamily": "REVERSAL",
+          "transformationDirection": "INVERT_ORIENTATION",
+          "trigger": "WEIGHT_APPLIED",
+          "escalationTopology": "FALSE_PROGRESS",
+          "resolutionTopology": "OPENING_RECREATED",
+          "finalSilhouetteTopology": "INVERT_ORIENTATION_ROLE_REVERSAL",
+          "loopTopology": "NONE"
+        },
+        "fullHash": "02e0ea068d0d59c7e9032106ff276f3574681502d7190798711e3d62761698d4",
+        "coreHash": "50ec5465c6687439bbe1ca549bef99e10ac6d8c50f18f7f66a87c8968f9a18a0",
+        "supportedCoreDimensions": 7,
+        "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+        "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+      }
+    },
+    {
+      "candidateId": "lid",
+      "title": "Lid",
+      "protagonist": "Opa",
+      "protagonistCharacterId": "00000000-0000-0000-0000-000000000001",
+      "everydayGoal": "close the lid",
+      "primaryObject": "snack box lid",
+      "engineFamily": "REVERSAL",
+      "goalRuleRelationship": "The invert orientation response to seal prevents the snack box lid from reaching or holding the usable state needed to close the lid.",
+      "impossibleRule": "The snack box lid flips upside down whenever pressure is applied to it.",
+      "frameZeroDescription": "Opa tries to close the lid and presses the snack box lid toward its rim. The snack box lid flips upside down at contact. Opa's eyes widen at the blocked goal.",
+      "beats": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Opa tries to close the lid and presses the snack box lid toward its rim. The snack box lid flips upside down at contact. Opa's eyes widen at the blocked goal."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Opa guides the object with one hand, pushes using both hands, and presses the snack box lid toward its rim. The snack box lid flips upright at the next contact."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Opa braces with both hands, squeezes between broad forearms, and presses the snack box lid toward its rim. The snack box lid flips upside down as the body braces it."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Opa braces with the whole body and moves underneath the stationary snack box lid without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15,
+          "description": "Opa finally holds the snack box lid at the goal position without repeating the trigger, then presses the snack box lid toward its rim. The snack box lid flips upside down with the character still holding it. The visible goal is blocked again by the same rule."
+        }
+      ],
+      "finalPayoff": "Opa finally holds the snack box lid at the goal position without repeating the trigger, then presses the snack box lid toward its rim. The snack box lid flips upside down with the character still holding it. The visible goal is blocked again by the same rule.",
+      "escalationCurve": [
+        {
+          "beatIndex": 1,
+          "sourceRule": "The snack box lid flips upside down whenever pressure is applied to it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 1
+        },
+        {
+          "beatIndex": 2,
+          "sourceRule": "The snack box lid flips upside down whenever pressure is applied to it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 2
+        },
+        {
+          "beatIndex": 3,
+          "sourceRule": "The snack box lid flips upside down whenever pressure is applied to it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 4,
+          "sourceRule": "The snack box lid flips upside down whenever pressure is applied to it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 5,
+          "sourceRule": "The snack box lid flips upside down whenever pressure is applied to it.",
+          "stateTransition": "INVERT_ORIENTATION",
+          "transitionApplication": 4
+        }
+      ],
+      "loopPotential": {
+        "type": "NONE",
+        "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+      },
+      "dialogueRequirement": "NONE",
+      "environment": "kitchen",
+      "intendedDurationSeconds": 15,
+      "productionNotes": [
+        "One character and one primary object; fixed camera and continuous identity.",
+        "Keep object orientation and body contact readable."
+      ],
+      "composition": {
+        "goalId": "close",
+        "goalFamily": "HOUSEHOLD",
+        "objectId": "snack_box_lid",
+        "objectCategory": "container",
+        "engineFamily": "REVERSAL",
+        "trigger": "PRESSURE",
+        "escalationTopology": "CONTROL_LOSS",
+        "payoffTopology": "FAKE_RESOLUTION",
+        "environment": "kitchen",
+        "stateTransition": "INVERT_ORIENTATION"
+      },
+      "structuralPlan": {
+        "interactionType": "seal",
+        "trigger": "PRESSURE",
+        "transformationDirection": "INVERT_ORIENTATION",
+        "escalationTopology": "CONTROL_LOSS",
+        "resolutionTopology": "FAKE_RESOLUTION",
+        "finalSilhouetteTopology": "INVERT_ORIENTATION_FAKE_RESOLUTION",
+        "loopTopology": "NONE"
+      },
+      "visualFingerprint": {
+        "characterPoseFamily": "LEAN_OVER",
+        "objectRelativePosition": "AT_WAIST",
+        "dominantDirection": "INVERT_ORIENTATION",
+        "objectScaleRelation": "STABLE",
+        "characterObjectContact": "PALMS",
+        "finalFrameComposition": "INVERTED_CONTACT",
+        "movementAxis": "VERTICAL",
+        "environmentInteraction": "LOCAL_WORK_AREA"
+      },
+      "provenance": {
+        "generatorVersion": "short-concept-generator-v2",
+        "grammarVersion": "causal-grammar-v2",
+        "grammarSha256": "1282094bc249b18e0bf4e6d8f0a75f5042b1de54c810bd6d6e6e52158f884683",
+        "seed": 42,
+        "characterAssignedAfterEngine": true,
+        "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+      },
+      "structuralFingerprint": {
+        "version": "short-concept-fingerprint-v1",
+        "dimensions": {
+          "goalType": "CLOSE",
+          "interactionType": "SEAL",
+          "engineFamily": "REVERSAL",
+          "transformationDirection": "INVERT_ORIENTATION",
+          "trigger": "PRESSURE",
+          "escalationTopology": "CONTROL_LOSS",
+          "resolutionTopology": "FAKE_RESOLUTION",
+          "finalSilhouetteTopology": "INVERT_ORIENTATION_FAKE_RESOLUTION",
+          "loopTopology": "NONE"
+        },
+        "fullHash": "6b20933adc217f9ea5c9f36d2ecb193a8fadbf0c5a5dd48a06e60f1b4f6062d0",
+        "coreHash": "41901feb5254eb47b36b49c3bba03cb6ee0ec089aae921f9e6300333f738f4b6",
+        "supportedCoreDimensions": 7,
+        "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+        "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+      }
+    },
+    {
+      "candidateId": "brush",
+      "title": "Brush",
+      "protagonist": "Kiko",
+      "protagonistCharacterId": "00000000-0000-0000-0000-000000000002",
+      "everydayGoal": "brush hair",
+      "primaryObject": "brush",
+      "engineFamily": "PROGRESSIVE_GROWTH",
+      "goalRuleRelationship": "The scale up response to stroke prevents the brush from reaching or holding the usable state needed to brush hair.",
+      "impossibleRule": "The brush grows one size step whenever a stroke is completed.",
+      "frameZeroDescription": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.",
+      "beats": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15,
+          "description": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone."
+        }
+      ],
+      "finalPayoff": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+      "escalationCurve": [
+        {
+          "beatIndex": 1,
+          "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+          "stateTransition": "SCALE_UP",
+          "transitionApplication": 1
+        },
+        {
+          "beatIndex": 2,
+          "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+          "stateTransition": "SCALE_UP",
+          "transitionApplication": 2
+        },
+        {
+          "beatIndex": 3,
+          "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+          "stateTransition": "SCALE_UP",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 4,
+          "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+          "stateTransition": "SCALE_UP",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 5,
+          "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+          "stateTransition": "SCALE_UP",
+          "transitionApplication": 4
+        }
+      ],
+      "loopPotential": {
+        "type": "NONE",
+        "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+      },
+      "dialogueRequirement": "NONE",
+      "environment": "bathroom",
+      "intendedDurationSeconds": 15,
+      "productionNotes": [
+        "One character and one primary object; fixed camera and continuous identity.",
+        "Keep changing scale and contact visible."
+      ],
+      "composition": {
+        "goalId": "brush",
+        "goalFamily": "BODY_SELF_CARE",
+        "objectId": "brush",
+        "objectCategory": "grooming",
+        "engineFamily": "PROGRESSIVE_GROWTH",
+        "trigger": "STROKE",
+        "escalationTopology": "SPACE_COMPRESSION",
+        "payoffTopology": "GOAL_INVERSION",
+        "environment": "bathroom",
+        "stateTransition": "SCALE_UP"
+      },
+      "structuralPlan": {
+        "interactionType": "stroke",
+        "trigger": "STROKE",
+        "transformationDirection": "SCALE_UP",
+        "escalationTopology": "SPACE_COMPRESSION",
+        "resolutionTopology": "GOAL_INVERSION",
+        "finalSilhouetteTopology": "SCALE_UP_GOAL_INVERSION",
+        "loopTopology": "NONE"
+      },
+      "visualFingerprint": {
+        "characterPoseFamily": "ARMS_UP",
+        "objectRelativePosition": "HEAD_LEVEL",
+        "dominantDirection": "SCALE_UP",
+        "objectScaleRelation": "INCREASING",
+        "characterObjectContact": "HAIR",
+        "finalFrameComposition": "OBJECT_FILLS_FRAME",
+        "movementAxis": "VERTICAL",
+        "environmentInteraction": "SPACE_LOSS"
+      },
+      "provenance": {
+        "generatorVersion": "short-concept-generator-v2",
+        "grammarVersion": "causal-grammar-v2",
+        "grammarSha256": "1282094bc249b18e0bf4e6d8f0a75f5042b1de54c810bd6d6e6e52158f884683",
+        "seed": 42,
+        "characterAssignedAfterEngine": true,
+        "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+      },
+      "structuralFingerprint": {
+        "version": "short-concept-fingerprint-v1",
+        "dimensions": {
+          "goalType": "GROOM",
+          "interactionType": "STROKE",
+          "engineFamily": "PROGRESSIVE_GROWTH",
+          "transformationDirection": "INCREASE",
+          "trigger": "STROKE",
+          "escalationTopology": "SPACE_COMPRESSION",
+          "resolutionTopology": "GOAL_INVERSION",
+          "finalSilhouetteTopology": "SCALE_UP_GOAL_INVERSION",
+          "loopTopology": "NONE"
+        },
+        "fullHash": "686e6386c6b2b85e9d73593036e2e11eeafb72dee9773d2881ab5273581282c9",
+        "coreHash": "cab85dfeff23b2df2d5d6de8bbb4419324c2fe1ea85ba347c518008ff1be6227",
+        "supportedCoreDimensions": 7,
+        "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+        "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+      }
+    },
+    {
+      "candidateId": "shoe",
+      "title": "Shoe",
+      "protagonist": "Noah",
+      "protagonistCharacterId": "00000000-0000-0000-0000-000000000006",
+      "everydayGoal": "put the shoe on",
+      "primaryObject": "shoe",
+      "engineFamily": "RESET_TO_START",
+      "goalRuleRelationship": "The return origin response to wear prevents the shoe from reaching or holding the usable state needed to put the shoe on.",
+      "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+      "frameZeroDescription": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.",
+      "beats": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15,
+          "description": "Noah finally holds the shoe at the goal position without repeating the trigger, then pulls the shoe over the foot. The shoe slides back into its starting position again. The visible goal is blocked again by the same rule."
+        }
+      ],
+      "finalPayoff": "Noah finally holds the shoe at the goal position without repeating the trigger, then pulls the shoe over the foot. The shoe slides back into its starting position again. The visible goal is blocked again by the same rule.",
+      "escalationCurve": [
+        {
+          "beatIndex": 1,
+          "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+          "stateTransition": "RETURN_ORIGIN",
+          "transitionApplication": 1
+        },
+        {
+          "beatIndex": 2,
+          "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+          "stateTransition": "RETURN_ORIGIN",
+          "transitionApplication": 2
+        },
+        {
+          "beatIndex": 3,
+          "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+          "stateTransition": "RETURN_ORIGIN",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 4,
+          "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+          "stateTransition": "RETURN_ORIGIN",
+          "transitionApplication": 3
+        },
+        {
+          "beatIndex": 5,
+          "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+          "stateTransition": "RETURN_ORIGIN",
+          "transitionApplication": 4
+        }
+      ],
+      "loopPotential": {
+        "type": "TRIGGER_RECREATES_PROBLEM",
+        "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+      },
+      "dialogueRequirement": "NONE",
+      "environment": "entryway",
+      "intendedDurationSeconds": 15,
+      "productionNotes": [
+        "One character and one primary object; fixed camera and continuous identity.",
+        "Maintain a visible start mark."
+      ],
+      "composition": {
+        "goalId": "shoe",
+        "goalFamily": "DRESSING",
+        "objectId": "shoe",
+        "objectCategory": "footwear",
+        "engineFamily": "RESET_TO_START",
+        "trigger": "PULL",
+        "escalationTopology": "STRATEGY_RESPONSE",
+        "payoffTopology": "OPENING_RECREATED",
+        "environment": "entryway",
+        "stateTransition": "RETURN_ORIGIN"
+      },
+      "structuralPlan": {
+        "interactionType": "wear",
+        "trigger": "PULL",
+        "transformationDirection": "RETURN_ORIGIN",
+        "escalationTopology": "STRATEGY_RESPONSE",
+        "resolutionTopology": "OPENING_RECREATED",
+        "finalSilhouetteTopology": "RETURN_ORIGIN_OPENING_RECREATED",
+        "loopTopology": "TRIGGER_RECREATES_PROBLEM"
+      },
+      "visualFingerprint": {
+        "characterPoseFamily": "ONE_FOOT_RAISED",
+        "objectRelativePosition": "FOOT_LEVEL",
+        "dominantDirection": "RETURN_ORIGIN",
+        "objectScaleRelation": "STABLE",
+        "characterObjectContact": "FOOT",
+        "finalFrameComposition": "START_MARK_RETURN",
+        "movementAxis": "HORIZONTAL",
+        "environmentInteraction": "LOCAL_WORK_AREA"
+      },
+      "provenance": {
+        "generatorVersion": "short-concept-generator-v2",
+        "grammarVersion": "causal-grammar-v2",
+        "grammarSha256": "1282094bc249b18e0bf4e6d8f0a75f5042b1de54c810bd6d6e6e52158f884683",
+        "seed": 42,
+        "characterAssignedAfterEngine": true,
+        "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+      },
+      "structuralFingerprint": {
+        "version": "short-concept-fingerprint-v1",
+        "dimensions": {
+          "goalType": "DRESS",
+          "interactionType": "WEAR",
+          "engineFamily": "RESET_TO_START",
+          "transformationDirection": "RETURN_ORIGIN",
+          "trigger": "PULL",
+          "escalationTopology": "STRATEGY_RESPONSE",
+          "resolutionTopology": "OPENING_RECREATED",
+          "finalSilhouetteTopology": "RETURN_ORIGIN_OPENING_RECREATED",
+          "loopTopology": "TRIGGER_RECREATES_PROBLEM"
+        },
+        "fullHash": "055e84a8d55cc6dcd0f91fb1fede8a7cbecb4562619aeaec3c79823d613ed94c",
+        "coreHash": "149e8ac285f0a6d1e4fbd7d44f0bc69f90cb8d914c64f4a968e61359e4f54a96",
+        "supportedCoreDimensions": 7,
+        "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+        "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+      }
+    }
+  ],
+  "rankedRows": [
+    {
+      "candidateId": "chair-a",
+      "rank": 1,
+      "rankingScore": 100,
+      "shortFormEngine": {
+        "payoffScore": 100,
+        "progressDensityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100
+        },
+        "rewatchScore": 60
+      },
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "productionRisk": {
+        "flags": []
+      }
+    },
+    {
+      "candidateId": "chair-b",
+      "rank": 2,
+      "rankingScore": 100,
+      "shortFormEngine": {
+        "payoffScore": 100,
+        "progressDensityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100
+        },
+        "rewatchScore": 60
+      },
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "productionRisk": {
+        "flags": []
+      }
+    },
+    {
+      "candidateId": "lid",
+      "rank": 3,
+      "rankingScore": 98,
+      "shortFormEngine": {
+        "payoffScore": 98,
+        "progressDensityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100
+        },
+        "rewatchScore": 60
+      },
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "productionRisk": {
+        "flags": []
+      }
+    },
+    {
+      "candidateId": "brush",
+      "rank": 4,
+      "rankingScore": 98,
+      "shortFormEngine": {
+        "payoffScore": 98,
+        "progressDensityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100
+        },
+        "rewatchScore": 60
+      },
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "productionRisk": {
+        "flags": []
+      }
+    },
+    {
+      "candidateId": "shoe",
+      "rank": 5,
+      "rankingScore": 97,
+      "shortFormEngine": {
+        "payoffScore": 97,
+        "progressDensityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100
+        },
+        "rewatchScore": 60
+      },
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "productionRisk": {
+        "flags": []
+      }
+    }
+  ]
+}

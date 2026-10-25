@@ -1,0 +1,92 @@
+{
+  "implementation": "STRUCTURED_EVIDENCE_INPUT_V1",
+  "sharedScoringEvaluator": true,
+  "scoringWeightsAndThresholdsUnchanged": true,
+  "canonicalRankingArithmeticUnchanged": true,
+  "taxonomyUnchanged": true,
+  "legacyByteParityCases": 521,
+  "newTestsPassed": 552,
+  "focusedTests": {
+    "passed": 677,
+    "failed": 1,
+    "failureCategory": "historical active-source hash pin"
+  },
+  "ui": {
+    "passed": 115,
+    "files": 7
+  },
+  "java": {
+    "passed": 11,
+    "failed": 0
+  },
+  "fullRegression": {
+    "passed": 2713,
+    "failed": 44,
+    "skipped": 2,
+    "unchangedBaselineFailures": 36,
+    "newFailures": 8,
+    "newFailureCategory": "Historical source-byte pins for the two requested active-code refactors",
+    "newBehavioralFailuresObserved": 0,
+    "green": false
+  },
+  "protectedFileCount": 311,
+  "changedProtectedFiles": [],
+  "authorizedRefactorFiles": {
+    "intelligence/ml-service/app/workflow/short_form_engine.py": {
+      "before": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+      "after": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46"
+    },
+    "intelligence/ml-service/app/workflow/concept_ranking.py": {
+      "before": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+      "after": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d"
+    }
+  },
+  "originalLiveEvidenceUnchanged": true,
+  "originalAdapterAnalysisUnchanged": true,
+  "historicalManifestsUnchanged": true,
+  "legacyHashGuardTestsNotEditedOrSkipped": true,
+  "providerCallsDuringTask": 0,
+  "externalProviderCalls": 0,
+  "newCreativeConceptsGenerated": 0,
+  "productionPrompts": 0,
+  "renders": 0,
+  "scoreOverrides": false,
+  "scoresBlended": false,
+  "cliNetworkAndSubprocessDenied": true,
+  "cliCredentialsStripped": true,
+  "offlineReproducibility": {
+    "byteIdentical": true,
+    "pythonHashSeed": 17,
+    "sha256": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9"
+  },
+  "normalizedCount": 33,
+  "legacyMean": 27.636363636363637,
+  "structuredMean": 59.60606060606061,
+  "increaseAtLeast10": 23,
+  "increaseAtLeast20": 21,
+  "sfePassCount": 4,
+  "newlyEligible": [
+    "raw-013"
+  ],
+  "newProductionCandidates": [],
+  "humanReviewSetCount": 18,
+  "fixtureScores": {
+    "towel_transfer": {
+      "legacy": 18,
+      "structured": 99
+    },
+    "eraser_transfer": {
+      "legacy": 19,
+      "structured": 70
+    },
+    "lid_room": {
+      "legacy": 100,
+      "structured": 100
+    }
+  },
+  "limitations": [
+    "Structured support uses deterministic field-overlap/change heuristics, not a semantic/visual oracle.",
+    "Higher score is not independent creative-quality or retention proof.",
+    "Historical source-byte guard failures are recorded; historical evidence/manifests are not rewritten."
+  ]
+}

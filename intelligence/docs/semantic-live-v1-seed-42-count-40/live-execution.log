@@ -1,0 +1,38 @@
+{"experimentId": "semantic-live-v1-seed-42-count-40", "provider": "deepseek", "model": "deepseek-v4-pro", "maxRequestCount": 1, "requestedRawCount": 40, "requestedFinalCount": 20, "seed": 42, "maxOutputTokens": 64000, "timeoutSeconds": 90, "automaticRetries": 0, "fallback": false, "maxCostUsd": 2, "liveGenerationByteDeterministic": false, "allowExternalGeneration": true, "configurationPriceUpperEstimateUsd": 0.268389, "upperInputTokenEstimate": 11325, "estimateBasis": "UTF8_BYTES_UPPER_ESTIMATE_PLUS_MAX_OUTPUT; CONFIGURED_PRICES_NOT_BILL"}
+{
+  "startedAt": "2026-10-25T01:00:55.323625+00:00",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "requestCount": 1,
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 56297,
+    "prompt_tokens": 2863,
+    "total_tokens": 59160,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 27369,
+      "rejected_prediction_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": null,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 2863
+  },
+  "actualCostUsd": null,
+  "finishedAt": "2026-10-25T01:09:45.638288+00:00",
+  "providerResponseMetadata": {
+    "requestId": "66a292a5-cac0-4de4-b4e6-0930b7cc09fe",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro"
+  }
+}

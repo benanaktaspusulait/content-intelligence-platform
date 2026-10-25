@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-24",
+  "premiseNaturalnessGateVersion": "premise-naturalness-v1",
+  "generatorVersion": "short-concept-generator-v2",
+  "beatGrammarVersion": "beat-grammar-v2",
+  "seed": 42,
+  "requestedCount": 20,
+  "providerCalls": 0,
+  "paidEvaluations": 0,
+  "externalSpendUsd": 0,
+  "renders": [],
+  "canonicalScoresChanged": false,
+  "acceptedEngineSourcesChanged": false,
+  "previousEvidenceChanged": false,
+  "protectedFileCount": 160,
+  "allProtectedHashesUnchanged": true,
+  "newTests": {
+    "passed": 34,
+    "unit": 19,
+    "generationSelectionApiCliBenchmarkProtection": 15
+  },
+  "focusedTests": {
+    "passed": 355,
+    "warnings": 4
+  },
+  "ui": {
+    "passed": 102,
+    "files": 5
+  },
+  "backend": {
+    "passed": 9,
+    "errors": 0,
+    "failures": 0
+  },
+  "ruff": "PASS",
+  "fullRegression": {
+    "passed": 2014,
+    "failed": 36,
+    "skipped": 2,
+    "warnings": 3030,
+    "seconds": 102.43,
+    "newFailures": 0,
+    "failureIdsIdenticalToBaseline": true,
+    "baselinePassed": 1980
+  },
+  "generationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "finalCandidateCount": 20,
+    "eligibleCount": 9,
+    "revisionCount": 11,
+    "rejectedCount": 0
+  },
+  "productionSlate": [
+    {
+      "candidateId": "bg2-6c3a164fda187c53",
+      "title": "Shoe / Reset To Start / Body Escalation",
+      "rawRank": 1,
+      "productionSlateRank": 1,
+      "rankingScore": 97.6
+    },
+    {
+      "candidateId": "bg2-fe88951786ac1868",
+      "title": "Lid / Reversal / Goal Distance Reversal",
+      "rawRank": 5,
+      "productionSlateRank": 2,
+      "rankingScore": 97.6
+    },
+    {
+      "candidateId": "bg2-e4c45fe438207b3a",
+      "title": "Chair / Reversal / Environmental Escalation",
+      "rawRank": 3,
+      "productionSlateRank": 3,
+      "rankingScore": 97.6
+    }
+  ],
+  "commands": {
+    "fullRegression": ".venv/bin/python ../scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short",
+    "focused": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_premise_naturalness.py tests/test_premise_generation.py tests/test_beat_grammar.py tests/test_beat_generation.py tests/test_beat_generation_api.py tests/test_short_concept_v2.py tests/test_concept_production_selection.py tests/test_short_concept_v2_api.py tests/test_short_concept_generation.py tests/test_concept_fingerprint.py tests/test_short_concept_generation_api.py tests/test_concept_ranking.py tests/test_concept_ranking_api.py tests/test_short_form_engine.py tests/test_short_form_integration.py tests/test_story_premise_engine.py tests/test_story_premise_integration.py -q --tb=short",
+    "ui": "npm exec ng test -- --watch=false --include=src/app/pages/concept-generation.page.spec.ts --include=src/app/pages/concept-ranking.page.spec.ts --include=src/app/pages/short-form-report.component.spec.ts --include=src/app/pages/story-premise-report.component.spec.ts --include=src/app/pages/quality-validator/post-family-workflow.spec.ts",
+    "backend": "mvn -o -q -Dtest=ConceptGenerationControllerTest,ConceptRankingControllerTest,ShortFormReportTest,StoryPremiseReportTest test"
+  },
+  "scope": "Offline deterministic pre-render planning experiment. QA/video-QC suites excluded; Java dispatch/projection only. No media/PDF renders.",
+  "limitations": [
+    "A/B naturalness annotations and A beat annotations are newly computed on stored copies; historical scores and selections remain unchanged.",
+    "Curated coverage and filtering mechanically increase admitted-premise metrics; this is not independent creative-quality validation.",
+    "Object specificity tests functional-family dependence over 13 configured comparison archetypes, not unique-object originality.",
+    "No audience, retention, rendering or overall creative-superiority inference is supported."
+  ],
+  "artifactSha256": {
+    "ui-tests-final.log": "f77dda87fbe489f5c7531693a6d24228c78d14b5b6a3632b5902ce5d2c80b121",
+    "focused-tests-final.log": "4c9547ac16c440b8846faa02ed3b0b567000fe99f5e7235b40080a76d9eb19be",
+    "java-tests-final.log": "7ee5db0a3b7b34bd02c5e7eedfc6000787e9a5f41a8a92f9d68bf100794b46d8",
+    "full-regression-final.log": "4c3a8fb2d7de0eea75efa8ca5eaa56850dfe2783162aa4012770f2c0cb1798ed",
+    "baseline-comparison.json": "e2b0481aec2410b7dc26c7cc751c884eb3834a186385f8e829d80957b9c30d4a",
+    "immutable-before.json": "a15abf8f6ad4e0b1f20ab8afa51c5f2e05aaa529d00a600bef238a30d40d3a35",
+    "benchmark-abc.json": "746002b80d2970c74da70bbfbffcf429f6f4771d521f62455b21709561c89148",
+    "changed-files.json": "e5bb58dc2f783c495559887c3fc7411de72ab7e54f86202327c0bbe39d70b5d1",
+    "java-results.json": "c3132f9e3b9f77486f3fd2edf469efc79b4e3ffeba161b1f0c3fee339f537860",
+    "README.md": "9203e39ab072a693f75652eb01102855a1602fc6d256e64d0547f8056aac459c",
+    "complete-20-concepts.md": "c464b77ef3af01fb2e7bab6a7ec56b1776927eea7e4f268d81b5944d3d561bd0",
+    "immutable-after.json": "a15abf8f6ad4e0b1f20ab8afa51c5f2e05aaa529d00a600bef238a30d40d3a35",
+    "ui-tests-verified.log": "786cae218f5c0626b261352e733f8a5fa1d46a07b680f346b0821dd90f5b23fc",
+    "ruff-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "experiment-seed-42-count-20.json": "660d594dac77de6f0ea9c54eb0f54ffb60255df32400f4861ecf85c5e62c9ac5"
+  }
+}

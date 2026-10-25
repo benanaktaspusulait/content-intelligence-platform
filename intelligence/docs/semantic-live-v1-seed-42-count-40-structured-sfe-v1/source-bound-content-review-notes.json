@@ -1,0 +1,121 @@
+[
+  {
+    "ideaId": "raw-013",
+    "title": "Tangling Hairbrush",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors."
+    },
+    "inference": "The stated brush rule creates and tightens knots; the payoff additionally makes cut hair regrow instantly. This may introduce a new mechanism rather than derive the ending from knotting.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-025",
+    "title": "Self-Knotting Laces",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "As you tie a bow, the laces weave themselves into additional knots, becoming tighter and more complex with every pull; untying creates two new knots."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The knotted shoe follows him, hopping along, and the laces untie themselves into a perfect bow on the other shoe."
+    },
+    "inference": "The stated laces rule creates extra knots on tying or untying; the ending unties itself into a perfect bow on another shoe. Verify whether the intervening beats establish this exception.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-026",
+    "title": "Bending Nail Hammer",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically."
+    },
+    "inference": "The rule concerns the nail struck by the hammer; the payoff extends bending to all room nails and the character thumb. This expands both target scope and physical behavior.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-027",
+    "title": "Opposite-Color Paintbrush",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors."
+    },
+    "inference": "Complementary paint colors are established; the wall becoming a mirror adds a material/reflection property not explicit in that rule.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-030",
+    "title": "Spiky Ice Cube Tray",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "The water freezes into sharp upward spikes that puncture the plastic tray and any covering, growing toward the ceiling."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The bag of ice starts sprouting spikes inside the plastic bag, and the bag floats up to the ceiling, freezing a chandelier."
+    },
+    "inference": "Upward-growing ice spikes are established; the final bag also floats. Verify whether this motion is physically caused by the spike growth or is a separate flight effect.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-032",
+    "title": "Delayed Mirror",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room."
+    },
+    "inference": "A one-second delayed reflection is established; physical duplication of the character at the ending is an additional effect.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-039",
+    "title": "Smearing Eraser",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Rubbing eraser spreads graphite into a larger smudge, and the smudge darkens into a sticky tar that stains fingers and paper."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The smudge spreads to the opposite page, then shrinks into a perfect drawing of a cat, no longer a mistake."
+    },
+    "inference": "Graphite spreading into sticky tar is established; shrinking into a perfect cat drawing adds a new transformation. Rule linkage needs human creative review.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  }
+]

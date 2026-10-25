@@ -1,0 +1,698 @@
+BEAT GRAMMAR UNCLASSIFIED CONSEQUENCE SUPPORT V1
+
+Accepted output: final-replay/. replay/ and verified-replay/ are development snapshots.
+Architecture: unchanged strict canonical context → opt-in canonical.beat_evidence → presence/classification states, source-bound action and state-difference evidence → same Beat Grammar quality levels and cutoffs → unchanged production preselection.
+Default deterministic mode and accepted Canonical Propagation V1 mode remain byte-identical. New behavior requires canonical_creative_evidence plus unclassified_consequence_support=True. No provider/generator interface exists in the new replay CLI.
+
+CONSEQUENCE AND STRATEGY EVIDENCE STATES
+Consequence: CONSEQUENCE_PRESENT_CLASSIFIED / CONSEQUENCE_PRESENT_UNCLASSIFIED / CONSEQUENCE_MISSING / CONSEQUENCE_AMBIGUOUS.
+Strategy: STRATEGY_PRESENT_CLASSIFIED / STRATEGY_PRESENT_UNCLASSIFIED / STRATEGY_MISSING / STRATEGY_AMBIGUOUS.
+Explicit source text remains present when taxonomy classification is absent. Empty/no-result placeholders are MISSING. Explicit uncertain/unknown source is AMBIGUOUS. Ambiguous means a description exists but support is unresolved, not a verified result.
+Each beat retains strategyPresent, strategyClassificationStatus, consequencePresent, consequenceClassificationStatus, newInformationPresent, stateChangeSupported, goalStateChangeSupported, bodyStateChangeSupported, spatialChangeSupported, evidenceRefs. Raw text/classification, exact information, supported difference, action predicate/target and local measurement keys are separate.
+
+FACTS VERSUS QUALITY
+An unclassified presence flag never supplies progression or diversity by itself. State keys require the accepted canonical rule-linked state support plus a different non-magnitude consequence snapshot. Information credit requires explicit, non-placeholder, non-ambiguous information not repeated previously. A different information field can support information progression without classifying a consequence, but does not itself create a consequence-diversity key.
+Unclassified strategy keys require a literal action predicate and target. Actor, adverbs, magnitude and purpose clauses are excluded. A raw sentence hash is not a strategy key. Known strategies retain existing family grouping. No new strategy/consequence enum values are added.
+Unknown body/spatial/goal/contact axes stay unsupported; matching UNKNOWN is not a duplicate attempt. For payoff distance only mutually supported axes are compared. No supported comparison=0; the cutoff remains0.5. A supported difference on one available axis may yield distance1 with that limited coverage explicitly listed. This is representation normalization, not a full four-axis physical validation.
+Limitations: deterministic literal action/state checks are not semantic understanding or observed pixels. Source-local state/action IDs are not new taxonomy names. Unsupported state means not established by the canonical check, not proof that nothing changes. Body/spatial states are not inferred from prose without typed state support.
+Before-mode informationGain=null means NOT_REPORTED_AFTER_EARLY_BROKEN, not absent source information. Before-mode zero diversity/progression values came from the early classification error; they are not observations of no activity.
+Quality expressions are unchanged exactly: {"info": "round(100 * progressive / len(plan), 2)", "body_score": "round(100 * body_changes / len(plan), 2)", "spatial_score": "round(100 * len(observed) / len(spatial_axes), 2)", "mechanical": "unique_s < 3 or unique_c < 3 or info < 60", "quality": "'BROKEN' if broken else 'MECHANICAL' if mechanical else 'STRONG' if body_score >= 60 and payoff['distance'] >= 0.5 and (info >= 80) and (near == 0) else 'ACCEPTABLE'"}
+
+TAXONOMY COVERAGE
+{
+  "strategy": {
+    "STRATEGY_PRESENT_UNCLASSIFIED": 36,
+    "STRATEGY_PRESENT_CLASSIFIED": 54,
+    "STRATEGY_MISSING": 0,
+    "STRATEGY_AMBIGUOUS": 0
+  },
+  "consequence": {
+    "CONSEQUENCE_PRESENT_UNCLASSIFIED": 80,
+    "CONSEQUENCE_PRESENT_CLASSIFIED": 10,
+    "CONSEQUENCE_MISSING": 0,
+    "CONSEQUENCE_AMBIGUOUS": 0
+  }
+}
+
+RESULTS
+{
+  "candidateCount": 18,
+  "beatCount": 90,
+  "providerCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "attemptedNetworkOrSubprocess": {},
+  "oldCanonicalModeExactlyUnchanged": true,
+  "structuredSFEExactlyUnchanged": true,
+  "fullRankingReportsExactlyUnchanged": true,
+  "naturalnessExactlyUnchanged": true,
+  "noTaxonomyExpansion": true,
+  "noThresholdChanges": true,
+  "onlyExplicitNewEvidenceModeChanged": true,
+  "qualityDistribution": {
+    "ACCEPTABLE": 15,
+    "MECHANICAL": 3
+  },
+  "productionSlateBefore": [],
+  "productionSlateAfter": []
+}
+Four eligible/SFE PASS diagnostic cases remain individually eligible with ranking97.6. All SFE reports and entire ranking reports equal the accepted stored reports. No score, threshold or taxonomy changes.
+No candidate becomes production-admissible. raw013 remains blocked by OPENING_EVIDENCE_INSUFFICIENT and PREMISE_NOT_ADMITTED. Its Naturalness opening legibility remains35, below unchanged60. Naturalness remains BROKEN, response categoryB/UNSUPPORTED_RESPONSE. Beat Grammar floor is no longer its blocker.
+
+ALL 18 BEFORE / AFTER
+
+raw-007 | sem1-bbdb302fefb48bd5 | Backward Alarm Clock
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 1.0, "findings": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "payoffDistance": {"before": 0, "after": 1.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+raw-013 | sem1-8d1da895a1fb41af | Tangling Hairbrush
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 1.0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "payoffDistance": {"before": 0, "after": 1.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 4, "STRATEGY_PRESENT_UNCLASSIFIED": 1, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 3, "CONSEQUENCE_PRESENT_CLASSIFIED": 2, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+raw-026 | sem1-23a3c991b8104bee | Bending Nail Hammer
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 1.0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "payoffDistance": {"before": 0, "after": 1.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+raw-027 | sem1-2ae718e8672f18cc | Opposite-Color Paintbrush
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 75.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 1.0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 75.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "payoffDistance": {"before": 0, "after": 1.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+raw-005 | sem1-913bc9ae39a3c15e | Vacuum Blows
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-006 | sem1-d1e9d5ce1154b96b | Mirrored Doorway
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_UNCLASSIFIED": 3, "STRATEGY_PRESENT_CLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-018 | sem1-91ea45894fa28d7b | Random Fridge Interior
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 75.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 1, "STRATEGY_PRESENT_UNCLASSIFIED": 4, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-008 | sem1-8a6fb30b4a11976b | Neighbor's TV Remote
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 1.0, "findings": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "payoffDistance": {"before": 0, "after": 1.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_UNCLASSIFIED": 3, "STRATEGY_PRESENT_CLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-004 | sem1-11beb05a18d36fdb | Sweep-Back Broom
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "MECHANICAL", "strategyDiversity": 50.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "LOW_STRATEGY_DIVERSITY"}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "MECHANICAL"}, "strategyDiversity": {"before": 0, "after": 50.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "LOW_STRATEGY_DIVERSITY"}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_UNCLASSIFIED": 4, "STRATEGY_PRESENT_CLASSIFIED": 1, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-019 | sem1-63760a23881b08d8 | Microwave Hot Plate
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 2, "STRATEGY_PRESENT_UNCLASSIFIED": 3, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-020 | sem1-c2b6225333ed3cda | Wrong-Room Light Switch
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 75.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-032 | sem1-cfeed66616185cb0 | Delayed Mirror
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 100.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 100.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 2, "STRATEGY_PRESENT_UNCLASSIFIED": 3, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-003 | sem1-5cf30c7094c804b1 | Spiraling Shopping Cart
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 100.0, "consequenceDiversity": 75.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[2, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[2, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 5, "STRATEGY_PRESENT_UNCLASSIFIED": 0, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-015 | sem1-90670eeaf4ee0468 | Bottom-Opening Zipper
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 75.0, "consequenceDiversity": 75.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[2, 3], [2, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 75.0}, "consequenceDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[2, 3], [2, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_UNCLASSIFIED": 1, "STRATEGY_PRESENT_CLASSIFIED": 4, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-016 | sem1-6c8721485468a0f0 | Bottomless Backpack
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 75.0, "consequenceDiversity": 75.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 75.0}, "consequenceDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-001 | sem1-70ee2b7099c48d36 | The Inward Umbrella
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "MECHANICAL", "strategyDiversity": 100.0, "consequenceDiversity": 50.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "LOW_CONSEQUENCE_DIVERSITY"}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "MECHANICAL"}, "strategyDiversity": {"before": 0, "after": 100.0}, "consequenceDiversity": {"before": 0, "after": 50.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "STRATEGY_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "LOW_CONSEQUENCE_DIVERSITY"}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_UNCLASSIFIED": 2, "STRATEGY_PRESENT_CLASSIFIED": 3, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 4, "CONSEQUENCE_PRESENT_CLASSIFIED": 1, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-009 | sem1-dd72ae9a5bebad5a | Ceiling Pancake
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "ACCEPTABLE", "strategyDiversity": 75.0, "consequenceDiversity": 75.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[2, 4], [3, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "ACCEPTABLE"}, "strategyDiversity": {"before": 0, "after": 75.0}, "consequenceDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[2, 4], [3, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 5, "STRATEGY_PRESENT_UNCLASSIFIED": 0, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-031 | sem1-c85a677474d9ed27 | Shadow Flashlight
+BEFORE: {"quality": "BROKEN", "strategyDiversity": 0, "consequenceDiversity": 0, "bodyProgression": 0, "spatialProgression": 0, "informationGain": null, "payoffDistance": 0, "findings": [{"code": "UNKNOWN_CONSEQUENCE"}]}
+AFTER: {"quality": "MECHANICAL", "strategyDiversity": 75.0, "consequenceDiversity": 0.0, "bodyProgression": 0.0, "spatialProgression": 0.0, "informationGain": 100.0, "payoffDistance": 0, "findings": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "LOW_CONSEQUENCE_DIVERSITY"}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[1, 4], [1, 5], [4, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}
+DELTA: {"quality": {"before": "BROKEN", "after": "MECHANICAL"}, "strategyDiversity": {"before": 0, "after": 75.0}, "informationGain": {"before": null, "after": 100.0}, "findings": {"before": [{"code": "UNKNOWN_CONSEQUENCE"}], "after": [{"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 1}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 2}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 3}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 4}, {"code": "CONSEQUENCE_PRESENT_UNCLASSIFIED", "beatNumber": 5}, {"code": "LOW_CONSEQUENCE_DIVERSITY"}, {"code": "BEAT_ROLE_REPETITION"}, {"code": "NEAR_DUPLICATE_ATTEMPTS", "pairs": [[1, 4], [1, 5], [4, 5]]}, {"code": "LOW_PAYOFF_DISTANCE"}, {"code": "STATIC_SPATIAL_PROGRESSION"}]}}
+CAUSE: Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.
+COVERAGE: {"strategy": {"STRATEGY_PRESENT_CLASSIFIED": 5, "STRATEGY_PRESENT_UNCLASSIFIED": 0, "STRATEGY_MISSING": 0, "STRATEGY_AMBIGUOUS": 0}, "consequence": {"CONSEQUENCE_PRESENT_UNCLASSIFIED": 5, "CONSEQUENCE_PRESENT_CLASSIFIED": 0, "CONSEQUENCE_MISSING": 0, "CONSEQUENCE_AMBIGUOUS": 0}}
+PRESELECTION BEFORE: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+PRESELECTION AFTER: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-013 BEAT-BY-BEAT AUDIT — Tangling Hairbrush
+BEFORE BROKEN → AFTER ACCEPTABLE; remaining blockers ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+Beat 1
+Raw consequence: The knot tightens into a bun that pulls his head back.
+Normalized consequence: The knot tightens into a bun that pulls his head back.
+Canonical projected consequence: The knot tightens into a bun that pulls his head back.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa pulls the brush out slowly, hoping to unwind the knot.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "pull", "target": ["brush"], "sourceClause": "pulls the brush out slowly", "supported": true}
+State change: {"before": null, "after": "The knot tightens into a bun that pulls his head back.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Pulling the brush out causes the hair to cinch, not loosen.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].strategy", "sourceText": "Opa pulls the brush out slowly, hoping to unwind the knot.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].visibleConsequence", "sourceText": "The knot tightens into a bun that pulls his head back.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].newInformation", "sourceText": "Pulling the brush out causes the hair to cinch, not loosen.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 2
+Raw consequence: The comb adds more knots, and his hair expands into a giant sphere around his head.
+Normalized consequence: The comb adds more knots, and his hair expands into a giant sphere around his head.
+Canonical projected consequence: The comb adds more knots, and his hair expands into a giant sphere around his head.
+Consequence status: CONSEQUENCE_PRESENT_CLASSIFIED; classification=OBJECT_GROWS
+Strategy: Opa uses a wide-tooth comb to gently work through the tangle.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "use", "target": ["comb", "tooth", "wid"], "sourceClause": "uses a wide-tooth comb to gently work through the tangle", "supported": true}
+State change: {"before": "The knot tightens into a bun that pulls his head back.", "after": "The comb adds more knots, and his hair expands into a giant sphere around his head.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Any grooming tool multiplies knots instead of removing them.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].strategy", "sourceText": "Opa uses a wide-tooth comb to gently work through the tangle.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].visibleConsequence", "sourceText": "The comb adds more knots, and his hair expands into a giant sphere around his head.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].newInformation", "sourceText": "Any grooming tool multiplies knots instead of removing them.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 3
+Raw consequence: The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.
+Normalized consequence: The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.
+Canonical projected consequence: The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa applies hair conditioner to make strands slippery.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "apply", "target": ["conditioner", "hair"], "sourceClause": "applies hair conditioner to make strands slippery", "supported": true}
+State change: {"before": "The comb adds more knots, and his hair expands into a giant sphere around his head.", "after": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Conditioner turns hair elastic, making tangles spring-loaded.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].strategy", "sourceText": "Opa applies hair conditioner to make strands slippery.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].visibleConsequence", "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].newInformation", "sourceText": "Conditioner turns hair elastic, making tangles spring-loaded.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 4
+Raw consequence: The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.
+Normalized consequence: The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.
+Canonical projected consequence: The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa puts on a hat to hide the hair and stop brushing.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "put", "target": ["hat"], "sourceClause": "puts on a hat to hide the hair and stop brushing", "supported": true}
+State change: {"before": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.", "after": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The hair's tangling now acts like a living trap, consuming objects.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].strategy", "sourceText": "Opa puts on a hat to hide the hair and stop brushing.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].visibleConsequence", "sourceText": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].newInformation", "sourceText": "The hair's tangling now acts like a living trap, consuming objects.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 5
+Raw consequence: The hair regrows instantly into a larger, tighter knot, trapping the scissors.
+Normalized consequence: The hair regrows instantly into a larger, tighter knot, trapping the scissors.
+Canonical projected consequence: The hair regrows instantly into a larger, tighter knot, trapping the scissors.
+Consequence status: CONSEQUENCE_PRESENT_CLASSIFIED; classification=OBJECT_GROWS
+Strategy: Opa uses scissors to cut the hair away.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "use", "target": ["scissor"], "sourceClause": "uses scissors to cut the hair away", "supported": true}
+State change: {"before": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.", "after": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Cutting triggers accelerated regrowth with more tangles.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].strategy", "sourceText": "Opa uses scissors to cut the hair away.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].visibleConsequence", "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].newInformation", "sourceText": "Cutting triggers accelerated regrowth with more tangles.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+Payoff facts: {"present": true, "ruleLinked": true, "stateChanging": true}
+
+raw-007 BEAT-BY-BEAT AUDIT — Backward Alarm Clock
+BEFORE BROKEN → AFTER ACCEPTABLE; remaining blockers ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+Beat 1
+Raw consequence: As soon as he releases, the hands spin backward rapidly to 3:00.
+Normalized consequence: As soon as he releases, the hands spin backward rapidly to 3:00.
+Canonical projected consequence: As soon as he releases, the hands spin backward rapidly to 3:00.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa manually winds the clock forward to 6:59, expecting the alarm soon.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "wind", "target": ["clock"], "sourceClause": "manually winds the clock forward to 6:59", "supported": true}
+State change: {"before": null, "after": "As soon as he releases, the hands spin backward rapidly to 3:00.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Manual forward adjustment is undone by the reverse mechanism.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].strategy", "sourceText": "Opa manually winds the clock forward to 6:59, expecting the alarm soon.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].visibleConsequence", "sourceText": "As soon as he releases, the hands spin backward rapidly to 3:00.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].newInformation", "sourceText": "Manual forward adjustment is undone by the reverse mechanism.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 2
+Raw consequence: The hands freeze, then twitch backward one minute for every real second that passes.
+Normalized consequence: The hands freeze, then twitch backward one minute for every real second that passes.
+Canonical projected consequence: The hands freeze, then twitch backward one minute for every real second that passes.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa turns the alarm off and just watches the clock to see what time it shows.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "turn", "target": ["alarm"], "sourceClause": "turns the alarm off and just watches the clock to see what time it shows", "supported": true}
+State change: {"before": "As soon as he releases, the hands spin backward rapidly to 3:00.", "after": "The hands freeze, then twitch backward one minute for every real second that passes.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Without alarm set, the clock still runs backward but slower.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].strategy", "sourceText": "Opa turns the alarm off and just watches the clock to see what time it shows.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].visibleConsequence", "sourceText": "The hands freeze, then twitch backward one minute for every real second that passes.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].newInformation", "sourceText": "Without alarm set, the clock still runs backward but slower.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 3
+Raw consequence: The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.
+Normalized consequence: The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.
+Canonical projected consequence: The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.
+Consequence status: CONSEQUENCE_PRESENT_CLASSIFIED; classification=CHARACTER_MOVES
+Strategy: Opa sets the alarm for a time that already appears behind the current hand position, like 2:00, hoping it will trigger quickly.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "set", "target": ["alarm"], "sourceClause": "sets the alarm for a time that already appears behind the current hand position", "supported": true}
+State change: {"before": "The hands freeze, then twitch backward one minute for every real second that passes.", "after": "The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Triggering the alarm causes time to jump forward to noon and sound to invert.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].strategy", "sourceText": "Opa sets the alarm for a time that already appears behind the current hand position, like 2:00, hoping it will trigger quickly.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].visibleConsequence", "sourceText": "The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].newInformation", "sourceText": "Triggering the alarm causes time to jump forward to noon and sound to invert.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 4
+Raw consequence: The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.
+Normalized consequence: The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.
+Canonical projected consequence: The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa unplugs the clock and uses his phone to check the actual time.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "unplug", "target": ["clock"], "sourceClause": "unplugs the clock and uses his phone to check the actual time", "supported": true}
+State change: {"before": "The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.", "after": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The clock's impossible rule spreads to other time-keeping devices.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].strategy", "sourceText": "Opa unplugs the clock and uses his phone to check the actual time.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].visibleConsequence", "sourceText": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].newInformation", "sourceText": "The clock's impossible rule spreads to other time-keeping devices.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 5
+Raw consequence: The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+Normalized consequence: The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+Canonical projected consequence: The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Opa gives up and falls back asleep.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "giv", "target": [], "sourceClause": "gives up and falls back asleep", "supported": false}
+State change: {"before": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.", "after": "The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The backward time eventually catches up to the correct wake hour, but day and night are swapped.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].strategy", "sourceText": "Opa gives up and falls back asleep.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].visibleConsequence", "sourceText": "The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].newInformation", "sourceText": "The backward time eventually catches up to the correct wake hour, but day and night are swapped.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+Payoff facts: {"present": true, "ruleLinked": true, "stateChanging": true}
+
+raw-026 BEAT-BY-BEAT AUDIT — Bending Nail Hammer
+BEFORE BROKEN → AFTER ACCEPTABLE; remaining blockers ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+Beat 1
+Raw consequence: The nail bends around the pliers and grips them, trapping the tool.
+Normalized consequence: The nail bends around the pliers and grips them, trapping the tool.
+Canonical projected consequence: The nail bends around the pliers and grips them, trapping the tool.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Kiko holds the nail straight with pliers and hammers gently.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "hold", "target": ["nail", "straight"], "sourceClause": "holds the nail straight with pliers and hammers gently", "supported": true}
+State change: {"before": null, "after": "The nail bends around the pliers and grips them, trapping the tool.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The nail's bending is directional and can ensnare nearby tools.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].strategy", "sourceText": "Kiko holds the nail straight with pliers and hammers gently.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].visibleConsequence", "sourceText": "The nail bends around the pliers and grips them, trapping the tool.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].newInformation", "sourceText": "The nail's bending is directional and can ensnare nearby tools.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 2
+Raw consequence: The long nail curls into a spiral, then springs back and pings off the wall.
+Normalized consequence: The long nail curls into a spiral, then springs back and pings off the wall.
+Canonical projected consequence: The long nail curls into a spiral, then springs back and pings off the wall.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Kiko uses a longer nail, hoping it will go straight.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "use", "target": ["longer", "nail"], "sourceClause": "uses a longer nail", "supported": true}
+State change: {"before": "The nail bends around the pliers and grips them, trapping the tool.", "after": "The long nail curls into a spiral, then springs back and pings off the wall.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Nail length increases elasticity, causing projectile bending.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].strategy", "sourceText": "Kiko uses a longer nail, hoping it will go straight.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].visibleConsequence", "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].newInformation", "sourceText": "Nail length increases elasticity, causing projectile bending.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 3
+Raw consequence: The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.
+Normalized consequence: The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.
+Canonical projected consequence: The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Kiko pre-drills a hole, then taps the nail.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "pre", "target": ["drill", "hol"], "sourceClause": "pre-drills a hole", "supported": true}
+State change: {"before": "The long nail curls into a spiral, then springs back and pings off the wall.", "after": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The nail bends at a specific depth, damaging the wall.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].strategy", "sourceText": "Kiko pre-drills a hole, then taps the nail.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].visibleConsequence", "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].newInformation", "sourceText": "The nail bends at a specific depth, damaging the wall.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 4
+Raw consequence: The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+Normalized consequence: The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+Canonical projected consequence: The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Kiko gives up on nails and uses adhesive strips.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "giv", "target": ["nail"], "sourceClause": "gives up on nails and uses adhesive strips", "supported": true}
+State change: {"before": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.", "after": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The hammer can install nails only when not held by Kiko.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].strategy", "sourceText": "Kiko gives up on nails and uses adhesive strips.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].visibleConsequence", "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].newInformation", "sourceText": "The hammer can install nails only when not held by Kiko.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 5
+Raw consequence: All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+Normalized consequence: All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+Canonical projected consequence: All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "grab", "target": ["hammer"], "sourceClause": "grabs the hammer to adjust the picture", "supported": true}
+State change: {"before": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.", "after": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The hammer's bent-nail effect spreads to all previously straight nails.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].strategy", "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].visibleConsequence", "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].newInformation", "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+Payoff facts: {"present": true, "ruleLinked": true, "stateChanging": true}
+
+raw-027 BEAT-BY-BEAT AUDIT — Opposite-Color Paintbrush
+BEFORE BROKEN → AFTER ACCEPTABLE; remaining blockers ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+Beat 1
+Raw consequence: The brush paints a shimmering gray that immediately splits into blue and orange stripes.
+Normalized consequence: The brush paints a shimmering gray that immediately splits into blue and orange stripes.
+Canonical projected consequence: The brush paints a shimmering gray that immediately splits into blue and orange stripes.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "mix", "target": ["blu", "color", "custom", "equal", "part"], "sourceClause": "mixes a custom color equal parts blue and orange", "supported": true}
+State change: {"before": null, "after": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Complementary inversion doesn't cancel but separates into two colors.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].strategy", "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].visibleConsequence", "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[0].newInformation", "sourceText": "Complementary inversion doesn't cancel but separates into two colors.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 2
+Raw consequence: The wall turns blue-green, not pure blue, and the brush swirls automatically.
+Normalized consequence: The wall turns blue-green, not pure blue, and the brush swirls automatically.
+Canonical projected consequence: The wall turns blue-green, not pure blue, and the brush swirls automatically.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Mimi tries to paint the wall orange, expecting inversion to give blue.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": null, "target": ["orang", "paint", "wall"], "sourceClause": "tries to paint the wall orange", "supported": false}
+State change: {"before": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.", "after": "The wall turns blue-green, not pure blue, and the brush swirls automatically.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].strategy", "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].visibleConsequence", "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[1].newInformation", "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 3
+Raw consequence: The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.
+Normalized consequence: The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.
+Canonical projected consequence: The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.
+Consequence status: CONSEQUENCE_PRESENT_CLASSIFIED; classification=OBJECT_GROWS
+Strategy: Mimi uses a roller instead of brush.
+Strategy status: STRATEGY_PRESENT_CLASSIFIED; action evidence={"predicate": "use", "target": ["brush", "roller"], "sourceClause": "uses a roller instead of brush", "supported": true}
+State change: {"before": "The wall turns blue-green, not pure blue, and the brush swirls automatically.", "after": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The inversion applies to any painting tool, increasing area.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].strategy", "sourceText": "Mimi uses a roller instead of brush.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].visibleConsequence", "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[2].newInformation", "sourceText": "The inversion applies to any painting tool, increasing area.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 4
+Raw consequence: The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+Normalized consequence: The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+Canonical projected consequence: The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Mimi puts a stencil on the wall to paint a pattern.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "put", "target": ["stencil", "wall"], "sourceClause": "puts a stencil on the wall to paint a pattern", "supported": true}
+State change: {"before": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.", "after": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: The brush inverts color in the open areas, not just strokes.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].strategy", "sourceText": "Mimi puts a stencil on the wall to paint a pattern.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].visibleConsequence", "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[3].newInformation", "sourceText": "The brush inverts color in the open areas, not just strokes.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+
+
+Beat 5
+Raw consequence: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+Normalized consequence: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+Canonical projected consequence: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+Consequence status: CONSEQUENCE_PRESENT_UNCLASSIFIED; classification=None
+Strategy: Mimi gives up and paints the wall back white.
+Strategy status: STRATEGY_PRESENT_UNCLASSIFIED; action evidence={"predicate": "giv", "target": [], "sourceClause": "gives up and paints the wall back white", "supported": false}
+State change: {"before": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.", "after": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.", "supported": true, "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE", "objectState": null, "goalState": null, "bodyState": null, "spatialState": null, "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."}
+New information: Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.
+Progression: state=True, information=True, any=True
+Diagnosis: C; A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.
+Evidence refs: [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].strategy", "sourceText": "Mimi gives up and paints the wall back white.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].visibleConsequence", "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}, {"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "beats[4].newInformation", "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}]
+Payoff facts: {"present": true, "ruleLinked": true, "stateChanging": true}
+
+REMAINING MECHANICAL CANDIDATES
+raw-004 Sweep-Back Broom: ["LOW_STRATEGY_DIVERSITY", "BEAT_ROLE_REPETITION", "LOW_PAYOFF_DISTANCE", "STATIC_SPATIAL_PROGRESSION"]. Presence is intact. The supported action/state diversity floor is not met; this is not UNKNOWN_CONSEQUENCE.
+raw-001 The Inward Umbrella: ["LOW_CONSEQUENCE_DIVERSITY", "BEAT_ROLE_REPETITION", "LOW_PAYOFF_DISTANCE", "STATIC_SPATIAL_PROGRESSION"]. Presence is intact. The supported action/state diversity floor is not met; this is not UNKNOWN_CONSEQUENCE.
+raw-031 Shadow Flashlight: ["LOW_CONSEQUENCE_DIVERSITY", "BEAT_ROLE_REPETITION", "NEAR_DUPLICATE_ATTEMPTS", "LOW_PAYOFF_DISTANCE", "STATIC_SPATIAL_PROGRESSION"]. Presence is intact. The supported action/state diversity floor is not met; this is not UNKNOWN_CONSEQUENCE.
+
+EDITORIAL PATTERN DISCOVERY — NO TAXONOMY EXPANSION
+
+audit-pattern-01 opposite/complementary/reversed output
+Candidate IDs: ["sem1-2ae718e8672f18cc", "sem1-bbdb302fefb48bd5"]
+Idea IDs: ["raw-007", "raw-027"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-007 beat5: The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+raw-027 beat4: The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+raw-027 beat5: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+
+audit-pattern-02 consequence references a target or surface
+Candidate IDs: ["sem1-23a3c991b8104bee", "sem1-2ae718e8672f18cc", "sem1-5cf30c7094c804b1", "sem1-70ee2b7099c48d36", "sem1-8a6fb30b4a11976b", "sem1-90670eeaf4ee0468", "sem1-913bc9ae39a3c15e", "sem1-91ea45894fa28d7b", "sem1-bbdb302fefb48bd5", "sem1-c85a677474d9ed27", "sem1-cfeed66616185cb0", "sem1-dd72ae9a5bebad5a"]
+Idea IDs: ["raw-001", "raw-003", "raw-005", "raw-007", "raw-008", "raw-009", "raw-015", "raw-018", "raw-026", "raw-027", "raw-031", "raw-032"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-007 beat4: The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.
+raw-026 beat2: The long nail curls into a spiral, then springs back and pings off the wall.
+raw-026 beat4: The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+raw-027 beat2: The wall turns blue-green, not pure blue, and the brush swirls automatically.
+raw-027 beat4: The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+raw-027 beat5: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+raw-005 beat1: A blast of air shoots out, knocking over a plant and spraying soil across the floor.
+raw-005 beat3: The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.
+raw-005 beat4: The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.
+raw-018 beat4: The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.
+raw-008 beat1: The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.
+raw-008 beat2: The neighbor's TV turns off and on rapidly, causing a strobe effect through the window.
+raw-008 beat3: The neighbor's TV switches to a karaoke channel, and the neighbor starts singing loudly, while Kiko's TV ignores the manual buttons.
+raw-008 beat4: The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.
+raw-008 beat5: The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.
+raw-032 beat3: The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.
+raw-032 beat4: The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.
+raw-003 beat3: The other three wheels snap to new positions, causing the cart to lurch sideways and knock over a stack of oranges.
+raw-015 beat4: The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.
+raw-001 beat4: The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.
+raw-009 beat1: The pancake still leaps up and splats on ceiling, sticking even harder.
+raw-009 beat2: The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.
+raw-009 beat3: The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.
+raw-009 beat4: The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.
+raw-009 beat5: The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.
+raw-031 beat2: The ceiling turns black and starts dripping shadow like ink, covering the floor.
+
+audit-pattern-03 return/reappearance after an attempted change
+Candidate IDs: ["sem1-11beb05a18d36fdb", "sem1-23a3c991b8104bee", "sem1-70ee2b7099c48d36", "sem1-8d1da895a1fb41af", "sem1-913bc9ae39a3c15e", "sem1-91ea45894fa28d7b", "sem1-bbdb302fefb48bd5", "sem1-c85a677474d9ed27", "sem1-cfeed66616185cb0", "sem1-dd72ae9a5bebad5a"]
+Idea IDs: ["raw-001", "raw-004", "raw-005", "raw-007", "raw-009", "raw-013", "raw-018", "raw-026", "raw-031", "raw-032"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-007 beat4: The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.
+raw-013 beat1: The knot tightens into a bun that pulls his head back.
+raw-013 beat3: The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.
+raw-026 beat2: The long nail curls into a spiral, then springs back and pings off the wall.
+raw-005 beat4: The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.
+raw-018 beat2: His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.
+raw-004 beat1: As he tilts pan, the pile dissolves and dirt races back to the original spot, leaving pan empty.
+raw-004 beat2: Dirt enters the pan but then flies out backward through the bristles, returning to start.
+raw-004 beat4: The box shakes, dirt bursts out the seams, and returns to the original spot, leaving box empty.
+raw-032 beat4: The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.
+raw-001 beat2: The canopy promptly engulfs his crouched back and legs, leaving only his feet sticking out, while rain pools on the fabric.
+raw-009 beat3: The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.
+raw-031 beat4: Instead of darkness, a bright beam shines out the back of the flashlight, illuminating a corner where keys are visible.
+
+audit-pattern-04 contact traps or takes another object
+Candidate IDs: ["sem1-23a3c991b8104bee", "sem1-6c8721485468a0f0", "sem1-8d1da895a1fb41af", "sem1-913bc9ae39a3c15e", "sem1-91ea45894fa28d7b", "sem1-c85a677474d9ed27"]
+Idea IDs: ["raw-005", "raw-013", "raw-016", "raw-018", "raw-026", "raw-031"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-013 beat1: The knot tightens into a bun that pulls his head back.
+raw-013 beat3: The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.
+raw-013 beat4: The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.
+raw-026 beat1: The nail bends around the pliers and grips them, trapping the tool.
+raw-005 beat5: The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.
+raw-018 beat2: His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.
+raw-016 beat5: The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.
+raw-031 beat1: The darkness beam becomes wider, swallowing a chair and half the room into blackness.
+
+audit-pattern-05 effect spreads beyond its original target
+Candidate IDs: ["sem1-23a3c991b8104bee", "sem1-2ae718e8672f18cc", "sem1-6c8721485468a0f0", "sem1-91ea45894fa28d7b", "sem1-bbdb302fefb48bd5", "sem1-d1e9d5ce1154b96b", "sem1-dd72ae9a5bebad5a"]
+Idea IDs: ["raw-006", "raw-007", "raw-009", "raw-016", "raw-018", "raw-026", "raw-027"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-007 beat2: The hands freeze, then twitch backward one minute for every real second that passes.
+raw-026 beat5: All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+raw-027 beat5: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+raw-006 beat3: The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.
+raw-018 beat3: The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.
+raw-016 beat2: A new side seam splits open, and all contents slide out horizontally.
+raw-009 beat4: The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.
+
+audit-pattern-06 state relation changes after a delay/sequence
+Candidate IDs: ["sem1-11beb05a18d36fdb", "sem1-23a3c991b8104bee", "sem1-2ae718e8672f18cc", "sem1-5cf30c7094c804b1", "sem1-6c8721485468a0f0", "sem1-8a6fb30b4a11976b", "sem1-bbdb302fefb48bd5", "sem1-cfeed66616185cb0", "sem1-dd72ae9a5bebad5a"]
+Idea IDs: ["raw-003", "raw-004", "raw-007", "raw-008", "raw-009", "raw-016", "raw-026", "raw-027", "raw-032"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-007 beat2: The hands freeze, then twitch backward one minute for every real second that passes.
+raw-026 beat2: The long nail curls into a spiral, then springs back and pings off the wall.
+raw-026 beat3: The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.
+raw-026 beat4: The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+raw-027 beat1: The brush paints a shimmering gray that immediately splits into blue and orange stripes.
+raw-027 beat5: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+raw-008 beat4: The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.
+raw-004 beat2: Dirt enters the pan but then flies out backward through the bristles, returning to start.
+raw-032 beat1: The mirror's delay increases to three seconds, and her reflection starts combing hair that Kiko hasn't touched yet.
+raw-032 beat2: The mirror shows her reflection looking up and smiling, then her own head tilts involuntarily to match.
+raw-032 beat3: The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.
+raw-032 beat5: The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.
+raw-003 beat1: The cart jerks right, then left, tracing a spiral that wraps around a cereal display.
+raw-003 beat2: The cart spins in place like a top, cans rattling, then accelerates forward in a new spiral toward the produce section.
+raw-003 beat4: The cart tilts and rolls on two wheels, then slams down and spirals toward the automatic entrance, triggering doors to open.
+raw-016 beat5: The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.
+raw-009 beat3: The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.
+
+audit-pattern-07 space or environment replaces the working target
+Candidate IDs: ["sem1-11beb05a18d36fdb", "sem1-23a3c991b8104bee", "sem1-2ae718e8672f18cc", "sem1-70ee2b7099c48d36", "sem1-8a6fb30b4a11976b", "sem1-90670eeaf4ee0468", "sem1-913bc9ae39a3c15e", "sem1-91ea45894fa28d7b", "sem1-c2b6225333ed3cda", "sem1-c85a677474d9ed27", "sem1-cfeed66616185cb0", "sem1-d1e9d5ce1154b96b", "sem1-dd72ae9a5bebad5a"]
+Idea IDs: ["raw-001", "raw-004", "raw-005", "raw-006", "raw-008", "raw-009", "raw-015", "raw-018", "raw-020", "raw-026", "raw-027", "raw-031", "raw-032"]
+Scope: EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring.
+raw-026 beat2: The long nail curls into a spiral, then springs back and pings off the wall.
+raw-026 beat4: The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+raw-026 beat5: All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+raw-027 beat2: The wall turns blue-green, not pure blue, and the brush swirls automatically.
+raw-027 beat4: The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+raw-027 beat5: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+raw-005 beat1: A blast of air shoots out, knocking over a plant and spraying soil across the floor.
+raw-005 beat3: The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.
+raw-005 beat4: The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.
+raw-005 beat5: The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.
+raw-006 beat1: He lands in a mirrored hallway, with door now behind him showing the kitchen as a reflection.
+raw-006 beat2: He ends up in the original hallway but now the door is on his left instead of right, and the kitchen is behind him.
+raw-006 beat3: The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.
+raw-006 beat4: His arm disappears through the doorway and emerges from a door behind him, tapping his own shoulder.
+raw-018 beat3: The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.
+raw-018 beat4: The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.
+raw-018 beat5: The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.
+raw-008 beat1: The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.
+raw-008 beat4: The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.
+raw-004 beat5: The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.
+raw-020 beat1: Various lights in the house turn on and off in a pattern, but the living room stays dark while the porch light blinks.
+raw-020 beat2: The bathroom light turns off, and the living room light turns on.
+raw-020 beat4: The flashlight turns on, but its beam illuminates the wrong room through a window, and Kiko stumbles.
+raw-032 beat4: The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.
+raw-032 beat5: The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.
+raw-015 beat4: The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.
+raw-001 beat4: The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.
+raw-009 beat1: The pancake still leaps up and splats on ceiling, sticking even harder.
+raw-009 beat2: The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.
+raw-009 beat3: The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.
+raw-009 beat4: The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.
+raw-009 beat5: The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.
+raw-031 beat1: The darkness beam becomes wider, swallowing a chair and half the room into blackness.
+raw-031 beat2: The ceiling turns black and starts dripping shadow like ink, covering the floor.
+
+PRODUCTION PRESELECTION
+before: {"OPENING_EVIDENCE_INSUFFICIENT": 18, "BEAT_GRAMMAR_QUALITY_FLOOR": 18, "PREMISE_NOT_ADMITTED": 18, "ACCEPTED_VALIDATOR_INELIGIBLE": 14, "RANKING_QUALITY_FLOOR": 14, "SHORT_FORM_QUALITY_FLOOR": 11}
+after: {"OPENING_EVIDENCE_INSUFFICIENT": 18, "PREMISE_NOT_ADMITTED": 18, "ACCEPTED_VALIDATOR_INELIGIBLE": 14, "RANKING_QUALITY_FLOOR": 14, "SHORT_FORM_QUALITY_FLOOR": 11, "BEAT_GRAMMAR_QUALITY_FLOOR": 3}
+No new production candidates. Slate stays[]. No manual promotion or changed floor.
+
+FILES CHANGED
+Runtime changed: app/workflow/beat_grammar.py (explicit evidence mode and representation-aware measurements); canonical_creative_evidence.py (new read-only beat_evidence acquisition method; existing context receipts unchanged).
+Runtime added: app/workflow/beat_consequence_evidence.py (strict evidence model, presence, action and supported-state acquisition).
+CLI added: intelligence/scripts/replay-unclassified-beat-consequences.py (fixed18, stored data only, audit-denied network/subprocesses).
+Tests added: test_unclassified_beat_consequences.py and test_beat_evidence_integrity.py. Integrity helper/fixture integration updated: protected_integrity.py and test_protected_integrity_policy.py; new separately pinned fixtures/beat_evidence_integrity_v1.json.
+Previous approval policies/manifests and all historical artifacts are immutable. New exact2-file contiguous source migration is bound to user authorization, baseline and before/after digests. No hash bypasses or skipped tests.
+
+GOLDEN TEST COVERAGE A–S
+A/B: all18 presence/classification tests; presence-state matrix tests.
+C/E/K: no-state/no-information and repeated-result fixtures stay MECHANICAL; raw013 repeat mutation is not automatically promoted.
+D/F/G: rule-linked unclassified state changes and novel explicit information; existing unclassified final payoff examples.
+H/I: MISSING and AMBIGUOUS remain distinct blocking states; UNKNOWN taxonomy is not either.
+J/L/M/N: four diagnostic candidates no longer fail just for UNKNOWN_CONSEQUENCE; no body/spatial free credit; independent SFE/ranking exact equality.
+O: old source oracle for18 legacy plans; original deterministic Beat Grammar reference/negative fixtures; full regression historical goldens.
+P/Q: all18 entire SFE/ranking reports unchanged; quality-cutoff-parity.json exact expressions unchanged.
+R/S: audit-denied offline replay and historical hash verification. Manual and semantic equivalent source evidence yields identical judgments.
+
+VERIFICATION
+Full exact test counts/failure IDs and historical byte proof: verification.json / full-regression-comparison.json / historical-evidence-proof.json (finalized after tests).
+Provider calls=0; new live concepts=0; renders=0. Required regression uses existing mock/deterministic test fixtures only. No new story batches are requested or saved. STOP after offline replay and regression.
+
+FINAL EXACT VERIFICATION
+Full regression:2841 passed,36 failed,2 skipped,3030 warnings in197.87seconds. The36 failure IDs exactly match the accepted Canonical Evidence Propagation V1 baseline, with0 new or missing failure IDs. These are the same accepted skips; no new skip was added.
+New tests:43 passed in1.24seconds. Focused regression:765 passed in48.79seconds. Full regression includes all current-source tests; no source changed during that final run. Earlier full-regression.log was deliberately interrupted to fix the unresolved-comparison diagnostic edge case; full-regression-final.log is authoritative.
+Historical files checked:1495, all byte-identical. Other protected files remain unchanged except4 scoped runtime/integrity-support edits. All old policies/manifests, consequence/strategy taxonomy data, SFE source, structured SFE acquisition, ranking source and saved semantic input remain untouched.
+Runtime evidence schema:canonical-beat-evidence-schema.json. Source and artifact hashes are attached. Provider calls0; new replay concepts0; renders0.

@@ -1,0 +1,190 @@
+{
+  "date": "2026-10-23",
+  "workflowVersion": "short-concept-generator-v1",
+  "providerCalls": 0,
+  "paidEvaluations": 0,
+  "externalModelSpendUsd": 0,
+  "renderedImages": [],
+  "renderedVideos": [],
+  "renderedDocuments": [],
+  "productionResultsModified": false,
+  "canonicalScoresChanged": false,
+  "acceptedEngineSourcesChanged": false,
+  "implementationAndTestFiles": [
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/concept_fingerprint.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/short_concept_generation.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/short_concept_catalog.json",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/api.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/ConceptGenerationController.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/quality/ConceptGenerationControllerTest.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-generation.page.spec.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/generate-short-concepts.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_short_concept_generation.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_concept_fingerprint.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_short_concept_generation_api.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/concept_fingerprint_cases.json",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/short_concept_generation_golden.json"
+  ],
+  "evidenceDirectory": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/short-concept-generation-v1",
+  "protectedFiles": {
+    "count": 86,
+    "allHashesEqual": true,
+    "before": "immutable-before.json",
+    "after": "immutable-after.json"
+  },
+  "exampleSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "structuralDuplicateCount": 0,
+    "eligibleCount": 8,
+    "revisionCount": 8,
+    "rejectedCount": 4,
+    "deferredCount": 0,
+    "notEvaluatedCount": 0,
+    "rankingAdmissionCount": 20,
+    "catalogExhausted": false
+  },
+  "exampleMetrics": {
+    "eligibilityYield": 0.4,
+    "duplicateRate": 0.0,
+    "engineDiversity": 1.0,
+    "averageShortFormScore": 61.9,
+    "topCandidateScore": 97.6,
+    "highActivityLowProgressRate": 0.5,
+    "weakPayoffRate": 0.55,
+    "lateHookRate": 0.5,
+    "productionRiskRate": 0.05,
+    "evaluatedDenominator": 20,
+    "scoreUse": "GENERATOR_DIAGNOSTICS_ONLY_NOT_CANONICAL_CREATIVE_SCORES"
+  },
+  "top3": [
+    {
+      "title": "Chair Answers The Armrest",
+      "candidateId": "local-chair-answers-the-armrest-011",
+      "productionRank": 1
+    },
+    {
+      "title": "Chair Marks Its Spot",
+      "candidateId": "local-chair-marks-its-spot-007",
+      "productionRank": 2
+    },
+    {
+      "title": "Runaway Lid",
+      "candidateId": "local-runaway-lid-018",
+      "productionRank": 3
+    }
+  ],
+  "firstRenderCandidate": "local-chair-answers-the-armrest-011",
+  "rankingReusedWithoutModification": true,
+  "testResults": {
+    "newTests": {
+      "passed": 58,
+      "failed": 0,
+      "log": "new-tests.txt"
+    },
+    "focusedIntegration": {
+      "passed": 236,
+      "failed": 0,
+      "warnings": 4,
+      "log": "focused-tests.txt"
+    },
+    "ui": {
+      "passed": 96,
+      "files": 5,
+      "failed": 0,
+      "log": "ui-tests.txt"
+    },
+    "java": [
+      {
+        "suite": "ConceptGenerationControllerTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "ConceptRankingControllerTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "ShortFormReportTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "StoryPremiseReportTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "fullRegression": {
+      "passed": 1895,
+      "failed": 36,
+      "skipped": 2,
+      "warnings": 3030,
+      "log": "regression-tests.txt",
+      "baselineFailureIdsExactlyEqual": true
+    },
+    "baselineControl": {
+      "failed": 36,
+      "generationEntryPointDisabled": true,
+      "log": "legacy-control-tests.txt",
+      "failureIds": [
+        "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+        "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+        "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+        "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+        "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+        "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+        "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+        "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+        "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+        "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+        "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+        "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+        "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+        "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+        "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+        "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+        "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+        "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+        "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+        "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+        "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+        "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+      ]
+    }
+  },
+  "commands": {
+    "newTests": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_short_concept_generation.py tests/test_concept_fingerprint.py tests/test_short_concept_generation_api.py -q --tb=short",
+    "focusedIntegration": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_short_concept_generation.py tests/test_concept_fingerprint.py tests/test_short_concept_generation_api.py tests/test_concept_ranking.py tests/test_concept_ranking_api.py tests/test_short_form_engine.py tests/test_short_form_integration.py tests/test_story_premise_engine.py tests/test_story_premise_integration.py -q --tb=short",
+    "fullRegression": ".venv/bin/python ../scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short",
+    "java": "mvn -o -q -Dtest=ConceptGenerationControllerTest,ConceptRankingControllerTest,ShortFormReportTest,StoryPremiseReportTest test",
+    "ui": "npm exec ng test -- --watch=false --include=src/app/pages/concept-generation.page.spec.ts --include=src/app/pages/concept-ranking.page.spec.ts --include=src/app/pages/short-form-report.component.spec.ts --include=src/app/pages/story-premise-report.component.spec.ts --include=src/app/pages/workflow.page.spec.ts",
+    "cliSmoke": "intelligence/ml-service/.venv/bin/python intelligence/scripts/generate-short-concepts.py --count 20 --seed 42 --rank --text-report"
+  },
+  "cliSmokeMatchesRecordedExample": true
+}

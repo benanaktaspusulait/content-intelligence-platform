@@ -1,0 +1,170 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "beatNumber": {
+      "title": "Beatnumber",
+      "type": "integer"
+    },
+    "strategyPresent": {
+      "title": "Strategypresent",
+      "type": "boolean"
+    },
+    "strategyClassificationStatus": {
+      "enum": [
+        "STRATEGY_PRESENT_CLASSIFIED",
+        "STRATEGY_PRESENT_UNCLASSIFIED",
+        "STRATEGY_MISSING",
+        "STRATEGY_AMBIGUOUS"
+      ],
+      "title": "Strategyclassificationstatus",
+      "type": "string"
+    },
+    "consequencePresent": {
+      "title": "Consequencepresent",
+      "type": "boolean"
+    },
+    "consequenceClassificationStatus": {
+      "enum": [
+        "CONSEQUENCE_PRESENT_CLASSIFIED",
+        "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "CONSEQUENCE_MISSING",
+        "CONSEQUENCE_AMBIGUOUS"
+      ],
+      "title": "Consequenceclassificationstatus",
+      "type": "string"
+    },
+    "rawStrategy": {
+      "title": "Rawstrategy",
+      "type": "string"
+    },
+    "rawConsequence": {
+      "title": "Rawconsequence",
+      "type": "string"
+    },
+    "strategyClassification": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Strategyclassification"
+    },
+    "consequenceClassification": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Consequenceclassification"
+    },
+    "newInformation": {
+      "title": "Newinformation",
+      "type": "string"
+    },
+    "newInformationPresent": {
+      "title": "Newinformationpresent",
+      "type": "boolean"
+    },
+    "newInformationNovel": {
+      "title": "Newinformationnovel",
+      "type": "boolean"
+    },
+    "stateChangeSupported": {
+      "title": "Statechangesupported",
+      "type": "boolean"
+    },
+    "goalStateChangeSupported": {
+      "title": "Goalstatechangesupported",
+      "type": "boolean"
+    },
+    "bodyStateChangeSupported": {
+      "title": "Bodystatechangesupported",
+      "type": "boolean"
+    },
+    "spatialChangeSupported": {
+      "title": "Spatialchangesupported",
+      "type": "boolean"
+    },
+    "informationProgressionSupported": {
+      "title": "Informationprogressionsupported",
+      "type": "boolean"
+    },
+    "progressionSupported": {
+      "title": "Progressionsupported",
+      "type": "boolean"
+    },
+    "strategyDiversityKey": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Strategydiversitykey"
+    },
+    "consequenceDiversityKey": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Consequencediversitykey"
+    },
+    "stateDifference": {
+      "additionalProperties": true,
+      "title": "Statedifference",
+      "type": "object"
+    },
+    "actionEvidence": {
+      "additionalProperties": true,
+      "title": "Actionevidence",
+      "type": "object"
+    },
+    "evidenceRefs": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Evidencerefs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "beatNumber",
+    "strategyPresent",
+    "strategyClassificationStatus",
+    "consequencePresent",
+    "consequenceClassificationStatus",
+    "rawStrategy",
+    "rawConsequence",
+    "strategyClassification",
+    "consequenceClassification",
+    "newInformation",
+    "newInformationPresent",
+    "newInformationNovel",
+    "stateChangeSupported",
+    "goalStateChangeSupported",
+    "bodyStateChangeSupported",
+    "spatialChangeSupported",
+    "informationProgressionSupported",
+    "progressionSupported",
+    "strategyDiversityKey",
+    "consequenceDiversityKey",
+    "stateDifference",
+    "actionEvidence",
+    "evidenceRefs"
+  ],
+  "title": "BeatEvidence",
+  "type": "object"
+}

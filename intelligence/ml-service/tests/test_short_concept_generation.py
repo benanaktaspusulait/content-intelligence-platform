@@ -1,5 +1,4 @@
 from copy import deepcopy
-import hashlib
 import re
 import json
 from pathlib import Path
@@ -396,5 +395,6 @@ def test_accepted_sources_fixtures_history_and_projections_keep_all_hashes():
     workspace = Path(__file__).parents[3]
     manifest = json.loads((ROOT / "docs/short-concept-generation-v1/immutable-before.json").read_text())
     assert len(manifest) == 86
-    for name, sha in manifest.items():
-        assert hashlib.sha256((workspace / name).read_bytes()).hexdigest() == sha, name
+    from protected_integrity import assert_manifest_integrity
+
+    assert_manifest_integrity(workspace, manifest)

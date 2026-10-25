@@ -1,0 +1,257 @@
+{
+  "seed": 42,
+  "requestedCount": 20,
+  "v1": {
+    "outputCount": 20,
+    "eligibleCount": 8,
+    "eligibilityYield": 0.4,
+    "outputStructuralDuplicateRate": 0.0,
+    "internalPoolDuplicateRate": null,
+    "objectConcentration": 0.15,
+    "engineConcentration": 0.05,
+    "payoffConcentration": 0.25,
+    "meanPairwiseCreativeDistance": 0.885247,
+    "minimumPairwiseCreativeDistance": 0.5,
+    "pairCount": 190,
+    "top3Diversity": {
+      "meanPairwiseCreativeDistance": 0.7,
+      "minimumPairwiseCreativeDistance": 0.56,
+      "pairCount": 3
+    },
+    "averageShortFormScore": 61.9,
+    "productionRiskRate": 0.05,
+    "distributionEvidence": {
+      "goalFamilyDistribution": {
+        "BODY_SELF_CARE": 5,
+        "DRESSING": 2,
+        "FOOD": 2,
+        "HOUSEHOLD": 11
+      },
+      "objectCategoryDistribution": {
+        "CLOTHING": 2,
+        "CONTAINER": 2,
+        "FABRIC": 2,
+        "FURNITURE": 2,
+        "GROOMING": 3,
+        "HYGIENE": 1,
+        "STORAGE": 3,
+        "TOY": 2,
+        "UTENSIL": 3
+      },
+      "engineDistribution": {
+        "ADHESION": 1,
+        "CHAIN_REACTION": 1,
+        "CONTAINMENT_FAILURE": 1,
+        "CONTAINMENT_INVERSION": 1,
+        "DELAYED_RELEASE": 1,
+        "DISTANCE_CONTRADICTION": 1,
+        "ELASTIC_CONTAINMENT": 1,
+        "ELASTIC_EXTENSION": 1,
+        "FOLD_REVERSAL": 1,
+        "MULTIPLICATION": 1,
+        "OBJECT_REFUSES_USE": 1,
+        "OPPOSITE_EFFECT": 1,
+        "POSITION_RESET": 1,
+        "POSITION_TRANSFER": 1,
+        "PROGRESSIVE_GROWTH": 1,
+        "PROGRESSIVE_SHRINK": 1,
+        "PROPERTY_TRANSFER": 1,
+        "REPULSION": 1,
+        "ROTATION_REVERSAL": 1,
+        "WEIGHT_CONTRADICTION": 1
+      },
+      "escalationDistribution": {
+        "ACCUMULATION": 2,
+        "CONTROL_LOSS": 3,
+        "FALSE_PROGRESS": 4,
+        "LINEAR_MAGNITUDE": 2,
+        "SPACE_COMPRESSION": 3,
+        "STATE_CHAIN": 4,
+        "STRATEGY_RESPONSE": 2
+      },
+      "payoffDistribution": {
+        "FAKE_RESOLUTION": 5,
+        "GOAL_INVERSION": 3,
+        "LOGICAL_EXTREME": 5,
+        "RECURRENCE": 2,
+        "ROLE_REVERSAL": 2,
+        "VISUAL_REVEAL": 3
+      },
+      "environmentDistribution": {
+        "One uncluttered playroom work area": 20
+      },
+      "characterDistribution": {
+        "00000000-0000-0000-0000-000000000001": 3,
+        "00000000-0000-0000-0000-000000000002": 2,
+        "00000000-0000-0000-0000-000000000003": 7,
+        "00000000-0000-0000-0000-000000000004": 4,
+        "00000000-0000-0000-0000-000000000005": 1,
+        "00000000-0000-0000-0000-000000000006": 3
+      },
+      "concentrationWarnings": [
+        {
+          "code": "GOAL_FAMILY_CONCENTRATION",
+          "dimension": "goalFamily",
+          "value": "HOUSEHOLD",
+          "count": 11,
+          "share": 0.55,
+          "reason": "HOUSEHOLD appears in 55.0% of candidates."
+        },
+        {
+          "code": "ENVIRONMENT_CONCENTRATION",
+          "dimension": "environment",
+          "value": "One uncluttered playroom work area",
+          "count": 20,
+          "share": 1.0,
+          "reason": "One uncluttered playroom work area appears in 100.0% of candidates."
+        }
+      ],
+      "engineEntropy": 2.995732,
+      "engineDiversity": 1.0
+    },
+    "visualAxesCoverage": {
+      "local-backward-brush-stroke-005": 4,
+      "local-blanket-reverses-the-fold-014": 0,
+      "local-box-multiplies-the-task-015": 0,
+      "local-box-passes-the-buckle-002": 0,
+      "local-brush-shrinks-away-001": 4,
+      "local-brush-will-not-let-go-019": 4,
+      "local-chair-answers-the-armrest-011": 4,
+      "local-chair-marks-its-spot-007": 4,
+      "local-cloth-returns-the-dust-016": 0,
+      "local-cup-will-not-be-heavy-004": 0,
+      "local-drawer-borrows-the-room-009": 4,
+      "local-drawer-repels-the-pull-017": 4,
+      "local-hanger-repels-the-coat-008": 0,
+      "local-runaway-lid-018": 4,
+      "local-shoe-stretches-the-step-020": 4,
+      "local-soap-lends-its-stick-006": 0,
+      "local-spoon-delays-the-bite-010": 4,
+      "local-spoon-outgrows-breakfast-013": 4,
+      "local-tray-loses-its-bottom-003": 0,
+      "local-wall-borrows-the-stretch-012": 4
+    }
+  },
+  "v2": {
+    "outputCount": 20,
+    "eligibleCount": 6,
+    "eligibilityYield": 0.3,
+    "outputStructuralDuplicateRate": 0.0,
+    "internalPoolDuplicateRate": 0.0625,
+    "objectConcentration": 0.15,
+    "engineConcentration": 0.2,
+    "payoffConcentration": 0.3,
+    "meanPairwiseCreativeDistance": 0.839,
+    "minimumPairwiseCreativeDistance": 0.36,
+    "pairCount": 190,
+    "top3Diversity": {
+      "meanPairwiseCreativeDistance": 0.97,
+      "minimumPairwiseCreativeDistance": 0.94,
+      "pairCount": 3
+    },
+    "averageShortFormScore": 73.7,
+    "productionRiskRate": 0.0,
+    "distributionEvidence": {
+      "goalFamilyDistribution": {
+        "BODY_SELF_CARE": 3,
+        "CONCRETE_PLAY": 2,
+        "DRESSING": 4,
+        "FOOD": 3,
+        "HOUSEHOLD": 5,
+        "SCHOOL_CRAFT": 3
+      },
+      "objectCategoryDistribution": {
+        "CONTAINER": 1,
+        "DRAWING_TOOL": 2,
+        "FABRIC": 1,
+        "FOOTWEAR": 1,
+        "FURNITURE": 2,
+        "GARDEN_TOOL": 1,
+        "GROOMING": 1,
+        "HEADWEAR": 2,
+        "HYGIENE": 2,
+        "SCHOOL_MATERIAL": 1,
+        "STORAGE": 1,
+        "TOY": 2,
+        "UTENSIL": 3
+      },
+      "engineDistribution": {
+        "ADHESION": 3,
+        "ELASTIC_EXTENSION": 2,
+        "ESCAPING_TARGET": 2,
+        "PROGRESSIVE_GROWTH": 4,
+        "PROGRESSIVE_SHRINK": 2,
+        "RESET_TO_START": 3,
+        "REVERSAL": 2,
+        "WEIGHT_SHIFT": 2
+      },
+      "escalationDistribution": {
+        "ACCUMULATION": 3,
+        "CONTROL_LOSS": 4,
+        "FALSE_PROGRESS": 3,
+        "LINEAR_MAGNITUDE": 2,
+        "SPACE_COMPRESSION": 2,
+        "STATE_CHAIN": 3,
+        "STRATEGY_RESPONSE": 3
+      },
+      "payoffDistribution": {
+        "FAKE_RESOLUTION": 4,
+        "GOAL_INVERSION": 6,
+        "LOGICAL_EXTREME": 3,
+        "RECURRENCE": 3,
+        "ROLE_REVERSAL": 4
+      },
+      "environmentDistribution": {
+        "bathroom": 3,
+        "bedroom": 2,
+        "classroom-like craft area": 3,
+        "dining area": 3,
+        "entryway": 3,
+        "garden": 1,
+        "kitchen": 1,
+        "living room": 1,
+        "playroom": 3
+      },
+      "characterDistribution": {
+        "00000000-0000-0000-0000-000000000001": 5,
+        "00000000-0000-0000-0000-000000000002": 3,
+        "00000000-0000-0000-0000-000000000003": 3,
+        "00000000-0000-0000-0000-000000000004": 2,
+        "00000000-0000-0000-0000-000000000005": 3,
+        "00000000-0000-0000-0000-000000000006": 4
+      },
+      "concentrationWarnings": [],
+      "engineEntropy": 2.042316,
+      "engineDiversity": 0.982146
+    },
+    "visualAxesCoverage": {
+      "v2-14c0b43af6c58b06": 8,
+      "v2-5a0870794e171ea8": 8,
+      "v2-062e7bf556e48f94": 8,
+      "v2-69e8e1f5cbc4a53d": 8,
+      "v2-e70ca55d68ad7a7b": 8,
+      "v2-e9c584c43c995349": 8,
+      "v2-e8dfd5964f027942": 8,
+      "v2-6c36b93c554d7c58": 8,
+      "v2-c638f08cf6bb3636": 8,
+      "v2-8b3b2df2e96b1955": 8,
+      "v2-9e86238d4c468fa5": 8,
+      "v2-326fbbb3510140dd": 8,
+      "v2-22b2cb77e1dde577": 8,
+      "v2-a89131dd5d788713": 8,
+      "v2-9de8869972de6b7b": 8,
+      "v2-b159e20d4712ab28": 8,
+      "v2-c1d7176087ee0e7e": 8,
+      "v2-42f8db51be5f3dc4": 8,
+      "v2-35ef06bc2d57f2e0": 8,
+      "v2-cac93cceccb3310c": 8
+    }
+  },
+  "limitations": [
+    "Same accepted quality assessors and scores; no scorer or generator tuning from benchmark results.",
+    "V1 staging annotations cover at most four shared affordance axes; V2 provides eight planned axes. Distances normalize supported weights; comparison is approximate, not a visual study.",
+    "V1 one generic environment versus V2 goal-linked environment labels is a schema/content difference, not measured audience novelty.",
+    "V2 internal duplicate rate and output duplicate rate have different denominators, separately exposed.",
+    "V1 has a broader authored engine bank; V2 need not improve every metric. No external providers or measured performance."
+  ]
+}

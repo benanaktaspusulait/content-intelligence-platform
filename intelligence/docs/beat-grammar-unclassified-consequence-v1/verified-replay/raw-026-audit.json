@@ -1,0 +1,3822 @@
+{
+  "ideaId": "raw-026",
+  "candidateId": "sem1-23a3c991b8104bee",
+  "title": "Bending Nail Hammer",
+  "before": {
+    "quality": "BROKEN",
+    "strategyDiversity": 0,
+    "consequenceDiversity": 0,
+    "bodyProgression": 0,
+    "spatialProgression": 0,
+    "informationGain": null,
+    "payoffDistance": 0,
+    "findings": [
+      {
+        "code": "UNKNOWN_CONSEQUENCE"
+      }
+    ]
+  },
+  "after": {
+    "quality": "ACCEPTABLE",
+    "strategyDiversity": 100.0,
+    "consequenceDiversity": 100.0,
+    "bodyProgression": 0.0,
+    "spatialProgression": 0.0,
+    "informationGain": 100.0,
+    "payoffDistance": 1.0,
+    "findings": [
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 5
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 5
+      },
+      {
+        "code": "BEAT_ROLE_REPETITION"
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ]
+  },
+  "delta": {
+    "quality": {
+      "before": "BROKEN",
+      "after": "ACCEPTABLE"
+    },
+    "strategyDiversity": {
+      "before": 0,
+      "after": 100.0
+    },
+    "consequenceDiversity": {
+      "before": 0,
+      "after": 100.0
+    },
+    "informationGain": {
+      "before": null,
+      "after": 100.0
+    },
+    "payoffDistance": {
+      "before": 0,
+      "after": 1.0
+    },
+    "findings": {
+      "before": [
+        {
+          "code": "UNKNOWN_CONSEQUENCE"
+        }
+      ],
+      "after": [
+        {
+          "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+          "beatNumber": 1
+        },
+        {
+          "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+          "beatNumber": 2
+        },
+        {
+          "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+          "beatNumber": 3
+        },
+        {
+          "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+          "beatNumber": 3
+        },
+        {
+          "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+          "beatNumber": 4
+        },
+        {
+          "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+          "beatNumber": 5
+        },
+        {
+          "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+          "beatNumber": 5
+        },
+        {
+          "code": "BEAT_ROLE_REPETITION"
+        },
+        {
+          "code": "STATIC_SPATIAL_PROGRESSION"
+        }
+      ]
+    }
+  },
+  "cause": "Unknown taxonomy label no longer causes BROKEN. The same quality cutoffs use supported source actions/states/information; unavailable physical axes earn no invented credit.",
+  "counts": {
+    "strategy": {
+      "STRATEGY_PRESENT_CLASSIFIED": 3,
+      "STRATEGY_PRESENT_UNCLASSIFIED": 2
+    },
+    "consequence": {
+      "CONSEQUENCE_PRESENT_UNCLASSIFIED": 5
+    }
+  },
+  "audit": [
+    {
+      "beatNumber": 1,
+      "rawConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+      "normalizedConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+      "canonicalProjectedConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+      "evidence": {
+        "beatNumber": 1,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko holds the nail straight with pliers and hammers gently.",
+        "rawConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+        "strategyClassification": "REDUCE_FORCE",
+        "consequenceClassification": null,
+        "newInformation": "The nail's bending is directional and can ensnare nearby tools.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "INPUT_MODULATION",
+        "consequenceDiversityKey": "source-state:10496ae89e40cf7b",
+        "stateDifference": {
+          "before": null,
+          "after": "The nail bends around the pliers and grips them, trapping the tool.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "hold",
+          "target": [
+            "nail",
+            "straight"
+          ],
+          "sourceClause": "holds the nail straight with pliers and hammers gently",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].strategy",
+            "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].newInformation",
+            "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "diagnosis": "C",
+      "diagnosisMeaning": "A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.",
+      "payoff": null
+    },
+    {
+      "beatNumber": 2,
+      "rawConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+      "normalizedConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+      "canonicalProjectedConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+      "evidence": {
+        "beatNumber": 2,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko uses a longer nail, hoping it will go straight.",
+        "rawConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "strategyClassification": "ANCHOR_TO_ENVIRONMENT",
+        "consequenceClassification": null,
+        "newInformation": "Nail length increases elasticity, causing projectile bending.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "ENVIRONMENT_ANCHOR",
+        "consequenceDiversityKey": "source-state:e5862eeb06552867",
+        "stateDifference": {
+          "before": "The nail bends around the pliers and grips them, trapping the tool.",
+          "after": "The long nail curls into a spiral, then springs back and pings off the wall.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "use",
+          "target": [
+            "longer",
+            "nail"
+          ],
+          "sourceClause": "uses a longer nail",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].strategy",
+            "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].visibleConsequence",
+            "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].newInformation",
+            "sourceText": "Nail length increases elasticity, causing projectile bending.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "diagnosis": "C",
+      "diagnosisMeaning": "A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.",
+      "payoff": null
+    },
+    {
+      "beatNumber": 3,
+      "rawConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+      "normalizedConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+      "canonicalProjectedConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+      "evidence": {
+        "beatNumber": 3,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko pre-drills a hole, then taps the nail.",
+        "rawConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "The nail bends at a specific depth, damaging the wall.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "source-action:c18685b47d84b5a3",
+        "consequenceDiversityKey": "source-state:a67660ff1c2ce871",
+        "stateDifference": {
+          "before": "The long nail curls into a spiral, then springs back and pings off the wall.",
+          "after": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "pre",
+          "target": [
+            "drill",
+            "hol"
+          ],
+          "sourceClause": "pre-drills a hole",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].strategy",
+            "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].newInformation",
+            "sourceText": "The nail bends at a specific depth, damaging the wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "diagnosis": "C",
+      "diagnosisMeaning": "A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.",
+      "payoff": null
+    },
+    {
+      "beatNumber": 4,
+      "rawConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+      "normalizedConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+      "canonicalProjectedConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+      "evidence": {
+        "beatNumber": 4,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko gives up on nails and uses adhesive strips.",
+        "rawConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "strategyClassification": "DIRECT_USE",
+        "consequenceClassification": null,
+        "newInformation": "The hammer can install nails only when not held by Kiko.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "DIRECT_FORCE",
+        "consequenceDiversityKey": "source-state:514a25ee8639e9c0",
+        "stateDifference": {
+          "before": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+          "after": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "giv",
+          "target": [
+            "nail"
+          ],
+          "sourceClause": "gives up on nails and uses adhesive strips",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].strategy",
+            "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "diagnosis": "C",
+      "diagnosisMeaning": "A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.",
+      "payoff": null
+    },
+    {
+      "beatNumber": 5,
+      "rawConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+      "normalizedConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+      "canonicalProjectedConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+      "evidence": {
+        "beatNumber": 5,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+        "rawConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "source-action:1f4be9798dc0e981",
+        "consequenceDiversityKey": "source-state:575243c547547eb3",
+        "stateDifference": {
+          "before": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+          "after": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "grab",
+          "target": [
+            "hammer"
+          ],
+          "sourceClause": "grabs the hammer to adjust the picture",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].strategy",
+            "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].newInformation",
+            "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "diagnosis": "C",
+      "diagnosisMeaning": "A absent; B explicit unclassified with information support; C explicit with supported state change; D explicit but no supported difference; AMBIGUOUS unresolved source.",
+      "payoff": {
+        "present": true,
+        "ruleLinked": true,
+        "stateChanging": true
+      }
+    }
+  ],
+  "beforeReport": {
+    "version": "beat-grammar-v2",
+    "beatGrammarQuality": "BROKEN",
+    "flags": [
+      {
+        "code": "UNKNOWN_CONSEQUENCE"
+      }
+    ],
+    "strategyDiversityScore": 0,
+    "consequenceDiversityScore": 0,
+    "bodyStateProgressionScore": 0,
+    "spatialProgressionScore": 0,
+    "payoffDistance": 0,
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Hang a picture frame",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+            "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+            "newInformation": "The nail's bending is directional and can ensnare nearby tools.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+            "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "newInformation": "Nail length increases elasticity, causing projectile bending.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Nail length increases elasticity, causing projectile bending.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Kiko pre-drills a hole, then taps the nail.",
+            "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "newInformation": "The nail bends at a specific depth, damaging the wall.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The nail bends at a specific depth, damaging the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Kiko gives up on nails and uses adhesive strips.",
+            "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "newInformation": "The hammer can install nails only when not held by Kiko.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+            "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any future hanging requires avoiding hammers, but the hammer may seek Kiko out.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a795322002854621695f61dd641db74fd0b3286326f7f54659e1e863dcb42eb3",
+        "normalizedFieldsSha256": "47be42ba500fa7397f305273ff7061b7bbcf9be335cd1b67b4c89ca7bd145737",
+        "textSha256": "035b7bc683499a456c20f6a395c7faa8884518c474a84a1c742514b93b9bc93d"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "sourceBeatPlan": [
+      {
+        "beatNumber": 1,
+        "beatRole": "HOOK_PROBLEM",
+        "characterStrategy": "REDUCE_FORCE",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail bends around the pliers and grips them, trapping the tool.",
+        "characterConsequence": "The nail's bending is directional and can ensnare nearby tools.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The nail's bending is directional and can ensnare nearby tools."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 2,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "characterConsequence": "Nail length increases elasticity, causing projectile bending.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "Nail length increases elasticity, causing projectile bending."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 3,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "UNKNOWN",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+        "characterConsequence": "The nail bends at a specific depth, damaging the wall.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The nail bends at a specific depth, damaging the wall."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 4,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "DIRECT_USE",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "characterConsequence": "The hammer can install nails only when not held by Kiko.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The hammer can install nails only when not held by Kiko."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 5,
+        "beatRole": "PAYOFF",
+        "characterStrategy": "UNKNOWN",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "characterConsequence": "The hammer's bent-nail effect spreads to all previously straight nails.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The hammer's bent-nail effect spreads to all previously straight nails."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+        "payoffStateChange": "UNKNOWN"
+      }
+    ],
+    "evidenceLimitations": [
+      "UNKNOWN classification is not missing strategy/consequence/rule/payoff.",
+      "Unstated body/contact/spatial states are UNKNOWN; deterministic adapter defaults are not source evidence.",
+      "Existing class requirements remain active; BROKEN with UNKNOWN_CONSEQUENCE is a taxonomy coverage failure, not an absent consequence."
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 5,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 5,
+        "field": "consequenceType",
+        "sourcePresent": true
+      }
+    ]
+  },
+  "afterReport": {
+    "version": "beat-grammar-v2",
+    "strategySequence": [
+      "REDUCE_FORCE",
+      "ANCHOR_TO_ENVIRONMENT",
+      "UNKNOWN",
+      "DIRECT_USE",
+      "UNKNOWN"
+    ],
+    "strategyFamilySequence": [
+      "INPUT_MODULATION",
+      "ENVIRONMENT_ANCHOR",
+      "source-action:c18685b47d84b5a3",
+      "DIRECT_FORCE",
+      "source-action:1f4be9798dc0e981"
+    ],
+    "uniqueStrategyCount": 5,
+    "strategyDiversityScore": 100.0,
+    "consequenceSequence": [
+      "source-state:10496ae89e40cf7b",
+      "source-state:e5862eeb06552867",
+      "source-state:a67660ff1c2ce871",
+      "source-state:514a25ee8639e9c0",
+      "source-state:575243c547547eb3"
+    ],
+    "uniqueConsequenceCount": 5,
+    "consequenceDiversityScore": 100.0,
+    "bodyStateSequence": [
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN"
+    ],
+    "bodyStateProgressionScore": 0.0,
+    "spatialProgressionScore": 0.0,
+    "informationGainScore": 100.0,
+    "attemptSignatures": [
+      {
+        "strategyType": "INPUT_MODULATION",
+        "triggerType": null,
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:10496ae89e40cf7b",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "ENVIRONMENT_ANCHOR",
+        "triggerType": null,
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:e5862eeb06552867",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "source-action:c18685b47d84b5a3",
+        "triggerType": null,
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:a67660ff1c2ce871",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "DIRECT_FORCE",
+        "triggerType": null,
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:514a25ee8639e9c0",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "source-action:1f4be9798dc0e981",
+        "triggerType": null,
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:575243c547547eb3",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      }
+    ],
+    "attemptComparisons": [
+      {
+        "beats": [
+          1,
+          2
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          1,
+          3
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          1,
+          4
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          1,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          2,
+          3
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          2,
+          4
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          2,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          3,
+          4
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          3,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          4,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.0,
+        "matchingDimensions": [],
+        "observedDimensions": [
+          "strategyType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      }
+    ],
+    "nearDuplicateAttemptRate": 0.0,
+    "payoffDistance": 1.0,
+    "payoffStateChange": {
+      "before": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+      "after": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+      "supported": true,
+      "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+      "objectState": null,
+      "goalState": null,
+      "bodyState": null,
+      "spatialState": null,
+      "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+    },
+    "payoffEvidence": {
+      "distance": 1.0,
+      "comparisons": [
+        {
+          "comparedWithBeat": 3,
+          "distance": 1.0,
+          "changedDimensions": [
+            "consequenceType"
+          ],
+          "observedDimensions": [
+            "consequenceType"
+          ]
+        },
+        {
+          "comparedWithBeat": 4,
+          "distance": 1.0,
+          "changedDimensions": [
+            "consequenceType"
+          ],
+          "observedDimensions": [
+            "consequenceType"
+          ]
+        }
+      ],
+      "stateChange": {
+        "before": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "after": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "supported": true,
+        "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+        "objectState": null,
+        "goalState": null,
+        "bodyState": null,
+        "spatialState": null,
+        "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+      },
+      "magnitudeOnlyDoesNotCount": true,
+      "normalization": "SUPPORTED_AXES_ONLY; NO_SUPPORTED_COMPARISON=0"
+    },
+    "beatGrammarQuality": "ACCEPTABLE",
+    "flags": [
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 5
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 5
+      },
+      {
+        "code": "BEAT_ROLE_REPETITION"
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ],
+    "productionFeasibility": {
+      "score": 100,
+      "flags": [],
+      "evidenceStatus": "PLANNED_CONTACT_COMPLEXITY_SCREEN_NOT_RENDER_VERIFICATION"
+    },
+    "scoreUse": "NON_CANONICAL_GENERATION_REVIEW_NOT_RETENTION",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Hang a picture frame",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+            "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+            "newInformation": "The nail's bending is directional and can ensnare nearby tools.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+            "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "newInformation": "Nail length increases elasticity, causing projectile bending.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Nail length increases elasticity, causing projectile bending.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Kiko pre-drills a hole, then taps the nail.",
+            "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "newInformation": "The nail bends at a specific depth, damaging the wall.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The nail bends at a specific depth, damaging the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Kiko gives up on nails and uses adhesive strips.",
+            "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "newInformation": "The hammer can install nails only when not held by Kiko.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+            "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any future hanging requires avoiding hammers, but the hammer may seek Kiko out.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a795322002854621695f61dd641db74fd0b3286326f7f54659e1e863dcb42eb3",
+        "normalizedFieldsSha256": "47be42ba500fa7397f305273ff7061b7bbcf9be335cd1b67b4c89ca7bd145737",
+        "textSha256": "035b7bc683499a456c20f6a395c7faa8884518c474a84a1c742514b93b9bc93d"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "sourceBeatPlan": [
+      {
+        "beatNumber": 1,
+        "beatRole": "HOOK_PROBLEM",
+        "characterStrategy": "REDUCE_FORCE",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail bends around the pliers and grips them, trapping the tool.",
+        "characterConsequence": "The nail's bending is directional and can ensnare nearby tools.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The nail's bending is directional and can ensnare nearby tools."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 2,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "characterConsequence": "Nail length increases elasticity, causing projectile bending.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "Nail length increases elasticity, causing projectile bending."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 3,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "UNKNOWN",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+        "characterConsequence": "The nail bends at a specific depth, damaging the wall.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The nail bends at a specific depth, damaging the wall."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 4,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "DIRECT_USE",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "characterConsequence": "The hammer can install nails only when not held by Kiko.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The hammer can install nails only when not held by Kiko."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 5,
+        "beatRole": "PAYOFF",
+        "characterStrategy": "UNKNOWN",
+        "trigger": "UNCLASSIFIED_TRIGGER",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "characterConsequence": "The hammer's bent-nail effect spreads to all previously straight nails.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The hammer's bent-nail effect spreads to all previously straight nails."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+        "payoffStateChange": "UNKNOWN"
+      }
+    ],
+    "evidenceLimitations": [
+      "Presence is independent of taxonomy and of progression quality.",
+      "Source-local action/state keys are evidence identities, never canonical taxonomy additions.",
+      "Literal action/target and rule-linked state checks are deterministic text-plan evidence, not semantic vision.",
+      "Unknown body, spatial, goal and contact axes earn no invented state credit."
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 5,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 5,
+        "field": "consequenceType",
+        "sourcePresent": true
+      }
+    ],
+    "evidenceMode": "beat-unclassified-consequence-support-v1",
+    "canonicalBeatEvidence": [
+      {
+        "beatNumber": 1,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko holds the nail straight with pliers and hammers gently.",
+        "rawConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+        "strategyClassification": "REDUCE_FORCE",
+        "consequenceClassification": null,
+        "newInformation": "The nail's bending is directional and can ensnare nearby tools.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "INPUT_MODULATION",
+        "consequenceDiversityKey": "source-state:10496ae89e40cf7b",
+        "stateDifference": {
+          "before": null,
+          "after": "The nail bends around the pliers and grips them, trapping the tool.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "hold",
+          "target": [
+            "nail",
+            "straight"
+          ],
+          "sourceClause": "holds the nail straight with pliers and hammers gently",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].strategy",
+            "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].newInformation",
+            "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 2,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko uses a longer nail, hoping it will go straight.",
+        "rawConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "strategyClassification": "ANCHOR_TO_ENVIRONMENT",
+        "consequenceClassification": null,
+        "newInformation": "Nail length increases elasticity, causing projectile bending.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "ENVIRONMENT_ANCHOR",
+        "consequenceDiversityKey": "source-state:e5862eeb06552867",
+        "stateDifference": {
+          "before": "The nail bends around the pliers and grips them, trapping the tool.",
+          "after": "The long nail curls into a spiral, then springs back and pings off the wall.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "use",
+          "target": [
+            "longer",
+            "nail"
+          ],
+          "sourceClause": "uses a longer nail",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].strategy",
+            "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].visibleConsequence",
+            "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].newInformation",
+            "sourceText": "Nail length increases elasticity, causing projectile bending.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 3,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko pre-drills a hole, then taps the nail.",
+        "rawConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "The nail bends at a specific depth, damaging the wall.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "source-action:c18685b47d84b5a3",
+        "consequenceDiversityKey": "source-state:a67660ff1c2ce871",
+        "stateDifference": {
+          "before": "The long nail curls into a spiral, then springs back and pings off the wall.",
+          "after": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "pre",
+          "target": [
+            "drill",
+            "hol"
+          ],
+          "sourceClause": "pre-drills a hole",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].strategy",
+            "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].newInformation",
+            "sourceText": "The nail bends at a specific depth, damaging the wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 4,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko gives up on nails and uses adhesive strips.",
+        "rawConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "strategyClassification": "DIRECT_USE",
+        "consequenceClassification": null,
+        "newInformation": "The hammer can install nails only when not held by Kiko.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "DIRECT_FORCE",
+        "consequenceDiversityKey": "source-state:514a25ee8639e9c0",
+        "stateDifference": {
+          "before": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+          "after": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "giv",
+          "target": [
+            "nail"
+          ],
+          "sourceClause": "gives up on nails and uses adhesive strips",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].strategy",
+            "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 5,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+        "rawConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "source-action:1f4be9798dc0e981",
+        "consequenceDiversityKey": "source-state:575243c547547eb3",
+        "stateDifference": {
+          "before": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+          "after": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "grab",
+          "target": [
+            "hammer"
+          ],
+          "sourceClause": "grabs the hammer to adjust the picture",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].strategy",
+            "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].newInformation",
+            "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "candidateId": "sem1-23a3c991b8104bee",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Hang a picture frame",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+            "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+            "newInformation": "The nail's bending is directional and can ensnare nearby tools.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+            "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "newInformation": "Nail length increases elasticity, causing projectile bending.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Nail length increases elasticity, causing projectile bending.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Kiko pre-drills a hole, then taps the nail.",
+            "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "newInformation": "The nail bends at a specific depth, damaging the wall.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The nail bends at a specific depth, damaging the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Kiko gives up on nails and uses adhesive strips.",
+            "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "newInformation": "The hammer can install nails only when not held by Kiko.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+            "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any future hanging requires avoiding hammers, but the hammer may seek Kiko out.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a795322002854621695f61dd641db74fd0b3286326f7f54659e1e863dcb42eb3",
+        "normalizedFieldsSha256": "47be42ba500fa7397f305273ff7061b7bbcf9be335cd1b67b4c89ca7bd145737",
+        "textSha256": "035b7bc683499a456c20f6a395c7faa8884518c474a84a1c742514b93b9bc93d"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "title": "Bending Nail Hammer",
+    "normalizedConcept": {
+      "id": "sem1-23a3c991b8104bee",
+      "title": "Bending Nail Hammer",
+      "protagonist": "Kiko",
+      "protagonistGoal": "Hang a picture frame",
+      "objectOrPrimaryInteraction": "Hammer",
+      "impossibleRuleOrCoreContradiction": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.",
+      "escalationPlan": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15.0,
+          "description": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails."
+        }
+      ],
+      "finalPayoff": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+      "intendedDurationSeconds": 15.0,
+      "optionalDialogue": null,
+      "evaluationText": "0-3s: Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.\n3-6s: Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending.\n6-9s: Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall.\n9-12s: Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.\n12-15s: Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+      "originalInput": {
+        "id": "sem1-23a3c991b8104bee",
+        "title": "Bending Nail Hammer",
+        "protagonist": "Kiko",
+        "protagonistGoal": "Hang a picture frame",
+        "objectOrPrimaryInteraction": "Hammer",
+        "impossibleRuleOrCoreContradiction": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.",
+        "escalationPlan": [
+          {
+            "startSeconds": 0.0,
+            "endSeconds": 3.0,
+            "description": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools."
+          },
+          {
+            "startSeconds": 3.0,
+            "endSeconds": 6.0,
+            "description": "Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending."
+          },
+          {
+            "startSeconds": 6.0,
+            "endSeconds": 9.0,
+            "description": "Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall."
+          },
+          {
+            "startSeconds": 9.0,
+            "endSeconds": 12.0,
+            "description": "Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko."
+          },
+          {
+            "startSeconds": 12.0,
+            "endSeconds": 15.0,
+            "description": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails."
+          }
+        ],
+        "finalPayoff": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+        "intendedDurationSeconds": 15.0
+      },
+      "normalizationEvidence": {
+        "id": "EXPLICIT_FIELD",
+        "title": "EXPLICIT_FIELD",
+        "protagonist": "EXPLICIT_FIELD",
+        "protagonistGoal": "EXPLICIT_FIELD",
+        "objectOrPrimaryInteraction": "EXPLICIT_FIELD",
+        "impossibleRuleOrCoreContradiction": "EXPLICIT_FIELD",
+        "frameZeroDescription": "EXPLICIT_FIELD",
+        "escalationPlan": "EXPLICIT_FIELD",
+        "finalPayoff": "EXPLICIT_FIELD",
+        "intendedDurationSeconds": "EXPLICIT_FIELD"
+      },
+      "sourceSha256": "382626a3d2b8439cf0c5e5678807f9d8510b2b2f618fd58321439818507c8f7d",
+      "normalizationWarnings": [
+        "Only explicit fields, labeled text and supported source excerpts are normalized; unknown fields remain missing.",
+        "Timed middle beats can bound supplied opening/payoff windows; no actions are generated."
+      ],
+      "canonicalCreativeEvidence": {
+        "version": "canonical-creative-evidence-v1",
+        "contextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434",
+        "facts": {
+          "goal": {
+            "declared": true,
+            "visibleInOpening": true,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Hang a picture frame",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          },
+          "opening": {
+            "goalPresent": true,
+            "anomalyPresent": true,
+            "problemPresent": true,
+            "causalRelationshipVisible": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+          },
+          "rule": {
+            "present": true,
+            "visible": true,
+            "dominant": true,
+            "goalRelated": true,
+            "classificationStatus": "PRESENT_UNCLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "present": true,
+            "visible": true,
+            "classificationStatus": "PRESENT_UNCLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "beats": [
+            {
+              "beatNumber": 1,
+              "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+              "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+              "newInformation": "The nail's bending is directional and can ensnare nearby tools.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[0].strategy",
+                  "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[0].visibleConsequence",
+                  "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[0].newInformation",
+                  "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 2,
+              "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+              "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+              "newInformation": "Nail length increases elasticity, causing projectile bending.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[1].strategy",
+                  "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[1].visibleConsequence",
+                  "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[1].newInformation",
+                  "sourceText": "Nail length increases elasticity, causing projectile bending.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 3,
+              "strategy": "Kiko pre-drills a hole, then taps the nail.",
+              "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+              "newInformation": "The nail bends at a specific depth, damaging the wall.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[2].strategy",
+                  "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[2].visibleConsequence",
+                  "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[2].newInformation",
+                  "sourceText": "The nail bends at a specific depth, damaging the wall.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 4,
+              "strategy": "Kiko gives up on nails and uses adhesive strips.",
+              "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+              "newInformation": "The hammer can install nails only when not held by Kiko.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[3].strategy",
+                  "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[3].visibleConsequence",
+                  "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[3].newInformation",
+                  "sourceText": "The hammer can install nails only when not held by Kiko.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 5,
+              "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+              "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+              "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].strategy",
+                  "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].visibleConsequence",
+                  "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].newInformation",
+                  "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            }
+          ],
+          "payoff": {
+            "present": true,
+            "ruleLinked": true,
+            "stateChanging": true,
+            "visual": true,
+            "classificationStatus": "PRESENT_UNCLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "Any future hanging requires avoiding hammers, but the hammer may seek Kiko out.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        },
+        "provenance": {
+          "sourceKind": "SEMANTIC",
+          "structuredSourceSha256": "a795322002854621695f61dd641db74fd0b3286326f7f54659e1e863dcb42eb3",
+          "normalizedFieldsSha256": "47be42ba500fa7397f305273ff7061b7bbcf9be335cd1b67b4c89ca7bd145737",
+          "textSha256": "035b7bc683499a456c20f6a395c7faa8884518c474a84a1c742514b93b9bc93d"
+        },
+        "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+      }
+    },
+    "eligibility": "ELIGIBLE",
+    "missingFields": [],
+    "eligibilityReasons": [],
+    "shortFormScore": 100,
+    "rankingScore": 97.6,
+    "baseCompositeScore": 97.6,
+    "rankingDimensions": [
+      {
+        "dimension": "instantCausalLegibility",
+        "score": 100,
+        "weightPercent": 22,
+        "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+      },
+      {
+        "dimension": "visualContradiction",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.hookScore"
+      },
+      {
+        "dimension": "goalClarity",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.goalScore"
+      },
+      {
+        "dimension": "oneRuleStrength",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+      },
+      {
+        "dimension": "progressDensity",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.progressDensityScore"
+      },
+      {
+        "dimension": "escalationQuality",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.escalationScore"
+      },
+      {
+        "dimension": "payoffStrength",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.payoffScore"
+      },
+      {
+        "dimension": "rewatchPotential",
+        "score": 60,
+        "weightPercent": 6,
+        "source": "SHORT_FORM_ENGINE.rewatchScore"
+      }
+    ],
+    "penalties": [],
+    "rankingPenaltyPoints": 0,
+    "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+    "productionRisk": {
+      "score": 100,
+      "flags": [],
+      "evidenceStatus": "TEXT_RISK_SCREEN_ONLY"
+    },
+    "productionEfficiency": {
+      "score": 100,
+      "source": "SHORT_FORM_ENGINE.productionFeasibilityScore",
+      "use": "Secondary only within a 3-point anchored quality band; no verified monetary cost estimate."
+    },
+    "strengths": [
+      {
+        "dimension": "instantCausalLegibility",
+        "score": 100,
+        "weightPercent": 22,
+        "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+      },
+      {
+        "dimension": "visualContradiction",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.hookScore"
+      },
+      {
+        "dimension": "goalClarity",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.goalScore"
+      },
+      {
+        "dimension": "oneRuleStrength",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+      },
+      {
+        "dimension": "progressDensity",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.progressDensityScore"
+      },
+      {
+        "dimension": "escalationQuality",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.escalationScore"
+      },
+      {
+        "dimension": "payoffStrength",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.payoffScore"
+      }
+    ],
+    "weaknesses": [],
+    "shortFormEngine": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "PASS",
+      "shortFormScore": 100,
+      "hookScore": 100,
+      "goalScore": 100,
+      "ruleClarityScore": 100,
+      "beatDensityScore": 100,
+      "progressDensityScore": 100,
+      "escalationScore": 100,
+      "payoffScore": 100,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 100,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      },
+      "alreadyInTrouble": true,
+      "rules": [],
+      "majorCausalBeatCount": 5,
+      "describedBlockCount": 5,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.0,
+          "quote": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.",
+          "sourceSpan": null,
+          "visual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.",
+          "rules": [],
+          "strategies": [
+            "strategy:58dfe1102fba7468"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:10496ae89e40cf7b"
+          ],
+          "goal": true,
+          "result": true,
+          "progressTypes": [
+            "UNDERSTANDING"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.0,
+          "end": 6.0,
+          "quote": "Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending.",
+          "sourceSpan": null,
+          "visual": "Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending.",
+          "rules": [],
+          "strategies": [
+            "strategy:3b718f294a874749"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:e5862eeb06552867"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B3",
+          "start": 6.0,
+          "end": 9.0,
+          "quote": "Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall.",
+          "sourceSpan": null,
+          "visual": "Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall.",
+          "rules": [],
+          "strategies": [
+            "strategy:623f1c83cece0c47"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:a67660ff1c2ce871"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B4",
+          "start": 9.0,
+          "end": 12.0,
+          "quote": "Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+          "sourceSpan": null,
+          "visual": "Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+          "rules": [],
+          "strategies": [
+            "strategy:afe8984a0682a4e0"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:514a25ee8639e9c0"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B5",
+          "start": 12.0,
+          "end": 15.0,
+          "quote": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+          "sourceSpan": null,
+          "visual": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+          "rules": [],
+          "strategies": [
+            "strategy:c0e7984ff1fc01db"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:575243c547547eb3"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE",
+            "PAYOFF"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        }
+      ],
+      "findings": [],
+      "escalationCurve": {
+        "longestPlateauSeconds": 3.0,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Next materially different attempt, consequence or final physical state.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 100,
+        "rule": 100,
+        "reaction": 100,
+        "payoff": 100
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15.0,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "PASS: short-form 100/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+      "sourceSha256": "382626a3d2b8439cf0c5e5678807f9d8510b2b2f618fd58321439818507c8f7d",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0,
+      "evidenceSourceVersion": "structured-canonical-v1",
+      "canonicalEvidence": {
+        "version": "short-form-canonical-evidence-v1",
+        "sourceKind": "STRUCTURED_CANONICAL_V1",
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.",
+            "sourceSpan": null,
+            "visual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko holds the nail straight with pliers and hammers gently.. The nail bends around the pliers and grips them, trapping the tool. The nail's bending is directional and can ensnare nearby tools.",
+            "rules": [],
+            "strategies": [
+              "strategy:58dfe1102fba7468"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:10496ae89e40cf7b"
+            ],
+            "goal": true,
+            "result": true
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending.",
+            "sourceSpan": null,
+            "visual": "Kiko Kiko uses a longer nail, hoping it will go straight.. The long nail curls into a spiral, then springs back and pings off the wall. Nail length increases elasticity, causing projectile bending.",
+            "rules": [],
+            "strategies": [
+              "strategy:3b718f294a874749"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:e5862eeb06552867"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall.",
+            "sourceSpan": null,
+            "visual": "Kiko Kiko pre-drills a hole, then taps the nail.. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole. The nail bends at a specific depth, damaging the wall.",
+            "rules": [],
+            "strategies": [
+              "strategy:623f1c83cece0c47"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:a67660ff1c2ce871"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+            "sourceSpan": null,
+            "visual": "Kiko Kiko gives up on nails and uses adhesive strips.. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+            "rules": [],
+            "strategies": [
+              "strategy:afe8984a0682a4e0"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:514a25ee8639e9c0"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+            "sourceSpan": null,
+            "visual": "Kiko Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically. The hammer's bent-nail effect spreads to all previously straight nails.",
+            "rules": [],
+            "strategies": [
+              "strategy:c0e7984ff1fc01db"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:575243c547547eb3"
+            ],
+            "goal": false,
+            "result": true
+          }
+        ],
+        "acquisition": [
+          {
+            "resultTokens": [
+              "around",
+              "bend",
+              "grip",
+              "nail",
+              "plier",
+              "tool",
+              "trapp"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:1d199c881c6e8865"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Kiko holds the nail straight with pliers and hammers gently.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "The nail's bending is directional and can ensnare nearby tools.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "back",
+              "curl",
+              "long",
+              "nail",
+              "off",
+              "ping",
+              "spiral",
+              "spring",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:1d199c881c6e8865"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Kiko uses a longer nail, hoping it will go straight.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Nail length increases elasticity, causing projectile bending.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "bend",
+              "halfway",
+              "hol",
+              "larg",
+              "mak",
+              "nail",
+              "pass",
+              "sideway",
+              "split",
+              "wallboard"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:1d199c881c6e8865"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Kiko pre-drills a hole, then taps the nail.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The nail bends at a specific depth, damaging the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "bent",
+              "hammer",
+              "hand",
+              "leap",
+              "nail",
+              "perfectly",
+              "straighten",
+              "tap",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:1d199c881c6e8865"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Kiko gives up on nails and uses adhesive strips.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "bend",
+              "comically",
+              "crash",
+              "curv",
+              "hand",
+              "nail",
+              "pictur",
+              "ping",
+              "room",
+              "s",
+              "thumb"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": true,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:1d199c881c6e8865"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "facts": {
+          "openingDelayed": false,
+          "goalDeclared": true,
+          "mechanismIds": [
+            "source-rule:1d199c881c6e8865"
+          ],
+          "classifiedRules": [],
+          "confusion": false,
+          "loopCue": false,
+          "speechWords": 0,
+          "longSpeech": false,
+          "audioRequired": false,
+          "reactionVisible": true,
+          "stagingRisks": [],
+          "productionRisks": [],
+          "duplicateSignature": {
+            "opening": [],
+            "progression": [
+              "strategy:58dfe1102fba7468",
+              "strategy:3b718f294a874749",
+              "strategy:623f1c83cece0c47",
+              "strategy:afe8984a0682a4e0",
+              "strategy:c0e7984ff1fc01db"
+            ],
+            "ending": []
+          }
+        },
+        "dimensions": {
+          "goal": {
+            "declared": true,
+            "openingVisible": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Hang a picture frame",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "opening": {
+            "problemPresent": true,
+            "anomalySupported": true,
+            "goalSupported": true,
+            "anchorMatches": [
+              "nail",
+              "wall"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "coreRule": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "supported": true,
+            "classification": [],
+            "mechanismIds": [
+              "source-rule:1d199c881c6e8865"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "payoff": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "ruleLinked": true,
+            "stateChanging": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "The hammer's bent-nail effect spreads to all previously straight nails.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "Any future hanging requires avoiding hammers, but the hammer may seek Kiko out.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "verification": {
+            "method": "SOURCE_FIELD_OVERLAP_AND_STRUCTURAL_CHANGE_V1",
+            "confidence": "STRUCTURED_INFERENCE",
+            "candidateId": "sem1-23a3c991b8104bee",
+            "normalizedFieldsSha256": "47be42ba500fa7397f305273ff7061b7bbcf9be335cd1b67b4c89ca7bd145737",
+            "ruleAnchorMinimum": 2,
+            "consequenceNearDuplicateJaccard": 0.8,
+            "limitation": "Deterministic support checks, not semantic understanding or observed visual proof. Unknown quality remains unresolved; declaration alone does not grant goal visibility, rule support or payoff linkage."
+          }
+        }
+      },
+      "findingEvidence": {}
+    },
+    "cpqPreview": {
+      "contractVersion": "creative-prompt-quality-v1",
+      "rubricVersion": "creative-prompt-quality-v1",
+      "calibrationCorpusVersion": null,
+      "gradingStatus": "CALIBRATION_INCOMPLETE",
+      "absoluteQuality": {
+        "status": "NOT_QUALIFIED",
+        "grade": null,
+        "aggregateScore": null,
+        "reason": "No approved, independently reviewed calibration corpus and activated thresholds are available."
+      },
+      "relativeImprovement": {
+        "status": "NO_CHANGE",
+        "promptFingerprintChanged": false,
+        "addedTokenCount": 0,
+        "removedTokenCount": 0,
+        "materialityEvidence": [],
+        "classification": "EQUIVALENT",
+        "note": "Token difference and verbosity do not establish material improvement."
+      },
+      "dimensions": [
+        {
+          "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies visual anomaly or contrast."
+          ],
+          "weaknesses": [
+            "The prompt does not explicitly establish opening window.",
+            "The prompt does not explicitly establish viewer-facing composition."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for opening window only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for viewer-facing composition only if diagnosis supports it."
+          ],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "visual anomaly or contrast"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "CAUSAL_PROGRESSION",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies explicit cause/consequence relation.",
+            "Text explicitly specifies state change or escalation.",
+            "Text explicitly specifies ordered progression."
+          ],
+          "weaknesses": [],
+          "recommendations": [],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "explicit cause/consequence relation"
+            },
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "state change or escalation"
+            },
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "ordered progression"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "VISUAL_STORYTELLING",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies spatial relation.",
+            "Text explicitly specifies physical interaction.",
+            "Text explicitly specifies composition or visibility instruction."
+          ],
+          "weaknesses": [],
+          "recommendations": [],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "spatial relation"
+            },
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "physical interaction"
+            },
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "composition or visibility instruction"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "PRODUCTION_EXECUTABILITY",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies timing budget."
+          ],
+          "weaknesses": [
+            "The prompt does not explicitly establish camera/shot plan.",
+            "The prompt does not explicitly establish continuity or action-complexity control."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for camera/shot plan only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for continuity or action-complexity control only if diagnosis supports it."
+          ],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "timing budget"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "ENDING_REPLAY",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [],
+          "weaknesses": [
+            "The prompt does not explicitly establish defined final image/consequence.",
+            "The prompt does not explicitly establish opening relation or loop option.",
+            "The prompt does not explicitly establish payoff or intentional curiosity."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for defined final image/consequence only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for opening relation or loop option only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for payoff or intentional curiosity only if diagnosis supports it."
+          ],
+          "evidenceReferences": [],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies concrete execution choice."
+          ],
+          "weaknesses": [
+            "The prompt does not explicitly establish specific visual mechanism.",
+            "The prompt does not explicitly establish non-generic variation or contrast."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for specific visual mechanism only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for non-generic variation or contrast only if diagnosis supports it."
+          ],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "concrete execution choice"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        }
+      ],
+      "sourceFidelity": {
+        "decision": "UNKNOWN",
+        "requiredForQualifiedGrade": true,
+        "evidenceId": null
+      },
+      "canonicalValidation": {
+        "rulesetVersion": "1.11",
+        "status": "NOT_PROVIDED"
+      },
+      "productionRisks": [],
+      "missingEvidence": [
+        "Approved calibration corpus",
+        "Calibrated dimension thresholds and aggregation",
+        "Held-out error analysis",
+        "Independent reviewer agreement"
+      ],
+      "qualityConfidence": {
+        "status": "NOT_CALIBRATED",
+        "reviewerAgreement": null
+      },
+      "visualAdherence": "UNVERIFIED",
+      "audienceEffect": "UNMEASURED",
+      "renderReadiness": "SEPARATE_F8_POLICY",
+      "renderAuthorized": false,
+      "automaticApproval": false,
+      "fingerprints": {
+        "originalPromptSha256": "382626a3d2b8439cf0c5e5678807f9d8510b2b2f618fd58321439818507c8f7d",
+        "candidatePromptSha256": "382626a3d2b8439cf0c5e5678807f9d8510b2b2f618fd58321439818507c8f7d"
+      }
+    },
+    "historicalComparison": {
+      "closestHistoricalEngine": null,
+      "similarities": [],
+      "differences": [],
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "limitation": "No supported structural match in the two-reference corpus; originality remains unverified."
+    },
+    "engineSignature": {
+      "opening": [],
+      "progression": [
+        "strategy:58dfe1102fba7468",
+        "strategy:3b718f294a874749",
+        "strategy:623f1c83cece0c47",
+        "strategy:afe8984a0682a4e0",
+        "strategy:c0e7984ff1fc01db"
+      ],
+      "ending": []
+    },
+    "renderAuthorized": false
+  },
+  "beforePreselectionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "BEAT_GRAMMAR_QUALITY_FLOOR",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "afterPreselectionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "PREMISE_NOT_ADMITTED"
+  ]
+}

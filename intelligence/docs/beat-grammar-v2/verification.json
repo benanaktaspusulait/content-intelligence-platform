@@ -1,0 +1,260 @@
+{
+  "date": "2026-10-23",
+  "generatorVersion": "short-concept-generator-v2",
+  "beatGrammarVersion": "beat-grammar-v2",
+  "providerCalls": 0,
+  "paidEvaluations": 0,
+  "externalSpendUsd": 0,
+  "renders": [],
+  "canonicalScoresChanged": false,
+  "acceptedEngineSourcesChanged": false,
+  "previousV1V2EvidenceChanged": false,
+  "productionDataModified": false,
+  "commands": {
+    "newTests": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_beat_grammar.py tests/test_beat_generation.py tests/test_beat_generation_api.py -q --tb=short",
+    "focusedTests": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_beat_grammar.py tests/test_beat_generation.py tests/test_beat_generation_api.py tests/test_short_concept_v2.py tests/test_concept_production_selection.py tests/test_short_concept_v2_api.py tests/test_short_concept_generation.py tests/test_concept_fingerprint.py tests/test_short_concept_generation_api.py tests/test_concept_ranking.py tests/test_concept_ranking_api.py tests/test_short_form_engine.py tests/test_short_form_integration.py tests/test_story_premise_engine.py tests/test_story_premise_integration.py -q --tb=short",
+    "fullRegression": ".venv/bin/python ../scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short",
+    "ui": "npm exec ng test -- --watch=false --include=src/app/pages/concept-generation.page.spec.ts --include=src/app/pages/concept-ranking.page.spec.ts --include=src/app/pages/short-form-report.component.spec.ts --include=src/app/pages/story-premise-report.component.spec.ts --include=src/app/pages/quality-validator/post-family-workflow.spec.ts",
+    "backend": "mvn -o -q -Dtest=ConceptGenerationControllerTest,ConceptRankingControllerTest,ShortFormReportTest,StoryPremiseReportTest test",
+    "cli": "intelligence/ml-service/.venv/bin/python intelligence/scripts/generate-short-concepts.py --generator-version v2 --beat-grammar-version v2 --seed 42 --count 20 --rank"
+  },
+  "commandDirectories": {
+    "python": "intelligence/ml-service",
+    "ui": "intelligence/frontend",
+    "backend": "intelligence/backend",
+    "cli": "repository root"
+  },
+  "tests": {
+    "new": {
+      "passed": 35,
+      "failed": 0,
+      "log": "verified-new-tests.txt"
+    },
+    "focused": {
+      "passed": 321,
+      "failed": 0,
+      "warnings": 4,
+      "log": "verified-focused-tests.txt"
+    },
+    "ui": {
+      "passed": 100,
+      "testFiles": 5,
+      "failed": 0,
+      "log": "ui-tests.txt"
+    },
+    "backend": {
+      "passed": 9,
+      "failed": 0,
+      "suites": [
+        {
+          "suite": "ConceptGenerationControllerTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "ConceptRankingControllerTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "ShortFormReportTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "StoryPremiseReportTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "log": "backend-tests.txt"
+    },
+    "fullRegression": {
+      "passed": 1980,
+      "failed": 36,
+      "skipped": 2,
+      "warnings": 3030,
+      "failureIdsExactlyEqualAcceptedBaseline": true,
+      "failureIds": [
+        "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+        "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+        "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+        "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+        "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+        "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+        "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+        "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+        "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+        "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+        "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+        "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+        "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+        "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+        "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+        "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+        "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+        "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+        "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+        "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+        "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+        "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+        "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+        "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+      ],
+      "log": "verified-regression-tests.txt"
+    }
+  },
+  "protectedFiles": {
+    "count": 138,
+    "allHashesEqual": true,
+    "before": "immutable-before.json",
+    "after": "immutable-after.json"
+  },
+  "filesChanged": [
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_grammar.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_grammar_v2.json",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_generation.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_grammar_benchmark.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/api.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/generate-short-concepts.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_beat_grammar.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_beat_generation.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_beat_generation_api.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/beat_grammar_v2_reference.json",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/beat_generation_v2_golden.json",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-generation.page.spec.ts"
+  ],
+  "generationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "finalCandidateCount": 20,
+    "eligibleCount": 4,
+    "revisionCount": 15,
+    "rejectedCount": 1
+  },
+  "generationEvidence": {
+    "generatorVersion": "short-concept-generator-v2",
+    "beatGrammarVersion": "beat-grammar-v2",
+    "seed": 42,
+    "requestedCount": 20,
+    "internalPoolSize": 240,
+    "validCompositionCount": 3136,
+    "finalCandidateCount": 20,
+    "capacityStatus": "REQUEST_SATISFIED",
+    "scope": "BOUNDED_LOCAL_SEARCH"
+  },
+  "nonCanonicalMetrics": {
+    "strategyDistribution": {
+      "ANCHOR_TO_ENVIRONMENT": 3,
+      "BLOCK_PATH": 5,
+      "BRACE_BODY": 11,
+      "DIRECT_USE": 20,
+      "FIRST_NORMAL_USE": 20,
+      "MOVE_SELF_NOT_OBJECT": 6,
+      "REDUCE_FORCE": 4,
+      "SWITCH_CONTACT_POINT": 8,
+      "TEMPORARILY_STOP_TRIGGER": 14,
+      "USE_ENVIRONMENT_SURFACE": 9
+    },
+    "consequenceDistribution": {
+      "BODY_PART_TRAPPED": 3,
+      "CHARACTER_IS_DRAGGED": 2,
+      "CHARACTER_IS_LIFTED": 3,
+      "CHARACTER_LOSES_BALANCE": 1,
+      "CHARACTER_MOVES": 14,
+      "ENVIRONMENT_BECOMES_BLOCKED": 3,
+      "GOAL_APPEARS_REACHED": 11,
+      "GOAL_MOVES_FARTHER": 2,
+      "OBJECT_CONTROLS_CHARACTER": 13,
+      "OBJECT_GROWS": 4,
+      "OBJECT_MOVES": 6,
+      "OBJECT_ROTATES": 1,
+      "OBJECT_SHRINKS": 5,
+      "OBJECT_STICKS": 4,
+      "PATH_BLOCKED": 10,
+      "PROBLEM_RESETS": 10,
+      "SPACE_REDUCES": 8
+    },
+    "progressionShapeDistribution": {
+      "BODY_ESCALATION": 4,
+      "CONTROL_TRANSFER": 4,
+      "ENVIRONMENTAL_ESCALATION": 3,
+      "FALSE_MASTERY": 4,
+      "GOAL_DISTANCE_REVERSAL": 3,
+      "SPACE_COLLAPSE": 2
+    },
+    "payoffStateChangeDistribution": {
+      "OBJECT_CONTROLS_CHARACTER": 13,
+      "OPENING_PROBLEM_RETURNS": 7
+    },
+    "averageStrategyDiversity": 100.0,
+    "averageConsequenceDiversity": 96.25,
+    "averageBodyStateProgression": 81.0,
+    "nearDuplicateAttemptRate": 0.025,
+    "moveUnderObjectRate": 0.0,
+    "twoHandForceRate": 0.0,
+    "lowPayoffDistanceRate": 0.0,
+    "productionRiskRate": 0.0,
+    "qualityDistribution": {
+      "STRONG": 14,
+      "ACCEPTABLE": 6
+    },
+    "concentrationWarnings": [],
+    "candidateDenominator": 20,
+    "scoreUse": "NON_CANONICAL_BATCH_DIAGNOSTICS",
+    "eligibilityYield": 0.2,
+    "averageShortFormScore": 65.7,
+    "acceptedProductionRiskRate": 0.0,
+    "top3CreativeDistance": {
+      "meanPairwiseCreativeDistance": 0.94,
+      "minimumPairwiseCreativeDistance": 0.94,
+      "pairCount": 1
+    }
+  },
+  "selectedSlate": [
+    {
+      "title": "Shoe / Reset To Start / Goal Distance Reversal",
+      "candidateId": "bg2-a120ce228c15d6d3",
+      "rawRank": 2,
+      "productionSlateRank": 1,
+      "rankingScore": 97.6,
+      "shortFormScore": 99
+    },
+    {
+      "title": "Lid / Reversal / Body Escalation",
+      "candidateId": "bg2-125e2fd9d22ec536",
+      "rawRank": 1,
+      "productionSlateRank": 2,
+      "rankingScore": 97.6,
+      "shortFormScore": 99
+    }
+  ],
+  "slateUnderfilled": true,
+  "creativeSuccessClaimed": false,
+  "limitations": [
+    "Non-canonical structured plan diagnostics; no measured retention, semantic or rendered adherence claim.",
+    "Accepted validators and ranking are unchanged; English pattern coverage still limits eligibility.",
+    "New body reactions and environment constraints are planned causal hypotheses for human review."
+  ]
+}

@@ -1,0 +1,403 @@
+{
+  "$defs": {
+    "BeatEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "beatNumber": {
+          "maximum": 30,
+          "minimum": 1,
+          "title": "Beatnumber",
+          "type": "integer"
+        },
+        "beatStrategyEvidence": {
+          "$ref": "#/$defs/EvidenceField"
+        },
+        "consequenceEvidence": {
+          "$ref": "#/$defs/EvidenceField"
+        },
+        "progressionEvidence": {
+          "$ref": "#/$defs/EvidenceField"
+        },
+        "hasStrategy": {
+          "title": "Hasstrategy",
+          "type": "boolean"
+        },
+        "hasVisibleConsequence": {
+          "title": "Hasvisibleconsequence",
+          "type": "boolean"
+        },
+        "hasNewInformation": {
+          "title": "Hasnewinformation",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "beatNumber",
+        "beatStrategyEvidence",
+        "consequenceEvidence",
+        "progressionEvidence",
+        "hasStrategy",
+        "hasVisibleConsequence",
+        "hasNewInformation"
+      ],
+      "title": "BeatEvidence",
+      "type": "object"
+    },
+    "CanonicalEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "semantic-evidence-adapter-v1",
+          "default": "semantic-evidence-adapter-v1",
+          "title": "Version",
+          "type": "string"
+        },
+        "sourceSha256": {
+          "title": "Sourcesha256",
+          "type": "string"
+        },
+        "normalizedFieldsSha256": {
+          "title": "Normalizedfieldssha256",
+          "type": "string"
+        },
+        "candidateId": {
+          "title": "Candidateid",
+          "type": "string"
+        },
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/$defs/EvidenceField"
+          },
+          "propertyNames": {
+            "enum": [
+              "visibleGoalEvidence",
+              "primaryObjectEvidence",
+              "expectedAffordanceEvidence",
+              "coreRuleEvidence",
+              "triggerEvidence",
+              "openingProblemEvidence",
+              "payoffEvidence",
+              "loopEvidence",
+              "affordanceRelationshipEvidence",
+              "goalRuleRelationshipEvidence"
+            ]
+          },
+          "title": "Fields",
+          "type": "object"
+        },
+        "beats": {
+          "items": {
+            "$ref": "#/$defs/BeatEvidence"
+          },
+          "title": "Beats",
+          "type": "array"
+        },
+        "describedBeatCount": {
+          "title": "Describedbeatcount",
+          "type": "integer"
+        },
+        "enginePresence": {
+          "enum": [
+            "PRESENT",
+            "MISSING",
+            "AMBIGUOUS"
+          ],
+          "title": "Enginepresence",
+          "type": "string"
+        },
+        "engineClassification": {
+          "title": "Engineclassification",
+          "type": "string"
+        },
+        "payoffPresence": {
+          "enum": [
+            "PRESENT",
+            "MISSING",
+            "AMBIGUOUS"
+          ],
+          "title": "Payoffpresence",
+          "type": "string"
+        },
+        "payoffClassification": {
+          "title": "Payoffclassification",
+          "type": "string"
+        },
+        "payoffStatus": {
+          "enum": [
+            "PAYOFF_MISSING",
+            "PAYOFF_PRESENT_CLASSIFIED",
+            "PAYOFF_PRESENT_UNCLASSIFIED",
+            "PAYOFF_AMBIGUOUS"
+          ],
+          "title": "Payoffstatus",
+          "type": "string"
+        },
+        "providerDeclaredLoop": {
+          "$ref": "#/$defs/EvidenceField"
+        },
+        "structurePresence": {
+          "enum": [
+            "PRESENT",
+            "MISSING"
+          ],
+          "title": "Structurepresence",
+          "type": "string"
+        },
+        "structureClassification": {
+          "title": "Structureclassification",
+          "type": "string"
+        },
+        "fullySpecifiedBeatCount": {
+          "title": "Fullyspecifiedbeatcount",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sourceSha256",
+        "normalizedFieldsSha256",
+        "candidateId",
+        "fields",
+        "beats",
+        "describedBeatCount",
+        "enginePresence",
+        "engineClassification",
+        "payoffPresence",
+        "payoffClassification",
+        "payoffStatus",
+        "providerDeclaredLoop",
+        "structurePresence",
+        "structureClassification",
+        "fullySpecifiedBeatCount"
+      ],
+      "title": "CanonicalEvidence",
+      "type": "object"
+    },
+    "EvidenceField": {
+      "additionalProperties": false,
+      "properties": {
+        "presence": {
+          "enum": [
+            "PRESENT",
+            "MISSING",
+            "AMBIGUOUS"
+          ],
+          "title": "Presence",
+          "type": "string"
+        },
+        "classification": {
+          "default": "UNCLASSIFIED",
+          "title": "Classification",
+          "type": "string"
+        },
+        "classificationBasis": {
+          "default": "NOT_CLASSIFIED",
+          "enum": [
+            "NOT_CLASSIFIED",
+            "EXISTING_NORMALIZER",
+            "EXISTING_CREATIVE_SHAPE"
+          ],
+          "title": "Classificationbasis",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceEvidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "presence",
+        "evidence"
+      ],
+      "title": "EvidenceField",
+      "type": "object"
+    },
+    "SourceEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": {
+          "const": "SEMANTIC_NORMALIZED_FIELD",
+          "default": "SEMANTIC_NORMALIZED_FIELD",
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "sourceField": {
+          "title": "Sourcefield",
+          "type": "string"
+        },
+        "sourceText": {
+          "title": "Sourcetext",
+          "type": "string"
+        },
+        "projectionRule": {
+          "title": "Projectionrule",
+          "type": "string"
+        },
+        "confidence": {
+          "default": "EXPLICIT",
+          "enum": [
+            "EXPLICIT",
+            "STRUCTURED_INFERENCE",
+            "AMBIGUOUS"
+          ],
+          "title": "Confidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceField",
+        "sourceText",
+        "projectionRule"
+      ],
+      "title": "SourceEvidence",
+      "type": "object"
+    },
+    "StoryBeat": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "title": "Strategy",
+          "type": "string"
+        },
+        "visibleConsequence": {
+          "title": "Visibleconsequence",
+          "type": "string"
+        },
+        "newInformation": {
+          "title": "Newinformation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ],
+      "title": "StoryBeat",
+      "type": "object"
+    },
+    "StoryFields": {
+      "additionalProperties": false,
+      "properties": {
+        "everydayGoal": {
+          "title": "Everydaygoal",
+          "type": "string"
+        },
+        "primaryObject": {
+          "title": "Primaryobject",
+          "type": "string"
+        },
+        "normalExpectation": {
+          "title": "Normalexpectation",
+          "type": "string"
+        },
+        "impossibleRule": {
+          "title": "Impossiblerule",
+          "type": "string"
+        },
+        "visibleTrigger": {
+          "title": "Visibletrigger",
+          "type": "string"
+        },
+        "frameZeroDescription": {
+          "title": "Framezerodescription",
+          "type": "string"
+        },
+        "finalPayoff": {
+          "title": "Finalpayoff",
+          "type": "string"
+        },
+        "loopPotential": {
+          "title": "Looppotential",
+          "type": "string"
+        },
+        "whyThisObject": {
+          "title": "Whythisobject",
+          "type": "string"
+        },
+        "goalRuleRelationship": {
+          "title": "Goalrulerelationship",
+          "type": "string"
+        },
+        "beats": {
+          "items": {
+            "$ref": "#/$defs/StoryBeat"
+          },
+          "maxItems": 30,
+          "title": "Beats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "frameZeroDescription",
+        "finalPayoff",
+        "loopPotential",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "beats"
+      ],
+      "title": "StoryFields",
+      "type": "object"
+    },
+    "Timing": {
+      "additionalProperties": false,
+      "properties": {
+        "startSeconds": {
+          "title": "Startseconds",
+          "type": "number"
+        },
+        "endSeconds": {
+          "title": "Endseconds",
+          "type": "number"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "startSeconds",
+        "endSeconds"
+      ],
+      "title": "Timing",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "projection": {
+      "$ref": "#/$defs/CanonicalEvidence"
+    },
+    "semanticFields": {
+      "$ref": "#/$defs/StoryFields"
+    },
+    "protagonist": {
+      "title": "Protagonist",
+      "type": "string"
+    },
+    "timing": {
+      "items": {
+        "$ref": "#/$defs/Timing"
+      },
+      "maxItems": 30,
+      "title": "Timing",
+      "type": "array"
+    }
+  },
+  "required": [
+    "projection",
+    "semanticFields",
+    "protagonist",
+    "timing"
+  ],
+  "title": "StructuredCanonicalInput",
+  "type": "object"
+}

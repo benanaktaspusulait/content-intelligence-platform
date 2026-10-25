@@ -1,0 +1,26 @@
+{
+  "ConceptGenerationControllerTest": {
+    "tests": 2,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "ConceptRankingControllerTest": {
+    "tests": 2,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "ShortFormReportTest": {
+    "tests": 3,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "StoryPremiseReportTest": {
+    "tests": 2,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  }
+}

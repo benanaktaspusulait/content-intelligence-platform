@@ -1,0 +1,49 @@
+{
+  "version": "canonical-evidence-propagation-integrity-v1",
+  "scope": [
+    "intelligence/ml-service/app/workflow/concept_ranking.py",
+    "intelligence/ml-service/app/workflow/premise_naturalness.py",
+    "intelligence/ml-service/app/workflow/beat_grammar.py",
+    "intelligence/ml-service/app/workflow/creative_shape.py"
+  ],
+  "files": {
+    "intelligence/ml-service/app/workflow/concept_ranking.py": {
+      "previousSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+      "approvedSha256": "65c136ee1e6727e290c3f14f052cba329807c4e1057e4412ae4c9613070085e3"
+    },
+    "intelligence/ml-service/app/workflow/premise_naturalness.py": {
+      "previousSha256": "0069e6f4ca56d47b277339ab03ecc9af6643160f53cd2184808b1c48b5b40fc8",
+      "approvedSha256": "f50ae4f2dc7649298e708189a9a639556468b740dea47cf4f3a148447e6c1457"
+    },
+    "intelligence/ml-service/app/workflow/beat_grammar.py": {
+      "previousSha256": "b419d37c25b1124fa3fb1c8e158091cd215b23023e530714ada81bb26489e1d9",
+      "approvedSha256": "67a886e40dbc306fe5b6e127a07e9c6306d324fd3cbf822862d8e9e5866c0588"
+    },
+    "intelligence/ml-service/app/workflow/creative_shape.py": {
+      "previousSha256": "0c862af88818e6304dac74b15b62fa559a6276afcac0dcac2f9e2872a5f1727e",
+      "approvedSha256": "01b71cee68635bee187a8b1c09afce6e17887cca71022a56679c59571178a714"
+    }
+  },
+  "evidence": [
+    {
+      "path": "intelligence/docs/canonical-evidence-propagation-v1/authorized-active-before.json",
+      "sha256": "21573defd6358caf093264af0dc98ef655064dffe1e16b00fb513de0b701501a",
+      "role": "historical"
+    },
+    {
+      "path": "intelligence/docs/canonical-evidence-propagation-v1/authorized-active-after.json",
+      "sha256": "999965bb687a0d68300f09448d3afbd0e476314eb7ad1b2dcb5ffe7712dab53e",
+      "role": "approved"
+    },
+    {
+      "path": "intelligence/docs/canonical-evidence-propagation-v1/authorization.txt",
+      "sha256": "eecb3d8ea1d7196580ee855df0479b3856087ad3e68470f3cb039b36a8f29b3c",
+      "role": "authorization"
+    },
+    {
+      "path": "intelligence/docs/canonical-evidence-propagation-v1/audit-only-baseline.json",
+      "sha256": "27ac5a62d068814fd7244621177847f4fafc07304d1612c7a5a21cb321c116dd",
+      "role": "auditBeforeModification"
+    }
+  ]
+}

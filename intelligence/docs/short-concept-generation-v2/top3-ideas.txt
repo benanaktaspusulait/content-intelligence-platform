@@ -1,0 +1,41 @@
+Shoe / Reset To Start / Opening Recreated
+FRAME ZERO: Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.
+GOAL: put the shoe on
+IMPOSSIBLE RULE: The shoe slides back to its starting position whenever it is pulled.
+BEAT 1: Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.
+BEAT 2: Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position.
+BEAT 3: Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary.
+BEAT 4: Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.
+BEAT 5 / PAYOFF: Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.
+WHY IT MAY WORK: Existing hook 100, progress 100, payoff 100. Explicit visible trigger; five planned causal states. These are text-screen hypotheses.
+MAIN RISK: Maintain a visible start mark.
+CLOSEST HISTORICAL ENGINE: No supported match in limited corpus
+RAW RANK: 3 / PRODUCTION SLATE RANK: 1
+
+Brush / Progressive Growth / Goal Inversion
+FRAME ZERO: Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.
+GOAL: brush hair
+IMPOSSIBLE RULE: The brush grows one size step whenever a stroke is completed.
+BEAT 1: Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.
+BEAT 2: Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap.
+BEAT 3: Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body.
+BEAT 4: Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.
+BEAT 5 / PAYOFF: Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.
+WHY IT MAY WORK: Existing hook 100, progress 100, payoff 100. Explicit visible trigger; five planned causal states. These are text-screen hypotheses.
+MAIN RISK: Keep changing scale and contact visible.
+CLOSEST HISTORICAL ENGINE: No supported match in limited corpus
+RAW RANK: 2 / PRODUCTION SLATE RANK: 2
+
+Chair / Reversal / Role Reversal
+FRAME ZERO: Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.
+GOAL: sit down
+IMPOSSIBLE RULE: The chair flips its usable surface away from the character whenever body weight is placed on it.
+BEAT 1: Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.
+BEAT 2: Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface.
+BEAT 3: Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways.
+BEAT 4: Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.
+BEAT 5 / PAYOFF: Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.
+WHY IT MAY WORK: Existing hook 100, progress 100, payoff 100. Explicit visible trigger; five planned causal states. These are text-screen hypotheses.
+MAIN RISK: Keep object orientation and body contact readable.
+CLOSEST HISTORICAL ENGINE: upside-chair-01
+RAW RANK: 1 / PRODUCTION SLATE RANK: 3

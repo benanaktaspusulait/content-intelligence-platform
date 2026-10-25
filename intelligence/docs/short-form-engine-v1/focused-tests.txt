@@ -1,0 +1,16 @@
+........................................................................ [ 39%]
+........................................................................ [ 79%]
+.....................................                                    [100%]
+=============================== warnings summary ===============================
+tests/test_short_form_integration.py: 1 warning
+tests/test_story_premise_integration.py: 3 warnings
+tests/test_story_review_contract.py: 8 warnings
+tests/test_family8_integration.py: 2 warnings
+tests/test_prompt_quality_second_pass.py: 20 warnings
+tests/test_ruleset_1_12_long_form_policy.py: 1 warning
+tests/test_story_stage_canonical_evidence.py: 2 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:214: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+181 passed, 37 warnings in 2.70s

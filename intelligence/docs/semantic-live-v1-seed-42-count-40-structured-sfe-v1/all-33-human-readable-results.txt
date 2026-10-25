@@ -1,0 +1,4149 @@
+STRUCTURED SFE V1 — ALL 33 STORED NORMALIZED CONCEPTS
+
+Only existing source stories are shown. Both sources use the same SFE evaluator/weights/thresholds.
+Legacy reports retain their original bytes. Structured support is deterministic evidence acquisition, not independent semantic or visual truth.
+
+==========================================================================================
+raw-001 — The Inward Umbrella
+candidateId: sem1-70ee2b7099c48d36
+GOAL: Stay dry in the rain
+RULE: The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.
+PAYOFF: The umbrella stays open upside-down over his head, collecting rainwater that pours down his face inside the shelter.
+LEGACY: 32 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 41 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +9
+PRIMARY REASON: Evidence acquisition changed: progressDensityScore: 20 -> 40; escalationScore: 0 -> 64
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "2 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 2 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 2
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 9,
+  "findingsAdded": [],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-002 — Self-Squeezing Toothpaste
+candidateId: sem1-ca296146499be3ab
+GOAL: Brush teeth
+RULE: The tube squeezes itself from the bottom when cap is off, but any paste exiting immediately crawls back inside the nozzle when you squeeze manually.
+PAYOFF: The drawer rattles, the tube rockets out, and a fresh paste snake lands directly on Kiko's tongue.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 54 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +36
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; ruleClarityScore: 0 -> 100; beatDensityScore: 25 -> 45; progressDensityScore: 0 -> 60; escalationScore: 100 -> 64; silentLegibilityScore: 18 -> 56
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 36,
+  "findingsAdded": [
+    "ESCALATION_PLATEAU"
+  ],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-003 — Spiraling Shopping Cart
+candidateId: sem1-5cf30c7094c804b1
+GOAL: Push cart through supermarket to checkout
+RULE: Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.
+PAYOFF: The cart, still spiraling, bumps into Mimi from behind, pushing her through the checkout line and out the exit.
+LEGACY: 19 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": false,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 46 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +27
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; ruleClarityScore: 0 -> 100; beatDensityScore: 25 -> 45; progressDensityScore: 0 -> 60; escalationScore: 100 -> 64; silentLegibilityScore: 29 -> 68
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 27,
+  "findingsAdded": [
+    "ESCALATION_PLATEAU"
+  ],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED",
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-004 — Sweep-Back Broom
+candidateId: sem1-11beb05a18d36fdb
+GOAL: Sweep dirt into a dustpan
+RULE: Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.
+PAYOFF: The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.
+LEGACY: 38 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 78 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +40
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; goalScore: 55 -> 100; ruleClarityScore: 45 -> 100; beatDensityScore: 45 -> 100; progressDensityScore: 60 -> 80; silentLegibilityScore: 42 -> 68
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 3,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 40,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "EVERYDAY_GOAL_UNCLEAR",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "MULTIPLE_UNRELATED_RULES",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-005 — Vacuum Blows
+candidateId: sem1-913bc9ae39a3c15e
+GOAL: Clean crumbs from carpet
+RULE: The vacuum blows air outward instead of sucking, scattering dust and crumbs toward the user's face and across the room.
+PAYOFF: The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.
+LEGACY: 33 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 93 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +60
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; goalScore: 0 -> 100; beatDensityScore: 25 -> 100; progressDensityScore: 40 -> 80; payoffScore: 15 -> 100; silentLegibilityScore: 42 -> 89
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 2,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 60,
+  "findingsAdded": [
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "findingsRemoved": [
+    "EVERYDAY_GOAL_UNCLEAR",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-006 — Mirrored Doorway
+candidateId: sem1-d1e9d5ce1154b96b
+GOAL: Enter the kitchen from hallway
+RULE: Whichever side of the door Noah opens, he steps into the same hallway but mirrored left-right.
+PAYOFF: He steps through and finds himself in the kitchen, but everything is mirrored—cabinets open the wrong way, and the clock runs backward.
+LEGACY: 33 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 93 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +60
+PRIMARY REASON: Evidence acquisition changed: hookScore: 50 -> 100; goalScore: 0 -> 100; ruleClarityScore: 45 -> 100; beatDensityScore: 45 -> 100; progressDensityScore: 60 -> 80; escalationScore: 10 -> 64; payoffScore: 15 -> 100; silentLegibilityScore: 29 -> 89
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "CONFUSION_REWATCH",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ambiguity is not positive intentional replay value.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 3,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 60,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "EVERYDAY_GOAL_UNCLEAR",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "MULTIPLE_UNRELATED_RULES",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-007 — Backward Alarm Clock
+candidateId: sem1-bbdb302fefb48bd5
+GOAL: Wake up at 7 AM after setting alarm
+RULE: The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.
+PAYOFF: The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+LEGACY: 46 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 100 / PASS
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 5,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +54
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; beatDensityScore: 25 -> 100; progressDensityScore: 0 -> 100; payoffScore: 15 -> 100; silentLegibilityScore: 79 -> 100
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 5
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 54,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-008 — Neighbor's TV Remote
+candidateId: sem1-8a6fb30b4a11976b
+GOAL: Change channel to watch favorite show
+RULE: The remote's signal always targets the neighbor's television through the wall, changing their channel while your TV stays off.
+PAYOFF: The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 83 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 5,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +65
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; ruleClarityScore: 0 -> 100; beatDensityScore: 25 -> 100; progressDensityScore: 0 -> 100; payoffScore: 15 -> 100; silentLegibilityScore: 18 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 5
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 65,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-009 — Ceiling Pancake
+candidateId: sem1-dd72ae9a5bebad5a
+GOAL: Flip a pancake
+RULE: The pan exerts a vertical launch force so strong that any food flies upward and sticks to the ceiling; the pan then becomes too slippery to hold.
+PAYOFF: The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.
+LEGACY: 28 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 41 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +13
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; beatDensityScore: 25 -> 45; progressDensityScore: 40 -> 60; escalationScore: 0 -> 10; silentLegibilityScore: 29 -> 42
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "MULTIPLE_UNRELATED_RULES",
+    "severity": "REVISION_REQUIRED",
+    "message": "Potential independent rule families ['ADHESION', 'FLIGHT']; explain their causal relationship.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 9s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 2,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 13,
+  "findingsAdded": [],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-010 — Kettle Rain Cloud
+candidateId: sem1-101af67295c2d0f2
+GOAL: Make a cup of tea
+RULE: Boiling water evaporates into a small rain cloud that follows the kettle, and the rain falls only when you try to pour, often into your face or elsewhere.
+PAYOFF: The cloud follows the kettle, which now flies off the counter and hovers over the microwave, raining into it and shorting the appliance.
+LEGACY: 24 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 63 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +39
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; beatDensityScore: 25 -> 45; progressDensityScore: 20 -> 60; escalationScore: 0 -> 10; payoffScore: 15 -> 100; silentLegibilityScore: 42 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 9s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 39,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-011 — Dirtying Soap
+candidateId: sem1-c8c8a33f8c699da0
+GOAL: Wash hands clean
+RULE: Soap transfers dirt from the sink onto hands, making them grimier with every scrub; when rinsed, the soap laughs and re-dirties the water.
+PAYOFF: The soap bar follows him, bouncing along the floor, and wherever it touches, grime appears, making a trail.
+LEGACY: 36 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 42 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +6
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; escalationScore: 10 -> 0; silentLegibilityScore: 42 -> 56
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "2 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 2 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 12s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 6,
+  "findingsAdded": [],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-012 — Wet-Transfer Towel
+candidateId: sem1-a2f775dcd3a914d7
+GOAL: Dry off after shower
+RULE: Towel absorbs water from any wet surface but immediately releases it onto any dry surface it touches next, including Noah.
+PAYOFF: The towel follows him, wrapping around his waist, and immediately releases a bucket of water onto the living room carpet.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 69 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +51
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; ruleClarityScore: 0 -> 100; beatDensityScore: 25 -> 45; progressDensityScore: 0 -> 60; escalationScore: 100 -> 64; payoffScore: 15 -> 100; silentLegibilityScore: 18 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 51,
+  "findingsAdded": [
+    "ESCALATION_PLATEAU"
+  ],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-013 — Tangling Hairbrush
+candidateId: sem1-8d1da895a1fb41af
+GOAL: Brush hair smooth
+RULE: Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.
+PAYOFF: The hair regrows instantly into a larger, tighter knot, trapping the scissors.
+LEGACY: 31 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 99 / PASS
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 5,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +68
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; goalScore: 0 -> 100; ruleClarityScore: 45 -> 100; beatDensityScore: 45 -> 100; progressDensityScore: 60 -> 100; escalationScore: 64 -> 100; payoffScore: 15 -> 100; silentLegibilityScore: 29 -> 89
+CANONICAL ELIGIBILITY: INELIGIBLE -> ELIGIBLE
+STRUCTURED FINDINGS:
+[]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 3,
+      "structured": 5
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 68,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "ESCALATION_PLATEAU",
+    "EVERYDAY_GOAL_UNCLEAR",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "MULTIPLE_UNRELATED_RULES",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-015 — Bottom-Opening Zipper
+candidateId: sem1-90670eeaf4ee0468
+GOAL: Zip up jacket to stay warm
+RULE: As you pull the zipper tab upward, the bottom of the zipper separates, so the jacket opens from bottom while top closes; when you pull down, the bottom closes but top opens.
+PAYOFF: The safety pin zips itself into the zipper track and the entire jacket rolls up like a window blind, squeezing Mimi's torso.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 43 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +25
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; ruleClarityScore: 0 -> 100; progressDensityScore: 0 -> 40; escalationScore: 100 -> 10; silentLegibilityScore: 18 -> 56
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "2 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 2 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 9s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  },
+  {
+    "code": "SIMULTANEOUS_OBJECTS",
+    "severity": "WARNING",
+    "message": "Production continuity risk; review feasibility separately from premise quality.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 2
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 25,
+  "findingsAdded": [
+    "ESCALATION_PLATEAU"
+  ],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-016 — Bottomless Backpack
+candidateId: sem1-6c8721485468a0f0
+GOAL: Pack backpack for school
+RULE: The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.
+PAYOFF: The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.
+LEGACY: 36 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 42 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +6
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; escalationScore: 10 -> 0; silentLegibilityScore: 42 -> 56
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "2 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 2 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 12s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 6,
+  "findingsAdded": [],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-018 — Random Fridge Interior
+candidateId: sem1-91ea45894fa28d7b
+GOAL: Get milk from fridge
+RULE: Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.
+PAYOFF: The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.
+LEGACY: 24 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 85 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +61
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; goalScore: 0 -> 100; beatDensityScore: 25 -> 45; progressDensityScore: 20 -> 60; escalationScore: 0 -> 64; payoffScore: 15 -> 100; silentLegibilityScore: 42 -> 89
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 61,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "EVERYDAY_GOAL_UNCLEAR",
+    "OPENING_NOT_IN_TROUBLE",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-019 — Microwave Hot Plate
+candidateId: sem1-63760a23881b08d8
+GOAL: Reheat leftovers
+RULE: The microwave heats the plate to scalding while food remains frozen solid; any attempt to remove plate transfers heat to food, flash-thawing it but also melting plate.
+PAYOFF: The hot plate jumps from counter onto Opa's lap, thawing the food on his fork instantly but also scorching his pants.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": false,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 77 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +59
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; ruleClarityScore: 0 -> 100; beatDensityScore: 25 -> 100; progressDensityScore: 0 -> 80; escalationScore: 100 -> 64; payoffScore: 15 -> 100; silentLegibilityScore: 18 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 59,
+  "findingsAdded": [
+    "ESCALATION_PLATEAU"
+  ],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-020 — Wrong-Room Light Switch
+candidateId: sem1-c2b6225333ed3cda
+GOAL: Turn on living room light
+RULE: The switch controls the light in a different room (e.g., bathroom), while the room you're in stays dark; each switch in house controls a random other room.
+PAYOFF: The candles' flames cast shadows that point to a hidden switch behind a bookshelf; flipping that switch turns on the sun outside, causing full daylight indoors.
+LEGACY: 32 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 64 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +32
+PRIMARY REASON: Evidence acquisition changed: hookScore: 50 -> 100; goalScore: 0 -> 100; beatDensityScore: 25 -> 45; progressDensityScore: 20 -> 60; escalationScore: 0 -> 10; silentLegibilityScore: 42 -> 68
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 9s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  },
+  {
+    "code": "SIMULTANEOUS_OBJECTS",
+    "severity": "WARNING",
+    "message": "Production continuity risk; review feasibility separately from premise quality.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 32,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "EVERYDAY_GOAL_UNCLEAR",
+    "OPENING_NOT_IN_TROUBLE"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-022 — Collapsing Chair
+candidateId: sem1-94f6d134918f72c9
+GOAL: Sit down at desk
+RULE: The chair remains rigid when empty, but the instant any weight is applied, its legs fold flat, dropping occupant to floor; when empty, it pops back upright.
+PAYOFF: The chair, now empty, creeps over and positions itself under him, then collapses flat, leaving him sitting on a folded chair.
+LEGACY: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +0
+PRIMARY REASON: Recognized scoring dimensions unchanged; same evaluator and thresholds.
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 0,
+  "findingsAdded": [],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-024 — Book Jumps to End
+candidateId: sem1-ffcb077f3482bc82
+GOAL: Read the first chapter
+RULE: Whenever you try to read from the beginning, the pages turn themselves rapidly to the last page; the text also rearranges so the story reads backward from end to start.
+PAYOFF: The audiobook begins with the final chapter, and the physical book flips pages in sync with the audio, ending in 3 seconds.
+LEGACY: 35 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 72 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +37
+PRIMARY REASON: Evidence acquisition changed: hookScore: 50 -> 10; goalScore: 0 -> 55; beatDensityScore: 25 -> 100; progressDensityScore: 40 -> 80; escalationScore: 0 -> 100; payoffScore: 15 -> 100; silentLegibilityScore: 42 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 2,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 37,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "ESCALATION_PLATEAU",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-025 — Self-Knotting Laces
+candidateId: sem1-48ddf9ea62000d61
+GOAL: Tie shoes before walk
+RULE: As you tie a bow, the laces weave themselves into additional knots, becoming tighter and more complex with every pull; untying creates two new knots.
+PAYOFF: The knotted shoe follows him, hopping along, and the laces untie themselves into a perfect bow on the other shoe.
+LEGACY: 31 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: -6
+PRIMARY REASON: Evidence acquisition changed: goalScore: 100 -> 55; silentLegibilityScore: 42 -> 31
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "openingVisibleGoal": {
+      "timedText": true,
+      "structured": false
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": -6,
+  "findingsAdded": [
+    "EVERYDAY_GOAL_UNCLEAR"
+  ],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-026 — Bending Nail Hammer
+candidateId: sem1-23a3c991b8104bee
+GOAL: Hang a picture frame
+RULE: Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.
+PAYOFF: All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+LEGACY: 19 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": false,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 100 / PASS
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 5,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +81
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; goalScore: 0 -> 100; ruleClarityScore: 0 -> 100; beatDensityScore: 25 -> 100; progressDensityScore: 0 -> 100; payoffScore: 15 -> 100; silentLegibilityScore: 29 -> 100
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 0,
+      "structured": 5
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 81,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "CORE_RULE_UNSUPPORTED",
+    "EVERYDAY_GOAL_UNCLEAR",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-027 — Opposite-Color Paintbrush
+candidateId: sem1-2ae718e8672f18cc
+GOAL: Paint wall blue
+RULE: Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.
+PAYOFF: The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+LEGACY: 33 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 99 / PASS
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 5,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +66
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 100; goalScore: 0 -> 100; beatDensityScore: 25 -> 100; progressDensityScore: 40 -> 100; escalationScore: 64 -> 100; payoffScore: 15 -> 100; silentLegibilityScore: 42 -> 89
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingVisibleGoal": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 2,
+      "structured": 5
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 66,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "ESCALATION_PLATEAU",
+    "EVERYDAY_GOAL_UNCLEAR",
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "OPENING_NOT_IN_TROUBLE",
+    "TOO_FEW_CAUSAL_BEATS",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+[]
+
+==========================================================================================
+raw-029 — Dirtying Washing Machine
+candidateId: sem1-7a6188be5ce157bd
+GOAL: Clean clothes
+RULE: The machine extracts dirt from clothes and redeposits it onto another item in the same load, so the load comes out with one clean item and the rest soot-black.
+PAYOFF: The washing machine follows him on its spin cycle, rolling down the street, and the clothes he washed in the river absorb dirt from the machine's wake.
+LEGACY: 32 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": true,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 26 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: -6
+PRIMARY REASON: Evidence acquisition changed: goalScore: 100 -> 55; silentLegibilityScore: 54 -> 42
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "openingVisibleGoal": {
+      "timedText": true,
+      "structured": false
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": -6,
+  "findingsAdded": [
+    "EVERYDAY_GOAL_UNCLEAR",
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-030 — Spiky Ice Cube Tray
+candidateId: sem1-9ba62d8bf2207bb6
+GOAL: Make ice cubes for drinks
+RULE: The water freezes into sharp upward spikes that puncture the plastic tray and any covering, growing toward the ceiling.
+PAYOFF: The bag of ice starts sprouting spikes inside the plastic bag, and the bag floats up to the ceiling, freezing a chandelier.
+LEGACY: 28 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 56 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +28
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; ruleClarityScore: 20 -> 100; beatDensityScore: 45 -> 25; progressDensityScore: 60 -> 40; payoffScore: 15 -> 100; silentLegibilityScore: 34 -> 89
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "2 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 2 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 3,
+      "structured": 2
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 28,
+  "findingsAdded": [
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "findingsRemoved": [
+    "MULTIPLE_UNRELATED_RULES",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-031 — Shadow Flashlight
+candidateId: sem1-c85a677474d9ed27
+GOAL: Find keys in dark room
+RULE: The flashlight absorbs light and projects a darkness beam; pointing it at objects makes them disappear into shadow, while surroundings stay dim.
+PAYOFF: The keys glow and float into the flashlight's front beam, where they vanish into shadow, never to be found.
+LEGACY: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 26 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +1
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; ruleClarityScore: 100 -> 0; progressDensityScore: 20 -> 0; escalationScore: 0 -> 100; silentLegibilityScore: 54 -> 42
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": true,
+      "structured": false
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 0
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 1,
+  "findingsAdded": [
+    "CORE_RULE_UNSUPPORTED",
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "findingsRemoved": [
+    "ESCALATION_PLATEAU"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-032 — Delayed Mirror
+candidateId: sem1-cfeed66616185cb0
+GOAL: Fix hair using mirror
+RULE: The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself.
+PAYOFF: The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.
+LEGACY: 33 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 63 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +30
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; beatDensityScore: 25 -> 100; progressDensityScore: 20 -> 80; escalationScore: 0 -> 64; silentLegibilityScore: 54 -> 68
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 30,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "TOO_FEW_CAUSAL_BEATS"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-033 — Swapping Stairs
+candidateId: sem1-0ea8b18049cec99f
+GOAL: Walk upstairs to bedroom
+RULE: The stair heights rearrange each step you take: the step you are about to step on moves up or down, alternating between 1 inch and 3 feet, causing missteps.
+PAYOFF: The entire staircase folds into a flat ramp, and Mimi slides gently up to the bedroom door without using stairs.
+LEGACY: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": false,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +0
+PRIMARY REASON: Recognized scoring dimensions unchanged; same evaluator and thresholds.
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 0,
+  "findingsAdded": [],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-034 — Wallet Money Flight
+candidateId: sem1-8bb634d95756b01b
+GOAL: Pay for coffee
+RULE: When opened, any money inside launches out like confetti and flutters away; closing wallet causes the money to teleport back inside.
+PAYOFF: The wallet opens itself in the cashier's hand, releasing all bills into a tip jar, and the card lands on the reader, approving payment.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": false,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +7
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; ruleClarityScore: 45 -> 0; progressDensityScore: 20 -> 0; escalationScore: 10 -> 100; silentLegibilityScore: 29 -> 31
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "ruleSupported": {
+      "timedText": true,
+      "structured": false
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 0
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 7,
+  "findingsAdded": [
+    "CORE_RULE_UNSUPPORTED"
+  ],
+  "findingsRemoved": [
+    "ESCALATION_PLATEAU",
+    "MULTIPLE_UNRELATED_RULES"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-036 — Upward Flush Toilet
+candidateId: sem1-2a58df94ed1346db
+GOAL: Use toilet normally
+RULE: Flushing causes water to shoot up from the bowl like a geyser, reaching the ceiling, and only after the flush stops does everything fall back into bowl.
+PAYOFF: The toilet, still spinning, follows him, and all the water it previously shot up falls as indoor rain on the hallway.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 1,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 69 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +51
+PRIMARY REASON: Evidence acquisition changed: hookScore: 10 -> 50; goalScore: 0 -> 55; ruleClarityScore: 45 -> 100; beatDensityScore: 25 -> 45; progressDensityScore: 20 -> 60; escalationScore: 10 -> 64; payoffScore: 15 -> 100; silentLegibilityScore: 29 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "openingAnomaly": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 1,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 51,
+  "findingsAdded": [],
+  "findingsRemoved": [
+    "MULTIPLE_UNRELATED_RULES",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-037 — Split Garbage Bag
+candidateId: sem1-55fe32d619adcfb4
+GOAL: Take out the trash
+RULE: The bag remains intact in the can, but the moment you lift it, the seams split and trash falls back into the can; when you put bag back, it seals.
+PAYOFF: The bag climbs out of the can, stretches over the trash, and seals it perfectly, then levitates to the curb.
+LEGACY: 44 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 63 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 3,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +19
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; ruleClarityScore: 20 -> 100; beatDensityScore: 100 -> 45; progressDensityScore: 80 -> 60; escalationScore: 64 -> 10; payoffScore: 15 -> 100; silentLegibilityScore: 22 -> 78
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "3 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 3 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 9s; aim for change every 2–4s.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 4,
+      "structured": 3
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 19,
+  "findingsAdded": [
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "TOO_FEW_CAUSAL_BEATS"
+  ],
+  "findingsRemoved": [
+    "MULTIPLE_UNRELATED_RULES",
+    "WEAK_VISUAL_PAYOFF"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-038 — Disappearing Ink Pen
+candidateId: sem1-3bc8be33c1b4c778
+GOAL: Write a shopping list
+RULE: The pen writes visible ink, but the lines evaporate after exactly one second, leaving blank paper; when the pen is capped, the marks reappear on the paper in reverse order.
+PAYOFF: The list on paper rearranges to normal as she shops, but every item she picks up vanishes from the cart.
+LEGACY: 18 / REJECT
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": false,
+  "ruleSupported": false,
+  "triggerPresent": false,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 25 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": false,
+  "coreRulePresent": true,
+  "ruleSupported": false,
+  "triggerPresent": true,
+  "causalBeats": 0,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+DELTA: +7
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; silentLegibilityScore: 18 -> 31
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "CORE_RULE_UNSUPPORTED",
+    "severity": "REVISION_REQUIRED",
+    "message": "No supported dominant visible rule was found.",
+    "beatIds": []
+  },
+  {
+    "code": "TOO_FEW_CAUSAL_BEATS",
+    "severity": "REVISION_REQUIRED",
+    "message": "0 supported causal beats; target 4–5, normally 4–6.",
+    "beatIds": []
+  },
+  {
+    "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+    "severity": "REVISION_REQUIRED",
+    "message": "5 described blocks contain only 0 supported causal developments.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "coreRulePresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "triggerPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 7,
+  "findingsAdded": [
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "findingsRemoved": [],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["RULE_SUPPORT_NOT_ESTABLISHED_BY_STRUCTURAL_LINKAGE_CHECKS", "OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+raw-039 — Smearing Eraser
+candidateId: sem1-9d566f7a928ca626
+GOAL: Erase a pencil mistake
+RULE: Rubbing eraser spreads graphite into a larger smudge, and the smudge darkens into a sticky tar that stains fingers and paper.
+PAYOFF: The smudge spreads to the opposite page, then shrinks into a perfect drawing of a cat, no longer a mistake.
+LEGACY: 26 / REVISION_REQUIRED
+{
+  "goalDeclared": false,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 2,
+  "describedBeats": 5,
+  "payoffPresent": false,
+  "payoffRuleLinked": false,
+  "loopSupported": false
+}
+STRUCTURED: 55 / REVISION_REQUIRED
+{
+  "goalDeclared": true,
+  "openingVisibleGoal": false,
+  "openingAnomaly": true,
+  "coreRulePresent": true,
+  "ruleSupported": true,
+  "triggerPresent": true,
+  "causalBeats": 4,
+  "describedBeats": 5,
+  "payoffPresent": true,
+  "payoffRuleLinked": true,
+  "loopSupported": false
+}
+DELTA: +29
+PRIMARY REASON: Evidence acquisition changed: goalScore: 0 -> 55; ruleClarityScore: 20 -> 45; beatDensityScore: 25 -> 100; progressDensityScore: 40 -> 80; escalationScore: 10 -> 64; silentLegibilityScore: 34 -> 54
+CANONICAL ELIGIBILITY: INELIGIBLE -> INELIGIBLE
+STRUCTURED FINDINGS:
+[
+  {
+    "code": "OPENING_NOT_IN_TROUBLE",
+    "severity": "REVISION_REQUIRED",
+    "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+    "beatIds": []
+  },
+  {
+    "code": "EVERYDAY_GOAL_UNCLEAR",
+    "severity": "REVISION_REQUIRED",
+    "message": "An immediate visible everyday goal must be understandable at the opening.",
+    "beatIds": []
+  },
+  {
+    "code": "MULTIPLE_UNRELATED_RULES",
+    "severity": "REVISION_REQUIRED",
+    "message": "Potential independent rule families ['ADHESION', 'GROWTH']; explain their causal relationship.",
+    "beatIds": []
+  },
+  {
+    "code": "IDENTICAL_ATTEMPTS",
+    "severity": "REVISION_REQUIRED",
+    "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+    "beatIds": [
+      "B4"
+    ]
+  },
+  {
+    "code": "ESCALATION_PLATEAU",
+    "severity": "WARNING",
+    "message": "Longest gap between supported developments is 6s; aim for change every 2–4s.",
+    "beatIds": []
+  },
+  {
+    "code": "WEAK_VISUAL_PAYOFF",
+    "severity": "REVISION_REQUIRED",
+    "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+    "beatIds": []
+  }
+]
+DUAL AUDIT:
+{
+  "mode": "DUAL_EVIDENCE_AUDIT",
+  "evidenceDifferences": {
+    "goalDeclared": {
+      "timedText": false,
+      "structured": true
+    },
+    "causalBeats": {
+      "timedText": 2,
+      "structured": 4
+    },
+    "payoffPresent": {
+      "timedText": false,
+      "structured": true
+    },
+    "payoffRuleLinked": {
+      "timedText": false,
+      "structured": true
+    }
+  },
+  "scoreDifference": 29,
+  "findingsAdded": [
+    "IDENTICAL_ATTEMPTS"
+  ],
+  "findingsRemoved": [
+    "HIGH_ACTIVITY_LOW_PROGRESS",
+    "TOO_FEW_CAUSAL_BEATS"
+  ],
+  "scoresCombined": false
+}
+REMAINING SOURCE UNCERTAINTY:
+["OPENING_GOAL_RELATION_UNRESOLVED_BY_TOKEN_OVERLAP"]
+
+==========================================================================================
+A. SCORE INCREASE >=10
+[
+  "raw-002",
+  "raw-003",
+  "raw-004",
+  "raw-005",
+  "raw-006",
+  "raw-007",
+  "raw-008",
+  "raw-009",
+  "raw-010",
+  "raw-012",
+  "raw-013",
+  "raw-015",
+  "raw-018",
+  "raw-019",
+  "raw-020",
+  "raw-024",
+  "raw-026",
+  "raw-027",
+  "raw-030",
+  "raw-032",
+  "raw-036",
+  "raw-037",
+  "raw-039"
+]
+
+==========================================================================================
+B. SCORE INCREASE >=20
+[
+  "raw-002",
+  "raw-003",
+  "raw-004",
+  "raw-005",
+  "raw-006",
+  "raw-007",
+  "raw-008",
+  "raw-010",
+  "raw-012",
+  "raw-013",
+  "raw-015",
+  "raw-018",
+  "raw-019",
+  "raw-020",
+  "raw-024",
+  "raw-026",
+  "raw-027",
+  "raw-030",
+  "raw-032",
+  "raw-036",
+  "raw-039"
+]
+
+==========================================================================================
+C. STATUS TRANSITIONS
+[
+  {
+    "ideaId": "raw-002",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-003",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-007",
+    "transition": "REVISION_REQUIRED -> PASS"
+  },
+  {
+    "ideaId": "raw-008",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-010",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-012",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-013",
+    "transition": "REVISION_REQUIRED -> PASS"
+  },
+  {
+    "ideaId": "raw-015",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-018",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-019",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-026",
+    "transition": "REJECT -> PASS"
+  },
+  {
+    "ideaId": "raw-027",
+    "transition": "REVISION_REQUIRED -> PASS"
+  },
+  {
+    "ideaId": "raw-034",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-036",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  },
+  {
+    "ideaId": "raw-038",
+    "transition": "REJECT -> REVISION_REQUIRED"
+  }
+]
+
+==========================================================================================
+D. NEWLY ELIGIBLE
+[
+  "raw-013"
+]
+
+==========================================================================================
+E. HUMAN_REVIEW_SET
+[
+  {
+    "ideaId": "raw-001",
+    "candidateId": "sem1-70ee2b7099c48d36",
+    "title": "The Inward Umbrella",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-003",
+    "candidateId": "sem1-5cf30c7094c804b1",
+    "title": "Spiraling Shopping Cart",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-004",
+    "candidateId": "sem1-11beb05a18d36fdb",
+    "title": "Sweep-Back Broom",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY"
+    ]
+  },
+  {
+    "ideaId": "raw-005",
+    "candidateId": "sem1-913bc9ae39a3c15e",
+    "title": "Vacuum Blows",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY",
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-006",
+    "candidateId": "sem1-d1e9d5ce1154b96b",
+    "title": "Mirrored Doorway",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY",
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-007",
+    "candidateId": "sem1-bbdb302fefb48bd5",
+    "title": "Backward Alarm Clock",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY",
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-008",
+    "candidateId": "sem1-8a6fb30b4a11976b",
+    "title": "Neighbor's TV Remote",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY"
+    ]
+  },
+  {
+    "ideaId": "raw-009",
+    "candidateId": "sem1-dd72ae9a5bebad5a",
+    "title": "Ceiling Pancake",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-013",
+    "candidateId": "sem1-8d1da895a1fb41af",
+    "title": "Tangling Hairbrush",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY",
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-015",
+    "candidateId": "sem1-90670eeaf4ee0468",
+    "title": "Bottom-Opening Zipper",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-016",
+    "candidateId": "sem1-6c8721485468a0f0",
+    "title": "Bottomless Backpack",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-018",
+    "candidateId": "sem1-91ea45894fa28d7b",
+    "title": "Random Fridge Interior",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY"
+    ]
+  },
+  {
+    "ideaId": "raw-019",
+    "candidateId": "sem1-63760a23881b08d8",
+    "title": "Microwave Hot Plate",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY"
+    ]
+  },
+  {
+    "ideaId": "raw-020",
+    "candidateId": "sem1-c2b6225333ed3cda",
+    "title": "Wrong-Room Light Switch",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-026",
+    "candidateId": "sem1-23a3c991b8104bee",
+    "title": "Bending Nail Hammer",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY",
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-027",
+    "candidateId": "sem1-2ae718e8672f18cc",
+    "title": "Opposite-Color Paintbrush",
+    "reasons": [
+      "EXISTING_REVIEW_POLICY"
+    ]
+  },
+  {
+    "ideaId": "raw-031",
+    "candidateId": "sem1-c85a677474d9ed27",
+    "title": "Shadow Flashlight",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  },
+  {
+    "ideaId": "raw-032",
+    "candidateId": "sem1-cfeed66616185cb0",
+    "title": "Delayed Mirror",
+    "reasons": [
+      "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+    ]
+  }
+]
+
+==========================================================================================
+F. STILL <60 WITH COMPLETE DECLARED EVIDENCE
+[
+  "raw-001",
+  "raw-002",
+  "raw-003",
+  "raw-009",
+  "raw-011",
+  "raw-015",
+  "raw-016",
+  "raw-022",
+  "raw-025",
+  "raw-029",
+  "raw-030",
+  "raw-031",
+  "raw-033",
+  "raw-034",
+  "raw-038",
+  "raw-039"
+]
+
+==========================================================================================
+G. PRESENT_UNCLASSIFIED ENGINES
+[
+  "raw-001",
+  "raw-002",
+  "raw-003",
+  "raw-004",
+  "raw-005",
+  "raw-006",
+  "raw-008",
+  "raw-010",
+  "raw-011",
+  "raw-012",
+  "raw-013",
+  "raw-015",
+  "raw-018",
+  "raw-019",
+  "raw-020",
+  "raw-022",
+  "raw-024",
+  "raw-025",
+  "raw-026",
+  "raw-027",
+  "raw-029",
+  "raw-030",
+  "raw-031",
+  "raw-032",
+  "raw-033",
+  "raw-034",
+  "raw-036",
+  "raw-037",
+  "raw-038"
+]
+
+==========================================================================================
+H. PRESENT_UNCLASSIFIED PAYOFFS
+[
+  "raw-001",
+  "raw-002",
+  "raw-003",
+  "raw-004",
+  "raw-005",
+  "raw-006",
+  "raw-007",
+  "raw-008",
+  "raw-009",
+  "raw-010",
+  "raw-011",
+  "raw-012",
+  "raw-013",
+  "raw-015",
+  "raw-016",
+  "raw-018",
+  "raw-019",
+  "raw-020",
+  "raw-022",
+  "raw-024",
+  "raw-025",
+  "raw-026",
+  "raw-027",
+  "raw-029",
+  "raw-030",
+  "raw-031",
+  "raw-032",
+  "raw-033",
+  "raw-034",
+  "raw-036",
+  "raw-037",
+  "raw-038",
+  "raw-039"
+]
+
+==========================================================================================
+I. AUTOMATICALLY ESTABLISHED CONTENT FAILURES
+[]
+
+==========================================================================================
+J. REMAINING EVIDENCE-SOURCE UNCERTAINTY
+[
+  "raw-001",
+  "raw-002",
+  "raw-003",
+  "raw-008",
+  "raw-009",
+  "raw-010",
+  "raw-011",
+  "raw-012",
+  "raw-015",
+  "raw-016",
+  "raw-019",
+  "raw-022",
+  "raw-024",
+  "raw-025",
+  "raw-029",
+  "raw-030",
+  "raw-031",
+  "raw-032",
+  "raw-033",
+  "raw-034",
+  "raw-036",
+  "raw-037",
+  "raw-038",
+  "raw-039"
+]
+
+
+I. ADDITIONAL SOURCE-BOUND EDITORIAL CONCERNS — INFERENCE, NOT CANONICAL FINDINGS
+[
+  {
+    "ideaId": "raw-013",
+    "title": "Tangling Hairbrush",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors."
+    },
+    "inference": "The stated brush rule creates and tightens knots; the payoff additionally makes cut hair regrow instantly. This may introduce a new mechanism rather than derive the ending from knotting.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-025",
+    "title": "Self-Knotting Laces",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "As you tie a bow, the laces weave themselves into additional knots, becoming tighter and more complex with every pull; untying creates two new knots."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The knotted shoe follows him, hopping along, and the laces untie themselves into a perfect bow on the other shoe."
+    },
+    "inference": "The stated laces rule creates extra knots on tying or untying; the ending unties itself into a perfect bow on another shoe. Verify whether the intervening beats establish this exception.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-026",
+    "title": "Bending Nail Hammer",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically."
+    },
+    "inference": "The rule concerns the nail struck by the hammer; the payoff extends bending to all room nails and the character thumb. This expands both target scope and physical behavior.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-027",
+    "title": "Opposite-Color Paintbrush",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors."
+    },
+    "inference": "Complementary paint colors are established; the wall becoming a mirror adds a material/reflection property not explicit in that rule.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-030",
+    "title": "Spiky Ice Cube Tray",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "The water freezes into sharp upward spikes that puncture the plastic tray and any covering, growing toward the ceiling."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The bag of ice starts sprouting spikes inside the plastic bag, and the bag floats up to the ceiling, freezing a chandelier."
+    },
+    "inference": "Upward-growing ice spikes are established; the final bag also floats. Verify whether this motion is physically caused by the spike growth or is a separate flight effect.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-032",
+    "title": "Delayed Mirror",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room."
+    },
+    "inference": "A one-second delayed reflection is established; physical duplication of the character at the ending is an additional effect.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  },
+  {
+    "ideaId": "raw-039",
+    "title": "Smearing Eraser",
+    "classification": "LIKELY_CONTENT_FAILURE_REQUIRING_HUMAN_REVIEW",
+    "confidence": "STRUCTURED_INFERENCE",
+    "observedRule": {
+      "sourceField": "impossibleRule",
+      "sourceText": "Rubbing eraser spreads graphite into a larger smudge, and the smudge darkens into a sticky tar that stains fingers and paper."
+    },
+    "observedPayoff": {
+      "sourceField": "finalPayoff",
+      "sourceText": "The smudge spreads to the opposite page, then shrinks into a perfect drawing of a cat, no longer a mistake."
+    },
+    "inference": "Graphite spreading into sticky tar is established; shrinking into a perfect cat drawing adds a new transformation. Rule linkage needs human creative review.",
+    "canonicalScoreModified": false,
+    "limitation": "Source-bound editorial concern, not an automatic verdict. Inspect middle beats for an established causal bridge."
+  }
+]

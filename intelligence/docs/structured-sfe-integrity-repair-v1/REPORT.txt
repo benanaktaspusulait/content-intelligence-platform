@@ -1,0 +1,119 @@
+STRUCTURED SFE — INTEGRITY BOUNDARY REPAIR V1
+
+Scope and root cause
+
+The accepted Structured Evidence Input V1 refactor changed two ACTIVE implementation files. Eight protection tests were still comparing these active paths directly against old experiment hashes. Each manifest mixed frozen evidence and active code. The old historical hashes were accurate descriptions of the old implementation; they were not the approved current active-code baseline.
+
+No scoring, evidence acquisition, ranking behavior, thresholds, taxonomy, prompts, provider transport or UI code is changed in this repair.
+
+The investigation was recorded BEFORE source edits in investigation-before-changes.json. It contains each failing test, its manifest, every changed file, expected digest, actual digest, intent and protection classification.
+
+Eight failing tests
+
+1. tests/test_beat_generation.py::test_new_golden_and_old_protected_hashes
+   Manifest: intelligence/docs/beat-grammar-v2/immutable-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+2. tests/test_concept_ranking.py::test_frozen_accepted_implementations_fixtures_and_all_historical_artifacts_keep_hashes
+   Manifest: intelligence/docs/concept-ranking-v1/immutable-before.json
+   Active hash conflict: short_form_engine.py.
+
+3. tests/test_premise_generation.py::test_all_protected_files_and_historical_evidence_unchanged
+   Manifest: intelligence/docs/premise-naturalness-v1/immutable-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+4. tests/test_semantic_concept_generation.py::test_all_accepted_sources_and_frozen_evidence_unchanged
+   Manifest: intelligence/docs/semantic-concept-v1/immutable-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+5. tests/test_semantic_evidence_adapter.py::test_immutable_live_and_protected_hashes
+   Manifest: intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/protected-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+6. tests/test_shape_generation.py::test_protected_sources_and_all_prior_experiments_unchanged
+   Manifest: intelligence/docs/creative-shape-v1/immutable-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+7. tests/test_short_concept_generation.py::test_accepted_sources_fixtures_history_and_projections_keep_all_hashes
+   Manifest: intelligence/docs/short-concept-generation-v1/immutable-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+8. tests/test_short_concept_v2.py::test_protected_sources_and_v1_evidence_unchanged
+   Manifest: intelligence/docs/short-concept-generation-v2/immutable-before.json
+   Active hash conflicts: concept_ranking.py, short_form_engine.py.
+
+Exact active implementation digests
+
+intelligence/ml-service/app/workflow/short_form_engine.py
+  Historical: 10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658
+  Approved current: a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46
+  Intentional prior change: acquisition/scoring separation for Structured Evidence Input V1; existing scoring formulas retained.
+
+intelligence/ml-service/app/workflow/concept_ranking.py
+  Historical: 71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf
+  Approved current: 8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d
+  Intentional prior change: optional structured evidence forwarding; ranking arithmetic retained.
+
+These two files already had the approved current bytes at task start. Neither file is edited by this repair.
+
+Protection model
+
+Existing immutable Structured SFE architecture records are reused as the approval authority: authorized-refactor-before.json, authorized-refactor-after.json and scoring-parity-proof.json. Their exact bytes remain unchanged.
+
+There was no general reviewed-active-code resolver in the existing protection tests. The unrelated golden-content approved_hashes.yaml mechanism remains untouched. This repair adds a narrow TEST-SIDE resolver, protected_integrity.py, with a SHA-pinned approved_active_integrity_v1.json policy.
+
+The policy has two explicitly separated scopes:
+  - Architecture approval: exactly the two active implementation files above.
+  - Integrity repair approval: exact before/after hashes for nine test assertion adapters.
+
+The original eight tests now delegate their integrity assertions to this resolver. The newer Structured SFE protection test uses the same boundary, because it also snapshots the active protection-test files. This avoids introducing a fresh recursive hash failure. Their other functional/golden assertions are preserved. The test-source migrations are recorded separately from the two business implementation approvals; they are not unrelated runtime changes.
+
+For an approved active path, the historical manifest must name a reviewed historical/current revision, and the actual file must match the exact approved CURRENT digest. Rollback to the historical bytes fails. Every unlisted path still requires exact historical byte equality. There are no ignored directories, globs, skipped tests, fake hash results or dynamically approved current bytes. The policy itself is SHA-pinned; approval records are hash-verified and their mappings must agree with the policy.
+
+No historical manifest or experiment record is regenerated. Old expected hashes remain intact as provenance. Future reviewed active revisions can use a central versioned approval policy rather than rewriting frozen experiments.
+
+Files changed
+
+New:
+  intelligence/ml-service/tests/protected_integrity.py
+  intelligence/ml-service/tests/fixtures/approved_active_integrity_v1.json
+  intelligence/ml-service/tests/test_protected_integrity_policy.py
+
+Updated only at integrity assertion/import sites:
+  intelligence/ml-service/tests/test_beat_generation.py
+  intelligence/ml-service/tests/test_concept_ranking.py
+  intelligence/ml-service/tests/test_premise_generation.py
+  intelligence/ml-service/tests/test_semantic_concept_generation.py
+  intelligence/ml-service/tests/test_semantic_evidence_adapter.py
+  intelligence/ml-service/tests/test_shape_generation.py
+  intelligence/ml-service/tests/test_short_concept_generation.py
+  intelligence/ml-service/tests/test_short_concept_v2.py
+  intelligence/ml-service/tests/test_structured_short_form.py
+
+Exact test-source before/after digests are in test-boundary-before.json, test-boundary-after.json and the reviewed policy. Runtime implementation hashes and historical evidence hashes are separate. Other changes are new repair evidence in this directory.
+
+Verification
+
+The eight previously failing tests pass. Fifteen new policy tests verify strict frozen evidence protection, rejection of unreviewed active edits, rollback, unknown historical revisions, modified approval records, policy tampering, scope expansion, path escape and symlink rollback. No tests are skipped to achieve this result.
+
+The focused source/parity/adapter/protection package passes 621 tests. This includes the existing 521 legacy byte-parity cases.
+
+The stored structured analysis is replayed with provider/network/subprocess access denied. The entire JSON result is byte-identical to accepted Structured SFE V1, with SHA-256:
+  e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9
+
+Preserved results:
+  Timed mean 27.6363636364; structured mean 59.6060606061
+  Timed median 28; structured median 63
+  Structured range 25–100; SFE PASS 4
+  New full-ranking eligible: raw-013 only
+  Human review set 18; no new production candidates
+  Towel 18 -> 99; Eraser 19 -> 70; Lid 100 -> 100
+
+Each fixture's complete structured report also matches the previously accepted fixture report, not only its score. See fixture-replay-proof.json and structured-replay-proof.json.
+
+Final full regression and historical preservation hashes are recorded in verification.json and full-regression-comparison.json after completion. They must show exactly the accepted 36 failure IDs, the two existing skips, and no additional failure.
+
+Provider calls: 0. No new creative concepts, production prompts or renders.
+
+FINAL FULL REGRESSION: 2736 passed, exactly the same 36 accepted baseline failure IDs, 2 existing skips. Additional failures: 0.
+Historical/runtime protection: 1543 frozen/unchanged files verified byte-identical; no runtime implementation change during repair.

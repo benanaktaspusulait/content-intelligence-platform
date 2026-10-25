@@ -1,0 +1,16 @@
+{
+  "batch": "five-candidate diversity fixture",
+  "candidateIds": [
+    "growth",
+    "lid-a",
+    "lid-b",
+    "lid-c",
+    "z-garden"
+  ],
+  "permutationsChecked": 120,
+  "uniqueFullOutputHashes": [
+    "d463dc01153e9e559f7af78863e1c75a5ba76edd8dd64d5d5ab9f9ea3006c3eb"
+  ],
+  "allFullSerializedOutputsIdentical": true,
+  "method": "Re-evaluated all permutations; hash covers entire canonical JSON response, including rationale, rejection records, slate and fingerprint."
+}

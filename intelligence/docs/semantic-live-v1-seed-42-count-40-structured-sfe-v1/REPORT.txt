@@ -1,0 +1,124 @@
+STRUCTURED EVIDENCE INPUT V1 — OFFLINE RESULT
+
+Architecture
+
+SHORT_FORM_ENGINE now separates evidence acquisition from one shared evaluator:
+  TimedTextEvidenceSource / timed-text-v1
+  StructuredCanonicalEvidenceSource / structured-canonical-v1
+      -> ShortFormCanonicalEvidence
+      -> short_form_engine._evaluate
+
+There is no separate semantic scoring engine and no runtime copy of scoring formulas. The default remains timed text. Structured reports add provenance/recognition metadata; default/explicit timed-text reports retain their original bytes. The archived legacy-short-form-engine.py.txt is a test oracle, not a runtime engine.
+
+The canonical evidence object contains beat features plus objective acquisition facts, declared/supported goal, opening, rule, trigger, payoff and loop dimensions. It also carries timing, dialogue load/dependence, reaction, staging/production risk signals, and structured source references. No source input can supply score, findings, penalties or PASS/REJECT decisions. The strict structured input schema accepts only Adapter V1 projection, selected story fields, actor and source-consistent timing carriers.
+
+Structured acquisition consumes the existing Adapter V1 explicit fields. It independently verifies supported opening/rule/beat/payoff relations; declared fields do not become strong facts automatically. It uses source-field morphology/overlap, existing known rule patterns, and structural difference checks. At least two non-object rule anchors or a known rule-family match support linkage; a source rule also requires an opening link, trigger declaration and at least two linked consequences. Consequence similarity is checked at Jaccard 0.8, with new information independently supplied. These are versioned acquisition heuristics, not changes to creative PASS/REVISION/REJECT thresholds. Quoted claims/instructions are excluded from visual support. No provider rationale or suggested creative label enters this verification.
+
+Source rule IDs identify concrete evidence, not new engine-taxonomy classes. All scoring weights, numerical score/threshold expressions, finding codes, penalties, historical comparison algorithm, and production gates remain authoritative. A present-unclassified rule/payoff can be evaluated on evidence of support/linkage/state change without inventing a taxonomy label. Unknown quality is not awarded full credit merely because a field exists.
+
+Goal declaration without opening support receives the existing partial goal tier (55), while no declared/supported goal receives 0. Full goal credit still requires opening support. A declared payoff can receive the existing weak payoff value (15); presence alone does not qualify it for the existing strong-payoff tier. Provider loop suggestions do not become intentional-loop credit.
+
+Files and schemas
+
+changed-files.json lists all 12 code files with hashes: evidence acquisition model/sources, replay orchestration, tests, offline CLI, a small UI component, Java dispatch, and minimal SFE/ranking/API/page integration changes. Canonical models are exported in canonical-evidence-schema.json and structured-source-input-schema.json. Accepted Semantic Provider V1 and Semantic Evidence Adapter V1 sources remain unchanged.
+
+Offline API: POST /api/v1/workflow/concepts/semantic/short-form-replay
+Java/UI path: /api/v1/intelligence/workflow/concepts/semantic/short-form-replay
+Request: fixed experimentId, shortFormEvidenceSourceVersion, dualEvidenceAudit, allowExternalGeneration=false. Arbitrary paths, providers and unsupported modes are rejected. UI makes no request on page load.
+
+CLI:
+  intelligence/ml-service/.venv/bin/python intelligence/scripts/replay-structured-sfe.py \
+    --short-form-evidence-source structured-canonical-v1 --dual-evidence-audit \
+    --output /new/derived-output-directory
+
+The CLI strips credentials and denies network/address-resolution/subprocess access. Source generation is never invoked; only the saved semantic response is parsed and normalized. Dual audit runs independent source results and never combines their scores.
+
+Legacy parity and safety
+
+521 complete reports captured BEFORE refactoring (480 saved deterministic pool entries, 33 saved live normalized entries, 8 existing mock normalized entries) reproduce byte-for-byte after refactoring, including explicit timed-text-v1 mode. No new concept pool was generated for this parity capture. The old lexical/taxonomy helper prefix is byte-identical. Golden AST tests verify the original weights and score/threshold expressions; the evaluator has no source-specific branch. Towel/eraser/lid fixture content remains unchanged.
+
+Live stored-response baseline matches the complete original stored validation exactly before structured analysis. All 33 normalized concepts were replayed. The original seven excluded raw entries remain excluded; the normalizer/schema/cast policies are not changed.
+
+Recognition comparison (33 candidates, 165 described beats)
+
+                                           TIMED TEXT   STRUCTURED
+Goal declared recognized                       7             33
+Opening visible-goal support                   3              9
+Opening anomaly support                        9             27
+Core rule presence                            21             33
+Core rule supported                           21             26
+Trigger presence                              13             33
+Supported causal beats                        38             90
+Payoff presence                                0             33
+Payoff rule linkage                            0             17
+Intentional loop support                       0              0
+
+The legacy trigger number is the existing normalized composition trigger, as used by the prior experiment; timed-text SFE did not independently expose a trigger field. Structured trigger presence and classification are separate. Timed-text non-detection is not proof a source field was absent.
+
+Taxonomy coverage, structured source
+
+Engine:   4 PRESENT_CLASSIFIED, 29 PRESENT_UNCLASSIFIED
+Trigger:  8 PRESENT_CLASSIFIED, 25 PRESENT_UNCLASSIFIED
+Payoff:   0 PRESENT_CLASSIFIED, 33 PRESENT_UNCLASSIFIED
+
+These use the existing SFE rule classes and existing Adapter V1 payoff/trigger labels; no taxonomy is expanded. The prior Adapter V1 engine count used a different existing normalizer classification scope (28 unclassified). SFE legacy looked across timed scenes and detected rule families in 21 candidates; the structured source classifies the explicit core-rule field, rather than incidental later scene words. Classification coverage and supported existence are not interchangeable.
+
+Score/status comparison
+
+                    TIMED TEXT                 STRUCTURED
+Minimum / maximum   18 / 46                    25 / 100
+Mean                27.6363636364              59.6060606061
+Median              28                         63
+PASS                0                          4
+REVISION_REQUIRED   21                         29
+REJECT              12                         0
+Production slate    0                          0
+
+29 scores increase, two decrease by 6, two remain equal. 23 increase by >=10; 21 increase by >=20. Material-change reporting uses absolute delta >=10 only; it does not affect scoring. Every candidate and complete delta distribution is in results-summary.json and all-33-human-readable-results.txt.
+
+Fixtures
+
+Towel Property Transfer: 18 -> 99, PASS; four supported beats, explicit linked payoff, declared loop not automatically supported. Source mechanism is present-unclassified, not missing. The outcome is computed by the same evaluator; no new expected score was manually prescribed.
+Eraser Property Transfer: 19 -> 70, REVISION_REQUIRED; three supported beats, payoff present but terminal rule linkage still not supported by the deterministic overlap verifier. The final 'former scribble' wording versus initial 'pencil mark' illustrates remaining semantic-linkage uncertainty. No synonym/threshold fix is made based on this result.
+Lid Environmental Takeover: 100 -> 100, PASS; four supported beats and the passing fixture remains stable. The focused ranking test also preserves its eligible result, score and penalties.
+
+State transitions and selection
+
+New SFE PASS: raw-007, raw-013, raw-026, raw-027.
+All 12 previous SFE REJECT cases become REVISION_REQUIRED or PASS. Three previous revision cases and one previous reject case become PASS.
+New full ranking ELIGIBLE: raw-013 only.
+New production candidates: none. The existing naturalness, Beat Grammar, Creative Shape and selection gates remain applied. The remaining ranking declared-goal/rule checks retain their accepted lexical behavior; their reasons are preserved per candidate. SFE PASS is not production authorization.
+
+Diagnostic HUMAN_REVIEW_SET: 13 -> 18.
+Entering: raw-004, raw-008, raw-018, raw-019, raw-027.
+Leaving: none. Existing review criteria are reused; no canonical threshold is changed. All 18 entries and reasons appear in results-summary.json.
+
+Special sections A–J
+
+A. Score increase >=10: raw-002,003,004,005,006,007,008,009,010,012,013,015,018,019,020,024,026,027,030,032,036,037,039.
+B. Score increase >=20: raw-002,003,004,005,006,007,008,010,012,013,015,018,019,020,024,026,027,030,032,036,039.
+C. Every status transition: results-summary.json / all-33-human-readable-results.txt.
+D. Newly eligible: raw-013. New production: none.
+E. Review set: all 18 with reasons in results-summary.json.
+F. Still <60 with complete declared source evidence: raw-001,002,003,009,011,015,016,022,025,029,030,031,033,034,038,039. Complete declaration is not complete supported quality or complete semantic understanding.
+G. Present-unclassified engines: all 29 IDs in results-summary.json.
+H. Present-unclassified payoffs: all 33 normalized IDs in results-summary.json.
+I. No low-scoring candidate is automatically established as a genuine content failure independently of acquisition uncertainty. Seven source-bound EDITORIAL INFERENCES flag possible new-rule/scope changes: raw-013,025,026,027,030,032,039. Exact rule/payoff quotes and cautions are in source-bound-content-review-notes.json. These notes do not modify scores or findings; middle beats should be reviewed for a causal bridge.
+J. 24 candidates retain unresolved opening/rule verification under the conservative source heuristics. Their IDs and source-specific reasons are recorded. Unsupported source verification must not automatically be labeled BAD IDEA. This task does not introduce a general semantic reasoning model.
+
+Interpretation
+
+The old lexical source suppressed substantial explicit evidence: source presence rises, supported development count changes, and many scores rise under the same formulas. The result does not establish creative quality. Some candidates decline; many still fail criteria; independent source-linkage limits remain. Some high scores also have editorial rule-coherence concerns. Both acquisition reliability and creative quality therefore require review. No model superiority or retention claim is made.
+
+Exact test results and preservation
+
+New source/parity/safety tests: 552 passed, including 521 byte-parity cases.
+Focused suite: 677 passed, 1 failed (a historical source-hash pin).
+UI: 115 passed across seven files; npm offline, no page-load request.
+Java: 11 passed; Maven offline.
+Full regression: 2713 passed, 44 failed, 2 skipped. The same 36 pre-existing failures remain. All eight additional failures are historical source-hash guards that expect the old active SFE/ranking file bytes. Each affected historical manifest was checked: its only differing files are the two explicitly authorized input-boundary refactor files. The historical manifests and guard tests themselves were not rewritten or skipped. See full-regression-comparison.json for exact IDs. The full suite is NOT reported as green.
+
+311 other protected sources/evidence files retain their hashes. SFE/ranking are explicit authorized refactor exceptions, recorded before and after. Their source bytes changed; default timed-text behavior, numerical scoring policy and ranking arithmetic remain stable. Original live/adapter experiments retain their bytes. Independent hash-seed replay reproduces the derived analysis byte-for-byte. Exact proofs are in verification.json, scoring-parity-proof.json and the manifests.
+
+Provider calls in this task: 0. New creative concepts: 0. Production prompts: 0. Renders: 0.
+No threshold or taxonomy changes. Analysis stops here.

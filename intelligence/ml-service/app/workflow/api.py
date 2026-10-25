@@ -15,7 +15,9 @@ from .feedback import compare_cohort, match_publication, measure_observation, re
 from .repair import repair_prompt
 from .review import review_prompt
 from .concept_ranking import ConceptBatchRequest, ConceptInput
-from .short_concept_generation import GenerationRequest
+from .semantic_concept_generation import GenerationRequest
+from .semantic_evidence_replay import EvidenceReplayRequest
+from .structured_sfe_replay import StructuredReplayRequest
 from .start_frame_generation import generate_start_frame
 
 router = APIRouter(prefix="/api/v1/workflow", tags=["post-family-workflow"])
@@ -118,9 +120,28 @@ def rank_concept_candidates(request: ConceptBatchRequest) -> dict[str, Any]:
         raise HTTPException(422, str(error)) from error
 
 
+@router.post('/concepts/semantic/short-form-replay')
+def replay_structured_short_form(request: StructuredReplayRequest) -> dict[str, Any]:
+    from .structured_sfe_replay import replay_experiment
+    try:
+        return replay_experiment(request)
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+
+
+@router.post('/concepts/semantic/replay')
+def replay_semantic_evidence(request: EvidenceReplayRequest) -> dict[str, Any]:
+    from pydantic import ValidationError
+    from .semantic_evidence_replay import replay_experiment
+    try:
+        return replay_experiment(request)
+    except (ValueError, ValidationError) as error:
+        raise HTTPException(422, str(error)) from error
+
+
 @router.post('/concepts/generate')
 def generate_short_concept_candidates(request: GenerationRequest) -> dict[str, Any]:
-    from .short_concept_generation import generate_and_rank
+    from .semantic_concept_generation import generate_and_rank
     try:
         return generate_and_rank(request)
     except ValueError as error:

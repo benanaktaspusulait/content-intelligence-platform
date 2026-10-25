@@ -1,0 +1,85 @@
+{
+  "profile": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "documentedVersion": "DeepSeek-V4-Pro-0813",
+    "baseUrl": "https://api.deepseek.com",
+    "protocol": "chat_completions",
+    "responseMode": "json_object",
+    "contextTokens": 1000000,
+    "maxOutputTokens": 393216,
+    "inputUsdPerMillion": 1.32,
+    "cachedInputUsdPerMillion": 0.044,
+    "outputUsdPerMillion": 3.96,
+    "priceBasis": "PEAK_CACHE_MISS_UPPER_BOUND; off-peak and cache discounts not assumed",
+    "tokenParameter": "max_tokens",
+    "reasoningEffort": "high",
+    "temperatureSupported": false,
+    "reasoningBilledWithinOutput": true,
+    "deprecated": false,
+    "documentation": [
+      "https://api-docs.deepseek.com/quick_start/pricing/",
+      "https://api-docs.deepseek.com/api/create-chat-completion/"
+    ]
+  },
+  "generation": {
+    "generatorVersion": "v2",
+    "count": 20,
+    "seed": 42,
+    "duration": 15,
+    "characterIds": [],
+    "excludeEngineFamilies": [],
+    "excludeObjects": [],
+    "excludeObjectCategories": [],
+    "canonicalCast": null,
+    "rank": true,
+    "internalPoolSize": 240,
+    "beatGrammarVersion": "v2",
+    "premiseNaturalnessGateVersion": "v1",
+    "premisePoolSize": 480,
+    "creativeShapeVersion": "v1",
+    "minimumStoryShapeDistance": 0.22,
+    "minimumShapeShortFormScore": 85,
+    "minimumShapeRankingScore": 75,
+    "allowHighHistoricalTerritoryRisk": false,
+    "generatorMode": "semantic",
+    "semanticProvider": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "temperature": 0.7,
+      "maxCandidates": 60,
+      "maxOutputTokens": 64000,
+      "timeoutSeconds": 90.0,
+      "mockCorpus": "review-v1"
+    },
+    "semanticRawCount": 40,
+    "semanticConceptPromptVersion": "v1",
+    "allowExternalGeneration": true
+  },
+  "cast": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "name": "Opa"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "name": "Kiko"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "name": "Mimi"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000004",
+      "name": "Arda"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000005",
+      "name": "Luca"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000006",
+      "name": "Noah"
+    }
+  ]
+}

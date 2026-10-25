@@ -1,0 +1,19 @@
+{
+  "experimentId": "semantic-live-v1-seed-42-count-40",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "maxRequestCount": 1,
+  "requestedRawCount": 40,
+  "requestedFinalCount": 20,
+  "seed": 42,
+  "maxOutputTokens": 64000,
+  "timeoutSeconds": 90,
+  "automaticRetries": 0,
+  "fallback": false,
+  "maxCostUsd": 2,
+  "liveGenerationByteDeterministic": false,
+  "allowExternalGeneration": true,
+  "configurationPriceUpperEstimateUsd": 0.268389,
+  "upperInputTokenEstimate": 11325,
+  "estimateBasis": "UTF8_BYTES_UPPER_ESTIMATE_PLUS_MAX_OUTPUT; CONFIGURED_PRICES_NOT_BILL"
+}

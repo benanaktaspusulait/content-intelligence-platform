@@ -1,0 +1,9 @@
+{
+  "sharedEvaluator": "_evaluate",
+  "sourceSpecificBranchesInEvaluator": false,
+  "scoringWeightsAndThresholdExpressionsUnchanged": true,
+  "legacyReportsByteIdentical": 521,
+  "taxonomyAndLexicalHelperPrefixByteIdentical": true,
+  "rankingChange": "Optional evidence forwarding only; ranking weights, penalties, thresholds and history logic unchanged.",
+  "noKeywordInjection": true
+}

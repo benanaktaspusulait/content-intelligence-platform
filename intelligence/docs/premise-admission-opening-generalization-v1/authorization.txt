@@ -1,0 +1,721 @@
+Continue from the current repository state.
+
+Beat Grammar Unclassified Consequence Support V1 is ACCEPTED.
+
+Current important state:
+
+- Structured SFE remains unchanged.
+- Canonical Evidence Propagation remains active.
+- Beat Grammar now distinguishes PRESENT_UNCLASSIFIED consequence from missing consequence.
+- Across the 18 HUMAN_REVIEW candidates:
+  - 15 are ACCEPTABLE
+  - raw-001 / raw-004 / raw-031 are MECHANICAL
+- raw-013 changed:
+  - Beat Grammar BROKEN → ACCEPTABLE
+- raw-013 still has exactly two production-preselection blockers:
+  1. OPENING_EVIDENCE_INSUFFICIENT
+  2. PREMISE_NOT_ADMITTED
+- production slate remains empty
+- thresholds unchanged
+- taxonomies unchanged
+- provider calls = 0
+- new concepts = 0
+- renders = 0
+
+The next task is to determine whether the remaining Premise Naturalness / admission blockers represent:
+
+A. genuine weak premises
+
+or
+
+B. another case where explicit semantic evidence exists but the current admission model cannot classify it.
+
+Do NOT loosen Naturalness.
+
+Do NOT lower admission thresholds.
+
+Do NOT expand taxonomy yet.
+
+Do NOT call any provider.
+
+======================================================================
+1. PRIMARY GOAL
+======================================================================
+
+Separate factual premise evidence from premise-quality judgment.
+
+Premise Naturalness / admission must distinguish:
+
+MISSING EVIDENCE
+
+from
+
+PRESENT BUT UNCLASSIFIED EVIDENCE
+
+from
+
+PRESENT BUT LOW QUALITY.
+
+This task is specifically about:
+
+- opening evidence
+- object expectation
+- trigger
+- object-response relationship
+- goal interference
+- response/admission compatibility
+
+======================================================================
+2. RAW-013 IS THE PRIMARY DIAGNOSTIC CASE
+======================================================================
+
+Current raw-013:
+
+SFE:
+99 PASS
+
+ranking:
+97.6
+
+Beat Grammar:
+ACCEPTABLE
+
+Naturalness opening:
+35
+
+production blockers:
+
+OPENING_EVIDENCE_INSUFFICIENT
+
+PREMISE_NOT_ADMITTED
+
+Previous premise finding included:
+
+UNSUPPORTED_RESPONSE
+
+Audit raw-013 end to end.
+
+For every Premise Naturalness / admission dimension show:
+
+- factual evidence
+- evidence source
+- classification
+- quality judgment
+- exact admission rule
+- exact failure reason
+
+Do not change anything until the failure is classified.
+
+======================================================================
+3. OPENING EVIDENCE MODEL
+======================================================================
+
+Use canonical opening facts already available:
+
+- goal declared
+- goal visible
+- problem visible
+- anomaly visible
+- object visible
+- trigger visible if applicable
+- goal/problem relationship visible
+- rule inferable from still frame where possible
+
+Do not invent evidence.
+
+Opening quality evaluator should consume these facts rather than re-parse semantic prose independently.
+
+======================================================================
+4. OPENING PRESENCE VS OPENING QUALITY
+======================================================================
+
+Distinguish:
+
+OPENING_FACTS_PRESENT
+
+from
+
+OPENING_LEGIBILITY_STRONG.
+
+Example:
+
+goal visible = true
+problem visible = true
+
+does NOT automatically mean:
+
+opening score = high.
+
+The opening may still be visually weak because:
+
+- relationship is unclear
+- anomaly requires motion
+- causality is invisible
+- too many elements must be inferred
+
+That is a legitimate quality judgment.
+
+======================================================================
+5. OPENING_EVIDENCE_INSUFFICIENT AUDIT
+======================================================================
+
+For all 18 HUMAN_REVIEW candidates report exactly why this finding appears.
+
+Classify each case as:
+
+SOURCE_MISSING
+
+EVIDENCE_SOURCE_MISMATCH
+
+PRESENT_BUT_WEAK
+
+MOTION_DEPENDENT_OPENING
+
+CAUSAL_RELATION_NOT_VISIBLE
+
+AMBIGUOUS
+
+OTHER
+
+Do not remove the blocker just because structured evidence exists.
+
+======================================================================
+6. PREMISE ADMISSION MODEL
+======================================================================
+
+Audit the admission path.
+
+Determine exactly which conditions are required for:
+
+admitted = true
+
+Document:
+
+- expected object behavior
+- contradiction type
+- response type
+- trigger compatibility
+- goal interference
+- object specificity
+- naturalness classification
+- arbitrary-magic checks
+- any compatibility tables
+
+======================================================================
+7. UNSUPPORTED_RESPONSE
+======================================================================
+
+This is a critical case.
+
+For every candidate with:
+
+UNSUPPORTED_RESPONSE
+
+determine whether the response is:
+
+A. genuinely absent
+
+B. explicit but unclassified
+
+C. explicit and classified but incompatible
+
+D. explicit but unsupported by current compatibility table
+
+E. ambiguous
+
+F. extraction failure
+
+Use:
+
+RESPONSE_MISSING
+
+RESPONSE_PRESENT_CLASSIFIED
+
+RESPONSE_PRESENT_UNCLASSIFIED
+
+RESPONSE_PRESENT_INCOMPATIBLE
+
+RESPONSE_AMBIGUOUS
+
+Do not treat all unknown responses as unsupported.
+
+======================================================================
+8. RESPONSE TAXONOMY MUST NOT EXPAND YET
+======================================================================
+
+Do NOT add new canonical response labels.
+
+If raw-013 has an explicit response not represented in current taxonomy:
+
+mark:
+
+RESPONSE_PRESENT_UNCLASSIFIED
+
+Then continue evaluating available premise facts.
+
+Do not automatically admit it.
+
+======================================================================
+9. NATURALNESS QUALITY WITHOUT TAXONOMY
+======================================================================
+
+Premise Naturalness should still be able to assess some quality properties without a named response class:
+
+- exact-object relevance
+- normal expectation contradiction
+- direct goal interference
+- trigger naturalness
+- physical/intuitive relationship
+- arbitrary-magic risk
+- functional irony
+- static-frame legibility
+
+Unknown taxonomy must not erase these judgments.
+
+======================================================================
+10. OBJECT-SPECIFICITY SAFETY
+======================================================================
+
+Keep the existing:
+
+WHY THIS EXACT OBJECT?
+
+principle.
+
+A semantic premise should not become admitted merely because its rule is explicit.
+
+The response must still have a meaningful relationship to:
+
+- object function
+- affordance
+- expected motion
+- material/property
+- everyday goal
+
+Random magic remains weak.
+
+======================================================================
+11. DIRECT GOAL INTERFERENCE
+======================================================================
+
+Use canonical evidence to determine whether the impossible response:
+
+DIRECTLY
+
+INDIRECTLY
+
+CONTRIVEDLY
+
+or
+
+NOT AT ALL
+
+interferes with the everyday goal.
+
+Do not depend on response taxonomy label where causal facts already establish the relationship.
+
+======================================================================
+12. ADMISSION SHOULD NOT REQUIRE KNOWN LABEL IF FACTS ARE SUFFICIENT
+======================================================================
+
+Audit whether current admission implicitly requires:
+
+known contradiction type
++
+known response type
+
+even when:
+
+- object expectation is explicit
+- impossible behavior is explicit
+- trigger is explicit
+- goal interference is explicit
+- object specificity is strong
+
+If yes, report this as:
+
+TAXONOMY_COUPLED_ADMISSION
+
+Do not automatically remove the requirement until tested.
+
+======================================================================
+13. ADMISSION V1.1 BEHAVIOR
+======================================================================
+
+If architecture permits, allow admission to distinguish:
+
+KNOWN_SUPPORTED
+
+from
+
+UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+
+from
+
+UNSUPPORTED.
+
+Do not give the second category automatic PASS.
+
+Instead run the same factual naturalness criteria that do not depend on taxonomy label.
+
+Any taxonomy-dependent rule may remain unresolved.
+
+======================================================================
+14. NO QUALITY BONUS
+======================================================================
+
+PRESENT_UNCLASSIFIED must never equal:
+
+STRONG
+
+or
+
+PASS.
+
+It only means:
+
+the concept contains behavior that the system can see but cannot name.
+
+Quality must still be proven.
+
+======================================================================
+15. ALL 18 REPLAY
+======================================================================
+
+Run all 18 current HUMAN_REVIEW candidates through the updated premise/opening evidence path.
+
+For each return:
+
+BEFORE:
+opening score
+premise naturalness
+admitted
+findings
+
+AFTER:
+opening score
+premise naturalness
+admitted
+findings
+
+DELTA
+
+CAUSE
+
+======================================================================
+16. RAW-007 / 026 / 027
+======================================================================
+
+These three candidates are now:
+
+SFE PASS
+ranking ELIGIBLE
+
+Run the same Naturalness/admission audit.
+
+Determine why they still do not enter production.
+
+Do not assume the same issue as raw-013.
+
+Return exact remaining preselection blockers after this task.
+
+======================================================================
+17. RAW-013 EXACT OUTCOME
+======================================================================
+
+After corrected premise evidence handling:
+
+if raw-013 remains NOT_ADMITTED:
+
+show the genuine quality reason.
+
+If it becomes admitted:
+
+run existing production preselection unchanged.
+
+Report the exact remaining blockers.
+
+Do NOT manually promote it.
+
+======================================================================
+18. OPENING STILL-FRAME STANDARD
+======================================================================
+
+Preserve the project's creative requirement:
+
+frame zero should ideally communicate:
+
+character
++
+goal
++
+problem
+
+without:
+
+dialogue
+text
+prior context
+waiting for motion
+
+Structured fields must not bypass this standard.
+
+If a semantic concept only becomes understandable after motion:
+
+opening may legitimately remain weak.
+
+======================================================================
+19. ALL 18 OPENING REVIEW
+======================================================================
+
+For each candidate provide:
+
+FRAME-ZERO DESCRIPTION
+
+CAN SEE CHARACTER?
+CAN SEE GOAL?
+CAN SEE OBJECT?
+CAN SEE PROBLEM?
+CAN SEE IMPOSSIBLE RELATION?
+NEEDS MOTION TO UNDERSTAND?
+NEEDS PRIOR CONTEXT?
+CAUSAL LEGIBILITY?
+
+Then existing opening score.
+
+This is diagnostic evidence, not a new score.
+
+======================================================================
+20. PRODUCTION PRESELECTION REPLAY
+======================================================================
+
+After premise/opening replay:
+
+run production preselection unchanged.
+
+Report:
+
+production-admissible candidate count
+
+production slate count
+
+all remaining blockers
+
+Do not change thresholds.
+
+======================================================================
+21. TAXONOMY COVERAGE
+======================================================================
+
+Across the 18 report:
+
+contradiction:
+classified
+present-unclassified
+missing
+
+response:
+classified
+present-unclassified
+missing
+
+goal-interference:
+classified
+present-unclassified
+missing
+
+Do not expand taxonomy.
+
+======================================================================
+22. REPEATED UNCLASSIFIED PREMISE PATTERNS
+======================================================================
+
+Group recurring unclassified premise/response patterns.
+
+For each group provide:
+
+candidate IDs
+
+source behavior
+
+object relationship
+
+why current taxonomy does not map
+
+Do not create canonical names yet.
+
+This is evidence for a future taxonomy decision.
+
+======================================================================
+23. LEGACY SAFETY
+======================================================================
+
+Existing deterministic Premise Naturalness fixtures must remain unchanged.
+
+Historical:
+
+- Naturalness results
+- deterministic generation experiments
+- protected evidence
+
+must remain stable.
+
+Only structured canonical evidence mode should use the new presence/unclassified distinction where applicable.
+
+======================================================================
+24. NO SFE OR BEAT GRAMMAR CHANGES
+======================================================================
+
+Do NOT modify:
+
+SHORT_FORM_ENGINE
+
+Beat Grammar
+
+ranking weights
+
+Creative Shape
+
+historical territory
+
+Their current results must remain unchanged.
+
+======================================================================
+25. GOLDEN TESTS
+======================================================================
+
+Add tests proving:
+
+A. explicit response not in taxonomy is PRESENT_UNCLASSIFIED, not missing
+
+B. unclassified response does not automatically pass Naturalness
+
+C. known incompatible response remains incompatible
+
+D. missing response remains missing
+
+E. exact-object relevance still required
+
+F. random magic remains penalized
+
+G. direct goal interference can be recognized without response taxonomy label
+
+H. opening factual evidence is shared canonically
+
+I. opening facts do not automatically imply strong opening
+
+J. motion-dependent opening can still be weak
+
+K. raw-013 no longer fails solely because response label is unknown
+
+L. raw-013 may still fail for genuine naturalness/opening reasons
+
+M. raw-007 remains source-consistent
+
+N. raw-026 remains source-consistent
+
+O. raw-027 remains source-consistent
+
+P. deterministic Naturalness fixtures remain unchanged
+
+Q. SFE outputs remain unchanged
+
+R. Beat Grammar outputs remain unchanged
+
+S. ranking outputs remain unchanged unless eligibility legitimately changes from premise admission
+
+T. no provider calls occur
+
+U. historical evidence remains unchanged
+
+======================================================================
+26. REGRESSION TARGET
+======================================================================
+
+Run:
+
+Premise Naturalness tests
+canonical evidence tests
+admission tests
+production-preselection tests
+SFE parity
+Beat Grammar parity
+ranking tests
+full regression
+
+Target:
+
+only accepted 36 baseline failures
+existing 2 skips
+
+No new failures.
+
+======================================================================
+27. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. architecture summary
+2. files changed
+3. opening evidence model
+4. response evidence-state model
+5. admission rules before/after
+6. raw-013 detailed audit
+7. raw-007 detailed audit
+8. raw-026 detailed audit
+9. raw-027 detailed audit
+10. all 18 before/after Naturalness results
+11. all 18 opening evidence audits
+12. response taxonomy coverage
+13. contradiction taxonomy coverage
+14. recurring unclassified premise patterns
+15. production preselection before/after
+16. new production-admissible candidates if any
+17. remaining blockers
+18. exact test results
+19. provider calls = 0 proof
+20. SFE unchanged proof
+21. Beat Grammar unchanged proof
+22. historical evidence unchanged proof
+23. proof only accepted baseline failures remain
+
+======================================================================
+28. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+more premises become admitted.
+
+Success is:
+
+Premise Naturalness and admission can distinguish:
+
+NO RESPONSE
+
+from
+
+A RESPONSE EXISTS BUT THE TAXONOMY DOES NOT YET HAVE A NAME
+
+while still rejecting genuinely arbitrary, weak, or visually unclear premises.
+
+======================================================================
+29. STOP
+======================================================================
+
+After offline replay:
+
+STOP.
+
+Do NOT:
+
+expand premise taxonomy
+change thresholds
+change semantic prompt
+call provider
+generate new concepts
+generate production prompts
+render anything.
+
+Implement Premise Admission & Opening Evidence Generalization V1 using only the existing 18 candidates.

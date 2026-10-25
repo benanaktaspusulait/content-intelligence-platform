@@ -1,0 +1,143 @@
+{
+  "stages": {
+    "A_deterministic": {
+      "rawNormalizedCount": 480,
+      "schemaValidYield": null,
+      "validCandidateYield": 0.18958333333333333,
+      "finalCandidateCount": 9,
+      "meanShortFormScore": 97.66666666666667,
+      "candidateDenominator": 9,
+      "meanStoryShapeDistance": 0.557333,
+      "minimumStoryShapeDistance": 0.238182,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 2,
+        "CONTROL_REVERSAL": 3,
+        "FALSE_SUCCESS_COLLAPSE": 2,
+        "OPENING_RECREATED": 2
+      },
+      "payoffConcentrationRate": 0.3333333333333333,
+      "dominantPayoffWarning": null,
+      "strategySequenceDistribution": {
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 2,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 3,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 2,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 2
+      },
+      "strategySequenceConcentration": 0.3333333333333333,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.4444444444444444,
+      "temporaryStopTriggerRate": 0.6666666666666666,
+      "resetPayoffRate": 0.4444444444444444,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 2,
+        "OBJECT_CONTROLS_CHARACTER": 3,
+        "OPENING_STATE_RECREATED": 4
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "templateShapeRiskDistribution": {
+        "HIGH": 9
+      },
+      "productionSlateSize": 3,
+      "sourceDistribution": {
+        "DETERMINISTIC_V2": 480
+      }
+    },
+    "B_semantic_mock": {
+      "rawNormalizedCount": 8,
+      "schemaValidYield": 0.5333333333333333,
+      "validCandidateYield": 0.125,
+      "finalCandidateCount": 1,
+      "meanShortFormScore": 100.0,
+      "candidateDenominator": 1,
+      "meanStoryShapeDistance": null,
+      "minimumStoryShapeDistance": null,
+      "payoffFamilyDistribution": {
+        "ENVIRONMENTAL_TAKEOVER": 1
+      },
+      "payoffConcentrationRate": 1.0,
+      "dominantPayoffWarning": {
+        "code": "PAYOFF_FAMILY_CONCENTRATION",
+        "family": "ENVIRONMENTAL_TAKEOVER",
+        "share": 1.0
+      },
+      "strategySequenceDistribution": {
+        "93017bf60e1d215eb63b1ad14b3f910483cdebbabf2ecf5b0a715be145e852ad": 1
+      },
+      "strategySequenceConcentration": 1.0,
+      "strategySequenceWarning": "STRATEGY_SEQUENCE_CONCENTRATION",
+      "falseSuccessBeat4Rate": 0.0,
+      "temporaryStopTriggerRate": 0.0,
+      "resetPayoffRate": 0.0,
+      "finalRelationshipDistribution": {
+        "ENVIRONMENT_BECOMES_PROBLEM": 1
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "templateShapeRiskDistribution": {
+        "LOW": 1
+      },
+      "productionSlateSize": 1,
+      "sourceDistribution": {
+        "SEMANTIC_V1": 8
+      }
+    },
+    "C_hybrid": {
+      "rawNormalizedCount": 488,
+      "schemaValidYield": 0.5333333333333333,
+      "validCandidateYield": 0.1885245901639344,
+      "finalCandidateCount": 10,
+      "meanShortFormScore": 97.9,
+      "candidateDenominator": 10,
+      "meanStoryShapeDistance": 0.58897,
+      "minimumStoryShapeDistance": 0.238182,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 3,
+        "CONTROL_REVERSAL": 2,
+        "ENVIRONMENTAL_TAKEOVER": 1,
+        "FALSE_SUCCESS_COLLAPSE": 2,
+        "OPENING_RECREATED": 2
+      },
+      "payoffConcentrationRate": 0.3,
+      "dominantPayoffWarning": null,
+      "strategySequenceDistribution": {
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 2,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 2,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 2,
+        "93017bf60e1d215eb63b1ad14b3f910483cdebbabf2ecf5b0a715be145e852ad": 1,
+        "abe101127e5ba41190eb340bc443804cb7378808d66a2db8667c7e4f4ad4762a": 2,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 1
+      },
+      "strategySequenceConcentration": 0.2,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.5,
+      "temporaryStopTriggerRate": 0.7,
+      "resetPayoffRate": 0.4,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 3,
+        "ENVIRONMENT_BECOMES_PROBLEM": 1,
+        "OBJECT_CONTROLS_CHARACTER": 2,
+        "OPENING_STATE_RECREATED": 4
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "templateShapeRiskDistribution": {
+        "LOW": 1,
+        "HIGH": 9
+      },
+      "productionSlateSize": 3,
+      "sourceDistribution": {
+        "DETERMINISTIC_V2": 480,
+        "SEMANTIC_V1": 8
+      }
+    }
+  },
+  "externalProviderCalls": 0,
+  "paidEvaluations": 0,
+  "limitations": [
+    "Authored mock fixtures validate architecture, not semantic superiority, model performance or retention.",
+    "Final score/yield are conditional on unchanged deterministic quality floors. Source pools and sizes differ.",
+    "Novel transfer ideas can pass naturalness/shape analysis while remaining canonical revisions because accepted language coverage is limited.",
+    "Human inspection/approval is required before prompt generation or rendering."
+  ]
+}

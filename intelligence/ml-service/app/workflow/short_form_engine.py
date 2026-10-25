@@ -135,12 +135,28 @@ def _duplicates(text: str, signature: dict[str, Any]) -> dict[str, Any]:
 
 
 def assess(text: str, context: dict[str, Any] | None = None) -> dict[str, Any] | None:
-    """No default activation. Only exact boolean opt-in adds this report."""
+    """Opt-in, versioned evidence acquisition; one unchanged scoring evaluator."""
     context = context or {}
     if context.get('shortFormEvaluation') is not True:
         return None
-    raw = _timeline(text)
-    beats = [{**b, **_features(b['quote'])} for b in raw]
+    from .short_form_evidence import acquire
+    evidence = acquire(text, context)
+    report = _evaluate(text, context, evidence)
+    if evidence.sourceKind == 'STRUCTURED_CANONICAL_V1':
+        report['evidenceSourceVersion'] = 'structured-canonical-v1'
+        report['canonicalEvidence'] = evidence.model_dump()
+        report['findingEvidence'] = {finding['code']: [
+            dict(beatId=beat.id, references=facts.references)
+            for beat, facts in zip(evidence.beats, evidence.acquisition)
+            if not finding['beatIds'] or beat.id in finding['beatIds']
+        ] for finding in report['findings']}
+    return report
+
+
+def _evaluate(text, context, evidence):
+    """Shared scoring/thresholds/findings. No source-specific branches."""
+    beats = [b.model_dump() for b in evidence.beats]
+    raw = beats
     findings: list[dict[str, Any]] = []
 
     def flag(code: str, message: str, severity: str = 'WARNING', ids: list[str] | None = None):
@@ -160,20 +176,18 @@ def assess(text: str, context: dict[str, Any] | None = None) -> dict[str, Any] |
     if duration is None or not 10 <= duration <= 20:
         flag('SHORT_DURATION_MISMATCH', 'This surface targets 10–20 seconds around a 15-second primary format.', 'REVISION_REQUIRED')
     first = beats[0] if beats else {'visual': '', 'goal': False, 'rules': [], 'start': None, 'end': None}
-    hook = 100 if first['goal'] and first['rules'] else (50 if first['rules'] else 10)
+    first_mechanisms = evidence.acquisition[0].mechanismIds if beats else []
+    hook = 100 if first['goal'] and first_mechanisms else (50 if first_mechanisms else 10)
     if first['start'] != 0 or (first['end'] or 99) > 4:
         hook = min(hook, 50)
-    if _has(r'normal (?:scene|situation).{0,60}(?:then|before)|after (?:one|two|three|[1-9]).{0,12}seconds?|after (?:the )?(?:dialogue|explanation)|only (?:after|through).{0,20}(?:dialogue|text)|count(?:ing)? .{0,20}(?:objects?|items?)|prior context', first['visual']):
+    if evidence.facts.openingDelayed:
         hook = min(hook, 20)
-    goal = 100 if first['goal'] else (55 if any(b['goal'] for b in beats) else 0)
+    goal = 100 if first['goal'] else (55 if evidence.facts.goalDeclared else 0)
     if hook < 70:
         flag('OPENING_NOT_IN_TROUBLE', 'First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.', 'REVISION_REQUIRED')
     if goal < 70:
         flag('EVERYDAY_GOAL_UNCLEAR', 'An immediate visible everyday goal must be understandable at the opening.', 'REVISION_REQUIRED')
-    rules = list(dict.fromkeys(r for b in beats for r in b['rules']))
-    # Return is an ordinary reset of adhesion, not a second independent rule.
-    if 'ADHESION' in rules and 'RETURN' in rules:
-        rules.remove('RETURN')
+    rules = evidence.facts.mechanismIds
     rule_score = 100 if len(rules) == 1 else (0 if not rules else max(10, 70 - 25 * (len(rules) - 1)))
     if len(rules) > 1:
         flag('MULTIPLE_UNRELATED_RULES', f'Potential independent rule families {rules}; explain their causal relationship.', 'REVISION_REQUIRED')
@@ -185,11 +199,12 @@ def assess(text: str, context: dict[str, Any] | None = None) -> dict[str, Any] |
     seen_results: set[str] = set()
     for index, beat in enumerate(beats):
         types = []
-        results = set(re.findall(_RESULT, beat['visual'].lower()))
-        magnitude_rises = _has(r'\bdoubles?\b|grows? (?:even )?(?:larger|bigger)|gets? (?:even )?bigger|larger than (?:before|last)', beat['visual'])
+        acquired = evidence.acquisition[index]
+        results = set(acquired.resultTokens)
+        magnitude_rises = acquired.magnitudeRises
         material = bool(set(beat['stateSignals']) - seen_changes) or magnitude_rises
         strategy_change = bool(set(beat['strategies']) - seen_strategies)
-        if index == 0 and beat['rules']:
+        if index == 0 and acquired.mechanismIds:
             types.append('UNDERSTANDING')
         if index > 0 and beat['result'] and rules:
             if strategy_change:
@@ -198,14 +213,14 @@ def assess(text: str, context: dict[str, Any] | None = None) -> dict[str, Any] |
                 types.append('ESCALATION')
             if results - seen_results and (material or strategy_change):
                 types.append('CONSEQUENCE')
-        endings = [key for key, pattern in _PAYOFF.items() if _has(pattern, beat['visual'])]
-        if 'RECREATED_PROBLEM' in endings and not _has(r'finally|relaxes?|stays? normal|behaves?|success|closed|succeeds?', beat['visual']):
+        endings = acquired.endingPatterns.copy()
+        if 'RECREATED_PROBLEM' in endings and not acquired.recreatedSuccess:
             endings.remove('RECREATED_PROBLEM')
-        if 'LOGICAL_EXTREME' in endings and _has(_PAYOFF['LOGICAL_EXTREME'], first['visual']) and not material:
+        if 'LOGICAL_EXTREME' in endings and acquired.openingLogicalExtreme and not material:
             endings.remove('LOGICAL_EXTREME')
         # A payoff must retain the established anomaly. A surprise from a new
         # magic system or merely the label "twist/reveal" earns no payoff.
-        if index == len(beats) - 1 and endings and len(rules) == 1 and set(beat['rules']).intersection(rules) and beat['result']:
+        if index == len(beats) - 1 and (endings or acquired.terminalStateChange) and len(rules) == 1 and set(acquired.mechanismIds).intersection(rules) and beat['result']:
             types.append('PAYOFF')
         beat['progressTypes'] = types
         beat['materialProgress'] = bool(types)
@@ -237,51 +252,33 @@ def assess(text: str, context: dict[str, Any] | None = None) -> dict[str, Any] |
     payoff = 100 if beats and 'PAYOFF' in beats[-1]['progressTypes'] else 15
     if payoff < 70:
         flag('WEAK_VISUAL_PAYOFF', 'Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.', 'REVISION_REQUIRED')
-    full_visual = ' '.join(b['visual'] for b in beats)
-    ending_text = beats[-1]['quote'] if beats else ''
-    confusion = _has(r'unclear|unexplained|confusing|cannot tell|ambiguous', ending_text)
-    loop = payoff >= 70 and _has(r'loop|back to (?:the )?(?:first|opening)|reinterprets?', ending_text)
+    confusion = evidence.facts.confusion
+    loop = payoff >= 70 and evidence.facts.loopCue
     rewatch_type = 'CONFUSION_REWATCH' if confusion else ('INTENTIONAL_REWATCH' if loop else 'OPTIONAL_NOT_ESTABLISHED')
     rewatch = 10 if confusion else (100 if loop else 60)
     if confusion:
         flag('CONFUSION_REWATCH', 'Ambiguity is not positive intentional replay value.', 'REVISION_REQUIRED')
-    # Speech is counted in the timeline only, not repeated dialogue lock notes.
-    speech = re.findall(r'[“"]([^”"]+)[”"]', ' '.join(b['quote'] for b in beats))
-    words = sum(len(s.split()) for s in speech)
-    audio_required = _has(r'(?:only|requires?|through|after).{0,35}(?:dialogue|explanation|narration|reading|text)|explains? (?:the |why|that)|lip.sync.{0,20}(?:long|sequence)', ' '.join(b['quote'] for b in beats))
-    dialogue_heavy = words > 18 or any(len(s.split()) > 8 for s in speech) or audio_required
+    words = evidence.facts.speechWords
+    audio_required = evidence.facts.audioRequired
+    dialogue_heavy = words > 18 or evidence.facts.longSpeech or audio_required
     if dialogue_heavy:
         flag('DIALOGUE_LOAD', 'Explanatory dialogue, long lip-sync or word load competes with visual escalation.')
-    reaction = 100 if _has(r'eyes|flinch|freezes?|catches? .{0,15}self|leans?|determined|cross.eyed|recoils?', full_visual) else 55
+    reaction = 100 if evidence.facts.reactionVisible else 55
     silent_parts = {'goal': goal, 'rule': rule_score, 'reaction': reaction, 'payoff': payoff}
     silent = round(sum(silent_parts.values()) / 4)
     if audio_required:
         silent = min(silent, 35)
         flag('AUDIO_DEPENDENT_CAUSALITY', 'Essential causality depends on speech or text.', 'REVISION_REQUIRED')
-    staging = []
-    for name, pattern in {
-        'PRESENTER_BLOCKING': r'front.facing presenter|addresses? (?:the )?viewer|speaks? to (?:the )?viewer|eye contact with (?:the )?camera|stares? (?:directly )?(?:at|into) (?:the )?camera',
-        'STATIC_PERFORMANCE': r'static centered|long reaction pose|holds? .{0,20}reaction for',
-    }.items():
-        if _has(pattern, full_visual):
-            staging.append(name)
-            flag(name, 'Prompt/execution risk: stage physical eyelines and object interaction. Premise score is independent.')
-    production = []
-    for name, pattern in {
-        'MANY_CHARACTERS': r'crowd|many characters|(?:[3-9]|three|four|five|six|seven|eight|nine|ten) characters',
-        'SIMULTANEOUS_OBJECTS': r'many .{0,20}(?:objects|balls)|simultaneous|dozens|hundreds',
-        'FINE_FINGER_CONTACT': r'fine finger|individual fingers|threads? .{0,15}needle',
-        'TINY_TEXT': r'tiny text|read\w* .{0,15}badge|read\w* .{0,15}sign',
-        'IDENTITY_CONTINUITY': r'identity swap|costume transform|changes? .{0,15}costume',
-        'MULTI_LOCATION': r'multi.location|teleports?|another room|across three',
-    }.items():
-        if _has(pattern, full_visual):
-            production.append(name)
-            flag(name, 'Production continuity risk; review feasibility separately from premise quality.')
+    staging = evidence.facts.stagingRisks.copy()
+    for name in staging:
+        flag(name, 'Prompt/execution risk: stage physical eyelines and object interaction. Premise score is independent.')
+    production = evidence.facts.productionRisks.copy()
+    for name in production:
+        flag(name, 'Production continuity risk; review feasibility separately from premise quality.')
     if len(rules) > 1:
         production.append('MULTIPLE_PHYSICS_SYSTEMS')
     feasibility = max(0, 100 - 18 * len(production))
-    duplicate = _duplicates(text, _signature(beats))
+    duplicate = _duplicates(text, evidence.facts.duplicateSignature)
     if duplicate['status'] in {'HIGH', 'MODERATE'}:
         flag('ENGINE_DUPLICATE_RISK', 'Opening/progression/final structure overlaps a known reference; object renaming is not novelty.',
              'REVISION_REQUIRED' if duplicate['status'] == 'HIGH' else 'WARNING')
@@ -299,7 +296,7 @@ def assess(text: str, context: dict[str, Any] | None = None) -> dict[str, Any] |
     reason = 'Opening contains a visible everyday goal and anomaly.' if hook == 100 else 'Opening goal/anomaly or immediate timing is not sufficiently supported.'
     return {'engine': 'SHORT_FORM_ENGINE', 'version': VERSION, 'status': status, 'shortFormScore': score,
             **scores, 'instantPremiseLegibility': {'score': hook, 'reason': reason},
-            'alreadyInTrouble': hook == 100, 'rules': rules, 'majorCausalBeatCount': major,
+            'alreadyInTrouble': hook == 100, 'rules': evidence.facts.classifiedRules, 'majorCausalBeatCount': major,
             'describedBlockCount': len(beats), 'beats': beats, 'findings': findings,
             'escalationCurve': {'longestPlateauSeconds': plateau, 'targetSeconds': [2, 4]},
             'continuationReason': 'Next materially different attempt, consequence or final physical state.' if major >= 4 else 'Not established beyond repeated activity.',

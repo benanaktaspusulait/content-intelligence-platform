@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-24",
+  "implementationVersion": "semantic-concept-generator-v1",
+  "promptVersion": "semantic-concept-prompt-v1",
+  "verificationMode": "CONTROLLED_MOCK_ONLY",
+  "externalProviderCalls": 0,
+  "paidEvaluations": 0,
+  "externalSpendUsd": 0,
+  "renders": [],
+  "vendorSdkAdded": false,
+  "vendorProviderFactoryConstructed": false,
+  "liveTransportEnabled": false,
+  "automaticRetries": 0,
+  "canonicalScoresChanged": false,
+  "acceptedEngineSourcesChanged": false,
+  "priorExperimentsChanged": false,
+  "protectedFileCount": 214,
+  "allProtectedHashesUnchanged": true,
+  "newTests": {
+    "passed": 51,
+    "providerParserConfig": 26,
+    "integrationProvenanceProtection": 25
+  },
+  "focusedTests": {
+    "passed": 442,
+    "warnings": 4
+  },
+  "ui": {
+    "passed": 106,
+    "files": 5
+  },
+  "backend": {
+    "passed": 9,
+    "failures": 0,
+    "errors": 0
+  },
+  "ruff": "PASS",
+  "fullRegression": {
+    "passed": 2101,
+    "failed": 36,
+    "skipped": 2,
+    "warnings": 3030,
+    "seconds": 177.22,
+    "baselinePassed": 2050,
+    "newFailures": 0,
+    "failureIdsIdenticalToBaseline": true
+  },
+  "additionalTransferModelChecks": {
+    "passed": 2
+  },
+  "reproducibility": {
+    "seed": 42,
+    "mockSemanticCanonicalSha256": "18f6e721230d0771cee24002aba1f9396e981e23c0149a0198c9b59a42f89794",
+    "mockSemanticFileSha256": "9a988f5d0fff92f8d7cfc9839f8b7bf518ab202695b8c45f2b1d917fc0578b3c",
+    "comparisonRunIds": {
+      "A_deterministic": "concept-run-9f209990208dfc627223",
+      "B_semantic_mock": "concept-run-0441841e5b61f5f06647",
+      "C_hybrid": "concept-run-e76a890691385ea5e41d"
+    },
+    "externalProviderCalls": 0,
+    "paidEvaluations": 0,
+    "networkBlockedDuringEvidenceRun": true,
+    "crossProcessPythonHashSeed": 17,
+    "rawFrameZeroJudgedIndependently": true,
+    "transferContradictionTarget": "absorbs water",
+    "crossProcessCliSha256": "9a988f5d0fff92f8d7cfc9839f8b7bf518ab202695b8c45f2b1d917fc0578b3c",
+    "byteIdenticalCliAndSavedMockRun": true
+  },
+  "mockSemanticGenerationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 8,
+    "finalCandidateCount": 1,
+    "eligibleCount": 1,
+    "revisionCount": 0,
+    "rejectedCount": 0
+  },
+  "comparison": {
+    "A_deterministic": {
+      "rawNormalizedCount": 480,
+      "schemaValidYield": null,
+      "validCandidateYield": 0.18958333333333333,
+      "finalCandidateCount": 9,
+      "meanShortFormScore": 97.66666666666667,
+      "candidateDenominator": 9,
+      "meanStoryShapeDistance": 0.557333,
+      "minimumStoryShapeDistance": 0.238182,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 2,
+        "CONTROL_REVERSAL": 3,
+        "FALSE_SUCCESS_COLLAPSE": 2,
+        "OPENING_RECREATED": 2
+      },
+      "payoffConcentrationRate": 0.3333333333333333,
+      "dominantPayoffWarning": null,
+      "strategySequenceDistribution": {
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 2,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 3,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 2,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 2
+      },
+      "strategySequenceConcentration": 0.3333333333333333,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.4444444444444444,
+      "temporaryStopTriggerRate": 0.6666666666666666,
+      "resetPayoffRate": 0.4444444444444444,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 2,
+        "OBJECT_CONTROLS_CHARACTER": 3,
+        "OPENING_STATE_RECREATED": 4
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "templateShapeRiskDistribution": {
+        "HIGH": 9
+      },
+      "productionSlateSize": 3,
+      "sourceDistribution": {
+        "DETERMINISTIC_V2": 480
+      }
+    },
+    "B_semantic_mock": {
+      "rawNormalizedCount": 8,
+      "schemaValidYield": 0.5333333333333333,
+      "validCandidateYield": 0.125,
+      "finalCandidateCount": 1,
+      "meanShortFormScore": 100.0,
+      "candidateDenominator": 1,
+      "meanStoryShapeDistance": null,
+      "minimumStoryShapeDistance": null,
+      "payoffFamilyDistribution": {
+        "ENVIRONMENTAL_TAKEOVER": 1
+      },
+      "payoffConcentrationRate": 1.0,
+      "dominantPayoffWarning": {
+        "code": "PAYOFF_FAMILY_CONCENTRATION",
+        "family": "ENVIRONMENTAL_TAKEOVER",
+        "share": 1.0
+      },
+      "strategySequenceDistribution": {
+        "93017bf60e1d215eb63b1ad14b3f910483cdebbabf2ecf5b0a715be145e852ad": 1
+      },
+      "strategySequenceConcentration": 1.0,
+      "strategySequenceWarning": "STRATEGY_SEQUENCE_CONCENTRATION",
+      "falseSuccessBeat4Rate": 0.0,
+      "temporaryStopTriggerRate": 0.0,
+      "resetPayoffRate": 0.0,
+      "finalRelationshipDistribution": {
+        "ENVIRONMENT_BECOMES_PROBLEM": 1
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "templateShapeRiskDistribution": {
+        "LOW": 1
+      },
+      "productionSlateSize": 1,
+      "sourceDistribution": {
+        "SEMANTIC_V1": 8
+      }
+    },
+    "C_hybrid": {
+      "rawNormalizedCount": 488,
+      "schemaValidYield": 0.5333333333333333,
+      "validCandidateYield": 0.1885245901639344,
+      "finalCandidateCount": 10,
+      "meanShortFormScore": 97.9,
+      "candidateDenominator": 10,
+      "meanStoryShapeDistance": 0.58897,
+      "minimumStoryShapeDistance": 0.238182,
+      "payoffFamilyDistribution": {
+        "CONTACT_ENTANGLEMENT": 3,
+        "CONTROL_REVERSAL": 2,
+        "ENVIRONMENTAL_TAKEOVER": 1,
+        "FALSE_SUCCESS_COLLAPSE": 2,
+        "OPENING_RECREATED": 2
+      },
+      "payoffConcentrationRate": 0.3,
+      "dominantPayoffWarning": null,
+      "strategySequenceDistribution": {
+        "41dda9889d35672dc6e066ec726f527820f0a2168999f0496d49bbc6ec9210f8": 2,
+        "4244b970c33cfeba3f8fc0dd74ac6ff6614c2ebab052b7d1875a56d1366f44bd": 2,
+        "5ecf47cd268d160983738616748e5c3522c121690e856d8401c325957fd8f56d": 2,
+        "93017bf60e1d215eb63b1ad14b3f910483cdebbabf2ecf5b0a715be145e852ad": 1,
+        "abe101127e5ba41190eb340bc443804cb7378808d66a2db8667c7e4f4ad4762a": 2,
+        "fa864f74584bf261a4a377909129ac6b0c6d0085dfef02f32901b368a4afbefd": 1
+      },
+      "strategySequenceConcentration": 0.2,
+      "strategySequenceWarning": null,
+      "falseSuccessBeat4Rate": 0.5,
+      "temporaryStopTriggerRate": 0.7,
+      "resetPayoffRate": 0.4,
+      "finalRelationshipDistribution": {
+        "CHARACTER_ATTACHED_TO_OBJECT": 3,
+        "ENVIRONMENT_BECOMES_PROBLEM": 1,
+        "OBJECT_CONTROLS_CHARACTER": 2,
+        "OPENING_STATE_RECREATED": 4
+      },
+      "historicalCreativeTerritoryCollisionRate": 0.0,
+      "scope": "NON_CANONICAL_GENERATOR_CONTROLLED_DIAGNOSTICS_NOT_INDEPENDENT_CREATIVE_QUALITY",
+      "templateShapeRiskDistribution": {
+        "LOW": 1,
+        "HIGH": 9
+      },
+      "productionSlateSize": 3,
+      "sourceDistribution": {
+        "DETERMINISTIC_V2": 480,
+        "SEMANTIC_V1": 8
+      }
+    }
+  },
+  "manualReviewRequired": true,
+  "noSemanticSuperiorityClaim": true,
+  "scope": "Offline tests; QA/video-QC excluded; Java dispatch/projection only. All provider verification uses controlled mocks. No rendering.",
+  "commands": {
+    "newTests": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_semantic_concept_provider.py tests/test_semantic_concept_generation.py -q --tb=short",
+    "focused": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_semantic_concept_provider.py tests/test_semantic_concept_generation.py tests/test_creative_shape.py tests/test_shape_generation.py tests/test_premise_naturalness.py tests/test_premise_generation.py tests/test_beat_grammar.py tests/test_beat_generation.py tests/test_beat_generation_api.py tests/test_short_concept_v2.py tests/test_concept_production_selection.py tests/test_short_concept_v2_api.py tests/test_short_concept_generation.py tests/test_concept_fingerprint.py tests/test_short_concept_generation_api.py tests/test_concept_ranking.py tests/test_concept_ranking_api.py tests/test_short_form_engine.py tests/test_short_form_integration.py tests/test_story_premise_engine.py tests/test_story_premise_integration.py -q --tb=short",
+    "fullRegression": ".venv/bin/python ../scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short",
+    "ui": "npm exec ng test -- --watch=false --include=src/app/pages/concept-generation.page.spec.ts --include=src/app/pages/concept-ranking.page.spec.ts --include=src/app/pages/short-form-report.component.spec.ts --include=src/app/pages/story-premise-report.component.spec.ts --include=src/app/pages/quality-validator/post-family-workflow.spec.ts",
+    "backend": "mvn -o -q -Dtest=ConceptGenerationControllerTest,ConceptRankingControllerTest,ShortFormReportTest,StoryPremiseReportTest test",
+    "mockCli": "PYTHONHASHSEED=17 .venv/bin/python ../scripts/generate-short-concepts.py --mode semantic --mock --count 20 --seed 42 --rank"
+  },
+  "artifactSha256": {
+    "full-regression-release.log": "7d1fb671c4149c0d810c909e7c5111f45213cfff7258a1fe5a4b3117fbe24eba",
+    "ui-tests-final.log": "e21fba2c490f266d71448148e12c5d338e8a42c4fb5d7e952ae3640e253da348",
+    "focused-tests-final.log": "b5cef17ed6486114527a1f73b0fa4b71ee41112b1a1d1cfe6c20b7ee0211ae0c",
+    "java-tests-final.log": "dd46e2f0e8076b0a857318fc9c7e7149a744dbee0eb59a7388ac354d3f3b2033",
+    "full-regression-final.log": "4d6441150029061cff700af11e004010aefd1282a316a8d048270079b58c71ea",
+    "baseline-comparison.json": "2de20c1d1d76add34d80e20f90e48dfa803bbc4a2dd0a48d5a89e3abcf2cdada",
+    "mock-comparison-abc.json": "2481ccb9816b29a07341789240a29f3421cdb4b34feb6b02bb101e4b096e3eb0",
+    "immutable-before.json": "f3345ec548072c0cf1ddee1dbba968d08197a0cced1dcd45ef73f5375b61a65a",
+    "mock-semantic-review.md": "e361e0763b0ecbde5abbfe4d4ca7dba226853da4b75a5099569706008f84c6a3",
+    "changed-files.json": "64d947b74528bc70b827625c5828469f4ad8212b1d1123a59d4e91c4812d4165",
+    "response-schema-v1.json": "bed6c5ff38bae0ff106df2aa12bae5357f6c335e80d062c303ced789f0fcfee3",
+    "request-schema-v1.json": "8613d0a975cf80974b4c49502a59abbb4d1ffbaceebe56f88f5aa3892ab2e666",
+    "mock-semantic-seed-42.json": "9a988f5d0fff92f8d7cfc9839f8b7bf518ab202695b8c45f2b1d917fc0578b3c",
+    "java-results.json": "5e43f0746a2ba558c133df108c3ce22ae35c8092a72eabe5f5f09d33faef1fbc",
+    "README.md": "8c1e9d69c9b714c4f7dd011d7da9eb91893f8557a5d57b8be57850cee05e41f8",
+    "immutable-after.json": "f3345ec548072c0cf1ddee1dbba968d08197a0cced1dcd45ef73f5375b61a65a",
+    "ruff-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "reproducibility.json": "e135106b3f13b866f3e513fa884b2607898f398bb1b247653757cd85a6f4577e",
+    "semantic-prompt-v1.txt": "1ff1420fd7abb6f0df067b379e446c92d299618cc20facc242cda67154a4464c",
+    "new-tests-final.log": "ad47e5f9b7d435478ffd6aceb47a36b259a1904162742c748f6702d31747328e",
+    "focused-tests-release.log": "8cb029dd38d9c496c5680c3cf7743ca2f3983edb4fe51c8464d87eb8b1b08c27",
+    "new-tests-initial.log": "c944eda516cbcd22b5fa508c18ec749bb2bffac02e5538fea116d5ac4c9f0cb7",
+    "mock-comparison-hybrid-seed-42.json.gz": "a13baa45a4db55f3cefd79c85d57f795e8468efe5a2b49f9c5d20be4f8317073",
+    "mock-comparison-deterministic-seed-42.json.gz": "b60008476ad09e213d66ec688c031ab168837ff7cb9204a2f26778ad1cfed804"
+  }
+}

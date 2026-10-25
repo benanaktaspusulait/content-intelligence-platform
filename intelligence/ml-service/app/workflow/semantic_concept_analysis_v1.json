@@ -1,0 +1,28 @@
+{
+  "version": "semantic-concept-analysis-v1",
+  "waterPatchTransfer": {
+    "requiredRulePatterns": [
+      "wip",
+      "water|wet patch",
+      "transfer",
+      "cloth|sleeve|shirt"
+    ],
+    "lexicalAssessmentInput": "Each wipe removes a wet mark from the table and transfers that exact wet mark onto clothes.",
+    "policy": {
+      "archetypes": [
+        "ABSORBENT_TEXTILE"
+      ],
+      "responses": [
+        "MARK_TRANSFER"
+      ],
+      "contradictionType": "TRANSFER",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 95,
+      "functionalIrony": "HIGH",
+      "materialConnection": "absorption",
+      "strangeButIntuitive": true
+    }
+  },
+  "scope": "Isolated non-canonical classification coverage. No finished story, canonical score change or production output."
+}

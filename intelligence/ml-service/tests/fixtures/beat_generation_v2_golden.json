@@ -1,0 +1,12 @@
+{
+  "version": "beat-grammar-v2",
+  "candidateHash": "1b12cfd992ee6bb08fff3d410f7c741f9ac5bdaa3abd6f4e144d55bec155471f",
+  "summary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "finalCandidateCount": 20,
+    "eligibleCount": 4,
+    "revisionCount": 15,
+    "rejectedCount": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "suppressedCandidateCount": 471,
+  "reasonCounts": {
+    "ACCEPTED_VALIDATOR_INELIGIBLE": 358,
+    "SHORT_FORM_QUALITY_FLOOR": 339,
+    "RANKING_QUALITY_FLOOR": 358,
+    "HIGH_HISTORICAL_CREATIVE_TERRITORY": 37,
+    "STORY_SHAPE_DISTANCE_CAPACITY": 82
+  },
+  "reasonCountsAreNonExclusive": true
+}

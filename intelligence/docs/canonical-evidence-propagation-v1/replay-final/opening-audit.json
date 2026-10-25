@@ -1,0 +1,1136 @@
+[
+  {
+    "ideaId": "raw-007",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Wake up at 7 AM after setting alarm",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "ELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "LEGITIMATE_QUALITY_DIFFERENCE"
+  },
+  {
+    "ideaId": "raw-013",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Brush hair smooth",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "ELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-026",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Hang a picture frame",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "ELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-027",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Paint wall blue",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "ELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-005",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Clean crumbs from carpet",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-006",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Enter the kitchen from hallway",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-018",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Get milk from fridge",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-008",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Change channel to watch favorite show",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 50,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 50,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Change channel to watch favorite show",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-004",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Sweep dirt into a dustpan",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-019",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Reheat leftovers",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 50,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 50,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Reheat leftovers",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-020",
+    "canonical": {
+      "goalPresent": true,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": true,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Turn on living room light",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 100,
+      "goalScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 35,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": []
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-032",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Fix hair using mirror",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 50,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 50,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Fix hair using mirror",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-003",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Push cart through supermarket to checkout",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 10,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 10,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Push cart through supermarket to checkout",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-015",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Zip up jacket to stay warm",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 50,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 50,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Zip up jacket to stay warm",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-016",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Pack backpack for school",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 50,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 50,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Pack backpack for school",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "LEGITIMATE_QUALITY_DIFFERENCE"
+  },
+  {
+    "ideaId": "raw-001",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Stay dry in the rain",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 10,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 10,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Stay dry in the rain",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  },
+  {
+    "ideaId": "raw-009",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": true,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Flip a pancake",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 50,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 50,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Flip a pancake",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "LEGITIMATE_QUALITY_DIFFERENCE"
+  },
+  {
+    "ideaId": "raw-031",
+    "canonical": {
+      "goalPresent": false,
+      "anomalyPresent": false,
+      "problemPresent": true,
+      "causalRelationshipVisible": false,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+    },
+    "goal": {
+      "declared": true,
+      "visibleInOpening": false,
+      "everyday": true,
+      "source": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "everydayGoal",
+          "sourceText": "Find keys in dark room",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+    },
+    "SFE": {
+      "hookScore": 10,
+      "goalScore": 55,
+      "instantPremiseLegibility": {
+        "score": 10,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      }
+    },
+    "Naturalness": {
+      "before": 15,
+      "after": 15,
+      "qualityRule": "existing direct affordance-policy AND canonical source-supported opening; facts alone do not satisfy direct"
+    },
+    "Ranking": {
+      "eligibility": "INELIGIBLE",
+      "goalFindings": [
+        {
+          "code": "DECLARED_GOAL_UNSUPPORTED",
+          "field": "protagonistGoal",
+          "source": "CANONICAL_CREATIVE_EVIDENCE",
+          "reason": "The declared goal is not a supported visible everyday goal.",
+          "evidence": {
+            "declared": true,
+            "visibleInOpening": false,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Find keys in dark room",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          }
+        }
+      ]
+    },
+    "classification": "TAXONOMY_LIMIT"
+  }
+]

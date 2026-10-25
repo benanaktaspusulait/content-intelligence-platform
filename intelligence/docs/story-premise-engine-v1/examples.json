@@ -1,0 +1,1041 @@
+{
+  "provenance": "HUMAN_AUTHORED_DETERMINISTIC_TEST_FIXTURES_NOT_PRODUCTION_RESULTS",
+  "productionValidation": false,
+  "providerCalls": 0,
+  "renderAuthorized": false,
+  "examples": {
+    "garden_guardian": {
+      "version": "story-premise-engine-v1",
+      "engine": "STORY_PREMISE_ENGINE",
+      "scope": {
+        "active": true,
+        "requestedDurationSeconds": 60.0,
+        "explicitStoryMode": false,
+        "calibratedDurationRange": [
+          45,
+          75
+        ]
+      },
+      "sourceSha256": "a452af25caaea3fa3e10f340a0baf578864db75a1c9ec0b866410a0ae3dffcae",
+      "status": "STORY_REVISION_REQUIRED",
+      "score": 0,
+      "scoreType": "LONG_FORM_PREMISE_HEURISTIC_NOT_CANONICAL",
+      "archetype": "PASSIVE_MISUNDERSTANDING",
+      "checks": [
+        {
+          "checkId": "PREMISE_STRENGTH",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 12,
+          "gate": "SOFT",
+          "reason": "The opening lacks a supported active goal/contradiction before execution detail.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "ACTIVE_PROTAGONIST_OR_GUEST_GOAL",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 10,
+          "gate": "HARD",
+          "reason": "No explicit driving goal; appearance or misunderstanding is insufficient.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "ROLE_CONTRADICTION",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 8,
+          "gate": "SOFT",
+          "reason": "The driving goal meets explicit resistance; role/goal contradiction needs editorial confirmation.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "ACTIVE_DECEPTION_OR_HIDDEN_INTENT",
+          "outcome": "NOT_APPLICABLE",
+          "strength": 0.0,
+          "weight": 5,
+          "gate": "SOFT",
+          "reason": "Hidden intent supports dramatic irony; it is positive, not mandatory.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "MORAL_CHOICE_GATE",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 20,
+          "gate": "HARD",
+          "reason": "No source-supported deliberate rejection of a real opportunity to complete the original goal.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "SACRIFICE_OR_COST",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 12,
+          "gate": "HARD",
+          "reason": "No lasting cost tied to the original goal is established.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "TRAIT_REPURPOSING",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 10,
+          "gate": "SOFT",
+          "reason": "No linked reuse of an established trait; a late new skill is insufficient.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "STATUS_REVERSAL",
+          "outcome": "UNKNOWN",
+          "strength": 0.0,
+          "weight": 8,
+          "gate": "SOFT",
+          "reason": "A meaningful final role change is not established.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "PREDICTABILITY_EARLY_SOLVE_RISK",
+          "outcome": "FAIL",
+          "strength": 0.0,
+          "weight": 5,
+          "gate": "HARD",
+          "reason": "High early-solve risk: the setup suggests its payoff without a later consequential decision.",
+          "evidence": [
+            {
+              "id": "s1",
+              "quote": "Arda looks scary in a costume but is actually harmless.",
+              "sourceSpan": [
+                50,
+                105
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                55,
+                66
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "MEANING_SHIFT_DENSITY",
+          "outcome": "FAIL",
+          "strength": 0.0,
+          "weight": 6,
+          "gate": "SOFT",
+          "reason": "0 distinct meaning changes; repeated physical attempts earn no credit.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "PAYOFF_DENSITY",
+          "outcome": "FAIL",
+          "strength": 0.0,
+          "weight": 4,
+          "gate": "SOFT",
+          "reason": "Long stretches lack a meaningful consequence/reinterpretation.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        }
+      ],
+      "findings": [
+        {
+          "code": "PASSIVE_MISUNDERSTANDING",
+          "severity": "STORY_REVISION_REQUIRED",
+          "message": "Passive misunderstanding supplies appearance/reveal, not an active moral arc."
+        },
+        {
+          "code": "ACTIVE_PROTAGONIST_OR_GUEST_GOAL",
+          "severity": "STORY_REVISION_REQUIRED",
+          "message": "No explicit driving goal; appearance or misunderstanding is insufficient."
+        },
+        {
+          "code": "MORAL_CHOICE_GATE",
+          "severity": "STORY_REVISION_REQUIRED",
+          "message": "No source-supported deliberate rejection of a real opportunity to complete the original goal."
+        },
+        {
+          "code": "SACRIFICE_OR_COST",
+          "severity": "STORY_REVISION_REQUIRED",
+          "message": "No lasting cost tied to the original goal is established."
+        },
+        {
+          "code": "PREDICTABILITY_EARLY_SOLVE_RISK",
+          "severity": "STORY_REVISION_REQUIRED",
+          "message": "High early-solve risk: the setup suggests its payoff without a later consequential decision."
+        },
+        {
+          "code": "LOW_MEANING_SHIFT_DENSITY",
+          "severity": "WARN",
+          "message": "Physical activity cannot compensate for too few relationship, goal, status or meaning changes."
+        },
+        {
+          "code": "PREMISE_STRENGTH",
+          "severity": "WARN",
+          "message": "The opening lacks a supported active goal/contradiction before execution detail."
+        },
+        {
+          "code": "ROLE_CONTRADICTION",
+          "severity": "WARN",
+          "message": "The driving goal meets explicit resistance; role/goal contradiction needs editorial confirmation."
+        },
+        {
+          "code": "TRAIT_REPURPOSING",
+          "severity": "WARN",
+          "message": "No linked reuse of an established trait; a late new skill is insufficient."
+        },
+        {
+          "code": "STATUS_REVERSAL",
+          "severity": "WARN",
+          "message": "A meaningful final role change is not established."
+        },
+        {
+          "code": "MEANING_SHIFT_DENSITY",
+          "severity": "WARN",
+          "message": "0 distinct meaning changes; repeated physical attempts earn no credit."
+        },
+        {
+          "code": "PAYOFF_DENSITY",
+          "severity": "WARN",
+          "message": "Long stretches lack a meaningful consequence/reinterpretation."
+        }
+      ],
+      "storyEngineSummary": {
+        "premise": "Arda looks scary in a costume but is actually harmless.",
+        "drivingGoal": null,
+        "drivingActor": [],
+        "selfInterestedGoalTextSupport": false,
+        "contradiction": null,
+        "hiddenIntent": null,
+        "moralChoice": null,
+        "cost": null,
+        "traitRepurposing": [],
+        "finalStatusReversal": null,
+        "predictabilityRisk": "HIGH",
+        "openDramaticQuestionAfterOpening": "NOT_ESTABLISHED",
+        "earlySolveBy15Seconds": "UNVERIFIED_EDITORIAL_INFERENCE",
+        "resolutionBySeconds": null,
+        "longFormSuitability": "REVISION_REQUIRED"
+      },
+      "meaningShifts": [],
+      "meaningShiftCount": 0,
+      "payoffTiming": {
+        "status": "SUPPORTED",
+        "gaps": [
+          {
+            "start": 0.0,
+            "end": 60.0,
+            "seconds": 60.0
+          }
+        ],
+        "timeBasis": "SUPPORTING_BEAT_ENDS_NOT_OBSERVED_EVENT_TIMES"
+      },
+      "durationSuitability": {
+        "10_20_SECONDS": {
+          "status": "SUITABLE",
+          "reason": "A single setup/reveal can sustain a short; this is not a global concept rejection."
+        },
+        "20_35_SECONDS": {
+          "status": "REVIEW_REQUIRED",
+          "reason": "Needs a distinct development and payoff within this duration."
+        },
+        "45_75_SECONDS": {
+          "status": "REVISION_REQUIRED",
+          "score": 0,
+          "reason": "A sustained active arc needs a real choice, cost and multiple meaning changes."
+        }
+      },
+      "humanReadableReport": "STORY_REVISION_REQUIRED: passive misunderstanding; premise-engine score 0/100. Passive misunderstanding supplies appearance/reveal, not an active moral arc. No explicit driving goal; appearance or misunderstanding is insufficient. No source-supported deliberate rejection of a real opportunity to complete the original goal. No lasting cost tied to the original goal is established. High early-solve risk: the setup suggests its payoff without a later consequential decision. Textual support only; visual execution and audience response remain unverified.",
+      "evidenceLimitations": [
+        "Conservative English source-pattern screening, not semantic verification.",
+        "Unrecognized wording and ambiguous actor references require editorial review.",
+        "Early-solve risk is an editorial hypothesis, not observed viewer behavior.",
+        "No rendered visual or audience evidence."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0
+    },
+    "boogeymans_exam": {
+      "version": "story-premise-engine-v1",
+      "engine": "STORY_PREMISE_ENGINE",
+      "scope": {
+        "active": true,
+        "requestedDurationSeconds": 60.0,
+        "explicitStoryMode": false,
+        "calibratedDurationRange": [
+          45,
+          75
+        ]
+      },
+      "sourceSha256": "7d6cc71128fa14254387b4cda3eafd0bc6639389ff3a8aa4fafcf58930812712",
+      "status": "PASS_WITH_WARNINGS",
+      "score": 91,
+      "scoreType": "LONG_FORM_PREMISE_HEURISTIC_NOT_CANONICAL",
+      "archetype": "ACTIVE_MORAL_ARC",
+      "checks": [
+        {
+          "checkId": "PREMISE_STRENGTH",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 12,
+          "gate": "SOFT",
+          "reason": "Opening goal and contradiction create a textual dramatic question.",
+          "evidence": [
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                72,
+                82
+              ]
+            },
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                126,
+                129
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "ACTIVE_PROTAGONIST_OR_GUEST_GOAL",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 10,
+          "gate": "HARD",
+          "reason": "An explicit active goal drives the story.",
+          "evidence": [
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                72,
+                82
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "ROLE_CONTRADICTION",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 8,
+          "gate": "SOFT",
+          "reason": "The driving goal meets explicit resistance; role/goal contradiction needs editorial confirmation.",
+          "evidence": [
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                72,
+                82
+              ]
+            },
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                126,
+                129
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "ACTIVE_DECEPTION_OR_HIDDEN_INTENT",
+          "outcome": "NOT_APPLICABLE",
+          "strength": 0.0,
+          "weight": 5,
+          "gate": "SOFT",
+          "reason": "Hidden intent supports dramatic irony; it is positive, not mandatory.",
+          "evidence": [],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "MORAL_CHOICE_GATE",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 20,
+          "gate": "HARD",
+          "reason": "The same actor rejects an opportunity linked to the original goal to help another.",
+          "evidence": [
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ],
+              "matchedSpan": [
+                72,
+                82
+              ]
+            },
+            {
+              "id": "s3",
+              "quote": "Moro shares a blanket with Noah and they become friends.",
+              "sourceSpan": [
+                225,
+                281
+              ],
+              "timeRange": [
+                18.0,
+                28.0
+              ],
+              "matchedSpan": [
+                230,
+                251
+              ]
+            },
+            {
+              "id": "s5",
+              "quote": "Moro can now scare Noah and pass his exam.",
+              "sourceSpan": [
+                316,
+                358
+              ],
+              "timeRange": [
+                28.0,
+                38.0
+              ],
+              "matchedSpan": [
+                321,
+                328
+              ]
+            },
+            {
+              "id": "s6",
+              "quote": "Moro deliberately drops the exam badge and rejects the chance to scare Noah, choosing to shield Noah instead.",
+              "sourceSpan": [
+                367,
+                476
+              ],
+              "timeRange": [
+                38.0,
+                46.0
+              ],
+              "matchedSpan": [
+                372,
+                384
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "SACRIFICE_OR_COST",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 12,
+          "gate": "HARD",
+          "reason": "The choice costs an original stake.",
+          "evidence": [
+            {
+              "id": "s8",
+              "quote": "Moro officially fails the exam and loses his badge.",
+              "sourceSpan": [
+                555,
+                606
+              ],
+              "timeRange": [
+                52.0,
+                56.0
+              ],
+              "matchedSpan": [
+                571,
+                580
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "TRAIT_REPURPOSING",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 10,
+          "gate": "SOFT",
+          "reason": "The same established trait is used to help later.",
+          "evidence": [
+            {
+              "id": "s1",
+              "quote": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+              "sourceSpan": [
+                55,
+                156
+              ],
+              "timeRange": [
+                0.0,
+                8.0
+              ]
+            },
+            {
+              "id": "s7",
+              "quote": "Moro uses the same scary roar to protect Noah from the storm.",
+              "sourceSpan": [
+                485,
+                546
+              ],
+              "timeRange": [
+                46.0,
+                52.0
+              ],
+              "matchedSpan": [
+                510,
+                514
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "STATUS_REVERSAL",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 8,
+          "gate": "SOFT",
+          "reason": "A changed social/emotional role is explicit.",
+          "evidence": [
+            {
+              "id": "s9",
+              "quote": "Noah calls Moro Best Monster and welcomes him into the family.",
+              "sourceSpan": [
+                615,
+                677
+              ],
+              "timeRange": [
+                56.0,
+                60.0
+              ],
+              "matchedSpan": [
+                631,
+                643
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "PREDICTABILITY_EARLY_SOLVE_RISK",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 5,
+          "gate": "HARD",
+          "reason": "A later opportunity/decision keeps the outcome structurally open.",
+          "evidence": [
+            {
+              "id": "s5",
+              "quote": "Moro can now scare Noah and pass his exam.",
+              "sourceSpan": [
+                316,
+                358
+              ],
+              "timeRange": [
+                28.0,
+                38.0
+              ],
+              "matchedSpan": [
+                321,
+                328
+              ]
+            },
+            {
+              "id": "s6",
+              "quote": "Moro deliberately drops the exam badge and rejects the chance to scare Noah, choosing to shield Noah instead.",
+              "sourceSpan": [
+                367,
+                476
+              ],
+              "timeRange": [
+                38.0,
+                46.0
+              ],
+              "matchedSpan": [
+                372,
+                384
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "MEANING_SHIFT_DENSITY",
+          "outcome": "PASS",
+          "strength": 1.0,
+          "weight": 6,
+          "gate": "SOFT",
+          "reason": "6 distinct meaning changes; repeated physical attempts earn no credit.",
+          "evidence": [
+            {
+              "id": "s3",
+              "quote": "Moro shares a blanket with Noah and they become friends.",
+              "sourceSpan": [
+                225,
+                281
+              ],
+              "timeRange": [
+                18.0,
+                28.0
+              ],
+              "matchedSpan": [
+                230,
+                251
+              ]
+            },
+            {
+              "id": "s5",
+              "quote": "Moro can now scare Noah and pass his exam.",
+              "sourceSpan": [
+                316,
+                358
+              ],
+              "timeRange": [
+                28.0,
+                38.0
+              ],
+              "matchedSpan": [
+                321,
+                328
+              ]
+            },
+            {
+              "id": "s6",
+              "quote": "Moro deliberately drops the exam badge and rejects the chance to scare Noah, choosing to shield Noah instead.",
+              "sourceSpan": [
+                367,
+                476
+              ],
+              "timeRange": [
+                38.0,
+                46.0
+              ],
+              "matchedSpan": [
+                372,
+                384
+              ]
+            },
+            {
+              "id": "s8",
+              "quote": "Moro officially fails the exam and loses his badge.",
+              "sourceSpan": [
+                555,
+                606
+              ],
+              "timeRange": [
+                52.0,
+                56.0
+              ],
+              "matchedSpan": [
+                571,
+                580
+              ]
+            },
+            {
+              "id": "s7",
+              "quote": "Moro uses the same scary roar to protect Noah from the storm.",
+              "sourceSpan": [
+                485,
+                546
+              ],
+              "timeRange": [
+                46.0,
+                52.0
+              ],
+              "matchedSpan": [
+                510,
+                514
+              ]
+            },
+            {
+              "id": "s9",
+              "quote": "Noah calls Moro Best Monster and welcomes him into the family.",
+              "sourceSpan": [
+                615,
+                677
+              ],
+              "timeRange": [
+                56.0,
+                60.0
+              ],
+              "matchedSpan": [
+                631,
+                643
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        },
+        {
+          "checkId": "PAYOFF_DENSITY",
+          "outcome": "FAIL",
+          "strength": 0.0,
+          "weight": 4,
+          "gate": "SOFT",
+          "reason": "Long stretches lack a meaningful consequence/reinterpretation.",
+          "evidence": [
+            {
+              "id": "s3",
+              "quote": "Moro shares a blanket with Noah and they become friends.",
+              "sourceSpan": [
+                225,
+                281
+              ],
+              "timeRange": [
+                18.0,
+                28.0
+              ],
+              "matchedSpan": [
+                230,
+                251
+              ]
+            },
+            {
+              "id": "s5",
+              "quote": "Moro can now scare Noah and pass his exam.",
+              "sourceSpan": [
+                316,
+                358
+              ],
+              "timeRange": [
+                28.0,
+                38.0
+              ],
+              "matchedSpan": [
+                321,
+                328
+              ]
+            },
+            {
+              "id": "s6",
+              "quote": "Moro deliberately drops the exam badge and rejects the chance to scare Noah, choosing to shield Noah instead.",
+              "sourceSpan": [
+                367,
+                476
+              ],
+              "timeRange": [
+                38.0,
+                46.0
+              ],
+              "matchedSpan": [
+                372,
+                384
+              ]
+            },
+            {
+              "id": "s8",
+              "quote": "Moro officially fails the exam and loses his badge.",
+              "sourceSpan": [
+                555,
+                606
+              ],
+              "timeRange": [
+                52.0,
+                56.0
+              ],
+              "matchedSpan": [
+                571,
+                580
+              ]
+            },
+            {
+              "id": "s7",
+              "quote": "Moro uses the same scary roar to protect Noah from the storm.",
+              "sourceSpan": [
+                485,
+                546
+              ],
+              "timeRange": [
+                46.0,
+                52.0
+              ],
+              "matchedSpan": [
+                510,
+                514
+              ]
+            },
+            {
+              "id": "s9",
+              "quote": "Noah calls Moro Best Monster and welcomes him into the family.",
+              "sourceSpan": [
+                615,
+                677
+              ],
+              "timeRange": [
+                56.0,
+                60.0
+              ],
+              "matchedSpan": [
+                631,
+                643
+              ]
+            }
+          ],
+          "basis": "SOURCE_TEXT_PATTERN_SUPPORT"
+        }
+      ],
+      "findings": [
+        {
+          "code": "PAYOFF_DENSITY",
+          "severity": "WARN",
+          "message": "Long stretches lack a meaningful consequence/reinterpretation."
+        }
+      ],
+      "storyEngineSummary": {
+        "premise": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+        "drivingGoal": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+        "drivingActor": [
+          "moro",
+          "monster"
+        ],
+        "selfInterestedGoalTextSupport": true,
+        "contradiction": "Moro the monster must scare Noah with his scary roar to pass his exam, but Noah refuses to be scared.",
+        "hiddenIntent": null,
+        "moralChoice": "Moro deliberately drops the exam badge and rejects the chance to scare Noah, choosing to shield Noah instead.",
+        "cost": "Moro officially fails the exam and loses his badge.",
+        "traitRepurposing": [
+          "roar"
+        ],
+        "finalStatusReversal": "Noah calls Moro Best Monster and welcomes him into the family.",
+        "predictabilityRisk": "LOWER_STRUCTURAL_RISK",
+        "openDramaticQuestionAfterOpening": "SUPPORTED_STRUCTURALLY",
+        "earlySolveBy15Seconds": "UNVERIFIED_EDITORIAL_INFERENCE",
+        "resolutionBySeconds": 60.0,
+        "longFormSuitability": "SUITABLE"
+      },
+      "meaningShifts": [
+        {
+          "kind": "RELATIONSHIP_CHANGE",
+          "dimensions": [
+            "RELATIONSHIP_CHANGE"
+          ],
+          "evidence": {
+            "id": "s3",
+            "quote": "Moro shares a blanket with Noah and they become friends.",
+            "sourceSpan": [
+              225,
+              281
+            ],
+            "timeRange": [
+              18.0,
+              28.0
+            ],
+            "matchedSpan": [
+              230,
+              251
+            ]
+          }
+        },
+        {
+          "kind": "NEW_OPPORTUNITY",
+          "dimensions": [
+            "NEW_INFORMATION"
+          ],
+          "evidence": {
+            "id": "s5",
+            "quote": "Moro can now scare Noah and pass his exam.",
+            "sourceSpan": [
+              316,
+              358
+            ],
+            "timeRange": [
+              28.0,
+              38.0
+            ],
+            "matchedSpan": [
+              321,
+              328
+            ]
+          }
+        },
+        {
+          "kind": "MORAL_CHOICE",
+          "dimensions": [
+            "MORAL_CHOICE",
+            "GOAL_CHANGE"
+          ],
+          "evidence": {
+            "id": "s6",
+            "quote": "Moro deliberately drops the exam badge and rejects the chance to scare Noah, choosing to shield Noah instead.",
+            "sourceSpan": [
+              367,
+              476
+            ],
+            "timeRange": [
+              38.0,
+              46.0
+            ],
+            "matchedSpan": [
+              372,
+              384
+            ]
+          }
+        },
+        {
+          "kind": "COST",
+          "dimensions": [
+            "CONSEQUENCE"
+          ],
+          "evidence": {
+            "id": "s8",
+            "quote": "Moro officially fails the exam and loses his badge.",
+            "sourceSpan": [
+              555,
+              606
+            ],
+            "timeRange": [
+              52.0,
+              56.0
+            ],
+            "matchedSpan": [
+              571,
+              580
+            ]
+          }
+        },
+        {
+          "kind": "TRAIT_REINTERPRETATION",
+          "dimensions": [
+            "REINTERPRETATION"
+          ],
+          "evidence": {
+            "id": "s7",
+            "quote": "Moro uses the same scary roar to protect Noah from the storm.",
+            "sourceSpan": [
+              485,
+              546
+            ],
+            "timeRange": [
+              46.0,
+              52.0
+            ],
+            "matchedSpan": [
+              510,
+              514
+            ]
+          }
+        },
+        {
+          "kind": "STATUS_CHANGE",
+          "dimensions": [
+            "STATUS_CHANGE"
+          ],
+          "evidence": {
+            "id": "s9",
+            "quote": "Noah calls Moro Best Monster and welcomes him into the family.",
+            "sourceSpan": [
+              615,
+              677
+            ],
+            "timeRange": [
+              56.0,
+              60.0
+            ],
+            "matchedSpan": [
+              631,
+              643
+            ]
+          }
+        }
+      ],
+      "meaningShiftCount": 6,
+      "payoffTiming": {
+        "status": "SUPPORTED",
+        "gaps": [
+          {
+            "start": 0.0,
+            "end": 28.0,
+            "seconds": 28.0
+          }
+        ],
+        "timeBasis": "SUPPORTING_BEAT_ENDS_NOT_OBSERVED_EVENT_TIMES"
+      },
+      "durationSuitability": {
+        "10_20_SECONDS": {
+          "status": "SUITABLE",
+          "reason": "An active premise can work as a short; condense to one consequential turn."
+        },
+        "20_35_SECONDS": {
+          "status": "SUITABLE",
+          "reason": "Needs a distinct development and payoff within this duration."
+        },
+        "45_75_SECONDS": {
+          "status": "SUITABLE",
+          "score": 91,
+          "reason": "A sustained active arc needs a real choice, cost and multiple meaning changes."
+        }
+      },
+      "humanReadableReport": "PASS_WITH_WARNINGS: active moral arc; premise-engine score 91/100. The text supports a deliberate goal-sacrificing arc.  Textual support only; visual execution and audience response remain unverified.",
+      "evidenceLimitations": [
+        "Conservative English source-pattern screening, not semantic verification.",
+        "Unrecognized wording and ambiguous actor references require editorial review.",
+        "Early-solve risk is an editorial hypothesis, not observed viewer behavior.",
+        "No rendered visual or audience evidence."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0
+    }
+  }
+}

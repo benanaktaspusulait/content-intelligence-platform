@@ -1,0 +1,378 @@
+{
+  "workflow": "SEMANTIC_EVIDENCE_REPLAY",
+  "semanticEvidenceAdapterVersion": "semantic-evidence-adapter-v1",
+  "experimentId": "semantic-live-v1-seed-42-count-40",
+  "sourceResponseSha256": "0d0e63063f51b6f22c303cfa0ef08f8bed892d02dcc0aee97353c3212ad88103",
+  "rootCauseEvidence": {
+    "legacyTerminalRelationshipCounts": {
+      "CHARACTER_ATTEMPTS_CONTROL": 32,
+      "OBJECT_DISPLACES_BODY": 1
+    },
+    "legacyPayoffShapeCounts": {
+      "UNKNOWN": 33
+    },
+    "explanation": "Legacy semantic adapter maps terminal relations through narrow growth/transfer/environment patterns; Creative Shape returns UNKNOWN for unsupported terminal relations. SFE independently reads timed prose with fixed goal/rule/payoff patterns. Neither UNKNOWN nor an unsupported phrase proves the source field is absent."
+  },
+  "baselineExact": true,
+  "before": {
+    "normalizedCount": 33,
+    "validatorRecognitionCounts": {
+      "goal": 3,
+      "frameZero": 0,
+      "coreRule": 21,
+      "trigger": 13,
+      "payoff": 0,
+      "payoffClassification": 0,
+      "loop": 0,
+      "causalBeats": 38,
+      "describedBeats": 165
+    },
+    "validatorRecognitionRates": {
+      "goal": 0.09090909090909091,
+      "frameZero": 0.0,
+      "coreRule": 0.6363636363636364,
+      "trigger": 0.3939393939393939,
+      "payoff": 0.0,
+      "payoffClassification": 0.0,
+      "loop": 0.0
+    },
+    "causalBeatRecognitionRate": 0.23030303030303031,
+    "score": {
+      "min": 18,
+      "max": 46,
+      "mean": 27.636363636363637,
+      "median": 28
+    },
+    "dispositionCounts": {
+      "REVISION_REQUIRED": 21,
+      "REJECT": 12
+    },
+    "existingHumanReviewSetCount": 0,
+    "productionCandidateCount": 0
+  },
+  "after": {
+    "normalizedCount": 33,
+    "validatorRecognitionCounts": {
+      "goal": 3,
+      "frameZero": 0,
+      "coreRule": 21,
+      "trigger": 13,
+      "payoff": 0,
+      "payoffClassification": 0,
+      "loop": 0,
+      "causalBeats": 38,
+      "describedBeats": 165
+    },
+    "validatorRecognitionRates": {
+      "goal": 0.09090909090909091,
+      "frameZero": 0.0,
+      "coreRule": 0.6363636363636364,
+      "trigger": 0.3939393939393939,
+      "payoff": 0.0,
+      "payoffClassification": 0.0,
+      "loop": 0.0
+    },
+    "causalBeatRecognitionRate": 0.23030303030303031,
+    "score": {
+      "min": 18,
+      "max": 46,
+      "mean": 27.636363636363637,
+      "median": 28
+    },
+    "dispositionCounts": {
+      "REVISION_REQUIRED": 21,
+      "REJECT": 12
+    },
+    "existingHumanReviewSetCount": 0,
+    "productionCandidateCount": 0
+  },
+  "projectedRecognitionCounts": {
+    "visibleGoalEvidence": 33,
+    "primaryObjectEvidence": 33,
+    "expectedAffordanceEvidence": 33,
+    "coreRuleEvidence": 33,
+    "triggerEvidence": 33,
+    "openingProblemEvidence": 33,
+    "payoffEvidence": 33,
+    "loopEvidence": 33,
+    "affordanceRelationshipEvidence": 33,
+    "goalRuleRelationshipEvidence": 33
+  },
+  "payoffBreakdown": {
+    "PAYOFF_MISSING": 0,
+    "PAYOFF_PRESENT_CLASSIFIED": 0,
+    "PAYOFF_PRESENT_UNCLASSIFIED": 33,
+    "PAYOFF_AMBIGUOUS": 0
+  },
+  "unknownEngineIdeaIds": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-008",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038"
+  ],
+  "unclassifiedPayoffIdeaIds": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-016",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038",
+    "raw-039"
+  ],
+  "completeSourceProjectionIdeaIds": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-016",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038",
+    "raw-039"
+  ],
+  "below60DespiteCompleteProjection": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-016",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038",
+    "raw-039"
+  ],
+  "completeValidatorRecognitionIdeaIds": [],
+  "changedCanonicalOutcomes": [],
+  "materialScoreChanges": [],
+  "HUMAN_REVIEW_SET": [
+    {
+      "ideaId": "raw-001",
+      "candidateId": "sem1-70ee2b7099c48d36",
+      "title": "The Inward Umbrella",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-003",
+      "candidateId": "sem1-5cf30c7094c804b1",
+      "title": "Spiraling Shopping Cart",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-005",
+      "candidateId": "sem1-913bc9ae39a3c15e",
+      "title": "Vacuum Blows",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-006",
+      "candidateId": "sem1-d1e9d5ce1154b96b",
+      "title": "Mirrored Doorway",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-007",
+      "candidateId": "sem1-bbdb302fefb48bd5",
+      "title": "Backward Alarm Clock",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-009",
+      "candidateId": "sem1-dd72ae9a5bebad5a",
+      "title": "Ceiling Pancake",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-013",
+      "candidateId": "sem1-8d1da895a1fb41af",
+      "title": "Tangling Hairbrush",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-015",
+      "candidateId": "sem1-90670eeaf4ee0468",
+      "title": "Bottom-Opening Zipper",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-016",
+      "candidateId": "sem1-6c8721485468a0f0",
+      "title": "Bottomless Backpack",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-020",
+      "candidateId": "sem1-c2b6225333ed3cda",
+      "title": "Wrong-Room Light Switch",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-026",
+      "candidateId": "sem1-23a3c991b8104bee",
+      "title": "Bending Nail Hammer",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-031",
+      "candidateId": "sem1-c85a677474d9ed27",
+      "title": "Shadow Flashlight",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-032",
+      "candidateId": "sem1-cfeed66616185cb0",
+      "title": "Delayed Mirror",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    }
+  ],
+  "fieldLossStatusCounts": {
+    "VALIDATOR_EXTRACTION_LOSS": 500,
+    "PRESERVED": 259,
+    "AMBIGUOUS_SOURCE": 66
+  },
+  "legacyNormalizationStatusCounts": {
+    "PRESERVED": 792,
+    "NORMALIZATION_LOSS": 33
+  },
+  "diagnosisTransitions": {
+    "UNKNOWN -> EVIDENCE_EXTRACTION_FAILURE": 60
+  },
+  "canonicalRankingUnchanged": true,
+  "baselineProductionSlate": [],
+  "adapterProductionSlate": [],
+  "providerCalls": 0,
+  "externalProviderCalls": 0,
+  "newConceptsGenerated": 0,
+  "renders": 0,
+  "scoreOverrides": false,
+  "limitations": [
+    "Projection presence is not proof of coherent causality, visible staging or a strong idea.",
+    "Accepted SFE/ranking consume timed prose and do not accept typed evidence overrides. Canonical input remains unchanged; no keyword injection or monkeypatching.",
+    "Typed projection is complete where declared source fields are supplied; scoring-validator recognition can still be incomplete. These are separately counted.",
+    "Existing shape taxonomy is reused; suggested provider payoff labels and rationale are excluded.",
+    "The expanded review set is diagnostic only; it never changes ranking or production admission."
+  ]
+}

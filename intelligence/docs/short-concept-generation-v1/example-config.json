@@ -1,0 +1,37 @@
+{
+  "generatorVersion": "short-concept-generator-v1",
+  "count": 20,
+  "seed": 42,
+  "duration": 15,
+  "characterIds": [],
+  "excludeEngineFamilies": [],
+  "excludeObjects": [],
+  "excludeObjectCategories": [],
+  "rank": true,
+  "canonicalCast": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "name": "Opa"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "name": "Kiko"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "name": "Mimi"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000004",
+      "name": "Arda"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000005",
+      "name": "Luca"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000006",
+      "name": "Noah"
+    }
+  ]
+}

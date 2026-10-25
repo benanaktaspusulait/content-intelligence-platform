@@ -1,0 +1,6 @@
+{
+  "intelligence/ml-service/app/workflow/concept_ranking.py": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+  "intelligence/ml-service/app/workflow/premise_naturalness.py": "0069e6f4ca56d47b277339ab03ecc9af6643160f53cd2184808b1c48b5b40fc8",
+  "intelligence/ml-service/app/workflow/beat_grammar.py": "b419d37c25b1124fa3fb1c8e158091cd215b23023e530714ada81bb26489e1d9",
+  "intelligence/ml-service/app/workflow/creative_shape.py": "0c862af88818e6304dac74b15b62fa559a6276afcac0dcac2f9e2872a5f1727e"
+}

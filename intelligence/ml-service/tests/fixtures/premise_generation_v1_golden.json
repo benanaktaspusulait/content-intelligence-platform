@@ -1,0 +1,37 @@
+{
+  "candidateIds": [
+    "bg2-4ccad65c0d3ef5fe",
+    "bg2-b9eb527105f7dbc4",
+    "bg2-4bc8807e605927cd",
+    "bg2-f7f645f7ceb01289",
+    "bg2-6c3a164fda187c53",
+    "bg2-cb112b5875e15b02",
+    "bg2-82cad7eb12869bb2",
+    "bg2-0dad72b9409feebb",
+    "bg2-288bca257378c880",
+    "bg2-e4c45fe438207b3a",
+    "bg2-d6534d3e1a56353a",
+    "bg2-11d9761449831aea",
+    "bg2-a938f9d6e3e71693",
+    "bg2-ef21c527a10b27ec",
+    "bg2-fcb7fd5f44afee19",
+    "bg2-dad1ed89c7e2b2fe",
+    "bg2-aa8847be74147569",
+    "bg2-84100580efb9c5e1",
+    "bg2-59dca321fe7c5a89",
+    "bg2-fe88951786ac1868"
+  ],
+  "generationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 20,
+    "finalCandidateCount": 20,
+    "eligibleCount": 9,
+    "revisionCount": 11,
+    "rejectedCount": 0
+  },
+  "productionSlate": [
+    "bg2-6c3a164fda187c53",
+    "bg2-fe88951786ac1868",
+    "bg2-e4c45fe438207b3a"
+  ]
+}

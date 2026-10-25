@@ -1,0 +1,479 @@
+.............F.......................................................... [  2%]
+........F............................................................... [  5%]
+........................................................................ [  7%]
+...............F..................F.......F............................. [ 10%]
+................................F....................................... [ 12%]
+...........................................FFFFFFFFF.................... [ 15%]
+........................F............................................... [ 18%]
+........................................................................ [ 20%]
+...............FFFFFF.FF.F.............................................. [ 23%]
+........................................F.......................FFF..... [ 25%]
+........................................................................ [ 28%]
+........................................................................ [ 31%]
+.............................................F.......................... [ 33%]
+........................................................................ [ 36%]
+........................................................................ [ 38%]
+................................................FFF..................... [ 41%]
+........................F.................................F............. [ 44%]
+........................................................................ [ 46%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 54%]
+........................................................................ [ 57%]
+.........................................s.............................. [ 59%]
+..............................................s......................... [ 62%]
+........................................................................ [ 64%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 85%]
+........................................................................ [ 88%]
+........................................................................ [ 90%]
+........................................................................ [ 93%]
+........................................................................ [ 96%]
+........................................F............................... [ 98%]
+......................................                                   [100%]
+=================================== FAILURES ===================================
+______ test_inline_character_only_constraint_is_not_an_actor_declaration _______
+tests/test_actor_source_attempts.py:100: in test_inline_character_only_constraint_is_not_an_actor_declaration
+    assert [(beat["actor"], beat["primaryVerb"]) for beat in ir["beats"] if beat["isAttempt"]] == [
+E   AssertionError: assert [('Kiko', 'PULL')] == [('Kiko', 'PU...o', 'ROTATE')]
+E     
+E     Right contains one more item: ('Kiko', 'ROTATE')
+E     Use -v to get more diff
+_ test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta _
+tests/test_authoring_contract_repair_v2.py:160: in test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta
+    assert compiled['review']['canonicalRuleEvaluation']['rulesetVersion']=='1.11'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'rulesetVersion'
+____ test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline _____
+tests/test_creative_reconstruction_v2.py:57: in test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline
+    assert c['review']['canonicalRuleEvaluation']['status']=='EVALUATED'
+E   AssertionError: assert 'ERROR' == 'EVALUATED'
+E     
+E     - EVALUATED
+E     + ERROR
+_ test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates _
+tests/test_creative_roles.py:192: in test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates
+    assert candidate['mandatoryStoryGate']['status'] == 'PASS'
+E   AssertionError: assert 'NOT_EVALUATED' == 'PASS'
+E     
+E     - PASS
+E     + NOT_EVALUATED
+_ test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts _
+tests/test_creative_roles.py:377: in test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts
+    assert result['status'] == 'EVALUATED'
+E   AssertionError: assert 'ERROR' == 'EVALUATED'
+E     
+E     - EVALUATED
+E     + ERROR
+_____ test_reconstruction_changes_with_objective_without_a_prepared_answer _____
+tests/test_creative_v2_generation_evidence.py:107: in test_reconstruction_changes_with_objective_without_a_prepared_answer
+    assert candidate['review']['canonicalRuleEvaluation']['rulesetVersion'] == '1.11'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'rulesetVersion'
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_ test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01] _
+tests/test_family10_golden_review.py:52: in test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api
+    assert transport["pre_render_assessment"] == api["pre_render_assessment"]
+E   AssertionError: assert {'aggregation...OMPLETE', ...} == {'aggregation...OMPLETE', ...}
+E     
+E     Omitting 24 identical items, use -vv to show
+E     Right contains 1 more item:
+E     {'story_validation': {'content_profile': 'UNKNOWN',
+E                           'required_rules': {'ATTEMPT_001': 'NOT_EVALUATED',
+E                                              'ATTEMPT_002': 'NOT_EVALUATED',
+E                                              'BEAT_DENSITY_RULE': 'NOT_EVALUATED',...
+E     
+E     ...Full output truncated (15 lines hidden), use '-vv' to show
+_______________ test_island_journal_escalation_is_not_applicable _______________
+tests/test_family2_escalation.py:49: in test_island_journal_escalation_is_not_applicable
+    assert evidence.applicability == "NOT_APPLICABLE"
+E   AssertionError: assert 'APPLICABLE' == 'NOT_APPLICABLE'
+E     
+E     - NOT_APPLICABLE
+E     ? ----
+E     + APPLICABLE
+___ test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result ___
+tests/test_hook_002_metamorphic_stability.py:56: in test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result
+    assert row(baseline_result, "HOOK_002")["outcome"] == "PASS"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+_ test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]] _
+tests/test_hook_002_metamorphic_stability.py:74: in test_later_beat_and_metadata_edits_cannot_change_hook_002
+    assert row(original, "HOOK_002") == row(edited, "HOOK_002")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+_ test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]] _
+tests/test_hook_002_metamorphic_stability.py:74: in test_later_beat_and_metadata_edits_cannot_change_hook_002
+    assert row(original, "HOOK_002") == row(edited, "HOOK_002")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+_ test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]] _
+tests/test_hook_002_metamorphic_stability.py:74: in test_later_beat_and_metadata_edits_cannot_change_hook_002
+    assert row(original, "HOOK_002") == row(edited, "HOOK_002")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+_ test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]] _
+tests/test_hook_002_metamorphic_stability.py:74: in test_later_beat_and_metadata_edits_cannot_change_hook_002
+    assert row(original, "HOOK_002") == row(edited, "HOOK_002")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+_ test_later_beat_and_metadata_edits_cannot_change_hook_002[\nPRODUCTION NOTE: Keep later contact readable.] _
+tests/test_hook_002_metamorphic_stability.py:74: in test_later_beat_and_metadata_edits_cannot_change_hook_002
+    assert row(original, "HOOK_002") == row(edited, "HOOK_002")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+___ test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens ___
+tests/test_hook_002_metamorphic_stability.py:92: in test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens
+    assert row(result, "HOOK_002")["outcome"] != "PASS"
+           ^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_hook_002_metamorphic_stability.py:34: in row
+    return next(item for group in ("passedRules", "failedRules", "unknownRules", "notApplicableRules")
+E   StopIteration
+_ test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence _
+tests/test_hook_002_metamorphic_stability.py:101: in test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence
+    assert decision['state'] == 'NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN'
+E   AssertionError: assert 'CONTRACT_FAILURE' == 'NO_MATERIAL_...CREATIVE_GAIN'
+E     
+E     - NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN
+E     + CONTRACT_FAILURE
+__________ test_formatting_only_preserves_all_rule_outcomes_and_score __________
+tests/test_hook_002_metamorphic_stability.py:124: in test_formatting_only_preserves_all_rule_outcomes_and_score
+    assert before['score'] == after['score']
+           ^^^^^^^^^^^^^^^
+E   KeyError: 'score'
+___ test_complete_mock_provider_source_canonical_critic_and_comparison_gates ___
+tests/test_model_authored_execution.py:159: in test_complete_mock_provider_source_canonical_critic_and_comparison_gates
+    assert c['review']['canonicalRuleEvaluation']['status']=='EVALUATED'
+E   AssertionError: assert 'ERROR' == 'EVALUATED'
+E     
+E     - EVALUATED
+E     + ERROR
+___________ test_saved_workflow_and_frozen_history[Original-saved0] ____________
+tests/test_motion_token_policy.py:48: in test_saved_workflow_and_frozen_history
+    assert json.loads(json.dumps(historical)) == saved['canonicalRuleEvaluation']
+E   AssertionError: assert {'failedRules....}, ...], ...} == {'failedRules....}, ...], ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]} != {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]}
+E     {'videoPlanIR': {'beats': [{'acti...
+E     
+E     ...Full output truncated (5 lines hidden), use '-vv' to show
+__________ test_saved_workflow_and_frozen_history[candidate-a-saved1] __________
+tests/test_motion_token_policy.py:48: in test_saved_workflow_and_frozen_history
+    assert json.loads(json.dumps(historical)) == saved['canonicalRuleEvaluation']
+E   AssertionError: assert {'failedRules....}, ...], ...} == {'failedRules....}, ...], ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]} != {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]}
+E     {'videoPlanIR': {'beats': [{'acti...
+E     
+E     ...Full output truncated (5 lines hidden), use '-vv' to show
+__________ test_saved_workflow_and_frozen_history[candidate-b-saved2] __________
+tests/test_motion_token_policy.py:48: in test_saved_workflow_and_frozen_history
+    assert json.loads(json.dumps(historical)) == saved['canonicalRuleEvaluation']
+E   AssertionError: assert {'failedRules....}, ...], ...} == {'failedRules....}, ...], ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]} != {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]}
+E     {'videoPlanIR': {'beats': [{'acti...
+E     
+E     ...Full output truncated (5 lines hidden), use '-vv' to show
+_ test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates _
+tests/test_post_family_workflow.py:83: in test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates
+    assert rows[shared_rule]["outcome"] != "NOT_APPLICABLE"
+E   AssertionError: assert 'NOT_APPLICABLE' != 'NOT_APPLICABLE'
+_ test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0] _
+tests/test_ruleset_1_11_measurements.py:28: in test_saved_inputs_preserve_1_10_and_correct_only_measurements
+    assert json.loads(json.dumps(old)) == saved['canonicalRuleEvaluation']
+E   AssertionError: assert {'failedRules....}, ...], ...} == {'failedRules....}, ...], ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]} != {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]}
+E     {'videoPlanIR': {'beats': [{'acti...
+E     
+E     ...Full output truncated (5 lines hidden), use '-vv' to show
+_ test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1] _
+tests/test_ruleset_1_11_measurements.py:28: in test_saved_inputs_preserve_1_10_and_correct_only_measurements
+    assert json.loads(json.dumps(old)) == saved['canonicalRuleEvaluation']
+E   AssertionError: assert {'failedRules....}, ...], ...} == {'failedRules....}, ...], ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]} != {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]}
+E     {'videoPlanIR': {'beats': [{'acti...
+E     
+E     ...Full output truncated (5 lines hidden), use '-vv' to show
+_ test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2] _
+tests/test_ruleset_1_11_measurements.py:28: in test_saved_inputs_preserve_1_10_and_correct_only_measurements
+    assert json.loads(json.dumps(old)) == saved['canonicalRuleEvaluation']
+E   AssertionError: assert {'failedRules....}, ...], ...} == {'failedRules....}, ...], ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]} != {'unknownRules': [{'details': {'evaluation_stage': 'PRE_RENDER', 'recommendation': 'The physical rule established in t...ent has no verified evidence; provider dispatch is disabled for this local ruleset.', 'outcome': 'UNKNOWN', ...}, ...]}
+E     {'videoPlanIR': {'beats': [{'acti...
+E     
+E     ...Full output truncated (5 lines hidden), use '-vv' to show
+_ TestGoal001GoalObstructionClarity.test_flawed_juice_mechanic_demo_fails_as_missing_motivation _
+tests/test_ruleset_1_3_new_rules.py:96: in test_flawed_juice_mechanic_demo_fails_as_missing_motivation
+    assert ir["goalEvidence"]["goalExplicitness"] == "UNSUPPORTED"
+E   AssertionError: assert 'IMPLICIT_BUT_OBSERVABLE' == 'UNSUPPORTED'
+E     
+E     - UNSUPPORTED
+E     + IMPLICIT_BUT_OBSERVABLE
+__________ test_engine_silhouette_duplicate_blocks_missing_comparison __________
+tests/test_ruleset_1_4_new_rules.py:148: in test_engine_silhouette_duplicate_blocks_missing_comparison
+    assert evaluation.outcome is RuleOutcome.FAIL
+E   AssertionError: assert <RuleOutcome.UNKNOWN: 'UNKNOWN'> is <RuleOutcome.FAIL: 'FAIL'>
+E    +  where <RuleOutcome.UNKNOWN: 'UNKNOWN'> = RuleEvaluation(rule_id='ENGINE_SILHOUETTE_DUPLICATE', rule_name='Engine Silhouette Duplicate', family='visual_novelty'...MISSING_COMPARISON', 'failureBasis': 'EVIDENCE_INCOMPLETE'}, evaluation_state=<EvaluationState.EVALUATED: 'EVALUATED'>).outcome
+E    +  and   <RuleOutcome.FAIL: 'FAIL'> = RuleOutcome.FAIL
+_______ test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt ________
+tests/test_studio_self_service.py:22: in test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt
+    assert len(Provider.calls)==1 and result['result']==IDEA
+E   assert (1 == 1 and {'candidateId...n seat.', ...} == {'concept': '... space.', ...}
+E    +  where 1 = len([('{"text": "A surprising picnic.", "context": {"characterRecord": {"id": "arda", "name": "Arda"}}}', 'Invent original... payoff. Warm lived-in 3D cartoon environment; no white void, generic studio, automatic PASS or production approval.')])
+E    +    where [('{"text": "A surprising picnic.", "context": {"characterRecord": {"id": "arda", "name": "Arda"}}}', 'Invent original... payoff. Warm lived-in 3D cartoon environment; no white void, generic studio, automatic PASS or production approval.')] = Provider.calls
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Left contains 1 more item:
+E     {'candidateId': 'idea-1'}
+E     Use -v to get more diff)
+=============================== warnings summary ===============================
+tests/test_actor_source_attempts.py: 29 warnings
+tests/test_adaptive_optimization_v3.py: 244 warnings
+tests/test_api_conversions.py: 11 warnings
+tests/test_authoring_contract_repair_v2.py: 393 warnings
+tests/test_autofix_loop.py: 2 warnings
+tests/test_canonical_beat_evidence.py: 12 warnings
+tests/test_creative_reconstruction_v2.py: 115 warnings
+tests/test_creative_roles.py: 64 warnings
+tests/test_creative_v2_generation_evidence.py: 109 warnings
+tests/test_curiosity_positive_control.py: 6 warnings
+tests/test_duration_parsing.py: 2 warnings
+tests/test_f8_authorization.py: 19 warnings
+tests/test_failed_cases.py: 4 warnings
+tests/test_family10_freeze_gate.py: 9 warnings
+tests/test_family2_escalation.py: 6 warnings
+tests/test_family3_goal_realization.py: 1 warning
+tests/test_family4_mechanic_payoff.py: 4 warnings
+tests/test_family5_specialized_applicability.py: 9 warnings
+tests/test_family6_golden_contract.py: 2 warnings
+tests/test_family7_aggregation_representation.py: 2 warnings
+tests/test_family7_missing_evaluation.py: 1 warning
+tests/test_family8_integration.py: 2 warnings
+tests/test_family9_golden_representation.py: 8 warnings
+tests/test_family9_representation_consistency.py: 5 warnings
+tests/test_golden_provenance.py: 1 warning
+tests/test_golden_representation_contract.py: 1 warning
+tests/test_hook_002_metamorphic_stability.py: 31 warnings
+tests/test_integration_e2e.py: 6 warnings
+tests/test_isolated_fixture_transport.py: 1 warning
+tests/test_model_authored_execution.py: 890 warnings
+tests/test_motion_token_policy.py: 6 warnings
+tests/test_optimization_comparison.py: 34 warnings
+tests/test_optimization_distinctness.py: 62 warnings
+tests/test_optimization_failure_contract.py: 25 warnings
+tests/test_optimization_loop.py: 376 warnings
+tests/test_optimization_profile_contract.py: 40 warnings
+tests/test_optimization_split_coverage.py: 29 warnings
+tests/test_parser_contract.py: 23 warnings
+tests/test_plan_first_optimization.py: 299 warnings
+tests/test_pompom_golden_baseline.py: 11 warnings
+tests/test_post_family_execution.py: 12 warnings
+tests/test_post_family_workflow.py: 18 warnings
+tests/test_prompt_quality_consistency_golden.py: 1 warning
+tests/test_prompt_quality_second_pass.py: 20 warnings
+tests/test_quality_router.py: 1 warning
+tests/test_quality_scorer.py: 5 warnings
+tests/test_regression_checker.py: 4 warnings
+tests/test_rule_engine_contract.py: 4 warnings
+tests/test_ruleset_1_11_measurements.py: 11 warnings
+tests/test_ruleset_1_12_long_form_policy.py: 1 warning
+tests/test_ruleset_1_3_new_rules.py: 1 warning
+tests/test_ruleset_1_6_story_density.py: 1 warning
+tests/test_ruleset_1_8_dispatch.py: 8 warnings
+tests/test_short_form_integration.py: 1 warning
+tests/test_step5_source_contract.py: 11 warnings
+tests/test_story_premise_integration.py: 3 warnings
+tests/test_story_review_contract.py: 8 warnings
+tests/test_story_stage_canonical_evidence.py: 2 warnings
+tests/test_temporal_source_evidence.py: 2 warnings
+tests/test_workflow_impact_amendment.py: 21 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:214: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+tests/test_llm_providers.py::test_get_provider_gemini
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/llm/gemini_provider.py:3: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration
+FAILED tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta
+FAILED tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline
+FAILED tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates
+FAILED tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts
+FAILED tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]
+FAILED tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable
+FAILED tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\nPRODUCTION NOTE: Keep later contact readable.]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens
+FAILED tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence
+FAILED tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score
+FAILED tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates
+FAILED tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]
+FAILED tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]
+FAILED tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]
+FAILED tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates
+FAILED tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]
+FAILED tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]
+FAILED tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]
+FAILED tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation
+FAILED tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison
+FAILED tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt
+36 failed, 2736 passed, 2 skipped, 3030 warnings in 192.33s (0:03:12)

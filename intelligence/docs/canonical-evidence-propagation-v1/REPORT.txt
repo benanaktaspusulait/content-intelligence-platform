@@ -1,0 +1,1601 @@
+CANONICAL EVIDENCE PROPAGATION V1 — OFFLINE REPORT
+
+Accepted output: verified-replay/. replay/ and replay-final/ are development snapshots; verified-replay includes final source/text binding, provenance and quality-scope clarification.
+Architecture: stored normalized fields + accepted Structured Evidence Input V1 acquisition → source-bound canonical creative evidence context → independent SFE, Naturalness, Beat Grammar, ranking/admission, Creative Shape → existing production preselection.
+No global score. No thresholds, score weights, enum vocabulary, model/compatibility data, prompts, or provider configuration changed. Default legacy and the prior structured-SFE-only mode remain unchanged. Canonical propagation requires an explicit context or canonicalCreativeEvidenceMode=v1.
+The fact context is source independent: TIMED_TEXT, SEMANTIC, MANUAL. MANUAL uses the same strict structured field/provenance contract. Timed acquisition retains unknown facts as null; it does not fabricate trigger/payoff presence. Source kind is audit provenance and never a scoring preference.
+Canonical facts are source-text declarations and deterministic support inferences, not observed pixels. Everyday goal support is the explicit goal + object + normal expectation fact, distinct from opening visibility and from a configured object-affordance quality match. Trigger/opening overlap and the existing structured goal/rule linkage checks do not prove semantic truth.
+Input extra fields are forbidden; scores, pass/fail and admission cannot be supplied. Context is built from validated projection hashes/references and bound to exact timing carrier, candidate ID and ranking fields. Snapshots are copied for evaluator isolation.
+
+AUDIT BEFORE MODIFICATION
+Audit-only baseline was persisted before consumer edits: audit-only-baseline.json. The 504-cell matrix covers 18 × 7 factual axes × 4 consumers. 71 cells identify an evidence acquisition path mismatch (54 Naturalness opening/trigger cells + 17 independent legacy goal-pattern checks). These are not 71 proven contradictory creative judgments. UNKNOWN means the old evaluator did not export that fact. All 18 also have a beat-content acquisition mismatch: synthetic category/state/newInformation plans rather than the exact source fields; beat counts themselves agree. See audit-only-beat-content.json.
+After propagation: zero differing shared fact receipts; SFE uses exactly the accepted acquisition object and every full SFE report equals its saved report. Classification/quality differences remain separately visible; the after matrix does not imply equal quality verdicts.
+
+EVALUATOR CHANGES
+SFE: acquisition reused, _evaluate and thresholds untouched, exact report projection preserved. No SFE source edit.
+Ranking: canonical mode replaces only legacy declared-goal lexical recognition/conflict acquisition. A declared goal must still be supported as ordinary use and visible in the opening. Insufficient visibility yields DECLARED_GOAL_UNSUPPORTED with canonical evidence. Required fields, source conflicts, all scores/weights/penalties/history remain active.
+Naturalness: receives original goal, object, rule, opening, expectation, why-this-object, trigger and all shared fact receipts. Opening source support now comes from canonical facts, rather than separately parsing the frame through generic affordance patterns. Existing object categories, expected-behavior model, response regex classifier, policy lookup, quality formula and admission rules remain independent. Explicit normal expectation/why-this-object do not create an unconfigured compatibility policy.
+Beat Grammar: receives exact source strategy/consequence/newInformation, reuses existing strategy/consequence categories only, removes fabricated generic body/contact/spatial states, keeps unstated physical states UNKNOWN. Existing UNKNOWN_CONSEQUENCE validation remains active. A BROKEN result with this code means classification coverage is unresolved, not that a consequence/rule/payoff is absent. All 18 encounter this existing coverage requirement. No taxonomy expansion and no quality promotion.
+Creative Shape: derives its fingerprint from the same acquired beat facts; unknown physical relationships/payoff mechanism stay UNKNOWN. Presence is not mechanism classification. Production preselection uses newly evaluated Naturalness/BG/validation records through existing quality_reasons/curate/production selection. No forced raw rank or slate promotion.
+
+BLOCKER COUNTS (overlap; null ranking is still null, never an assigned zero score)
+OPENING_EVIDENCE_INSUFFICIENT: 18 → 18
+ACCEPTED_VALIDATOR_INELIGIBLE: 17 → 14
+RANKING_QUALITY_FLOOR: 17 → 14
+BEAT_GRAMMAR_QUALITY_FLOOR: 18 → 18
+PREMISE_NOT_ADMITTED: 18 → 18
+SHORT_FORM_QUALITY_FLOOR: 11 → 11
+eligibility/admission: 18 → 18
+taxonomy/coverage-related premise blocker: 18 → 18
+Production slate: [] → []; firstRenderCandidate: null → null.
+Eligibility alone: 1 → 4 eligible. Admission remains blocked for all 18. Counts are diagnostics, not a success score.
+
+ALL 18 BEFORE / AFTER
+
+raw-007 | sem1-bbdb302fefb48bd5 | Backward Alarm Clock
+BEFORE: {"SFE": "PASS", "shortFormScore": 100, "Naturalness": "CONTRIVED", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "PASS", "shortFormScore": 100, "Naturalness": "CONTRIVED", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "ELIGIBLE", "rankingScore": 97.6, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}, "eligibility": {"before": "INELIGIBLE", "after": "ELIGIBLE"}, "rankingScore": {"before": null, "after": 97.6}, "blockers": {"before": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"], "after": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-013 | sem1-8d1da895a1fb41af | Tangling Hairbrush
+BEFORE: {"SFE": "PASS", "shortFormScore": 99, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "ELIGIBLE", "rankingScore": 97.6, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "PASS", "shortFormScore": 99, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "ELIGIBLE", "rankingScore": 97.6, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-026 | sem1-23a3c991b8104bee | Bending Nail Hammer
+BEFORE: {"SFE": "PASS", "shortFormScore": 100, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "PASS", "shortFormScore": 100, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "ELIGIBLE", "rankingScore": 97.6, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}, "eligibility": {"before": "INELIGIBLE", "after": "ELIGIBLE"}, "rankingScore": {"before": null, "after": 97.6}, "blockers": {"before": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"], "after": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-027 | sem1-2ae718e8672f18cc | Opposite-Color Paintbrush
+BEFORE: {"SFE": "PASS", "shortFormScore": 99, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "PASS", "shortFormScore": 99, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "ELIGIBLE", "rankingScore": 97.6, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}, "eligibility": {"before": "INELIGIBLE", "after": "ELIGIBLE"}, "rankingScore": {"before": null, "after": 97.6}, "blockers": {"before": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"], "after": ["OPENING_EVIDENCE_INSUFFICIENT", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-005 | sem1-913bc9ae39a3c15e | Vacuum Blows
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 93, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 93, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-006 | sem1-d1e9d5ce1154b96b | Mirrored Doorway
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 93, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 93, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-018 | sem1-91ea45894fa28d7b | Random Fridge Interior
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 85, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 85, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-008 | sem1-8a6fb30b4a11976b | Neighbor's TV Remote
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 83, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 83, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-004 | sem1-11beb05a18d36fdb | Sweep-Back Broom
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 78, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 78, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-019 | sem1-63760a23881b08d8 | Microwave Hot Plate
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 77, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 77, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-020 | sem1-c2b6225333ed3cda | Wrong-Room Light Switch
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 64, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 64, "Naturalness": "BROKEN", "openingLegibility": 35, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"openingLegibility": {"before": 15, "after": 35}, "BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-032 | sem1-cfeed66616185cb0 | Delayed Mirror
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 63, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 63, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-003 | sem1-5cf30c7094c804b1 | Spiraling Shopping Cart
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 46, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 46, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-015 | sem1-90670eeaf4ee0468 | Bottom-Opening Zipper
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 43, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 43, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-016 | sem1-6c8721485468a0f0 | Bottomless Backpack
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 42, "Naturalness": "CONTRIVED", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 42, "Naturalness": "CONTRIVED", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-001 | sem1-70ee2b7099c48d36 | The Inward Umbrella
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 41, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 41, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-009 | sem1-dd72ae9a5bebad5a | Ceiling Pancake
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 41, "Naturalness": "CONTRIVED", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 41, "Naturalness": "CONTRIVED", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+raw-031 | sem1-c85a677474d9ed27 | Shadow Flashlight
+BEFORE: {"SFE": "REVISION_REQUIRED", "shortFormScore": 26, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "MECHANICAL", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+AFTER: {"SFE": "REVISION_REQUIRED", "shortFormScore": 26, "Naturalness": "BROKEN", "openingLegibility": 15, "BeatGrammar": "BROKEN", "eligibility": "INELIGIBLE", "rankingScore": null, "blockers": ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]}
+DELTA: {"BeatGrammar": {"before": "MECHANICAL", "after": "BROKEN"}}
+CAUSE: Ranking uses canonical declared/ordinary-use/visible-opening evidence instead of independently matching the legacy goal regex. Naturalness uses canonical opening/trigger facts; its object model, response classifier, compatibility policies and quality formula are unchanged. Beat Grammar receives source consequences and exact newInformation. Unstated physical defaults are removed; unclassified consequences invoke the existing UNKNOWN_CONSEQUENCE rule.
+
+RAW-007 / RAW-026 / RAW-027 GOLDENS
+
+raw-007 Backward Alarm Clock
+Original goal: Wake up at 7 AM after setting alarm
+Original frame zero: Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.
+Canonical goal: {"declared": true, "visibleInOpening": true, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Wake up at 7 AM after setting alarm", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}
+Original eligibility findings: [{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "SHORT_FORM_ENGINE_GOAL_PATTERN", "reason": "The declared goal is not a supported visible everyday goal."}]
+After eligibility findings: []
+Result: ELIGIBLE; ranking 97.6; no production admission. Removed cause: independent SHORT_FORM_ENGINE_GOAL_PATTERN lexical mismatch, not a changed eligibility threshold.
+
+raw-026 Bending Nail Hammer
+Original goal: Hang a picture frame
+Original frame zero: Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.
+Canonical goal: {"declared": true, "visibleInOpening": true, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Hang a picture frame", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}
+Original eligibility findings: [{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "SHORT_FORM_ENGINE_GOAL_PATTERN", "reason": "The declared goal is not a supported visible everyday goal."}]
+After eligibility findings: []
+Result: ELIGIBLE; ranking 97.6; no production admission. Removed cause: independent SHORT_FORM_ENGINE_GOAL_PATTERN lexical mismatch, not a changed eligibility threshold.
+
+raw-027 Opposite-Color Paintbrush
+Original goal: Paint wall blue
+Original frame zero: Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.
+Canonical goal: {"declared": true, "visibleInOpening": true, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Paint wall blue", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}
+Original eligibility findings: [{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "SHORT_FORM_ENGINE_GOAL_PATTERN", "reason": "The declared goal is not a supported visible everyday goal."}]
+After eligibility findings: []
+Result: ELIGIBLE; ranking 97.6; no production admission. Removed cause: independent SHORT_FORM_ENGINE_GOAL_PATTERN lexical mismatch, not a changed eligibility threshold.
+
+RAW-013 DEEP CONSISTENCY AUDIT
+{
+  "ideaId": "raw-013",
+  "before": {
+    "SFE": "PASS",
+    "shortFormScore": 99,
+    "Naturalness": "BROKEN",
+    "openingLegibility": 15,
+    "BeatGrammar": "MECHANICAL",
+    "eligibility": "ELIGIBLE",
+    "rankingScore": 97.6,
+    "blockers": [
+      "OPENING_EVIDENCE_INSUFFICIENT",
+      "BEAT_GRAMMAR_QUALITY_FLOOR",
+      "PREMISE_NOT_ADMITTED"
+    ]
+  },
+  "after": {
+    "SFE": "PASS",
+    "shortFormScore": 99,
+    "Naturalness": "BROKEN",
+    "openingLegibility": 35,
+    "BeatGrammar": "BROKEN",
+    "eligibility": "ELIGIBLE",
+    "rankingScore": 97.6,
+    "blockers": [
+      "OPENING_EVIDENCE_INSUFFICIENT",
+      "BEAT_GRAMMAR_QUALITY_FLOOR",
+      "PREMISE_NOT_ADMITTED"
+    ]
+  },
+  "canonicalFacts": {
+    "version": "canonical-creative-evidence-v1",
+    "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0",
+    "facts": {
+      "goal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Brush hair smooth",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "opening": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "rule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "trigger": {
+        "present": true,
+        "visible": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "visibleTrigger",
+            "sourceText": "Opa brushes once, hair stands up in a giant knot.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "beats": [
+        {
+          "beatNumber": 1,
+          "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+          "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+          "newInformation": "Pulling the brush out causes the hair to cinch, not loosen.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[0].strategy",
+              "sourceText": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[0].visibleConsequence",
+              "sourceText": "The knot tightens into a bun that pulls his head back.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[0].newInformation",
+              "sourceText": "Pulling the brush out causes the hair to cinch, not loosen.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 2,
+          "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+          "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+          "newInformation": "Any grooming tool multiplies knots instead of removing them.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[1].strategy",
+              "sourceText": "Opa uses a wide-tooth comb to gently work through the tangle.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[1].visibleConsequence",
+              "sourceText": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[1].newInformation",
+              "sourceText": "Any grooming tool multiplies knots instead of removing them.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 3,
+          "strategy": "Opa applies hair conditioner to make strands slippery.",
+          "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+          "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[2].strategy",
+              "sourceText": "Opa applies hair conditioner to make strands slippery.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[2].visibleConsequence",
+              "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[2].newInformation",
+              "sourceText": "Conditioner turns hair elastic, making tangles spring-loaded.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 4,
+          "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+          "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+          "newInformation": "The hair's tangling now acts like a living trap, consuming objects.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[3].strategy",
+              "sourceText": "Opa puts on a hat to hide the hair and stop brushing.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[3].visibleConsequence",
+              "sourceText": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[3].newInformation",
+              "sourceText": "The hair's tangling now acts like a living trap, consuming objects.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 5,
+          "strategy": "Opa uses scissors to cut the hair away.",
+          "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+          "newInformation": "Cutting triggers accelerated regrowth with more tangles.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].strategy",
+              "sourceText": "Opa uses scissors to cut the hair away.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      ],
+      "payoff": {
+        "present": true,
+        "ruleLinked": true,
+        "stateChanging": true,
+        "visual": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "finalPayoff",
+            "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].newInformation",
+            "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+            "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "loop": {
+        "declared": true,
+        "supported": false,
+        "references": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "loopPotential",
+            "sourceText": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      }
+    },
+    "provenance": {
+      "sourceKind": "SEMANTIC",
+      "structuredSourceSha256": "339760b057671194796716fe09738da4706cdc7e04967ee1f07c8541bf6ae534",
+      "normalizedFieldsSha256": "1a0084d7c954980ca8f9c221c6ccd7cd08268988dd9e4d6eee0cd9219267f3c0",
+      "textSha256": "90da311ca5939ef35b5a95f476a9396ddda9450c6c14f9ced2b16a778c2a4c1d"
+    },
+    "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+  },
+  "blockers": [
+    {
+      "code": "OPENING_EVIDENCE_INSUFFICIENT",
+      "factUsedBefore": "Object/action/anomaly frame evidence parsed using GENERIC affordance goal patterns and infer_response(frame)",
+      "evidenceSourceBefore": "legacy Naturalness on raw frame plus generic object model",
+      "qualityRule": "full_causal = 90 if direct and source_supported else 60 if direct and no frame else 35 if source_supported else 15; preselection requires >=60",
+      "classificationBefore": "EVIDENCE_SOURCE_MISMATCH",
+      "factUsedAfter": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "resultBefore": 15,
+      "resultAfter": 35,
+      "remainingClassification": "TAXONOMY_COVERAGE_LIMIT",
+      "whyDifferentFromSFE": "SFE opening goal/anomaly checks pass. Naturalness also requires a configured direct object/response policy; shared facts alone yield 35, below unchanged60."
+    },
+    {
+      "code": "BEAT_GRAMMAR_QUALITY_FLOOR",
+      "factUsedBefore": {
+        "version": "beat-grammar-v2",
+        "strategySequence": [
+          "ANCHOR_TO_ENVIRONMENT",
+          "CHANGE_ANGLE",
+          "DIRECT_USE",
+          "TEMPORARILY_STOP_TRIGGER",
+          "DIRECT_USE"
+        ],
+        "strategyFamilySequence": [
+          "ENVIRONMENT_ANCHOR",
+          "ANGLE_CHANGE",
+          "DIRECT_FORCE",
+          "TRIGGER_INHIBITION",
+          "DIRECT_FORCE"
+        ],
+        "uniqueStrategyCount": 4,
+        "strategyDiversityScore": 100.0,
+        "consequenceSequence": [
+          "CHARACTER_MOVES",
+          "SPACE_REDUCES",
+          "CHARACTER_MOVES",
+          "CHARACTER_MOVES",
+          "SPACE_REDUCES"
+        ],
+        "uniqueConsequenceCount": 2,
+        "consequenceDiversityScore": 50.0,
+        "bodyStateSequence": [
+          "LEANING",
+          "OFF_BALANCE",
+          "OFF_BALANCE",
+          "OFF_BALANCE",
+          "OFF_BALANCE"
+        ],
+        "bodyStateProgressionScore": 40.0,
+        "spatialProgressionScore": 14.29,
+        "informationGainScore": 80.0,
+        "attemptSignatures": [
+          {
+            "strategyType": "ENVIRONMENT_ANCHOR",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "NORMAL_CONTROL",
+            "bodyStateAfter": "LEANING",
+            "objectStateBefore": "USABLE_START",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "CHARACTER_MOVES",
+            "newInformation": [
+              "INITIAL_CONTRADICTION",
+              "TACTIC:ANCHOR_TO_ENVIRONMENT"
+            ],
+            "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "ANGLE_CHANGE",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "LEANING",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "SPACE_REDUCES",
+            "newInformation": [
+              "TACTIC:CHANGE_ANGLE"
+            ],
+            "relationshipAfter": "OBJECT_DISPLACES_BODY",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "DIRECT_FORCE",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "OFF_BALANCE",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "CHARACTER_MOVES",
+            "newInformation": [
+              "TACTIC:DIRECT_USE"
+            ],
+            "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "TRIGGER_INHIBITION",
+            "triggerType": "NONE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "OFF_BALANCE",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "CHARACTER_MOVES",
+            "newInformation": [
+              "TACTIC:TEMPORARILY_STOP_TRIGGER"
+            ],
+            "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "DIRECT_FORCE",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "OFF_BALANCE",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "SPACE_REDUCES",
+            "newInformation": [],
+            "relationshipAfter": "OBJECT_DISPLACES_BODY",
+            "goalDistanceChange": "FARTHER"
+          }
+        ],
+        "attemptComparisons": [
+          {
+            "beats": [
+              1,
+              2
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              1,
+              3
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.75,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              1,
+              4
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.625,
+            "matchingDimensions": [
+              "contactPattern",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              1,
+              5
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              2,
+              3
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.625,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              2,
+              4
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              2,
+              5
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.875,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              3,
+              4
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.75,
+            "matchingDimensions": [
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              3,
+              5
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.75,
+            "matchingDimensions": [
+              "strategyType",
+              "triggerType",
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              4,
+              5
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          }
+        ],
+        "nearDuplicateAttemptRate": 0.4,
+        "payoffDistance": 0.5,
+        "payoffStateChange": "OBJECT_DISPLACES_BODY",
+        "payoffEvidence": {
+          "distance": 0.5,
+          "comparisons": [
+            {
+              "comparedWithBeat": 3,
+              "distance": 0.5,
+              "changedDimensions": [
+                "consequenceType",
+                "relationshipAfter"
+              ]
+            },
+            {
+              "comparedWithBeat": 4,
+              "distance": 0.5,
+              "changedDimensions": [
+                "consequenceType",
+                "relationshipAfter"
+              ]
+            }
+          ],
+          "stateChange": "OBJECT_DISPLACES_BODY",
+          "magnitudeOnlyDoesNotCount": true
+        },
+        "beatGrammarQuality": "MECHANICAL",
+        "flags": [
+          {
+            "code": "LOW_CONSEQUENCE_DIVERSITY"
+          },
+          {
+            "code": "BEAT_ROLE_REPETITION"
+          },
+          {
+            "code": "NEAR_DUPLICATE_ATTEMPTS",
+            "pairs": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                3,
+                5
+              ]
+            ]
+          },
+          {
+            "code": "NON_PROGRESSIVE_BEAT",
+            "beatNumber": 5
+          }
+        ],
+        "productionFeasibility": {
+          "score": 100,
+          "flags": [],
+          "evidenceStatus": "PLANNED_CONTACT_COMPLEXITY_SCREEN_NOT_RENDER_VERIFICATION"
+        },
+        "scoreUse": "NON_CANONICAL_GENERATION_REVIEW_NOT_RETENTION",
+        "adapterVersion": "semantic-plan-adapter-v1"
+      },
+      "evidenceSourceBefore": "semantic-plan-adapter-v1 synthesized consequence/body/contact/newInformation classes",
+      "qualityRule": "MECHANICAL if uniqueStrategyFamilies<3 OR uniqueConsequenceClasses<3 OR informationGain<60; here uniqueConsequenceClasses=2",
+      "classificationBefore": "EVIDENCE_SOURCE_MISMATCH",
+      "factUsedAfter": {
+        "version": "beat-grammar-v2",
+        "beatGrammarQuality": "BROKEN",
+        "flags": [
+          {
+            "code": "UNKNOWN_CONSEQUENCE"
+          }
+        ],
+        "strategyDiversityScore": 0,
+        "consequenceDiversityScore": 0,
+        "bodyStateProgressionScore": 0,
+        "spatialProgressionScore": 0,
+        "payoffDistance": 0,
+        "canonicalCreativeEvidence": {
+          "version": "canonical-creative-evidence-v1",
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0",
+          "facts": {
+            "goal": {
+              "declared": true,
+              "visibleInOpening": true,
+              "everyday": true,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "everydayGoal",
+                  "sourceText": "Brush hair smooth",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ],
+              "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+            },
+            "opening": {
+              "goalPresent": true,
+              "anomalyPresent": true,
+              "problemPresent": true,
+              "causalRelationshipVisible": true,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "frameZeroDescription",
+                  "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ],
+              "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+            },
+            "rule": {
+              "present": true,
+              "visible": true,
+              "dominant": true,
+              "goalRelated": true,
+              "classificationStatus": "PRESENT_UNCLASSIFIED",
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "impossibleRule",
+                  "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            "trigger": {
+              "present": true,
+              "visible": true,
+              "classificationStatus": "PRESENT_UNCLASSIFIED",
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "visibleTrigger",
+                  "sourceText": "Opa brushes once, hair stands up in a giant knot.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            "beats": [
+              {
+                "beatNumber": 1,
+                "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+                "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+                "newInformation": "Pulling the brush out causes the hair to cinch, not loosen.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[0].strategy",
+                    "sourceText": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[0].visibleConsequence",
+                    "sourceText": "The knot tightens into a bun that pulls his head back.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[0].newInformation",
+                    "sourceText": "Pulling the brush out causes the hair to cinch, not loosen.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 2,
+                "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+                "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+                "newInformation": "Any grooming tool multiplies knots instead of removing them.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[1].strategy",
+                    "sourceText": "Opa uses a wide-tooth comb to gently work through the tangle.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[1].visibleConsequence",
+                    "sourceText": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[1].newInformation",
+                    "sourceText": "Any grooming tool multiplies knots instead of removing them.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 3,
+                "strategy": "Opa applies hair conditioner to make strands slippery.",
+                "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+                "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[2].strategy",
+                    "sourceText": "Opa applies hair conditioner to make strands slippery.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[2].visibleConsequence",
+                    "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[2].newInformation",
+                    "sourceText": "Conditioner turns hair elastic, making tangles spring-loaded.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 4,
+                "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+                "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+                "newInformation": "The hair's tangling now acts like a living trap, consuming objects.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[3].strategy",
+                    "sourceText": "Opa puts on a hat to hide the hair and stop brushing.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[3].visibleConsequence",
+                    "sourceText": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[3].newInformation",
+                    "sourceText": "The hair's tangling now acts like a living trap, consuming objects.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 5,
+                "strategy": "Opa uses scissors to cut the hair away.",
+                "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                "newInformation": "Cutting triggers accelerated regrowth with more tangles.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[4].strategy",
+                    "sourceText": "Opa uses scissors to cut the hair away.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[4].visibleConsequence",
+                    "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[4].newInformation",
+                    "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              }
+            ],
+            "payoff": {
+              "present": true,
+              "ruleLinked": true,
+              "stateChanging": true,
+              "visual": true,
+              "classificationStatus": "PRESENT_UNCLASSIFIED",
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "finalPayoff",
+                  "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].visibleConsequence",
+                  "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                  "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].newInformation",
+                  "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+                  "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            "loop": {
+              "declared": true,
+              "supported": false,
+              "references": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "loopPotential",
+                  "sourceText": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            }
+          },
+          "provenance": {
+            "sourceKind": "SEMANTIC",
+            "structuredSourceSha256": "339760b057671194796716fe09738da4706cdc7e04967ee1f07c8541bf6ae534",
+            "normalizedFieldsSha256": "1a0084d7c954980ca8f9c221c6ccd7cd08268988dd9e4d6eee0cd9219267f3c0",
+            "textSha256": "90da311ca5939ef35b5a95f476a9396ddda9450c6c14f9ced2b16a778c2a4c1d"
+          },
+          "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+        },
+        "sourceBeatPlan": [
+          {
+            "beatNumber": 1,
+            "beatRole": "HOOK_PROBLEM",
+            "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The knot tightens into a bun that pulls his head back.",
+            "characterConsequence": "Pulling the brush out causes the hair to cinch, not loosen.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Pulling the brush out causes the hair to cinch, not loosen."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "UNKNOWN",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 2,
+            "beatRole": "TACTIC_CHANGE",
+            "characterStrategy": "CHANGE_ANGLE",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+            "characterConsequence": "Any grooming tool multiplies knots instead of removing them.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Any grooming tool multiplies knots instead of removing them."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "OBJECT_GROWS",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 3,
+            "beatRole": "TACTIC_CHANGE",
+            "characterStrategy": "UNKNOWN",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "characterConsequence": "Conditioner turns hair elastic, making tangles spring-loaded.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Conditioner turns hair elastic, making tangles spring-loaded."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "UNKNOWN",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 4,
+            "beatRole": "TACTIC_CHANGE",
+            "characterStrategy": "TEMPORARILY_STOP_TRIGGER",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+            "characterConsequence": "The hair's tangling now acts like a living trap, consuming objects.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "The hair's tangling now acts like a living trap, consuming objects."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "UNKNOWN",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 5,
+            "beatRole": "PAYOFF",
+            "characterStrategy": "DIRECT_USE",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "characterConsequence": "Cutting triggers accelerated regrowth with more tangles.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Cutting triggers accelerated regrowth with more tangles."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "OBJECT_GROWS",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+            "payoffStateChange": "UNKNOWN"
+          }
+        ],
+        "evidenceLimitations": [
+          "UNKNOWN classification is not missing strategy/consequence/rule/payoff.",
+          "Unstated body/contact/spatial states are UNKNOWN; deterministic adapter defaults are not source evidence.",
+          "Existing class requirements remain active; BROKEN with UNKNOWN_CONSEQUENCE is a taxonomy coverage failure, not an absent consequence."
+        ],
+        "coverageFailures": [
+          {
+            "beatNumber": 1,
+            "field": "consequenceType",
+            "sourcePresent": true
+          },
+          {
+            "beatNumber": 3,
+            "field": "characterStrategy",
+            "sourcePresent": true
+          },
+          {
+            "beatNumber": 3,
+            "field": "consequenceType",
+            "sourcePresent": true
+          },
+          {
+            "beatNumber": 4,
+            "field": "consequenceType",
+            "sourcePresent": true
+          }
+        ]
+      },
+      "remainingClassification": "TAXONOMY_COVERAGE_LIMIT",
+      "whyDifferentFromSFE": "Exact source consequences and information are now present. Several consequences do not map to existing BG vocabulary and trigger existing UNKNOWN_CONSEQUENCE. This does not prove actual repetitive choreography. SFE uses independent rule-linked state/information change checks."
+    },
+    {
+      "code": "PREMISE_NOT_ADMITTED",
+      "factUsedBefore": "Rule explicitly present; name Hairbrush maps to GENERIC; impossible response classifier returns UNSUPPORTED_RESPONSE; policy absent",
+      "evidenceSourceBefore": "original impossibleRule and object name; configured response regex and compatibility table",
+      "qualityRule": "broken if response unsupported; admission requires STRONG/ACCEPTABLE, DIRECT, CLEAR_CONTRADICTION",
+      "classificationBefore": "TAXONOMY_COVERAGE_LIMIT",
+      "unsupportedResponseCategory": "B",
+      "unsupportedResponseMeaning": "Explicit object response exists but existing response classifier cannot classify knot multiplication/tangling. No policy lookup can resolve an UNSUPPORTED_RESPONSE. Category C applies to classified responses with missing compatibility; raw-013 is B.",
+      "resultAfter": {
+        "responsePresent": true,
+        "category": "B",
+        "classification": "TAXONOMY_COVERAGE_LIMIT",
+        "meaning": "responseType classifies the impossible object response, not the existence of a rule"
+      },
+      "whyDifferentFromSFE": "Presence, linkage and progression can be supported without a Naturalness response category or object compatibility policy."
+    }
+  ],
+  "noBugClaim": "No independent scoring bug established. The ranking lexical evidence mismatch and synthetic beat representation are acquisition defects; unresolved response coverage is retained, not patched.",
+  "remainingLegitimateQualityDifference": "SFE sufficiency and Naturalness requirement for a direct configured affordance relation are separate quality requirements; taxonomy limits prevent a fully supported Naturalness judgment here.",
+  "production": "Still suppressed before batch ranking; no raw/production slate rank assigned."
+}
+
+OPENING EVIDENCE ACROSS ALL 18
+raw-007: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=ELIGIBLE; goal findings=[]; remaining difference=LEGITIMATE_QUALITY_DIFFERENCE
+raw-013: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=ELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-026: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=ELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-027: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=ELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-005: goal=True; anomaly=True; problem=True; causal=False; SFE hook=100 goal=100; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-006: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=INELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-018: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=INELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-008: goal=False; anomaly=True; problem=True; causal=False; SFE hook=50 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Change channel to watch favorite show", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+raw-004: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=INELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-019: goal=False; anomaly=True; problem=True; causal=False; SFE hook=50 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Reheat leftovers", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+raw-020: goal=True; anomaly=True; problem=True; causal=True; SFE hook=100 goal=100; Naturalness legibility 15→35; ranking=INELIGIBLE; goal findings=[]; remaining difference=TAXONOMY_LIMIT
+raw-032: goal=False; anomaly=True; problem=True; causal=False; SFE hook=50 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Fix hair using mirror", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+raw-003: goal=False; anomaly=True; problem=True; causal=False; SFE hook=10 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Push cart through supermarket to checkout", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+raw-015: goal=False; anomaly=True; problem=True; causal=False; SFE hook=50 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Zip up jacket to stay warm", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+raw-016: goal=False; anomaly=True; problem=True; causal=False; SFE hook=50 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Pack backpack for school", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=LEGITIMATE_QUALITY_DIFFERENCE
+raw-001: goal=False; anomaly=True; problem=True; causal=False; SFE hook=10 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Stay dry in the rain", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+raw-009: goal=False; anomaly=True; problem=True; causal=False; SFE hook=50 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Flip a pancake", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=LEGITIMATE_QUALITY_DIFFERENCE
+raw-031: goal=False; anomaly=False; problem=True; causal=False; SFE hook=10 goal=55; Naturalness legibility 15→15; ranking=INELIGIBLE; goal findings=[{"code": "DECLARED_GOAL_UNSUPPORTED", "field": "protagonistGoal", "source": "CANONICAL_CREATIVE_EVIDENCE", "reason": "The declared goal is not a supported visible everyday goal.", "evidence": {"declared": true, "visibleInOpening": false, "everyday": true, "source": [{"sourceType": "SEMANTIC_NORMALIZED_FIELD", "sourceField": "everydayGoal", "sourceText": "Find keys in dark room", "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence", "confidence": "EXPLICIT"}], "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"}}]; remaining difference=TAXONOMY_LIMIT
+
+REMAINING DIFFERENCES
+Legitimate independent rule differences: opening evidence sufficient for SFE does not establish a direct affordance contradiction; explicit payoff presence does not establish payoff category or causal quality; declared goal is not necessarily visible; SFE below85 still fails the existing production floor for11 candidates.
+Taxonomy/coverage differences: Naturalness has15 unsupported response classifications and3 classified responses without usable compatibility. Unclassified object/response coverage still blocks premise admission for18. All18 BG results report UNKNOWN_CONSEQUENCE; this is retained classification uncertainty. All18 payoff declarations remain present even when Creative Shape/BG cannot classify their mechanism.
+BG quality labels changed MECHANICAL→BROKEN because ungrounded coarse classifications were removed; this must not be interpreted as newly discovered worse stories. The prior repetitive-choreography diagnosis for raw-013 is not supported by that synthetic plan.
+
+AUDIT-ONLY DISAGREEMENT MATRIX (complete 504 cells)
+
+raw-007
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "LEGITIMATE_RULE_DIFFERENCE", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-013
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-026
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-027
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-005
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-006
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-018
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-008
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-004
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-019
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-020
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-032
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-003
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-015
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-016
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "LEGITIMATE_RULE_DIFFERENCE", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-001
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-009
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "LEGITIMATE_RULE_DIFFERENCE", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+raw-031
+goalDeclared: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+goalVisible: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+openingAnomaly: {"canonical": false, "SFE": {"classification": "AGREE", "value": false, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+rulePresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "TAXONOMY_LIMIT", "value": true, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+triggerPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "EVIDENCE_SOURCE_MISMATCH", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "UNKNOWN", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+beatCount: {"canonical": 5, "SFE": {"classification": "AGREE", "value": 5, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "AGREE", "value": 5, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+payoffPresent: {"canonical": true, "SFE": {"classification": "AGREE", "value": true, "source": "structured.canonicalEvidence.dimensions"}, "Naturalness": {"classification": "UNKNOWN", "value": null, "source": "legacy object goalPatterns / infer_response(frame) / composition.trigger", "note": "Independent quality score is not a factual absence claim; no exported fact for this axis."}, "BeatGrammar": {"classification": "UNKNOWN", "value": null, "source": "semantic-plan-adapter-v1 synthesized plan", "note": "Beat count agrees; strategy/consequence/newInformation acquisition loses source detail."}, "RankingAdmission": {"classification": "AGREE", "value": null, "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report"}}
+
+AFTER FACT MATRIX: verified-replay/disagreement-matrix-after.json. All four consumer fact receipts agree; quality and coverage verdicts above remain separate.
+
+FILES / VERIFICATION
+New runtime: app/workflow/canonical_creative_evidence.py; canonical_evidence_propagation.py.
+Changed active consumers: concept_ranking.py; premise_naturalness.py; beat_grammar.py; creative_shape.py. No default SFE/scoring source changes.
+New offline tool: intelligence/scripts/replay-canonical-evidence.py. New tests: test_canonical_creative_evidence.py and test_canonical_integrity.py.
+Integrity chain: existing approved_active_integrity_v1.json and all historical manifests untouched. New exact four-file canonical_evidence_integrity_v1.json approval is bound to before/after records, baseline audit and the explicit user request. protected_integrity.py supports this contiguous, separately pinned migration; test_protected_integrity_policy.py fixture covers it. All unlisted paths remain strictly protected; no skipped checks or glob exemptions.
+Test results and historical byte verification: verification.json and full-regression-comparison.json (written after suite completion).
+Offline replay exact proof: {
+  "candidateCount": 18,
+  "providerCalls": 0,
+  "externalProviderCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "blockedEvents": {},
+  "structuredSFEExactlyUnchanged": true,
+  "sharedFactMismatches": [],
+  "baselineMismatchCells": 71,
+  "afterMismatchCells": 0,
+  "auditMethod": "Exact same source-bound immutable fact receipt in each consumer; SFE report exact-equal to stored accepted structured report. Independent quality output is not a fact contradiction.",
+  "inputHashes": {
+    "intelligence/docs/canonical-evidence-propagation-v1/audit-only-baseline.json": "27ac5a62d068814fd7244621177847f4fafc07304d1612c7a5a21cb321c116dd",
+    "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/response.txt": "298c928c74e7a5add47ab9f0ddda51576ea3674cfd0683e744e2034dddeaf95c"
+  }
+}
+No taxonomy expansion, threshold tuning, new ideas, provider calls, prompts or media renders. STOP after offline validation.
+
+DETAILED BASELINE MATRIX
+audit-only-disagreement-matrix-detailed.json expands the stored before-state into all 504 consumer/fact cells with original inputs, classification values and quality-versus-presence distinctions. The original pre-edit baseline remains immutable. audit-only-beat-content.json traces exact source versus synthetic beat annotations for all18.
+
+LEGACY WARNING NAME CLARIFICATION
+Naturalness retains its existing CAUSE_NOT_VISIBLE_AT_FRAME_ZERO warning trigger and quality formula. Canonical mode attaches canonicalCausalRelationshipVisible, qualityScope=CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION and evidenceClassification. Its reason explicitly states that this legacy quality flag does not assert goal/anomaly/rule/trigger absence.
+
+GOLDEN COVERAGE A–R
+A/D/E/F: test_all_evaluators_same_facts_and_sfe_exactly_unchanged (18 parameter cases), plus explicit present-unclassified raw013 assertions.
+B/G/H/L: test_legitimate_quality_difference_and_response_category_b; existing independent Naturalness/BG/Creative Shape suites. Raw013 opening/grammar/admission blockers traced separately in raw-013-consistency-audit.json.
+C: test_lexical_goal_pattern_cannot_change_canonical_ranking; canonical opt-in test; insufficient-opening goal test.
+I/J/K: test_required_goal_mismatch_goldens (007/026/027).
+M/N: six score/status/facts/admission injection rejections; provenance tamper and text/candidate binding tests.
+O: all18 default legacy ranking equality checks, timed-context equality, historical fixture suite and521 accepted SFE byte-parity cases.
+P: all18 full Structured SFE report equality checks and verified-replay exact equality.
+Q: offline replay socket/subprocess audit guard, zero attempted network/process events, offline test harness forbids outbound sockets/media processes. No generation function called in replay.
+R:1458 historical files byte-identical, current active-code chain tests plus negative tamper/scope/rollback/unknown revision/symlink protection.
+Only test fixtures exercise existing deterministic/mock generation during required regression; no new live concepts are requested or saved.
+
+EXACT FINAL REGRESSION
+2798 passed,36 failed,2 skipped,3030 warnings in193.16seconds. The36 failure IDs exactly equal the accepted baseline, with zero additional or missing failures. New canonical test files account for62 additional passes. Full failure-ID comparison: full-regression-comparison.json. No source file changed during the final regression.
+Historical proof:1458 historical files byte-identical;337 other protected files unchanged; only the6 explicitly scoped implementation/integrity-support edits differ. Prior policy V1, all frozen manifests, Structured SFE core/acquisition, all model/taxonomy data and stored response unchanged.
+
+Final canonical/integrity targeted verification:77 passed in1.23seconds (canonical-verified-tests.log).

@@ -1,0 +1,695 @@
+"""Opt-in structured strategy/consequence evidence. Never a canonical creative score."""
+
+from collections import Counter
+from copy import deepcopy
+from itertools import combinations
+import json
+from pathlib import Path
+from . import short_concept_generation_v2 as base
+
+VERSION = "beat-grammar-v2"
+
+
+def load_data():
+    return json.loads(Path(__file__).with_name("beat_grammar_v2.json").read_text())
+
+
+def compatible(strategy, composition, data=None):
+    data = data or load_data()
+    item = data["strategies"].get(strategy)
+    if item is None:
+        return ["UNKNOWN_STRATEGY"]
+    name = str(composition.get("objectId", "")).replace("_", " ")
+    if name not in data["objectProperties"]:
+        return ["UNKNOWN_OBJECT"]
+    properties = set(data["objectProperties"][name])
+    if composition["engineFamily"] == "ADHESION":
+        properties.add("adhesion")
+    if composition["stateTransition"] == "FLOAT_AWAY":
+        properties.add("elevated")
+    missing = set(item["requires"]) - properties
+    return ["STRATEGY_AFFORDANCE_MISMATCH:" + v for v in sorted(missing)]
+
+
+def strategy_family(value, data=None):
+    return (data or load_data())["strategies"].get(value, {}).get("family", "UNKNOWN")
+
+
+def attempt_signature(beat, data=None):
+    """No prose/title/magnitude values can manufacture attempt novelty."""
+    data = data or load_data()
+    return {
+        "strategyType": strategy_family(beat["characterStrategy"], data),
+        "triggerType": beat["trigger"],
+        "contactPattern": beat["contactPattern"],
+        "bodyStateBefore": beat["bodyStateBefore"],
+        "bodyStateAfter": beat["bodyStateAfter"],
+        "objectStateBefore": beat["objectStateBefore"]["kind"],
+        "objectStateAfter": beat["objectStateAfter"]["kind"],
+        "spatialChange": beat["spatialChange"],
+        "consequenceType": beat["consequenceType"],
+        "newInformation": beat["newInformation"],
+        "relationshipAfter": beat["relationshipAfter"],
+        "goalDistanceChange": beat["goalProgress"],
+    }
+
+
+def compare_attempts(a, b, data=None):
+    x, y = attempt_signature(a, data), attempt_signature(b, data)
+    axes = (
+        "strategyType",
+        "triggerType",
+        "contactPattern",
+        "bodyStateAfter",
+        "objectStateAfter",
+        "consequenceType",
+        "goalDistanceChange",
+        "relationshipAfter",
+    )
+    same = sum(x[k] == y[k] for k in axes)
+    similarity = round(same / len(axes), 6)
+    return {
+        "classification": "IDENTICAL_ATTEMPT"
+        if same == len(axes)
+        else "NEAR_DUPLICATE_ATTEMPT"
+        if similarity >= 0.71
+        else "DISTINCT_ATTEMPT",
+        "similarity": similarity,
+        "matchingDimensions": [k for k in axes if x[k] == y[k]],
+        "limitation": "Structured attempt comparison; physical state evidence, not text similarity.",
+    }
+
+
+def payoff_distance(plan):
+    if len(plan) < 2:
+        return {"distance": 0, "comparisons": [], "stateChange": None}
+    last = plan[-1]
+    values = []
+    axes = ("bodyStateAfter", "consequenceType", "goalProgress", "relationshipAfter")
+    for previous in plan[-3:-1]:
+        changes = [k for k in axes if previous.get(k) != last.get(k)]
+        values.append(
+            {
+                "comparedWithBeat": previous["beatNumber"],
+                "distance": len(changes) / len(axes),
+                "changedDimensions": changes,
+            }
+        )
+    return {
+        "distance": round(min(v["distance"] for v in values), 6),
+        "comparisons": values,
+        "stateChange": last.get("payoffStateChange", "NONE"),
+        "magnitudeOnlyDoesNotCount": True,
+    }
+
+
+def assess(plan, composition=None, data=None, *, canonical_creative_evidence=None):
+    if canonical_creative_evidence is not None and canonical_creative_evidence.is_structured:
+        canonical = canonical_creative_evidence
+        acquired = canonical.beat_plan(plan, data or load_data())
+        report = assess(acquired, composition, data)
+        report["canonicalCreativeEvidence"] = canonical.receipt()
+        report["sourceBeatPlan"] = acquired
+        report["evidenceLimitations"] = [
+            "UNKNOWN classification is not missing strategy/consequence/rule/payoff.",
+            "Unstated body/contact/spatial states are UNKNOWN; deterministic adapter defaults are not source evidence.",
+            "Existing class requirements remain active; BROKEN with UNKNOWN_CONSEQUENCE is a taxonomy coverage failure, not an absent consequence.",
+        ]
+        report["coverageFailures"] = [dict(beatNumber=b["beatNumber"], field=k, sourcePresent=True)
+            for b in acquired for k in ("characterStrategy","consequenceType") if b[k]=="UNKNOWN"]
+        return report
+    data = data or load_data()
+    flags = []
+    errors = []
+    if not 4 <= len(plan) <= 5:
+        errors.append("INVALID_BEAT_COUNT")
+    for i, b in enumerate(plan):
+        required = (
+            "beatNumber",
+            "beatRole",
+            "characterStrategy",
+            "trigger",
+            "impossibleRule",
+            "objectResponse",
+            "characterConsequence",
+            "bodyStateBefore",
+            "bodyStateAfter",
+            "objectStateBefore",
+            "objectStateAfter",
+            "spatialChange",
+            "goalProgress",
+            "newInformation",
+            "contactPattern",
+            "consequenceType",
+            "relationshipAfter",
+            "payoffContribution",
+        )
+        if any(k not in b for k in required):
+            errors.append("INCOMPLETE_ATTEMPT_SIGNATURE")
+            continue
+        if b["beatRole"] not in data["roles"]:
+            errors.append("UNKNOWN_BEAT_ROLE")
+        if b["consequenceType"] not in data["consequences"]:
+            errors.append("UNKNOWN_CONSEQUENCE")
+        if composition:
+            errors.extend(compatible(b["characterStrategy"], composition, data))
+        if i and (
+            b["objectStateBefore"] != plan[i - 1]["objectStateAfter"]
+            or b["bodyStateBefore"] != plan[i - 1]["bodyStateAfter"]
+        ):
+            errors.append("STATE_CONTINUITY_BROKEN")
+        if b["trigger"] == "NONE" and b["objectStateBefore"] != b["objectStateAfter"]:
+            errors.append("UNTRIGGERED_OBJECT_STATE_CHANGE")
+    if errors:
+        return {
+            "version": VERSION,
+            "beatGrammarQuality": "BROKEN",
+            "flags": [{"code": e} for e in sorted(set(errors))],
+            "strategyDiversityScore": 0,
+            "consequenceDiversityScore": 0,
+            "bodyStateProgressionScore": 0,
+            "spatialProgressionScore": 0,
+            "payoffDistance": 0,
+        }
+    if len({b["impossibleRule"] for b in plan}) != 1:
+        flags.append({"code": "DOMINANT_RULE_CHANGED"})
+    strategies = [b["characterStrategy"] for b in plan]
+    families = [strategy_family(s, data) for s in strategies]
+    consequences = [b["consequenceType"] for b in plan]
+    bodies = [b["bodyStateAfter"] for b in plan]
+    unique_s = len(set(families))
+    unique_c = len(set(consequences))
+    if unique_s < 3:
+        flags.append({"code": "LOW_STRATEGY_DIVERSITY"})
+    if unique_c < 3:
+        flags.append({"code": "LOW_CONSEQUENCE_DIVERSITY"})
+    roles = Counter(b["beatRole"] for b in plan)
+    if max(roles.values(), default=0) >= 3:
+        flags.append({"code": "BEAT_ROLE_REPETITION"})
+    pairs = [
+        {"beats": [a["beatNumber"], b["beatNumber"]], **compare_attempts(a, b, data)}
+        for a, b in combinations(plan, 2)
+    ]
+    near = sum(p["classification"] != "DISTINCT_ATTEMPT" for p in pairs)
+    if near:
+        flags.append(
+            {
+                "code": "NEAR_DUPLICATE_ATTEMPTS",
+                "pairs": [p["beats"] for p in pairs if p["classification"] != "DISTINCT_ATTEMPT"],
+            }
+        )
+    seen = set()
+    progressive = 0
+    for b in plan:
+        facts = set(b["newInformation"]) - seen
+        if facts:
+            progressive += 1
+        else:
+            flags.append({"code": "NON_PROGRESSIVE_BEAT", "beatNumber": b["beatNumber"]})
+        seen.update(b["newInformation"])
+    info = round(100 * progressive / len(plan), 2)
+    if info < 80:
+        flags.append({"code": "LOW_INFORMATION_GAIN"})
+    payoff = payoff_distance(plan)
+    if payoff["distance"] < 0.5:
+        flags.append({"code": "LOW_PAYOFF_DISTANCE"})
+    body_changes = sum(b["bodyStateBefore"] != b["bodyStateAfter"] for b in plan)
+    body_score = round(100 * body_changes / len(plan), 2)
+    spatial_axes = {
+        "distanceToGoal",
+        "distanceToObject",
+        "verticalPosition",
+        "horizontalDisplacement",
+        "availableFreeSpace",
+        "objectRelativePosition",
+        "environmentUse",
+    }
+    observed = {
+        k
+        for b in plan
+        for k, v in b["spatialChange"].items()
+        if k in spatial_axes and v not in ("UNCHANGED", None)
+    }
+    spatial_score = round(100 * len(observed) / len(spatial_axes), 2)
+    if not observed:
+        flags.append({"code": "STATIC_SPATIAL_PROGRESSION"})
+    risk_codes = sorted(
+        {risk for s in strategies for risk in data["strategies"].get(s, {}).get("productionRiskHints", [])}
+    )
+    broken = any(f["code"] == "DOMINANT_RULE_CHANGED" for f in flags)
+    mechanical = unique_s < 3 or unique_c < 3 or info < 60
+    quality = (
+        "BROKEN"
+        if broken
+        else "MECHANICAL"
+        if mechanical
+        else "STRONG"
+        if body_score >= 60 and payoff["distance"] >= 0.5 and info >= 80 and near == 0
+        else "ACCEPTABLE"
+    )
+    return {
+        "version": VERSION,
+        "strategySequence": strategies,
+        "strategyFamilySequence": families,
+        "uniqueStrategyCount": unique_s,
+        "strategyDiversityScore": round(100 * min(unique_s, 4) / 4, 2),
+        "consequenceSequence": consequences,
+        "uniqueConsequenceCount": unique_c,
+        "consequenceDiversityScore": round(100 * min(unique_c, 4) / 4, 2),
+        "bodyStateSequence": bodies,
+        "bodyStateProgressionScore": body_score,
+        "spatialProgressionScore": spatial_score,
+        "informationGainScore": info,
+        "attemptSignatures": [attempt_signature(b, data) for b in plan],
+        "attemptComparisons": pairs,
+        "nearDuplicateAttemptRate": round(near / len(pairs), 6) if pairs else 0,
+        "payoffDistance": payoff["distance"],
+        "payoffStateChange": payoff["stateChange"],
+        "payoffEvidence": payoff,
+        "beatGrammarQuality": quality,
+        "flags": flags,
+        "productionFeasibility": {
+            "score": max(0, 100 - 15 * len(risk_codes)),
+            "flags": risk_codes,
+            "evidenceStatus": "PLANNED_CONTACT_COMPLEXITY_SCREEN_NOT_RENDER_VERIFICATION",
+        },
+        "scoreUse": "NON_CANONICAL_GENERATION_REVIEW_NOT_RETENTION",
+    }
+
+
+def batch_evidence(candidates):
+    rows = [c["beatGrammar"] for c in candidates]
+    strategies = Counter(s for r in rows for s in r["strategySequence"])
+    shapes = Counter(c["progressionShape"] for c in candidates)
+    consequences = Counter(s for r in rows for s in r["consequenceSequence"])
+    payoffs = Counter(r["payoffStateChange"] for r in rows)
+    n = len(candidates)
+    warnings = []
+    for strategy, code in [
+        ("MOVE_UNDER_OBJECT", "MOVE_UNDER_OBJECT_CONCENTRATION"),
+        ("TWO_HAND_FORCE", "FORCE_ESCALATION_CONCENTRATION"),
+        ("WHOLE_BODY_BRACE", "WHOLE_BODY_BRACE_CONCENTRATION"),
+    ]:
+        count = sum(strategy in r["strategySequence"] for r in rows)
+        if n and count / n > 0.35:
+            warnings.append({"code": code, "candidateCount": count, "share": round(count / n, 6)})
+    linear = sum(c.get("composition", {}).get("escalationTopology") == "LINEAR_MAGNITUDE" for c in candidates)
+    if n and linear / n > 0.35:
+        warnings.append(
+            {
+                "code": "LINEAR_MAGNITUDE_CONCENTRATION",
+                "candidateCount": linear,
+                "share": round(linear / n, 6),
+            }
+        )
+    mean = lambda key: round(sum(r[key] for r in rows) / n, 6) if n else None
+    for shape, count in shapes.items():
+        if n and count / n > 0.5:
+            warnings.append(
+                {"code": "PROGRESSION_SHAPE_CONCENTRATION", "shape": shape, "share": round(count / n, 6)}
+            )
+    return {
+        "strategyDistribution": dict(sorted(strategies.items())),
+        "consequenceDistribution": dict(sorted(consequences.items())),
+        "progressionShapeDistribution": dict(sorted(shapes.items())),
+        "payoffStateChangeDistribution": dict(sorted(payoffs.items())),
+        "averageStrategyDiversity": mean("strategyDiversityScore"),
+        "averageConsequenceDiversity": mean("consequenceDiversityScore"),
+        "averageBodyStateProgression": mean("bodyStateProgressionScore"),
+        "nearDuplicateAttemptRate": mean("nearDuplicateAttemptRate"),
+        "moveUnderObjectRate": sum("MOVE_UNDER_OBJECT" in r["strategySequence"] for r in rows) / n
+        if n
+        else None,
+        "twoHandForceRate": sum("TWO_HAND_FORCE" in r["strategySequence"] for r in rows) / n if n else None,
+        "lowPayoffDistanceRate": sum(r["payoffDistance"] < 0.5 for r in rows) / n if n else None,
+        "productionRiskRate": sum(bool(r["productionFeasibility"]["flags"]) for r in rows) / n if n else None,
+        "qualityDistribution": dict(Counter(r["beatGrammarQuality"] for r in rows)),
+        "concentrationWarnings": warnings,
+        "candidateDenominator": n,
+        "scoreUse": "NON_CANONICAL_BATCH_DIAGNOSTICS",
+    }
+
+
+def build_plan(composition, shape, grammar=None, data=None):
+    grammar = grammar or base.load_grammar()
+    data = data or load_data()
+    profile = data["shapes"][shape]
+    errors = [e for s in profile["strategies"] for e in compatible(s, composition, data)]
+    if composition["stateTransition"] not in profile.get(
+        "validTransitions", [composition["stateTransition"]]
+    ):
+        errors.append("PROGRESSION_SHAPE_ENGINE_MISMATCH")
+    if errors:
+        raise ValueError(",".join(sorted(set(errors))))
+    rule_template = base.TRANSITIONS[composition["stateTransition"]][0]
+    obj = next(o for o in grammar["objects"] if o["id"] == composition["objectId"])
+    trigger_phrase = grammar["triggers"][composition["trigger"]]["rule"]
+    rule = "The " + obj["name"] + " " + rule_template.format(trigger=trigger_phrase) + "."
+    primary = {
+        "SCALE_UP": "OBJECT_GROWS",
+        "SCALE_DOWN": "OBJECT_SHRINKS",
+        "CONTACT_RETAINS": "OBJECT_STICKS",
+        "RETURN_ORIGIN": "PROBLEM_RESETS",
+        "INVERT_ORIENTATION": "OBJECT_ROTATES",
+        "EXTEND_CONTACT": "OBJECT_MOVES",
+        "MOVE_AWAY": "GOAL_MOVES_FARTHER",
+        "FLOAT_AWAY": "OBJECT_MOVES",
+    }[composition["stateTransition"]]
+    body_effect = {
+        "SCALE_UP": ("SPACE_REDUCES", "OFF_BALANCE"),
+        "SCALE_DOWN": ("GOAL_MOVES_FARTHER", "CROUCHED"),
+        "CONTACT_RETAINS": ("BODY_PART_TRAPPED", "TRAPPED"),
+        "RETURN_ORIGIN": ("CHARACTER_IS_DRAGGED", "DRAGGED"),
+        "INVERT_ORIENTATION": ("CHARACTER_LOSES_BALANCE", "OFF_BALANCE"),
+        "EXTEND_CONTACT": ("CHARACTER_IS_DRAGGED", "STRETCHED"),
+        "MOVE_AWAY": ("CHARACTER_MOVES", "FOLLOWING_OBJECT"),
+        "FLOAT_AWAY": ("CHARACTER_IS_LIFTED", "LIFTED"),
+    }
+    plan = []
+    state = {"kind": "USABLE_START", "applicationCount": 0}
+    body = "NORMAL_CONTROL"
+    for i, (strategy, role) in enumerate(zip(profile["strategies"], profile["roles"])):
+        trigger = (
+            "NONE"
+            if strategy in ("MOVE_SELF_NOT_OBJECT", "TEMPORARILY_STOP_TRIGGER")
+            else composition["trigger"]
+        )
+        next_state = (
+            {"kind": composition["stateTransition"], "applicationCount": state["applicationCount"] + 1}
+            if trigger != "NONE"
+            else deepcopy(state)
+        )
+        if i == 0:
+            consequence = primary
+            after = "LEANING"
+            goal = "FARTHER"
+            info = ["VISIBLE_TRIGGER_AND_OBSTRUCTION"]
+            relation = "CHARACTER_ATTEMPTS_CONTROL"
+            contact = "PRIMARY_WORKING_CONTACT"
+        elif strategy in ("ANCHOR_TO_ENVIRONMENT", "USE_ENVIRONMENT_SURFACE", "BLOCK_PATH", "TRAP_OBJECT"):
+            consequence = (
+                "PATH_BLOCKED"
+                if composition["stateTransition"] not in ("SCALE_UP", "EXTEND_CONTACT")
+                else "SPACE_REDUCES"
+            )
+            after = "BRACED"
+            goal = "UNCHANGED"
+            info = ["BOUNDARY_CONSTRAINS_SAME_TRANSITION"]
+            relation = "ENVIRONMENT_LIMITS_CONTROL"
+            contact = "FIXED_SURFACE_CONTACT"
+        elif strategy == "REDUCE_FORCE":
+            consequence = primary
+            after = "CROUCHED"
+            goal = "CLOSER"
+            info = ["LOW_FORCE_STILL_ACTIVATES_RULE"]
+            relation = "CHARACTER_MODULATES_INPUT"
+            contact = "LIGHT_WORKING_CONTACT"
+        elif strategy == "SWITCH_CONTACT_POINT":
+            consequence = (
+                "BODY_PART_TRAPPED"
+                if composition["stateTransition"] == "CONTACT_RETAINS"
+                else "CHARACTER_MOVES"
+            )
+            after = "LEANING"
+            goal = "CLOSER"
+            info = ["NEW_CONTACT_CHANGES_BODY_EXPOSURE"]
+            relation = "BODY_ACCEPTS_CONSEQUENCE"
+            contact = "ALTERNATE_BROAD_CONTACT"
+        elif strategy == "BRACE_BODY":
+            consequence, after = body_effect[composition["stateTransition"]]
+            goal = "FARTHER"
+            info = ["BODY_TAKES_REACTION_OF_RULE"]
+            relation = "OBJECT_DISPLACES_BODY"
+            contact = "BODY_BRACED_GRIP"
+        elif trigger == "NONE":
+            consequence = "GOAL_APPEARS_REACHED"
+            after = "FALSE_SUCCESS"
+            goal = "AT_GOAL"
+            info = ["BODY_CAN_ALIGN_WITHOUT_NEW_TRIGGER"]
+            relation = "APPARENT_CONTROL_WITHOUT_TRIGGER"
+            contact = "STATIONARY_WORKING_CONTACT"
+        else:
+            consequence = primary
+            after = "BRACED"
+            goal = "CLOSER"
+            info = ["BOUNDARY_CONSTRAINS_SAME_TRANSITION"]
+            relation = "ENVIRONMENT_LIMITS_CONTROL"
+            contact = "FIXED_SURFACE_CONTACT"
+        if i == 4:
+            recurrence = composition["payoffTopology"] in (
+                "OPENING_RECREATED",
+                "SELF_CREATED_LOOP",
+                "FAKE_RESOLUTION",
+            )
+            consequence = "PROBLEM_RESETS" if recurrence else "OBJECT_CONTROLS_CHARACTER"
+            after = "FINAL_DEFEAT" if recurrence else "FOLLOWING_OBJECT"
+            goal = "FARTHER"
+            info = [
+                "NORMAL_USE_RECREATES_OPENING" if recurrence else "RULE_REVERSES_CHARACTER_OBJECT_CONTROL"
+            ]
+            relation = "OPENING_PROBLEM_RETURNS" if recurrence else "OBJECT_CONTROLS_CHARACTER"
+            contact = "ORIGINAL_TASK_CONTACT"
+        if i == 3 and shape in ("CONTROL_TRANSFER", "SPACE_COLLAPSE"):
+            consequence = "CHARACTER_MOVES"
+            after = "FOLLOWING_OBJECT" if shape == "CONTROL_TRANSFER" else "CROUCHED"
+            goal = "CLOSER"
+            info = ["BODY_ROUTE_REMAINS_WHEN_OBJECT_ROUTE_FAILS"]
+            relation = "BODY_MOVES_IN_OBJECT_SPACE"
+        if i == 3 and shape == "ENVIRONMENTAL_ESCALATION":
+            consequence = "ENVIRONMENT_BECOMES_BLOCKED"
+            after = "BRACED"
+            goal = "FARTHER"
+            info = ["PREVIOUS_CHANGE_BLOCKS_THE_WORKING_AREA"]
+            relation = "ENVIRONMENT_BECOMES_OBSTACLE"
+        if i == 4 and composition["stateTransition"] == "CONTACT_RETAINS":
+            contact = "CHEEK_CONTACT"
+            after = "TRAPPED"
+        spatial = {
+            "distanceToGoal": goal,
+            "distanceToObject": "CLOSER" if strategy == "MOVE_SELF_NOT_OBJECT" else "UNCHANGED",
+            "verticalPosition": "HIGHER"
+            if after == "LIFTED"
+            else "LOWER"
+            if after == "CROUCHED"
+            else "UNCHANGED",
+            "horizontalDisplacement": "BACKWARD"
+            if after in ("DRAGGED", "STRETCHED")
+            else "SIDEWAYS"
+            if after == "OFF_BALANCE"
+            else "UNCHANGED",
+            "availableFreeSpace": "REDUCED"
+            if consequence in ("SPACE_REDUCES", "PATH_BLOCKED")
+            else "UNCHANGED",
+            "objectRelativePosition": "BODY_ALIGNED" if trigger == "NONE" else "UNCHANGED",
+            "environmentUse": "BOUNDARY_CONTACT" if contact == "FIXED_SURFACE_CONTACT" else "UNCHANGED",
+        }
+        response = (
+            object_response(composition["stateTransition"], obj["name"], next_state["applicationCount"])
+            if trigger != "NONE"
+            else "The stationary object exposes the unchanged working state while the trigger is absent."
+        )
+        if i == 4 and composition["stateTransition"] == "CONTACT_RETAINS":
+            response = f"The {obj['name']} sticks to the cheek at the new face contact."
+        if i == 4 and composition["stateTransition"] == "RETURN_ORIGIN":
+            response = f"The {obj['name']} slides back to the original start mark again."
+        if i == 4 and composition["stateTransition"] == "INVERT_ORIENTATION":
+            response = f"The {obj['name']} flips upside down with the character still holding it."
+        plan.append(
+            {
+                "beatNumber": i + 1,
+                "beatRole": role,
+                "characterStrategy": strategy,
+                "trigger": trigger,
+                "impossibleRule": rule,
+                "objectResponse": response,
+                "characterConsequence": consequence_text(consequence, obj["name"]),
+                "bodyStateBefore": body,
+                "bodyStateAfter": after,
+                "objectStateBefore": deepcopy(state),
+                "objectStateAfter": deepcopy(next_state),
+                "spatialChange": spatial,
+                "goalProgress": goal,
+                "newInformation": info,
+                "contactPattern": contact,
+                "consequenceType": consequence,
+                "relationshipAfter": relation,
+                "payoffContribution": "FINAL_RELATIONSHIP_CHANGE"
+                if i == 4
+                else "ESTABLISH_CONSTRAINT"
+                if i == 0
+                else "CHANGE_STRATEGY_OR_INFORMATION",
+                "payoffStateChange": relation if i == 4 else "NONE",
+            }
+        )
+        state = next_state
+        body = after
+    return plan
+
+
+def object_response(transition, noun, stage):
+    values = {
+        "SCALE_UP": f"The {noun} grows another size step.",
+        "SCALE_DOWN": f"The {noun} shrinks another size step.",
+        "CONTACT_RETAINS": f"The {noun} sticks to the body surface currently touching it.",
+        "RETURN_ORIGIN": f"The {noun} slides back to the original start mark.",
+        "INVERT_ORIENTATION": f"The {noun} flips its usable surface away from the body.",
+        "EXTEND_CONTACT": f"The {noun} stretches another body length from the held contact.",
+        "MOVE_AWAY": f"The {noun} slides one object width farther from the goal.",
+        "FLOAT_AWAY": f"The {noun} floats another body height higher.",
+    }
+    return values[transition]
+
+
+def consequence_text(consequence, noun):
+    return {
+        "OBJECT_GROWS": f"The enlarged {noun} blocks the original working reach.",
+        "OBJECT_SHRINKS": f"The smaller {noun} no longer spans the original working contact.",
+        "OBJECT_STICKS": "The working contact cannot separate.",
+        "PROBLEM_RESETS": "The original goal is out of reach again.",
+        "OBJECT_ROTATES": "The usable surface faces away from the intended body contact.",
+        "OBJECT_MOVES": "The object leaves the intended working position.",
+        "GOAL_MOVES_FARTHER": "The character must follow the object instead of completing the task.",
+        "SPACE_REDUCES": "The changing object blocks the remaining gap the body needed.",
+        "PATH_BLOCKED": "The fixed boundary blocks the direct route, forcing the body to reposition.",
+        "BODY_PART_TRAPPED": "The new contact leaves a body part held by the same adhesion.",
+        "CHARACTER_MOVES": "The character shifts the body into the remaining working space beside the object.",
+        "ENVIRONMENT_BECOMES_BLOCKED": "The character looks along the fixed boundary; the earlier object displacement now blocks that working route.",
+        "CHARACTER_IS_DRAGGED": "The held object drags the braced character backward.",
+        "CHARACTER_IS_LIFTED": "The held object lifts the gripping arms and body.",
+        "CHARACTER_LOSES_BALANCE": "Following the rotating contact pulls the body off balance.",
+        "GOAL_APPEARS_REACHED": "With the trigger stopped, the body aligns with the usable point and the goal appears reached.",
+        "OBJECT_CONTROLS_CHARACTER": "The character must follow the object; the object now determines the final body pose.",
+    }[consequence]
+
+
+def render_plan(plan, composition, actor, grammar=None, data=None):
+    """Render only after structured validation; statements come from plan state fields."""
+    grammar = grammar or base.load_grammar()
+    data = data or load_data()
+    evidence = assess(plan, composition, data)
+    if evidence["beatGrammarQuality"] == "BROKEN":
+        raise ValueError("Invalid structured beat plan")
+    obj = next(o for o in grammar["objects"] if o["id"] == composition["objectId"])
+    goal = next(g for g in grammar["goals"] if g["id"] == composition["goalId"])
+    noun = obj["name"]
+    name = actor["name"]
+    texts = []
+    for i, b in enumerate(plan):
+        action = data["strategies"][b["characterStrategy"]]["action"].replace("the object", f"the {noun}")
+        trigger_action = (
+            obj["action"]
+            if b["trigger"] != "NONE"
+            else "keeps the object stationary without repeating the trigger"
+        )
+        if i == 0:
+            line = f"At frame zero, beside the fixed working boundary, {name} is already trying to {goal['visibleAction']}; {name} {trigger_action}. {b['objectResponse']} {b['characterConsequence']}"
+        else:
+            line = f"{name} {action}. "
+        if i > 0:
+            if b["trigger"] != "NONE":
+                line += f"{name} {trigger_action}. "
+            line += b["objectResponse"] + " " + b["characterConsequence"]
+        if i == 4 and b["payoffStateChange"] == "OPENING_PROBLEM_RETURNS":
+            line += " Apparent success ends as normal use repeats the visible trigger; the starting problem returns."
+        texts.append(line)
+    return texts
+
+
+def annotate_legacy(candidate):
+    """Conservative text-to-taxonomy annotation for comparison only, not a new generation path."""
+    import re
+
+    plan = []
+    state = {"kind": "USABLE_START", "applicationCount": 0}
+    body = "NORMAL_CONTROL"
+    seen_magnitude = False
+    for i, beat in enumerate(candidate["beats"]):
+        text = beat["description"].lower()
+        strategy = (
+            "MOVE_UNDER_OBJECT"
+            if "moves underneath" in text
+            else "TWO_HAND_FORCE"
+            if "both hands" in text
+            else "DIRECT_USE"
+        )
+        trigger = "NONE" if strategy == "MOVE_UNDER_OBJECT" else candidate["composition"]["trigger"]
+        after = (
+            "CROUCHED"
+            if strategy == "MOVE_UNDER_OBJECT"
+            else "BRACED"
+            if "clamps" in text
+            else "TRAPPED"
+            if "traps the hands" in text
+            else "FOLLOWING_OBJECT"
+            if "pose now follows" in text
+            else "LEANING"
+        )
+        kind = candidate["composition"]["stateTransition"]
+        consequence = {
+            "SCALE_UP": "OBJECT_GROWS",
+            "SCALE_DOWN": "OBJECT_SHRINKS",
+            "CONTACT_RETAINS": "OBJECT_STICKS",
+            "RETURN_ORIGIN": "PROBLEM_RESETS",
+            "INVERT_ORIENTATION": "OBJECT_ROTATES",
+            "EXTEND_CONTACT": "OBJECT_MOVES",
+            "MOVE_AWAY": "GOAL_MOVES_FARTHER",
+            "FLOAT_AWAY": "OBJECT_MOVES",
+        }[kind]
+        facts = ["VISIBLE_RULE"] if i == 0 else []
+        if (
+            re.search("larger|above the shoulders|half the usable|second contact", text)
+            and not seen_magnitude
+        ):
+            facts.append("MAGNITUDE_CHANGE")
+            seen_magnitude = True
+        if strategy == "MOVE_UNDER_OBJECT":
+            facts.append("PAUSED_TRIGGER_OBSERVATION")
+            consequence = "CHARACTER_MOVES"
+        relation = (
+            "OBJECT_CONTROLS_CHARACTER"
+            if "pose now follows" in text
+            else "OPENING_PROBLEM_RETURNS"
+            if i == 4 and "again" in text and "starting" in text
+            else "CHARACTER_ATTEMPTS_CONTROL"
+        )
+        if relation != "CHARACTER_ATTEMPTS_CONTROL":
+            facts.append("FINAL_RELATIONSHIP_CHANGE")
+        nxt = (
+            {"kind": kind, "applicationCount": state["applicationCount"] + 1}
+            if trigger != "NONE"
+            else deepcopy(state)
+        )
+        plan.append(
+            {
+                "beatNumber": i + 1,
+                "beatRole": "HOOK_PROBLEM" if i == 0 else "PAYOFF" if i == 4 else "FIRST_OBVIOUS_FIX",
+                "characterStrategy": strategy,
+                "trigger": trigger,
+                "impossibleRule": candidate["impossibleRule"],
+                "contactPattern": "WORKING_CONTACT",
+                "bodyStateBefore": body,
+                "bodyStateAfter": after,
+                "objectStateBefore": deepcopy(state),
+                "objectStateAfter": deepcopy(nxt),
+                "objectResponse": beat["description"],
+                "characterConsequence": beat["description"],
+                "consequenceType": consequence,
+                "spatialChange": {
+                    "objectRelativePosition": "BELOW_OBJECT"
+                    if strategy == "MOVE_UNDER_OBJECT"
+                    else "UNCHANGED"
+                },
+                "goalProgress": "AT_GOAL" if "finally holds" in text else "FARTHER",
+                "newInformation": facts,
+                "relationshipAfter": relation,
+                "payoffContribution": "LEGACY_TEXT_ANNOTATION",
+                "payoffStateChange": relation if i == 4 else "NONE",
+            }
+        )
+        body = after
+        state = nxt
+    result = deepcopy(candidate)
+    result.update(
+        structuredBeatPlan=plan, beatGrammar=assess(plan), progressionShape="LEGACY_TEMPLATE_TEXT_ANNOTATION"
+    )
+    return result

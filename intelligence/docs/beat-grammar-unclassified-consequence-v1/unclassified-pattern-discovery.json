@@ -1,0 +1,1702 @@
+[
+  {
+    "discoveryGroupId": "audit-pattern-01",
+    "structuralSignature": {
+      "relationCue": "opposite/complementary/reversed output",
+      "literalPattern": "\\b(?:opposite|complementary|reverse\\w*|inver\\w*)\\b"
+    },
+    "candidateIds": [
+      "sem1-2ae718e8672f18cc",
+      "sem1-bbdb302fefb48bd5"
+    ],
+    "ideaIds": [
+      "raw-007",
+      "raw-027"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "beatNumber": 5,
+        "sourceExample": "The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.",
+        "matchedSourceSpans": [
+          {
+            "text": "reverse",
+            "start": 33,
+            "end": 40
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 4,
+        "sourceExample": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "matchedSourceSpans": [
+          {
+            "text": "complementary",
+            "start": 68,
+            "end": 81
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 5,
+        "sourceExample": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "matchedSourceSpans": [
+          {
+            "text": "inverted",
+            "start": 102,
+            "end": 110
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  },
+  {
+    "discoveryGroupId": "audit-pattern-02",
+    "structuralSignature": {
+      "relationCue": "consequence references a target or surface",
+      "literalPattern": "\\b(?:another|other|neighbor\\w*|wall|floor|ceiling|screen|phone|surface)\\b"
+    },
+    "candidateIds": [
+      "sem1-23a3c991b8104bee",
+      "sem1-2ae718e8672f18cc",
+      "sem1-5cf30c7094c804b1",
+      "sem1-70ee2b7099c48d36",
+      "sem1-8a6fb30b4a11976b",
+      "sem1-90670eeaf4ee0468",
+      "sem1-913bc9ae39a3c15e",
+      "sem1-91ea45894fa28d7b",
+      "sem1-bbdb302fefb48bd5",
+      "sem1-c85a677474d9ed27",
+      "sem1-cfeed66616185cb0",
+      "sem1-dd72ae9a5bebad5a"
+    ],
+    "ideaIds": [
+      "raw-001",
+      "raw-003",
+      "raw-005",
+      "raw-007",
+      "raw-008",
+      "raw-009",
+      "raw-015",
+      "raw-018",
+      "raw-026",
+      "raw-027",
+      "raw-031",
+      "raw-032"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "beatNumber": 4,
+        "sourceExample": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.",
+        "matchedSourceSpans": [
+          {
+            "text": "phone",
+            "start": 37,
+            "end": 42
+          },
+          {
+            "text": "screen",
+            "start": 43,
+            "end": 49
+          },
+          {
+            "text": "phone",
+            "start": 91,
+            "end": 96
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 2,
+        "sourceExample": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 71,
+            "end": 75
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 4,
+        "sourceExample": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 107,
+            "end": 111
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 2,
+        "sourceExample": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 4,
+            "end": 8
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 4,
+        "sourceExample": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 57,
+            "end": 61
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 5,
+        "sourceExample": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 45,
+            "end": 49
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 1,
+        "sourceExample": "A blast of air shoots out, knocking over a plant and spraying soil across the floor.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 78,
+            "end": 83
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 3,
+        "sourceExample": "The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 43,
+            "end": 48
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 4,
+        "sourceExample": "The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 24,
+            "end": 29
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 4,
+        "sourceExample": "The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.",
+        "matchedSourceSpans": [
+          {
+            "text": "another",
+            "start": 99,
+            "end": 106
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 1,
+        "sourceExample": "The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.",
+        "matchedSourceSpans": [
+          {
+            "text": "neighbor",
+            "start": 4,
+            "end": 12
+          },
+          {
+            "text": "wall",
+            "start": 59,
+            "end": 63
+          },
+          {
+            "text": "screen",
+            "start": 78,
+            "end": 84
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 2,
+        "sourceExample": "The neighbor's TV turns off and on rapidly, causing a strobe effect through the window.",
+        "matchedSourceSpans": [
+          {
+            "text": "neighbor",
+            "start": 4,
+            "end": 12
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 3,
+        "sourceExample": "The neighbor's TV switches to a karaoke channel, and the neighbor starts singing loudly, while Kiko's TV ignores the manual buttons.",
+        "matchedSourceSpans": [
+          {
+            "text": "neighbor",
+            "start": 4,
+            "end": 12
+          },
+          {
+            "text": "neighbor",
+            "start": 57,
+            "end": 65
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 4,
+        "sourceExample": "The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.",
+        "matchedSourceSpans": [
+          {
+            "text": "neighbor",
+            "start": 4,
+            "end": 12
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 5,
+        "sourceExample": "The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.",
+        "matchedSourceSpans": [
+          {
+            "text": "neighbor",
+            "start": 4,
+            "end": 12
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 3,
+        "sourceExample": "The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.",
+        "matchedSourceSpans": [
+          {
+            "text": "surface",
+            "start": 80,
+            "end": 87
+          },
+          {
+            "text": "screen",
+            "start": 95,
+            "end": 101
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 4,
+        "sourceExample": "The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 74,
+            "end": 78
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-003",
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "beatNumber": 3,
+        "sourceExample": "The other three wheels snap to new positions, causing the cart to lurch sideways and knock over a stack of oranges.",
+        "matchedSourceSpans": [
+          {
+            "text": "other",
+            "start": 4,
+            "end": 9
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-015",
+        "candidateId": "sem1-90670eeaf4ee0468",
+        "beatNumber": 4,
+        "sourceExample": "The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 102,
+            "end": 107
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-001",
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "beatNumber": 4,
+        "sourceExample": "The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 138,
+            "end": 142
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 1,
+        "sourceExample": "The pancake still leaps up and splats on ceiling, sticking even harder.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 41,
+            "end": 48
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 2,
+        "sourceExample": "The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 108,
+            "end": 115
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 3,
+        "sourceExample": "The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 33,
+            "end": 40
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 4,
+        "sourceExample": "The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 99,
+            "end": 106
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 5,
+        "sourceExample": "The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 43,
+            "end": 50
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-031",
+        "candidateId": "sem1-c85a677474d9ed27",
+        "beatNumber": 2,
+        "sourceExample": "The ceiling turns black and starts dripping shadow like ink, covering the floor.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 4,
+            "end": 11
+          },
+          {
+            "text": "floor",
+            "start": 74,
+            "end": 79
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  },
+  {
+    "discoveryGroupId": "audit-pattern-03",
+    "structuralSignature": {
+      "relationCue": "return/reappearance after an attempted change",
+      "literalPattern": "\\b(?:back|return\\w*|reappear\\w*|again|regrow\\w*)\\b"
+    },
+    "candidateIds": [
+      "sem1-11beb05a18d36fdb",
+      "sem1-23a3c991b8104bee",
+      "sem1-70ee2b7099c48d36",
+      "sem1-8d1da895a1fb41af",
+      "sem1-913bc9ae39a3c15e",
+      "sem1-91ea45894fa28d7b",
+      "sem1-bbdb302fefb48bd5",
+      "sem1-c85a677474d9ed27",
+      "sem1-cfeed66616185cb0",
+      "sem1-dd72ae9a5bebad5a"
+    ],
+    "ideaIds": [
+      "raw-001",
+      "raw-004",
+      "raw-005",
+      "raw-007",
+      "raw-009",
+      "raw-013",
+      "raw-018",
+      "raw-026",
+      "raw-031",
+      "raw-032"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "beatNumber": 4,
+        "sourceExample": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.",
+        "matchedSourceSpans": [
+          {
+            "text": "reappears",
+            "start": 20,
+            "end": 29
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-013",
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "beatNumber": 1,
+        "sourceExample": "The knot tightens into a bun that pulls his head back.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 49,
+            "end": 53
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-013",
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "beatNumber": 3,
+        "sourceExample": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 88,
+            "end": 92
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 2,
+        "sourceExample": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 48,
+            "end": 52
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 4,
+        "sourceExample": "The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 85,
+            "end": 89
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 2,
+        "sourceExample": "His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 15,
+            "end": 19
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "beatNumber": 1,
+        "sourceExample": "As he tilts pan, the pile dissolves and dirt races back to the original spot, leaving pan empty.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 51,
+            "end": 55
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "beatNumber": 2,
+        "sourceExample": "Dirt enters the pan but then flies out backward through the bristles, returning to start.",
+        "matchedSourceSpans": [
+          {
+            "text": "returning",
+            "start": 70,
+            "end": 79
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "beatNumber": 4,
+        "sourceExample": "The box shakes, dirt bursts out the seams, and returns to the original spot, leaving box empty.",
+        "matchedSourceSpans": [
+          {
+            "text": "returns",
+            "start": 47,
+            "end": 54
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 4,
+        "sourceExample": "The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 4,
+            "end": 8
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-001",
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "beatNumber": 2,
+        "sourceExample": "The canopy promptly engulfs his crouched back and legs, leaving only his feet sticking out, while rain pools on the fabric.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 41,
+            "end": 45
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 3,
+        "sourceExample": "The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 51,
+            "end": 55
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-031",
+        "candidateId": "sem1-c85a677474d9ed27",
+        "beatNumber": 4,
+        "sourceExample": "Instead of darkness, a bright beam shines out the back of the flashlight, illuminating a corner where keys are visible.",
+        "matchedSourceSpans": [
+          {
+            "text": "back",
+            "start": 50,
+            "end": 54
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  },
+  {
+    "discoveryGroupId": "audit-pattern-04",
+    "structuralSignature": {
+      "relationCue": "contact traps or takes another object",
+      "literalPattern": "\\b(?:trap\\w*|grip\\w*|swallow\\w*|suck\\w*|tighten\\w*|knot\\w*)\\b"
+    },
+    "candidateIds": [
+      "sem1-23a3c991b8104bee",
+      "sem1-6c8721485468a0f0",
+      "sem1-8d1da895a1fb41af",
+      "sem1-913bc9ae39a3c15e",
+      "sem1-91ea45894fa28d7b",
+      "sem1-c85a677474d9ed27"
+    ],
+    "ideaIds": [
+      "raw-005",
+      "raw-013",
+      "raw-016",
+      "raw-018",
+      "raw-026",
+      "raw-031"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-013",
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "beatNumber": 1,
+        "sourceExample": "The knot tightens into a bun that pulls his head back.",
+        "matchedSourceSpans": [
+          {
+            "text": "knot",
+            "start": 4,
+            "end": 8
+          },
+          {
+            "text": "tightens",
+            "start": 9,
+            "end": 17
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-013",
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "beatNumber": 3,
+        "sourceExample": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+        "matchedSourceSpans": [
+          {
+            "text": "knots",
+            "start": 65,
+            "end": 70
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-013",
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "beatNumber": 4,
+        "sourceExample": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+        "matchedSourceSpans": [
+          {
+            "text": "sucked",
+            "start": 11,
+            "end": 17
+          },
+          {
+            "text": "knot",
+            "start": 32,
+            "end": 36
+          },
+          {
+            "text": "swallowed",
+            "start": 41,
+            "end": 50
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 1,
+        "sourceExample": "The nail bends around the pliers and grips them, trapping the tool.",
+        "matchedSourceSpans": [
+          {
+            "text": "grips",
+            "start": 37,
+            "end": 42
+          },
+          {
+            "text": "trapping",
+            "start": 49,
+            "end": 57
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 5,
+        "sourceExample": "The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.",
+        "matchedSourceSpans": [
+          {
+            "text": "sucked",
+            "start": 97,
+            "end": 103
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 2,
+        "sourceExample": "His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.",
+        "matchedSourceSpans": [
+          {
+            "text": "trapping",
+            "start": 89,
+            "end": 97
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-016",
+        "candidateId": "sem1-6c8721485468a0f0",
+        "beatNumber": 5,
+        "sourceExample": "The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.",
+        "matchedSourceSpans": [
+          {
+            "text": "swallows",
+            "start": 29,
+            "end": 37
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-031",
+        "candidateId": "sem1-c85a677474d9ed27",
+        "beatNumber": 1,
+        "sourceExample": "The darkness beam becomes wider, swallowing a chair and half the room into blackness.",
+        "matchedSourceSpans": [
+          {
+            "text": "swallowing",
+            "start": 33,
+            "end": 43
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  },
+  {
+    "discoveryGroupId": "audit-pattern-05",
+    "structuralSignature": {
+      "relationCue": "effect spreads beyond its original target",
+      "literalPattern": "\\b(?:all|every|entire|whole|spreads?|multiple|others)\\b"
+    },
+    "candidateIds": [
+      "sem1-23a3c991b8104bee",
+      "sem1-2ae718e8672f18cc",
+      "sem1-6c8721485468a0f0",
+      "sem1-91ea45894fa28d7b",
+      "sem1-bbdb302fefb48bd5",
+      "sem1-d1e9d5ce1154b96b",
+      "sem1-dd72ae9a5bebad5a"
+    ],
+    "ideaIds": [
+      "raw-006",
+      "raw-007",
+      "raw-009",
+      "raw-016",
+      "raw-018",
+      "raw-026",
+      "raw-027"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "beatNumber": 2,
+        "sourceExample": "The hands freeze, then twitch backward one minute for every real second that passes.",
+        "matchedSourceSpans": [
+          {
+            "text": "every",
+            "start": 54,
+            "end": 59
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 5,
+        "sourceExample": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "matchedSourceSpans": [
+          {
+            "text": "All",
+            "start": 0,
+            "end": 3
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 5,
+        "sourceExample": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "matchedSourceSpans": [
+          {
+            "text": "entire",
+            "start": 38,
+            "end": 44
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-006",
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "beatNumber": 3,
+        "sourceExample": "The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.",
+        "matchedSourceSpans": [
+          {
+            "text": "multiple",
+            "start": 77,
+            "end": 85
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 3,
+        "sourceExample": "The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.",
+        "matchedSourceSpans": [
+          {
+            "text": "every",
+            "start": 23,
+            "end": 28
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-016",
+        "candidateId": "sem1-6c8721485468a0f0",
+        "beatNumber": 2,
+        "sourceExample": "A new side seam splits open, and all contents slide out horizontally.",
+        "matchedSourceSpans": [
+          {
+            "text": "all",
+            "start": 33,
+            "end": 36
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 4,
+        "sourceExample": "The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.",
+        "matchedSourceSpans": [
+          {
+            "text": "all",
+            "start": 39,
+            "end": 42
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  },
+  {
+    "discoveryGroupId": "audit-pattern-06",
+    "structuralSignature": {
+      "relationCue": "state relation changes after a delay/sequence",
+      "literalPattern": "\\b(?:then|after|before|delay\\w*|finally|immediately|suddenly)\\b"
+    },
+    "candidateIds": [
+      "sem1-11beb05a18d36fdb",
+      "sem1-23a3c991b8104bee",
+      "sem1-2ae718e8672f18cc",
+      "sem1-5cf30c7094c804b1",
+      "sem1-6c8721485468a0f0",
+      "sem1-8a6fb30b4a11976b",
+      "sem1-bbdb302fefb48bd5",
+      "sem1-cfeed66616185cb0",
+      "sem1-dd72ae9a5bebad5a"
+    ],
+    "ideaIds": [
+      "raw-003",
+      "raw-004",
+      "raw-007",
+      "raw-008",
+      "raw-009",
+      "raw-016",
+      "raw-026",
+      "raw-027",
+      "raw-032"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "beatNumber": 2,
+        "sourceExample": "The hands freeze, then twitch backward one minute for every real second that passes.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 18,
+            "end": 22
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 2,
+        "sourceExample": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 35,
+            "end": 39
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 3,
+        "sourceExample": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 25,
+            "end": 29
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 4,
+        "sourceExample": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 72,
+            "end": 76
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 1,
+        "sourceExample": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+        "matchedSourceSpans": [
+          {
+            "text": "immediately",
+            "start": 40,
+            "end": 51
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 5,
+        "sourceExample": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 29,
+            "end": 33
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 4,
+        "sourceExample": "The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 32,
+            "end": 36
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "beatNumber": 2,
+        "sourceExample": "Dirt enters the pan but then flies out backward through the bristles, returning to start.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 24,
+            "end": 28
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 1,
+        "sourceExample": "The mirror's delay increases to three seconds, and her reflection starts combing hair that Kiko hasn't touched yet.",
+        "matchedSourceSpans": [
+          {
+            "text": "delay",
+            "start": 13,
+            "end": 18
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 2,
+        "sourceExample": "The mirror shows her reflection looking up and smiling, then her own head tilts involuntarily to match.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 56,
+            "end": 60
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 3,
+        "sourceExample": "The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.",
+        "matchedSourceSpans": [
+          {
+            "text": "delayed",
+            "start": 51,
+            "end": 58
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 5,
+        "sourceExample": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 30,
+            "end": 34
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-003",
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "beatNumber": 1,
+        "sourceExample": "The cart jerks right, then left, tracing a spiral that wraps around a cereal display.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 22,
+            "end": 26
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-003",
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "beatNumber": 2,
+        "sourceExample": "The cart spins in place like a top, cans rattling, then accelerates forward in a new spiral toward the produce section.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 51,
+            "end": 55
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-003",
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "beatNumber": 4,
+        "sourceExample": "The cart tilts and rolls on two wheels, then slams down and spirals toward the automatic entrance, triggering doors to open.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 40,
+            "end": 44
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-016",
+        "candidateId": "sem1-6c8721485468a0f0",
+        "beatNumber": 5,
+        "sourceExample": "The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.",
+        "matchedSourceSpans": [
+          {
+            "text": "then",
+            "start": 63,
+            "end": 67
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 3,
+        "sourceExample": "The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.",
+        "matchedSourceSpans": [
+          {
+            "text": "immediately",
+            "start": 74,
+            "end": 85
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  },
+  {
+    "discoveryGroupId": "audit-pattern-07",
+    "structuralSignature": {
+      "relationCue": "space or environment replaces the working target",
+      "literalPattern": "\\b(?:room|doorway|door|wall|floor|ceiling|environment)\\b"
+    },
+    "candidateIds": [
+      "sem1-11beb05a18d36fdb",
+      "sem1-23a3c991b8104bee",
+      "sem1-2ae718e8672f18cc",
+      "sem1-70ee2b7099c48d36",
+      "sem1-8a6fb30b4a11976b",
+      "sem1-90670eeaf4ee0468",
+      "sem1-913bc9ae39a3c15e",
+      "sem1-91ea45894fa28d7b",
+      "sem1-c2b6225333ed3cda",
+      "sem1-c85a677474d9ed27",
+      "sem1-cfeed66616185cb0",
+      "sem1-d1e9d5ce1154b96b",
+      "sem1-dd72ae9a5bebad5a"
+    ],
+    "ideaIds": [
+      "raw-001",
+      "raw-004",
+      "raw-005",
+      "raw-006",
+      "raw-008",
+      "raw-009",
+      "raw-015",
+      "raw-018",
+      "raw-020",
+      "raw-026",
+      "raw-027",
+      "raw-031",
+      "raw-032"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 2,
+        "sourceExample": "The long nail curls into a spiral, then springs back and pings off the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 71,
+            "end": 75
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 4,
+        "sourceExample": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 107,
+            "end": 111
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-026",
+        "candidateId": "sem1-23a3c991b8104bee",
+        "beatNumber": 5,
+        "sourceExample": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 17,
+            "end": 21
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 2,
+        "sourceExample": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 4,
+            "end": 8
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 4,
+        "sourceExample": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 57,
+            "end": 61
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "beatNumber": 5,
+        "sourceExample": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 45,
+            "end": 49
+          },
+          {
+            "text": "room",
+            "start": 94,
+            "end": 98
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 1,
+        "sourceExample": "A blast of air shoots out, knocking over a plant and spraying soil across the floor.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 78,
+            "end": 83
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 3,
+        "sourceExample": "The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 43,
+            "end": 48
+          },
+          {
+            "text": "room",
+            "start": 79,
+            "end": 83
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 4,
+        "sourceExample": "The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 24,
+            "end": 29
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "beatNumber": 5,
+        "sourceExample": "The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.",
+        "matchedSourceSpans": [
+          {
+            "text": "door",
+            "start": 72,
+            "end": 76
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-006",
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "beatNumber": 1,
+        "sourceExample": "He lands in a mirrored hallway, with door now behind him showing the kitchen as a reflection.",
+        "matchedSourceSpans": [
+          {
+            "text": "door",
+            "start": 37,
+            "end": 41
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-006",
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "beatNumber": 2,
+        "sourceExample": "He ends up in the original hallway but now the door is on his left instead of right, and the kitchen is behind him.",
+        "matchedSourceSpans": [
+          {
+            "text": "door",
+            "start": 47,
+            "end": 51
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-006",
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "beatNumber": 3,
+        "sourceExample": "The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.",
+        "matchedSourceSpans": [
+          {
+            "text": "door",
+            "start": 4,
+            "end": 8
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-006",
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "beatNumber": 4,
+        "sourceExample": "His arm disappears through the doorway and emerges from a door behind him, tapping his own shoulder.",
+        "matchedSourceSpans": [
+          {
+            "text": "doorway",
+            "start": 31,
+            "end": 38
+          },
+          {
+            "text": "door",
+            "start": 58,
+            "end": 62
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 3,
+        "sourceExample": "The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.",
+        "matchedSourceSpans": [
+          {
+            "text": "environment",
+            "start": 4,
+            "end": 15
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 4,
+        "sourceExample": "The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.",
+        "matchedSourceSpans": [
+          {
+            "text": "door",
+            "start": 4,
+            "end": 8
+          },
+          {
+            "text": "door",
+            "start": 91,
+            "end": 95
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "beatNumber": 5,
+        "sourceExample": "The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.",
+        "matchedSourceSpans": [
+          {
+            "text": "door",
+            "start": 4,
+            "end": 8
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 1,
+        "sourceExample": "The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 59,
+            "end": 63
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "beatNumber": 4,
+        "sourceExample": "The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 67,
+            "end": 71
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "beatNumber": 5,
+        "sourceExample": "The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 102,
+            "end": 106
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-020",
+        "candidateId": "sem1-c2b6225333ed3cda",
+        "beatNumber": 1,
+        "sourceExample": "Various lights in the house turn on and off in a pattern, but the living room stays dark while the porch light blinks.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 73,
+            "end": 77
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-020",
+        "candidateId": "sem1-c2b6225333ed3cda",
+        "beatNumber": 2,
+        "sourceExample": "The bathroom light turns off, and the living room light turns on.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 45,
+            "end": 49
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-020",
+        "candidateId": "sem1-c2b6225333ed3cda",
+        "beatNumber": 4,
+        "sourceExample": "The flashlight turns on, but its beam illuminates the wrong room through a window, and Kiko stumbles.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 60,
+            "end": 64
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 4,
+        "sourceExample": "The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 74,
+            "end": 78
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "beatNumber": 5,
+        "sourceExample": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 106,
+            "end": 110
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-015",
+        "candidateId": "sem1-90670eeaf4ee0468",
+        "beatNumber": 4,
+        "sourceExample": "The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.",
+        "matchedSourceSpans": [
+          {
+            "text": "floor",
+            "start": 102,
+            "end": 107
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-001",
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "beatNumber": 4,
+        "sourceExample": "The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.",
+        "matchedSourceSpans": [
+          {
+            "text": "wall",
+            "start": 138,
+            "end": 142
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 1,
+        "sourceExample": "The pancake still leaps up and splats on ceiling, sticking even harder.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 41,
+            "end": 48
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 2,
+        "sourceExample": "The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 108,
+            "end": 115
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 3,
+        "sourceExample": "The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 33,
+            "end": 40
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 4,
+        "sourceExample": "The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 99,
+            "end": 106
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "beatNumber": 5,
+        "sourceExample": "The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 43,
+            "end": 50
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-031",
+        "candidateId": "sem1-c85a677474d9ed27",
+        "beatNumber": 1,
+        "sourceExample": "The darkness beam becomes wider, swallowing a chair and half the room into blackness.",
+        "matchedSourceSpans": [
+          {
+            "text": "room",
+            "start": 65,
+            "end": 69
+          }
+        ]
+      },
+      {
+        "ideaId": "raw-031",
+        "candidateId": "sem1-c85a677474d9ed27",
+        "beatNumber": 2,
+        "sourceExample": "The ceiling turns black and starts dripping shadow like ink, covering the floor.",
+        "matchedSourceSpans": [
+          {
+            "text": "ceiling",
+            "start": 4,
+            "end": 11
+          },
+          {
+            "text": "floor",
+            "start": 74,
+            "end": 79
+          }
+        ]
+      }
+    ],
+    "scope": "EDITORIAL_DISCOVERY_ONLY; overlapping literal relation cues, not canonical types or semantic classification; never used by scoring."
+  }
+]

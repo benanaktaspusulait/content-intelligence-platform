@@ -1,0 +1,48 @@
+{
+  "generatorVersion": "short-concept-generator-v2",
+  "sameConfiguration": {
+    "generatorVersion": "v2",
+    "count": 20,
+    "seed": 42,
+    "duration": 15,
+    "characterIds": [],
+    "excludeEngineFamilies": [],
+    "excludeObjects": [],
+    "excludeObjectCategories": [],
+    "rank": true,
+    "internalPoolSize": 240,
+    "canonicalCast": [
+      {
+        "id": "00000000-0000-0000-0000-000000000001",
+        "name": "Opa"
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000002",
+        "name": "Kiko"
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000003",
+        "name": "Mimi"
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000004",
+        "name": "Arda"
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000005",
+        "name": "Luca"
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000006",
+        "name": "Noah"
+      }
+    ]
+  },
+  "candidateHash": "c8bf79e806cd11ad838e1a954e3cc81d2fd8d40c9611c110f115c92845d94ec5",
+  "repeatCandidateHash": "c8bf79e806cd11ad838e1a954e3cc81d2fd8d40c9611c110f115c92845d94ec5",
+  "fullResultHash": "70f87331ea1ca108dd3cf7fd07be6b46804ebe13d3ab7e858cdb1a840b24ab1d",
+  "repeatFullResultHash": "70f87331ea1ca108dd3cf7fd07be6b46804ebe13d3ab7e858cdb1a840b24ab1d",
+  "seed43ResultHash": "fa5aa1b5830d86126839c0579bcf97d1cbf910df19bae83c24fb83777950de0d",
+  "seed42OnlyCores": 19,
+  "seed43OnlyCores": 19
+}

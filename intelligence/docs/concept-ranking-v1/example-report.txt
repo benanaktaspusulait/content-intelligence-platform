@@ -1,0 +1,17 @@
+Concept production ranking (editorial; render admission remains separate)
+Produce first: z-garden
+1. z-garden — Accepted Garden short adaptation fixture: ranking 100; short form 100; hook 100; progress 100; payoff 100; duplicate NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100.
+Rank 1 vs growth: composite 100 vs 97.6; rewatchPotential 100 vs 60; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 100; QUALITY_SCORE.
+2. growth — Accepted repeated-growth test plan: ranking 97.6; short form 100; hook 100; progress 100; payoff 100; duplicate NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100.
+Rank 2 vs z-garden: composite 97.6 vs 100; rewatchPotential 60 vs 100; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 100; QUALITY_SCORE.
+3. simple — Existing lid plan without an explicit loop: ranking 97.6; short form 100; hook 100; progress 100; payoff 100; duplicate NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100.
+Rank 3 vs growth: composite 97.6 vs 97.6; all creative dimensions equal; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 100; STABLE_ID_TIE_BREAK.
+4. heavy — Existing lid fixture with accepted production-risk test constraints: ranking 100; short form 100; hook 100; progress 100; payoff 100; duplicate NO_MATCH_IN_LIMITED_CORPUS; production efficiency 28.
+Rank 4 vs simple: composite 100 vs 97.6; rewatchPotential 100 vs 60; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 28 vs 100; PRODUCTION_EFFICIENCY_TIE_BREAK.
+Penalty PRODUCTION_COMPLEXITY: 0 quality points; scope CLOSE_SCORE_TIE_BREAK_ONLY.
+5. a-adhesion — Accepted changing-consequence adhesion test plan: ranking 89.6; short form 100; hook 100; progress 100; payoff 100; duplicate MODERATE; production efficiency 100.
+Rank 5 vs heavy: composite 89.6 vs 100; rewatchPotential 60 vs 100; ranking penalties 8 vs 0; duplicate risk MODERATE vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 28; QUALITY_SCORE.
+Penalty DUPLICATE_ENGINE: 8 quality points; scope RANKING_SCORE.
+INELIGIBLE busy: 1 supported causal beats; target 4–5, normally 4–6.; 5 described blocks contain only 1 supported causal developments.; Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.
+INELIGIBLE duplicate: Opening/progression/final structure overlaps a known reference; object renaming is not novelty.
+INELIGIBLE incomplete: Missing protagonist.; Missing protagonistGoal.; Missing objectOrPrimaryInteraction.; Missing impossibleRuleOrCoreContradiction.; Missing frameZeroDescription.; Missing escalationPlan.; Missing finalPayoff.; Missing intendedDurationSeconds.

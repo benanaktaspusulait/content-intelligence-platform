@@ -1,0 +1,86 @@
+{
+  "examples": {
+    "growth_spoon": {
+      "version": "short-concept-fingerprint-v1",
+      "dimensions": {
+        "goalType": "EAT",
+        "interactionType": "OBJECT_LIFT",
+        "engineFamily": "PROGRESSIVE_GROWTH",
+        "transformationDirection": "INCREASE",
+        "trigger": "OBJECT_LIFT",
+        "escalationTopology": "MAGNITUDE_RATCHET",
+        "resolutionTopology": "UNSPECIFIED",
+        "finalSilhouetteTopology": "UNSPECIFIED",
+        "loopTopology": "NONE"
+      },
+      "fullHash": "07be3a4ffdb95daeb83c6ee2b1f7a56a5a2fd86821f8c0da999412f44695dead",
+      "coreHash": "43607f29159aa8c2d7ecbdd42ae41663d4f60ec71c3367b81643db781ab00945",
+      "supportedCoreDimensions": 5,
+      "evidenceKind": "RULE_TEXT_PATTERN_SCREEN",
+      "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+    },
+    "growth_brush": {
+      "version": "short-concept-fingerprint-v1",
+      "dimensions": {
+        "goalType": "GROOM",
+        "interactionType": "OBJECT_LIFT",
+        "engineFamily": "PROGRESSIVE_GROWTH",
+        "transformationDirection": "INCREASE",
+        "trigger": "OBJECT_LIFT",
+        "escalationTopology": "MAGNITUDE_RATCHET",
+        "resolutionTopology": "UNSPECIFIED",
+        "finalSilhouetteTopology": "UNSPECIFIED",
+        "loopTopology": "NONE"
+      },
+      "fullHash": "54f267cc01d8fdc987fd55b0a75f8b917adf0a01a8fd4782b844868fef952e75",
+      "coreHash": "43607f29159aa8c2d7ecbdd42ae41663d4f60ec71c3367b81643db781ab00945",
+      "supportedCoreDimensions": 5,
+      "evidenceKind": "RULE_TEXT_PATTERN_SCREEN",
+      "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+    },
+    "shrinking_strategy": {
+      "version": "short-concept-fingerprint-v1",
+      "dimensions": {
+        "goalType": "GROOM",
+        "interactionType": "STRATEGY_CHANGE",
+        "engineFamily": "PROGRESSIVE_SHRINKING",
+        "transformationDirection": "DECREASE",
+        "trigger": "STRATEGY_CHANGE",
+        "escalationTopology": "CAPABILITY_LOSS",
+        "resolutionTopology": "GOAL_REVERSAL",
+        "finalSilhouetteTopology": "UNSPECIFIED",
+        "loopTopology": "NONE"
+      },
+      "fullHash": "690bd76d5cc40f8269ede859db74f8ac49df99f09d19fda88185b94be1f1ccd7",
+      "coreHash": "f28fce7e9ccea4d93dc1b8159f3041b51ae42c2477450d2f20fb1c1106f153c4",
+      "supportedCoreDimensions": 6,
+      "evidenceKind": "RULE_TEXT_PATTERN_SCREEN",
+      "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+    }
+  },
+  "spoonVsBrush": {
+    "nearDuplicate": true,
+    "matchingDimensions": [
+      "interactionType",
+      "engineFamily",
+      "transformationDirection",
+      "trigger",
+      "escalationTopology"
+    ],
+    "materialDifferences": [],
+    "goalDifferenceIsCosmeticForEngine": true
+  },
+  "growthVsStrategyShrinking": {
+    "nearDuplicate": false,
+    "matchingDimensions": [],
+    "materialDifferences": [
+      "interactionType",
+      "engineFamily",
+      "transformationDirection",
+      "trigger",
+      "escalationTopology",
+      "resolutionTopology"
+    ],
+    "goalDifferenceIsCosmeticForEngine": false
+  }
+}

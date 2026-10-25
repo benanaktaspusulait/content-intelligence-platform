@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-24",
+  "creativeShapeVersion": "creative-shape-v1",
+  "generatorVersion": "short-concept-generator-v2",
+  "beatGrammarVersion": "beat-grammar-v2",
+  "premiseNaturalnessGateVersion": "premise-naturalness-v1",
+  "seed": 42,
+  "requestedCount": 20,
+  "providerCalls": 0,
+  "paidEvaluations": 0,
+  "externalSpendUsd": 0,
+  "renders": [],
+  "canonicalScoresChanged": false,
+  "acceptedEngineSourcesChanged": false,
+  "previousExperimentsChanged": false,
+  "allProtectedHashesUnchanged": true,
+  "protectedFileCount": 184,
+  "newTests": {
+    "passed": 36,
+    "shapeUnitCases": 18,
+    "integrationCases": 18
+  },
+  "focusedTests": {
+    "passed": 391,
+    "warnings": 4
+  },
+  "ui": {
+    "passed": 104,
+    "files": 5
+  },
+  "backend": {
+    "passed": 9,
+    "failures": 0,
+    "errors": 0
+  },
+  "ruff": "PASS",
+  "fullRegression": {
+    "passed": 2050,
+    "failed": 36,
+    "skipped": 2,
+    "warnings": 3030,
+    "seconds": 133.51,
+    "newFailures": 0,
+    "failureIdsIdenticalToBaseline": true,
+    "baselinePassed": 2014
+  },
+  "generationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 480,
+    "finalCandidateCount": 9,
+    "eligibleCount": 9,
+    "revisionCount": 0,
+    "rejectedCount": 0
+  },
+  "capacityStatus": "DIVERSITY_CAPACITY_REACHED",
+  "qualityAdmittedPool": 91,
+  "suppressedCandidateCount": 471,
+  "productionSlate": [
+    {
+      "candidateId": "bg2-0e9cda54beaf770b",
+      "title": "Drawer / Reset To Start / Environmental Escalation",
+      "rawRank": 1,
+      "productionSlateRank": 1,
+      "rankingScore": 97.6
+    },
+    {
+      "candidateId": "bg2-f902cc280181d9eb",
+      "title": "Snack Box Lid / Reversal / Control Transfer",
+      "rawRank": 5,
+      "productionSlateRank": 2,
+      "rankingScore": 97.6
+    },
+    {
+      "candidateId": "bg2-c815450f2d7ca346",
+      "title": "Shoe / Reset To Start / Goal Distance Reversal",
+      "rawRank": 4,
+      "productionSlateRank": 3,
+      "rankingScore": 97.6
+    }
+  ],
+  "reproducibility": {
+    "configuration": {
+      "generatorVersion": "v2",
+      "beatGrammarVersion": "v2",
+      "premiseNaturalnessGateVersion": "v1",
+      "creativeShapeVersion": "v1",
+      "seed": 42,
+      "count": 20
+    },
+    "canonicalResultSha256": "33785716543a944548db648a4a5411b947fef240d25cc19dc597c221d9c99905",
+    "experimentFileSha256": "34edcc30b89e4d807c102103651ad7425024b00f2f3568f5906021084108228b",
+    "numericDefaultsNormalized": true,
+    "providerCalls": 0,
+    "crossProcessCliFileSha256": "34edcc30b89e4d807c102103651ad7425024b00f2f3568f5906021084108228b",
+    "crossProcessPythonHashSeed": 17,
+    "byteIdenticalCliAndSavedExperiment": true
+  },
+  "manualCreativeReviewStatus": "PENDING_NO_CREATIVE_SUCCESS_CLAIM",
+  "scope": "Offline local deterministic curation. QA/video-QC excluded; Java projection/dispatch only. No media or PDF renders.",
+  "commands": {
+    "fullRegression": ".venv/bin/python ../scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short",
+    "focused": ".venv/bin/python ../scripts/test-story-premise-offline.py tests/test_creative_shape.py tests/test_shape_generation.py tests/test_premise_naturalness.py tests/test_premise_generation.py tests/test_beat_grammar.py tests/test_beat_generation.py tests/test_beat_generation_api.py tests/test_short_concept_v2.py tests/test_concept_production_selection.py tests/test_short_concept_v2_api.py tests/test_short_concept_generation.py tests/test_concept_fingerprint.py tests/test_short_concept_generation_api.py tests/test_concept_ranking.py tests/test_concept_ranking_api.py tests/test_short_form_engine.py tests/test_short_form_integration.py tests/test_story_premise_engine.py tests/test_story_premise_integration.py -q --tb=short",
+    "ui": "npm exec ng test -- --watch=false --include=src/app/pages/concept-generation.page.spec.ts --include=src/app/pages/concept-ranking.page.spec.ts --include=src/app/pages/short-form-report.component.spec.ts --include=src/app/pages/story-premise-report.component.spec.ts --include=src/app/pages/quality-validator/post-family-workflow.spec.ts",
+    "backend": "mvn -o -q -Dtest=ConceptGenerationControllerTest,ConceptRankingControllerTest,ShortFormReportTest,StoryPremiseReportTest test",
+    "cli": "PYTHONHASHSEED=17 .venv/bin/python ../scripts/generate-short-concepts.py --generator-version v2 --beat-grammar-version v2 --premise-naturalness-gate-version v1 --creative-shape-version v1 --seed 42 --count 20 --rank"
+  },
+  "artifactSha256": {
+    "full-regression-release.log": "ac67f6fe75a95036761fc3f1d4d68a789ffce3fec641a57239086dcc7bbc5cee",
+    "ui-tests-final.log": "0b0913dbc5c4f9b11566ee069877f7d3032cc8df949562e79e74ef2fd1f8dab9",
+    "focused-tests-verified.log": "c100b27e1a097c0bc9a92fca40e1c1eb7bdbf3e98c108affb25186c303f6f9f0",
+    "focused-tests-final.log": "c50d164e78880c2bd0a8216eba770a9fed57ae4e35014bbfbf8595c2b977929d",
+    "java-tests-final.log": "7ee5db0a3b7b34bd02c5e7eedfc6000787e9a5f41a8a92f9d68bf100794b46d8",
+    "full-regression-final.log": "3a8c1c2f4cc285da0237cc9d11da805dd60ecb47ff0623774b0dd534c8195df4",
+    "baseline-comparison.json": "2de20c1d1d76add34d80e20f90e48dfa803bbc4a2dd0a48d5a89e3abcf2cdada",
+    "immutable-before.json": "6b5bc44c6262f130af0736ef000d2c9342af924c932495fb8040033a7b24be53",
+    "changed-files.json": "9dc961b0a8697d7ff91c1431196741ff56c6aa5e62e6ab95c1d36f7b6380ebc7",
+    "complete-final-concepts.md": "8b3c95246aef8bd9a31efc64300a1d48df4363bbe1a2387658dad23b3ad8c938",
+    "suppression-index.json": "6389bf4a9ccb517d03389d24d6ffc8151de6c016f1bcd28180d57fa5c17d06f7",
+    "benchmark-abcd.json": "d00cc1bcc9d828423e548686c0298d9ca0e49f4a7cc287aa33580b8e8e13813a",
+    "java-results.json": "5e43f0746a2ba558c133df108c3ce22ae35c8092a72eabe5f5f09d33faef1fbc",
+    "suppression-summary.json": "7055d0da13694411130b527cfe5aa137c9451ea7bfad9ac6304f970ba1da2aa1",
+    "README.md": "662d8ae407ed5f662b4c1ce5b5ff19f38c56cd6193cb20fb05830e7c964af729",
+    "immutable-after.json": "6b5bc44c6262f130af0736ef000d2c9342af924c932495fb8040033a7b24be53",
+    "ruff-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "experiment-seed-42-count-20.json": "34edcc30b89e4d807c102103651ad7425024b00f2f3568f5906021084108228b",
+    "full-regression-verified.log": "76bcc254e13697dd463c644532d3b7824547814324ecc757264df4497b5dc055",
+    "reproducibility.json": "11a6502e24b2b73f6a64682feefad413e4b2c0d6a76ac582e3f2e8e02a707814",
+    "focused-tests-release.log": "8814df37666a1c8f1551b33b22085b6d43563c57a6a4031bd7b6317bfd7bf769",
+    "new-tests-initial.log": "d5a804642dcbef796209041d71dd0ee24795cf0c21e28aae297b8a15a76115e2"
+  }
+}

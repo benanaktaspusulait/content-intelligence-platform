@@ -1,0 +1,9 @@
+{
+  "acceptedFunction": "app.workflow.concept_ranking.rank_concepts",
+  "exactResultEquality": true,
+  "standaloneResultHash": "47f50b93e87f605da7d089a0e31845cbe98ba67765b9d587a16e678b8bcce429",
+  "orchestratedResultHash": "47f50b93e87f605da7d089a0e31845cbe98ba67765b9d587a16e678b8bcce429",
+  "admittedCount": 20,
+  "firstRenderCandidate": "local-chair-answers-the-armrest-011",
+  "scope": "ALL_STRUCTURAL_ADMISSIONS"
+}

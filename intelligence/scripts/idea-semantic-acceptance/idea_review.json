@@ -1,0 +1,532 @@
+{
+  "policyVersion": "idea-semantic-review-v1",
+  "reviewerModel": "fixture-transport-v1",
+  "reviewerVersion": "fixture-transport-v1",
+  "candidateReviews": [
+    {
+      "candidateId": "583a9164-336f-3ba7-8158-89b4d084ab4f",
+      "sourcePayloadSha256": "3bdc70444a0019ccb8517097633adae741b8730c561f03b4ffb3676057bec3e3",
+      "originalEvaluationRevision": 3,
+      "judgments": [
+        {
+          "dimension": "EVERYDAY_GOAL",
+          "ruleId": "GOAL_001",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "everydayGoal",
+              "quote": "Fold the sofa blanket."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "IMMEDIATE_CONFLICT",
+          "ruleId": "HOOK_004",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "frameZeroProblem",
+              "quote": "The blanket’s shadow shows a pointed corner Arda cannot see on the blanket."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "TEXTUAL_OPENING_CAUSALITY",
+          "ruleId": "HOOK_004",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "firstStaticFrame",
+              "quote": "In a warm, lived-in 3D cartoon living room, Arda holds a rumpled blanket over a sofa. Its shadow on the patterned rug has one sharply pointed corner, though every visible blanket corner is rounded."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "SINGLE_RULE",
+          "ruleId": "CONCEPT_007",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "impossibleRule",
+              "quote": "Only the blanket’s shadow accurately shows its concealed folded shape."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "RULE_CONSISTENCY",
+          "ruleId": "CONCEPT_007",
+          "verdict": "SEMANTIC_FAIL",
+          "evidence": [
+            {
+              "field": "discovery",
+              "quote": "The pointed shadow is cast by a real fold tucked beneath the blanket, changing the apparent impossibility into a clue about its shape."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "CHARACTER_MOTIVATION",
+          "ruleId": "GOAL_001",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "everydayGoal",
+              "quote": "Fold the sofa blanket."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "CAUSAL_PROGRESSION",
+          "ruleId": "PROGRESSION_006",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "proposedProgression",
+              "quote": "Arda turns the blanket, but the pointed shadow stays tied to one concealed fold; following the shadow directs Arda’s hand beneath the fabric; opening that fold reveals the full star shape."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "POTENTIAL_VISUAL_BEATS",
+          "ruleId": "PROGRESSION_006",
+          "verdict": "LATER_STAGE_EVIDENCE",
+          "evidence": [
+            {
+              "field": "proposedProgression",
+              "quote": "Arda turns the blanket, but the pointed shadow stays tied to one concealed fold; following the shadow directs Arda’s hand beneath the fabric; opening that fold reveals the full star shape."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "PAYOFF_SALIENCE",
+          "ruleId": "PAYOFF_004",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "payoff",
+              "quote": "Arda lifts the hidden fold and the blanket opens into a neat, unmistakable star shape across the sofa; its star-shaped shadow finally matches."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "REPLAY_POTENTIAL",
+          "ruleId": "PAYOFF_006",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "viewerQuestion",
+              "quote": "Where is the pointed corner coming from?"
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "ORIGINALITY_RISK",
+          "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+          "verdict": "VISUAL_EVIDENCE_REQUIRED",
+          "evidence": [
+            {
+              "field": "concept",
+              "quote": "Visual discovery: Arda tries to fold a blanket, but its shadow reveals a shape the blanket itself does not seem to have."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "PRODUCTION_FEASIBILITY",
+          "ruleId": "PRODUCIBILITY_003",
+          "verdict": "VISUAL_EVIDENCE_REQUIRED",
+          "evidence": [
+            {
+              "field": "productionRisk",
+              "quote": "Keep the shadow aligned with the blanket and rug; avoid extra folds that obscure the single visual clue."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        }
+      ]
+    },
+    {
+      "candidateId": "18ae8b38-7a8f-3e64-b47b-ae6c7da0926d",
+      "sourcePayloadSha256": "4a73deac62ebe9281c67a444e06f8d053835982ebdbfe821c329488c979bfcac",
+      "originalEvaluationRevision": 3,
+      "judgments": [
+        {
+          "dimension": "EVERYDAY_GOAL",
+          "ruleId": "GOAL_001",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "everydayGoal",
+              "quote": "Make a comfortable place to sit."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "IMMEDIATE_CONFLICT",
+          "ruleId": "HOOK_004",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "frameZeroProblem",
+              "quote": "The seat deforms before Arda can put the pillow down."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "TEXTUAL_OPENING_CAUSALITY",
+          "ruleId": "HOOK_004",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "firstStaticFrame",
+              "quote": "In a cozy 3D cartoon home with a knitted throw and a worn sofa, Arda holds one plump pillow above an empty seat whose cushion is already dipping upward toward it."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "SINGLE_RULE",
+          "ruleId": "CONCEPT_007",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "impossibleRule",
+              "quote": "Sofa upholstery moves toward this pillow rather than compressing away from it."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "RULE_CONSISTENCY",
+          "ruleId": "CONCEPT_007",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "discovery",
+              "quote": "The pillow is not unusually heavy: its presence makes nearby upholstery rise toward it, reversing the expected direction of a cushion’s dip."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "CHARACTER_MOTIVATION",
+          "ruleId": "GOAL_001",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "everydayGoal",
+              "quote": "Make a comfortable place to sit."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "CAUSAL_PROGRESSION",
+          "ruleId": "PROGRESSION_006",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "proposedProgression",
+              "quote": "The empty cushion bulges toward the hovering pillow; the armrests lean inward as Arda lowers it; the settled pillow draws the upholstery into an elevated seat."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "POTENTIAL_VISUAL_BEATS",
+          "ruleId": "PROGRESSION_006",
+          "verdict": "LATER_STAGE_EVIDENCE",
+          "evidence": [
+            {
+              "field": "proposedProgression",
+              "quote": "The empty cushion bulges toward the hovering pillow; the armrests lean inward as Arda lowers it; the settled pillow draws the upholstery into an elevated seat."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "PAYOFF_SALIENCE",
+          "ruleId": "PAYOFF_004",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "payoff",
+              "quote": "With the pillow resting in place, the sofa cushions curl up around it into a tall, snug throne; Arda perches visibly above the original seat height."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "REPLAY_POTENTIAL",
+          "ruleId": "PAYOFF_006",
+          "verdict": "SEMANTIC_UNKNOWN",
+          "evidence": [
+            {
+              "field": "viewerQuestion",
+              "quote": "Why is the sofa moving toward a pillow that has not touched it?"
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "ORIGINALITY_RISK",
+          "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+          "verdict": "VISUAL_EVIDENCE_REQUIRED",
+          "evidence": [
+            {
+              "field": "concept",
+              "quote": "Expectation reversal: Arda expects a pillow to sink into a sofa cushion, but the sofa sinks away from the pillow."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "PRODUCTION_FEASIBILITY",
+          "ruleId": "PRODUCIBILITY_003",
+          "verdict": "VISUAL_EVIDENCE_REQUIRED",
+          "evidence": [
+            {
+              "field": "productionRisk",
+              "quote": "Limit deformation to the sofa cushions and keep the pillow’s position clear so the reversed motion reads immediately."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        }
+      ]
+    },
+    {
+      "candidateId": "a19a4e69-2a23-3fb9-9f63-866b946049fd",
+      "sourcePayloadSha256": "3e36ce68b9317b940ea00d524d4faf7d55208e0403cd153880c5f6f15526dafa",
+      "originalEvaluationRevision": 3,
+      "judgments": [
+        {
+          "dimension": "EVERYDAY_GOAL",
+          "ruleId": "GOAL_001",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "everydayGoal",
+              "quote": "Prepare a comfortable spot for a quiet meal."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "IMMEDIATE_CONFLICT",
+          "ruleId": "HOOK_004",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "frameZeroProblem",
+              "quote": "The table looks ready, but the only chair is tightly curled and unusable."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "TEXTUAL_OPENING_CAUSALITY",
+          "ruleId": "HOOK_004",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "firstStaticFrame",
+              "quote": "In a warm, lived-in 3D cartoon dining nook, Arda stands beside a set table. One tablecloth drapes neatly over it, while a bare chair beside the table curls its back inward like a shivering shoulder."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "SINGLE_RULE",
+          "ruleId": "CONCEPT_007",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "impossibleRule",
+              "quote": "Furniture covered by this tablecloth becomes plush and relaxed; uncovered furniture keeps its ordinary shape."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "RULE_CONSISTENCY",
+          "ruleId": "CONCEPT_007",
+          "verdict": "SEMANTIC_FAIL",
+          "evidence": [
+            {
+              "field": "discovery",
+              "quote": "Wherever the tablecloth rests, the furniture beneath it visibly relaxes and rounds out; the chair’s hunched shape is not damage but a response to being uncovered."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "CHARACTER_MOTIVATION",
+          "ruleId": "GOAL_001",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "everydayGoal",
+              "quote": "Prepare a comfortable spot for a quiet meal."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "CAUSAL_PROGRESSION",
+          "ruleId": "PROGRESSION_006",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "proposedProgression",
+              "quote": "Arda notices the chair’s inward curl while the covered table appears unusually cushioned; lifting one cloth edge makes the table firm as the chair’s nearest edge softens; moving the cloth fully onto the chair restores a usable seat at the cost of the dressed table."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "POTENTIAL_VISUAL_BEATS",
+          "ruleId": "PROGRESSION_006",
+          "verdict": "LATER_STAGE_EVIDENCE",
+          "evidence": [
+            {
+              "field": "proposedProgression",
+              "quote": "Arda notices the chair’s inward curl while the covered table appears unusually cushioned; lifting one cloth edge makes the table firm as the chair’s nearest edge softens; moving the cloth fully onto the chair restores a usable seat at the cost of the dressed table."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "PAYOFF_SALIENCE",
+          "ruleId": "PAYOFF_004",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "payoff",
+              "quote": "Arda chooses to wrap the cloth around the chair; it unfolds into a generous, plush seat, while the uncovered table remains plain and intact. Arda sits comfortably in the transformed chair."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "REPLAY_POTENTIAL",
+          "ruleId": "PAYOFF_006",
+          "verdict": "SEMANTIC_PASS",
+          "evidence": [
+            {
+              "field": "viewerQuestion",
+              "quote": "Why does the chair seem cold beside a neatly dressed table?"
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "ORIGINALITY_RISK",
+          "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+          "verdict": "VISUAL_EVIDENCE_REQUIRED",
+          "evidence": [
+            {
+              "field": "concept",
+              "quote": "Consequential choice: Arda must decide whether to keep a table neatly set or give its cloth to a chilly-looking chair."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        },
+        {
+          "dimension": "PRODUCTION_FEASIBILITY",
+          "ruleId": "PRODUCIBILITY_003",
+          "verdict": "VISUAL_EVIDENCE_REQUIRED",
+          "evidence": [
+            {
+              "field": "productionRisk",
+              "quote": "Keep the furniture deformation simple and the cloth as the only transferring object; avoid making the chair appear alive."
+            }
+          ],
+          "comparisonEvidence": [],
+          "reason": "SYNTHETIC ACCEPTANCE FIXTURE ONLY. This varied verdict exercises contract/UI handling; it is not an independent creative judgment about Arda.",
+          "confidence": 0.5
+        }
+      ]
+    }
+  ]
+}

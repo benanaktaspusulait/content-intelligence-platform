@@ -1,0 +1,14 @@
+{
+  "intelligence/ml-service/tests/protected_integrity.py": "2214d44aec7af940e2bf6530ddb8367824801238a4814482b451f6b3c82e059c",
+  "intelligence/ml-service/tests/test_protected_integrity_policy.py": "7998048f2b86a1b4647919cccb0b35799574c82f62071bf415991aaea0d1ea7b",
+  "intelligence/ml-service/tests/fixtures/approved_active_integrity_v1.json": "6d8389e5cc567d8408e404c3e11294337200fb64970ed30403d92e751661ff57",
+  "intelligence/ml-service/tests/test_beat_generation.py": "48778cff76531ca2b9f88b9ba148feb5a1e110705700628387ec5107a806f4d4",
+  "intelligence/ml-service/tests/test_concept_ranking.py": "ede398e8d5558846a28468b4a52db40136213308cc6bcd09db01bd6b4d58bf40",
+  "intelligence/ml-service/tests/test_premise_generation.py": "7ac100686308bc26e50304dcf010c76523c3bbf0241c0ecec59df616c85be3a8",
+  "intelligence/ml-service/tests/test_semantic_concept_generation.py": "92fce36472fb3b305ea363d53387b546fb5b85ce1dafb39405c339f3e0eaf248",
+  "intelligence/ml-service/tests/test_semantic_evidence_adapter.py": "c3a30d5207c1de2a35c6fe840f0acfdea0399ab156db0d9d0aab4ae4417d8656",
+  "intelligence/ml-service/tests/test_shape_generation.py": "48b964c956cfb86955ea8a78335ef64a45571bee5fd9ee14a653139385530b5c",
+  "intelligence/ml-service/tests/test_short_concept_generation.py": "878208a4426d4fbae23d6d637007aeaafff3d7c5d875546e7d5e4d54b3d53d0e",
+  "intelligence/ml-service/tests/test_short_concept_v2.py": "2f14cb661951e59f0d01fdc2452c1581d6b4ec196334c80cbf9578ee1f30c872",
+  "intelligence/ml-service/tests/test_structured_short_form.py": "772f4256f080faafe6ff4c34a987584af5577c62e30672e5b891e8d2cf0275f7"
+}

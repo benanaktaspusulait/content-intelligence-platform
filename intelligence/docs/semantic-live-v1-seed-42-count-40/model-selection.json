@@ -1,0 +1,9 @@
+{
+  "profileId": "deepseek-primary",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "configurationSource": "intelligence/data/workflow/creative-provider-profiles-v3.json",
+  "legacyEnvironmentStoryModel": "deepseek-chat",
+  "selectionReason": "Explicit current creative capability profile; no fallback to legacy story-role environment model",
+  "credentialSource": "Existing ml-service/.env; value not recorded"
+}

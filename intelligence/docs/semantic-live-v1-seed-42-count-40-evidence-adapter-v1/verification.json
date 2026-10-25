@@ -1,0 +1,43 @@
+{
+  "implementation": "semantic-evidence-adapter-v1",
+  "newGoldenTestsPassed": 47,
+  "pythonFocusedPassed": 211,
+  "uiTestsPassed": 111,
+  "uiTestFiles": 6,
+  "javaTestsPassed": 10,
+  "failures": 0,
+  "externalProviderCallsDuringTask": 0,
+  "newConceptsGenerated": 0,
+  "deterministicRegenerationDuringReplay": false,
+  "productionPromptCalls": 0,
+  "renders": 0,
+  "canonicalScoreOverrides": false,
+  "canonicalValidatorsChanged": false,
+  "canonicalThresholdsChanged": false,
+  "taxonomyExpanded": false,
+  "canonicalRankingUnchanged": true,
+  "allCanonicalOutcomesUnchanged": true,
+  "protectedFileCount": 282,
+  "changedProtectedFiles": [],
+  "originalLiveFileCount": 29,
+  "originalLiveAllBytesUnchanged": true,
+  "storedReplayByteIdentical": true,
+  "replaySha256": "4fa7f681341ba3791beac27f0ee212483b2ae9cc94a03f3ba8de5fc0b4950e41",
+  "replayPythonHashSeed": 17,
+  "baselineExact": true,
+  "payoffPresence": {
+    "PAYOFF_MISSING": 0,
+    "PAYOFF_PRESENT_CLASSIFIED": 0,
+    "PAYOFF_PRESENT_UNCLASSIFIED": 33,
+    "PAYOFF_AMBIGUOUS": 0
+  },
+  "projectionCompleteCount": 33,
+  "scoringValidatorCompleteRecognitionCount": 0,
+  "expandedHumanReviewSetCount": 13,
+  "productionCandidates": 0,
+  "diagnosisTransitions": {
+    "UNKNOWN -> EVIDENCE_EXTRACTION_FAILURE": 60
+  },
+  "scope": "Only stored response replay plus existing authored/mock validator fixtures; no creative generator-regeneration suites.",
+  "networkSafety": "Python offline harness; CLI audit denies sockets/address resolution/subprocess and strips credentials; npm offline; Maven -o."
+}

@@ -267,12 +267,19 @@ def _historical(signature: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def validate_concept(candidate: ConceptInput | dict[str, Any] | str) -> dict[str, Any]:
+def validate_concept(candidate: ConceptInput | dict[str, Any] | str, *, short_form_evidence: dict[str, Any] | None = None, canonical_creative_evidence=None) -> dict[str, Any]:
     normalized = normalize(candidate)
     text = normalized["evaluationText"]
+    canonical = canonical_creative_evidence
+    if canonical is None and (short_form_evidence or {}).get("canonicalCreativeEvidenceMode") == "v1":
+        from .canonical_creative_evidence import from_structured
+        canonical = from_structured(text, short_form_evidence["structuredCanonicalInput"])
+    if canonical is not None:
+        canonical.assert_ranking(normalized)
     report = (
-        short.assess(
-            text, {"shortFormEvaluation": True, "desiredDuration": normalized["intendedDurationSeconds"]}
+        canonical.assess_short_form(text, {"shortFormEvaluation": True, "desiredDuration": normalized["intendedDurationSeconds"]})
+        if canonical is not None else short.assess(
+            text, {**(short_form_evidence or {}), "shortFormEvaluation": True, "desiredDuration": normalized["intendedDurationSeconds"]}
         )
         if text.strip()
         else None
@@ -315,35 +322,42 @@ def validate_concept(candidate: ConceptInput | dict[str, Any] | str) -> dict[str
                         "reason": f"{field} differs from the actual timed plan.",
                     }
                 )
-        if (
-            normalized.get("protagonistGoal")
-            and not short._features(str(normalized["protagonistGoal"]))["goal"]
-        ):
-            reasons.append(
-                {
-                    "code": "DECLARED_GOAL_UNSUPPORTED",
-                    "field": "protagonistGoal",
-                    "source": "SHORT_FORM_ENGINE_GOAL_PATTERN",
-                    "reason": "The declared goal is not a supported visible everyday goal.",
-                }
-            )
-        declared_goal = re.search(short._GOAL, str(normalized.get("protagonistGoal") or ""), re.I)
-        opening_goal = re.search(short._GOAL, report["beats"][0]["visual"], re.I)
-        if declared_goal and opening_goal:
-
-            def goal_words(value):
-                words = re.findall(r"\w+", value.lower())
-                return [word for word in words if word not in {"the", "a", "an", "his", "her"}]
-
-            if goal_words(declared_goal[0]) != goal_words(opening_goal[0]):
+        if canonical is not None and canonical.is_structured:
+            goal = canonical.facts["goal"]
+            if normalized.get("protagonistGoal") and not (goal["declared"] and goal["everyday"] and goal["visibleInOpening"]):
+                reasons.append(dict(code="DECLARED_GOAL_UNSUPPORTED", field="protagonistGoal",
+                    source="CANONICAL_CREATIVE_EVIDENCE", reason="The declared goal is not a supported visible everyday goal.",
+                    evidence=goal))
+        else:
+            if (
+                normalized.get("protagonistGoal")
+                and not short._features(str(normalized["protagonistGoal"]))["goal"]
+            ):
                 reasons.append(
                     {
-                        "code": "DECLARED_GOAL_CONFLICT",
+                        "code": "DECLARED_GOAL_UNSUPPORTED",
                         "field": "protagonistGoal",
-                        "source": "NORMALIZATION",
-                        "reason": "The declared goal differs from the supported opening goal; clarify the source rather than assuming equivalence.",
+                        "source": "SHORT_FORM_ENGINE_GOAL_PATTERN",
+                        "reason": "The declared goal is not a supported visible everyday goal.",
                     }
                 )
+            declared_goal = re.search(short._GOAL, str(normalized.get("protagonistGoal") or ""), re.I)
+            opening_goal = re.search(short._GOAL, report["beats"][0]["visual"], re.I)
+            if declared_goal and opening_goal:
+    
+                def goal_words(value):
+                    words = re.findall(r"\w+", value.lower())
+                    return [word for word in words if word not in {"the", "a", "an", "his", "her"}]
+    
+                if goal_words(declared_goal[0]) != goal_words(opening_goal[0]):
+                    reasons.append(
+                        {
+                            "code": "DECLARED_GOAL_CONFLICT",
+                            "field": "protagonistGoal",
+                            "source": "NORMALIZATION",
+                            "reason": "The declared goal differs from the supported opening goal; clarify the source rather than assuming equivalence.",
+                        }
+                    )
         protagonist = str(normalized.get("protagonist") or "").split()
         opening_actor = re.search(
             r"\b([A-Z][a-z]+) (?:tries|runs|has|is|wants|must|pulls|attempts|needs)\b",
@@ -385,6 +399,9 @@ def validate_concept(candidate: ConceptInput | dict[str, Any] | str) -> dict[str
                     "reason": "Place the supplied dialogue in the timed plan; speech timing is not invented.",
                 }
             )
+    if canonical is not None:
+        # Exposed beside independent quality results, never folded into their scores.
+        normalized["canonicalCreativeEvidence"] = canonical.receipt()
     signature = (
         short._signature(report["beats"]) if report else {"opening": [], "progression": [], "ending": []}
     )
@@ -460,6 +477,7 @@ def validate_concept(candidate: ConceptInput | dict[str, Any] | str) -> dict[str
     )
     return {
         "candidateId": normalized["id"],
+        **({"canonicalCreativeEvidence": canonical.receipt()} if canonical is not None else {}),
         "title": normalized.get("title"),
         "normalizedConcept": normalized,
         "eligibility": "ELIGIBLE" if eligible else "INELIGIBLE",
@@ -513,10 +531,18 @@ def _comparison(row: dict[str, Any], other: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def rank_concepts(candidates: list[ConceptInput | dict[str, Any] | str]) -> dict[str, Any]:
+def rank_concepts(candidates: list[ConceptInput | dict[str, Any] | str], *, short_form_evidence_by_id: dict[str, dict[str, Any]] | None = None, canonical_creative_evidence_by_id=None) -> dict[str, Any]:
     if not 1 <= len(candidates) <= 30:
         raise ValueError("Provide 1–30 supplied concepts")
-    rows = [validate_concept(candidate) for candidate in candidates]
+    if canonical_creative_evidence_by_id:
+        rows = [validate_concept(candidate,
+            short_form_evidence=(short_form_evidence_by_id or {}).get(normalize(candidate)['id']),
+            canonical_creative_evidence=canonical_creative_evidence_by_id.get(normalize(candidate)['id']))
+            for candidate in candidates]
+    elif short_form_evidence_by_id:
+        rows = [validate_concept(candidate, short_form_evidence=short_form_evidence_by_id.get(normalize(candidate)['id'])) for candidate in candidates]
+    else:
+        rows = [validate_concept(candidate) for candidate in candidates]
     ids = [row["candidateId"] for row in rows]
     if len(set(ids)) != len(ids):
         raise ValueError(

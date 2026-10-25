@@ -1,0 +1,73 @@
+{
+  "seed": 42,
+  "requestedCount": 20,
+  "runs": {
+    "A_originalV2": {
+      "eligibilityYield": 0.3,
+      "averageShortFormScore": 73.7,
+      "averageStrategyDiversity": 50.0,
+      "averageConsequenceDiversity": 50.0,
+      "arbitraryMagicRate": 0.5,
+      "genericEngineApplicationRate": 0.5,
+      "highObjectSpecificityRate": 0.5,
+      "highFunctionalIronyRate": 0.35,
+      "meanPhysicalPayoffPotential": 57.85,
+      "premiseReviewDistribution": {
+        "STRANGE_BUT_LEGIBLE": 4,
+        "ARBITRARY": 10,
+        "INTUITIVE_AND_STRONG": 5,
+        "INTUITIVE_BUT_WEAK": 1
+      },
+      "candidateDenominator": 20,
+      "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS",
+      "top3ProductionSlateSize": 3,
+      "annotationProvenance": "RETROSPECTIVE_NON_CANONICAL_ON_COPIES"
+    },
+    "B_beatGrammarV2": {
+      "eligibilityYield": 0.2,
+      "averageShortFormScore": 65.7,
+      "averageStrategyDiversity": 100.0,
+      "averageConsequenceDiversity": 96.25,
+      "arbitraryMagicRate": 0.65,
+      "genericEngineApplicationRate": 0.65,
+      "highObjectSpecificityRate": 0.35,
+      "highFunctionalIronyRate": 0.2,
+      "meanPhysicalPayoffPotential": 47.2,
+      "premiseReviewDistribution": {
+        "STRANGE_BUT_LEGIBLE": 4,
+        "ARBITRARY": 13,
+        "INTUITIVE_BUT_WEAK": 1,
+        "INTUITIVE_AND_STRONG": 2
+      },
+      "candidateDenominator": 20,
+      "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS",
+      "top3ProductionSlateSize": 2,
+      "annotationProvenance": "RETROSPECTIVE_NON_CANONICAL_ON_COPIES"
+    },
+    "C_premiseNaturalnessV1": {
+      "eligibilityYield": 0.45,
+      "averageShortFormScore": 70.15,
+      "averageStrategyDiversity": 100.0,
+      "averageConsequenceDiversity": 97.5,
+      "arbitraryMagicRate": 0.0,
+      "genericEngineApplicationRate": 0.0,
+      "highObjectSpecificityRate": 1.0,
+      "highFunctionalIronyRate": 1.0,
+      "meanPhysicalPayoffPotential": 92.6,
+      "premiseReviewDistribution": {
+        "STRANGE_BUT_LEGIBLE": 8,
+        "INTUITIVE_AND_STRONG": 12
+      },
+      "candidateDenominator": 20,
+      "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS",
+      "top3ProductionSlateSize": 3,
+      "annotationProvenance": "NEW_RUN_NON_CANONICAL"
+    }
+  },
+  "limitations": [
+    "A/B naturalness annotations and A beat annotations are newly computed on stored copies; historical scores and selections remain unchanged.",
+    "Curated coverage and filtering mechanically increase admitted-premise metrics; this is not independent creative-quality validation.",
+    "Object specificity tests functional-family dependence over 13 configured comparison archetypes, not unique-object originality.",
+    "No audience, retention, rendering or overall creative-superiority inference is supported."
+  ]
+}

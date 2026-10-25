@@ -1,0 +1,26 @@
+{
+  "candidateIds": [
+    "bg2-c815450f2d7ca346",
+    "bg2-f902cc280181d9eb",
+    "bg2-4bea72dd5e1bac81",
+    "bg2-0e9cda54beaf770b",
+    "bg2-446cc5aeaa454b9b",
+    "bg2-20c0ff93bd29fbb4",
+    "bg2-a55dc979329e06e3",
+    "bg2-fe88951786ac1868",
+    "bg2-f6ad0e78652f370b"
+  ],
+  "generationSummary": {
+    "requestedCount": 20,
+    "rawCandidateCount": 480,
+    "finalCandidateCount": 9,
+    "eligibleCount": 9,
+    "revisionCount": 0,
+    "rejectedCount": 0
+  },
+  "productionSlate": [
+    "bg2-0e9cda54beaf770b",
+    "bg2-f902cc280181d9eb",
+    "bg2-c815450f2d7ca346"
+  ]
+}

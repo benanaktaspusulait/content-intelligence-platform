@@ -1,0 +1,43 @@
+{
+  "candidates": [
+    {
+      "id": "simple",
+      "title": "Existing lid plan without an explicit loop",
+      "text": "0-3s: Mimi tries to close the lid, but it pops open against her hands. Her eyes widen.\n3-6s: Mimi pushes harder with both hands; the lid springs open and spills crumbs.\n6-9s: She clamps the lid underneath her arm; it pops open and traps her arm against the table.\n9-12s: She wedges the lid behind her back; it stays normal only when she looks back.\n12-15s: Mimi finally closes the lid and relaxes. Behind her back it pops open again, recreating the opening. "
+    },
+    {
+      "id": "heavy",
+      "title": "Existing lid fixture with accepted production-risk test constraints",
+      "text": "0-3s: Mimi tries to close the lid, but it pops open against her hands. Her eyes widen.\n3-6s: Mimi pushes harder with both hands; the lid springs open and spills crumbs.\n6-9s: She clamps the lid underneath her arm; it pops open and traps her arm against the table.\n9-12s: She wedges the lid behind her back; it stays normal only when she looks back.\n12-15s: Mimi finally closes the lid and relaxes. Behind her back it pops open again, recreating the opening. Loop back to the first frame. Many characters perform fine finger interaction with tiny text in another room."
+    },
+    {
+      "id": "z-garden",
+      "title": "Accepted Garden short adaptation fixture",
+      "text": "0-3s: Arda tries to water the garden; birds flee from his scary costume and knock his watering can aside. His eyes widen.\n3-6s: Arda lifts the can overhead; the birds flinch and spill water onto the seedlings.\n6-9s: Arda holds the can behind his back; the birds flee underneath the fence and water spills onto a dry plant.\n9-12s: Arda turns away and waters the garden; only when his costume faces the birds do they flee toward the dry plants.\n12-15s: Arda reveals that the birds are actually watering the last dry plant as they flee, reinterpreting the opening. His scary costume guards the garden. Loop back to the opening."
+    },
+    {
+      "id": "growth",
+      "title": "Accepted repeated-growth test plan",
+      "text": "0-3s: Kiko tries to eat a snack, but her spoon is huge. Her eyes widen.\n3-6s: Kiko lifts the spoon; it grows even bigger.\n6-9s: Kiko lifts the spoon; it grows even bigger.\n9-12s: Kiko lifts the spoon; it grows even bigger.\n12-15s: The giant spoon fills the frame and blocks Kiko from reaching her snack."
+    },
+    {
+      "id": "a-adhesion",
+      "title": "Accepted changing-consequence adhesion test plan",
+      "text": "0-3s: Luca tries to retrieve the ball, but it is stuck to the wall. His eyes widen.\n3-6s: Luca pulls with both hands; the ball stays stuck.\n6-9s: Luca pulls harder; the ball stays stuck.\n9-12s: Luca pulls; the wall flexes and the ball stretches.\n12-15s: The ball drops onto his cheek and sticks there."
+    },
+    {
+      "id": "busy",
+      "title": "Existing high-activity weak fixture",
+      "text": "0-3s: Kiko tries to sit on an upside-down chair. Her eyes widen.\n3-6s: Kiko runs around and looks surprised.\n6-9s: She jumps, waves, spins and smiles.\n9-12s: Kiko runs around and looks surprised again.\n12-15s: She smiles and celebrates."
+    },
+    {
+      "id": "duplicate",
+      "title": "Historical chair engine with object renamed",
+      "text": "Create a highly engaging 15\u201318 second vertical 9:16 Pompom Hills Instagram Reel.\n\nUse the official existing Pompom Hills character references exactly.\nMAIN CHARACTER: KIKO\n\nDo not redesign Kiko.\nDo not replace her with a generic child.\n\nSERIES:\nPompom English \u2014 What\u2019s Wrong?\n\nCORE ENGLISH:\nSTOOL\nUP\nDOWN\n\u201cIt\u2019s upside down!\u201d\n\nSETTING:\nBright Pompom Hills playroom or garden patio.\nKeep the environment simple and instantly readable.\n\n--------------------------------------------------\n0.0\u20130.8 SEC \u2014 HARD SCROLL-STOP HOOK\n--------------------------------------------------\n\nStart immediately.\n\nKiko runs toward a stool to sit down.\n\nBUT THE STOOL IS COMPLETELY UPSIDE DOWN.\n\nLegs pointing into the air.\n\nKiko is already halfway into the sitting motion before noticing.\n\nShe freezes inches above it.\n\nEyes huge.\n\nShe blurts:\n\n\u201cWHAT?!\u201d\n\nNO establishing shot.\nThe upside-down stool must dominate the first frame.\n\n--------------------------------------------------\n0.8\u20133.5 SEC\n--------------------------------------------------\n\nKiko points:\n\n\u201cA STOOL!\u201d\n\nThen looks confused.\n\nShe says clearly:\n\n\u201cIt\u2019s upside down!\u201d\n\nShe grabs the stool and flips it correctly.\n\n--------------------------------------------------\n3.5\u20136.0 SEC\n--------------------------------------------------\n\nKiko smiles proudly.\n\n\u201cUp\u2026 down!\u201d\n\nShe points upward while saying UP.\nThen downward while saying DOWN.\n\nShe turns around to sit.\n\n--------------------------------------------------\n6.0\u20138.5 SEC \u2014 FIRST ESCALATION\n--------------------------------------------------\n\nThe instant Kiko turns away\u2014\n\nFLIP!\n\nThe stool turns upside down by itself.\n\nKiko sits toward empty space and catches herself at the last second.\n\nShe spins around.\n\n--------------------------------------------------\n8.5\u201311.5 SEC\n--------------------------------------------------\n\nKiko flips it back.\n\nShe stares directly at the stool.\n\nChair stays normal.\n\nKiko slowly turns her head away.\n\nFLIP!\n\nShe immediately looks back.\n\nChair is upside down.\n\n--------------------------------------------------\n11.5\u201314.5 SEC \u2014 COMEDY PAYOFF\n--------------------------------------------------\n\nKiko becomes determined.\n\nShe keeps staring at the stool.\n\nShe slowly walks backward toward it without looking away.\n\nShe says:\n\n\u201cStay DOWN!\u201d\n\nThe stool behaves.\n\nKiko smiles.\n\n--------------------------------------------------\n14.5\u201317.0 SEC \u2014 TWIST + LOOP\n--------------------------------------------------\n\nKiko finally sits.\n\nThe ENTIRE stool suddenly flips upside down WITH Kiko on it.\n\nKiko ends upside down and shouts:\n\n\u201cAGAIN?!\u201d\n\nCut immediately.\n\nLoop back to the first upside-down stool.\n\n--------------------------------------------------\nMANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK\n--------------------------------------------------\n\nExact English dialogue REQUIRED:\n\nKiko:\n\u201cWHAT?!\u201d\n\nKiko:\n\u201cA STOOL!\u201d\n\nKiko:\n\u201cIt\u2019s upside down!\u201d\n\nKiko:\n\u201cUp\u2026 down!\u201d\n\nKiko:\n\u201cStay DOWN!\u201d\n\nKiko:\n\u201cAGAIN?!\u201d\n\nAll lines must be clearly audible English.\n\nVisible mouth movement.\nAccurate lip-sync.\n\nDo not:\n- remove dialogue\n- translate it\n- replace dialogue with subtitles\n- create a silent version\n- add narration\n\n--------------------------------------------------\nINSTAGRAM RETENTION RULES\n--------------------------------------------------\n\nSomething must change every 1\u20132 seconds.\n\nThe problem must be understandable without sound.\n\nDo not make the stool movement subtle.\n\nChair flips must be fast and visually obvious.\n\nNo moral lesson.\nNo slow ending.\nNo waiting after final joke.\nNo text generated inside scene."
+    },
+    {
+      "id": "incomplete",
+      "title": "Intentionally incomplete supplied record"
+    }
+  ]
+}

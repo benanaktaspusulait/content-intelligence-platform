@@ -1,0 +1,17 @@
+[
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/short_concept_generation_v2.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/short_concept_grammar_v2.json",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/creative_distance.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/concept_production_selection.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/short_concept_benchmark.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/api.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/generate-short-concepts.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/benchmark-short-concepts.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_short_concept_v2.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_concept_production_selection.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_short_concept_v2_api.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/short_concept_v2_golden.json",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/chair_concentration_v2.json",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-generation.page.spec.ts"
+]

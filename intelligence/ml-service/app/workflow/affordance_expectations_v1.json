@@ -1,0 +1,814 @@
+{
+  "version": "affordance-expectations-v1",
+  "archetypes": {
+    "FOOTWEAR": {
+      "primaryExpectedBehaviors": [
+        "receives foot",
+        "stays around foot",
+        "moves with wearer"
+      ],
+      "materialProperties": [
+        "fit",
+        "flexible enclosure",
+        "retention"
+      ],
+      "naturalTriggers": [
+        "PULL",
+        "WEAR"
+      ],
+      "goalPatterns": [
+        "put.*shoe on",
+        "wear",
+        "put.*boot on"
+      ]
+    },
+    "SEATING": {
+      "primaryExpectedBehaviors": [
+        "supports body weight",
+        "remains beneath sitter",
+        "provides stable seat"
+      ],
+      "materialProperties": [
+        "support",
+        "balance",
+        "stable orientation"
+      ],
+      "naturalTriggers": [
+        "WEIGHT_APPLIED"
+      ],
+      "goalPatterns": [
+        "sit"
+      ]
+    },
+    "CLOSURE": {
+      "primaryExpectedBehaviors": [
+        "covers opening",
+        "seals container",
+        "stays aligned to rim"
+      ],
+      "materialProperties": [
+        "alignment",
+        "fit",
+        "cover"
+      ],
+      "naturalTriggers": [
+        "PRESSURE",
+        "CLOSE"
+      ],
+      "goalPatterns": [
+        "close"
+      ]
+    },
+    "GROOMING": {
+      "primaryExpectedBehaviors": [
+        "passes through hair",
+        "remains hand-sized",
+        "follows hand movement"
+      ],
+      "materialProperties": [
+        "bristles",
+        "hand-sized grip",
+        "stroke"
+      ],
+      "naturalTriggers": [
+        "STROKE",
+        "PULL"
+      ],
+      "goalPatterns": [
+        "brush.*hair"
+      ]
+    },
+    "EATING": {
+      "primaryExpectedBehaviors": [
+        "carries food",
+        "moves toward mouth",
+        "releases food"
+      ],
+      "materialProperties": [
+        "food transport",
+        "hand-sized grip"
+      ],
+      "naturalTriggers": [
+        "LIFT",
+        "SCOOP"
+      ],
+      "goalPatterns": [
+        "eat",
+        "scoop"
+      ]
+    },
+    "SLIDING_STORAGE": {
+      "primaryExpectedBehaviors": [
+        "slides outward and inward",
+        "exposes contents",
+        "stops at travel limit"
+      ],
+      "materialProperties": [
+        "guided translation",
+        "travel limit"
+      ],
+      "naturalTriggers": [
+        "PULL",
+        "CLOSE"
+      ],
+      "goalPatterns": [
+        "open.*drawer",
+        "close.*drawer"
+      ]
+    },
+    "WASHING": {
+      "primaryExpectedBehaviors": [
+        "remains between hands",
+        "becomes slippery",
+        "produces lather"
+      ],
+      "materialProperties": [
+        "slipperiness",
+        "foam",
+        "dissolves"
+      ],
+      "naturalTriggers": [
+        "PRESSURE",
+        "RUB"
+      ],
+      "goalPatterns": [
+        "wash.*hands"
+      ]
+    },
+    "DRAWING": {
+      "primaryExpectedBehaviors": [
+        "leaves a controlled mark on the surface",
+        "follows the hand along a line"
+      ],
+      "materialProperties": [
+        "mark deposition",
+        "point",
+        "hand-sized grip"
+      ],
+      "naturalTriggers": [
+        "STROKE"
+      ],
+      "goalPatterns": [
+        "draw",
+        "write"
+      ]
+    },
+    "ERASING": {
+      "primaryExpectedBehaviors": [
+        "removes a mark",
+        "leaves the surface clean"
+      ],
+      "materialProperties": [
+        "mark removal",
+        "friction"
+      ],
+      "naturalTriggers": [
+        "STROKE",
+        "RUB"
+      ],
+      "goalPatterns": [
+        "erase",
+        "remove.*mark"
+      ]
+    },
+    "ABSORBENT_TEXTILE": {
+      "primaryExpectedBehaviors": [
+        "absorbs water",
+        "leaves the wiped surface drier",
+        "folds along an edge"
+      ],
+      "materialProperties": [
+        "absorption",
+        "flexible fabric"
+      ],
+      "naturalTriggers": [
+        "STROKE",
+        "WIPE",
+        "PRESSURE"
+      ],
+      "goalPatterns": [
+        "dry",
+        "wipe",
+        "fold"
+      ]
+    },
+    "CLOTHING": {
+      "primaryExpectedBehaviors": [
+        "folds along aligned edges",
+        "stays supported when hung",
+        "covers the body"
+      ],
+      "materialProperties": [
+        "flexible fabric",
+        "fold",
+        "hang"
+      ],
+      "naturalTriggers": [
+        "PRESSURE",
+        "RELEASE"
+      ],
+      "goalPatterns": [
+        "fold",
+        "hang",
+        "wear"
+      ]
+    },
+    "HEADWEAR": {
+      "primaryExpectedBehaviors": [
+        "receives the head",
+        "stays around the head",
+        "moves with wearer"
+      ],
+      "materialProperties": [
+        "fit",
+        "retention"
+      ],
+      "naturalTriggers": [
+        "PULL",
+        "WEAR"
+      ],
+      "goalPatterns": [
+        "put on.*hat",
+        "wear.*hat"
+      ]
+    },
+    "RETRIEVABLE_BALL": {
+      "primaryExpectedBehaviors": [
+        "can be grasped and retrieved",
+        "bounces under impact",
+        "rolls after a push"
+      ],
+      "materialProperties": [
+        "bounce",
+        "roundness",
+        "graspable size"
+      ],
+      "naturalTriggers": [
+        "LIFT",
+        "BOUNCE",
+        "PUSH"
+      ],
+      "goalPatterns": [
+        "retrieve.*ball",
+        "bounce",
+        "roll"
+      ]
+    },
+    "POURING": {
+      "primaryExpectedBehaviors": [
+        "carries water",
+        "directs water through a spout",
+        "releases water onto a target"
+      ],
+      "materialProperties": [
+        "liquid containment",
+        "spout",
+        "pour"
+      ],
+      "naturalTriggers": [
+        "LIFT",
+        "TILT",
+        "POUR"
+      ],
+      "goalPatterns": [
+        "water.*plant",
+        "pour"
+      ]
+    },
+    "PLACED_ITEM": {
+      "primaryExpectedBehaviors": [
+        "stays where placed",
+        "fits inside its storage space"
+      ],
+      "materialProperties": [
+        "position retention",
+        "fit"
+      ],
+      "naturalTriggers": [
+        "RELEASE",
+        "PLACE"
+      ],
+      "goalPatterns": [
+        "put.*away",
+        "place"
+      ]
+    },
+    "ELASTIC": {
+      "primaryExpectedBehaviors": [
+        "stretches under a pull",
+        "snaps back after release"
+      ],
+      "materialProperties": [
+        "elasticity"
+      ],
+      "naturalTriggers": [
+        "PULL",
+        "RELEASE"
+      ],
+      "goalPatterns": [
+        "stretch",
+        "pull"
+      ]
+    },
+    "BUOYANT": {
+      "primaryExpectedBehaviors": [
+        "floats",
+        "expands when inflated"
+      ],
+      "materialProperties": [
+        "buoyancy",
+        "expansion"
+      ],
+      "naturalTriggers": [
+        "INFLATE",
+        "RELEASE"
+      ],
+      "goalPatterns": [
+        "inflate",
+        "hold"
+      ]
+    },
+    "MAGNETIC": {
+      "primaryExpectedBehaviors": [
+        "attracts suitable metal"
+      ],
+      "materialProperties": [
+        "magnetism"
+      ],
+      "naturalTriggers": [
+        "APPROACH",
+        "CONTACT"
+      ],
+      "goalPatterns": [
+        "attract",
+        "pick"
+      ]
+    },
+    "RAIN_COVER": {
+      "primaryExpectedBehaviors": [
+        "keeps rain off the body",
+        "covers the space beneath it"
+      ],
+      "materialProperties": [
+        "water shedding",
+        "cover"
+      ],
+      "naturalTriggers": [
+        "OPEN"
+      ],
+      "goalPatterns": [
+        "stay dry",
+        "shelter"
+      ]
+    },
+    "GENERIC": {
+      "primaryExpectedBehaviors": [
+        "moves when handled"
+      ],
+      "materialProperties": [],
+      "naturalTriggers": [
+        "TOUCH"
+      ],
+      "goalPatterns": [
+        "use",
+        "move"
+      ]
+    }
+  },
+  "objects": {
+    "shoe": {
+      "archetype": "FOOTWEAR"
+    },
+    "boot": {
+      "archetype": "FOOTWEAR"
+    },
+    "chair": {
+      "archetype": "SEATING"
+    },
+    "stool": {
+      "archetype": "SEATING"
+    },
+    "lid": {
+      "archetype": "CLOSURE"
+    },
+    "snack box lid": {
+      "archetype": "CLOSURE"
+    },
+    "brush": {
+      "archetype": "GROOMING"
+    },
+    "comb": {
+      "archetype": "GROOMING"
+    },
+    "spoon": {
+      "archetype": "EATING"
+    },
+    "fork": {
+      "archetype": "EATING"
+    },
+    "drawer": {
+      "archetype": "SLIDING_STORAGE"
+    },
+    "soap": {
+      "archetype": "WASHING"
+    },
+    "soap bar": {
+      "archetype": "WASHING"
+    },
+    "pencil": {
+      "archetype": "DRAWING"
+    },
+    "crayon": {
+      "archetype": "DRAWING"
+    },
+    "eraser": {
+      "archetype": "ERASING"
+    },
+    "towel": {
+      "archetype": "ABSORBENT_TEXTILE"
+    },
+    "cloth": {
+      "archetype": "ABSORBENT_TEXTILE"
+    },
+    "shirt": {
+      "archetype": "CLOTHING"
+    },
+    "coat": {
+      "archetype": "CLOTHING"
+    },
+    "hat": {
+      "archetype": "HEADWEAR"
+    },
+    "ball": {
+      "archetype": "RETRIEVABLE_BALL"
+    },
+    "watering can": {
+      "archetype": "POURING"
+    },
+    "book": {
+      "archetype": "PLACED_ITEM"
+    },
+    "notebook": {
+      "archetype": "PLACED_ITEM"
+    },
+    "rubber band": {
+      "archetype": "ELASTIC"
+    },
+    "balloon": {
+      "archetype": "BUOYANT"
+    },
+    "magnet": {
+      "archetype": "MAGNETIC"
+    },
+    "umbrella": {
+      "archetype": "RAIN_COVER"
+    },
+    "object": {
+      "archetype": "GENERIC"
+    },
+    "generic object": {
+      "archetype": "GENERIC"
+    }
+  },
+  "contradictionPolicies": [
+    {
+      "archetypes": [
+        "FOOTWEAR",
+        "HEADWEAR"
+      ],
+      "responses": [
+        "RETURN_ORIGIN",
+        "MOVE_AWAY"
+      ],
+      "contradictionType": "DIRECT_NEGATION",
+      "expectedBehaviorIndex": 1,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 95,
+      "functionalIrony": "HIGH",
+      "materialConnection": "retention",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "SEATING"
+      ],
+      "responses": [
+        "INVERT_ORIENTATION",
+        "MOVE_AWAY",
+        "RETURN_ORIGIN"
+      ],
+      "contradictionType": "REFUSAL",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 92,
+      "functionalIrony": "HIGH",
+      "materialConnection": "support",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "CLOSURE"
+      ],
+      "responses": [
+        "INVERT_ORIENTATION",
+        "MOVE_AWAY",
+        "RETURN_ORIGIN"
+      ],
+      "contradictionType": "OPPOSITE_BEHAVIOR",
+      "expectedBehaviorIndex": 2,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 93,
+      "functionalIrony": "HIGH",
+      "materialConnection": "alignment",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "SLIDING_STORAGE"
+      ],
+      "responses": [
+        "RETURN_ORIGIN"
+      ],
+      "contradictionType": "OPPOSITE_BEHAVIOR",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 96,
+      "functionalIrony": "HIGH",
+      "materialConnection": "guided translation",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "SLIDING_STORAGE",
+        "FOOTWEAR"
+      ],
+      "responses": [
+        "EXTEND_CONTACT"
+      ],
+      "contradictionType": "OVERCOMPLIANCE",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 82,
+      "functionalIrony": "HIGH",
+      "materialConnection": "travel limit",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "GROOMING"
+      ],
+      "responses": [
+        "SCALE_UP"
+      ],
+      "contradictionType": "SELF_DEFEATING_FUNCTION",
+      "expectedBehaviorIndex": 1,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 93,
+      "functionalIrony": "HIGH",
+      "materialConnection": "hand-sized grip",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "GROOMING"
+      ],
+      "responses": [
+        "CONTACT_RETAINS"
+      ],
+      "contradictionType": "DIRECT_NEGATION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 85,
+      "functionalIrony": "HIGH",
+      "materialConnection": "bristles",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "FOOTWEAR",
+        "HEADWEAR",
+        "CLOSURE"
+      ],
+      "responses": [
+        "SCALE_UP"
+      ],
+      "contradictionType": "SELF_DEFEATING_FUNCTION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 85,
+      "functionalIrony": "HIGH",
+      "materialConnection": "fit",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "SEATING"
+      ],
+      "responses": [
+        "SCALE_UP",
+        "SCALE_DOWN"
+      ],
+      "contradictionType": "SELF_DEFEATING_FUNCTION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 80,
+      "functionalIrony": "HIGH",
+      "materialConnection": "support",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "GROOMING",
+        "EATING"
+      ],
+      "responses": [
+        "SCALE_DOWN"
+      ],
+      "contradictionType": "SELF_DEFEATING_FUNCTION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 73,
+      "functionalIrony": "MEDIUM",
+      "materialConnection": "hand-sized grip",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "EATING"
+      ],
+      "responses": [
+        "SCALE_UP"
+      ],
+      "contradictionType": "SELF_DEFEATING_FUNCTION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 77,
+      "functionalIrony": "MEDIUM",
+      "materialConnection": "hand-sized grip",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "EATING",
+        "PLACED_ITEM"
+      ],
+      "responses": [
+        "RETURN_ORIGIN"
+      ],
+      "contradictionType": "DIRECT_NEGATION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 76,
+      "functionalIrony": "MEDIUM",
+      "materialConnection": "position retention",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "WASHING"
+      ],
+      "responses": [
+        "CONTACT_RETAINS"
+      ],
+      "contradictionType": "OPPOSITE_BEHAVIOR",
+      "expectedBehaviorIndex": 1,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 83,
+      "functionalIrony": "HIGH",
+      "materialConnection": "slipperiness",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "WASHING"
+      ],
+      "responses": [
+        "SLIP_INCREASE"
+      ],
+      "contradictionType": "PROPERTY_EXAGGERATION",
+      "expectedBehaviorIndex": 1,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 95,
+      "functionalIrony": "HIGH",
+      "materialConnection": "slipperiness",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "ERASING"
+      ],
+      "responses": [
+        "MARK_TRANSFER"
+      ],
+      "contradictionType": "TRANSFER",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 97,
+      "functionalIrony": "HIGH",
+      "materialConnection": "mark removal",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "ABSORBENT_TEXTILE"
+      ],
+      "responses": [
+        "WETTER"
+      ],
+      "contradictionType": "FUNCTION_REVERSAL",
+      "expectedBehaviorIndex": 1,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 97,
+      "functionalIrony": "HIGH",
+      "materialConnection": "absorption",
+      "strangeButIntuitive": false
+    },
+    {
+      "archetypes": [
+        "RAIN_COVER"
+      ],
+      "responses": [
+        "RAIN_ATTRACTION"
+      ],
+      "contradictionType": "FUNCTION_REVERSAL",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 94,
+      "functionalIrony": "HIGH",
+      "materialConnection": "water shedding",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "RETRIEVABLE_BALL"
+      ],
+      "responses": [
+        "WEIGHT_PER_BOUNCE"
+      ],
+      "contradictionType": "PROPERTY_EXAGGERATION",
+      "expectedBehaviorIndex": 1,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 86,
+      "functionalIrony": "HIGH",
+      "materialConnection": "bounce",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "ELASTIC"
+      ],
+      "responses": [
+        "EXTEND_CONTACT",
+        "RETURN_ORIGIN"
+      ],
+      "contradictionType": "PROPERTY_EXAGGERATION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 88,
+      "functionalIrony": "HIGH",
+      "materialConnection": "elasticity",
+      "strangeButIntuitive": true
+    },
+    {
+      "archetypes": [
+        "RETRIEVABLE_BALL"
+      ],
+      "responses": [
+        "SCALE_UP",
+        "MOVE_AWAY"
+      ],
+      "contradictionType": "SELF_DEFEATING_FUNCTION",
+      "expectedBehaviorIndex": 0,
+      "goalInterferenceType": "DIRECT",
+      "relationshipStrength": 68,
+      "functionalIrony": "MEDIUM",
+      "materialConnection": "graspable size",
+      "strangeButIntuitive": true
+    }
+  ],
+  "contradictionTypes": [
+    "DIRECT_NEGATION",
+    "OPPOSITE_BEHAVIOR",
+    "OVERCOMPLIANCE",
+    "REFUSAL",
+    "PROPERTY_EXAGGERATION",
+    "TRANSFER",
+    "FUNCTION_REVERSAL",
+    "SELF_DEFEATING_FUNCTION"
+  ],
+  "comparisonArchetypes": [
+    "FOOTWEAR",
+    "SEATING",
+    "CLOSURE",
+    "GROOMING",
+    "EATING",
+    "SLIDING_STORAGE",
+    "WASHING",
+    "DRAWING",
+    "ERASING",
+    "ABSORBENT_TEXTILE",
+    "POURING",
+    "PLACED_ITEM",
+    "RETRIEVABLE_BALL"
+  ]
+}

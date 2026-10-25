@@ -1,0 +1,400 @@
+COMPACT HUMAN CREATIVE REVIEW CARDS — VERBATIM STORED EXCERPTS
+Premise uses the exact impossibleRule field. Progression uses exact beat consequences in order. No creative rewrite or new verdict is added.
+
+--------------------------------------------------------------------------------
+raw-007 / Backward Alarm Clock
+ONE-SENTENCE PREMISE:
+The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.
+FRAME-ZERO HOOK:
+Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.
+PROGRESSION:
+1. As soon as he releases, the hands spin backward rapidly to 3:00.
+2. The hands freeze, then twitch backward one minute for every real second that passes.
+3. The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.
+4. The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.
+5. The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+PAYOFF:
+The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE PASS 100; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-013 / Tangling Hairbrush
+ONE-SENTENCE PREMISE:
+Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.
+FRAME-ZERO HOOK:
+Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.
+PROGRESSION:
+1. The knot tightens into a bun that pulls his head back.
+2. The comb adds more knots, and his hair expands into a giant sphere around his head.
+3. The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.
+4. The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.
+5. The hair regrows instantly into a larger, tighter knot, trapping the scissors.
+PAYOFF:
+The hair regrows instantly into a larger, tighter knot, trapping the scissors.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE PASS 99; full ranking ELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-026 / Bending Nail Hammer
+ONE-SENTENCE PREMISE:
+Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.
+FRAME-ZERO HOOK:
+Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.
+PROGRESSION:
+1. The nail bends around the pliers and grips them, trapping the tool.
+2. The long nail curls into a spiral, then springs back and pings off the wall.
+3. The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.
+4. The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.
+5. All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+PAYOFF:
+All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE PASS 100; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-027 / Opposite-Color Paintbrush
+ONE-SENTENCE PREMISE:
+Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.
+FRAME-ZERO HOOK:
+Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.
+PROGRESSION:
+1. The brush paints a shimmering gray that immediately splits into blue and orange stripes.
+2. The wall turns blue-green, not pure blue, and the brush swirls automatically.
+3. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.
+4. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.
+5. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+PAYOFF:
+The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE PASS 99; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-005 / Vacuum Blows
+ONE-SENTENCE PREMISE:
+The vacuum blows air outward instead of sucking, scattering dust and crumbs toward the user's face and across the room.
+FRAME-ZERO HOOK:
+Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.
+PROGRESSION:
+1. A blast of air shoots out, knocking over a plant and spraying soil across the floor.
+2. The machine still blows, but now it sends air into its own bag, inflating it like a balloon until it pops.
+3. The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.
+4. The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.
+5. The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.
+PAYOFF:
+The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 93; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-006 / Mirrored Doorway
+ONE-SENTENCE PREMISE:
+Whichever side of the door Noah opens, he steps into the same hallway but mirrored left-right.
+FRAME-ZERO HOOK:
+Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.
+PROGRESSION:
+1. He lands in a mirrored hallway, with door now behind him showing the kitchen as a reflection.
+2. He ends up in the original hallway but now the door is on his left instead of right, and the kitchen is behind him.
+3. The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.
+4. His arm disappears through the doorway and emerges from a door behind him, tapping his own shoulder.
+5. He steps through and finds himself in the kitchen, but everything is mirrored—cabinets open the wrong way, and the clock runs backward.
+PAYOFF:
+He steps through and finds himself in the kitchen, but everything is mirrored—cabinets open the wrong way, and the clock runs backward.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 93; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-018 / Random Fridge Interior
+ONE-SENTENCE PREMISE:
+Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.
+FRAME-ZERO HOOK:
+Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.
+PROGRESSION:
+1. Now the interior is a tropical rainforest with waterfalls; a pineapple rolls out.
+2. His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.
+3. The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.
+4. The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.
+5. The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.
+PAYOFF:
+The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 85; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-008 / Neighbor's TV Remote
+ONE-SENTENCE PREMISE:
+The remote's signal always targets the neighbor's television through the wall, changing their channel while your TV stays off.
+FRAME-ZERO HOOK:
+Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.
+PROGRESSION:
+1. The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.
+2. The neighbor's TV turns off and on rapidly, causing a strobe effect through the window.
+3. The neighbor's TV switches to a karaoke channel, and the neighbor starts singing loudly, while Kiko's TV ignores the manual buttons.
+4. The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.
+5. The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.
+PAYOFF:
+The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 83; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-004 / Sweep-Back Broom
+ONE-SENTENCE PREMISE:
+Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.
+FRAME-ZERO HOOK:
+Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.
+PROGRESSION:
+1. As he tilts pan, the pile dissolves and dirt races back to the original spot, leaving pan empty.
+2. Dirt enters the pan but then flies out backward through the bristles, returning to start.
+3. The dirt stays put for a full three seconds, then jumps back even faster, scattering across a wider area.
+4. The box shakes, dirt bursts out the seams, and returns to the original spot, leaving box empty.
+5. The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.
+PAYOFF:
+The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 78; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-019 / Microwave Hot Plate
+ONE-SENTENCE PREMISE:
+The microwave heats the plate to scalding while food remains frozen solid; any attempt to remove plate transfers heat to food, flash-thawing it but also melting plate.
+FRAME-ZERO HOOK:
+Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.
+PROGRESSION:
+1. The mitts start smoking, and the plate's heat melts a hole through the mitt, dropping the plate onto the counter, which sizzles.
+2. The water flashes to steam, and the food thaws instantly but is now soggy and boiling.
+3. The new plate heats red, food remains frozen, and the microwave's glass window fogs.
+4. The microwave refuses to start, beeping and displaying 'PLATE REQUIRED' in glowing letters.
+5. The hot plate jumps from counter onto Opa's lap, thawing the food on his fork instantly but also scorching his pants.
+PAYOFF:
+The hot plate jumps from counter onto Opa's lap, thawing the food on his fork instantly but also scorching his pants.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 77; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-020 / Wrong-Room Light Switch
+ONE-SENTENCE PREMISE:
+The switch controls the light in a different room (e.g., bathroom), while the room you're in stays dark; each switch in house controls a random other room.
+FRAME-ZERO HOOK:
+Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.
+PROGRESSION:
+1. Various lights in the house turn on and off in a pattern, but the living room stays dark while the porch light blinks.
+2. The bathroom light turns off, and the living room light turns on.
+3. Both rooms go dark, and a flickering light appears in the attic.
+4. The flashlight turns on, but its beam illuminates the wrong room through a window, and Kiko stumbles.
+5. The candles' flames cast shadows that point to a hidden switch behind a bookshelf; flipping that switch turns on the sun outside, causing full daylight indoors.
+PAYOFF:
+The candles' flames cast shadows that point to a hidden switch behind a bookshelf; flipping that switch turns on the sun outside, causing full daylight indoors.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 64; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-032 / Delayed Mirror
+ONE-SENTENCE PREMISE:
+The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself.
+FRAME-ZERO HOOK:
+Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.
+PROGRESSION:
+1. The mirror's delay increases to three seconds, and her reflection starts combing hair that Kiko hasn't touched yet.
+2. The mirror shows her reflection looking up and smiling, then her own head tilts involuntarily to match.
+3. The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.
+4. The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.
+5. The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.
+PAYOFF:
+The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 63; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-003 / Spiraling Shopping Cart
+ONE-SENTENCE PREMISE:
+Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.
+FRAME-ZERO HOOK:
+Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.
+PROGRESSION:
+1. The cart jerks right, then left, tracing a spiral that wraps around a cereal display.
+2. The cart spins in place like a top, cans rattling, then accelerates forward in a new spiral toward the produce section.
+3. The other three wheels snap to new positions, causing the cart to lurch sideways and knock over a stack of oranges.
+4. The cart tilts and rolls on two wheels, then slams down and spirals toward the automatic entrance, triggering doors to open.
+5. The cart, still spiraling, bumps into Mimi from behind, pushing her through the checkout line and out the exit.
+PAYOFF:
+The cart, still spiraling, bumps into Mimi from behind, pushing her through the checkout line and out the exit.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 46; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-015 / Bottom-Opening Zipper
+ONE-SENTENCE PREMISE:
+As you pull the zipper tab upward, the bottom of the zipper separates, so the jacket opens from bottom while top closes; when you pull down, the bottom closes but top opens.
+FRAME-ZERO HOOK:
+Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.
+PROGRESSION:
+1. The bottom zips shut but the top splits down to her chest.
+2. The zipper teeth at her hand pop apart, and her fingers get caught between them.
+3. Both top and bottom open outward like a mouth, and the jacket flaps open completely.
+4. The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.
+5. The safety pin zips itself into the zipper track and the entire jacket rolls up like a window blind, squeezing Mimi's torso.
+PAYOFF:
+The safety pin zips itself into the zipper track and the entire jacket rolls up like a window blind, squeezing Mimi's torso.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 43; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-016 / Bottomless Backpack
+ONE-SENTENCE PREMISE:
+The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.
+FRAME-ZERO HOOK:
+Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.
+PROGRESSION:
+1. The original top zipper opens, and books pour out onto his head.
+2. A new side seam splits open, and all contents slide out horizontally.
+3. The clothes squeeze through the bottom seam, pulling the books with them, leaving an empty flattened pack.
+4. The pack inflates and launches off his shoulders, spinning in midair as contents rainbow out.
+5. The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.
+PAYOFF:
+The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "upside-chair-01", "similarity": 0.35, "matchingAxes": ["openingRelation", "dominantTransformation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/upside-chair-01.md", "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 42; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-001 / The Inward Umbrella
+ONE-SENTENCE PREMISE:
+The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.
+FRAME-ZERO HOOK:
+Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.
+PROGRESSION:
+1. The wet fabric slides up his arm and seals around his neck like a collar, while rain soaks his exposed face.
+2. The canopy promptly engulfs his crouched back and legs, leaving only his feet sticking out, while rain pools on the fabric.
+3. The umbrella flattens over his entire body like a tarp, but water runs off the edges and forms a puddle around him, soaking him from below.
+4. The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.
+5. The umbrella stays open upside-down over his head, collecting rainwater that pours down his face inside the shelter.
+PAYOFF:
+The umbrella stays open upside-down over his head, collecting rainwater that pours down his face inside the shelter.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 41; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-009 / Ceiling Pancake
+ONE-SENTENCE PREMISE:
+The pan exerts a vertical launch force so strong that any food flies upward and sticks to the ceiling; the pan then becomes too slippery to hold.
+FRAME-ZERO HOOK:
+Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.
+PROGRESSION:
+1. The pancake still leaps up and splats on ceiling, sticking even harder.
+2. The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.
+3. The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.
+4. The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.
+5. The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.
+PAYOFF:
+The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.35, "matchingAxes": ["openingRelation", "dominantTransformation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 41; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+raw-031 / Shadow Flashlight
+ONE-SENTENCE PREMISE:
+The flashlight absorbs light and projects a darkness beam; pointing it at objects makes them disappear into shadow, while surroundings stay dim.
+FRAME-ZERO HOOK:
+Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.
+PROGRESSION:
+1. The darkness beam becomes wider, swallowing a chair and half the room into blackness.
+2. The ceiling turns black and starts dripping shadow like ink, covering the floor.
+3. The lamp works normally, but the flashlight's shadow beam seeks out the lamp and extinguishes it.
+4. Instead of darkness, a bright beam shines out the back of the flashlight, illuminating a corner where keys are visible.
+5. The keys glow and float into the flashlight's front beam, where they vanish into shadow, never to be found.
+PAYOFF:
+The keys glow and float into the flashlight's front beam, where they vanish into shadow, never to be found.
+SYSTEM'S MAIN CONCERN (recorded blockers):
+OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+CLOSEST HISTORICAL TERRITORY:
+{"referenceId": "sticky-ball-01", "similarity": 0.1, "matchingAxes": ["openingRelation"], "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt", "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"}; risk=LOW
+CURRENT STATUS:
+SFE REVISION_REQUIRED 26; full ranking INELIGIBLE; production NOT_SELECTED
+--------------------------------------------------------------------------------
+
+================================================================================================

@@ -1,0 +1,15 @@
+[
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_grammar.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_grammar_v2.json",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_generation.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/beat_grammar_benchmark.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/api.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/generate-short-concepts.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_beat_grammar.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_beat_generation.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_beat_generation_api.py",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/beat_grammar_v2_reference.json",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/fixtures/beat_generation_v2_golden.json",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+  "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/concept-generation.page.spec.ts"
+]

@@ -1,0 +1,32 @@
+{
+  "version": "creative-territories-v1",
+  "provenance": "New structural annotations of frozen prompts read in this task. No measured winner outcomes or new footage.",
+  "references": [
+    {
+      "referenceId": "upside-chair-01",
+      "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/upside-chair-01.md",
+      "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+      "signature": {
+        "objectCategory": "SEATING",
+        "goal": "SIT",
+        "openingRelation": "USE_BLOCKED",
+        "dominantTransformation": "INVERT_ORIENTATION",
+        "finalRelation": "OPENING_STATE_RECREATED",
+        "silhouetteTopology": "INVERTED_SEAT_BODY"
+      }
+    },
+    {
+      "referenceId": "sticky-ball-01",
+      "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+      "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01",
+      "signature": {
+        "objectCategory": "BALL",
+        "goal": "PLAY",
+        "openingRelation": "USE_BLOCKED",
+        "dominantTransformation": "CONTACT_RETAINS",
+        "finalRelation": "CHARACTER_ATTACHED_TO_OBJECT",
+        "silhouetteTopology": "BODY_ATTACHED_OBJECT"
+      }
+    }
+  ]
+}

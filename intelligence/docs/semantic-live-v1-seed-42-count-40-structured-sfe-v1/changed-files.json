@@ -1,0 +1,14 @@
+{
+  "intelligence/ml-service/app/workflow/short_form_evidence.py": "9f8919ee011a3daf3653f5fd1d132fa4957e5540b38c1f4a43aef9cda8a85eb2",
+  "intelligence/ml-service/app/workflow/structured_sfe_replay.py": "d2c74961091ce232a12fff3330c413ca0adf424a3cb714aa32eb5f4e5523f397",
+  "intelligence/ml-service/tests/test_structured_short_form.py": "95962d0c599892b2694f5c0f23320062b6a0287bb7d8e47c4ec65dedfc05d913",
+  "intelligence/scripts/replay-structured-sfe.py": "3f328e2a76a2c48ef1346f561e13ec64c422f74278b15d3a1134c6bc23d79663",
+  "intelligence/frontend/src/app/pages/structured-sfe-audit.component.ts": "fd3c7d407fa5364ea0a2f9c9a383c3165e213f81e81d07034986aac54e016081",
+  "intelligence/frontend/src/app/pages/structured-sfe-audit.component.spec.ts": "3f2fbd798dd81e2994d3d300a65cc726ac778cd3203e1293cc2bcef909fae0ed",
+  "intelligence/backend/src/test/java/com/pompomhills/intelligence/quality/StructuredSfeReplayControllerTest.java": "c01ac44aa119528f3bf7a2220a0e383ee44c17e37495fd609e8ed32d5e2fbfa0",
+  "intelligence/ml-service/app/workflow/short_form_engine.py": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+  "intelligence/ml-service/app/workflow/concept_ranking.py": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+  "intelligence/ml-service/app/workflow/api.py": "2add5065d9963e7591960497540ba15d6024eef73b468a007c402901e75ec181",
+  "intelligence/frontend/src/app/pages/concept-ranking.page.ts": "7e740b23e49bf61bb5fdd6d393a7107cb296b246fc138ef205b65ca4cf5a04a3",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/ConceptGenerationController.java": "30bb6acb2fc17e86622644bcd301c0a5dd378eb7dca411db03c3ed8d17d56d67"
+}

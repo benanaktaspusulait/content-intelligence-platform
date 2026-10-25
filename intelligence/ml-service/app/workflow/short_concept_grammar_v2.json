@@ -1,0 +1,968 @@
+{
+  "version": "causal-grammar-v2",
+  "goals": [
+    {
+      "id": "sit",
+      "family": "HOUSEHOLD",
+      "visibleAction": "sit down",
+      "environments": [
+        "living room",
+        "playroom"
+      ],
+      "interaction": "support",
+      "trigger": "WEIGHT_APPLIED"
+    },
+    {
+      "id": "close",
+      "family": "HOUSEHOLD",
+      "visibleAction": "close the lid",
+      "environments": [
+        "kitchen"
+      ],
+      "interaction": "seal",
+      "trigger": "PRESSURE"
+    },
+    {
+      "id": "eat",
+      "family": "FOOD",
+      "visibleAction": "eat food",
+      "environments": [
+        "dining area"
+      ],
+      "interaction": "carry_food",
+      "trigger": "LIFT"
+    },
+    {
+      "id": "brush",
+      "family": "BODY_SELF_CARE",
+      "visibleAction": "brush hair",
+      "environments": [
+        "bedroom",
+        "bathroom"
+      ],
+      "interaction": "stroke",
+      "trigger": "STROKE"
+    },
+    {
+      "id": "shoe",
+      "family": "DRESSING",
+      "visibleAction": "put the shoe on",
+      "environments": [
+        "entryway"
+      ],
+      "interaction": "wear",
+      "trigger": "PULL"
+    },
+    {
+      "id": "drawer",
+      "family": "HOUSEHOLD",
+      "visibleAction": "open the drawer",
+      "environments": [
+        "bedroom"
+      ],
+      "interaction": "slide",
+      "trigger": "PULL"
+    },
+    {
+      "id": "wash",
+      "family": "BODY_SELF_CARE",
+      "visibleAction": "wash hands",
+      "environments": [
+        "bathroom"
+      ],
+      "interaction": "rub",
+      "trigger": "PRESSURE"
+    },
+    {
+      "id": "put_away",
+      "family": "HOUSEHOLD",
+      "visibleAction": "put the book away",
+      "environments": [
+        "classroom-like craft area"
+      ],
+      "interaction": "place",
+      "trigger": "RELEASE"
+    },
+    {
+      "id": "draw",
+      "family": "SCHOOL_CRAFT",
+      "visibleAction": "draw a line",
+      "environments": [
+        "classroom-like craft area"
+      ],
+      "interaction": "mark",
+      "trigger": "STROKE"
+    },
+    {
+      "id": "fold",
+      "family": "DRESSING",
+      "visibleAction": "fold a shirt",
+      "environments": [
+        "bedroom"
+      ],
+      "interaction": "fold",
+      "trigger": "PRESSURE"
+    },
+    {
+      "id": "hat",
+      "family": "DRESSING",
+      "visibleAction": "put on a hat",
+      "environments": [
+        "entryway"
+      ],
+      "interaction": "wear_head",
+      "trigger": "PULL"
+    },
+    {
+      "id": "retrieve",
+      "family": "CONCRETE_PLAY",
+      "visibleAction": "retrieve the ball",
+      "environments": [
+        "garden",
+        "playroom"
+      ],
+      "interaction": "retrieve",
+      "trigger": "LIFT"
+    },
+    {
+      "id": "hang",
+      "family": "HOUSEHOLD",
+      "visibleAction": "hang a coat",
+      "environments": [
+        "entryway"
+      ],
+      "interaction": "hang",
+      "trigger": "RELEASE"
+    },
+    {
+      "id": "erase",
+      "family": "SCHOOL_CRAFT",
+      "visibleAction": "erase a mark",
+      "environments": [
+        "classroom-like craft area"
+      ],
+      "interaction": "rub",
+      "trigger": "STROKE"
+    },
+    {
+      "id": "water",
+      "family": "HOUSEHOLD",
+      "visibleAction": "water the plant",
+      "environments": [
+        "garden"
+      ],
+      "interaction": "pour",
+      "trigger": "LIFT"
+    }
+  ],
+  "objects": [
+    {
+      "id": "chair",
+      "name": "chair",
+      "category": "furniture",
+      "goalIds": [
+        "sit"
+      ],
+      "affordances": [
+        "support"
+      ],
+      "action": "lowers body onto the chair",
+      "pose": "CROUCH",
+      "axis": "VERTICAL",
+      "position": "BELOW_BODY",
+      "contact": "SEAT"
+    },
+    {
+      "id": "stool",
+      "name": "stool",
+      "category": "furniture",
+      "goalIds": [
+        "sit"
+      ],
+      "affordances": [
+        "support"
+      ],
+      "action": "lowers body onto the stool",
+      "pose": "CROUCH",
+      "axis": "VERTICAL",
+      "position": "BELOW_BODY",
+      "contact": "SEAT"
+    },
+    {
+      "id": "lid",
+      "name": "lid",
+      "category": "container",
+      "goalIds": [
+        "close"
+      ],
+      "affordances": [
+        "seal"
+      ],
+      "action": "presses the lid toward its rim",
+      "pose": "LEAN_OVER",
+      "axis": "VERTICAL",
+      "position": "AT_WAIST",
+      "contact": "PALMS"
+    },
+    {
+      "id": "snack_box_lid",
+      "name": "snack box lid",
+      "category": "container",
+      "goalIds": [
+        "close"
+      ],
+      "affordances": [
+        "seal"
+      ],
+      "action": "presses the snack box lid toward its rim",
+      "pose": "LEAN_OVER",
+      "axis": "VERTICAL",
+      "position": "AT_WAIST",
+      "contact": "PALMS"
+    },
+    {
+      "id": "spoon",
+      "name": "spoon",
+      "category": "utensil",
+      "goalIds": [
+        "eat"
+      ],
+      "affordances": [
+        "carry_food"
+      ],
+      "action": "lifts the spoon toward the mouth",
+      "pose": "SEATED_REACH",
+      "axis": "VERTICAL",
+      "position": "FACE_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "fork",
+      "name": "fork",
+      "category": "utensil",
+      "goalIds": [
+        "eat"
+      ],
+      "affordances": [
+        "carry_food"
+      ],
+      "action": "lifts the fork toward the mouth",
+      "pose": "SEATED_REACH",
+      "axis": "VERTICAL",
+      "position": "FACE_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "brush",
+      "name": "brush",
+      "category": "grooming",
+      "goalIds": [
+        "brush"
+      ],
+      "affordances": [
+        "stroke"
+      ],
+      "action": "draws the brush through hair",
+      "pose": "ARMS_UP",
+      "axis": "VERTICAL",
+      "position": "HEAD_LEVEL",
+      "contact": "HAIR"
+    },
+    {
+      "id": "comb",
+      "name": "comb",
+      "category": "grooming",
+      "goalIds": [
+        "brush"
+      ],
+      "affordances": [
+        "stroke"
+      ],
+      "action": "draws the comb through hair",
+      "pose": "ARMS_UP",
+      "axis": "VERTICAL",
+      "position": "HEAD_LEVEL",
+      "contact": "HAIR"
+    },
+    {
+      "id": "shoe",
+      "name": "shoe",
+      "category": "footwear",
+      "goalIds": [
+        "shoe"
+      ],
+      "affordances": [
+        "wear"
+      ],
+      "action": "pulls the shoe over the foot",
+      "pose": "ONE_FOOT_RAISED",
+      "axis": "HORIZONTAL",
+      "position": "FOOT_LEVEL",
+      "contact": "FOOT"
+    },
+    {
+      "id": "boot",
+      "name": "boot",
+      "category": "footwear",
+      "goalIds": [
+        "shoe"
+      ],
+      "affordances": [
+        "wear"
+      ],
+      "action": "pulls the boot over the foot",
+      "pose": "ONE_FOOT_RAISED",
+      "axis": "HORIZONTAL",
+      "position": "FOOT_LEVEL",
+      "contact": "FOOT"
+    },
+    {
+      "id": "drawer",
+      "name": "drawer",
+      "category": "storage",
+      "goalIds": [
+        "drawer"
+      ],
+      "affordances": [
+        "slide"
+      ],
+      "action": "pulls the drawer by its handle",
+      "pose": "BRACED_PULL",
+      "axis": "HORIZONTAL",
+      "position": "AT_WAIST",
+      "contact": "HANDLE"
+    },
+    {
+      "id": "soap_bar",
+      "name": "soap bar",
+      "category": "hygiene",
+      "goalIds": [
+        "wash"
+      ],
+      "affordances": [
+        "rub"
+      ],
+      "action": "presses the soap bar between wet palms",
+      "pose": "HANDS_TOGETHER",
+      "axis": "HORIZONTAL",
+      "position": "CHEST_LEVEL",
+      "contact": "PALMS"
+    },
+    {
+      "id": "book",
+      "name": "book",
+      "category": "school_material",
+      "goalIds": [
+        "put_away"
+      ],
+      "affordances": [
+        "place"
+      ],
+      "action": "releases the book into its storage space",
+      "pose": "BENT_REACH",
+      "axis": "HORIZONTAL",
+      "position": "SHELF_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "notebook",
+      "name": "notebook",
+      "category": "school_material",
+      "goalIds": [
+        "put_away"
+      ],
+      "affordances": [
+        "place"
+      ],
+      "action": "releases the notebook into its storage space",
+      "pose": "BENT_REACH",
+      "axis": "HORIZONTAL",
+      "position": "SHELF_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "crayon",
+      "name": "crayon",
+      "category": "drawing_tool",
+      "goalIds": [
+        "draw"
+      ],
+      "affordances": [
+        "mark"
+      ],
+      "action": "presses the crayon along the drawing surface",
+      "pose": "SEATED_LEAN",
+      "axis": "HORIZONTAL",
+      "position": "TABLE_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "pencil",
+      "name": "pencil",
+      "category": "drawing_tool",
+      "goalIds": [
+        "draw"
+      ],
+      "affordances": [
+        "mark"
+      ],
+      "action": "presses the pencil along the drawing surface",
+      "pose": "SEATED_LEAN",
+      "axis": "HORIZONTAL",
+      "position": "TABLE_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "shirt",
+      "name": "shirt",
+      "category": "fabric",
+      "goalIds": [
+        "fold"
+      ],
+      "affordances": [
+        "fold"
+      ],
+      "action": "presses one edge of the shirt toward the other",
+      "pose": "LEAN_OVER",
+      "axis": "HORIZONTAL",
+      "position": "TABLE_LEVEL",
+      "contact": "PALMS"
+    },
+    {
+      "id": "towel",
+      "name": "towel",
+      "category": "fabric",
+      "goalIds": [
+        "fold"
+      ],
+      "affordances": [
+        "fold"
+      ],
+      "action": "presses one edge of the towel toward the other",
+      "pose": "LEAN_OVER",
+      "axis": "HORIZONTAL",
+      "position": "TABLE_LEVEL",
+      "contact": "PALMS"
+    },
+    {
+      "id": "hat",
+      "name": "hat",
+      "category": "headwear",
+      "goalIds": [
+        "hat"
+      ],
+      "affordances": [
+        "wear_head"
+      ],
+      "action": "pulls the hat over the head",
+      "pose": "ARMS_UP",
+      "axis": "VERTICAL",
+      "position": "HEAD_LEVEL",
+      "contact": "HEAD"
+    },
+    {
+      "id": "ball",
+      "name": "ball",
+      "category": "toy",
+      "goalIds": [
+        "retrieve"
+      ],
+      "affordances": [
+        "retrieve"
+      ],
+      "action": "lifts the ball from the ground",
+      "pose": "BENT_REACH",
+      "axis": "VERTICAL",
+      "position": "GROUND",
+      "contact": "GRIP"
+    },
+    {
+      "id": "coat",
+      "name": "coat",
+      "category": "clothing",
+      "goalIds": [
+        "hang"
+      ],
+      "affordances": [
+        "hang"
+      ],
+      "action": "releases the coat onto the wall hook",
+      "pose": "ARMS_UP",
+      "axis": "VERTICAL",
+      "position": "HEAD_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "eraser",
+      "name": "eraser",
+      "category": "school_material",
+      "goalIds": [
+        "erase"
+      ],
+      "affordances": [
+        "rub"
+      ],
+      "action": "rubs the eraser across the marked surface",
+      "pose": "SEATED_LEAN",
+      "axis": "HORIZONTAL",
+      "position": "TABLE_LEVEL",
+      "contact": "GRIP"
+    },
+    {
+      "id": "watering_can",
+      "name": "watering can",
+      "category": "garden_tool",
+      "goalIds": [
+        "water"
+      ],
+      "affordances": [
+        "pour"
+      ],
+      "action": "lifts the watering can toward the plant",
+      "pose": "STANDING_REACH",
+      "axis": "VERTICAL",
+      "position": "AT_WAIST",
+      "contact": "GRIP"
+    }
+  ],
+  "engines": [
+    {
+      "id": "PROGRESSIVE_GROWTH",
+      "validTriggerTypes": [
+        "LIFT",
+        "PRESSURE",
+        "PULL",
+        "RELEASE",
+        "STROKE",
+        "WEIGHT_APPLIED"
+      ],
+      "validInteractionTypes": [
+        "carry_food",
+        "fold",
+        "hang",
+        "mark",
+        "place",
+        "pour",
+        "retrieve",
+        "rub",
+        "seal",
+        "slide",
+        "stroke",
+        "support",
+        "wear",
+        "wear_head"
+      ],
+      "stateTransition": "SCALE_UP",
+      "allowedEscalations": [
+        "LINEAR_MAGNITUDE",
+        "SPACE_COMPRESSION",
+        "STRATEGY_RESPONSE"
+      ],
+      "compatiblePayoffFamilies": [
+        "LOGICAL_EXTREME",
+        "GOAL_INVERSION"
+      ],
+      "productionRiskHints": [
+        "Keep changing scale and contact visible."
+      ]
+    },
+    {
+      "id": "PROGRESSIVE_SHRINK",
+      "validTriggerTypes": [
+        "LIFT",
+        "PRESSURE",
+        "PULL",
+        "RELEASE",
+        "STROKE",
+        "WEIGHT_APPLIED"
+      ],
+      "validInteractionTypes": [
+        "carry_food",
+        "fold",
+        "hang",
+        "mark",
+        "place",
+        "pour",
+        "retrieve",
+        "rub",
+        "seal",
+        "slide",
+        "stroke",
+        "support",
+        "wear",
+        "wear_head"
+      ],
+      "stateTransition": "SCALE_DOWN",
+      "allowedEscalations": [
+        "STRATEGY_RESPONSE",
+        "CONTROL_LOSS"
+      ],
+      "compatiblePayoffFamilies": [
+        "GOAL_INVERSION",
+        "LOGICAL_EXTREME"
+      ],
+      "productionRiskHints": [
+        "Small final object may be difficult to read."
+      ]
+    },
+    {
+      "id": "ADHESION",
+      "validTriggerTypes": [
+        "LIFT",
+        "PULL",
+        "PRESSURE",
+        "STROKE"
+      ],
+      "validInteractionTypes": [
+        "carry_food",
+        "fold",
+        "hang",
+        "mark",
+        "place",
+        "pour",
+        "retrieve",
+        "rub",
+        "seal",
+        "slide",
+        "stroke",
+        "support",
+        "wear",
+        "wear_head"
+      ],
+      "stateTransition": "CONTACT_RETAINS",
+      "allowedEscalations": [
+        "ACCUMULATION",
+        "CONTROL_LOSS",
+        "STRATEGY_RESPONSE"
+      ],
+      "compatiblePayoffFamilies": [
+        "ROLE_REVERSAL",
+        "FAKE_RESOLUTION"
+      ],
+      "productionRiskHints": [
+        "Keep attachment location stable."
+      ]
+    },
+    {
+      "id": "RESET_TO_START",
+      "validTriggerTypes": [
+        "PULL",
+        "RELEASE",
+        "LIFT"
+      ],
+      "validInteractionTypes": [
+        "carry_food",
+        "fold",
+        "hang",
+        "mark",
+        "place",
+        "pour",
+        "retrieve",
+        "rub",
+        "seal",
+        "slide",
+        "stroke",
+        "support",
+        "wear",
+        "wear_head"
+      ],
+      "stateTransition": "RETURN_ORIGIN",
+      "allowedEscalations": [
+        "FALSE_PROGRESS",
+        "STRATEGY_RESPONSE",
+        "STATE_CHAIN"
+      ],
+      "compatiblePayoffFamilies": [
+        "OPENING_RECREATED",
+        "SELF_CREATED_LOOP"
+      ],
+      "productionRiskHints": [
+        "Maintain a visible start mark."
+      ]
+    },
+    {
+      "id": "REVERSAL",
+      "validTriggerTypes": [
+        "PRESSURE",
+        "WEIGHT_APPLIED",
+        "PULL"
+      ],
+      "validInteractionTypes": [
+        "seal",
+        "support",
+        "fold",
+        "slide",
+        "wear",
+        "wear_head"
+      ],
+      "stateTransition": "INVERT_ORIENTATION",
+      "allowedEscalations": [
+        "STRATEGY_RESPONSE",
+        "CONTROL_LOSS",
+        "FALSE_PROGRESS"
+      ],
+      "compatiblePayoffFamilies": [
+        "FAKE_RESOLUTION",
+        "ROLE_REVERSAL"
+      ],
+      "productionRiskHints": [
+        "Keep object orientation and body contact readable."
+      ]
+    },
+    {
+      "id": "ELASTIC_EXTENSION",
+      "validTriggerTypes": [
+        "PULL",
+        "STROKE"
+      ],
+      "validInteractionTypes": [
+        "slide",
+        "wear",
+        "wear_head",
+        "stroke",
+        "mark",
+        "rub"
+      ],
+      "stateTransition": "EXTEND_CONTACT",
+      "allowedEscalations": [
+        "SPACE_COMPRESSION",
+        "CONTROL_LOSS",
+        "LINEAR_MAGNITUDE"
+      ],
+      "compatiblePayoffFamilies": [
+        "LOGICAL_EXTREME",
+        "GOAL_INVERSION"
+      ],
+      "productionRiskHints": [
+        "One continuous extension; do not alter object identity."
+      ]
+    },
+    {
+      "id": "ESCAPING_TARGET",
+      "validTriggerTypes": [
+        "PRESSURE",
+        "WEIGHT_APPLIED",
+        "LIFT"
+      ],
+      "validInteractionTypes": [
+        "seal",
+        "support",
+        "carry_food",
+        "retrieve",
+        "pour"
+      ],
+      "stateTransition": "MOVE_AWAY",
+      "allowedEscalations": [
+        "STRATEGY_RESPONSE",
+        "SPACE_COMPRESSION",
+        "FALSE_PROGRESS"
+      ],
+      "compatiblePayoffFamilies": [
+        "GOAL_INVERSION",
+        "ROLE_REVERSAL"
+      ],
+      "productionRiskHints": [
+        "Show one moving target, no independent extra objects."
+      ]
+    },
+    {
+      "id": "WEIGHT_SHIFT",
+      "validTriggerTypes": [
+        "LIFT",
+        "PRESSURE",
+        "WEIGHT_APPLIED"
+      ],
+      "validInteractionTypes": [
+        "carry_food",
+        "fold",
+        "hang",
+        "mark",
+        "place",
+        "pour",
+        "retrieve",
+        "rub",
+        "seal",
+        "slide",
+        "stroke",
+        "support",
+        "wear",
+        "wear_head"
+      ],
+      "stateTransition": "FLOAT_AWAY",
+      "allowedEscalations": [
+        "STATE_CHAIN",
+        "CONTROL_LOSS",
+        "FALSE_PROGRESS"
+      ],
+      "compatiblePayoffFamilies": [
+        "ROLE_REVERSAL",
+        "FAKE_RESOLUTION"
+      ],
+      "productionRiskHints": [
+        "Avoid rapid floating-body contact changes."
+      ]
+    }
+  ],
+  "triggers": {
+    "WEIGHT_APPLIED": {
+      "rule": "body weight is placed on it",
+      "visible": true,
+      "responseStrategies": [
+        "pushes down through one palm for balance",
+        "clamps the object between broad knees"
+      ]
+    },
+    "PRESSURE": {
+      "rule": "pressure is applied to it",
+      "visible": true,
+      "responseStrategies": [
+        "pushes using both hands",
+        "squeezes between broad forearms"
+      ]
+    },
+    "LIFT": {
+      "rule": "it is lifted",
+      "visible": true,
+      "responseStrategies": [
+        "lifts using both hands",
+        "grabs from underneath"
+      ]
+    },
+    "STROKE": {
+      "rule": "a stroke is completed",
+      "visible": true,
+      "responseStrategies": [
+        "holds the far end of the object",
+        "grabs close to the working edge"
+      ]
+    },
+    "PULL": {
+      "rule": "it is pulled",
+      "visible": true,
+      "responseStrategies": [
+        "pulls with both hands",
+        "clamps the sides with broad knees"
+      ]
+    },
+    "RELEASE": {
+      "rule": "it is released",
+      "visible": true,
+      "responseStrategies": [
+        "holds the object by its edge",
+        "wedges the body into the remaining clear space"
+      ]
+    }
+  },
+  "escalations": {
+    "LINEAR_MAGNITUDE": {
+      "strategies": [
+        "uses one broad movement",
+        "uses both hands with a wider movement",
+        "uses a full-body movement"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    },
+    "STRATEGY_RESPONSE": {
+      "strategies": [
+        "works from the front",
+        "changes to a side approach",
+        "changes to an underneath approach"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    },
+    "SPACE_COMPRESSION": {
+      "strategies": [
+        "works at the center of the available space",
+        "moves sideways into the remaining gap",
+        "works from the last clear patch"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    },
+    "CONTROL_LOSS": {
+      "strategies": [
+        "guides the object with one hand",
+        "braces with both hands",
+        "braces with the whole body"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    },
+    "FALSE_PROGRESS": {
+      "strategies": [
+        "guides the object halfway to the goal",
+        "guides it nearly to the goal",
+        "holds it at the goal boundary"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    },
+    "ACCUMULATION": {
+      "strategies": [
+        "uses one hand",
+        "adds the second hand",
+        "tries to free both hands with a broad body movement"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    },
+    "STATE_CHAIN": {
+      "strategies": [
+        "works at the starting position",
+        "moves to the middle position",
+        "works at the goal position"
+      ],
+      "stages": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "payoffs": {
+    "LOGICAL_EXTREME": {
+      "requiredRuleApplication": true,
+      "newObjects": false
+    },
+    "FAKE_RESOLUTION": {
+      "requiredRuleApplication": true,
+      "newObjects": false
+    },
+    "ROLE_REVERSAL": {
+      "requiredRuleApplication": true,
+      "newObjects": false
+    },
+    "OPENING_RECREATED": {
+      "requiredRuleApplication": true,
+      "newObjects": false
+    },
+    "GOAL_INVERSION": {
+      "requiredRuleApplication": true,
+      "newObjects": false
+    },
+    "SELF_CREATED_LOOP": {
+      "requiredRuleApplication": true,
+      "newObjects": false
+    }
+  }
+}

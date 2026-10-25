@@ -1,0 +1,17 @@
+{
+  "candidateCount": 18,
+  "providerCalls": 0,
+  "externalProviderCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "blockedEvents": {},
+  "structuredSFEExactlyUnchanged": true,
+  "sharedFactMismatches": [],
+  "baselineMismatchCells": 71,
+  "afterMismatchCells": 0,
+  "auditMethod": "Exact same source-bound immutable fact receipt in each consumer; SFE report exact-equal to stored accepted structured report. Independent quality output is not a fact contradiction.",
+  "inputHashes": {
+    "intelligence/docs/canonical-evidence-propagation-v1/audit-only-baseline.json": "27ac5a62d068814fd7244621177847f4fafc07304d1612c7a5a21cb321c116dd",
+    "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/response.txt": "298c928c74e7a5add47ab9f0ddda51576ea3674cfd0683e744e2034dddeaf95c"
+  }
+}

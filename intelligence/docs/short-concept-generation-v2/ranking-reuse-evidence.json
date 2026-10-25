@@ -1,0 +1,2948 @@
+{
+  "exactAcceptedRankingEquality": true,
+  "directResultHash": "ecd394720574f5053c7dcbec4eec5eba433a7e577c99c578751a6987c5e8948c",
+  "orchestratedResultHash": "ecd394720574f5053c7dcbec4eec5eba433a7e577c99c578751a6987c5e8948c",
+  "rawFirstCandidate": "v2-42f8db51be5f3dc4",
+  "productionFirstCandidate": "v2-69e8e1f5cbc4a53d",
+  "additiveSelection": {
+    "productionSlate": [
+      {
+        "candidateId": "v2-69e8e1f5cbc4a53d",
+        "title": "Shoe / Reset To Start / Opening Recreated",
+        "normalizedConcept": {
+          "id": "v2-69e8e1f5cbc4a53d",
+          "title": "Shoe / Reset To Start / Opening Recreated",
+          "protagonist": "Noah",
+          "protagonistGoal": "put the shoe on",
+          "objectOrPrimaryInteraction": "shoe",
+          "impossibleRuleOrCoreContradiction": "The shoe slides back to its starting position whenever it is pulled.",
+          "frameZeroDescription": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.",
+          "escalationPlan": [
+            {
+              "startSeconds": 0.0,
+              "endSeconds": 3.0,
+              "description": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal."
+            },
+            {
+              "startSeconds": 3.0,
+              "endSeconds": 6.0,
+              "description": "Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position."
+            },
+            {
+              "startSeconds": 6.0,
+              "endSeconds": 9.0,
+              "description": "Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary."
+            },
+            {
+              "startSeconds": 9.0,
+              "endSeconds": 12.0,
+              "description": "Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+            },
+            {
+              "startSeconds": 12.0,
+              "endSeconds": 15.0,
+              "description": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position."
+            }
+          ],
+          "finalPayoff": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.",
+          "intendedDurationSeconds": 15.0,
+          "optionalDialogue": null,
+          "evaluationText": "0-3s: Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.\n3-6s: Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position.\n6-9s: Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary.\n9-12s: Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.\n12-15s: Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.",
+          "originalInput": {
+            "id": "v2-69e8e1f5cbc4a53d",
+            "title": "Shoe / Reset To Start / Opening Recreated",
+            "protagonist": "Noah",
+            "protagonistGoal": "put the shoe on",
+            "objectOrPrimaryInteraction": "shoe",
+            "impossibleRuleOrCoreContradiction": "The shoe slides back to its starting position whenever it is pulled.",
+            "frameZeroDescription": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.",
+            "escalationPlan": [
+              {
+                "startSeconds": 0.0,
+                "endSeconds": 3.0,
+                "description": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal."
+              },
+              {
+                "startSeconds": 3.0,
+                "endSeconds": 6.0,
+                "description": "Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position."
+              },
+              {
+                "startSeconds": 6.0,
+                "endSeconds": 9.0,
+                "description": "Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary."
+              },
+              {
+                "startSeconds": 9.0,
+                "endSeconds": 12.0,
+                "description": "Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+              },
+              {
+                "startSeconds": 12.0,
+                "endSeconds": 15.0,
+                "description": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position."
+              }
+            ],
+            "finalPayoff": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.",
+            "intendedDurationSeconds": 15.0
+          },
+          "normalizationEvidence": {
+            "id": "EXPLICIT_FIELD",
+            "title": "EXPLICIT_FIELD",
+            "protagonist": "EXPLICIT_FIELD",
+            "protagonistGoal": "EXPLICIT_FIELD",
+            "objectOrPrimaryInteraction": "EXPLICIT_FIELD",
+            "impossibleRuleOrCoreContradiction": "EXPLICIT_FIELD",
+            "frameZeroDescription": "EXPLICIT_FIELD",
+            "escalationPlan": "EXPLICIT_FIELD",
+            "finalPayoff": "EXPLICIT_FIELD",
+            "intendedDurationSeconds": "EXPLICIT_FIELD"
+          },
+          "sourceSha256": "20aa7d219c6d28d41ff96ba003febace1461bc8cd5e0fe2b9eba9a632b121128",
+          "normalizationWarnings": [
+            "Only explicit fields, labeled text and supported source excerpts are normalized; unknown fields remain missing.",
+            "Timed middle beats can bound supplied opening/payoff windows; no actions are generated."
+          ]
+        },
+        "eligibility": "ELIGIBLE",
+        "missingFields": [],
+        "eligibilityReasons": [],
+        "shortFormScore": 100,
+        "rankingScore": 97.6,
+        "baseCompositeScore": 97.6,
+        "rankingDimensions": [
+          {
+            "dimension": "instantCausalLegibility",
+            "score": 100,
+            "weightPercent": 22,
+            "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+          },
+          {
+            "dimension": "visualContradiction",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.hookScore"
+          },
+          {
+            "dimension": "goalClarity",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.goalScore"
+          },
+          {
+            "dimension": "oneRuleStrength",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+          },
+          {
+            "dimension": "progressDensity",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.progressDensityScore"
+          },
+          {
+            "dimension": "escalationQuality",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.escalationScore"
+          },
+          {
+            "dimension": "payoffStrength",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.payoffScore"
+          },
+          {
+            "dimension": "rewatchPotential",
+            "score": 60,
+            "weightPercent": 6,
+            "source": "SHORT_FORM_ENGINE.rewatchScore"
+          }
+        ],
+        "penalties": [],
+        "rankingPenaltyPoints": 0,
+        "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+        "productionRisk": {
+          "score": 100,
+          "flags": [],
+          "evidenceStatus": "TEXT_RISK_SCREEN_ONLY"
+        },
+        "productionEfficiency": {
+          "score": 100,
+          "source": "SHORT_FORM_ENGINE.productionFeasibilityScore",
+          "use": "Secondary only within a 3-point anchored quality band; no verified monetary cost estimate."
+        },
+        "strengths": [
+          {
+            "dimension": "instantCausalLegibility",
+            "score": 100,
+            "weightPercent": 22,
+            "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+          },
+          {
+            "dimension": "visualContradiction",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.hookScore"
+          },
+          {
+            "dimension": "goalClarity",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.goalScore"
+          },
+          {
+            "dimension": "oneRuleStrength",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+          },
+          {
+            "dimension": "progressDensity",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.progressDensityScore"
+          },
+          {
+            "dimension": "escalationQuality",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.escalationScore"
+          },
+          {
+            "dimension": "payoffStrength",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.payoffScore"
+          }
+        ],
+        "weaknesses": [],
+        "shortFormEngine": {
+          "engine": "SHORT_FORM_ENGINE",
+          "version": "short-form-engine-v1",
+          "status": "PASS",
+          "shortFormScore": 100,
+          "hookScore": 100,
+          "goalScore": 100,
+          "ruleClarityScore": 100,
+          "beatDensityScore": 100,
+          "progressDensityScore": 100,
+          "escalationScore": 100,
+          "payoffScore": 100,
+          "rewatchScore": 60,
+          "silentLegibilityScore": 100,
+          "productionFeasibilityScore": 100,
+          "instantPremiseLegibility": {
+            "score": 100,
+            "reason": "Opening contains a visible everyday goal and anomaly."
+          },
+          "alreadyInTrouble": true,
+          "rules": [
+            "RETURN"
+          ],
+          "majorCausalBeatCount": 5,
+          "describedBlockCount": 5,
+          "beats": [
+            {
+              "id": "B1",
+              "start": 0.0,
+              "end": 3.0,
+              "quote": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.",
+              "sourceSpan": [
+                6,
+                157
+              ],
+              "visual": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.",
+              "rules": [
+                "RETURN"
+              ],
+              "strategies": [
+                "PULL"
+              ],
+              "changes": [
+                "CONSTRAINT"
+              ],
+              "stateSignals": [
+                "CONSTRAINT:block"
+              ],
+              "goal": true,
+              "result": true,
+              "progressTypes": [
+                "UNDERSTANDING"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B2",
+              "start": 3.0,
+              "end": 6.0,
+              "quote": "Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position.",
+              "sourceSpan": [
+                164,
+                295
+              ],
+              "visual": "Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position.",
+              "rules": [
+                "RETURN"
+              ],
+              "strategies": [
+                "PULL"
+              ],
+              "changes": [
+                "MAGNITUDE"
+              ],
+              "stateSignals": [
+                "MAGNITUDE:both hands"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "ESCALATION"
+              ],
+              "materialProgress": true,
+              "newStrategy": false
+            },
+            {
+              "id": "B3",
+              "start": 6.0,
+              "end": 9.0,
+              "quote": "Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary.",
+              "sourceSpan": [
+                302,
+                448
+              ],
+              "visual": "Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary.",
+              "rules": [
+                "RETURN"
+              ],
+              "strategies": [
+                "CLAMP",
+                "PULL"
+              ],
+              "changes": [],
+              "stateSignals": [],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B4",
+              "start": 9.0,
+              "end": 12.0,
+              "quote": "Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.",
+              "sourceSpan": [
+                456,
+                674
+              ],
+              "visual": "Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.",
+              "rules": [],
+              "strategies": [],
+              "changes": [
+                "POSITION",
+                "INFORMATION"
+              ],
+              "stateSignals": [
+                "POSITION:underneath",
+                "POSITION:underneath",
+                "INFORMATION:exposes"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "ESCALATION",
+                "CONSEQUENCE"
+              ],
+              "materialProgress": true,
+              "newStrategy": false
+            },
+            {
+              "id": "B5",
+              "start": 12.0,
+              "end": 15.0,
+              "quote": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.",
+              "sourceSpan": [
+                683,
+                945
+              ],
+              "visual": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.",
+              "rules": [
+                "RETURN"
+              ],
+              "strategies": [
+                "HOLD",
+                "PULL"
+              ],
+              "changes": [
+                "CONSTRAINT"
+              ],
+              "stateSignals": [
+                "CONSTRAINT:block"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY",
+                "PAYOFF"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            }
+          ],
+          "findings": [],
+          "escalationCurve": {
+            "longestPlateauSeconds": 3.0,
+            "targetSeconds": [
+              2,
+              4
+            ]
+          },
+          "continuationReason": "Next materially different attempt, consequence or final physical state.",
+          "earlyRuleUnderstandingPenalized": false,
+          "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+          "silentLegibility": {
+            "goal": 100,
+            "rule": 100,
+            "reaction": 100,
+            "payoff": 100
+          },
+          "dialogue": {
+            "words": 0,
+            "audioDependent": false
+          },
+          "stagingRisks": [],
+          "productionRisks": [],
+          "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+          "duplicateEngineRisk": {
+            "status": "NO_MATCH_IN_LIMITED_CORPUS",
+            "matches": [],
+            "comparedReferences": 2,
+            "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+          },
+          "requestedDurationSeconds": 15.0,
+          "timingVerifiedFromPlan": true,
+          "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+          "humanReadableReport": "PASS: short-form 100/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+          "sourceSha256": "20aa7d219c6d28d41ff96ba003febace1461bc8cd5e0fe2b9eba9a632b121128",
+          "evidenceLimitations": [
+            "Source text describes intended visuals; no actual video frames inspected.",
+            "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+            "Unknown mechanics, implicit goals and unsupported wording need human review.",
+            "Long-form quality, canonical gates and production risk are independent."
+          ],
+          "canonicalRulesetUnchanged": true,
+          "renderAuthorized": false,
+          "providerCalls": 0
+        },
+        "cpqPreview": {
+          "contractVersion": "creative-prompt-quality-v1",
+          "rubricVersion": "creative-prompt-quality-v1",
+          "calibrationCorpusVersion": null,
+          "gradingStatus": "CALIBRATION_INCOMPLETE",
+          "absoluteQuality": {
+            "status": "NOT_QUALIFIED",
+            "grade": null,
+            "aggregateScore": null,
+            "reason": "No approved, independently reviewed calibration corpus and activated thresholds are available."
+          },
+          "relativeImprovement": {
+            "status": "NO_CHANGE",
+            "promptFingerprintChanged": false,
+            "addedTokenCount": 0,
+            "removedTokenCount": 0,
+            "materialityEvidence": [],
+            "classification": "EQUIVALENT",
+            "note": "Token difference and verbosity do not establish material improvement."
+          },
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies opening window.",
+                "Text explicitly specifies visual anomaly or contrast."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish viewer-facing composition."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for viewer-facing composition only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "opening window"
+                },
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "visual anomaly or contrast"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies explicit cause/consequence relation.",
+                "Text explicitly specifies state change or escalation.",
+                "Text explicitly specifies ordered progression."
+              ],
+              "weaknesses": [],
+              "recommendations": [],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "explicit cause/consequence relation"
+                },
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "state change or escalation"
+                },
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "ordered progression"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies spatial relation."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish physical interaction.",
+                "The prompt does not explicitly establish composition or visibility instruction."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for physical interaction only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for composition or visibility instruction only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "spatial relation"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies timing budget."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish camera/shot plan.",
+                "The prompt does not explicitly establish continuity or action-complexity control."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for camera/shot plan only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for continuity or action-complexity control only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "timing budget"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies defined final image/consequence."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish opening relation or loop option.",
+                "The prompt does not explicitly establish payoff or intentional curiosity."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for opening relation or loop option only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for payoff or intentional curiosity only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "defined final image/consequence"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [],
+              "weaknesses": [
+                "The prompt does not explicitly establish specific visual mechanism.",
+                "The prompt does not explicitly establish non-generic variation or contrast.",
+                "The prompt does not explicitly establish concrete execution choice."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for specific visual mechanism only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for non-generic variation or contrast only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for concrete execution choice only if diagnosis supports it."
+              ],
+              "evidenceReferences": [],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            }
+          ],
+          "sourceFidelity": {
+            "decision": "UNKNOWN",
+            "requiredForQualifiedGrade": true,
+            "evidenceId": null
+          },
+          "canonicalValidation": {
+            "rulesetVersion": "1.11",
+            "status": "NOT_PROVIDED"
+          },
+          "productionRisks": [],
+          "missingEvidence": [
+            "Approved calibration corpus",
+            "Calibrated dimension thresholds and aggregation",
+            "Held-out error analysis",
+            "Independent reviewer agreement"
+          ],
+          "qualityConfidence": {
+            "status": "NOT_CALIBRATED",
+            "reviewerAgreement": null
+          },
+          "visualAdherence": "UNVERIFIED",
+          "audienceEffect": "UNMEASURED",
+          "renderReadiness": "SEPARATE_F8_POLICY",
+          "renderAuthorized": false,
+          "automaticApproval": false,
+          "fingerprints": {
+            "originalPromptSha256": "20aa7d219c6d28d41ff96ba003febace1461bc8cd5e0fe2b9eba9a632b121128",
+            "candidatePromptSha256": "20aa7d219c6d28d41ff96ba003febace1461bc8cd5e0fe2b9eba9a632b121128"
+          }
+        },
+        "historicalComparison": {
+          "closestHistoricalEngine": null,
+          "similarities": [],
+          "differences": [],
+          "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+          "limitation": "No supported structural match in the two-reference corpus; originality remains unverified."
+        },
+        "engineSignature": {
+          "opening": [
+            "RETURN"
+          ],
+          "progression": [
+            "PULL",
+            "CLAMP",
+            "HOLD"
+          ],
+          "ending": [
+            "RECREATED_PROBLEM"
+          ]
+        },
+        "renderAuthorized": false,
+        "rawRank": 3,
+        "tieBand": 1,
+        "rank": 3,
+        "whyRankedHere": {
+          "basis": "STABLE_ID_TIE_BREAK",
+          "comparison": {
+            "candidateId": "v2-69e8e1f5cbc4a53d",
+            "otherCandidateId": "v2-5a0870794e171ea8",
+            "dimensions": [
+              {
+                "dimension": "instantCausalLegibility",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "visualContradiction",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "goalClarity",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "oneRuleStrength",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "progressDensity",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "escalationQuality",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "payoffStrength",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "rewatchPotential",
+                "candidateScore": 60,
+                "otherScore": 60,
+                "difference": 0
+              }
+            ],
+            "rankingScore": [
+              97.6,
+              97.6
+            ],
+            "duplicateRisk": [
+              "NO_MATCH_IN_LIMITED_CORPUS",
+              "NO_MATCH_IN_LIMITED_CORPUS"
+            ],
+            "rankingPenaltyPoints": [
+              0,
+              0
+            ],
+            "productionEfficiency": [
+              100,
+              100
+            ]
+          },
+          "text": "Rank 3 vs v2-5a0870794e171ea8: composite 97.6 vs 97.6; all creative dimensions equal; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 100; STABLE_ID_TIE_BREAK."
+        },
+        "productionSlateRank": 1,
+        "productionRank": 1,
+        "candidate": {
+          "candidateId": "v2-69e8e1f5cbc4a53d",
+          "title": "Shoe / Reset To Start / Opening Recreated",
+          "protagonist": "Noah",
+          "protagonistCharacterId": "00000000-0000-0000-0000-000000000006",
+          "everydayGoal": "put the shoe on",
+          "primaryObject": "shoe",
+          "engineFamily": "RESET_TO_START",
+          "goalRuleRelationship": "The return origin response to wear prevents the shoe from reaching or holding the usable state needed to put the shoe on.",
+          "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+          "frameZeroDescription": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal.",
+          "beats": [
+            {
+              "startSeconds": 0.0,
+              "endSeconds": 3.0,
+              "description": "Noah tries to put the shoe on and pulls the shoe over the foot. The shoe slides back into the starting position. Noah's eyes widen at the blocked goal."
+            },
+            {
+              "startSeconds": 3.0,
+              "endSeconds": 6.0,
+              "description": "Noah works from the front, pulls with both hands, and pulls the shoe over the foot. The shoe slides back from the halfway position."
+            },
+            {
+              "startSeconds": 6.0,
+              "endSeconds": 9.0,
+              "description": "Noah changes to a side approach, clamps the sides with broad knees, and pulls the shoe over the foot. The shoe slides back from the goal boundary."
+            },
+            {
+              "startSeconds": 9.0,
+              "endSeconds": 12.0,
+              "description": "Noah changes to an underneath approach and moves underneath the stationary shoe without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+            },
+            {
+              "startSeconds": 12.0,
+              "endSeconds": 15,
+              "description": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position."
+            }
+          ],
+          "finalPayoff": "Noah finally holds the shoe at the goal position, moves back into the opening body pose, then pulls the shoe over the foot. The shoe slides back into its starting position again. The original reaching pose and blocked goal are recreated at the starting position.",
+          "escalationCurve": [
+            {
+              "beatIndex": 1,
+              "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+              "stateTransition": "RETURN_ORIGIN",
+              "transitionApplication": 1
+            },
+            {
+              "beatIndex": 2,
+              "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+              "stateTransition": "RETURN_ORIGIN",
+              "transitionApplication": 2
+            },
+            {
+              "beatIndex": 3,
+              "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+              "stateTransition": "RETURN_ORIGIN",
+              "transitionApplication": 3
+            },
+            {
+              "beatIndex": 4,
+              "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+              "stateTransition": "RETURN_ORIGIN",
+              "transitionApplication": 3
+            },
+            {
+              "beatIndex": 5,
+              "sourceRule": "The shoe slides back to its starting position whenever it is pulled.",
+              "stateTransition": "RETURN_ORIGIN",
+              "transitionApplication": 4
+            }
+          ],
+          "loopPotential": {
+            "type": "TRIGGER_RECREATES_PROBLEM",
+            "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+          },
+          "dialogueRequirement": "NONE",
+          "environment": "entryway",
+          "intendedDurationSeconds": 15,
+          "productionNotes": [
+            "One character and one primary object; fixed camera and continuous identity.",
+            "Maintain a visible start mark."
+          ],
+          "composition": {
+            "goalId": "shoe",
+            "goalFamily": "DRESSING",
+            "objectId": "shoe",
+            "objectCategory": "footwear",
+            "engineFamily": "RESET_TO_START",
+            "trigger": "PULL",
+            "escalationTopology": "STRATEGY_RESPONSE",
+            "payoffTopology": "OPENING_RECREATED",
+            "environment": "entryway",
+            "stateTransition": "RETURN_ORIGIN"
+          },
+          "structuralPlan": {
+            "interactionType": "wear",
+            "trigger": "PULL",
+            "transformationDirection": "RETURN_ORIGIN",
+            "escalationTopology": "STRATEGY_RESPONSE",
+            "resolutionTopology": "OPENING_RECREATED",
+            "finalSilhouetteTopology": "RETURN_ORIGIN_OPENING_RECREATED",
+            "loopTopology": "TRIGGER_RECREATES_PROBLEM"
+          },
+          "visualFingerprint": {
+            "characterPoseFamily": "ONE_FOOT_RAISED",
+            "objectRelativePosition": "FOOT_LEVEL",
+            "dominantDirection": "RETURN_ORIGIN",
+            "objectScaleRelation": "STABLE",
+            "characterObjectContact": "FOOT",
+            "finalFrameComposition": "START_MARK_RETURN",
+            "movementAxis": "HORIZONTAL",
+            "environmentInteraction": "LOCAL_WORK_AREA"
+          },
+          "provenance": {
+            "generatorVersion": "short-concept-generator-v2",
+            "grammarVersion": "causal-grammar-v2",
+            "grammarSha256": "0a21c87654c2a675e758f43adee9006178c94291a0786a8e6a9860f9cc4bc23d",
+            "seed": 42,
+            "characterAssignedAfterEngine": true,
+            "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+          },
+          "structuralFingerprint": {
+            "version": "short-concept-fingerprint-v1",
+            "dimensions": {
+              "goalType": "DRESS",
+              "interactionType": "WEAR",
+              "engineFamily": "RESET_TO_START",
+              "transformationDirection": "RETURN_ORIGIN",
+              "trigger": "PULL",
+              "escalationTopology": "STRATEGY_RESPONSE",
+              "resolutionTopology": "OPENING_RECREATED",
+              "finalSilhouetteTopology": "RETURN_ORIGIN_OPENING_RECREATED",
+              "loopTopology": "TRIGGER_RECREATES_PROBLEM"
+            },
+            "fullHash": "055e84a8d55cc6dcd0f91fb1fede8a7cbecb4562619aeaec3c79823d613ed94c",
+            "coreHash": "149e8ac285f0a6d1e4fbd7d44f0bc69f90cb8d914c64f4a968e61359e4f54a96",
+            "supportedCoreDimensions": 7,
+            "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+            "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+          }
+        },
+        "productionTieSignals": {
+          "payoff": 100,
+          "progress": 100,
+          "frameZero": 100,
+          "duplicateRisk": 0,
+          "batchNovelty": 0.266667,
+          "visualNovelty": 0.5,
+          "productionRisk": 0,
+          "rewatch": 60,
+          "noveltyVector": {
+            "goalNovelty": 0,
+            "objectNovelty": 1,
+            "escalationNovelty": 0,
+            "payoffNovelty": 0,
+            "engineNovelty": 0.333333,
+            "visualSilhouetteNovelty": 0.5
+          }
+        },
+        "diversityAdjustmentReason": "CREATIVE_TIE_ORDER_WITHIN_ANCHORED_3_POINT_BAND",
+        "selectionReason": "Payoff, progress, frame-zero, duplicate risk, batch novelty, visual novelty, production flags, rewatch, then ID; no score mutation."
+      },
+      {
+        "candidateId": "v2-5a0870794e171ea8",
+        "title": "Brush / Progressive Growth / Goal Inversion",
+        "normalizedConcept": {
+          "id": "v2-5a0870794e171ea8",
+          "title": "Brush / Progressive Growth / Goal Inversion",
+          "protagonist": "Kiko",
+          "protagonistGoal": "brush hair",
+          "objectOrPrimaryInteraction": "brush",
+          "impossibleRuleOrCoreContradiction": "The brush grows one size step whenever a stroke is completed.",
+          "frameZeroDescription": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.",
+          "escalationPlan": [
+            {
+              "startSeconds": 0.0,
+              "endSeconds": 3.0,
+              "description": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal."
+            },
+            {
+              "startSeconds": 3.0,
+              "endSeconds": 6.0,
+              "description": "Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap."
+            },
+            {
+              "startSeconds": 6.0,
+              "endSeconds": 9.0,
+              "description": "Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body."
+            },
+            {
+              "startSeconds": 9.0,
+              "endSeconds": 12.0,
+              "description": "Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+            },
+            {
+              "startSeconds": 12.0,
+              "endSeconds": 15.0,
+              "description": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone."
+            }
+          ],
+          "finalPayoff": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+          "intendedDurationSeconds": 15.0,
+          "optionalDialogue": null,
+          "evaluationText": "0-3s: Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.\n3-6s: Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap.\n6-9s: Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body.\n9-12s: Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.\n12-15s: Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+          "originalInput": {
+            "id": "v2-5a0870794e171ea8",
+            "title": "Brush / Progressive Growth / Goal Inversion",
+            "protagonist": "Kiko",
+            "protagonistGoal": "brush hair",
+            "objectOrPrimaryInteraction": "brush",
+            "impossibleRuleOrCoreContradiction": "The brush grows one size step whenever a stroke is completed.",
+            "frameZeroDescription": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.",
+            "escalationPlan": [
+              {
+                "startSeconds": 0.0,
+                "endSeconds": 3.0,
+                "description": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal."
+              },
+              {
+                "startSeconds": 3.0,
+                "endSeconds": 6.0,
+                "description": "Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap."
+              },
+              {
+                "startSeconds": 6.0,
+                "endSeconds": 9.0,
+                "description": "Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body."
+              },
+              {
+                "startSeconds": 9.0,
+                "endSeconds": 12.0,
+                "description": "Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+              },
+              {
+                "startSeconds": 12.0,
+                "endSeconds": 15.0,
+                "description": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone."
+              }
+            ],
+            "finalPayoff": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+            "intendedDurationSeconds": 15.0
+          },
+          "normalizationEvidence": {
+            "id": "EXPLICIT_FIELD",
+            "title": "EXPLICIT_FIELD",
+            "protagonist": "EXPLICIT_FIELD",
+            "protagonistGoal": "EXPLICIT_FIELD",
+            "objectOrPrimaryInteraction": "EXPLICIT_FIELD",
+            "impossibleRuleOrCoreContradiction": "EXPLICIT_FIELD",
+            "frameZeroDescription": "EXPLICIT_FIELD",
+            "escalationPlan": "EXPLICIT_FIELD",
+            "finalPayoff": "EXPLICIT_FIELD",
+            "intendedDurationSeconds": "EXPLICIT_FIELD"
+          },
+          "sourceSha256": "38fb9aaf7a7e5d38c87ffe02aa26ea00c1ee60c18e2a576fde69c4225e836bb9",
+          "normalizationWarnings": [
+            "Only explicit fields, labeled text and supported source excerpts are normalized; unknown fields remain missing.",
+            "Timed middle beats can bound supplied opening/payoff windows; no actions are generated."
+          ]
+        },
+        "eligibility": "ELIGIBLE",
+        "missingFields": [],
+        "eligibilityReasons": [],
+        "shortFormScore": 100,
+        "rankingScore": 97.6,
+        "baseCompositeScore": 97.6,
+        "rankingDimensions": [
+          {
+            "dimension": "instantCausalLegibility",
+            "score": 100,
+            "weightPercent": 22,
+            "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+          },
+          {
+            "dimension": "visualContradiction",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.hookScore"
+          },
+          {
+            "dimension": "goalClarity",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.goalScore"
+          },
+          {
+            "dimension": "oneRuleStrength",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+          },
+          {
+            "dimension": "progressDensity",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.progressDensityScore"
+          },
+          {
+            "dimension": "escalationQuality",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.escalationScore"
+          },
+          {
+            "dimension": "payoffStrength",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.payoffScore"
+          },
+          {
+            "dimension": "rewatchPotential",
+            "score": 60,
+            "weightPercent": 6,
+            "source": "SHORT_FORM_ENGINE.rewatchScore"
+          }
+        ],
+        "penalties": [],
+        "rankingPenaltyPoints": 0,
+        "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+        "productionRisk": {
+          "score": 100,
+          "flags": [],
+          "evidenceStatus": "TEXT_RISK_SCREEN_ONLY"
+        },
+        "productionEfficiency": {
+          "score": 100,
+          "source": "SHORT_FORM_ENGINE.productionFeasibilityScore",
+          "use": "Secondary only within a 3-point anchored quality band; no verified monetary cost estimate."
+        },
+        "strengths": [
+          {
+            "dimension": "instantCausalLegibility",
+            "score": 100,
+            "weightPercent": 22,
+            "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+          },
+          {
+            "dimension": "visualContradiction",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.hookScore"
+          },
+          {
+            "dimension": "goalClarity",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.goalScore"
+          },
+          {
+            "dimension": "oneRuleStrength",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+          },
+          {
+            "dimension": "progressDensity",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.progressDensityScore"
+          },
+          {
+            "dimension": "escalationQuality",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.escalationScore"
+          },
+          {
+            "dimension": "payoffStrength",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.payoffScore"
+          }
+        ],
+        "weaknesses": [],
+        "shortFormEngine": {
+          "engine": "SHORT_FORM_ENGINE",
+          "version": "short-form-engine-v1",
+          "status": "PASS",
+          "shortFormScore": 100,
+          "hookScore": 100,
+          "goalScore": 100,
+          "ruleClarityScore": 100,
+          "beatDensityScore": 100,
+          "progressDensityScore": 100,
+          "escalationScore": 100,
+          "payoffScore": 100,
+          "rewatchScore": 60,
+          "silentLegibilityScore": 100,
+          "productionFeasibilityScore": 100,
+          "instantPremiseLegibility": {
+            "score": 100,
+            "reason": "Opening contains a visible everyday goal and anomaly."
+          },
+          "alreadyInTrouble": true,
+          "rules": [
+            "GROWTH"
+          ],
+          "majorCausalBeatCount": 5,
+          "describedBlockCount": 5,
+          "beats": [
+            {
+              "id": "B1",
+              "start": 0.0,
+              "end": 3.0,
+              "quote": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.",
+              "sourceSpan": [
+                6,
+                143
+              ],
+              "visual": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.",
+              "rules": [
+                "GROWTH"
+              ],
+              "strategies": [],
+              "changes": [
+                "CONSTRAINT"
+              ],
+              "stateSignals": [
+                "CONSTRAINT:block"
+              ],
+              "goal": true,
+              "result": true,
+              "progressTypes": [
+                "UNDERSTANDING"
+              ],
+              "materialProgress": true,
+              "newStrategy": false
+            },
+            {
+              "id": "B2",
+              "start": 3.0,
+              "end": 6.0,
+              "quote": "Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap.",
+              "sourceSpan": [
+                150,
+                312
+              ],
+              "visual": "Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap.",
+              "rules": [
+                "GROWTH"
+              ],
+              "strategies": [
+                "HOLD"
+              ],
+              "changes": [
+                "MAGNITUDE"
+              ],
+              "stateSignals": [
+                "MAGNITUDE:larger"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY",
+                "ESCALATION",
+                "CONSEQUENCE"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B3",
+              "start": 6.0,
+              "end": 9.0,
+              "quote": "Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body.",
+              "sourceSpan": [
+                319,
+                490
+              ],
+              "visual": "Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body.",
+              "rules": [
+                "GROWTH"
+              ],
+              "strategies": [
+                "GRAB_HOLD"
+              ],
+              "changes": [
+                "MAGNITUDE",
+                "CONSTRAINT"
+              ],
+              "stateSignals": [
+                "MAGNITUDE:larger",
+                "CONSTRAINT:blocks"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY",
+                "ESCALATION",
+                "CONSEQUENCE"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B4",
+              "start": 9.0,
+              "end": 12.0,
+              "quote": "Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.",
+              "sourceSpan": [
+                498,
+                715
+              ],
+              "visual": "Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.",
+              "rules": [],
+              "strategies": [],
+              "changes": [
+                "POSITION",
+                "INFORMATION"
+              ],
+              "stateSignals": [
+                "POSITION:underneath",
+                "INFORMATION:exposes"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "ESCALATION",
+                "CONSEQUENCE"
+              ],
+              "materialProgress": true,
+              "newStrategy": false
+            },
+            {
+              "id": "B5",
+              "start": 12.0,
+              "end": 15.0,
+              "quote": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+              "sourceSpan": [
+                724,
+                959
+              ],
+              "visual": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+              "rules": [
+                "GROWTH"
+              ],
+              "strategies": [],
+              "changes": [
+                "MAGNITUDE"
+              ],
+              "stateSignals": [
+                "MAGNITUDE:enormous"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "ESCALATION",
+                "PAYOFF"
+              ],
+              "materialProgress": true,
+              "newStrategy": false
+            }
+          ],
+          "findings": [],
+          "escalationCurve": {
+            "longestPlateauSeconds": 3.0,
+            "targetSeconds": [
+              2,
+              4
+            ]
+          },
+          "continuationReason": "Next materially different attempt, consequence or final physical state.",
+          "earlyRuleUnderstandingPenalized": false,
+          "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+          "silentLegibility": {
+            "goal": 100,
+            "rule": 100,
+            "reaction": 100,
+            "payoff": 100
+          },
+          "dialogue": {
+            "words": 0,
+            "audioDependent": false
+          },
+          "stagingRisks": [],
+          "productionRisks": [],
+          "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+          "duplicateEngineRisk": {
+            "status": "NO_MATCH_IN_LIMITED_CORPUS",
+            "matches": [],
+            "comparedReferences": 2,
+            "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+          },
+          "requestedDurationSeconds": 15.0,
+          "timingVerifiedFromPlan": true,
+          "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+          "humanReadableReport": "PASS: short-form 100/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+          "sourceSha256": "38fb9aaf7a7e5d38c87ffe02aa26ea00c1ee60c18e2a576fde69c4225e836bb9",
+          "evidenceLimitations": [
+            "Source text describes intended visuals; no actual video frames inspected.",
+            "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+            "Unknown mechanics, implicit goals and unsupported wording need human review.",
+            "Long-form quality, canonical gates and production risk are independent."
+          ],
+          "canonicalRulesetUnchanged": true,
+          "renderAuthorized": false,
+          "providerCalls": 0
+        },
+        "cpqPreview": {
+          "contractVersion": "creative-prompt-quality-v1",
+          "rubricVersion": "creative-prompt-quality-v1",
+          "calibrationCorpusVersion": null,
+          "gradingStatus": "CALIBRATION_INCOMPLETE",
+          "absoluteQuality": {
+            "status": "NOT_QUALIFIED",
+            "grade": null,
+            "aggregateScore": null,
+            "reason": "No approved, independently reviewed calibration corpus and activated thresholds are available."
+          },
+          "relativeImprovement": {
+            "status": "NO_CHANGE",
+            "promptFingerprintChanged": false,
+            "addedTokenCount": 0,
+            "removedTokenCount": 0,
+            "materialityEvidence": [],
+            "classification": "EQUIVALENT",
+            "note": "Token difference and verbosity do not establish material improvement."
+          },
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies visual anomaly or contrast."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish opening window.",
+                "The prompt does not explicitly establish viewer-facing composition."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for opening window only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for viewer-facing composition only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "visual anomaly or contrast"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies state change or escalation."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish explicit cause/consequence relation.",
+                "The prompt does not explicitly establish ordered progression."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for explicit cause/consequence relation only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for ordered progression only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "state change or escalation"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies physical interaction.",
+                "Text explicitly specifies composition or visibility instruction."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish spatial relation."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for spatial relation only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "physical interaction"
+                },
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "composition or visibility instruction"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies timing budget."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish camera/shot plan.",
+                "The prompt does not explicitly establish continuity or action-complexity control."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for camera/shot plan only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for continuity or action-complexity control only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "timing budget"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [],
+              "weaknesses": [
+                "The prompt does not explicitly establish defined final image/consequence.",
+                "The prompt does not explicitly establish opening relation or loop option.",
+                "The prompt does not explicitly establish payoff or intentional curiosity."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for defined final image/consequence only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for opening relation or loop option only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for payoff or intentional curiosity only if diagnosis supports it."
+              ],
+              "evidenceReferences": [],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [],
+              "weaknesses": [
+                "The prompt does not explicitly establish specific visual mechanism.",
+                "The prompt does not explicitly establish non-generic variation or contrast.",
+                "The prompt does not explicitly establish concrete execution choice."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for specific visual mechanism only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for non-generic variation or contrast only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for concrete execution choice only if diagnosis supports it."
+              ],
+              "evidenceReferences": [],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            }
+          ],
+          "sourceFidelity": {
+            "decision": "UNKNOWN",
+            "requiredForQualifiedGrade": true,
+            "evidenceId": null
+          },
+          "canonicalValidation": {
+            "rulesetVersion": "1.11",
+            "status": "NOT_PROVIDED"
+          },
+          "productionRisks": [],
+          "missingEvidence": [
+            "Approved calibration corpus",
+            "Calibrated dimension thresholds and aggregation",
+            "Held-out error analysis",
+            "Independent reviewer agreement"
+          ],
+          "qualityConfidence": {
+            "status": "NOT_CALIBRATED",
+            "reviewerAgreement": null
+          },
+          "visualAdherence": "UNVERIFIED",
+          "audienceEffect": "UNMEASURED",
+          "renderReadiness": "SEPARATE_F8_POLICY",
+          "renderAuthorized": false,
+          "automaticApproval": false,
+          "fingerprints": {
+            "originalPromptSha256": "38fb9aaf7a7e5d38c87ffe02aa26ea00c1ee60c18e2a576fde69c4225e836bb9",
+            "candidatePromptSha256": "38fb9aaf7a7e5d38c87ffe02aa26ea00c1ee60c18e2a576fde69c4225e836bb9"
+          }
+        },
+        "historicalComparison": {
+          "closestHistoricalEngine": null,
+          "similarities": [],
+          "differences": [],
+          "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+          "limitation": "No supported structural match in the two-reference corpus; originality remains unverified."
+        },
+        "engineSignature": {
+          "opening": [
+            "GROWTH"
+          ],
+          "progression": [
+            "HOLD",
+            "GRAB_HOLD"
+          ],
+          "ending": [
+            "LOGICAL_EXTREME"
+          ]
+        },
+        "renderAuthorized": false,
+        "rawRank": 2,
+        "tieBand": 1,
+        "rank": 2,
+        "whyRankedHere": {
+          "basis": "STABLE_ID_TIE_BREAK",
+          "comparison": {
+            "candidateId": "v2-5a0870794e171ea8",
+            "otherCandidateId": "v2-42f8db51be5f3dc4",
+            "dimensions": [
+              {
+                "dimension": "instantCausalLegibility",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "visualContradiction",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "goalClarity",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "oneRuleStrength",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "progressDensity",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "escalationQuality",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "payoffStrength",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "rewatchPotential",
+                "candidateScore": 60,
+                "otherScore": 60,
+                "difference": 0
+              }
+            ],
+            "rankingScore": [
+              97.6,
+              97.6
+            ],
+            "duplicateRisk": [
+              "NO_MATCH_IN_LIMITED_CORPUS",
+              "NO_MATCH_IN_LIMITED_CORPUS"
+            ],
+            "rankingPenaltyPoints": [
+              0,
+              0
+            ],
+            "productionEfficiency": [
+              100,
+              100
+            ]
+          },
+          "text": "Rank 2 vs v2-42f8db51be5f3dc4: composite 97.6 vs 97.6; all creative dimensions equal; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 100; STABLE_ID_TIE_BREAK."
+        },
+        "productionSlateRank": 2,
+        "productionRank": 2,
+        "candidate": {
+          "candidateId": "v2-5a0870794e171ea8",
+          "title": "Brush / Progressive Growth / Goal Inversion",
+          "protagonist": "Kiko",
+          "protagonistCharacterId": "00000000-0000-0000-0000-000000000002",
+          "everydayGoal": "brush hair",
+          "primaryObject": "brush",
+          "engineFamily": "PROGRESSIVE_GROWTH",
+          "goalRuleRelationship": "The scale up response to stroke prevents the brush from reaching or holding the usable state needed to brush hair.",
+          "impossibleRule": "The brush grows one size step whenever a stroke is completed.",
+          "frameZeroDescription": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal.",
+          "beats": [
+            {
+              "startSeconds": 0.0,
+              "endSeconds": 3.0,
+              "description": "Kiko tries to brush hair and draws the brush through hair. The brush grows past the contact point. Kiko's eyes widen at the blocked goal."
+            },
+            {
+              "startSeconds": 3.0,
+              "endSeconds": 6.0,
+              "description": "Kiko works at the center of the available space, holds the far end of the object, and draws the brush through hair. The brush grows larger than the available gap."
+            },
+            {
+              "startSeconds": 6.0,
+              "endSeconds": 9.0,
+              "description": "Kiko moves sideways into the remaining gap, grabs close to the working edge, and draws the brush through hair. The brush grows even larger than before and blocks the body."
+            },
+            {
+              "startSeconds": 9.0,
+              "endSeconds": 12.0,
+              "description": "Kiko works from the last clear patch and moves underneath the stationary brush without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+            },
+            {
+              "startSeconds": 12.0,
+              "endSeconds": 15,
+              "description": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone."
+            }
+          ],
+          "finalPayoff": "Kiko makes one last attempt and draws the brush through hair. The brush grows until the enormous brush fills the frame. Instead of bringing the brush to the goal, Kiko must bring the body to the brush; the original task remains undone.",
+          "escalationCurve": [
+            {
+              "beatIndex": 1,
+              "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+              "stateTransition": "SCALE_UP",
+              "transitionApplication": 1
+            },
+            {
+              "beatIndex": 2,
+              "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+              "stateTransition": "SCALE_UP",
+              "transitionApplication": 2
+            },
+            {
+              "beatIndex": 3,
+              "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+              "stateTransition": "SCALE_UP",
+              "transitionApplication": 3
+            },
+            {
+              "beatIndex": 4,
+              "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+              "stateTransition": "SCALE_UP",
+              "transitionApplication": 3
+            },
+            {
+              "beatIndex": 5,
+              "sourceRule": "The brush grows one size step whenever a stroke is completed.",
+              "stateTransition": "SCALE_UP",
+              "transitionApplication": 4
+            }
+          ],
+          "loopPotential": {
+            "type": "NONE",
+            "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+          },
+          "dialogueRequirement": "NONE",
+          "environment": "bathroom",
+          "intendedDurationSeconds": 15,
+          "productionNotes": [
+            "One character and one primary object; fixed camera and continuous identity.",
+            "Keep changing scale and contact visible."
+          ],
+          "composition": {
+            "goalId": "brush",
+            "goalFamily": "BODY_SELF_CARE",
+            "objectId": "brush",
+            "objectCategory": "grooming",
+            "engineFamily": "PROGRESSIVE_GROWTH",
+            "trigger": "STROKE",
+            "escalationTopology": "SPACE_COMPRESSION",
+            "payoffTopology": "GOAL_INVERSION",
+            "environment": "bathroom",
+            "stateTransition": "SCALE_UP"
+          },
+          "structuralPlan": {
+            "interactionType": "stroke",
+            "trigger": "STROKE",
+            "transformationDirection": "SCALE_UP",
+            "escalationTopology": "SPACE_COMPRESSION",
+            "resolutionTopology": "GOAL_INVERSION",
+            "finalSilhouetteTopology": "SCALE_UP_GOAL_INVERSION",
+            "loopTopology": "NONE"
+          },
+          "visualFingerprint": {
+            "characterPoseFamily": "ARMS_UP",
+            "objectRelativePosition": "HEAD_LEVEL",
+            "dominantDirection": "SCALE_UP",
+            "objectScaleRelation": "INCREASING",
+            "characterObjectContact": "HAIR",
+            "finalFrameComposition": "OBJECT_FILLS_FRAME",
+            "movementAxis": "VERTICAL",
+            "environmentInteraction": "SPACE_LOSS"
+          },
+          "provenance": {
+            "generatorVersion": "short-concept-generator-v2",
+            "grammarVersion": "causal-grammar-v2",
+            "grammarSha256": "0a21c87654c2a675e758f43adee9006178c94291a0786a8e6a9860f9cc4bc23d",
+            "seed": 42,
+            "characterAssignedAfterEngine": true,
+            "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+          },
+          "structuralFingerprint": {
+            "version": "short-concept-fingerprint-v1",
+            "dimensions": {
+              "goalType": "GROOM",
+              "interactionType": "STROKE",
+              "engineFamily": "PROGRESSIVE_GROWTH",
+              "transformationDirection": "INCREASE",
+              "trigger": "STROKE",
+              "escalationTopology": "SPACE_COMPRESSION",
+              "resolutionTopology": "GOAL_INVERSION",
+              "finalSilhouetteTopology": "SCALE_UP_GOAL_INVERSION",
+              "loopTopology": "NONE"
+            },
+            "fullHash": "686e6386c6b2b85e9d73593036e2e11eeafb72dee9773d2881ab5273581282c9",
+            "coreHash": "cab85dfeff23b2df2d5d6de8bbb4419324c2fe1ea85ba347c518008ff1be6227",
+            "supportedCoreDimensions": 7,
+            "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+            "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+          }
+        },
+        "productionTieSignals": {
+          "payoff": 100,
+          "progress": 100,
+          "frameZero": 100,
+          "duplicateRisk": 0,
+          "batchNovelty": 0.266667,
+          "visualNovelty": 0.375,
+          "productionRisk": 0,
+          "rewatch": 60,
+          "noveltyVector": {
+            "goalNovelty": 0,
+            "objectNovelty": 1,
+            "escalationNovelty": 0,
+            "payoffNovelty": 0,
+            "engineNovelty": 0.333333,
+            "visualSilhouetteNovelty": 0.375
+          }
+        },
+        "diversityAdjustmentReason": "CREATIVE_TIE_ORDER_WITHIN_ANCHORED_3_POINT_BAND",
+        "selectionReason": "Payoff, progress, frame-zero, duplicate risk, batch novelty, visual novelty, production flags, rewatch, then ID; no score mutation."
+      },
+      {
+        "candidateId": "v2-42f8db51be5f3dc4",
+        "title": "Chair / Reversal / Role Reversal",
+        "normalizedConcept": {
+          "id": "v2-42f8db51be5f3dc4",
+          "title": "Chair / Reversal / Role Reversal",
+          "protagonist": "Noah",
+          "protagonistGoal": "sit down",
+          "objectOrPrimaryInteraction": "chair",
+          "impossibleRuleOrCoreContradiction": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+          "frameZeroDescription": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+          "escalationPlan": [
+            {
+              "startSeconds": 0.0,
+              "endSeconds": 3.0,
+              "description": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal."
+            },
+            {
+              "startSeconds": 3.0,
+              "endSeconds": 6.0,
+              "description": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface."
+            },
+            {
+              "startSeconds": 6.0,
+              "endSeconds": 9.0,
+              "description": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways."
+            },
+            {
+              "startSeconds": 9.0,
+              "endSeconds": 12.0,
+              "description": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+            },
+            {
+              "startSeconds": 12.0,
+              "endSeconds": 15.0,
+              "description": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it."
+            }
+          ],
+          "finalPayoff": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+          "intendedDurationSeconds": 15.0,
+          "optionalDialogue": null,
+          "evaluationText": "0-3s: Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.\n3-6s: Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface.\n6-9s: Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways.\n9-12s: Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.\n12-15s: Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+          "originalInput": {
+            "id": "v2-42f8db51be5f3dc4",
+            "title": "Chair / Reversal / Role Reversal",
+            "protagonist": "Noah",
+            "protagonistGoal": "sit down",
+            "objectOrPrimaryInteraction": "chair",
+            "impossibleRuleOrCoreContradiction": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+            "frameZeroDescription": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+            "escalationPlan": [
+              {
+                "startSeconds": 0.0,
+                "endSeconds": 3.0,
+                "description": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal."
+              },
+              {
+                "startSeconds": 3.0,
+                "endSeconds": 6.0,
+                "description": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface."
+              },
+              {
+                "startSeconds": 6.0,
+                "endSeconds": 9.0,
+                "description": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways."
+              },
+              {
+                "startSeconds": 9.0,
+                "endSeconds": 12.0,
+                "description": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+              },
+              {
+                "startSeconds": 12.0,
+                "endSeconds": 15.0,
+                "description": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it."
+              }
+            ],
+            "finalPayoff": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+            "intendedDurationSeconds": 15.0
+          },
+          "normalizationEvidence": {
+            "id": "EXPLICIT_FIELD",
+            "title": "EXPLICIT_FIELD",
+            "protagonist": "EXPLICIT_FIELD",
+            "protagonistGoal": "EXPLICIT_FIELD",
+            "objectOrPrimaryInteraction": "EXPLICIT_FIELD",
+            "impossibleRuleOrCoreContradiction": "EXPLICIT_FIELD",
+            "frameZeroDescription": "EXPLICIT_FIELD",
+            "escalationPlan": "EXPLICIT_FIELD",
+            "finalPayoff": "EXPLICIT_FIELD",
+            "intendedDurationSeconds": "EXPLICIT_FIELD"
+          },
+          "sourceSha256": "ac5f84f17d831316190bf0f42bb2183a38312cfbebd2fa50edf5a08cd297c6a0",
+          "normalizationWarnings": [
+            "Only explicit fields, labeled text and supported source excerpts are normalized; unknown fields remain missing.",
+            "Timed middle beats can bound supplied opening/payoff windows; no actions are generated."
+          ]
+        },
+        "eligibility": "ELIGIBLE",
+        "missingFields": [],
+        "eligibilityReasons": [],
+        "shortFormScore": 100,
+        "rankingScore": 97.6,
+        "baseCompositeScore": 97.6,
+        "rankingDimensions": [
+          {
+            "dimension": "instantCausalLegibility",
+            "score": 100,
+            "weightPercent": 22,
+            "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+          },
+          {
+            "dimension": "visualContradiction",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.hookScore"
+          },
+          {
+            "dimension": "goalClarity",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.goalScore"
+          },
+          {
+            "dimension": "oneRuleStrength",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+          },
+          {
+            "dimension": "progressDensity",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.progressDensityScore"
+          },
+          {
+            "dimension": "escalationQuality",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.escalationScore"
+          },
+          {
+            "dimension": "payoffStrength",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.payoffScore"
+          },
+          {
+            "dimension": "rewatchPotential",
+            "score": 60,
+            "weightPercent": 6,
+            "source": "SHORT_FORM_ENGINE.rewatchScore"
+          }
+        ],
+        "penalties": [],
+        "rankingPenaltyPoints": 0,
+        "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+        "productionRisk": {
+          "score": 100,
+          "flags": [],
+          "evidenceStatus": "TEXT_RISK_SCREEN_ONLY"
+        },
+        "productionEfficiency": {
+          "score": 100,
+          "source": "SHORT_FORM_ENGINE.productionFeasibilityScore",
+          "use": "Secondary only within a 3-point anchored quality band; no verified monetary cost estimate."
+        },
+        "strengths": [
+          {
+            "dimension": "instantCausalLegibility",
+            "score": 100,
+            "weightPercent": 22,
+            "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+          },
+          {
+            "dimension": "visualContradiction",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.hookScore"
+          },
+          {
+            "dimension": "goalClarity",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.goalScore"
+          },
+          {
+            "dimension": "oneRuleStrength",
+            "score": 100,
+            "weightPercent": 8,
+            "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+          },
+          {
+            "dimension": "progressDensity",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.progressDensityScore"
+          },
+          {
+            "dimension": "escalationQuality",
+            "score": 100,
+            "weightPercent": 10,
+            "source": "SHORT_FORM_ENGINE.escalationScore"
+          },
+          {
+            "dimension": "payoffStrength",
+            "score": 100,
+            "weightPercent": 18,
+            "source": "SHORT_FORM_ENGINE.payoffScore"
+          }
+        ],
+        "weaknesses": [],
+        "shortFormEngine": {
+          "engine": "SHORT_FORM_ENGINE",
+          "version": "short-form-engine-v1",
+          "status": "PASS",
+          "shortFormScore": 100,
+          "hookScore": 100,
+          "goalScore": 100,
+          "ruleClarityScore": 100,
+          "beatDensityScore": 100,
+          "progressDensityScore": 100,
+          "escalationScore": 100,
+          "payoffScore": 100,
+          "rewatchScore": 60,
+          "silentLegibilityScore": 100,
+          "productionFeasibilityScore": 100,
+          "instantPremiseLegibility": {
+            "score": 100,
+            "reason": "Opening contains a visible everyday goal and anomaly."
+          },
+          "alreadyInTrouble": true,
+          "rules": [
+            "INVERSION"
+          ],
+          "majorCausalBeatCount": 5,
+          "describedBlockCount": 5,
+          "beats": [
+            {
+              "id": "B1",
+              "start": 0.0,
+              "end": 3.0,
+              "quote": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+              "sourceSpan": [
+                6,
+                139
+              ],
+              "visual": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+              "rules": [
+                "INVERSION"
+              ],
+              "strategies": [
+                "INVERT"
+              ],
+              "changes": [
+                "CONSTRAINT"
+              ],
+              "stateSignals": [
+                "CONSTRAINT:block"
+              ],
+              "goal": true,
+              "result": true,
+              "progressTypes": [
+                "UNDERSTANDING"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B2",
+              "start": 3.0,
+              "end": 6.0,
+              "quote": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface.",
+              "sourceSpan": [
+                146,
+                335
+              ],
+              "visual": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface.",
+              "rules": [
+                "INVERSION"
+              ],
+              "strategies": [
+                "PUSH",
+                "INVERT"
+              ],
+              "changes": [
+                "MAGNITUDE"
+              ],
+              "stateSignals": [
+                "MAGNITUDE:both hands"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY",
+                "ESCALATION"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B3",
+              "start": 6.0,
+              "end": 9.0,
+              "quote": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways.",
+              "sourceSpan": [
+                342,
+                514
+              ],
+              "visual": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways.",
+              "rules": [
+                "INVERSION"
+              ],
+              "strategies": [
+                "CLAMP",
+                "INVERT"
+              ],
+              "changes": [],
+              "stateSignals": [],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B4",
+              "start": 9.0,
+              "end": 12.0,
+              "quote": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.",
+              "sourceSpan": [
+                522,
+                737
+              ],
+              "visual": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished.",
+              "rules": [],
+              "strategies": [
+                "HOLD"
+              ],
+              "changes": [
+                "POSITION",
+                "INFORMATION"
+              ],
+              "stateSignals": [
+                "POSITION:underneath",
+                "INFORMATION:exposes"
+              ],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "STRATEGY",
+                "ESCALATION",
+                "CONSEQUENCE"
+              ],
+              "materialProgress": true,
+              "newStrategy": true
+            },
+            {
+              "id": "B5",
+              "start": 12.0,
+              "end": 15.0,
+              "quote": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+              "sourceSpan": [
+                746,
+                956
+              ],
+              "visual": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+              "rules": [
+                "INVERSION"
+              ],
+              "strategies": [
+                "INVERT"
+              ],
+              "changes": [],
+              "stateSignals": [],
+              "goal": false,
+              "result": true,
+              "progressTypes": [
+                "PAYOFF"
+              ],
+              "materialProgress": true,
+              "newStrategy": false
+            }
+          ],
+          "findings": [],
+          "escalationCurve": {
+            "longestPlateauSeconds": 3.0,
+            "targetSeconds": [
+              2,
+              4
+            ]
+          },
+          "continuationReason": "Next materially different attempt, consequence or final physical state.",
+          "earlyRuleUnderstandingPenalized": false,
+          "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+          "silentLegibility": {
+            "goal": 100,
+            "rule": 100,
+            "reaction": 100,
+            "payoff": 100
+          },
+          "dialogue": {
+            "words": 0,
+            "audioDependent": false
+          },
+          "stagingRisks": [],
+          "productionRisks": [],
+          "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+          "duplicateEngineRisk": {
+            "status": "NO_MATCH_IN_LIMITED_CORPUS",
+            "matches": [],
+            "comparedReferences": 2,
+            "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+          },
+          "requestedDurationSeconds": 15.0,
+          "timingVerifiedFromPlan": true,
+          "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+          "humanReadableReport": "PASS: short-form 100/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+          "sourceSha256": "ac5f84f17d831316190bf0f42bb2183a38312cfbebd2fa50edf5a08cd297c6a0",
+          "evidenceLimitations": [
+            "Source text describes intended visuals; no actual video frames inspected.",
+            "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+            "Unknown mechanics, implicit goals and unsupported wording need human review.",
+            "Long-form quality, canonical gates and production risk are independent."
+          ],
+          "canonicalRulesetUnchanged": true,
+          "renderAuthorized": false,
+          "providerCalls": 0
+        },
+        "cpqPreview": {
+          "contractVersion": "creative-prompt-quality-v1",
+          "rubricVersion": "creative-prompt-quality-v1",
+          "calibrationCorpusVersion": null,
+          "gradingStatus": "CALIBRATION_INCOMPLETE",
+          "absoluteQuality": {
+            "status": "NOT_QUALIFIED",
+            "grade": null,
+            "aggregateScore": null,
+            "reason": "No approved, independently reviewed calibration corpus and activated thresholds are available."
+          },
+          "relativeImprovement": {
+            "status": "NO_CHANGE",
+            "promptFingerprintChanged": false,
+            "addedTokenCount": 0,
+            "removedTokenCount": 0,
+            "materialityEvidence": [],
+            "classification": "EQUIVALENT",
+            "note": "Token difference and verbosity do not establish material improvement."
+          },
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies visual anomaly or contrast."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish opening window.",
+                "The prompt does not explicitly establish viewer-facing composition."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for opening window only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for viewer-facing composition only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "visual anomaly or contrast"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [],
+              "weaknesses": [
+                "The prompt does not explicitly establish explicit cause/consequence relation.",
+                "The prompt does not explicitly establish state change or escalation.",
+                "The prompt does not explicitly establish ordered progression."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for explicit cause/consequence relation only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for state change or escalation only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for ordered progression only if diagnosis supports it."
+              ],
+              "evidenceReferences": [],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies spatial relation.",
+                "Text explicitly specifies physical interaction."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish composition or visibility instruction."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for composition or visibility instruction only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "spatial relation"
+                },
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "physical interaction"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [
+                "Text explicitly specifies timing budget."
+              ],
+              "weaknesses": [
+                "The prompt does not explicitly establish camera/shot plan.",
+                "The prompt does not explicitly establish continuity or action-complexity control."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for camera/shot plan only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for continuity or action-complexity control only if diagnosis supports it."
+              ],
+              "evidenceReferences": [
+                {
+                  "kind": "PROMPT_TEXT_SIGNAL",
+                  "label": "timing budget"
+                }
+              ],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [],
+              "weaknesses": [
+                "The prompt does not explicitly establish defined final image/consequence.",
+                "The prompt does not explicitly establish opening relation or loop option.",
+                "The prompt does not explicitly establish payoff or intentional curiosity."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for defined final image/consequence only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for opening relation or loop option only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for payoff or intentional curiosity only if diagnosis supports it."
+              ],
+              "evidenceReferences": [],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "TEXT_EVIDENCE_PREVIEW",
+              "calibratedScore": null,
+              "strengths": [],
+              "weaknesses": [
+                "The prompt does not explicitly establish specific visual mechanism.",
+                "The prompt does not explicitly establish non-generic variation or contrast.",
+                "The prompt does not explicitly establish concrete execution choice."
+              ],
+              "recommendations": [
+                "Add a source-faithful, observable instruction for specific visual mechanism only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for non-generic variation or contrast only if diagnosis supports it.",
+                "Add a source-faithful, observable instruction for concrete execution choice only if diagnosis supports it."
+              ],
+              "evidenceReferences": [],
+              "confidence": "NOT_CALIBRATED",
+              "explicitUnknowns": [
+                "Actual rendered visual adherence is unverified.",
+                "Audience effect is unmeasured."
+              ],
+              "profileConstraints": {
+                "contentProfile": "UNKNOWN",
+                "generator": "UNKNOWN",
+                "durationSeconds": 15.0
+              },
+              "canonicalContextReferences": []
+            }
+          ],
+          "sourceFidelity": {
+            "decision": "UNKNOWN",
+            "requiredForQualifiedGrade": true,
+            "evidenceId": null
+          },
+          "canonicalValidation": {
+            "rulesetVersion": "1.11",
+            "status": "NOT_PROVIDED"
+          },
+          "productionRisks": [],
+          "missingEvidence": [
+            "Approved calibration corpus",
+            "Calibrated dimension thresholds and aggregation",
+            "Held-out error analysis",
+            "Independent reviewer agreement"
+          ],
+          "qualityConfidence": {
+            "status": "NOT_CALIBRATED",
+            "reviewerAgreement": null
+          },
+          "visualAdherence": "UNVERIFIED",
+          "audienceEffect": "UNMEASURED",
+          "renderReadiness": "SEPARATE_F8_POLICY",
+          "renderAuthorized": false,
+          "automaticApproval": false,
+          "fingerprints": {
+            "originalPromptSha256": "ac5f84f17d831316190bf0f42bb2183a38312cfbebd2fa50edf5a08cd297c6a0",
+            "candidatePromptSha256": "ac5f84f17d831316190bf0f42bb2183a38312cfbebd2fa50edf5a08cd297c6a0"
+          }
+        },
+        "historicalComparison": {
+          "closestHistoricalEngine": "upside-chair-01",
+          "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+          "similarities": [
+            "opening"
+          ],
+          "differences": [
+            {
+              "axis": "progression",
+              "candidate": [
+                "INVERT",
+                "PUSH",
+                "CLAMP",
+                "HOLD"
+              ],
+              "historical": [
+                "GRAB_HOLD",
+                "INVERT",
+                "BREAK_GAZE",
+                "OBSERVE",
+                "BACKWARD_APPROACH"
+              ]
+            },
+            {
+              "axis": "ending",
+              "candidate": [
+                "INVERTED_RIDER"
+              ],
+              "historical": [
+                "INVERTED_RIDER",
+                "RECREATED_PROBLEM"
+              ]
+            }
+          ],
+          "duplicateRisk": "LOW",
+          "limitation": "Familiar structure alone is not rejection; exact three-axis reuse needs meaningful novelty. No new performance evidence."
+        },
+        "engineSignature": {
+          "opening": [
+            "INVERSION"
+          ],
+          "progression": [
+            "INVERT",
+            "PUSH",
+            "CLAMP",
+            "HOLD"
+          ],
+          "ending": [
+            "INVERTED_RIDER"
+          ]
+        },
+        "renderAuthorized": false,
+        "rawRank": 1,
+        "tieBand": 1,
+        "rank": 1,
+        "whyRankedHere": {
+          "basis": "STABLE_ID_TIE_BREAK",
+          "comparison": {
+            "candidateId": "v2-42f8db51be5f3dc4",
+            "otherCandidateId": "v2-5a0870794e171ea8",
+            "dimensions": [
+              {
+                "dimension": "instantCausalLegibility",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "visualContradiction",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "goalClarity",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "oneRuleStrength",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "progressDensity",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "escalationQuality",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "payoffStrength",
+                "candidateScore": 100,
+                "otherScore": 100,
+                "difference": 0
+              },
+              {
+                "dimension": "rewatchPotential",
+                "candidateScore": 60,
+                "otherScore": 60,
+                "difference": 0
+              }
+            ],
+            "rankingScore": [
+              97.6,
+              97.6
+            ],
+            "duplicateRisk": [
+              "NO_MATCH_IN_LIMITED_CORPUS",
+              "NO_MATCH_IN_LIMITED_CORPUS"
+            ],
+            "rankingPenaltyPoints": [
+              0,
+              0
+            ],
+            "productionEfficiency": [
+              100,
+              100
+            ]
+          },
+          "text": "Rank 1 vs v2-5a0870794e171ea8: composite 97.6 vs 97.6; all creative dimensions equal; ranking penalties 0 vs 0; duplicate risk NO_MATCH_IN_LIMITED_CORPUS vs NO_MATCH_IN_LIMITED_CORPUS; production efficiency 100 vs 100; STABLE_ID_TIE_BREAK."
+        },
+        "productionSlateRank": 3,
+        "productionRank": 3,
+        "candidate": {
+          "candidateId": "v2-42f8db51be5f3dc4",
+          "title": "Chair / Reversal / Role Reversal",
+          "protagonist": "Noah",
+          "protagonistCharacterId": "00000000-0000-0000-0000-000000000006",
+          "everydayGoal": "sit down",
+          "primaryObject": "chair",
+          "engineFamily": "REVERSAL",
+          "goalRuleRelationship": "The invert orientation response to support prevents the chair from reaching or holding the usable state needed to sit down.",
+          "impossibleRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+          "frameZeroDescription": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal.",
+          "beats": [
+            {
+              "startSeconds": 0.0,
+              "endSeconds": 3.0,
+              "description": "Noah tries to sit down and lowers body onto the chair. The chair flips upside down at contact. Noah's eyes widen at the blocked goal."
+            },
+            {
+              "startSeconds": 3.0,
+              "endSeconds": 6.0,
+              "description": "Noah guides the object halfway to the goal, pushes down through one palm for balance, and lowers body onto the chair. The chair flips upside down while both hands follow the moving surface."
+            },
+            {
+              "startSeconds": 6.0,
+              "endSeconds": 9.0,
+              "description": "Noah guides it nearly to the goal, clamps the object between broad knees, and lowers body onto the chair. The chair flips upside down as the braced body is forced sideways."
+            },
+            {
+              "startSeconds": 9.0,
+              "endSeconds": 12.0,
+              "description": "Noah holds it at the goal boundary and moves underneath the stationary chair without repeating the trigger. This angle exposes the unchanged physical state at the goal boundary; the original task remains unfinished."
+            },
+            {
+              "startSeconds": 12.0,
+              "endSeconds": 15,
+              "description": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it."
+            }
+          ],
+          "finalPayoff": "Noah tries to use the body to guide the chair and lowers body onto the chair. The chair flips upside down with the character still holding it. The body's final pose now follows the chair rather than guiding it.",
+          "escalationCurve": [
+            {
+              "beatIndex": 1,
+              "sourceRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+              "stateTransition": "INVERT_ORIENTATION",
+              "transitionApplication": 1
+            },
+            {
+              "beatIndex": 2,
+              "sourceRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+              "stateTransition": "INVERT_ORIENTATION",
+              "transitionApplication": 2
+            },
+            {
+              "beatIndex": 3,
+              "sourceRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+              "stateTransition": "INVERT_ORIENTATION",
+              "transitionApplication": 3
+            },
+            {
+              "beatIndex": 4,
+              "sourceRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+              "stateTransition": "INVERT_ORIENTATION",
+              "transitionApplication": 3
+            },
+            {
+              "beatIndex": 5,
+              "sourceRule": "The chair flips its usable surface away from the character whenever body weight is placed on it.",
+              "stateTransition": "INVERT_ORIENTATION",
+              "transitionApplication": 4
+            }
+          ],
+          "loopPotential": {
+            "type": "NONE",
+            "status": "UNVERIFIED_CREATIVE_HYPOTHESIS"
+          },
+          "dialogueRequirement": "NONE",
+          "environment": "playroom",
+          "intendedDurationSeconds": 15,
+          "productionNotes": [
+            "One character and one primary object; fixed camera and continuous identity.",
+            "Keep object orientation and body contact readable."
+          ],
+          "composition": {
+            "goalId": "sit",
+            "goalFamily": "HOUSEHOLD",
+            "objectId": "chair",
+            "objectCategory": "furniture",
+            "engineFamily": "REVERSAL",
+            "trigger": "WEIGHT_APPLIED",
+            "escalationTopology": "FALSE_PROGRESS",
+            "payoffTopology": "ROLE_REVERSAL",
+            "environment": "playroom",
+            "stateTransition": "INVERT_ORIENTATION"
+          },
+          "structuralPlan": {
+            "interactionType": "support",
+            "trigger": "WEIGHT_APPLIED",
+            "transformationDirection": "INVERT_ORIENTATION",
+            "escalationTopology": "FALSE_PROGRESS",
+            "resolutionTopology": "ROLE_REVERSAL",
+            "finalSilhouetteTopology": "INVERT_ORIENTATION_ROLE_REVERSAL",
+            "loopTopology": "NONE"
+          },
+          "visualFingerprint": {
+            "characterPoseFamily": "CROUCH",
+            "objectRelativePosition": "BELOW_BODY",
+            "dominantDirection": "INVERT_ORIENTATION",
+            "objectScaleRelation": "STABLE",
+            "characterObjectContact": "SEAT",
+            "finalFrameComposition": "INVERTED_CONTACT",
+            "movementAxis": "VERTICAL",
+            "environmentInteraction": "LOCAL_WORK_AREA"
+          },
+          "provenance": {
+            "generatorVersion": "short-concept-generator-v2",
+            "grammarVersion": "causal-grammar-v2",
+            "grammarSha256": "0a21c87654c2a675e758f43adee9006178c94291a0786a8e6a9860f9cc4bc23d",
+            "seed": 42,
+            "characterAssignedAfterEngine": true,
+            "evidenceKind": "COMPOSED_PLANNED_SCENE_NOT_OBSERVED_VIDEO"
+          },
+          "structuralFingerprint": {
+            "version": "short-concept-fingerprint-v1",
+            "dimensions": {
+              "goalType": "SIT",
+              "interactionType": "SUPPORT",
+              "engineFamily": "REVERSAL",
+              "transformationDirection": "INVERT_ORIENTATION",
+              "trigger": "WEIGHT_APPLIED",
+              "escalationTopology": "FALSE_PROGRESS",
+              "resolutionTopology": "ROLE_REVERSAL",
+              "finalSilhouetteTopology": "INVERT_ORIENTATION_ROLE_REVERSAL",
+              "loopTopology": "NONE"
+            },
+            "fullHash": "c4425b68cbee629ec64c533bb09d301a96013191963e1ef0a4d811c69c752e71",
+            "coreHash": "64b8e6103831e011473b9ba24fb2fa0e40b28ff4bc4b61e02bb623366e77d9e2",
+            "supportedCoreDimensions": 7,
+            "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+            "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+          }
+        },
+        "productionTieSignals": {
+          "payoff": 100,
+          "progress": 100,
+          "frameZero": 100,
+          "duplicateRisk": 0,
+          "batchNovelty": 0.133333,
+          "visualNovelty": 0.375,
+          "productionRisk": 0,
+          "rewatch": 60,
+          "noveltyVector": {
+            "goalNovelty": 0,
+            "objectNovelty": 0,
+            "escalationNovelty": 0,
+            "payoffNovelty": 0,
+            "engineNovelty": 0.666667,
+            "visualSilhouetteNovelty": 0.375
+          }
+        },
+        "diversityAdjustmentReason": "CREATIVE_TIE_ORDER_WITHIN_ANCHORED_3_POINT_BAND",
+        "selectionReason": "Payoff, progress, frame-zero, duplicate risk, batch novelty, visual novelty, production flags, rewatch, then ID; no score mutation."
+      }
+    ],
+    "firstRenderCandidate": "v2-69e8e1f5cbc4a53d",
+    "tieBands": [
+      {
+        "anchorScore": 97.6,
+        "candidateIds": [
+          "v2-69e8e1f5cbc4a53d",
+          "v2-5a0870794e171ea8",
+          "v2-42f8db51be5f3dc4",
+          "v2-9e86238d4c468fa5"
+        ]
+      },
+      {
+        "anchorScore": 89.6,
+        "candidateIds": [
+          "v2-062e7bf556e48f94",
+          "v2-35ef06bc2d57f2e0"
+        ]
+      }
+    ],
+    "creativeTieDecisions": [
+      {
+        "candidateId": "v2-69e8e1f5cbc4a53d",
+        "comparedWith": "v2-5a0870794e171ea8",
+        "firstDifferentiatingSignal": "visualNovelty",
+        "values": [
+          0.5,
+          0.375
+        ]
+      },
+      {
+        "candidateId": "v2-5a0870794e171ea8",
+        "comparedWith": "v2-42f8db51be5f3dc4",
+        "firstDifferentiatingSignal": "batchNovelty",
+        "values": [
+          0.266667,
+          0.133333
+        ]
+      },
+      {
+        "candidateId": "v2-42f8db51be5f3dc4",
+        "comparedWith": "v2-9e86238d4c468fa5",
+        "firstDifferentiatingSignal": "batchNovelty",
+        "values": [
+          0.133333,
+          0.066667
+        ]
+      },
+      {
+        "candidateId": "v2-062e7bf556e48f94",
+        "comparedWith": "v2-35ef06bc2d57f2e0",
+        "firstDifferentiatingSignal": "candidateId",
+        "values": [
+          "v2-062e7bf556e48f94",
+          "v2-35ef06bc2d57f2e0"
+        ]
+      }
+    ],
+    "productionOrder": [
+      "v2-69e8e1f5cbc4a53d",
+      "v2-5a0870794e171ea8",
+      "v2-42f8db51be5f3dc4",
+      "v2-9e86238d4c468fa5",
+      "v2-062e7bf556e48f94",
+      "v2-35ef06bc2d57f2e0"
+    ],
+    "diversityAdjustments": [],
+    "top3PairwiseCreativeDistance": {
+      "meanPairwiseCreativeDistance": 0.97,
+      "minimumPairwiseCreativeDistance": 0.94,
+      "pairCount": 3
+    },
+    "policy": {
+      "scoreMutation": false,
+      "qualityTieMargin": 3,
+      "diversityMargin": 5,
+      "tieOrder": [
+        "payoff",
+        "progress",
+        "frameZero",
+        "duplicateRisk",
+        "batchNovelty",
+        "visualNovelty",
+        "productionRisk",
+        "rewatch",
+        "candidateId"
+      ],
+      "noveltyAggregation": "Arithmetic mean of separately exposed known non-visual batch axes; visual axis follows separately."
+    }
+  }
+}

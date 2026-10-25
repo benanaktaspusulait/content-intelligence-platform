@@ -1,0 +1,24 @@
+{
+  "adapterVersion": "semantic-evidence-adapter-v1",
+  "fields": {
+    "visibleGoalEvidence": "everydayGoal",
+    "primaryObjectEvidence": "primaryObject",
+    "expectedAffordanceEvidence": "normalExpectation",
+    "coreRuleEvidence": "impossibleRule",
+    "triggerEvidence": "visibleTrigger",
+    "openingProblemEvidence": "frameZeroDescription",
+    "payoffEvidence": "finalPayoff",
+    "loopEvidence": "loopPotential",
+    "affordanceRelationshipEvidence": "whyThisObject",
+    "goalRuleRelationshipEvidence": "goalRuleRelationship"
+  },
+  "beats": {
+    "strategy": "beatStrategyEvidence",
+    "visibleConsequence": "consequenceEvidence",
+    "newInformation": "progressionEvidence"
+  },
+  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+  "presenceRule": "Exact field string after whitespace stripping; malformed/empty is missing. Equality of finalPayoff and last consequence establishes consistent terminal declaration, not creative quality.",
+  "classificationRule": "Reuse existing normalizer and Creative Shape outputs; provider rationale and suggested labels are excluded.",
+  "canonicalTransport": "Accepted ranking input assembled from exact normalized plan; no invented lexical markers, contexts, scores or outcomes."
+}

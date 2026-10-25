@@ -1,0 +1,7 @@
+{
+  "providerCalls": 0,
+  "networkDeniedByAuditHook": true,
+  "credentialEnvironmentStripped": true,
+  "subprocessDenied": true,
+  "analysisSha256": "4fa7f681341ba3791beac27f0ee212483b2ae9cc94a03f3ba8de5fc0b4950e41"
+}

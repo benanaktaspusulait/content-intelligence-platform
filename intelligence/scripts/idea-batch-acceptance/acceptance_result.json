@@ -1,0 +1,170 @@
+{
+  "status": "READY_FOR_OWNER_IDEA_AUTHORIZATION",
+  "verifiedAtUtc": "2026-10-21T15:16:59.389061+00:00",
+  "filesChangedByThisContinuation": [
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/IdeaCandidateService.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/IdeaDraftController.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/resources/db/migration/V73__native_idea_candidates.sql",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaCandidatePostgresTest.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/creative-studio.page.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/creative_roles.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_native_idea_batch.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/idea-batch-acceptance/fixture_ml.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/idea-batch-acceptance/seed_selection_fixture.sql",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/idea-batch-acceptance/verify_acceptance.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/scripts/idea-batch-acceptance/acceptance_result.json"
+  ],
+  "preservedPreexistingChanges": [
+    "ContentWorkspaceController.java",
+    "app/api/quality.py",
+    "app/parser/prompt_parser.py",
+    "tests/test_actor_source_attempts.py",
+    "Prior IDEA dispatch/contract changes in creative-studio.page.ts and creative_roles.py"
+  ],
+  "batchPersistence": "Native IDEA_REQUEST, IDEA_RECEIPT, IDEA_CANDIDATE, IDEA_EVALUATION and IDEA_DECISION events. Receipt committed separately; entire candidate/evaluation batch commits atomically. No STORY record created.",
+  "identityAndLineage": {
+    "candidateIds": [
+      "63da3e2f-c4ba-3512-8db6-e314c5352825",
+      "ad09a3c1-55f9-3f76-82c4-b89f5516d7e9",
+      "aecf2a22-fd96-3dad-ba44-a1e80e750fdb"
+    ],
+    "requestId": "a641f3c263ca2a46af0da4a0688a1c3e6b29d3e2b1fa54106acedc13b40769a5",
+    "providerRequestId": "isolated-fixture-receipt-001",
+    "receiptId": "3ac12ee5-71dc-4ee4-9e5a-141312c5e333",
+    "identity": "Deterministic UUID from canonical request identity and candidate index; titles never identify candidates",
+    "payload": "Complete immutable structured IDEA payload, parent draft and source revision, index, creation timestamp, candidate revision, evaluation/decision revisions"
+  },
+  "evaluationLifecycle": {
+    "independent": true,
+    "paidEvaluationCalls": 0,
+    "mandatoryGateCount": 10,
+    "productionPolicyStatus": "PENDING_EVIDENCE or REJECTED for exact duplicate stated rules; UNKNOWN is never promoted to PASS",
+    "limitation": "No existing IDEA semantic/visual admission evaluator supports the required proof. Missing semantic/visual/originality evidence is exposed and blocks selection. Existing story/IR rules are not misrepresented as IDEA proof.",
+    "syntheticSelectionFixture": "Only the disposable test DB has a fixture-identity evaluation for positive selection testing. This is not creative approval."
+  },
+  "idempotencyAndRecovery": {
+    "databaseUniqueIndexes": [
+      "IDEA_REQUEST identity",
+      "IDEA_RECEIPT identity",
+      "IDEA_CANDIDATE request/index UUID"
+    ],
+    "locking": "PostgreSQL transaction advisory locks; durable reservation before dispatch; unknown outcomes never dispatch again",
+    "receiptUnchangedAfterRecovery": true,
+    "receiptSha256": "d4d8752a98b95ed135122d2b73d871c310bf5ad0f131c853d5434494156598d6",
+    "realBrowserRecovery": "Initial 64-character binding limit failure saved receipt with zero candidate rows. Fixed deterministic UUID key, recovered all three through the UI, with fixture adapter call count still one.",
+    "providerRetries": 0
+  },
+  "threeCandidateFixtureResult": {
+    "database": "pompom_idea_acceptance_20261021",
+    "draftId": "11111111-2222-4333-8444-555555555555",
+    "recordCount": 3,
+    "fixtureAdapterRequests": 1,
+    "role": "IDEA",
+    "requestedCount": 3,
+    "actualProviderCalls": 0,
+    "costUsd": 0
+  },
+  "selectionRejectionBrowserTest": {
+    "persistedStates": {
+      "Fixture: Folded Sunlight": "UNDECIDED",
+      "Fixture: Backward Bowl": "REJECTED",
+      "Fixture: Heavy Reflection": "SELECTED"
+    },
+    "unresolvedMandatoryEvidenceSelection": "Disabled in UI and rejected by backend",
+    "positiveSelection": "Verified only with explicitly synthetic fixture-identity policy in isolated DB"
+  },
+  "reloadVerification": {
+    "browserRefresh": "PASS",
+    "navigateOverviewAndReturn": "PASS",
+    "independentEvaluationRevisionRetained": "PASS",
+    "serverRestartAndFinalBuildReload": "PASS",
+    "repeatedRecoveryNoAdditionalCandidates": "PASS"
+  },
+  "authorizationEnforcement": {
+    "realUiRole": "IDEA",
+    "provider": "OPENAI",
+    "model": "gpt-6-sol",
+    "requestedCandidates": 3,
+    "budgetUsdLeftUnchanged": 0,
+    "ownerConsentLeftUnchecked": true,
+    "confirmDisabled": true,
+    "missingAuthorizationResponse": {
+      "httpStatus": 409,
+      "body": {
+        "detail": "Explicit authorization for this paid creative operation is required",
+        "status": "UNKNOWN"
+      }
+    },
+    "storyAuthorizationNotReused": true
+  },
+  "realArdaDraft": {
+    "draftId": "7455a67e-1d39-4b91-9101-2df227ee3dc0",
+    "revision": 1,
+    "checkpoint": "IDEA",
+    "exactSavedRecordUnchanged": true,
+    "savedRecordSha256": "2adb70429a63bb649710f8acd12dfe7fffd13c7890ab63dd7aca9cdc31e1bd27",
+    "fixtureDataPresent": false,
+    "nativeIdeaRequests": 0,
+    "nativeIdeaCandidates": 0,
+    "configuration": {
+      "mainCharacterId": "00000000-0000-0000-0000-000000000004",
+      "profile": "ABSURD_PHYSICS",
+      "duration": 15,
+      "aspectRatio": "9:16",
+      "targetGenerator": "SEEDANCE_2_5",
+      "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/pompom-default"
+    },
+    "storedLegacyCandidateCountPreserved": 1,
+    "uiBatchCount": 3,
+    "environmentRepair": "Restored missing directory for existing pompom-default workspace without modifying draft history or creating another production project"
+  },
+  "actualProviderCallsAndCost": {
+    "providerCalls": 0,
+    "usd": 0,
+    "storyGeneration": 0,
+    "generatedImages": 0,
+    "videoRenders": 0,
+    "publishing": 0,
+    "newProductionProjects": 0
+  },
+  "tests": {
+    "javaSuites": [
+      {
+        "suite": "IdeaCandidatePostgresTest",
+        "passed": 7
+      },
+      {
+        "suite": "IdeaDraftPostgresTest",
+        "passed": 10
+      },
+      {
+        "suite": "IdeaDraftServiceTest",
+        "passed": 6
+      },
+      {
+        "suite": "WorkflowServiceTest",
+        "passed": 10
+      }
+    ],
+    "javaTotalPassed": 33,
+    "nativeIdeaPythonPassed": 8,
+    "frontendBuild": "PASS (existing bundle-size/unused-component warnings)",
+    "broaderPythonRun": {
+      "passed": 73,
+      "failed": 3,
+      "failedTests": [
+        "test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+        "test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+        "test_inline_character_only_constraint_is_not_an_actor_declaration"
+      ],
+      "scope": "Story/actor tests outside native IDEA changes; broader suite is not claimed green"
+    }
+  },
+  "remainingDefectsOrLimitations": [
+    "No known remaining candidate-card, persistence, recovery, navigation, rejection or refresh defect in exercised flows.",
+    "IDEA semantic/visual admission proof remains unavailable and blocks actual candidate approval; no fabricated PASS or score.",
+    "Three failures remain in the broader story/actor Python suite; see tests section."
+  ],
+  "exactNextOwnerUiAction": "Open New Video > Saved Projects > Arda's New Story Audition > Open draft > Generate 3 IDEA Candidates. Review IDEA/OpenAI/gpt-6-sol/exactly 3, intentionally choose a positive maximum spend, personally check consent and press Confirm generation. Current budget remains $0 and consent remains unchecked. Generation remains in IDEA; unresolved admission evidence blocks selection and STORY is a separate later stage."
+}

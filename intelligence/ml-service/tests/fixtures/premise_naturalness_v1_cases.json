@@ -1,0 +1,89 @@
+{
+  "provenance": "USER_REQUESTED_DETERMINISTIC_TEST_EXAMPLES_NOT_PRODUCTION_OUTCOMES",
+  "cases": {
+    "shoe_reset": {
+      "primaryObject": "shoe",
+      "everydayGoal": "put the shoe on",
+      "impossibleRule": "Whenever a foot tries to wear the shoe, the shoe snaps back to its starting position.",
+      "frameZeroDescription": "Kiko tries to put the shoe on; the shoe snaps back while the foot is entering.",
+      "trigger": "WEAR"
+    },
+    "brush_growth": {
+      "primaryObject": "brush",
+      "everydayGoal": "brush hair",
+      "impossibleRule": "Every completed brush stroke makes the brush larger.",
+      "frameZeroDescription": "Kiko tries to brush hair with an already larger brush that grows at the stroke.",
+      "trigger": "STROKE"
+    },
+    "eraser_transfer": {
+      "primaryObject": "eraser",
+      "everydayGoal": "erase a pencil mark",
+      "impossibleRule": "Every erased mark appears somewhere else on Noah.",
+      "frameZeroDescription": "Noah tries to erase a mark; the erased mark appears on his face.",
+      "trigger": "STROKE"
+    },
+    "wet_towel": {
+      "primaryObject": "towel",
+      "everydayGoal": "dry a wet surface",
+      "impossibleRule": "Each wipe leaves the surface wetter.",
+      "frameZeroDescription": "Noah tries to dry a wet surface; the wipe leaves the surface wetter.",
+      "trigger": "WIPE"
+    },
+    "drawer_reversal": {
+      "primaryObject": "drawer",
+      "everydayGoal": "open the drawer",
+      "impossibleRule": "Pulling the drawer outward moves it inward.",
+      "frameZeroDescription": "Noah tries to open the drawer; it slides back inward against the pull.",
+      "trigger": "PULL"
+    },
+    "fork_float": {
+      "primaryObject": "fork",
+      "everydayGoal": "eat food",
+      "impossibleRule": "The fork floats one body height higher whenever lifted.",
+      "frameZeroDescription": "Kiko tries to eat food while the fork floats above the mouth.",
+      "trigger": "LIFT"
+    },
+    "can_adhesion": {
+      "primaryObject": "watering can",
+      "everydayGoal": "water the plant",
+      "impossibleRule": "The watering can sticks to the cheek whenever lifted.",
+      "frameZeroDescription": "Kiko holds a watering can stuck to the cheek.",
+      "trigger": "LIFT"
+    },
+    "pencil_adhesion": {
+      "primaryObject": "pencil",
+      "everydayGoal": "draw a line",
+      "impossibleRule": "The pencil sticks to every body part after each drawing stroke.",
+      "frameZeroDescription": "Noah draws a line with a pencil stuck to the face.",
+      "trigger": "STROKE"
+    },
+    "generic_escape": {
+      "primaryObject": "object",
+      "everydayGoal": "move the object",
+      "impossibleRule": "The object moves away when touched.",
+      "frameZeroDescription": "The object moves away from the hand.",
+      "trigger": "TOUCH"
+    },
+    "soap_slip": {
+      "primaryObject": "soap",
+      "everydayGoal": "wash hands",
+      "impossibleRule": "The soap becomes slipperier whenever squeezed.",
+      "frameZeroDescription": "Kiko tries to wash hands; the soap becomes slipperier between the palms.",
+      "trigger": "PRESSURE"
+    },
+    "ball_weight": {
+      "primaryObject": "ball",
+      "everydayGoal": "bounce the ball",
+      "impossibleRule": "The ball becomes heavier after every bounce.",
+      "frameZeroDescription": "Noah tries to bounce the ball and the heavier ball pulls the arm down.",
+      "trigger": "BOUNCE"
+    },
+    "ordinary_fork": {
+      "primaryObject": "fork",
+      "everydayGoal": "eat food",
+      "impossibleRule": "The fork moves normally toward the mouth.",
+      "frameZeroDescription": "Kiko tries to eat food with a fork.",
+      "trigger": "LIFT"
+    }
+  }
+}

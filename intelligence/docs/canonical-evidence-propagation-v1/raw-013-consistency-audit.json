@@ -1,0 +1,1192 @@
+{
+  "ideaId": "raw-013",
+  "before": {
+    "SFE": "PASS",
+    "shortFormScore": 99,
+    "Naturalness": "BROKEN",
+    "openingLegibility": 15,
+    "BeatGrammar": "MECHANICAL",
+    "eligibility": "ELIGIBLE",
+    "rankingScore": 97.6,
+    "blockers": [
+      "OPENING_EVIDENCE_INSUFFICIENT",
+      "BEAT_GRAMMAR_QUALITY_FLOOR",
+      "PREMISE_NOT_ADMITTED"
+    ]
+  },
+  "after": {
+    "SFE": "PASS",
+    "shortFormScore": 99,
+    "Naturalness": "BROKEN",
+    "openingLegibility": 35,
+    "BeatGrammar": "BROKEN",
+    "eligibility": "ELIGIBLE",
+    "rankingScore": 97.6,
+    "blockers": [
+      "OPENING_EVIDENCE_INSUFFICIENT",
+      "BEAT_GRAMMAR_QUALITY_FLOOR",
+      "PREMISE_NOT_ADMITTED"
+    ]
+  },
+  "canonicalFacts": {
+    "version": "canonical-creative-evidence-v1",
+    "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0",
+    "facts": {
+      "goal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Brush hair smooth",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "opening": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "rule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "trigger": {
+        "present": true,
+        "visible": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "visibleTrigger",
+            "sourceText": "Opa brushes once, hair stands up in a giant knot.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "beats": [
+        {
+          "beatNumber": 1,
+          "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+          "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+          "newInformation": "Pulling the brush out causes the hair to cinch, not loosen.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[0].strategy",
+              "sourceText": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[0].visibleConsequence",
+              "sourceText": "The knot tightens into a bun that pulls his head back.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[0].newInformation",
+              "sourceText": "Pulling the brush out causes the hair to cinch, not loosen.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 2,
+          "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+          "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+          "newInformation": "Any grooming tool multiplies knots instead of removing them.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[1].strategy",
+              "sourceText": "Opa uses a wide-tooth comb to gently work through the tangle.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[1].visibleConsequence",
+              "sourceText": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[1].newInformation",
+              "sourceText": "Any grooming tool multiplies knots instead of removing them.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 3,
+          "strategy": "Opa applies hair conditioner to make strands slippery.",
+          "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+          "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[2].strategy",
+              "sourceText": "Opa applies hair conditioner to make strands slippery.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[2].visibleConsequence",
+              "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[2].newInformation",
+              "sourceText": "Conditioner turns hair elastic, making tangles spring-loaded.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 4,
+          "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+          "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+          "newInformation": "The hair's tangling now acts like a living trap, consuming objects.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[3].strategy",
+              "sourceText": "Opa puts on a hat to hide the hair and stop brushing.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[3].visibleConsequence",
+              "sourceText": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[3].newInformation",
+              "sourceText": "The hair's tangling now acts like a living trap, consuming objects.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        {
+          "beatNumber": 5,
+          "strategy": "Opa uses scissors to cut the hair away.",
+          "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+          "newInformation": "Cutting triggers accelerated regrowth with more tangles.",
+          "supportedStateChange": true,
+          "bodyState": null,
+          "spatialState": null,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].strategy",
+              "sourceText": "Opa uses scissors to cut the hair away.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      ],
+      "payoff": {
+        "present": true,
+        "ruleLinked": true,
+        "stateChanging": true,
+        "visual": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "finalPayoff",
+            "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].newInformation",
+            "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+            "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "loop": {
+        "declared": true,
+        "supported": false,
+        "references": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "loopPotential",
+            "sourceText": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      }
+    },
+    "provenance": {
+      "sourceKind": "SEMANTIC",
+      "structuredSourceSha256": "339760b057671194796716fe09738da4706cdc7e04967ee1f07c8541bf6ae534",
+      "normalizedFieldsSha256": "1a0084d7c954980ca8f9c221c6ccd7cd08268988dd9e4d6eee0cd9219267f3c0",
+      "textSha256": "90da311ca5939ef35b5a95f476a9396ddda9450c6c14f9ced2b16a778c2a4c1d"
+    },
+    "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+  },
+  "blockers": [
+    {
+      "code": "OPENING_EVIDENCE_INSUFFICIENT",
+      "factUsedBefore": "Object/action/anomaly frame evidence parsed using GENERIC affordance goal patterns and infer_response(frame)",
+      "evidenceSourceBefore": "legacy Naturalness on raw frame plus generic object model",
+      "qualityRule": "full_causal = 90 if direct and source_supported else 60 if direct and no frame else 35 if source_supported else 15; preselection requires >=60",
+      "classificationBefore": "EVIDENCE_SOURCE_MISMATCH",
+      "factUsedAfter": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "resultBefore": 15,
+      "resultAfter": 35,
+      "remainingClassification": "TAXONOMY_COVERAGE_LIMIT",
+      "whyDifferentFromSFE": "SFE opening goal/anomaly checks pass. Naturalness also requires a configured direct object/response policy; shared facts alone yield 35, below unchanged60."
+    },
+    {
+      "code": "BEAT_GRAMMAR_QUALITY_FLOOR",
+      "factUsedBefore": {
+        "version": "beat-grammar-v2",
+        "strategySequence": [
+          "ANCHOR_TO_ENVIRONMENT",
+          "CHANGE_ANGLE",
+          "DIRECT_USE",
+          "TEMPORARILY_STOP_TRIGGER",
+          "DIRECT_USE"
+        ],
+        "strategyFamilySequence": [
+          "ENVIRONMENT_ANCHOR",
+          "ANGLE_CHANGE",
+          "DIRECT_FORCE",
+          "TRIGGER_INHIBITION",
+          "DIRECT_FORCE"
+        ],
+        "uniqueStrategyCount": 4,
+        "strategyDiversityScore": 100.0,
+        "consequenceSequence": [
+          "CHARACTER_MOVES",
+          "SPACE_REDUCES",
+          "CHARACTER_MOVES",
+          "CHARACTER_MOVES",
+          "SPACE_REDUCES"
+        ],
+        "uniqueConsequenceCount": 2,
+        "consequenceDiversityScore": 50.0,
+        "bodyStateSequence": [
+          "LEANING",
+          "OFF_BALANCE",
+          "OFF_BALANCE",
+          "OFF_BALANCE",
+          "OFF_BALANCE"
+        ],
+        "bodyStateProgressionScore": 40.0,
+        "spatialProgressionScore": 14.29,
+        "informationGainScore": 80.0,
+        "attemptSignatures": [
+          {
+            "strategyType": "ENVIRONMENT_ANCHOR",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "NORMAL_CONTROL",
+            "bodyStateAfter": "LEANING",
+            "objectStateBefore": "USABLE_START",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "CHARACTER_MOVES",
+            "newInformation": [
+              "INITIAL_CONTRADICTION",
+              "TACTIC:ANCHOR_TO_ENVIRONMENT"
+            ],
+            "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "ANGLE_CHANGE",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "LEANING",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "SPACE_REDUCES",
+            "newInformation": [
+              "TACTIC:CHANGE_ANGLE"
+            ],
+            "relationshipAfter": "OBJECT_DISPLACES_BODY",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "DIRECT_FORCE",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "OFF_BALANCE",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "CHARACTER_MOVES",
+            "newInformation": [
+              "TACTIC:DIRECT_USE"
+            ],
+            "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "TRIGGER_INHIBITION",
+            "triggerType": "NONE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "OFF_BALANCE",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "CHARACTER_MOVES",
+            "newInformation": [
+              "TACTIC:TEMPORARILY_STOP_TRIGGER"
+            ],
+            "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+            "goalDistanceChange": "FARTHER"
+          },
+          {
+            "strategyType": "DIRECT_FORCE",
+            "triggerType": "STROKE",
+            "contactPattern": "WORKING_CONTACT",
+            "bodyStateBefore": "OFF_BALANCE",
+            "bodyStateAfter": "OFF_BALANCE",
+            "objectStateBefore": "UNSUPPORTED_RESPONSE",
+            "objectStateAfter": "UNSUPPORTED_RESPONSE",
+            "spatialChange": {
+              "distanceToGoal": "FARTHER",
+              "environmentUse": "UNCHANGED",
+              "availableFreeSpace": "UNCHANGED"
+            },
+            "consequenceType": "SPACE_REDUCES",
+            "newInformation": [],
+            "relationshipAfter": "OBJECT_DISPLACES_BODY",
+            "goalDistanceChange": "FARTHER"
+          }
+        ],
+        "attemptComparisons": [
+          {
+            "beats": [
+              1,
+              2
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              1,
+              3
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.75,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              1,
+              4
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.625,
+            "matchingDimensions": [
+              "contactPattern",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              1,
+              5
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              2,
+              3
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.625,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              2,
+              4
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              2,
+              5
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.875,
+            "matchingDimensions": [
+              "triggerType",
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              3,
+              4
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.75,
+            "matchingDimensions": [
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "consequenceType",
+              "goalDistanceChange",
+              "relationshipAfter"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              3,
+              5
+            ],
+            "classification": "NEAR_DUPLICATE_ATTEMPT",
+            "similarity": 0.75,
+            "matchingDimensions": [
+              "strategyType",
+              "triggerType",
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          },
+          {
+            "beats": [
+              4,
+              5
+            ],
+            "classification": "DISTINCT_ATTEMPT",
+            "similarity": 0.5,
+            "matchingDimensions": [
+              "contactPattern",
+              "bodyStateAfter",
+              "objectStateAfter",
+              "goalDistanceChange"
+            ],
+            "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+          }
+        ],
+        "nearDuplicateAttemptRate": 0.4,
+        "payoffDistance": 0.5,
+        "payoffStateChange": "OBJECT_DISPLACES_BODY",
+        "payoffEvidence": {
+          "distance": 0.5,
+          "comparisons": [
+            {
+              "comparedWithBeat": 3,
+              "distance": 0.5,
+              "changedDimensions": [
+                "consequenceType",
+                "relationshipAfter"
+              ]
+            },
+            {
+              "comparedWithBeat": 4,
+              "distance": 0.5,
+              "changedDimensions": [
+                "consequenceType",
+                "relationshipAfter"
+              ]
+            }
+          ],
+          "stateChange": "OBJECT_DISPLACES_BODY",
+          "magnitudeOnlyDoesNotCount": true
+        },
+        "beatGrammarQuality": "MECHANICAL",
+        "flags": [
+          {
+            "code": "LOW_CONSEQUENCE_DIVERSITY"
+          },
+          {
+            "code": "BEAT_ROLE_REPETITION"
+          },
+          {
+            "code": "NEAR_DUPLICATE_ATTEMPTS",
+            "pairs": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                3,
+                5
+              ]
+            ]
+          },
+          {
+            "code": "NON_PROGRESSIVE_BEAT",
+            "beatNumber": 5
+          }
+        ],
+        "productionFeasibility": {
+          "score": 100,
+          "flags": [],
+          "evidenceStatus": "PLANNED_CONTACT_COMPLEXITY_SCREEN_NOT_RENDER_VERIFICATION"
+        },
+        "scoreUse": "NON_CANONICAL_GENERATION_REVIEW_NOT_RETENTION",
+        "adapterVersion": "semantic-plan-adapter-v1"
+      },
+      "evidenceSourceBefore": "semantic-plan-adapter-v1 synthesized consequence/body/contact/newInformation classes",
+      "qualityRule": "MECHANICAL if uniqueStrategyFamilies<3 OR uniqueConsequenceClasses<3 OR informationGain<60; here uniqueConsequenceClasses=2",
+      "classificationBefore": "EVIDENCE_SOURCE_MISMATCH",
+      "factUsedAfter": {
+        "version": "beat-grammar-v2",
+        "beatGrammarQuality": "BROKEN",
+        "flags": [
+          {
+            "code": "UNKNOWN_CONSEQUENCE"
+          }
+        ],
+        "strategyDiversityScore": 0,
+        "consequenceDiversityScore": 0,
+        "bodyStateProgressionScore": 0,
+        "spatialProgressionScore": 0,
+        "payoffDistance": 0,
+        "canonicalCreativeEvidence": {
+          "version": "canonical-creative-evidence-v1",
+          "contextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0",
+          "facts": {
+            "goal": {
+              "declared": true,
+              "visibleInOpening": true,
+              "everyday": true,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "everydayGoal",
+                  "sourceText": "Brush hair smooth",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ],
+              "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+            },
+            "opening": {
+              "goalPresent": true,
+              "anomalyPresent": true,
+              "problemPresent": true,
+              "causalRelationshipVisible": true,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "frameZeroDescription",
+                  "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ],
+              "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+            },
+            "rule": {
+              "present": true,
+              "visible": true,
+              "dominant": true,
+              "goalRelated": true,
+              "classificationStatus": "PRESENT_UNCLASSIFIED",
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "impossibleRule",
+                  "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            "trigger": {
+              "present": true,
+              "visible": true,
+              "classificationStatus": "PRESENT_UNCLASSIFIED",
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "visibleTrigger",
+                  "sourceText": "Opa brushes once, hair stands up in a giant knot.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            "beats": [
+              {
+                "beatNumber": 1,
+                "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+                "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+                "newInformation": "Pulling the brush out causes the hair to cinch, not loosen.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[0].strategy",
+                    "sourceText": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[0].visibleConsequence",
+                    "sourceText": "The knot tightens into a bun that pulls his head back.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[0].newInformation",
+                    "sourceText": "Pulling the brush out causes the hair to cinch, not loosen.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 2,
+                "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+                "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+                "newInformation": "Any grooming tool multiplies knots instead of removing them.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[1].strategy",
+                    "sourceText": "Opa uses a wide-tooth comb to gently work through the tangle.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[1].visibleConsequence",
+                    "sourceText": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[1].newInformation",
+                    "sourceText": "Any grooming tool multiplies knots instead of removing them.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 3,
+                "strategy": "Opa applies hair conditioner to make strands slippery.",
+                "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+                "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[2].strategy",
+                    "sourceText": "Opa applies hair conditioner to make strands slippery.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[2].visibleConsequence",
+                    "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[2].newInformation",
+                    "sourceText": "Conditioner turns hair elastic, making tangles spring-loaded.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 4,
+                "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+                "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+                "newInformation": "The hair's tangling now acts like a living trap, consuming objects.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[3].strategy",
+                    "sourceText": "Opa puts on a hat to hide the hair and stop brushing.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[3].visibleConsequence",
+                    "sourceText": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[3].newInformation",
+                    "sourceText": "The hair's tangling now acts like a living trap, consuming objects.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              },
+              {
+                "beatNumber": 5,
+                "strategy": "Opa uses scissors to cut the hair away.",
+                "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                "newInformation": "Cutting triggers accelerated regrowth with more tangles.",
+                "supportedStateChange": true,
+                "bodyState": null,
+                "spatialState": null,
+                "source": [
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[4].strategy",
+                    "sourceText": "Opa uses scissors to cut the hair away.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[4].visibleConsequence",
+                    "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  },
+                  {
+                    "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                    "sourceField": "beats[4].newInformation",
+                    "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+                    "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                    "confidence": "EXPLICIT"
+                  }
+                ]
+              }
+            ],
+            "payoff": {
+              "present": true,
+              "ruleLinked": true,
+              "stateChanging": true,
+              "visual": true,
+              "classificationStatus": "PRESENT_UNCLASSIFIED",
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "finalPayoff",
+                  "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].visibleConsequence",
+                  "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+                  "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].newInformation",
+                  "sourceText": "Cutting triggers accelerated regrowth with more tangles.",
+                  "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            "loop": {
+              "declared": true,
+              "supported": false,
+              "references": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "loopPotential",
+                  "sourceText": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            }
+          },
+          "provenance": {
+            "sourceKind": "SEMANTIC",
+            "structuredSourceSha256": "339760b057671194796716fe09738da4706cdc7e04967ee1f07c8541bf6ae534",
+            "normalizedFieldsSha256": "1a0084d7c954980ca8f9c221c6ccd7cd08268988dd9e4d6eee0cd9219267f3c0",
+            "textSha256": "90da311ca5939ef35b5a95f476a9396ddda9450c6c14f9ced2b16a778c2a4c1d"
+          },
+          "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+        },
+        "sourceBeatPlan": [
+          {
+            "beatNumber": 1,
+            "beatRole": "HOOK_PROBLEM",
+            "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The knot tightens into a bun that pulls his head back.",
+            "characterConsequence": "Pulling the brush out causes the hair to cinch, not loosen.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Pulling the brush out causes the hair to cinch, not loosen."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "UNKNOWN",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 2,
+            "beatRole": "TACTIC_CHANGE",
+            "characterStrategy": "CHANGE_ANGLE",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+            "characterConsequence": "Any grooming tool multiplies knots instead of removing them.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Any grooming tool multiplies knots instead of removing them."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "OBJECT_GROWS",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 3,
+            "beatRole": "TACTIC_CHANGE",
+            "characterStrategy": "UNKNOWN",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "characterConsequence": "Conditioner turns hair elastic, making tangles spring-loaded.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Conditioner turns hair elastic, making tangles spring-loaded."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "UNKNOWN",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 4,
+            "beatRole": "TACTIC_CHANGE",
+            "characterStrategy": "TEMPORARILY_STOP_TRIGGER",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+            "characterConsequence": "The hair's tangling now acts like a living trap, consuming objects.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "The hair's tangling now acts like a living trap, consuming objects."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "UNKNOWN",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "CAUSAL_CONSEQUENCE",
+            "payoffStateChange": "UNKNOWN"
+          },
+          {
+            "beatNumber": 5,
+            "beatRole": "PAYOFF",
+            "characterStrategy": "DIRECT_USE",
+            "trigger": "UNCLASSIFIED_TRIGGER",
+            "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "objectResponse": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "characterConsequence": "Cutting triggers accelerated regrowth with more tangles.",
+            "bodyStateBefore": "UNKNOWN",
+            "bodyStateAfter": "UNKNOWN",
+            "objectStateBefore": {
+              "kind": "UNKNOWN"
+            },
+            "objectStateAfter": {
+              "kind": "UNKNOWN"
+            },
+            "spatialChange": {},
+            "goalProgress": "UNKNOWN",
+            "newInformation": [
+              "Cutting triggers accelerated regrowth with more tangles."
+            ],
+            "contactPattern": "UNKNOWN",
+            "consequenceType": "OBJECT_GROWS",
+            "relationshipAfter": "UNKNOWN",
+            "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+            "payoffStateChange": "UNKNOWN"
+          }
+        ],
+        "evidenceLimitations": [
+          "UNKNOWN classification is not missing strategy/consequence/rule/payoff.",
+          "Unstated body/contact/spatial states are UNKNOWN; deterministic adapter defaults are not source evidence.",
+          "Existing class requirements remain active; BROKEN with UNKNOWN_CONSEQUENCE is a taxonomy coverage failure, not an absent consequence."
+        ],
+        "coverageFailures": [
+          {
+            "beatNumber": 1,
+            "field": "consequenceType",
+            "sourcePresent": true
+          },
+          {
+            "beatNumber": 3,
+            "field": "characterStrategy",
+            "sourcePresent": true
+          },
+          {
+            "beatNumber": 3,
+            "field": "consequenceType",
+            "sourcePresent": true
+          },
+          {
+            "beatNumber": 4,
+            "field": "consequenceType",
+            "sourcePresent": true
+          }
+        ]
+      },
+      "remainingClassification": "TAXONOMY_COVERAGE_LIMIT",
+      "whyDifferentFromSFE": "Exact source consequences and information are now present. Several consequences do not map to existing BG vocabulary and trigger existing UNKNOWN_CONSEQUENCE. This does not prove actual repetitive choreography. SFE uses independent rule-linked state/information change checks."
+    },
+    {
+      "code": "PREMISE_NOT_ADMITTED",
+      "factUsedBefore": "Rule explicitly present; name Hairbrush maps to GENERIC; impossible response classifier returns UNSUPPORTED_RESPONSE; policy absent",
+      "evidenceSourceBefore": "original impossibleRule and object name; configured response regex and compatibility table",
+      "qualityRule": "broken if response unsupported; admission requires STRONG/ACCEPTABLE, DIRECT, CLEAR_CONTRADICTION",
+      "classificationBefore": "TAXONOMY_COVERAGE_LIMIT",
+      "unsupportedResponseCategory": "B",
+      "unsupportedResponseMeaning": "Explicit object response exists but existing response classifier cannot classify knot multiplication/tangling. No policy lookup can resolve an UNSUPPORTED_RESPONSE. Category C applies to classified responses with missing compatibility; raw-013 is B.",
+      "resultAfter": {
+        "responsePresent": true,
+        "category": "B",
+        "classification": "TAXONOMY_COVERAGE_LIMIT",
+        "meaning": "responseType classifies the impossible object response, not the existence of a rule"
+      },
+      "whyDifferentFromSFE": "Presence, linkage and progression can be supported without a Naturalness response category or object compatibility policy."
+    }
+  ],
+  "noBugClaim": "No independent scoring bug established. The ranking lexical evidence mismatch and synthetic beat representation are acquisition defects; unresolved response coverage is retained, not patched.",
+  "remainingLegitimateQualityDifference": "SFE sufficiency and Naturalness requirement for a direct configured affordance relation are separate quality requirements; taxonomy limits prevent a fully supported Naturalness judgment here.",
+  "production": "Still suppressed before batch ranking; no raw/production slate rank assigned."
+}

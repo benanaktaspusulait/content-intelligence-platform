@@ -1,0 +1,13 @@
+........................................................................ [ 36%]
+........................................................................ [ 73%]
+....................................................                     [100%]
+=============================== warnings summary ===============================
+tests/test_short_form_integration.py::test_same_source_can_return_both_engines_without_one_rewriting_the_other
+tests/test_story_premise_integration.py::test_quality_report_adds_revision_gate_without_rewriting_canonical_score_or_rules
+tests/test_story_premise_integration.py::test_existing_15_second_report_is_byte_for_byte_unchanged_with_layer_enabled
+tests/test_story_premise_integration.py::test_long_form_success_cannot_remove_existing_gate_failures
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:214: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+196 passed, 4 warnings in 3.23s

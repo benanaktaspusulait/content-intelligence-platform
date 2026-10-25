@@ -1,0 +1,3976 @@
+{
+  "ideaId": "raw-027",
+  "candidateId": "sem1-2ae718e8672f18cc",
+  "title": "Opposite-Color Paintbrush",
+  "raw": {
+    "ideaId": "raw-027",
+    "title": "Opposite-Color Paintbrush",
+    "protagonistSuggestion": "Mimi",
+    "everydayGoal": "Paint wall blue",
+    "primaryObject": "Paintbrush",
+    "normalExpectation": "Brush applies paint color loaded on it.",
+    "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+    "visibleTrigger": "Mimi strokes blue paint; wall turns orange.",
+    "whyThisObject": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+    "goalRuleRelationship": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+    "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "beats": [
+      {
+        "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+        "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+        "newInformation": "Complementary inversion doesn't cancel but separates into two colors."
+      },
+      {
+        "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+        "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+        "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+      },
+      {
+        "strategy": "Mimi uses a roller instead of brush.",
+        "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+        "newInformation": "The inversion applies to any painting tool, increasing area."
+      },
+      {
+        "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+        "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "newInformation": "The brush inverts color in the open areas, not just strokes."
+      },
+      {
+        "strategy": "Mimi gives up and paints the wall back white.",
+        "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+      }
+    ],
+    "finalPayoff": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+    "suggestedPayoffFamily": "logical extreme / environmental transformation",
+    "loopPotential": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+    "environment": "Room being painted",
+    "dialogueNeed": "NONE",
+    "durationSeconds": 15,
+    "providerRationale": "Paintbrush's pigment transfer is inverted; visually clear when blue becomes orange."
+  },
+  "before": {
+    "openingScore": 35,
+    "staticScore": 25,
+    "naturalness": "BROKEN",
+    "admitted": false,
+    "response": "UNSUPPORTED_RESPONSE",
+    "goalInterference": "CONTRIVED",
+    "findings": [
+      {
+        "code": "GENERIC_ENGINE_APPLICATION",
+        "reason": "The effect has insufficient supported dependence on this object function."
+      },
+      {
+        "code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO",
+        "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.",
+        "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION",
+        "canonicalCausalRelationshipVisible": true,
+        "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"
+      }
+    ]
+  },
+  "after": {
+    "openingScore": 90,
+    "staticScore": 85,
+    "naturalness": "CONTRIVED",
+    "admitted": false,
+    "response": null,
+    "goalInterference": "DIRECT",
+    "findings": [
+      {
+        "code": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"
+      },
+      {
+        "code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED",
+        "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+      }
+    ]
+  },
+  "beforeReport": {
+    "gateVersion": "premise-naturalness-v1",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Paint wall blue",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_CLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Mimi strokes blue paint; wall turns orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+            "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "newInformation": "Complementary inversion doesn't cancel but separates into two colors.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+            "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+            "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Mimi uses a roller instead of brush.",
+            "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+            "newInformation": "The inversion applies to any painting tool, increasing area.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Mimi uses a roller instead of brush.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The inversion applies to any painting tool, increasing area.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+            "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+            "newInformation": "The brush inverts color in the open areas, not just strokes.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The brush inverts color in the open areas, not just strokes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Mimi gives up and paints the wall back white.",
+            "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Mimi gives up and paints the wall back white.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a42b8ddd4f88f8b681f4be397dc09269b313c3db2338b529fc60f805495598e3",
+        "normalizedFieldsSha256": "5c0e7dc158eeba8ca5563a0e54a21e87f5f2ee0e4f566743aff5ff25bf659557",
+        "textSha256": "1ce9f14b952a3a8a1c9440429ef84ca7a2f0778513168d3f43d708e7a81737ca"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "sourceExpectations": {
+      "normalExpectation": "Brush applies paint color loaded on it.",
+      "whyThisObject": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "visibleTrigger": "Mimi strokes blue paint; wall turns orange."
+    },
+    "responseDiagnosis": {
+      "responsePresent": true,
+      "category": "B",
+      "classification": "TAXONOMY_COVERAGE_LIMIT",
+      "meaning": "responseType classifies the impossible object response, not the existence of a rule"
+    },
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "primaryExpectedBehaviors": [
+      "moves when handled"
+    ],
+    "expectedResponse": [
+      "moves when handled"
+    ],
+    "actualImpossibleResponse": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+    "responseType": "UNSUPPORTED_RESPONSE",
+    "contradictionType": null,
+    "expectationDistance": "ARBITRARY_DISCONNECT",
+    "premiseNaturalness": "BROKEN",
+    "premiseReviewStatus": "BROKEN",
+    "goalInterferenceType": "CONTRIVED",
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": "NONE",
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "materialPropertyConnection": {
+      "property": null,
+      "supportedInObjectData": false
+    },
+    "whyThisObject": "No supported object-function dependency; a natural trigger alone is insufficient.",
+    "objectSwapTest": {
+      "classification": "GENERIC_ENGINE_APPLICATION",
+      "portableArchetypeFraction": 0.0,
+      "comparisons": [
+        {
+          "replacementArchetype": "ABSORBENT_TEXTILE",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "CLOSURE",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "DRAWING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "EATING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "ERASING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "FOOTWEAR",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "GROOMING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "PLACED_ITEM",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "POURING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "RETRIEVABLE_BALL",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "SEATING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "SLIDING_STORAGE",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        },
+        {
+          "replacementArchetype": "WASHING",
+          "functionalLogicPreserved": false,
+          "reason": "The original violated function is not preserved."
+        }
+      ],
+      "scope": "Configured archetype substitutions with the violated function held fixed; not semantic counterfactual proof."
+    },
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "flags": [
+      {
+        "code": "GENERIC_ENGINE_APPLICATION",
+        "reason": "The effect has insufficient supported dependence on this object function."
+      },
+      {
+        "code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO",
+        "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.",
+        "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION",
+        "canonicalCausalRelationshipVisible": true,
+        "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"
+      }
+    ],
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "limitations": [
+      "Curated expectation/response coverage; absence of a policy is a review/filter decision, not proof that an idea is bad.",
+      "Static-frame and causal legibility are text-plan estimates, not observed pixels. Object specificity is function-family dependence, not unique-object originality."
+    ]
+  },
+  "afterReport": {
+    "gateVersion": "premise-naturalness-v1",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Paint wall blue",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_CLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Mimi strokes blue paint; wall turns orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+            "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "newInformation": "Complementary inversion doesn't cancel but separates into two colors.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+            "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+            "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Mimi uses a roller instead of brush.",
+            "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+            "newInformation": "The inversion applies to any painting tool, increasing area.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Mimi uses a roller instead of brush.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The inversion applies to any painting tool, increasing area.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+            "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+            "newInformation": "The brush inverts color in the open areas, not just strokes.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The brush inverts color in the open areas, not just strokes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Mimi gives up and paints the wall back white.",
+            "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Mimi gives up and paints the wall back white.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a42b8ddd4f88f8b681f4be397dc09269b313c3db2338b529fc60f805495598e3",
+        "normalizedFieldsSha256": "5c0e7dc158eeba8ca5563a0e54a21e87f5f2ee0e4f566743aff5ff25bf659557",
+        "textSha256": "1ce9f14b952a3a8a1c9440429ef84ca7a2f0778513168d3f43d708e7a81737ca"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "sourceExpectations": {
+      "normalExpectation": "Brush applies paint color loaded on it.",
+      "whyThisObject": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "visibleTrigger": "Mimi strokes blue paint; wall turns orange."
+    },
+    "responseDiagnosis": {
+      "responsePresent": true,
+      "category": "B",
+      "classification": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "compatibility": "UNRESOLVED",
+      "meaning": "Source behavior existence and configured response/admission compatibility are separate."
+    },
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "primaryExpectedBehaviors": [
+      "moves when handled"
+    ],
+    "expectedResponse": [
+      "moves when handled"
+    ],
+    "actualImpossibleResponse": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": "DIRECT",
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 90,
+    "staticFrameLegibility": 85,
+    "materialPropertyConnection": {
+      "property": null,
+      "supportedInObjectData": false
+    },
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "objectSwapTest": {
+      "classification": null,
+      "portableArchetypeFraction": null,
+      "comparisons": [],
+      "scope": "UNRESOLVED_SOURCE_BOUND_COUNTERFACTUAL; absence of a mapped policy is not proof of portable random magic."
+    },
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "flags": [
+      {
+        "code": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"
+      },
+      {
+        "code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED",
+        "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+      }
+    ],
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "limitations": [
+      "Curated expectation/response coverage; absence of a policy is a review/filter decision, not proof that an idea is bad.",
+      "Static-frame and causal legibility are text-plan estimates, not observed pixels. Object specificity is function-family dependence, not unique-object originality."
+    ],
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "responseEvidence": {
+      "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "classification": null,
+      "diagnosisCategory": "B",
+      "compatibility": "UNRESOLVED",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "impossibleRule",
+          "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "openingEvidence": {
+      "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+      "characterVisible": true,
+      "goalDeclared": true,
+      "goalVisible": true,
+      "objectVisible": true,
+      "objectEvidence": {
+        "present": true,
+        "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+        "matches": [
+          "paint",
+          "brush"
+        ]
+      },
+      "problemVisible": true,
+      "anomalyVisible": true,
+      "triggerVisible": true,
+      "goalProblemRelationship": true,
+      "impossibleRelationVisible": true,
+      "ruleInferableFromStill": true,
+      "needsMotionToUnderstand": null,
+      "needsPriorContext": null,
+      "canonicalCausalLegibility": true,
+      "stillCausalLegibility": "SUPPORTED",
+      "openingFactsState": "OPENING_FACTS_PRESENT",
+      "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+      "stillPropertyContrast": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ],
+      "explicitUsePose": true,
+      "sourceFunctionalContrastSupported": true,
+      "blockerClassification": "OTHER",
+      "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+    },
+    "qualityEvidence": {
+      "normalExpectation": {
+        "present": true,
+        "source": "Brush applies paint color loaded on it.",
+        "functionGoalMatches": [
+          "paint"
+        ],
+        "qualitySupport": "UNRESOLVED",
+        "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+      },
+      "exactObjectRelevance": {
+        "source": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+        "present": true,
+        "sourceFunctionMatches": [
+          "brush",
+          "color",
+          "paint"
+        ],
+        "qualitySupport": "UNRESOLVED",
+        "independentlyVerified": false,
+        "independentCounterfactualEvidence": null,
+        "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+      },
+      "expectedBehaviorContradiction": {
+        "present": true,
+        "classification": null,
+        "qualitySupport": "UNRESOLVED",
+        "expected": "Brush applies paint color loaded on it.",
+        "actual": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green."
+      },
+      "goalInterference": {
+        "present": true,
+        "source": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+        "classification": "DIRECT",
+        "qualitySupport": "SUPPORTED_SOURCE_LINK",
+        "relationMatchesGoal": [
+          "blu",
+          "paint",
+          "wall"
+        ],
+        "relationMatchesRule": [
+          "blu",
+          "orang",
+          "paint"
+        ],
+        "visibleEffectGoalMatches": [
+          "blu",
+          "paint",
+          "wall"
+        ],
+        "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+      },
+      "triggerNaturalness": {
+        "present": true,
+        "source": "Mimi strokes blue paint; wall turns orange.",
+        "classificationStatus": "PRESENT_CLASSIFIED",
+        "configuredScore": 40,
+        "sourceExpectationMatches": [
+          "paint"
+        ],
+        "qualitySupport": "UNRESOLVED",
+        "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+      },
+      "physicalRelationship": {
+        "source": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+        "qualitySupport": "UNRESOLVED"
+      },
+      "arbitraryMagicRisk": {
+        "qualitySupport": "UNRESOLVED",
+        "explicitlyPortable": false,
+        "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+      },
+      "functionalIrony": {
+        "sourceExpected": "Brush applies paint color loaded on it.",
+        "sourceActual": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "qualitySupport": "UNRESOLVED"
+      }
+    },
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+    "metricInterpretation": {
+      "objectSpecificityScore": "UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unresolved comparison is not observed low specificity",
+      "triggerNaturalness": "UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unknown classification is not missing trigger",
+      "premiseNaturalness": "CONSERVATIVE_COMPATIBILITY_GRADE; qualityAssessmentStatus distinguishes unresolved from proved weak"
+    },
+    "admissionCriteria": {
+      "naturalnessSupported": false,
+      "directGoalInterference": true,
+      "clearContradiction": false,
+      "exactObjectDependency": "UNRESOLVED",
+      "responseCompatibility": "UNRESOLVED",
+      "knownResponseLabelRequiredAtPresenceStage": false,
+      "taxonomyCoupledAdmissionDetected": true,
+      "taxonomyDependentCriteriaRemainUnresolved": true,
+      "unresolvedCriteria": [
+        "normalExpectation",
+        "exactObjectRelevance",
+        "expectedBehaviorContradiction",
+        "triggerNaturalness",
+        "physicalRelationship",
+        "arbitraryMagicRisk",
+        "functionalIrony"
+      ],
+      "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+      "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+    }
+  },
+  "openingAudit": {
+    "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "paint",
+        "brush"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": [
+          "blue"
+        ],
+        "shown": [
+          "orange"
+        ]
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "delta": {
+    "openingScore": {
+      "before": 35,
+      "after": 90
+    },
+    "staticScore": {
+      "before": 25,
+      "after": 85
+    },
+    "naturalness": {
+      "before": "BROKEN",
+      "after": "CONTRIVED"
+    },
+    "response": {
+      "before": "UNSUPPORTED_RESPONSE",
+      "after": null
+    },
+    "goalInterference": {
+      "before": "CONTRIVED",
+      "after": "DIRECT"
+    },
+    "findings": {
+      "before": [
+        {
+          "code": "GENERIC_ENGINE_APPLICATION",
+          "reason": "The effect has insufficient supported dependence on this object function."
+        },
+        {
+          "code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO",
+          "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.",
+          "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION",
+          "canonicalCausalRelationshipVisible": true,
+          "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"
+        }
+      ],
+      "after": [
+        {
+          "code": "RESPONSE_PRESENT_UNCLASSIFIED",
+          "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"
+        },
+        {
+          "code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED",
+          "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+        }
+      ]
+    }
+  },
+  "cause": "Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.",
+  "beforePreselectionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "validation": {
+    "candidateId": "sem1-2ae718e8672f18cc",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Paint wall blue",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_CLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Mimi strokes blue paint; wall turns orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+            "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "newInformation": "Complementary inversion doesn't cancel but separates into two colors.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+            "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+            "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Mimi uses a roller instead of brush.",
+            "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+            "newInformation": "The inversion applies to any painting tool, increasing area.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Mimi uses a roller instead of brush.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The inversion applies to any painting tool, increasing area.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+            "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+            "newInformation": "The brush inverts color in the open areas, not just strokes.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The brush inverts color in the open areas, not just strokes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Mimi gives up and paints the wall back white.",
+            "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Mimi gives up and paints the wall back white.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a42b8ddd4f88f8b681f4be397dc09269b313c3db2338b529fc60f805495598e3",
+        "normalizedFieldsSha256": "5c0e7dc158eeba8ca5563a0e54a21e87f5f2ee0e4f566743aff5ff25bf659557",
+        "textSha256": "1ce9f14b952a3a8a1c9440429ef84ca7a2f0778513168d3f43d708e7a81737ca"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "title": "Opposite-Color Paintbrush",
+    "normalizedConcept": {
+      "id": "sem1-2ae718e8672f18cc",
+      "title": "Opposite-Color Paintbrush",
+      "protagonist": "Mimi",
+      "protagonistGoal": "Paint wall blue",
+      "objectOrPrimaryInteraction": "Paintbrush",
+      "impossibleRuleOrCoreContradiction": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.",
+      "escalationPlan": [
+        {
+          "startSeconds": 0.0,
+          "endSeconds": 3.0,
+          "description": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors."
+        },
+        {
+          "startSeconds": 3.0,
+          "endSeconds": 6.0,
+          "description": "Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+        },
+        {
+          "startSeconds": 6.0,
+          "endSeconds": 9.0,
+          "description": "Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area."
+        },
+        {
+          "startSeconds": 9.0,
+          "endSeconds": 12.0,
+          "description": "Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes."
+        },
+        {
+          "startSeconds": 12.0,
+          "endSeconds": 15.0,
+          "description": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+        }
+      ],
+      "finalPayoff": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+      "intendedDurationSeconds": 15.0,
+      "optionalDialogue": null,
+      "evaluationText": "0-3s: Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.\n3-6s: Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.\n6-9s: Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area.\n9-12s: Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes.\n12-15s: Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+      "originalInput": {
+        "id": "sem1-2ae718e8672f18cc",
+        "title": "Opposite-Color Paintbrush",
+        "protagonist": "Mimi",
+        "protagonistGoal": "Paint wall blue",
+        "objectOrPrimaryInteraction": "Paintbrush",
+        "impossibleRuleOrCoreContradiction": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.",
+        "escalationPlan": [
+          {
+            "startSeconds": 0.0,
+            "endSeconds": 3.0,
+            "description": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors."
+          },
+          {
+            "startSeconds": 3.0,
+            "endSeconds": 6.0,
+            "description": "Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+          },
+          {
+            "startSeconds": 6.0,
+            "endSeconds": 9.0,
+            "description": "Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area."
+          },
+          {
+            "startSeconds": 9.0,
+            "endSeconds": 12.0,
+            "description": "Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes."
+          },
+          {
+            "startSeconds": 12.0,
+            "endSeconds": 15.0,
+            "description": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+          }
+        ],
+        "finalPayoff": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+        "intendedDurationSeconds": 15.0
+      },
+      "normalizationEvidence": {
+        "id": "EXPLICIT_FIELD",
+        "title": "EXPLICIT_FIELD",
+        "protagonist": "EXPLICIT_FIELD",
+        "protagonistGoal": "EXPLICIT_FIELD",
+        "objectOrPrimaryInteraction": "EXPLICIT_FIELD",
+        "impossibleRuleOrCoreContradiction": "EXPLICIT_FIELD",
+        "frameZeroDescription": "EXPLICIT_FIELD",
+        "escalationPlan": "EXPLICIT_FIELD",
+        "finalPayoff": "EXPLICIT_FIELD",
+        "intendedDurationSeconds": "EXPLICIT_FIELD"
+      },
+      "sourceSha256": "afaf2102835ac36930b1092077135511e5ae2faae2a8fb32867907a988968f32",
+      "normalizationWarnings": [
+        "Only explicit fields, labeled text and supported source excerpts are normalized; unknown fields remain missing.",
+        "Timed middle beats can bound supplied opening/payoff windows; no actions are generated."
+      ],
+      "canonicalCreativeEvidence": {
+        "version": "canonical-creative-evidence-v1",
+        "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+        "facts": {
+          "goal": {
+            "declared": true,
+            "visibleInOpening": true,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Paint wall blue",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          },
+          "opening": {
+            "goalPresent": true,
+            "anomalyPresent": true,
+            "problemPresent": true,
+            "causalRelationshipVisible": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+          },
+          "rule": {
+            "present": true,
+            "visible": true,
+            "dominant": true,
+            "goalRelated": true,
+            "classificationStatus": "PRESENT_UNCLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "present": true,
+            "visible": true,
+            "classificationStatus": "PRESENT_CLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Mimi strokes blue paint; wall turns orange.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "beats": [
+            {
+              "beatNumber": 1,
+              "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+              "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+              "newInformation": "Complementary inversion doesn't cancel but separates into two colors.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[0].strategy",
+                  "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[0].visibleConsequence",
+                  "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[0].newInformation",
+                  "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 2,
+              "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+              "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+              "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[1].strategy",
+                  "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[1].visibleConsequence",
+                  "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[1].newInformation",
+                  "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 3,
+              "strategy": "Mimi uses a roller instead of brush.",
+              "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+              "newInformation": "The inversion applies to any painting tool, increasing area.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[2].strategy",
+                  "sourceText": "Mimi uses a roller instead of brush.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[2].visibleConsequence",
+                  "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[2].newInformation",
+                  "sourceText": "The inversion applies to any painting tool, increasing area.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 4,
+              "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+              "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+              "newInformation": "The brush inverts color in the open areas, not just strokes.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[3].strategy",
+                  "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[3].visibleConsequence",
+                  "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[3].newInformation",
+                  "sourceText": "The brush inverts color in the open areas, not just strokes.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            },
+            {
+              "beatNumber": 5,
+              "strategy": "Mimi gives up and paints the wall back white.",
+              "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+              "supportedStateChange": true,
+              "bodyState": null,
+              "spatialState": null,
+              "source": [
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].strategy",
+                  "sourceText": "Mimi gives up and paints the wall back white.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].visibleConsequence",
+                  "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                },
+                {
+                  "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                  "sourceField": "beats[4].newInformation",
+                  "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                  "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                  "confidence": "EXPLICIT"
+                }
+              ]
+            }
+          ],
+          "payoff": {
+            "present": true,
+            "ruleLinked": true,
+            "stateChanging": true,
+            "visual": true,
+            "classificationStatus": "PRESENT_UNCLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        },
+        "provenance": {
+          "sourceKind": "SEMANTIC",
+          "structuredSourceSha256": "a42b8ddd4f88f8b681f4be397dc09269b313c3db2338b529fc60f805495598e3",
+          "normalizedFieldsSha256": "5c0e7dc158eeba8ca5563a0e54a21e87f5f2ee0e4f566743aff5ff25bf659557",
+          "textSha256": "1ce9f14b952a3a8a1c9440429ef84ca7a2f0778513168d3f43d708e7a81737ca"
+        },
+        "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+      }
+    },
+    "eligibility": "ELIGIBLE",
+    "missingFields": [],
+    "eligibilityReasons": [],
+    "shortFormScore": 99,
+    "rankingScore": 97.6,
+    "baseCompositeScore": 97.6,
+    "rankingDimensions": [
+      {
+        "dimension": "instantCausalLegibility",
+        "score": 100,
+        "weightPercent": 22,
+        "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+      },
+      {
+        "dimension": "visualContradiction",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.hookScore"
+      },
+      {
+        "dimension": "goalClarity",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.goalScore"
+      },
+      {
+        "dimension": "oneRuleStrength",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+      },
+      {
+        "dimension": "progressDensity",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.progressDensityScore"
+      },
+      {
+        "dimension": "escalationQuality",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.escalationScore"
+      },
+      {
+        "dimension": "payoffStrength",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.payoffScore"
+      },
+      {
+        "dimension": "rewatchPotential",
+        "score": 60,
+        "weightPercent": 6,
+        "source": "SHORT_FORM_ENGINE.rewatchScore"
+      }
+    ],
+    "penalties": [],
+    "rankingPenaltyPoints": 0,
+    "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+    "productionRisk": {
+      "score": 100,
+      "flags": [],
+      "evidenceStatus": "TEXT_RISK_SCREEN_ONLY"
+    },
+    "productionEfficiency": {
+      "score": 100,
+      "source": "SHORT_FORM_ENGINE.productionFeasibilityScore",
+      "use": "Secondary only within a 3-point anchored quality band; no verified monetary cost estimate."
+    },
+    "strengths": [
+      {
+        "dimension": "instantCausalLegibility",
+        "score": 100,
+        "weightPercent": 22,
+        "source": "SHORT_FORM_ENGINE.instantPremiseLegibility.score"
+      },
+      {
+        "dimension": "visualContradiction",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.hookScore"
+      },
+      {
+        "dimension": "goalClarity",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.goalScore"
+      },
+      {
+        "dimension": "oneRuleStrength",
+        "score": 100,
+        "weightPercent": 8,
+        "source": "SHORT_FORM_ENGINE.ruleClarityScore"
+      },
+      {
+        "dimension": "progressDensity",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.progressDensityScore"
+      },
+      {
+        "dimension": "escalationQuality",
+        "score": 100,
+        "weightPercent": 10,
+        "source": "SHORT_FORM_ENGINE.escalationScore"
+      },
+      {
+        "dimension": "payoffStrength",
+        "score": 100,
+        "weightPercent": 18,
+        "source": "SHORT_FORM_ENGINE.payoffScore"
+      }
+    ],
+    "weaknesses": [],
+    "shortFormEngine": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "PASS",
+      "shortFormScore": 99,
+      "hookScore": 100,
+      "goalScore": 100,
+      "ruleClarityScore": 100,
+      "beatDensityScore": 100,
+      "progressDensityScore": 100,
+      "escalationScore": 100,
+      "payoffScore": 100,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 89,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      },
+      "alreadyInTrouble": true,
+      "rules": [],
+      "majorCausalBeatCount": 5,
+      "describedBlockCount": 5,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.0,
+          "quote": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.",
+          "sourceSpan": null,
+          "visual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.",
+          "rules": [],
+          "strategies": [
+            "strategy:f48033c4143d5843"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:548882c4be420609"
+          ],
+          "goal": true,
+          "result": true,
+          "progressTypes": [
+            "UNDERSTANDING"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.0,
+          "end": 6.0,
+          "quote": "Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+          "sourceSpan": null,
+          "visual": "Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+          "rules": [],
+          "strategies": [
+            "strategy:17b308b419e385ad"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:057544ccae663e04"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B3",
+          "start": 6.0,
+          "end": 9.0,
+          "quote": "Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area.",
+          "sourceSpan": null,
+          "visual": "Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "strategy:695cff969623a876"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:4cc70eaab0aab819"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B4",
+          "start": 9.0,
+          "end": 12.0,
+          "quote": "Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes.",
+          "sourceSpan": null,
+          "visual": "Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes.",
+          "rules": [],
+          "strategies": [
+            "strategy:24d8612f59b6db7a"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:5d979a61d2fa31ba"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B5",
+          "start": 12.0,
+          "end": 15.0,
+          "quote": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+          "sourceSpan": null,
+          "visual": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+          "rules": [],
+          "strategies": [
+            "strategy:35da2be833667da6"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:01dc1e98b132f52e"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE",
+            "PAYOFF"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        }
+      ],
+      "findings": [],
+      "escalationCurve": {
+        "longestPlateauSeconds": 3.0,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Next materially different attempt, consequence or final physical state.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 100,
+        "rule": 100,
+        "reaction": 55,
+        "payoff": 100
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15.0,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "PASS: short-form 99/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+      "sourceSha256": "afaf2102835ac36930b1092077135511e5ae2faae2a8fb32867907a988968f32",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0,
+      "evidenceSourceVersion": "structured-canonical-v1",
+      "canonicalEvidence": {
+        "version": "short-form-canonical-evidence-v1",
+        "sourceKind": "STRUCTURED_CANONICAL_V1",
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.",
+            "sourceSpan": null,
+            "visual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange. Mimi Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.. The brush paints a shimmering gray that immediately splits into blue and orange stripes. Complementary inversion doesn't cancel but separates into two colors.",
+            "rules": [],
+            "strategies": [
+              "strategy:f48033c4143d5843"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:548882c4be420609"
+            ],
+            "goal": true,
+            "result": true
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "sourceSpan": null,
+            "visual": "Mimi Mimi tries to paint the wall orange, expecting inversion to give blue.. The wall turns blue-green, not pure blue, and the brush swirls automatically. The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "rules": [],
+            "strategies": [
+              "strategy:17b308b419e385ad"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:057544ccae663e04"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area.",
+            "sourceSpan": null,
+            "visual": "Mimi Mimi uses a roller instead of brush.. The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst. The inversion applies to any painting tool, increasing area.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [
+              "strategy:695cff969623a876"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:4cc70eaab0aab819"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes.",
+            "sourceSpan": null,
+            "visual": "Mimi Mimi puts a stencil on the wall to paint a pattern.. The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern. The brush inverts color in the open areas, not just strokes.",
+            "rules": [],
+            "strategies": [
+              "strategy:24d8612f59b6db7a"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:5d979a61d2fa31ba"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "sourceSpan": null,
+            "visual": "Mimi Mimi gives up and paints the wall back white.. The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors. Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "rules": [],
+            "strategies": [
+              "strategy:35da2be833667da6"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:01dc1e98b132f52e"
+            ],
+            "goal": false,
+            "result": true
+          }
+        ],
+        "acquisition": [
+          {
+            "resultTokens": [
+              "blu",
+              "brush",
+              "gray",
+              "orang",
+              "paint",
+              "shimmer",
+              "split",
+              "strip"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:cf8905b1f1e3574d"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "automatically",
+              "blu",
+              "brush",
+              "green",
+              "not",
+              "pur",
+              "swirl",
+              "turn",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:cf8905b1f1e3574d"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "color",
+              "cover",
+              "giant",
+              "opposit",
+              "orang",
+              "paint",
+              "roller",
+              "scal",
+              "sunburst",
+              "tripl",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:cf8905b1f1e3574d"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Mimi uses a roller instead of brush.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The inversion applies to any painting tool, increasing area.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "area",
+              "color",
+              "complementary",
+              "creat",
+              "expos",
+              "negativ",
+              "pattern",
+              "stay",
+              "stencil",
+              "turn",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:cf8905b1f1e3574d"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The brush inverts color in the open areas, not just strokes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "becom",
+              "black",
+              "color",
+              "entir",
+              "flash",
+              "invert",
+              "mirror",
+              "paint",
+              "reflect",
+              "room",
+              "turn",
+              "wall",
+              "whit"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": true,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:cf8905b1f1e3574d"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Mimi gives up and paints the wall back white.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "facts": {
+          "openingDelayed": false,
+          "goalDeclared": true,
+          "mechanismIds": [
+            "source-rule:cf8905b1f1e3574d"
+          ],
+          "classifiedRules": [],
+          "confusion": false,
+          "loopCue": false,
+          "speechWords": 0,
+          "longSpeech": false,
+          "audioRequired": false,
+          "reactionVisible": false,
+          "stagingRisks": [],
+          "productionRisks": [],
+          "duplicateSignature": {
+            "opening": [],
+            "progression": [
+              "strategy:f48033c4143d5843",
+              "strategy:17b308b419e385ad",
+              "strategy:695cff969623a876",
+              "strategy:24d8612f59b6db7a",
+              "strategy:35da2be833667da6"
+            ],
+            "ending": []
+          }
+        },
+        "dimensions": {
+          "goal": {
+            "declared": true,
+            "openingVisible": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Paint wall blue",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "opening": {
+            "problemPresent": true,
+            "anomalySupported": true,
+            "goalSupported": true,
+            "anchorMatches": [
+              "blu",
+              "brush",
+              "orang",
+              "paint"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "coreRule": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "supported": true,
+            "classification": [],
+            "mechanismIds": [
+              "source-rule:cf8905b1f1e3574d"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "presence": "PRESENT_CLASSIFIED",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Mimi strokes blue paint; wall turns orange.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "payoff": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "ruleLinked": true,
+            "stateChanging": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "verification": {
+            "method": "SOURCE_FIELD_OVERLAP_AND_STRUCTURAL_CHANGE_V1",
+            "confidence": "STRUCTURED_INFERENCE",
+            "candidateId": "sem1-2ae718e8672f18cc",
+            "normalizedFieldsSha256": "5c0e7dc158eeba8ca5563a0e54a21e87f5f2ee0e4f566743aff5ff25bf659557",
+            "ruleAnchorMinimum": 2,
+            "consequenceNearDuplicateJaccard": 0.8,
+            "limitation": "Deterministic support checks, not semantic understanding or observed visual proof. Unknown quality remains unresolved; declaration alone does not grant goal visibility, rule support or payoff linkage."
+          }
+        }
+      },
+      "findingEvidence": {}
+    },
+    "cpqPreview": {
+      "contractVersion": "creative-prompt-quality-v1",
+      "rubricVersion": "creative-prompt-quality-v1",
+      "calibrationCorpusVersion": null,
+      "gradingStatus": "CALIBRATION_INCOMPLETE",
+      "absoluteQuality": {
+        "status": "NOT_QUALIFIED",
+        "grade": null,
+        "aggregateScore": null,
+        "reason": "No approved, independently reviewed calibration corpus and activated thresholds are available."
+      },
+      "relativeImprovement": {
+        "status": "NO_CHANGE",
+        "promptFingerprintChanged": false,
+        "addedTokenCount": 0,
+        "removedTokenCount": 0,
+        "materialityEvidence": [],
+        "classification": "EQUIVALENT",
+        "note": "Token difference and verbosity do not establish material improvement."
+      },
+      "dimensions": [
+        {
+          "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies visual anomaly or contrast."
+          ],
+          "weaknesses": [
+            "The prompt does not explicitly establish opening window.",
+            "The prompt does not explicitly establish viewer-facing composition."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for opening window only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for viewer-facing composition only if diagnosis supports it."
+          ],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "visual anomaly or contrast"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "CAUSAL_PROGRESSION",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies explicit cause/consequence relation.",
+            "Text explicitly specifies state change or escalation.",
+            "Text explicitly specifies ordered progression."
+          ],
+          "weaknesses": [],
+          "recommendations": [],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "explicit cause/consequence relation"
+            },
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "state change or escalation"
+            },
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "ordered progression"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "VISUAL_STORYTELLING",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [],
+          "weaknesses": [
+            "The prompt does not explicitly establish spatial relation.",
+            "The prompt does not explicitly establish physical interaction.",
+            "The prompt does not explicitly establish composition or visibility instruction."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for spatial relation only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for physical interaction only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for composition or visibility instruction only if diagnosis supports it."
+          ],
+          "evidenceReferences": [],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "PRODUCTION_EXECUTABILITY",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [],
+          "weaknesses": [
+            "The prompt does not explicitly establish timing budget.",
+            "The prompt does not explicitly establish camera/shot plan.",
+            "The prompt does not explicitly establish continuity or action-complexity control."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for timing budget only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for camera/shot plan only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for continuity or action-complexity control only if diagnosis supports it."
+          ],
+          "evidenceReferences": [],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "ENDING_REPLAY",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [],
+          "weaknesses": [
+            "The prompt does not explicitly establish defined final image/consequence.",
+            "The prompt does not explicitly establish opening relation or loop option.",
+            "The prompt does not explicitly establish payoff or intentional curiosity."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for defined final image/consequence only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for opening relation or loop option only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for payoff or intentional curiosity only if diagnosis supports it."
+          ],
+          "evidenceReferences": [],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        },
+        {
+          "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+          "status": "TEXT_EVIDENCE_PREVIEW",
+          "calibratedScore": null,
+          "strengths": [
+            "Text explicitly specifies specific visual mechanism."
+          ],
+          "weaknesses": [
+            "The prompt does not explicitly establish non-generic variation or contrast.",
+            "The prompt does not explicitly establish concrete execution choice."
+          ],
+          "recommendations": [
+            "Add a source-faithful, observable instruction for non-generic variation or contrast only if diagnosis supports it.",
+            "Add a source-faithful, observable instruction for concrete execution choice only if diagnosis supports it."
+          ],
+          "evidenceReferences": [
+            {
+              "kind": "PROMPT_TEXT_SIGNAL",
+              "label": "specific visual mechanism"
+            }
+          ],
+          "confidence": "NOT_CALIBRATED",
+          "explicitUnknowns": [
+            "Actual rendered visual adherence is unverified.",
+            "Audience effect is unmeasured."
+          ],
+          "profileConstraints": {
+            "contentProfile": "UNKNOWN",
+            "generator": "UNKNOWN",
+            "durationSeconds": 15.0
+          },
+          "canonicalContextReferences": []
+        }
+      ],
+      "sourceFidelity": {
+        "decision": "UNKNOWN",
+        "requiredForQualifiedGrade": true,
+        "evidenceId": null
+      },
+      "canonicalValidation": {
+        "rulesetVersion": "1.11",
+        "status": "NOT_PROVIDED"
+      },
+      "productionRisks": [],
+      "missingEvidence": [
+        "Approved calibration corpus",
+        "Calibrated dimension thresholds and aggregation",
+        "Held-out error analysis",
+        "Independent reviewer agreement"
+      ],
+      "qualityConfidence": {
+        "status": "NOT_CALIBRATED",
+        "reviewerAgreement": null
+      },
+      "visualAdherence": "UNVERIFIED",
+      "audienceEffect": "UNMEASURED",
+      "renderReadiness": "SEPARATE_F8_POLICY",
+      "renderAuthorized": false,
+      "automaticApproval": false,
+      "fingerprints": {
+        "originalPromptSha256": "afaf2102835ac36930b1092077135511e5ae2faae2a8fb32867907a988968f32",
+        "candidatePromptSha256": "afaf2102835ac36930b1092077135511e5ae2faae2a8fb32867907a988968f32"
+      }
+    },
+    "historicalComparison": {
+      "closestHistoricalEngine": null,
+      "similarities": [],
+      "differences": [],
+      "duplicateRisk": "NO_MATCH_IN_LIMITED_CORPUS",
+      "limitation": "No supported structural match in the two-reference corpus; originality remains unverified."
+    },
+    "engineSignature": {
+      "opening": [],
+      "progression": [
+        "strategy:f48033c4143d5843",
+        "strategy:17b308b419e385ad",
+        "strategy:695cff969623a876",
+        "strategy:24d8612f59b6db7a",
+        "strategy:35da2be833667da6"
+      ],
+      "ending": []
+    },
+    "renderAuthorized": false
+  },
+  "beatGrammar": {
+    "version": "beat-grammar-v2",
+    "strategySequence": [
+      "ANCHOR_TO_ENVIRONMENT",
+      "DIRECT_USE",
+      "DIRECT_USE",
+      "UNKNOWN",
+      "UNKNOWN"
+    ],
+    "strategyFamilySequence": [
+      "ENVIRONMENT_ANCHOR",
+      "DIRECT_FORCE",
+      "DIRECT_FORCE",
+      "source-action:2b3b6f3f2cc8fab2",
+      null
+    ],
+    "uniqueStrategyCount": 3,
+    "strategyDiversityScore": 75.0,
+    "consequenceSequence": [
+      "source-state:548882c4be420609",
+      "source-state:057544ccae663e04",
+      "OBJECT_GROWS",
+      "source-state:5d979a61d2fa31ba",
+      "source-state:01dc1e98b132f52e"
+    ],
+    "uniqueConsequenceCount": 5,
+    "consequenceDiversityScore": 100.0,
+    "bodyStateSequence": [
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN"
+    ],
+    "bodyStateProgressionScore": 0.0,
+    "spatialProgressionScore": 0.0,
+    "informationGainScore": 100.0,
+    "attemptSignatures": [
+      {
+        "strategyType": "ENVIRONMENT_ANCHOR",
+        "triggerType": "STROKE",
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:548882c4be420609",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "DIRECT_FORCE",
+        "triggerType": "STROKE",
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:057544ccae663e04",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "DIRECT_FORCE",
+        "triggerType": "STROKE",
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "OBJECT_GROWS",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": "source-action:2b3b6f3f2cc8fab2",
+        "triggerType": "STROKE",
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:5d979a61d2fa31ba",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      },
+      {
+        "strategyType": null,
+        "triggerType": "STROKE",
+        "contactPattern": null,
+        "bodyStateAfter": null,
+        "objectStateAfter": null,
+        "consequenceType": "source-state:01dc1e98b132f52e",
+        "goalDistanceChange": null,
+        "relationshipAfter": null
+      }
+    ],
+    "attemptComparisons": [
+      {
+        "beats": [
+          1,
+          2
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.333333,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "strategyType",
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          1,
+          3
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.333333,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "strategyType",
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          1,
+          4
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.333333,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "strategyType",
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          1,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.5,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          2,
+          3
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.666667,
+        "matchingDimensions": [
+          "strategyType",
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "strategyType",
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          2,
+          4
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.333333,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "strategyType",
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          2,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.5,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          3,
+          4
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.333333,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "strategyType",
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          3,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.5,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      },
+      {
+        "beats": [
+          4,
+          5
+        ],
+        "classification": "DISTINCT_ATTEMPT",
+        "similarity": 0.5,
+        "matchingDimensions": [
+          "triggerType"
+        ],
+        "observedDimensions": [
+          "triggerType",
+          "consequenceType"
+        ],
+        "limitation": "Only supported axes compared; matching UNKNOWN values do not establish repetition."
+      }
+    ],
+    "nearDuplicateAttemptRate": 0.0,
+    "payoffDistance": 1.0,
+    "payoffStateChange": {
+      "before": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+      "after": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+      "supported": true,
+      "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+      "objectState": null,
+      "goalState": null,
+      "bodyState": null,
+      "spatialState": null,
+      "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+    },
+    "payoffEvidence": {
+      "distance": 1.0,
+      "comparisons": [
+        {
+          "comparedWithBeat": 3,
+          "distance": 1.0,
+          "changedDimensions": [
+            "consequenceType"
+          ],
+          "observedDimensions": [
+            "consequenceType"
+          ]
+        },
+        {
+          "comparedWithBeat": 4,
+          "distance": 1.0,
+          "changedDimensions": [
+            "consequenceType"
+          ],
+          "observedDimensions": [
+            "consequenceType"
+          ]
+        }
+      ],
+      "stateChange": {
+        "before": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "after": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "supported": true,
+        "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+        "objectState": null,
+        "goalState": null,
+        "bodyState": null,
+        "spatialState": null,
+        "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+      },
+      "magnitudeOnlyDoesNotCount": true,
+      "normalization": "SUPPORTED_AXES_ONLY; NO_SUPPORTED_COMPARISON=0"
+    },
+    "beatGrammarQuality": "ACCEPTABLE",
+    "flags": [
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 5
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 5
+      },
+      {
+        "code": "BEAT_ROLE_REPETITION"
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ],
+    "productionFeasibility": {
+      "score": 100,
+      "flags": [],
+      "evidenceStatus": "PLANNED_CONTACT_COMPLEXITY_SCREEN_NOT_RENDER_VERIFICATION"
+    },
+    "scoreUse": "NON_CANONICAL_GENERATION_REVIEW_NOT_RETENTION",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Paint wall blue",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": true,
+          "dominant": true,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_CLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Mimi strokes blue paint; wall turns orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [
+          {
+            "beatNumber": 1,
+            "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+            "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "newInformation": "Complementary inversion doesn't cancel but separates into two colors.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+            "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+            "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "strategy": "Mimi uses a roller instead of brush.",
+            "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+            "newInformation": "The inversion applies to any painting tool, increasing area.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "Mimi uses a roller instead of brush.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The inversion applies to any painting tool, increasing area.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+            "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+            "newInformation": "The brush inverts color in the open areas, not just strokes.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The brush inverts color in the open areas, not just strokes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "strategy": "Mimi gives up and paints the wall back white.",
+            "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "supportedStateChange": true,
+            "bodyState": null,
+            "spatialState": null,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].strategy",
+                "sourceText": "Mimi gives up and paints the wall back white.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[4].newInformation",
+                "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "payoff": {
+          "present": true,
+          "ruleLinked": true,
+          "stateChanging": true,
+          "visual": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "finalPayoff",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].visibleConsequence",
+              "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+              "confidence": "EXPLICIT"
+            },
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "beats[4].newInformation",
+              "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+              "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "loop": {
+          "declared": true,
+          "supported": false,
+          "references": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "loopPotential",
+              "sourceText": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "a42b8ddd4f88f8b681f4be397dc09269b313c3db2338b529fc60f805495598e3",
+        "normalizedFieldsSha256": "5c0e7dc158eeba8ca5563a0e54a21e87f5f2ee0e4f566743aff5ff25bf659557",
+        "textSha256": "1ce9f14b952a3a8a1c9440429ef84ca7a2f0778513168d3f43d708e7a81737ca"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "sourceBeatPlan": [
+      {
+        "beatNumber": 1,
+        "beatRole": "HOOK_PROBLEM",
+        "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+        "trigger": "STROKE",
+        "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "objectResponse": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+        "characterConsequence": "Complementary inversion doesn't cancel but separates into two colors.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "Complementary inversion doesn't cancel but separates into two colors."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 2,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "DIRECT_USE",
+        "trigger": "STROKE",
+        "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "objectResponse": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+        "characterConsequence": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 3,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "DIRECT_USE",
+        "trigger": "STROKE",
+        "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "objectResponse": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+        "characterConsequence": "The inversion applies to any painting tool, increasing area.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The inversion applies to any painting tool, increasing area."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "OBJECT_GROWS",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 4,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "UNKNOWN",
+        "trigger": "STROKE",
+        "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "objectResponse": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "characterConsequence": "The brush inverts color in the open areas, not just strokes.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "The brush inverts color in the open areas, not just strokes."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "UNKNOWN"
+      },
+      {
+        "beatNumber": 5,
+        "beatRole": "PAYOFF",
+        "characterStrategy": "UNKNOWN",
+        "trigger": "STROKE",
+        "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "objectResponse": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "characterConsequence": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+        "bodyStateBefore": "UNKNOWN",
+        "bodyStateAfter": "UNKNOWN",
+        "objectStateBefore": {
+          "kind": "UNKNOWN"
+        },
+        "objectStateAfter": {
+          "kind": "UNKNOWN"
+        },
+        "spatialChange": {},
+        "goalProgress": "UNKNOWN",
+        "newInformation": [
+          "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+        ],
+        "contactPattern": "UNKNOWN",
+        "consequenceType": "UNKNOWN",
+        "relationshipAfter": "UNKNOWN",
+        "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+        "payoffStateChange": "UNKNOWN"
+      }
+    ],
+    "evidenceLimitations": [
+      "Presence is independent of taxonomy and of progression quality.",
+      "Source-local action/state keys are evidence identities, never canonical taxonomy additions.",
+      "Literal action/target and rule-linked state checks are deterministic text-plan evidence, not semantic vision.",
+      "Unknown body, spatial, goal and contact axes earn no invented state credit."
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 5,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 5,
+        "field": "consequenceType",
+        "sourcePresent": true
+      }
+    ],
+    "evidenceMode": "beat-unclassified-consequence-support-v1",
+    "canonicalBeatEvidence": [
+      {
+        "beatNumber": 1,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+        "rawConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+        "strategyClassification": "ANCHOR_TO_ENVIRONMENT",
+        "consequenceClassification": null,
+        "newInformation": "Complementary inversion doesn't cancel but separates into two colors.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "ENVIRONMENT_ANCHOR",
+        "consequenceDiversityKey": "source-state:548882c4be420609",
+        "stateDifference": {
+          "before": null,
+          "after": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "mix",
+          "target": [
+            "blu",
+            "color",
+            "custom",
+            "equal",
+            "part"
+          ],
+          "sourceClause": "mixes a custom color equal parts blue and orange",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].strategy",
+            "sourceText": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].newInformation",
+            "sourceText": "Complementary inversion doesn't cancel but separates into two colors.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 2,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+        "rawConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+        "strategyClassification": "DIRECT_USE",
+        "consequenceClassification": null,
+        "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "DIRECT_FORCE",
+        "consequenceDiversityKey": "source-state:057544ccae663e04",
+        "stateDifference": {
+          "before": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+          "after": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": null,
+          "target": [
+            "orang",
+            "paint",
+            "wall"
+          ],
+          "sourceClause": "tries to paint the wall orange",
+          "supported": false
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].strategy",
+            "sourceText": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].visibleConsequence",
+            "sourceText": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].newInformation",
+            "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 3,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_CLASSIFIED",
+        "rawStrategy": "Mimi uses a roller instead of brush.",
+        "rawConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+        "strategyClassification": "DIRECT_USE",
+        "consequenceClassification": "OBJECT_GROWS",
+        "newInformation": "The inversion applies to any painting tool, increasing area.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "DIRECT_FORCE",
+        "consequenceDiversityKey": "OBJECT_GROWS",
+        "stateDifference": {
+          "before": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+          "after": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "use",
+          "target": [
+            "brush",
+            "roller"
+          ],
+          "sourceClause": "uses a roller instead of brush",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].strategy",
+            "sourceText": "Mimi uses a roller instead of brush.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].newInformation",
+            "sourceText": "The inversion applies to any painting tool, increasing area.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 4,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Mimi puts a stencil on the wall to paint a pattern.",
+        "rawConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "The brush inverts color in the open areas, not just strokes.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "source-action:2b3b6f3f2cc8fab2",
+        "consequenceDiversityKey": "source-state:5d979a61d2fa31ba",
+        "stateDifference": {
+          "before": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+          "after": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "put",
+          "target": [
+            "stencil",
+            "wall"
+          ],
+          "sourceClause": "puts a stencil on the wall to paint a pattern",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].strategy",
+            "sourceText": "Mimi puts a stencil on the wall to paint a pattern.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The brush inverts color in the open areas, not just strokes.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      {
+        "beatNumber": 5,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Mimi gives up and paints the wall back white.",
+        "rawConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": null,
+        "consequenceDiversityKey": "source-state:01dc1e98b132f52e",
+        "stateDifference": {
+          "before": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+          "after": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "giv",
+          "target": [],
+          "sourceClause": "gives up and paints the wall back white",
+          "supported": false
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].strategy",
+            "sourceText": "Mimi gives up and paints the wall back white.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[4].newInformation",
+            "sourceText": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      }
+    ]
+  },
+  "afterPreselectionBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ]
+}

@@ -1,0 +1,1884 @@
+{
+  "ideas": [
+    {
+      "ideaId": "raw-001",
+      "title": "The Inward Umbrella",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Stay dry in the rain",
+      "primaryObject": "Umbrella",
+      "normalExpectation": "Pressing the button opens the canopy above, creating a dry shield.",
+      "impossibleRule": "The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.",
+      "visibleTrigger": "Opa presses the open button under rain; the canopy blooms down over his arm and torso, leaving his head wet.",
+      "whyThisObject": "An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.",
+      "goalRuleRelationship": "The action meant to create dry overhead space instead traps the body and concentrates rain onto the uncovered head, directly preventing dryness.",
+      "frameZeroDescription": "Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.",
+      "beats": [
+        {
+          "strategy": "Opa pulls the inverted canopy off his head and points the handle skyward, pressing button again to close.",
+          "visibleConsequence": "The wet fabric slides up his arm and seals around his neck like a collar, while rain soaks his exposed face.",
+          "newInformation": "The umbrella can't be removed by pulling; it migrates to the highest point of his body."
+        },
+        {
+          "strategy": "Opa crouches low to the ground, hoping the umbrella will slide up to his raised hand.",
+          "visibleConsequence": "The canopy promptly engulfs his crouched back and legs, leaving only his feet sticking out, while rain pools on the fabric.",
+          "newInformation": "The umbrella always moves to cover the lowest body part, not the highest."
+        },
+        {
+          "strategy": "Opa lies flat on the ground, spreading arms and legs to prevent any body part from being lowest.",
+          "visibleConsequence": "The umbrella flattens over his entire body like a tarp, but water runs off the edges and forms a puddle around him, soaking him from below.",
+          "newInformation": "Being covered doesn't stop water; it collects and soaks from ground contact."
+        },
+        {
+          "strategy": "Opa rolls sideways toward a bus shelter, hoping to escape the rain while still covered.",
+          "visibleConsequence": "The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.",
+          "newInformation": "The umbrella's coverage deflects all rain away from any part it touches, concentrating rain onto uncovered head."
+        },
+        {
+          "strategy": "Opa sits up inside the shelter, folds the umbrella manually by hand, and uses it as a normal hat.",
+          "visibleConsequence": "The umbrella stays open upside-down over his head, collecting rainwater that pours down his face inside the shelter.",
+          "newInformation": "The impossible orientation persists even when manually adjusted; any use creates a personal rain cloud."
+        }
+      ],
+      "finalPayoff": "The umbrella stays open upside-down over his head, collecting rainwater that pours down his face inside the shelter.",
+      "suggestedPayoffFamily": "inversion persists despite manual correction",
+      "loopPotential": "Each new body position causes the umbrella to relocate to the lowest point, so Opa keeps trying to out-think the wrap but only changes which part gets covered.",
+      "environment": "Rainy city sidewalk",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "The protective function is reversed into a wet trap; visually clear because a downward-opening umbrella is instantly wrong for staying dry."
+    },
+    {
+      "ideaId": "raw-002",
+      "title": "Self-Squeezing Toothpaste",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Brush teeth",
+      "primaryObject": "Toothpaste tube",
+      "normalExpectation": "Squeezing tube dispenses paste onto brush.",
+      "impossibleRule": "The tube squeezes itself from the bottom when cap is off, but any paste exiting immediately crawls back inside the nozzle when you squeeze manually.",
+      "visibleTrigger": "Kiko removes cap and paste oozes out on its own; when Kiko squeezes, the paste retracts.",
+      "whyThisObject": "Toothpaste is meant to be pushed out by external pressure; reversing cause and effect makes the tube act like a living creature controlling its contents.",
+      "goalRuleRelationship": "Every attempt to get paste onto brush results in either uncontrollable overflow or instant reattachment to tube, so brushing never gets paste.",
+      "frameZeroDescription": "Kiko holds a toothbrush ready while a toothpaste tube on the counter is already oozing a snake of paste upward; Kiko's other hand reaches to squeeze, but the paste begins sliding back into the nozzle.",
+      "beats": [
+        {
+          "strategy": "Kiko grabs the tube and squeezes hard to force paste onto brush.",
+          "visibleConsequence": "The ribbon of paste outside retracts fully into the nozzle, leaving brush dry.",
+          "newInformation": "Manual squeezing causes paste to be sucked back, opposite of normal."
+        },
+        {
+          "strategy": "Kiko holds the tube upright and waits for it to ooze on its own, then brings brush underneath.",
+          "visibleConsequence": "Paste drips onto the brush but continues flowing, wrapping around bristles and gluing them into a blob.",
+          "newInformation": "The tube's self-squeeze never stops, creating an endless stream."
+        },
+        {
+          "strategy": "Kiko yanks the brush away to break the paste stream.",
+          "visibleConsequence": "The paste string stretches and snaps, flinging the blob back onto Kiko's nose; the tube continues to ooze a new strand.",
+          "newInformation": "Breaking the stream causes projectile paste, and the tube refills itself instantly."
+        },
+        {
+          "strategy": "Kiko caps the tube and uses a finger to scrape paste from his nose onto the brush.",
+          "visibleConsequence": "The tube starts shaking and expands, popping the cap off and spraying paste across the mirror.",
+          "newInformation": "The tube cannot be stopped by capping; pressure builds and releases violently."
+        },
+        {
+          "strategy": "Kiko hides the tube in a drawer and quickly rubs the brush with the paste already on it.",
+          "visibleConsequence": "The drawer rattles, the tube rockets out, and a fresh paste snake lands directly on Kiko's tongue.",
+          "newInformation": "The tube actively targets Kiko's mouth, ensuring the paste reaches the goal but not via the brush."
+        }
+      ],
+      "finalPayoff": "The drawer rattles, the tube rockets out, and a fresh paste snake lands directly on Kiko's tongue.",
+      "suggestedPayoffFamily": "absurd success via object's own action",
+      "loopPotential": "Kiko might try closing the drawer, using a different tube, or catching the paste, but the tube always ejects paste onto his tongue exactly when he gives up.",
+      "environment": "Bathroom sink and mirror",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Toothpaste self-dispensing and refilling is a direct function inversion; the tube controls the paste rather than the user."
+    },
+    {
+      "ideaId": "raw-003",
+      "title": "Spiraling Shopping Cart",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Push cart through supermarket to checkout",
+      "primaryObject": "Shopping cart",
+      "normalExpectation": "All four wheels swivel and roll straight when pushed.",
+      "impossibleRule": "Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.",
+      "visibleTrigger": "Mimi pushes forward, cart veers left and circles back.",
+      "whyThisObject": "Cart wheels are meant to provide straight mobility; locking their directions converts steering into a chaotic orbit.",
+      "goalRuleRelationship": "The push intended to move cart forward instead causes a spiral away from checkout, preventing reaching the goal.",
+      "frameZeroDescription": "Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.",
+      "beats": [
+        {
+          "strategy": "Mimi pushes harder and straightens handle to go down aisle.",
+          "visibleConsequence": "The cart jerks right, then left, tracing a spiral that wraps around a cereal display.",
+          "newInformation": "Force increases turning radius instability, not direction control."
+        },
+        {
+          "strategy": "Mimi tries to pull the cart backward, hoping the wheels unlock.",
+          "visibleConsequence": "The cart spins in place like a top, cans rattling, then accelerates forward in a new spiral toward the produce section.",
+          "newInformation": "Backward motion resets wheel angles to new random locks, worsening path."
+        },
+        {
+          "strategy": "Mimi leans over and tries to rotate one wheel by hand while holding cart steady.",
+          "visibleConsequence": "The other three wheels snap to new positions, causing the cart to lurch sideways and knock over a stack of oranges.",
+          "newInformation": "Wheel directions are interdependent; adjusting one changes all."
+        },
+        {
+          "strategy": "Mimi abandons pushing and drags the cart along the floor by its front corner.",
+          "visibleConsequence": "The cart tilts and rolls on two wheels, then slams down and spirals toward the automatic entrance, triggering doors to open.",
+          "newInformation": "The cart is stable only when moving sideways, but that still leads to exit."
+        },
+        {
+          "strategy": "Mimi lets go of the cart and runs toward checkout, hoping to grab items and leave.",
+          "visibleConsequence": "The cart, still spiraling, bumps into Mimi from behind, pushing her through the checkout line and out the exit.",
+          "newInformation": "The cart's uncontrollable motion actively pursues Mimi, forcing her out of the store without paying."
+        }
+      ],
+      "finalPayoff": "The cart, still spiraling, bumps into Mimi from behind, pushing her through the checkout line and out the exit.",
+      "suggestedPayoffFamily": "goal reached wrongly / environmental consequence",
+      "loopPotential": "Any attempt to steer or adjust wheels only creates a new spiral, and the cart inevitably herds Mimi toward the exit.",
+      "environment": "Supermarket aisle with checkout and automatic doors",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Wheels are for straight motion; reversing that into locked spirals is instantly intuitive and blocks shopping goal."
+    },
+    {
+      "ideaId": "raw-004",
+      "title": "Sweep-Back Broom",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Sweep dirt into a dustpan",
+      "primaryObject": "Broom",
+      "normalExpectation": "Sweeping moves dirt forward into a pile.",
+      "impossibleRule": "Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.",
+      "visibleTrigger": "Arda sweeps a pile to the dustpan, turns to get pan, and the dirt is already back where it started.",
+      "whyThisObject": "Broom bristles are meant to displace particles; if the displacement is temporary, sweeping becomes a time-delayed loop.",
+      "goalRuleRelationship": "The action of sweeping creates only a brief illusion of cleanliness; dirt returns before it can be collected, preventing the goal.",
+      "frameZeroDescription": "Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.",
+      "beats": [
+        {
+          "strategy": "Arda sweeps quickly and immediately tilts dustpan to catch pile.",
+          "visibleConsequence": "As he tilts pan, the pile dissolves and dirt races back to the original spot, leaving pan empty.",
+          "newInformation": "The delay is exactly two seconds, and any pause lets dirt escape."
+        },
+        {
+          "strategy": "Arda sweeps while holding dustpan in the other hand, moving both together.",
+          "visibleConsequence": "Dirt enters the pan but then flies out backward through the bristles, returning to start.",
+          "newInformation": "The broom's bristles repel dirt when the pan is close, so dirt cannot be trapped."
+        },
+        {
+          "strategy": "Arda turns the broom over and uses the handle to push dirt like a rake.",
+          "visibleConsequence": "The dirt stays put for a full three seconds, then jumps back even faster, scattering across a wider area.",
+          "newInformation": "Using a non-bristle part changes the delay to three seconds but increases speed of return."
+        },
+        {
+          "strategy": "Arda sweeps dirt into an open shoebox and quickly closes the lid.",
+          "visibleConsequence": "The box shakes, dirt bursts out the seams, and returns to the original spot, leaving box empty.",
+          "newInformation": "Containment fails; dirt always phases back to start regardless of barrier."
+        },
+        {
+          "strategy": "Arda gives up and simply walks away, leaving the broom on the floor.",
+          "visibleConsequence": "The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.",
+          "newInformation": "The broom can only sweep effectively when no one is trying to collect the dirt."
+        }
+      ],
+      "finalPayoff": "The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.",
+      "suggestedPayoffFamily": "role reversal / object does task when abandoned",
+      "loopPotential": "Arda may return to collect, but then dirt scatters; the broom only succeeds when unattended.",
+      "environment": "Kitchen floor",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Broom's cleaning function is delayed and reversed; the object works only by itself, creating a clear causal joke."
+    },
+    {
+      "ideaId": "raw-005",
+      "title": "Vacuum Blows",
+      "protagonistSuggestion": "Luca",
+      "everydayGoal": "Clean crumbs from carpet",
+      "primaryObject": "Vacuum cleaner",
+      "normalExpectation": "Vacuum sucks air and debris into bag.",
+      "impossibleRule": "The vacuum blows air outward instead of sucking, scattering dust and crumbs toward the user's face and across the room.",
+      "visibleTrigger": "Luca turns it on, crumbs fly up and coat his glasses.",
+      "whyThisObject": "Vacuum's core function is negative pressure; reversing polarity turns cleaning into a debris storm.",
+      "goalRuleRelationship": "The action meant to remove crumbs instead propels them everywhere, making the room dirtier and preventing cleaning.",
+      "frameZeroDescription": "Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.",
+      "beats": [
+        {
+          "strategy": "Luca checks the bag and points nozzle away, turning it on again.",
+          "visibleConsequence": "A blast of air shoots out, knocking over a plant and spraying soil across the floor.",
+          "newInformation": "The motor polarity is reversed, so it's now a leaf blower."
+        },
+        {
+          "strategy": "Luca reverses the vacuum's hose, attaching the other end to the front.",
+          "visibleConsequence": "The machine still blows, but now it sends air into its own bag, inflating it like a balloon until it pops.",
+          "newInformation": "Reversing the hose doesn't change airflow; it just pressurizes the containment."
+        },
+        {
+          "strategy": "Luca holds the vacuum bag shut with his hand and tilts the nozzle toward a window.",
+          "visibleConsequence": "The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.",
+          "newInformation": "The trapped air turns the vacuum into a thruster, causing uncontrolled flight."
+        },
+        {
+          "strategy": "Luca unplugs the vacuum to stop the chaos.",
+          "visibleConsequence": "The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.",
+          "newInformation": "Without power, the debris returns to its original position due to the reversed air pressure."
+        },
+        {
+          "strategy": "Luca plugs it back in, but this time turns the power dial to 'max' hoping it will suck.",
+          "visibleConsequence": "The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.",
+          "newInformation": "Max power reverses thrust direction, so the vacuum now sucks only when moving backward, dragging the user."
+        }
+      ],
+      "finalPayoff": "The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.",
+      "suggestedPayoffFamily": "cause/result inversion via motion",
+      "loopPotential": "Each correction flips the airflow direction, but always in the opposite of what Luca expects, so he is alternately blown or dragged.",
+      "environment": "Living room",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Vacuum's suction reversed is instantly wrong; causing it to become a thruster adds absurd consequence."
+    },
+    {
+      "ideaId": "raw-006",
+      "title": "Mirrored Doorway",
+      "protagonistSuggestion": "Noah",
+      "everydayGoal": "Enter the kitchen from hallway",
+      "primaryObject": "Door",
+      "normalExpectation": "Opening a door leads to the room on the other side.",
+      "impossibleRule": "Whichever side of the door Noah opens, he steps into the same hallway but mirrored left-right.",
+      "visibleTrigger": "Noah opens kitchen door and sees hallway behind him without turning around.",
+      "whyThisObject": "A door is a threshold; if it teleports you back but mirrored, the transition is impossible to complete.",
+      "goalRuleRelationship": "The act of crossing to the kitchen instead returns him to the hallway, preventing the goal.",
+      "frameZeroDescription": "Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.",
+      "beats": [
+        {
+          "strategy": "Noah steps through the doorway quickly, expecting to enter kitchen.",
+          "visibleConsequence": "He lands in a mirrored hallway, with door now behind him showing the kitchen as a reflection.",
+          "newInformation": "Passing through flips his orientation and swaps which side is real."
+        },
+        {
+          "strategy": "Noah backs through the doorway, hoping to reverse the mirror effect.",
+          "visibleConsequence": "He ends up in the original hallway but now the door is on his left instead of right, and the kitchen is behind him.",
+          "newInformation": "Backing through does not cancel the flip; it just reorients his body."
+        },
+        {
+          "strategy": "Noah tries to open the door from the mirrored hallway's other side.",
+          "visibleConsequence": "The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.",
+          "newInformation": "Each crossing creates a new mirrored copy of the same hallway, like an infinite recursion."
+        },
+        {
+          "strategy": "Noah holds the door open with one hand and reaches through to touch the kitchen counter he can see in the reflection.",
+          "visibleConsequence": "His arm disappears through the doorway and emerges from a door behind him, tapping his own shoulder.",
+          "newInformation": "Space is folded so any object poked through wraps around to the starting side."
+        },
+        {
+          "strategy": "Noah closes the door entirely, then opens it again while looking at his feet.",
+          "visibleConsequence": "He steps through and finds himself in the kitchen, but everything is mirrored—cabinets open the wrong way, and the clock runs backward.",
+          "newInformation": "The door finally allows entry, but the entire kitchen's handedness is reversed, so using it remains confusing."
+        }
+      ],
+      "finalPayoff": "He steps through and finds himself in the kitchen, but everything is mirrored—cabinets open the wrong way, and the clock runs backward.",
+      "suggestedPayoffFamily": "spatial rule change / goal reached with side effect",
+      "loopPotential": "Every additional door in the kitchen may also be mirrored, leading Noah to question every threshold.",
+      "environment": "Hallway and kitchen doorway",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Door as threshold is subverted by self-mirroring; intuitive because you see same hallway where kitchen should be."
+    },
+    {
+      "ideaId": "raw-007",
+      "title": "Backward Alarm Clock",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Wake up at 7 AM after setting alarm",
+      "primaryObject": "Alarm clock",
+      "normalExpectation": "Alarm rings at set time; hands move forward.",
+      "impossibleRule": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "visibleTrigger": "Opa sets alarm for 7:00, the hour hand starts cranking counterclockwise.",
+      "whyThisObject": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "goalRuleRelationship": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+      "frameZeroDescription": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+      "beats": [
+        {
+          "strategy": "Opa manually winds the clock forward to 6:59, expecting the alarm soon.",
+          "visibleConsequence": "As soon as he releases, the hands spin backward rapidly to 3:00.",
+          "newInformation": "Manual forward adjustment is undone by the reverse mechanism."
+        },
+        {
+          "strategy": "Opa turns the alarm off and just watches the clock to see what time it shows.",
+          "visibleConsequence": "The hands freeze, then twitch backward one minute for every real second that passes.",
+          "newInformation": "Without alarm set, the clock still runs backward but slower."
+        },
+        {
+          "strategy": "Opa sets the alarm for a time that already appears behind the current hand position, like 2:00, hoping it will trigger quickly.",
+          "visibleConsequence": "The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.",
+          "newInformation": "Triggering the alarm causes time to jump forward to noon and sound to invert."
+        },
+        {
+          "strategy": "Opa unplugs the clock and uses his phone to check the actual time.",
+          "visibleConsequence": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.",
+          "newInformation": "The clock's impossible rule spreads to other time-keeping devices."
+        },
+        {
+          "strategy": "Opa gives up and falls back asleep.",
+          "visibleConsequence": "The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.",
+          "newInformation": "The backward time eventually catches up to the correct wake hour, but day and night are swapped."
+        }
+      ],
+      "finalPayoff": "The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.",
+      "suggestedPayoffFamily": "delayed consequence / goal reached wrongly via causal inversion",
+      "loopPotential": "If Opa trusts the clock, he'll sleep through day; if he ignores it, he wakes on time but distrusts all clocks.",
+      "environment": "Bedroom with bedside clock",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Clock's directional time reversal directly prevents scheduled waking; the impossible rule is visually obvious with backward hands."
+    },
+    {
+      "ideaId": "raw-008",
+      "title": "Neighbor's TV Remote",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Change channel to watch favorite show",
+      "primaryObject": "TV remote",
+      "normalExpectation": "Pressing buttons changes your own TV channel.",
+      "impossibleRule": "The remote's signal always targets the neighbor's television through the wall, changing their channel while your TV stays off.",
+      "visibleTrigger": "Kiko presses power; neighbor yells, but Kiko's TV remains black.",
+      "whyThisObject": "Remote is designed to control one specific TV; misdirecting signal to wrong TV makes it useless for your goal.",
+      "goalRuleRelationship": "The intended action of controlling your TV instead controls someone else's, so your show cannot be selected.",
+      "frameZeroDescription": "Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.",
+      "beats": [
+        {
+          "strategy": "Kiko moves closer to his TV, pressing power repeatedly.",
+          "visibleConsequence": "The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.",
+          "newInformation": "Distance doesn't matter; the remote's signal is hardwired to the neighbor's set."
+        },
+        {
+          "strategy": "Kiko covers the remote's IR emitter with his hand, hoping to block scatter.",
+          "visibleConsequence": "The neighbor's TV turns off and on rapidly, causing a strobe effect through the window.",
+          "newInformation": "Blocking the emitter still sends an encoded signal that only the neighbor's TV understands."
+        },
+        {
+          "strategy": "Kiko opens his TV's manual buttons and tries to change channel directly.",
+          "visibleConsequence": "The neighbor's TV switches to a karaoke channel, and the neighbor starts singing loudly, while Kiko's TV ignores the manual buttons.",
+          "newInformation": "Any input intended for Kiko's TV is transferred to the neighbor's TV due to a crossed signal wire."
+        },
+        {
+          "strategy": "Kiko unplugs his TV to 'reset' the remote link.",
+          "visibleConsequence": "The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.",
+          "newInformation": "The link is now bidirectional; the neighbor's TV displays Kiko's actions."
+        },
+        {
+          "strategy": "Kiko goes next door to ask the neighbor to change their channel to Kiko's show.",
+          "visibleConsequence": "The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.",
+          "newInformation": "The cross-wiring is symmetrical: neighbor's remote controls Kiko's TV."
+        }
+      ],
+      "finalPayoff": "The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.",
+      "suggestedPayoffFamily": "role reversal / bidirectional transfer",
+      "loopPotential": "Kiko could swap remotes with neighbor, but that might swap their TVs entirely, leading to endless confusion.",
+      "environment": "Apartment living room with thin wall to neighbor",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Remote's targeted control is rerouted to wrong device; visually funny when neighbor reacts and your screen stays dark."
+    },
+    {
+      "ideaId": "raw-009",
+      "title": "Ceiling Pancake",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Flip a pancake",
+      "primaryObject": "Frying pan",
+      "normalExpectation": "A quick wrist flip sends pancake up and back into pan.",
+      "impossibleRule": "The pan exerts a vertical launch force so strong that any food flies upward and sticks to the ceiling; the pan then becomes too slippery to hold.",
+      "visibleTrigger": "Mimi flips the pancake; it rockets to ceiling and stays.",
+      "whyThisObject": "Pan's function is to toss food for cooking; if toss becomes permanent adhesion, cooking is impossible.",
+      "goalRuleRelationship": "The flipping action meant to turn the pancake instead removes it from the pan and glues it overhead, preventing eating.",
+      "frameZeroDescription": "Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.",
+      "beats": [
+        {
+          "strategy": "Mimi scrapes the pancake off the ceiling with a spatula, then tries a gentler flip.",
+          "visibleConsequence": "The pancake still leaps up and splats on ceiling, sticking even harder.",
+          "newInformation": "The launch force is independent of wrist strength."
+        },
+        {
+          "strategy": "Mimi holds a plate over the pan and flips, hoping to catch the pancake.",
+          "visibleConsequence": "The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.",
+          "newInformation": "The launched food has enough force to penetrate obstacles."
+        },
+        {
+          "strategy": "Mimi turns off the stove and waits for the pancake to fall.",
+          "visibleConsequence": "The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.",
+          "newInformation": "The pancake's fall is controlled by cooking timer, not gravity; it returns overcooked."
+        },
+        {
+          "strategy": "Mimi tries to cook without flipping, using a lid to steam.",
+          "visibleConsequence": "The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.",
+          "newInformation": "The pan's flipping rule applies to any batter inside, even without a wrist motion."
+        },
+        {
+          "strategy": "Mimi gives up and turns off the stove, leaving the pan on the counter.",
+          "visibleConsequence": "The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.",
+          "newInformation": "The pan's upward launch now applies to itself, completing the role reversal."
+        }
+      ],
+      "finalPayoff": "The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.",
+      "suggestedPayoffFamily": "role reversal / object takes action",
+      "loopPotential": "Any cooking utensil in this kitchen may also launch upward, forcing Mimi to cook with ceiling-mounted tools.",
+      "environment": "Kitchen with stove",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Pan's flip function is exaggerated into ceiling adhesion; visually clear and blocks eating."
+    },
+    {
+      "ideaId": "raw-010",
+      "title": "Kettle Rain Cloud",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Make a cup of tea",
+      "primaryObject": "Kettle",
+      "normalExpectation": "Kettle boils water, steam escapes, hot water pours into cup.",
+      "impossibleRule": "Boiling water evaporates into a small rain cloud that follows the kettle, and the rain falls only when you try to pour, often into your face or elsewhere.",
+      "visibleTrigger": "Arda boils kettle, a mini cloud forms above it; when he tilts, rain falls on his hand.",
+      "whyThisObject": "Kettle's steam should dissipate; if it condenses into a mobile cloud, it steals the water before it can be poured.",
+      "goalRuleRelationship": "The water never stays liquid to pour; it becomes a cloud that rains unpredictably, preventing tea.",
+      "frameZeroDescription": "Arda holds a boiling kettle with a tiny gray cloud hovering just above the spout; small raindrops fall onto his sleeve.",
+      "beats": [
+        {
+          "strategy": "Arda waves away the cloud and quickly pours into a cup.",
+          "visibleConsequence": "The cloud darts under the stream, catching all the water as it pours, leaving the cup dry.",
+          "newInformation": "The cloud can intercept the stream, so water becomes rain before reaching cup."
+        },
+        {
+          "strategy": "Arda holds the cup over the kettle spout to catch water before cloud intercepts.",
+          "visibleConsequence": "The cloud squeezes through the spout and rains inside the cup, but the water immediately evaporates back up to the cloud.",
+          "newInformation": "Any liquid water in the cup is reabsorbed by the cloud due to its attachment to the kettle's heat."
+        },
+        {
+          "strategy": "Arda puts the kettle in the refrigerator to cool the cloud down.",
+          "visibleConsequence": "The cloud starts snowing, covering Arda's hand and the counter with frost, while the kettle remains hot.",
+          "newInformation": "Cooling the environment changes the cloud's precipitation but not its stealing behavior."
+        },
+        {
+          "strategy": "Arda tilts the kettle and holds an umbrella over his head.",
+          "visibleConsequence": "The cloud expands into a full room-wide rainstorm, soaking everything except the cup.",
+          "newInformation": "The cloud's size scales with attempts to shield from it."
+        },
+        {
+          "strategy": "Arda unplugs the kettle and uses a microwave to heat water directly.",
+          "visibleConsequence": "The cloud follows the kettle, which now flies off the counter and hovers over the microwave, raining into it and shorting the appliance.",
+          "newInformation": "The cloud is bonded to the kettle object, not the heating method, and it actively prevents any other water heating."
+        }
+      ],
+      "finalPayoff": "The cloud follows the kettle, which now flies off the counter and hovers over the microwave, raining into it and shorting the appliance.",
+      "suggestedPayoffFamily": "environmental takeover / self-created obstacle",
+      "loopPotential": "Arda might use a different kettle, but the cloud may transfer to that one, chasing any boiling attempt.",
+      "environment": "Kitchen counter",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Kettle's steam condensing into a thieving rain cloud is intuitive and directly blocks tea."
+    },
+    {
+      "ideaId": "raw-011",
+      "title": "Dirtying Soap",
+      "protagonistSuggestion": "Luca",
+      "everydayGoal": "Wash hands clean",
+      "primaryObject": "Soap bar",
+      "normalExpectation": "Rubbing soap with water removes dirt.",
+      "impossibleRule": "Soap transfers dirt from the sink onto hands, making them grimier with every scrub; when rinsed, the soap laughs and re-dirties the water.",
+      "visibleTrigger": "Luca rubs soap, hands turn black.",
+      "whyThisObject": "Soap's chemical action is to lift dirt; reversing it makes soap a dirt magnet that deposits grime.",
+      "goalRuleRelationship": "The act of washing applies more dirt, so hands never become clean.",
+      "frameZeroDescription": "Luca stands at sink with soapy hands, but his hands are covered in dark grime, and the soap bar is pristine white while black suds flow down the drain.",
+      "beats": [
+        {
+          "strategy": "Luca rinses hands thoroughly under water.",
+          "visibleConsequence": "The water runs black, but his hands remain black, and the soap bar floats over and touches his elbow, transferring more grime.",
+          "newInformation": "Rinsing does not remove soap's dirt; the soap actively reattaches to skin."
+        },
+        {
+          "strategy": "Luca uses a nail brush to scrub the grime off.",
+          "visibleConsequence": "The brush strokes push the grime deeper into his skin, making his hands look like charcoal.",
+          "newInformation": "Any friction with the grime helps it penetrate, not remove."
+        },
+        {
+          "strategy": "Luca switches to liquid soap from a bottle.",
+          "visibleConsequence": "The liquid soap pours out as black goo and coats the bar soap, which then leaps into Luca's pocket, staining his clothes.",
+          "newInformation": "All soaps in the environment are contaminated and transfer grime to any surface."
+        },
+        {
+          "strategy": "Luca dries his hands with a paper towel.",
+          "visibleConsequence": "The towel tears away a layer of grime but reveals a second layer of different colored dirt underneath.",
+          "newInformation": "The dirt is layered, and removing the top layer just exposes the next."
+        },
+        {
+          "strategy": "Luca gives up and leaves the bathroom, hands black.",
+          "visibleConsequence": "The soap bar follows him, bouncing along the floor, and wherever it touches, grime appears, making a trail.",
+          "newInformation": "The soap's dirt-creating ability extends beyond hands to the environment."
+        }
+      ],
+      "finalPayoff": "The soap bar follows him, bouncing along the floor, and wherever it touches, grime appears, making a trail.",
+      "suggestedPayoffFamily": "delayed consequence / environmental spread",
+      "loopPotential": "Luca can try other cleaning products, but they may all become dirt generators due to the soap's influence.",
+      "environment": "Bathroom sink",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Soap's cleaning action reversed into dirt application is a direct function inversion with messy visual payoff."
+    },
+    {
+      "ideaId": "raw-012",
+      "title": "Wet-Transfer Towel",
+      "protagonistSuggestion": "Noah",
+      "everydayGoal": "Dry off after shower",
+      "primaryObject": "Towel",
+      "normalExpectation": "Towel absorbs water from body.",
+      "impossibleRule": "Towel absorbs water from any wet surface but immediately releases it onto any dry surface it touches next, including Noah.",
+      "visibleTrigger": "Noah wraps towel around waist; water pours out onto the floor.",
+      "whyThisObject": "Towel is meant to hold water; if it discharges instantly, drying becomes a game of wet transfer.",
+      "goalRuleRelationship": "The action of drying with towel transfers water back onto body or surroundings, so Noah never stays dry.",
+      "frameZeroDescription": "Noah stands in bathroom with towel around waist, but water is streaming from the towel onto his legs and pooling on the floor.",
+      "beats": [
+        {
+          "strategy": "Noah squeezes the towel over the bathtub to drain it.",
+          "visibleConsequence": "The towel releases a torrent, then immediately reabsorbs water from the air, swelling up.",
+          "newInformation": "The towel can reabsorb water from humidity, so squeezing doesn't empty it."
+        },
+        {
+          "strategy": "Noah hangs the towel on a rack and uses a bathrobe instead.",
+          "visibleConsequence": "The towel, hanging, drips continuously onto the bathrobe, soaking it.",
+          "newInformation": "The towel's discharge is constant and targets the driest nearby fabric."
+        },
+        {
+          "strategy": "Noah wraps a dry hand towel around his head.",
+          "visibleConsequence": "The hand towel soaks up water from his hair and then squirts it onto the mirror, fogging it.",
+          "newInformation": "Towels transfer water to mirrors and glass, not just skin."
+        },
+        {
+          "strategy": "Noah uses a hairdryer to dry himself without a towel.",
+          "visibleConsequence": "The hanging towel leaps off the rack and wraps around Noah's leg, transferring moisture back onto his skin.",
+          "newInformation": "The towel actively seeks the driest body part to wet."
+        },
+        {
+          "strategy": "Noah runs out of the bathroom naked, hoping to air dry.",
+          "visibleConsequence": "The towel follows him, wrapping around his waist, and immediately releases a bucket of water onto the living room carpet.",
+          "newInformation": "The towel is attached to Noah's body and will never let him be dry."
+        }
+      ],
+      "finalPayoff": "The towel follows him, wrapping around his waist, and immediately releases a bucket of water onto the living room carpet.",
+      "suggestedPayoffFamily": "object attachment / goal never reached",
+      "loopPotential": "Any attempt to get dry with a towel simply relocates the wetness, often back to Noah.",
+      "environment": "Bathroom and adjacent living room",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Towel's absorbency reversed into discharge is clearly wrong; the chase adds physical comedy."
+    },
+    {
+      "ideaId": "raw-013",
+      "title": "Tangling Hairbrush",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Brush hair smooth",
+      "primaryObject": "Hairbrush",
+      "normalExpectation": "Brushing untangles hair and smooths it.",
+      "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+      "visibleTrigger": "Opa brushes once, hair stands up in a giant knot.",
+      "whyThisObject": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+      "goalRuleRelationship": "The action of brushing makes hair worse, so smooth hair is impossible.",
+      "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+      "beats": [
+        {
+          "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+          "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+          "newInformation": "Pulling the brush out causes the hair to cinch, not loosen."
+        },
+        {
+          "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+          "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+          "newInformation": "Any grooming tool multiplies knots instead of removing them."
+        },
+        {
+          "strategy": "Opa applies hair conditioner to make strands slippery.",
+          "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+          "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded."
+        },
+        {
+          "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+          "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+          "newInformation": "The hair's tangling now acts like a living trap, consuming objects."
+        },
+        {
+          "strategy": "Opa uses scissors to cut the hair away.",
+          "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+          "newInformation": "Cutting triggers accelerated regrowth with more tangles."
+        }
+      ],
+      "finalPayoff": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+      "suggestedPayoffFamily": "logical extreme / effort worsens",
+      "loopPotential": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+      "environment": "Bathroom with mirror",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Brush's detangling function reversed into knot-creation is visually clear; regrowth adds escalation."
+    },
+    {
+      "ideaId": "raw-014",
+      "title": "Self-Healing Paper",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Cut paper for craft",
+      "primaryObject": "Scissors",
+      "normalExpectation": "Scissors shear paper into two pieces.",
+      "impossibleRule": "As scissors cut, the paper immediately heals behind the blades, leaving no cut; the scissors themselves become slightly more blunt.",
+      "visibleTrigger": "Kiko snips a paper, the cut line closes seamlessly.",
+      "whyThisObject": "Scissors are meant to divide material; if the material self-heals, the cutting action is futile.",
+      "goalRuleRelationship": "The intended cut never persists, so crafting cannot proceed.",
+      "frameZeroDescription": "Kiko holds scissors mid-snip on a paper; the cut line behind the blades is sealing itself closed, with no separation visible.",
+      "beats": [
+        {
+          "strategy": "Kiko cuts faster, moving scissors along a straight line.",
+          "visibleConsequence": "The paper zips back together instantly, and the scissors make a zipper-like sound.",
+          "newInformation": "Speed of cutting increases the healing speed equally."
+        },
+        {
+          "strategy": "Kiko folds the paper and cuts through multiple layers.",
+          "visibleConsequence": "The layers fuse together at the cut line, creating a thicker uncut stack.",
+          "newInformation": "Cutting multiple layers causes them to weld, not separate."
+        },
+        {
+          "strategy": "Kiko uses a craft knife instead of scissors.",
+          "visibleConsequence": "The knife blade passes through but the paper instantly reattaches, and the knife's edge dulls to a butter knife shape.",
+          "newInformation": "The self-healing effect applies to any cutting tool and dulls the blade."
+        },
+        {
+          "strategy": "Kiko tries to tear the paper by hand.",
+          "visibleConsequence": "The paper stretches like rubber and bounces back, flipping out of his hands.",
+          "newInformation": "The paper has become elastic, so it cannot be cut or torn."
+        },
+        {
+          "strategy": "Kiko gives up and tries to use pre-cut paper shapes from a packet.",
+          "visibleConsequence": "The pre-cut shapes snap back into full sheets, and the scissors in his hand leap to the paper and start 'cutting' but leaving no marks.",
+          "newInformation": "The rule reverses relationship: tools cuts but material refuses to remain divided; even pre-existing cuts are undone."
+        }
+      ],
+      "finalPayoff": "The pre-cut shapes snap back into full sheets, and the scissors in his hand leap to the paper and start 'cutting' but leaving no marks.",
+      "suggestedPayoffFamily": "false assumption / effort negated",
+      "loopPotential": "Any future cutting attempt heals; Kiko might try water or fire, but risk of new escalation.",
+      "environment": "Craft table",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Scissors' dividing function is negated by self-healing paper; intuitive because cut line zips shut."
+    },
+    {
+      "ideaId": "raw-015",
+      "title": "Bottom-Opening Zipper",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Zip up jacket to stay warm",
+      "primaryObject": "Jacket zipper",
+      "normalExpectation": "Pulling zipper up closes the jacket.",
+      "impossibleRule": "As you pull the zipper tab upward, the bottom of the zipper separates, so the jacket opens from bottom while top closes; when you pull down, the bottom closes but top opens.",
+      "visibleTrigger": "Mimi zips up to neck; the jacket's bottom half splits open, exposing her stomach.",
+      "whyThisObject": "Zipper is designed to interlock teeth sequentially; if it opens opposite end, the closure is incomplete.",
+      "goalRuleRelationship": "The action to close the jacket creates an opening elsewhere, so warmth cannot be retained.",
+      "frameZeroDescription": "Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.",
+      "beats": [
+        {
+          "strategy": "Mimi pulls zipper down to close the bottom gap.",
+          "visibleConsequence": "The bottom zips shut but the top splits down to her chest.",
+          "newInformation": "The zipper has a pivot point; one end opens as the other closes."
+        },
+        {
+          "strategy": "Mimi holds the bottom together with one hand while zipping up with the other.",
+          "visibleConsequence": "The zipper teeth at her hand pop apart, and her fingers get caught between them.",
+          "newInformation": "Physical holding doesn't prevent separation; the zipper actively parts around any obstruction."
+        },
+        {
+          "strategy": "Mimi zips halfway, hoping the middle stays closed.",
+          "visibleConsequence": "Both top and bottom open outward like a mouth, and the jacket flaps open completely.",
+          "newInformation": "Halfway position opens both ends simultaneously."
+        },
+        {
+          "strategy": "Mimi turns the jacket inside out and zips from the other side.",
+          "visibleConsequence": "The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.",
+          "newInformation": "The zipper's failure mode changes with orientation, now bisects the garment."
+        },
+        {
+          "strategy": "Mimi grabs a safety pin to pin the bottom closed.",
+          "visibleConsequence": "The safety pin zips itself into the zipper track and the entire jacket rolls up like a window blind, squeezing Mimi's torso.",
+          "newInformation": "The zipper treats any inserted object as a pull tab and activates full closure upward, trapping Mimi."
+        }
+      ],
+      "finalPayoff": "The safety pin zips itself into the zipper track and the entire jacket rolls up like a window blind, squeezing Mimi's torso.",
+      "suggestedPayoffFamily": "unexpected causal chain / self-trapping",
+      "loopPotential": "Further attempts to unfasten may cause the jacket to roll or unroll unpredictably.",
+      "environment": "Cold windy street",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Zipper's interlocking action is spatially inverted, so closing one end opens the other; visually clear and blocks warmth."
+    },
+    {
+      "ideaId": "raw-016",
+      "title": "Bottomless Backpack",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Pack backpack for school",
+      "primaryObject": "Backpack",
+      "normalExpectation": "Items placed in top stay inside until you open it.",
+      "impossibleRule": "The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.",
+      "visibleTrigger": "Arda puts books in upright backpack; they fall through bottom onto floor.",
+      "whyThisObject": "Backpack is a container; if gravity works against the orientation, it cannot hold items.",
+      "goalRuleRelationship": "The act of placing items inside directly causes them to exit through bottom, preventing packing.",
+      "frameZeroDescription": "Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.",
+      "beats": [
+        {
+          "strategy": "Arda turns the backpack upside down to use the sealed bottom as top.",
+          "visibleConsequence": "The original top zipper opens, and books pour out onto his head.",
+          "newInformation": "The pack has two openings, and gravity always finds the open one."
+        },
+        {
+          "strategy": "Arda holds the backpack sideways and loads books through the side.",
+          "visibleConsequence": "A new side seam splits open, and all contents slide out horizontally.",
+          "newInformation": "Any orientation creates a new opening at the lowest point."
+        },
+        {
+          "strategy": "Arda stuffs clothes into the bottom to block it, then adds books.",
+          "visibleConsequence": "The clothes squeeze through the bottom seam, pulling the books with them, leaving an empty flattened pack.",
+          "newInformation": "The bottom opening acts like a drain that vacuums contents out."
+        },
+        {
+          "strategy": "Arda puts the backpack on his back, hoping body pressure seals the bottom.",
+          "visibleConsequence": "The pack inflates and launches off his shoulders, spinning in midair as contents rainbow out.",
+          "newInformation": "Wearing the pack triggers ejection, not sealing."
+        },
+        {
+          "strategy": "Arda gives up and carries books in his arms.",
+          "visibleConsequence": "The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.",
+          "newInformation": "The pack wants to be filled but immediately empties itself as soon as it contains anything."
+        }
+      ],
+      "finalPayoff": "The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.",
+      "suggestedPayoffFamily": "impossible containment / object agency",
+      "loopPotential": "Any future loading attempt triggers the same drain; Arda might need a bottomless bag that is actually bottomless.",
+      "environment": "Bedroom floor",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Backpack's containment is inverted by gravity-dependent openings; the drain-like bottom is visually clear."
+    },
+    {
+      "ideaId": "raw-017",
+      "title": "Self-Tucking Bed Sheets",
+      "protagonistSuggestion": "Luca",
+      "everydayGoal": "Get out of bed in the morning",
+      "primaryObject": "Bed sheet",
+      "normalExpectation": "You push sheets off and stand up.",
+      "impossibleRule": "The more you push sheets away, the tighter they tuck around your body; sheets re-tuck themselves under the mattress as you move.",
+      "visibleTrigger": "Luca throws off blanket; it snaps back over him.",
+      "whyThisObject": "Bedsheets are meant to cover; if they actively trap, getting up becomes a wrestling match.",
+      "goalRuleRelationship": "The action to remove sheets causes them to rewrap, preventing standing.",
+      "frameZeroDescription": "Luca lies in bed with one leg out, but the sheet has wrapped around his leg and is pulling him back toward the mattress.",
+      "beats": [
+        {
+          "strategy": "Luca sits up and pushes the sheet to the foot of the bed.",
+          "visibleConsequence": "The sheet springs back and tucks itself under his chin, pinning his arms to his sides.",
+          "newInformation": "The sheet's fabric is elastic and self-tucking."
+        },
+        {
+          "strategy": "Luca rolls toward the edge to slide out.",
+          "visibleConsequence": "The sheet rolls with him, winding around his torso like a burrito.",
+          "newInformation": "Moving doesn't loosen; it increases winding."
+        },
+        {
+          "strategy": "Luca kicks violently to break the wrap.",
+          "visibleConsequence": "The sheet stretches into ropes that tie his ankles to the bed frame.",
+          "newInformation": "The sheet can transform into adjustable restraints, comedic but not harmful."
+        },
+        {
+          "strategy": "Luca tries to crawl out from the bottom of the bed.",
+          "visibleConsequence": "The fitted sheet pops off the mattress and becomes a parachute, dragging him back to the center.",
+          "newInformation": "The whole sheet detaches and acts as a net."
+        },
+        {
+          "strategy": "Luca calls for help, and Mimi enters to pull him out.",
+          "visibleConsequence": "The sheet wraps around both of them, tucking them together like a mummy, while the bed bounces.",
+          "newInformation": "The sheet's tucking extends to anyone who tries to intervene."
+        }
+      ],
+      "finalPayoff": "The sheet wraps around both of them, tucking them together like a mummy, while the bed bounces.",
+      "suggestedPayoffFamily": "goal blocked by self-tucking / role reversal",
+      "loopPotential": "Any morning, Luca will be held by sheets until the bed decides to release him.",
+      "environment": "Bedroom",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Bedsheets' covering function becomes trapping; intuitive because throwing off sheets should free you, not rewrap you."
+    },
+    {
+      "ideaId": "raw-018",
+      "title": "Random Fridge Interior",
+      "protagonistSuggestion": "Noah",
+      "everydayGoal": "Get milk from fridge",
+      "primaryObject": "Refrigerator",
+      "normalExpectation": "Opening door reveals same contents each time.",
+      "impossibleRule": "Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.",
+      "visibleTrigger": "Noah opens door expecting milk, sees a small snowstorm inside.",
+      "whyThisObject": "Fridge is a stable storage box; if interior is random, it can't store food.",
+      "goalRuleRelationship": "The action of opening to get milk reveals random non-milk content, preventing goal.",
+      "frameZeroDescription": "Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.",
+      "beats": [
+        {
+          "strategy": "Noah closes and reopens the fridge, hoping for the normal interior.",
+          "visibleConsequence": "Now the interior is a tropical rainforest with waterfalls; a pineapple rolls out.",
+          "newInformation": "Each opening cycles through random biome, never the kitchen fridge."
+        },
+        {
+          "strategy": "Noah reaches in past the environment to feel for the milk carton.",
+          "visibleConsequence": "His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.",
+          "newInformation": "Objects inside are real and can interact, but not his groceries."
+        },
+        {
+          "strategy": "Noah holds the door open and waits, watching the interior change.",
+          "visibleConsequence": "The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.",
+          "newInformation": "The fridge's interior is a portal to other places, not a storage space."
+        },
+        {
+          "strategy": "Noah puts on a coat and steps into the fridge to search.",
+          "visibleConsequence": "The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.",
+          "newInformation": "Entering the fridge transports the person to the biome, not to the groceries."
+        },
+        {
+          "strategy": "Noah unplugs the fridge, expecting it to reset.",
+          "visibleConsequence": "The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.",
+          "newInformation": "Turning off power deposits the missing milk outside the fridge, but frozen and unusable."
+        }
+      ],
+      "finalPayoff": "The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.",
+      "suggestedPayoffFamily": "environmental takeover / goal object appears unusable",
+      "loopPotential": "Noah might try a mini-fridge, but it could have similar portal properties.",
+      "environment": "Kitchen",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Refrigerator's storage function is subverted by randomized portal interior; visually surprising and directly blocks milk retrieval."
+    },
+    {
+      "ideaId": "raw-019",
+      "title": "Microwave Hot Plate",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Reheat leftovers",
+      "primaryObject": "Microwave oven",
+      "normalExpectation": "Microwave heats food evenly.",
+      "impossibleRule": "The microwave heats the plate to scalding while food remains frozen solid; any attempt to remove plate transfers heat to food, flash-thawing it but also melting plate.",
+      "visibleTrigger": "Opa opens microwave, plate glows red, food has ice crystals.",
+      "whyThisObject": "Microwave's energy is meant to excite water in food; if it excites the plate material, food stays cold.",
+      "goalRuleRelationship": "The action of heating food results in dangerous hot plate and cold food, preventing eating.",
+      "frameZeroDescription": "Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.",
+      "beats": [
+        {
+          "strategy": "Opa uses oven mitts to remove the hot plate.",
+          "visibleConsequence": "The mitts start smoking, and the plate's heat melts a hole through the mitt, dropping the plate onto the counter, which sizzles.",
+          "newInformation": "The plate is hotter than expected; it transfers heat outward."
+        },
+        {
+          "strategy": "Opa runs the plate under cold water to cool it.",
+          "visibleConsequence": "The water flashes to steam, and the food thaws instantly but is now soggy and boiling.",
+          "newInformation": "Water contact transfers heat to food but also overcooks it."
+        },
+        {
+          "strategy": "Opa puts the frozen food on a different plate and microwaves again.",
+          "visibleConsequence": "The new plate heats red, food remains frozen, and the microwave's glass window fogs.",
+          "newInformation": "The microwave always targets the plate material, not food."
+        },
+        {
+          "strategy": "Opa tries to microwave the food without a plate, directly on the turntable.",
+          "visibleConsequence": "The microwave refuses to start, beeping and displaying 'PLATE REQUIRED' in glowing letters.",
+          "newInformation": "The appliance demands a plate to activate, ensuring impossible heating."
+        },
+        {
+          "strategy": "Opa gives up and eats the frozen food directly.",
+          "visibleConsequence": "The hot plate jumps from counter onto Opa's lap, thawing the food on his fork instantly but also scorching his pants.",
+          "newInformation": "The plate can transfer its heat to the food when close, but always at the cost of burning surroundings."
+        }
+      ],
+      "finalPayoff": "The hot plate jumps from counter onto Opa's lap, thawing the food on his fork instantly but also scorching his pants.",
+      "suggestedPayoffFamily": "heat transfer inversion / self-created hazard",
+      "loopPotential": "Any reheat attempt repeats the plate heating; Opa might use a metal plate, causing sparks (child-safe comedic but not shown?).",
+      "environment": "Kitchen",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Microwave's selective heating is subverted; visually clear with ice on food and glowing plate."
+    },
+    {
+      "ideaId": "raw-020",
+      "title": "Wrong-Room Light Switch",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Turn on living room light",
+      "primaryObject": "Light switch",
+      "normalExpectation": "Flipping switch controls nearest room's light.",
+      "impossibleRule": "The switch controls the light in a different room (e.g., bathroom), while the room you're in stays dark; each switch in house controls a random other room.",
+      "visibleTrigger": "Kiko flips living room switch; hall light turns on, living room dark.",
+      "whyThisObject": "Light switches are spatially tied to their room; cross-wiring makes them useless for local control.",
+      "goalRuleRelationship": "The action to illuminate your room instead lights a distant room, leaving you in dark.",
+      "frameZeroDescription": "Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.",
+      "beats": [
+        {
+          "strategy": "Kiko flips the switch repeatedly, hoping to get the right room.",
+          "visibleConsequence": "Various lights in the house turn on and off in a pattern, but the living room stays dark while the porch light blinks.",
+          "newInformation": "The switch cycles through all other rooms except the one he's in."
+        },
+        {
+          "strategy": "Kiko walks to the bathroom to flip that switch.",
+          "visibleConsequence": "The bathroom light turns off, and the living room light turns on.",
+          "newInformation": "Switches are paired with opposite rooms; you must be in the room you don't want lit."
+        },
+        {
+          "strategy": "Kiko stands in the doorway between rooms to flip both switches.",
+          "visibleConsequence": "Both rooms go dark, and a flickering light appears in the attic.",
+          "newInformation": "Simultaneous toggles transfer power to an unswitched room."
+        },
+        {
+          "strategy": "Kiko uses a flashlight to see while navigating the switch panel.",
+          "visibleConsequence": "The flashlight turns on, but its beam illuminates the wrong room through a window, and Kiko stumbles.",
+          "newInformation": "The cross-wiring extends to all light sources, including portable ones."
+        },
+        {
+          "strategy": "Kiko gives up and uses candles.",
+          "visibleConsequence": "The candles' flames cast shadows that point to a hidden switch behind a bookshelf; flipping that switch turns on the sun outside, causing full daylight indoors.",
+          "newInformation": "There is a master switch that controls daylight, not indoor lights, solving the darkness but at absurd scale."
+        }
+      ],
+      "finalPayoff": "The candles' flames cast shadows that point to a hidden switch behind a bookshelf; flipping that switch turns on the sun outside, causing full daylight indoors.",
+      "suggestedPayoffFamily": "unexpected causal success via wrong switch",
+      "loopPotential": "The daylight switch may reset at night, forcing Kiko to find another hidden control.",
+      "environment": "House interior, multiple rooms",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Light switch's local function is scrambled; intuitive because you see wrong room light up."
+    },
+    {
+      "ideaId": "raw-021",
+      "title": "Upward Faucet",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Fill a glass with water",
+      "primaryObject": "Faucet",
+      "normalExpectation": "Water flows downward out of spout into glass.",
+      "impossibleRule": "Water flows upward from the faucet to the ceiling when turned on; turning off causes water to rain down only in the sink area.",
+      "visibleTrigger": "Mimi turns on faucet; water arcs up to ceiling like a fountain.",
+      "whyThisObject": "Faucet relies on gravity to pour water; reversing flow direction makes collection impossible.",
+      "goalRuleRelationship": "The action to fill glass causes water to go the wrong way, so glass never fills.",
+      "frameZeroDescription": "Mimi holds a glass under a faucet, but a vertical stream of water shoots upward to the ceiling, and none falls into the glass.",
+      "beats": [
+        {
+          "strategy": "Mimi holds the glass above the faucet, upside down, to catch the upward stream.",
+          "visibleConsequence": "The water flows into the glass but immediately shoots out the top like a second fountain, emptying it.",
+          "newInformation": "The water's upward momentum continues through any container."
+        },
+        {
+          "strategy": "Mimi turns the faucet off and collects the falling rainwater that comes down.",
+          "visibleConsequence": "The rain falls directly around the sink but not into the glass, and the glass itself floats upward.",
+          "newInformation": "When faucet is off, water falls, but the glass becomes buoyant and rises away."
+        },
+        {
+          "strategy": "Mimi puts a lid on the glass and stands on a chair to catch water at ceiling level.",
+          "visibleConsequence": "The water pressure pushes the lid off, and the glass sticks to the ceiling, filling with water but inaccessible.",
+          "newInformation": "The ceiling acts as a reservoir; water gathers there and traps containers."
+        },
+        {
+          "strategy": "Mimi uses a bucket and mop to sweep water from ceiling down.",
+          "visibleConsequence": "The bucket also floats up and sticks to ceiling, splashing water everywhere but down.",
+          "newInformation": "Objects near the upward flow become anti-gravity and collect on ceiling."
+        },
+        {
+          "strategy": "Mimi calls Luca to help, and he turns the faucet valve under the sink.",
+          "visibleConsequence": "The water stops, and all the ceiling water falls at once, filling the room waist-deep and floating the glass to Mimi.",
+          "newInformation": "Shutting off the valve releases the accumulated water all at once, causing a flood but delivering the glass."
+        }
+      ],
+      "finalPayoff": "The water stops, and all the ceiling water falls at once, filling the room waist-deep and floating the glass to Mimi.",
+      "suggestedPayoffFamily": "delayed consequence / flood payoff",
+      "loopPotential": "Any future faucet use causes ceiling reservoir and eventual indoor rain.",
+      "environment": "Kitchen",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Faucet's gravity-driven flow reversed into upward fountain; direct block to filling glass."
+    },
+    {
+      "ideaId": "raw-022",
+      "title": "Collapsing Chair",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Sit down at desk",
+      "primaryObject": "Chair",
+      "normalExpectation": "Chair supports weight when sat on.",
+      "impossibleRule": "The chair remains rigid when empty, but the instant any weight is applied, its legs fold flat, dropping occupant to floor; when empty, it pops back upright.",
+      "visibleTrigger": "Arda sits, chair flattens beneath him.",
+      "whyThisObject": "Chair's structural function is support; conditional collapse makes sitting impossible.",
+      "goalRuleRelationship": "The action of sitting triggers the loss of support, so you can never rest in chair.",
+      "frameZeroDescription": "Arda is mid-air just above a chair that has collapsed flat on the floor, legs splayed outward.",
+      "beats": [
+        {
+          "strategy": "Arda checks the chair, stands it up, and presses on the seat with one hand.",
+          "visibleConsequence": "The chair collapses instantly under the light hand pressure, then springs back.",
+          "newInformation": "Even partial weight triggers collapse; no weight means rigid."
+        },
+        {
+          "strategy": "Arda tries to sit very slowly, easing weight onto the seat.",
+          "visibleConsequence": "The chair collapses progressively, lowering him to the floor in a controlled slide, then snaps shut on his fingers.",
+          "newInformation": "Slow approach doesn't prevent collapse; it just prolongs the drop."
+        },
+        {
+          "strategy": "Arda puts a stack of books on the chair to hold it steady.",
+          "visibleConsequence": "The chair stays upright, but when Arda sits on the books, the chair collapses sideways and books scatter.",
+          "newInformation": "Distributed weight still triggers collapse as long as it includes Arda."
+        },
+        {
+          "strategy": "Arda stands on the chair instead of sitting.",
+          "visibleConsequence": "The chair flings him forward like a catapult, launching him onto the desk.",
+          "newInformation": "The chair's collapse mechanism can store and release energy when weight is applied."
+        },
+        {
+          "strategy": "Arda gives up and sits on the floor.",
+          "visibleConsequence": "The chair, now empty, creeps over and positions itself under him, then collapses flat, leaving him sitting on a folded chair.",
+          "newInformation": "The chair is attracted to being sat on but cannot support, so it ends up as a flattened seat."
+        }
+      ],
+      "finalPayoff": "The chair, now empty, creeps over and positions itself under him, then collapses flat, leaving him sitting on a folded chair.",
+      "suggestedPayoffFamily": "object agency / goal partially achieved absurdly",
+      "loopPotential": "Arda might use a different chair, but the same collapse rule may apply to its twin.",
+      "environment": "Home office",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Chair's support function is conditionally removed; visible collapse on sitting is classic but we vary with self-moving chair."
+    },
+    {
+      "ideaId": "raw-023",
+      "title": "Accelerating Ball",
+      "protagonistSuggestion": "Luca",
+      "everydayGoal": "Play catch with Kiko",
+      "primaryObject": "Ball",
+      "normalExpectation": "Thrown ball travels to friend and can be caught.",
+      "impossibleRule": "Any throw causes the ball to accelerate away from the thrower, gaining speed with distance, until it orbits back and hits nothing.",
+      "visibleTrigger": "Luca throws gently; ball shoots off and disappears over horizon, then returns like a rocket.",
+      "whyThisObject": "Ball's purpose is to be thrown and caught; if it accelerates uncontrollably, catch is impossible.",
+      "goalRuleRelationship": "The throwing action intended to send ball to friend instead accelerates it away, preventing catch.",
+      "frameZeroDescription": "Luca's arm is extended in a throwing motion, but the ball is already a blur leaving a trail, while Kiko stands empty-handed far away.",
+      "beats": [
+        {
+          "strategy": "Luca throws the ball as softly as possible.",
+          "visibleConsequence": "The ball still zooms off, curving around a tree and smashing into a fence, then bounces back at high speed.",
+          "newInformation": "The ball's acceleration is independent of throw force."
+        },
+        {
+          "strategy": "Kiko runs to intercept the returning ball.",
+          "visibleConsequence": "The ball swerves around Kiko, gaining more speed, and orbits the yard in a loop.",
+          "newInformation": "The ball actively avoids being caught."
+        },
+        {
+          "strategy": "Luca and Kiko stand back-to-back and each holds a glove to trap the ball.",
+          "visibleConsequence": "The ball bounces between their gloves, never being caught, and knocks them both over.",
+          "newInformation": "The ball treats gloves as new launch pads, increasing chaos."
+        },
+        {
+          "strategy": "Luca tries to trap the ball with a bucket.",
+          "visibleConsequence": "The ball ricochets off the bucket's rim, accelerates to supersonic speed, and creates a sonic boom.",
+          "newInformation": "The ball's speed now breaks sound barrier, making it uncatchable and noisy."
+        },
+        {
+          "strategy": "Both give up and walk away.",
+          "visibleConsequence": "The ball, losing speed, lands gently in Kiko's open hand, then falls asleep with a snore.",
+          "newInformation": "The ball only becomes catchable when no one is trying to catch it."
+        }
+      ],
+      "finalPayoff": "The ball, losing speed, lands gently in Kiko's open hand, then falls asleep with a snore.",
+      "suggestedPayoffFamily": "goal reached wrongly after abandon",
+      "loopPotential": "Any new attempt to play catch restarts the acceleration; the ball only cooperates when ignored.",
+      "environment": "Backyard",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Ball's projectile motion is exaggerated into self-acceleration; intuitive and blocks catch."
+    },
+    {
+      "ideaId": "raw-024",
+      "title": "Book Jumps to End",
+      "protagonistSuggestion": "Noah",
+      "everydayGoal": "Read the first chapter",
+      "primaryObject": "Book",
+      "normalExpectation": "Opening book at page 1 shows beginning.",
+      "impossibleRule": "Whenever you try to read from the beginning, the pages turn themselves rapidly to the last page; the text also rearranges so the story reads backward from end to start.",
+      "visibleTrigger": "Noah opens book at page 1; pages flip to end, and the first words are 'The End.'",
+      "whyThisObject": "Book is meant to be read sequentially; if it forces you to the end, reading the start is impossible.",
+      "goalRuleRelationship": "The action of reading from page 1 triggers skipping to end, preventing normal progress.",
+      "frameZeroDescription": "Noah holds a book open, but the pages are a blur, and the visible page shows the final chapter with 'The End' at the bottom.",
+      "beats": [
+        {
+          "strategy": "Noah holds the first page down with his thumb and tries to read.",
+          "visibleConsequence": "The pages underneath ripple and flip, pushing his thumb out and snapping the book shut.",
+          "newInformation": "The book can generate internal wind to turn pages."
+        },
+        {
+          "strategy": "Noah starts reading from the end, hoping the reversed story still makes sense.",
+          "visibleConsequence": "The text on the last page reads normally, but when he turns back one page, the words are upside down.",
+          "newInformation": "Reading backward causes alternating page orientations."
+        },
+        {
+          "strategy": "Noah uses a bookmark to keep the page, but the bookmark is ejected like a projectile.",
+          "visibleConsequence": "The book opens to a random middle page, and the story is now a recipe for soup.",
+          "newInformation": "The book's content changes based on which page is forced open."
+        },
+        {
+          "strategy": "Noah photocopies page 1 and reads the copy.",
+          "visibleConsequence": "The copy's text disappears, and the book's page 1 becomes blank.",
+          "newInformation": "The book can transfer its text to any copy and then erase it."
+        },
+        {
+          "strategy": "Noah closes the book and listens to an audiobook instead.",
+          "visibleConsequence": "The audiobook begins with the final chapter, and the physical book flips pages in sync with the audio, ending in 3 seconds.",
+          "newInformation": "The impossible rule extends to all versions of the story."
+        }
+      ],
+      "finalPayoff": "The audiobook begins with the final chapter, and the physical book flips pages in sync with the audio, ending in 3 seconds.",
+      "suggestedPayoffFamily": "function transferred to alternative medium",
+      "loopPotential": "Any attempt to experience the story from the beginning will be skipped to the end.",
+      "environment": "Living room armchair",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Book's sequential reading is inverted by auto-flipping to end; visually clear with page blur."
+    },
+    {
+      "ideaId": "raw-025",
+      "title": "Self-Knotting Laces",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Tie shoes before walk",
+      "primaryObject": "Shoe laces",
+      "normalExpectation": "Laces tie into a bow that stays.",
+      "impossibleRule": "As you tie a bow, the laces weave themselves into additional knots, becoming tighter and more complex with every pull; untying creates two new knots.",
+      "visibleTrigger": "Opa ties a simple bow; the laces instantly form a cloverleaf knot.",
+      "whyThisObject": "Laces are meant to secure shoe with a single bow; self-knotting prevents both tying and untying.",
+      "goalRuleRelationship": "The action of tying laces overcomplicates them, making shoes impossible to put on or remove.",
+      "frameZeroDescription": "Opa sits on a bench with one shoe on, but the laces are a mass of tangled knots covering the shoe.",
+      "beats": [
+        {
+          "strategy": "Opa pulls one end to untangle the knot.",
+          "visibleConsequence": "The laces form a figure-eight around his ankle, tightening the shoe.",
+          "newInformation": "Pulling any lace end adds a new knot and tightens."
+        },
+        {
+          "strategy": "Opa uses a fork to pick apart the knots.",
+          "visibleConsequence": "The fork gets woven into the laces, and the shoe jumps off his foot, still knotted with fork.",
+          "newInformation": "Tools get incorporated into the self-knotting laces."
+        },
+        {
+          "strategy": "Opa removes the shoe and works on it in his lap.",
+          "visibleConsequence": "The laces knot around his fingers, tying his hands to the shoe.",
+          "newInformation": "The laces can target body parts as new knots."
+        },
+        {
+          "strategy": "Opa puts the shoe under running water to loosen fibers.",
+          "visibleConsequence": "The wet laces shrink and knot tighter, turning the shoe into a hard ball.",
+          "newInformation": "Water worsens the knots due to shrinking."
+        },
+        {
+          "strategy": "Opa gives up and walks barefoot.",
+          "visibleConsequence": "The knotted shoe follows him, hopping along, and the laces untie themselves into a perfect bow on the other shoe.",
+          "newInformation": "The laces only cooperate when no one is touching them, and they switch shoes."
+        }
+      ],
+      "finalPayoff": "The knotted shoe follows him, hopping along, and the laces untie themselves into a perfect bow on the other shoe.",
+      "suggestedPayoffFamily": "role reversal / object self-resolves when ignored",
+      "loopPotential": "Opa might try to tie the good shoe, which could start the knotting again.",
+      "environment": "Park bench",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Laces' tying function is exaggerated into over-knotting; immediate block to wearing shoes."
+    },
+    {
+      "ideaId": "raw-026",
+      "title": "Bending Nail Hammer",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Hang a picture frame",
+      "primaryObject": "Hammer",
+      "normalExpectation": "Hammering a nail drives it straight into wall.",
+      "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+      "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+      "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+      "beats": [
+        {
+          "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+          "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+          "newInformation": "The nail's bending is directional and can ensnare nearby tools."
+        },
+        {
+          "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+          "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+          "newInformation": "Nail length increases elasticity, causing projectile bending."
+        },
+        {
+          "strategy": "Kiko pre-drills a hole, then taps the nail.",
+          "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+          "newInformation": "The nail bends at a specific depth, damaging the wall."
+        },
+        {
+          "strategy": "Kiko gives up on nails and uses adhesive strips.",
+          "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+          "newInformation": "The hammer can install nails only when not held by Kiko."
+        },
+        {
+          "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+          "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+          "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails."
+        }
+      ],
+      "finalPayoff": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+      "suggestedPayoffFamily": "object agency / effort causes wider damage",
+      "loopPotential": "Any future hanging requires avoiding hammers, but the hammer may seek Kiko out.",
+      "environment": "Living room wall",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Hammer's force is supposed to drive nail; nail bending under that force is visually obvious and blocks hanging."
+    },
+    {
+      "ideaId": "raw-027",
+      "title": "Opposite-Color Paintbrush",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Paint wall blue",
+      "primaryObject": "Paintbrush",
+      "normalExpectation": "Brush applies paint color loaded on it.",
+      "impossibleRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "visibleTrigger": "Mimi strokes blue paint; wall turns orange.",
+      "whyThisObject": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "goalRuleRelationship": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+      "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+      "beats": [
+        {
+          "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+          "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+          "newInformation": "Complementary inversion doesn't cancel but separates into two colors."
+        },
+        {
+          "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+          "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+          "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+        },
+        {
+          "strategy": "Mimi uses a roller instead of brush.",
+          "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+          "newInformation": "The inversion applies to any painting tool, increasing area."
+        },
+        {
+          "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+          "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+          "newInformation": "The brush inverts color in the open areas, not just strokes."
+        },
+        {
+          "strategy": "Mimi gives up and paints the wall back white.",
+          "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+          "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+        }
+      ],
+      "finalPayoff": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+      "suggestedPayoffFamily": "logical extreme / environmental transformation",
+      "loopPotential": "Any new paint attempt may cause new color chaos; the wall can never be one color.",
+      "environment": "Room being painted",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Paintbrush's pigment transfer is inverted; visually clear when blue becomes orange."
+    },
+    {
+      "ideaId": "raw-028",
+      "title": "Opposite Autocorrect",
+      "protagonistSuggestion": "Luca",
+      "everydayGoal": "Text friend to meet at 5",
+      "primaryObject": "Phone",
+      "normalExpectation": "Typing words sends intended message.",
+      "impossibleRule": "The phone autocorrects every word to its opposite meaning (e.g., 'yes' becomes 'no', '5' becomes 'five thousand'), and sends instantly before you can edit.",
+      "visibleTrigger": "Luca types 'Meet at 5' and message sends as 'Melt at five thousand'.",
+      "whyThisObject": "Phone's autocorrect is supposed to help, but if it inverts meaning, communication is reversed.",
+      "goalRuleRelationship": "The action of texting the plan sends the opposite plan, so friend goes to wrong place/time.",
+      "frameZeroDescription": "Luca looks at phone screen; the sent message reads 'Melt at five thousand' while the intended message is visible above as typed but crossed out.",
+      "beats": [
+        {
+          "strategy": "Luca types double negatives to get positive meaning.",
+          "visibleConsequence": "The phone autocorrects to opposite of double negative, resulting in confusing triple negative and message sends 'I won't not never meet'.",
+          "newInformation": "Inversion is literal but compounds with grammar."
+        },
+        {
+          "strategy": "Luca uses emojis instead of words.",
+          "visibleConsequence": "Emojis flip to their opposites: thumbs up becomes thumbs down, smiley becomes angry.",
+          "newInformation": "The autocorrect applies to all symbols, not just text."
+        },
+        {
+          "strategy": "Luca calls instead of texting.",
+          "visibleConsequence": "His voice comes out reversed, saying 'Meet at five' as 'Evif ta teem', and the friend hears gibberish.",
+          "newInformation": "The phone's inversion extends to audio, reversing speech."
+        },
+        {
+          "strategy": "Luca uses a different phone, borrowing Mimi's.",
+          "visibleConsequence": "Mimi's phone also autocorrects, sending 'Don't meet' but then the original phone sends the correct text spontaneously.",
+          "newInformation": "The rule follows Luca, not the device; only the first phone can sometimes correct itself."
+        },
+        {
+          "strategy": "Luca tries to edit the sent message by appending 'ignore previous', but that also inverts.",
+          "visibleConsequence": "The friend receives a series of contradictory messages and finally shows up at 5 AM, throwing a pillow at Luca.",
+          "newInformation": "The accumulation of opposite texts leads to the friend arriving at opposite time."
+        }
+      ],
+      "finalPayoff": "The friend receives a series of contradictory messages and finally shows up at 5 AM, throwing a pillow at Luca.",
+      "suggestedPayoffFamily": "delayed consequence / communication inversion",
+      "loopPotential": "Any future text will be reversed, forcing Luca to speak in person or use smoke signals.",
+      "environment": "Living room, phone in hand",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Phone autocorrect is meant to fix errors; reversing meaning creates direct goal interference."
+    },
+    {
+      "ideaId": "raw-029",
+      "title": "Dirtying Washing Machine",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Clean clothes",
+      "primaryObject": "Washing machine",
+      "normalExpectation": "Clothes come out cleaner.",
+      "impossibleRule": "The machine extracts dirt from clothes and redeposits it onto another item in the same load, so the load comes out with one clean item and the rest soot-black.",
+      "visibleTrigger": "Arda opens washer, one white shirt pristine, other clothes blackened.",
+      "whyThisObject": "Washer is meant to remove dirt; if it just moves dirt between items, cleaning is incomplete.",
+      "goalRuleRelationship": "The action to wash clothes leaves most dirtier, preventing clean laundry.",
+      "frameZeroDescription": "Arda looks into open washing machine; a single clean white shirt sits atop a pile of blackened garments.",
+      "beats": [
+        {
+          "strategy": "Arda separates whites and colors, running two loads.",
+          "visibleConsequence": "In the white load, dirt migrates to the machine's drum, which turns black and rubs off on all whites.",
+          "newInformation": "The machine can hold and transfer dirt to its own walls."
+        },
+        {
+          "strategy": "Arda puts all clothes in with extra detergent.",
+          "visibleConsequence": "The detergent bubbles turn gray, and the clothes come out tie-dyed with dirt patterns.",
+          "newInformation": "More detergent spreads dirt more evenly, creating stains."
+        },
+        {
+          "strategy": "Arda wipes the drum clean before running again.",
+          "visibleConsequence": "The wiped drum stays clean, but the clothes now emerge with mud splatters exactly where fabric touched the drum.",
+          "newInformation": "The machine deposits dirt at contact points, so any cycle dirties."
+        },
+        {
+          "strategy": "Arda uses a mesh laundry bag to isolate each item.",
+          "visibleConsequence": "Each bag becomes a dirt packet; one bag bursts, sprinkling dry dirt like a pepper shaker.",
+          "newInformation": "Isolating clothes turns each into a dirt bomb."
+        },
+        {
+          "strategy": "Arda gives up and takes clothes to a river to wash by hand.",
+          "visibleConsequence": "The washing machine follows him on its spin cycle, rolling down the street, and the clothes he washed in the river absorb dirt from the machine's wake.",
+          "newInformation": "The machine pursues Arda and re-dirties any clothes he cleans elsewhere."
+        }
+      ],
+      "finalPayoff": "The washing machine follows him on its spin cycle, rolling down the street, and the clothes he washed in the river absorb dirt from the machine's wake.",
+      "suggestedPayoffFamily": "environmental takeover / object pursues",
+      "loopPotential": "Any washing attempt, anywhere, attracts the machine's dirt.",
+      "environment": "Laundry room and street",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Washer's cleaning function is reversed into dirt redistribution; visually obvious with one clean item among blackened."
+    },
+    {
+      "ideaId": "raw-030",
+      "title": "Spiky Ice Cube Tray",
+      "protagonistSuggestion": "Noah",
+      "everydayGoal": "Make ice cubes for drinks",
+      "primaryObject": "Ice cube tray",
+      "normalExpectation": "Water in tray freezes into cube shapes.",
+      "impossibleRule": "The water freezes into sharp upward spikes that puncture the plastic tray and any covering, growing toward the ceiling.",
+      "visibleTrigger": "Noah opens freezer, ice spikes have pierced the tray and are growing out.",
+      "whyThisObject": "Ice tray forms cubes via expansion; if freezing instead creates directional spikes, ice is unusable and sharp-looking.",
+      "goalRuleRelationship": "The action to make cubes results in spiky ice that cannot be extracted safely, preventing cold drink.",
+      "frameZeroDescription": "Noah opens freezer; a tray is pierced by icy spikes pointing upward like a hedgehog.",
+      "beats": [
+        {
+          "strategy": "Noah tries to break off a spike by hand.",
+          "visibleConsequence": "The spike snaps but instantly regrows longer and sharper, nicking the freezer shelf.",
+          "newInformation": "The ice regrows when broken, faster each time."
+        },
+        {
+          "strategy": "Noah runs warm water over the tray to melt spikes.",
+          "visibleConsequence": "The spikes melt into a small flood that refreezes into an even larger spike cluster on the counter.",
+          "newInformation": "Melted water refreezes into spikes anywhere, not just tray."
+        },
+        {
+          "strategy": "Noah places the tray upside down in the freezer, hoping spikes grow downward.",
+          "visibleConsequence": "The spikes grow upward relative to gravity, piercing through the tray bottom and sticking out the top.",
+          "newInformation": "The spike growth is gravity-independent, always along the vertical axis of the tray's original orientation."
+        },
+        {
+          "strategy": "Noah uses a different silicone tray to make cubes.",
+          "visibleConsequence": "The silicone stretches around the spikes, forming a balloon that inflates until it pops, scattering ice shards.",
+          "newInformation": "Flexible trays can't contain the spikes; they stretch into a balloon."
+        },
+        {
+          "strategy": "Noah gives up and buys a bag of ice from the store.",
+          "visibleConsequence": "The bag of ice starts sprouting spikes inside the plastic bag, and the bag floats up to the ceiling, freezing a chandelier.",
+          "newInformation": "The spike formation follows any purchased ice, spreading to the environment."
+        }
+      ],
+      "finalPayoff": "The bag of ice starts sprouting spikes inside the plastic bag, and the bag floats up to the ceiling, freezing a chandelier.",
+      "suggestedPayoffFamily": "environmental takeover / growth",
+      "loopPotential": "Any future ice-making or ice-buying will produce spikes, so cold drinks become impossible.",
+      "environment": "Kitchen and freezer",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Ice cube tray's freezing function is subverted into spike growth; visually dramatic and blocks use."
+    },
+    {
+      "ideaId": "raw-031",
+      "title": "Shadow Flashlight",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Find keys in dark room",
+      "primaryObject": "Flashlight",
+      "normalExpectation": "Flashlight produces light beam to illuminate.",
+      "impossibleRule": "The flashlight absorbs light and projects a darkness beam; pointing it at objects makes them disappear into shadow, while surroundings stay dim.",
+      "visibleTrigger": "Opa turns on flashlight, a black cone shoots out, making the area darker.",
+      "whyThisObject": "Flashlight's purpose is to emit light; emitting darkness is its inverse.",
+      "goalRuleRelationship": "The action to illuminate keys instead casts them into deeper shadow, preventing search.",
+      "frameZeroDescription": "Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.",
+      "beats": [
+        {
+          "strategy": "Opa shakes the flashlight and changes batteries.",
+          "visibleConsequence": "The darkness beam becomes wider, swallowing a chair and half the room into blackness.",
+          "newInformation": "More power increases darkness, not light."
+        },
+        {
+          "strategy": "Opa points the flashlight at the ceiling, hoping reflected light reveals keys.",
+          "visibleConsequence": "The ceiling turns black and starts dripping shadow like ink, covering the floor.",
+          "newInformation": "The darkness is a substance that can drip and spread."
+        },
+        {
+          "strategy": "Opa turns on a lamp instead.",
+          "visibleConsequence": "The lamp works normally, but the flashlight's shadow beam seeks out the lamp and extinguishes it.",
+          "newInformation": "The darkness beam actively cancels any other light source."
+        },
+        {
+          "strategy": "Opa uses the flashlight in reverse, pointing it at his own eyes.",
+          "visibleConsequence": "Instead of darkness, a bright beam shines out the back of the flashlight, illuminating a corner where keys are visible.",
+          "newInformation": "The flashlight has reversed polarity: front emits dark, back emits light."
+        },
+        {
+          "strategy": "Opa picks up the keys using the light from the back.",
+          "visibleConsequence": "The keys glow and float into the flashlight's front beam, where they vanish into shadow, never to be found.",
+          "newInformation": "The flashlight's front beam can erase objects, not just darken them."
+        }
+      ],
+      "finalPayoff": "The keys glow and float into the flashlight's front beam, where they vanish into shadow, never to be found.",
+      "suggestedPayoffFamily": "absorption / property transfer",
+      "loopPotential": "The keys might reappear if Opa uses the back beam, but then the front beam may erase them again.",
+      "environment": "Dark hallway",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Flashlight's light emission is inverted to shadow projection; intuitive and blocks finding keys."
+    },
+    {
+      "ideaId": "raw-032",
+      "title": "Delayed Mirror",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Fix hair using mirror",
+      "primaryObject": "Wall mirror",
+      "normalExpectation": "Mirror shows real-time reflection.",
+      "impossibleRule": "The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself.",
+      "visibleTrigger": "Kiko raises hand, mirror's hand raises a second later.",
+      "whyThisObject": "Mirror's function is immediate visual feedback; delay makes self-grooming impossible.",
+      "goalRuleRelationship": "The action to style hair is based on outdated visual, so hands miss, preventing fixing.",
+      "frameZeroDescription": "Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.",
+      "beats": [
+        {
+          "strategy": "Kiko moves slowly, watching the mirror to adjust to delay.",
+          "visibleConsequence": "The mirror's delay increases to three seconds, and her reflection starts combing hair that Kiko hasn't touched yet.",
+          "newInformation": "The lag can grow when she tries to compensate."
+        },
+        {
+          "strategy": "Kiko touches her hair while looking down, ignoring the mirror.",
+          "visibleConsequence": "The mirror shows her reflection looking up and smiling, then her own head tilts involuntarily to match.",
+          "newInformation": "The delayed reflection can control her current actions, not just display."
+        },
+        {
+          "strategy": "Kiko covers the mirror with a towel.",
+          "visibleConsequence": "The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.",
+          "newInformation": "The reflection can project onto coverings."
+        },
+        {
+          "strategy": "Kiko turns the mirror around to face the wall.",
+          "visibleConsequence": "The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.",
+          "newInformation": "The mirror's delay effect transfers to the wall surface."
+        },
+        {
+          "strategy": "Kiko stands perfectly still until the reflection catches up.",
+          "visibleConsequence": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.",
+          "newInformation": "Synchronizing the delay creates a duplicate Kiko, solving the grooming by having the duplicate fix her hair."
+        }
+      ],
+      "finalPayoff": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.",
+      "suggestedPayoffFamily": "surreal resolution / duplication",
+      "loopPotential": "The duplicate Kiko may also have a delayed reflection, causing infinite twins.",
+      "environment": "Bathroom",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Mirror's real-time reflection is subverted by lag; visually clear when movements don't match."
+    },
+    {
+      "ideaId": "raw-033",
+      "title": "Swapping Stairs",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Walk upstairs to bedroom",
+      "primaryObject": "Stairs",
+      "normalExpectation": "Stairs have uniform riser heights, easy to climb.",
+      "impossibleRule": "The stair heights rearrange each step you take: the step you are about to step on moves up or down, alternating between 1 inch and 3 feet, causing missteps.",
+      "visibleTrigger": "Mimi steps on first stair; the second stair rises to waist height.",
+      "whyThisObject": "Stairs are meant to offer predictable vertical increments; randomizing heights makes climbing impossible without tripping.",
+      "goalRuleRelationship": "The action of climbing is undermined by changing step dimensions, preventing reaching top.",
+      "frameZeroDescription": "Mimi is mid-climb, one foot on a low step, the next step has risen to her waist, while another step behind has sunk to floor level.",
+      "beats": [
+        {
+          "strategy": "Mimi tries to step over the high step onto the next.",
+          "visibleConsequence": "The high step sinks as she lifts her leg, causing her to stomp down hard and stumble.",
+          "newInformation": "The stairs anticipate her movement and adjust to keep her off balance."
+        },
+        {
+          "strategy": "Mimi crawls on hands and knees to distribute weight.",
+          "visibleConsequence": "The steps flatten to a ramp, then tilt sideways, sliding her toward the wall.",
+          "newInformation": "The staircase can morph into different configurations."
+        },
+        {
+          "strategy": "Mimi holds the railing and leaps up two steps.",
+          "visibleConsequence": "The steps she skipped fold up like a ladder, pinning her leg briefly, and the next flight appears as a spiral.",
+          "newInformation": "Skipping steps causes them to fold into obstacles."
+        },
+        {
+          "strategy": "Mimi backs down and tries the escalator-like conveyor setting (if any).",
+          "visibleConsequence": "The stairs start moving like an escalator but in reverse, taking her back to the ground floor.",
+          "newInformation": "The staircase has a direction setting that always opposes her desired direction."
+        },
+        {
+          "strategy": "Mimi gives up and sits on the bottom step.",
+          "visibleConsequence": "The entire staircase folds into a flat ramp, and Mimi slides gently up to the bedroom door without using stairs.",
+          "newInformation": "The stairs become a ramp when not climbed, allowing effortless travel."
+        }
+      ],
+      "finalPayoff": "The entire staircase folds into a flat ramp, and Mimi slides gently up to the bedroom door without using stairs.",
+      "suggestedPayoffFamily": "absurd success after abandon",
+      "loopPotential": "If Mimi tries to use the ramp, it might revert to chaotic stairs.",
+      "environment": "House staircase",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Stairs' predictable steps are randomized in height; visually clear and directly blocks climbing."
+    },
+    {
+      "ideaId": "raw-034",
+      "title": "Wallet Money Flight",
+      "protagonistSuggestion": "Luca",
+      "everydayGoal": "Pay for coffee",
+      "primaryObject": "Wallet",
+      "normalExpectation": "Opening wallet allows you to take out cash.",
+      "impossibleRule": "When opened, any money inside launches out like confetti and flutters away; closing wallet causes the money to teleport back inside.",
+      "visibleTrigger": "Luca opens wallet, bills fly out and swirl around him.",
+      "whyThisObject": "Wallet is a secure money holder; if it ejects money on open, paying becomes a chase.",
+      "goalRuleRelationship": "The action to access cash causes it to scatter, preventing handing it to cashier.",
+      "frameZeroDescription": "Luca holds open wallet, a cloud of bills swirling around his head, while the wallet is empty.",
+      "beats": [
+        {
+          "strategy": "Luca closes the wallet to get money back, then opens it just a crack.",
+          "visibleConsequence": "The bills rocket out through the crack like a fan, hitting him in the face.",
+          "newInformation": "The ejection force is proportional to how little opening there is."
+        },
+        {
+          "strategy": "Luca tries to grab a bill midair.",
+          "visibleConsequence": "The bill slips through his fingers and joins a whirlwind above the counter.",
+          "newInformation": "Money becomes frictionless when airborne."
+        },
+        {
+          "strategy": "Luca holds the wallet upside down and opens, hoping bills fall into his hand.",
+          "visibleConsequence": "The bills fly upward, sticking to the ceiling in a neat stack.",
+          "newInformation": "Gravity is reversed for ejected money."
+        },
+        {
+          "strategy": "Luca uses a debit card instead of cash.",
+          "visibleConsequence": "The card also flies out and orbits the cashier's head like a boomerang.",
+          "newInformation": "The ejection applies to any flat item in the wallet."
+        },
+        {
+          "strategy": "Luca closes the wallet and hand it entire to the cashier.",
+          "visibleConsequence": "The wallet opens itself in the cashier's hand, releasing all bills into a tip jar, and the card lands on the reader, approving payment.",
+          "newInformation": "The wallet can pay by itself when given to the cashier, achieving the goal without Luca's control."
+        }
+      ],
+      "finalPayoff": "The wallet opens itself in the cashier's hand, releasing all bills into a tip jar, and the card lands on the reader, approving payment.",
+      "suggestedPayoffFamily": "goal reached via object agency / absurd success",
+      "loopPotential": "Any future attempt to pay manually will scatter money, but handing over the wallet works.",
+      "environment": "Coffee shop counter",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Wallet's money containment is inverted into ejection on open; visible cash whirlwind blocks payment."
+    },
+    {
+      "ideaId": "raw-035",
+      "title": "Relocking Key",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Unlock front door",
+      "primaryObject": "Key",
+      "normalExpectation": "Turning key unlocks door so it opens.",
+      "impossibleRule": "The key unlocks the door for exactly one second, then the door locks itself and spins the key back to locked; any attempt to open during that second causes the door to lock harder.",
+      "visibleTrigger": "Arda turns key, hears click, but when he pushes, the door relocks and key spins back.",
+      "whyThisObject": "Key is meant to disengage lock; if the lock re-engages instantly, unlocking is futile.",
+      "goalRuleRelationship": "The action to unlock door results in immediate relocking, preventing entry.",
+      "frameZeroDescription": "Arda stands at front door with key in lock, door visibly ajar for an instant, but the deadbolt is sliding back into locked position.",
+      "beats": [
+        {
+          "strategy": "Arda turns key and immediately kicks door open.",
+          "visibleConsequence": "The door opens a crack, then slams shut with such force that the key snaps in the lock.",
+          "newInformation": "Force against the door strengthens the relocking."
+        },
+        {
+          "strategy": "Arda turns key and holds it in the unlocked position, waiting.",
+          "visibleConsequence": "The lock cylinder starts rotating on its own, spinning the key and twisting Arda's wrist.",
+          "newInformation": "The lock can overpower the key, turning it back."
+        },
+        {
+          "strategy": "Arda calls Mimi to turn the key from inside while he pushes.",
+          "visibleConsequence": "The key turns, the door unlocks, but then a chain lock appears and locks itself across the door.",
+          "newInformation": "The lock can generate additional locking mechanisms to stay shut."
+        },
+        {
+          "strategy": "Arda removes the key and tries to pick the lock with a credit card.",
+          "visibleConsequence": "The card is swallowed by the lock and spit out as a metal key that unlocks a different door across the street.",
+          "newInformation": "The lock redirects unlocking attempts to other doors, not this one."
+        },
+        {
+          "strategy": "Arda gives up and walks around to the back door.",
+          "visibleConsequence": "The front door unlocks itself and swings open, then locks Arda inside a small porch as he steps through.",
+          "newInformation": "The door only opens when no one is trying, and then traps the person."
+        }
+      ],
+      "finalPayoff": "The front door unlocks itself and swings open, then locks Arda inside a small porch as he steps through.",
+      "suggestedPayoffFamily": "goal reached but new problem / self-trapping",
+      "loopPotential": "Any future unlock attempt will trigger relocking; the door may lock him in or out unpredictably.",
+      "environment": "Front door of house",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Key's unlocking function is reversed by instant relocking; visually clear with bolt sliding back."
+    },
+    {
+      "ideaId": "raw-036",
+      "title": "Upward Flush Toilet",
+      "protagonistSuggestion": "Noah",
+      "everydayGoal": "Use toilet normally",
+      "primaryObject": "Toilet",
+      "normalExpectation": "Flushing sends water and waste down into drain.",
+      "impossibleRule": "Flushing causes water to shoot up from the bowl like a geyser, reaching the ceiling, and only after the flush stops does everything fall back into bowl.",
+      "visibleTrigger": "Noah presses handle, water gushes upward, soaking him.",
+      "whyThisObject": "Toilet's flush is gravity-fed downward; reversing flow makes it a fountain.",
+      "goalRuleRelationship": "The action to flush creates an upward eruption, preventing clean and dry use.",
+      "frameZeroDescription": "Noah stands beside a toilet, a column of water shooting straight up from the bowl, while he shields his face.",
+      "beats": [
+        {
+          "strategy": "Noah closes the toilet lid before flushing.",
+          "visibleConsequence": "The lid blasts off, and the water column rockets to the ceiling, denting it.",
+          "newInformation": "The upward force is stronger than the lid."
+        },
+        {
+          "strategy": "Noah flushes from a distance using a stick.",
+          "visibleConsequence": "The geyser follows the stick's movement, curving toward Noah and drenching him.",
+          "newInformation": "The water stream is attracted to the person flushing."
+        },
+        {
+          "strategy": "Noah turns off the water supply valve behind the toilet.",
+          "visibleConsequence": "The geyser stops, but the toilet begins to shake and levitate, spinning slowly.",
+          "newInformation": "With no water, the toilet's internal pressure causes it to float."
+        },
+        {
+          "strategy": "Noah tries using a plunger to redirect the water downward.",
+          "visibleConsequence": "The plunger gets sucked into the toilet, and the water forms a whirlpool that lifts the bathroom mat into the air.",
+          "newInformation": "The toilet can invert gravity for any loose object nearby."
+        },
+        {
+          "strategy": "Noah gives up and leaves the bathroom.",
+          "visibleConsequence": "The toilet, still spinning, follows him, and all the water it previously shot up falls as indoor rain on the hallway.",
+          "newInformation": "The toilet's geyser water is delayed in falling and follows the toilet."
+        }
+      ],
+      "finalPayoff": "The toilet, still spinning, follows him, and all the water it previously shot up falls as indoor rain on the hallway.",
+      "suggestedPayoffFamily": "environmental takeover / delayed consequence",
+      "loopPotential": "Any future flush will cause geyser and following rain; Noah may need an outhouse.",
+      "environment": "Bathroom",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Toilet's downward drainage is inverted into upward geyser; visually messy and blocks normal use."
+    },
+    {
+      "ideaId": "raw-037",
+      "title": "Split Garbage Bag",
+      "protagonistSuggestion": "Opa",
+      "everydayGoal": "Take out the trash",
+      "primaryObject": "Garbage bag",
+      "normalExpectation": "Bag holds trash when tied and lifted.",
+      "impossibleRule": "The bag remains intact in the can, but the moment you lift it, the seams split and trash falls back into the can; when you put bag back, it seals.",
+      "visibleTrigger": "Opa lifts tied bag; bottom splits, trash drops.",
+      "whyThisObject": "Garbage bag's containment is supposed to be stable under load; conditional splitting prevents removal.",
+      "goalRuleRelationship": "The action to remove trash causes the bag to fail, so trash never leaves the can.",
+      "frameZeroDescription": "Opa holds the tied top of a garbage bag, but the bottom is wide open, trash spilling back into the can.",
+      "beats": [
+        {
+          "strategy": "Opa double-bags the trash with two bags.",
+          "visibleConsequence": "The outer bag splits, the inner bag holds, but then the inner bag's top unknots and trash flies out like a fountain.",
+          "newInformation": "Multiple bags shift the failure point rather than preventing it."
+        },
+        {
+          "strategy": "Opa uses a box instead of a bag, tipping the trash into it.",
+          "visibleConsequence": "The box's bottom opens when Opa lifts it, dumping trash back into the can.",
+          "newInformation": "The rule applies to any container lifted with trash, not just bags."
+        },
+        {
+          "strategy": "Opa scoops trash directly with a dustpan and carries it out.",
+          "visibleConsequence": "The dustpan flips upside down just before he reaches the door, scattering trash.",
+          "newInformation": "The anti-lifting rule extends to dustpans."
+        },
+        {
+          "strategy": "Opa drags the entire trash can to the curb, not lifting anything.",
+          "visibleConsequence": "The can's wheels spin off, and the can anchors itself to the floor, refusing to move.",
+          "newInformation": "Moving trash without lifting is also blocked; the can self-anchors."
+        },
+        {
+          "strategy": "Opa gives up and leaves the trash.",
+          "visibleConsequence": "The bag climbs out of the can, stretches over the trash, and seals it perfectly, then levitates to the curb.",
+          "newInformation": "The trash removes itself only when Opa stops trying."
+        }
+      ],
+      "finalPayoff": "The bag climbs out of the can, stretches over the trash, and seals it perfectly, then levitates to the curb.",
+      "suggestedPayoffFamily": "goal achieved by object after abandon",
+      "loopPotential": "If Opa tries to help next time, the bag will refuse again.",
+      "environment": "Kitchen and curb",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Garbage bag's containment fails on lift; intuitive because you see bottom split and trash fall back."
+    },
+    {
+      "ideaId": "raw-038",
+      "title": "Disappearing Ink Pen",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Write a shopping list",
+      "primaryObject": "Pen",
+      "normalExpectation": "Ink marks stay on paper.",
+      "impossibleRule": "The pen writes visible ink, but the lines evaporate after exactly one second, leaving blank paper; when the pen is capped, the marks reappear on the paper in reverse order.",
+      "visibleTrigger": "Kiko writes 'milk', the word fades as she watches.",
+      "whyThisObject": "Pen's function is to leave permanent marks; disappearing ink makes writing useless.",
+      "goalRuleRelationship": "The action of writing list produces only temporary marks, so the list cannot be read later.",
+      "frameZeroDescription": "Kiko holds a pen over a notepad; the word 'milk' is half-faded, the tail already invisible.",
+      "beats": [
+        {
+          "strategy": "Kiko writes quickly and photographs the list before it fades.",
+          "visibleConsequence": "The photo also fades, and the phone's screen becomes blank where the list was.",
+          "newInformation": "The disappearance transfers to any capture of the writing."
+        },
+        {
+          "strategy": "Kiko presses hard to dent paper so impressions remain.",
+          "visibleConsequence": "The indentations flatten immediately, and the paper becomes smooth.",
+          "newInformation": "The paper self-heals indents, erasing physical evidence."
+        },
+        {
+          "strategy": "Kiko writes with a different pen (pencil).",
+          "visibleConsequence": "The pencil marks also vanish, and the pencil itself disappears while writing.",
+          "newInformation": "The disappearing rule applies to all writing instruments, including the tool."
+        },
+        {
+          "strategy": "Kiko caps the pen and waits for marks to reappear.",
+          "visibleConsequence": "The marks reappear in reverse order, forming a jumbled list that reads backwards from bottom to top.",
+          "newInformation": "Capping the pen reverses time for the ink, but reverses the sequence."
+        },
+        {
+          "strategy": "Kiko reads the reversed list and heads to the store.",
+          "visibleConsequence": "The list on paper rearranges to normal as she shops, but every item she picks up vanishes from the cart.",
+          "newInformation": "The disappearing effect now applies to the actual items on the list, causing them to vanish when selected."
+        }
+      ],
+      "finalPayoff": "The list on paper rearranges to normal as she shops, but every item she picks up vanishes from the cart.",
+      "suggestedPayoffFamily": "property transfer to physical items",
+      "loopPotential": "Any future list will cause items to disappear, making shopping impossible.",
+      "environment": "Kitchen table and grocery store",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Pen's permanence is inverted into temporary ink; visually clear as words fade."
+    },
+    {
+      "ideaId": "raw-039",
+      "title": "Smearing Eraser",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Erase a pencil mistake",
+      "primaryObject": "Eraser",
+      "normalExpectation": "Eraser lifts graphite from paper.",
+      "impossibleRule": "Rubbing eraser spreads graphite into a larger smudge, and the smudge darkens into a sticky tar that stains fingers and paper.",
+      "visibleTrigger": "Mimi erases a line; it widens into a gray smear.",
+      "whyThisObject": "Eraser is designed to remove marks; if it smears, correcting mistakes is impossible.",
+      "goalRuleRelationship": "The action to erase makes the mistake bigger and messier, preventing correction.",
+      "frameZeroDescription": "Mimi holds an eraser on a paper; the erased area has turned into a dark smudge spreading outward.",
+      "beats": [
+        {
+          "strategy": "Mimi uses a clean corner of the eraser, pressing lightly.",
+          "visibleConsequence": "The smudge grows larger and darker, and the eraser corner becomes black.",
+          "newInformation": "The eraser absorbs graphite but redeposits it as tar."
+        },
+        {
+          "strategy": "Mimi blows away the eraser shavings.",
+          "visibleConsequence": "The shavings fly up and stick to the paper, creating a swarm of black dots.",
+          "newInformation": "The tar-like graphite is airborne and attaches."
+        },
+        {
+          "strategy": "Mimi tries to wipe the smudge with a tissue.",
+          "visibleConsequence": "The tissue sticks to the tar, then wads up and becomes a permanent black blob on the page.",
+          "newInformation": "Once smudged, the graphite becomes adhesive and traps cleaning tools."
+        },
+        {
+          "strategy": "Mimi uses a white correction tape over the smudge.",
+          "visibleConsequence": "The tape turns black and peels off, pulling a layer of paper with it, leaving a hole.",
+          "newInformation": "The smudge corrodes any covering."
+        },
+        {
+          "strategy": "Mimi gives up and closes the notebook.",
+          "visibleConsequence": "The smudge spreads to the opposite page, then shrinks into a perfect drawing of a cat, no longer a mistake.",
+          "newInformation": "When abandoned, the smudge transforms into a deliberate artwork, but not the intended correction."
+        }
+      ],
+      "finalPayoff": "The smudge spreads to the opposite page, then shrinks into a perfect drawing of a cat, no longer a mistake.",
+      "suggestedPayoffFamily": "absurd transformation / false success",
+      "loopPotential": "If Mimi tries to replicate the cat, it may smear again.",
+      "environment": "Study desk",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Eraser's removal function is inverted into smudging; visually obvious as the mark grows."
+    },
+    {
+      "ideaId": "raw-040",
+      "title": "Opposite-Side Butter Knife",
+      "protagonistSuggestion": "Arda",
+      "everydayGoal": "Butter a slice of bread",
+      "primaryObject": "Butter knife",
+      "normalExpectation": "Spreading butter with knife covers the top surface.",
+      "impossibleRule": "The knife transfers butter to the opposite side of the bread (bottom) regardless of which side you spread; when you flip the bread, the butter flips back to the original top, leaving bottom clean.",
+      "visibleTrigger": "Arda spreads butter on top; the top remains clean, but butter oozes out from the bottom.",
+      "whyThisObject": "Knife's function is to apply spread to the intended surface; transferring to opposite side prevents the usual toast.",
+      "goalRuleRelationship": "The action to butter one side results in butter on the other, so the intended side never gets butter.",
+      "frameZeroDescription": "Arda holds a bread slice with knife mid-spread on top, but a thick layer of butter is visibly dripping from the underside.",
+      "beats": [
+        {
+          "strategy": "Arda flips the bread over and butters the now-top side, which is currently buttered bottom.",
+          "visibleConsequence": "The butter on the bottom jumps to the new top, leaving both sides alternately buttered and unbuttered in a loop.",
+          "newInformation": "Flipping only relocates the butter, not both sides buttered."
+        },
+        {
+          "strategy": "Arda holds the bread vertically and spreads on the edge.",
+          "visibleConsequence": "Butter appears on the far edge, not the edge he's spreading, and drips onto his hand.",
+          "newInformation": "The knife transfers spread to the antipodal point on the bread."
+        },
+        {
+          "strategy": "Arda uses a different knife, a spoon.",
+          "visibleConsequence": "The butter still ends up on the opposite side, and the spoon starts spinning, flinging butter across the kitchen.",
+          "newInformation": "The rule is tied to the act of spreading, not the knife."
+        },
+        {
+          "strategy": "Arda butters both sides at once using two knives.",
+          "visibleConsequence": "Both knives transfer butter to each other's faces, leaving the bread dry and the knives coated.",
+          "newInformation": "Simultaneous spreading causes cross-transfer between tools."
+        },
+        {
+          "strategy": "Arda gives up and eats the bread plain.",
+          "visibleConsequence": "The butter from the underside levitates and lands on his nose, then the bread flips and butters itself perfectly on both sides.",
+          "newInformation": "The bread can butter itself only when Arda stops trying, achieving the goal but with a mess."
+        }
+      ],
+      "finalPayoff": "The butter from the underside levitates and lands on his nose, then the bread flips and butters itself perfectly on both sides.",
+      "suggestedPayoffFamily": "role reversal / object self-buttering",
+      "loopPotential": "Any future buttering attempt will cause butter on wrong side until he stops, then it self-corrects.",
+      "environment": "Kitchen counter",
+      "dialogueNeed": "NONE",
+      "durationSeconds": 15,
+      "providerRationale": "Knife's spreading action is spatially inverted to opposite side; visually clear with butter dripping from bottom."
+    }
+  ]
+}

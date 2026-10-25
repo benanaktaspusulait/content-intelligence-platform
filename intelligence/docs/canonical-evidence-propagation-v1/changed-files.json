@@ -1,0 +1,36 @@
+{
+  "changed": {
+    "intelligence/ml-service/tests/protected_integrity.py": {
+      "before": "2214d44aec7af940e2bf6530ddb8367824801238a4814482b451f6b3c82e059c",
+      "after": "8462634df17049d473155ee31b1f7e286c3afcb7b3be49a4af1bb931f7c80e7e"
+    },
+    "intelligence/ml-service/tests/test_protected_integrity_policy.py": {
+      "before": "7998048f2b86a1b4647919cccb0b35799574c82f62071bf415991aaea0d1ea7b",
+      "after": "e4778bc503f4f24aace0efa7af55fafcb7751ef71bb30fb416cbc0c82043227c"
+    },
+    "intelligence/ml-service/app/workflow/concept_ranking.py": {
+      "before": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d",
+      "after": "65c136ee1e6727e290c3f14f052cba329807c4e1057e4412ae4c9613070085e3"
+    },
+    "intelligence/ml-service/app/workflow/creative_shape.py": {
+      "before": "0c862af88818e6304dac74b15b62fa559a6276afcac0dcac2f9e2872a5f1727e",
+      "after": "01b71cee68635bee187a8b1c09afce6e17887cca71022a56679c59571178a714"
+    },
+    "intelligence/ml-service/app/workflow/premise_naturalness.py": {
+      "before": "0069e6f4ca56d47b277339ab03ecc9af6643160f53cd2184808b1c48b5b40fc8",
+      "after": "f50ae4f2dc7649298e708189a9a639556468b740dea47cf4f3a148447e6c1457"
+    },
+    "intelligence/ml-service/app/workflow/beat_grammar.py": {
+      "before": "b419d37c25b1124fa3fb1c8e158091cd215b23023e530714ada81bb26489e1d9",
+      "after": "67a886e40dbc306fe5b6e127a07e9c6306d324fd3cbf822862d8e9e5866c0588"
+    }
+  },
+  "added": {
+    "intelligence/ml-service/app/workflow/canonical_creative_evidence.py": "e4af5c73b27daaa36f06490a586f3cf7680e03c6501aefadfce2669f0194c357",
+    "intelligence/ml-service/app/workflow/canonical_evidence_propagation.py": "b0988995f10eae22fb17cbbeb413bc38e03cf62740106bd91388ce3b87222ec0",
+    "intelligence/ml-service/tests/test_canonical_creative_evidence.py": "1c5c85be7ee03ab79e6709ba0dae45e6b5c000b8807f4436afe2b92c390c89a1",
+    "intelligence/ml-service/tests/test_canonical_integrity.py": "2471094feedad891dfa644744728138f5699c7d3042c4c44cee786417868dc01",
+    "intelligence/ml-service/tests/fixtures/canonical_evidence_integrity_v1.json": "7f897aec7c40f3a7bc759867abb075e02db96f79637fb013adf6c8c190a8cbff",
+    "intelligence/scripts/replay-canonical-evidence.py": "66666d72b2161c898310d9055da1d4b45ec2bce474b21c939aa7524069123f85"
+  }
+}

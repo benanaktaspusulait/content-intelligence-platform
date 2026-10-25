@@ -1,0 +1,91 @@
+{
+  "version": "approved-active-integrity-v1",
+  "architectureApproval": {
+    "id": "ACCEPTED_STRUCTURED_EVIDENCE_INPUT_V1",
+    "files": {
+      "intelligence/ml-service/app/workflow/short_form_engine.py": {
+        "historicalSha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+        "approvedSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46"
+      },
+      "intelligence/ml-service/app/workflow/concept_ranking.py": {
+        "historicalSha256": "71ca66a26fe635d07417cdc7475fd9b1b7774bef60f00eb6180064421d2551cf",
+        "approvedSha256": "8480d7e32fe1c34ff81968c5becee9ff22cb2ec3d11d1b25a9522d849233118d"
+      }
+    },
+    "evidence": [
+      {
+        "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/authorized-refactor-before.json",
+        "sha256": "15a3d041f02cb7bb8c22ef13c8198191db7de0b340effdc4b84423e864fd44e3",
+        "role": "historical"
+      },
+      {
+        "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/authorized-refactor-after.json",
+        "sha256": "2085113f9343fa3bc6cc72eae199f0b95cda88d2bb0674aee7874728c320f70c",
+        "role": "approved"
+      },
+      {
+        "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/scoring-parity-proof.json",
+        "sha256": "c1feb2a9a4365cf121f2b737e0c29cd7d5902a7fc9bdb440157010c768511215",
+        "role": "parity"
+      }
+    ]
+  },
+  "integrityRepairApproval": {
+    "id": "EXPLICIT_USER_REQUEST_INTEGRITY_BOUNDARY_REPAIR_V1",
+    "files": {
+      "intelligence/ml-service/tests/test_beat_generation.py": {
+        "historicalSha256": "17c26f00bcc664058165bac9ae9868756a778320b5e92fba36362b7bb1ea6585",
+        "approvedSha256": "48778cff76531ca2b9f88b9ba148feb5a1e110705700628387ec5107a806f4d4"
+      },
+      "intelligence/ml-service/tests/test_concept_ranking.py": {
+        "historicalSha256": "f8b41dd817ffd1f29cc8f8940697e7d67f0d585db43462c2316a5fd4775f1c3b",
+        "approvedSha256": "ede398e8d5558846a28468b4a52db40136213308cc6bcd09db01bd6b4d58bf40"
+      },
+      "intelligence/ml-service/tests/test_premise_generation.py": {
+        "historicalSha256": "0f26a92f320f283498bc08036c3a4a86f7278cf0fa856f6aa11c236a76508c59",
+        "approvedSha256": "7ac100686308bc26e50304dcf010c76523c3bbf0241c0ecec59df616c85be3a8"
+      },
+      "intelligence/ml-service/tests/test_semantic_concept_generation.py": {
+        "historicalSha256": "1180ea90751b0fc57a0fff9e9bb83c48fcbe02c783c09bd8e952dcd1b2acabb9",
+        "approvedSha256": "92fce36472fb3b305ea363d53387b546fb5b85ce1dafb39405c339f3e0eaf248"
+      },
+      "intelligence/ml-service/tests/test_semantic_evidence_adapter.py": {
+        "historicalSha256": "febdcb30cfdbe20f2ef3bead4afc02a23bcaca75e488e99d7471ba2ed32fa36f",
+        "approvedSha256": "c3a30d5207c1de2a35c6fe840f0acfdea0399ab156db0d9d0aab4ae4417d8656"
+      },
+      "intelligence/ml-service/tests/test_shape_generation.py": {
+        "historicalSha256": "fe067331d61b5900f81b4ab7c11030617e9c55814af3fd75b71d00d2fc3078ab",
+        "approvedSha256": "48b964c956cfb86955ea8a78335ef64a45571bee5fd9ee14a653139385530b5c"
+      },
+      "intelligence/ml-service/tests/test_short_concept_generation.py": {
+        "historicalSha256": "6c70d6a4243654252a3aaf0e5dcb85d88a91b25a018c378d8437828fdec752c8",
+        "approvedSha256": "878208a4426d4fbae23d6d637007aeaafff3d7c5d875546e7d5e4d54b3d53d0e"
+      },
+      "intelligence/ml-service/tests/test_short_concept_v2.py": {
+        "historicalSha256": "656c55f006e0152df385ff89b6f96cf224c0814fbd2fb38668b787a8b6e767fb",
+        "approvedSha256": "2f14cb661951e59f0d01fdc2452c1581d6b4ec196334c80cbf9578ee1f30c872"
+      },
+      "intelligence/ml-service/tests/test_structured_short_form.py": {
+        "historicalSha256": "95962d0c599892b2694f5c0f23320062b6a0287bb7d8e47c4ec65dedfc05d913",
+        "approvedSha256": "772f4256f080faafe6ff4c34a987584af5577c62e30672e5b891e8d2cf0275f7"
+      }
+    },
+    "evidence": [
+      {
+        "path": "intelligence/docs/structured-sfe-integrity-repair-v1/test-boundary-before.json",
+        "sha256": "5a5a7daa859f52ba05e6b717109a19a3067b8a711753ab769afbe0c8af598d8e",
+        "role": "historical"
+      },
+      {
+        "path": "intelligence/docs/structured-sfe-integrity-repair-v1/test-boundary-after.json",
+        "sha256": "340e77a986355bdc6eff06ffcacd2c0d0c824d5cd491be2f22f1b9886b6129c4",
+        "role": "approved"
+      },
+      {
+        "path": "intelligence/docs/structured-sfe-integrity-repair-v1/investigation-before-changes.json",
+        "sha256": "bc7b39003203d3e3678b925d8f148fc606e0d21e1d00776f755a5cb72caab88c",
+        "role": "investigation"
+      }
+    ]
+  }
+}

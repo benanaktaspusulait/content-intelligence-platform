@@ -1,0 +1,71 @@
+{
+  "fullAnalysisByteIdentical": true,
+  "beforeSha256": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9",
+  "afterSha256": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9",
+  "legacy": {
+    "count": 33,
+    "min": 18,
+    "max": 46,
+    "mean": 27.636363636363637,
+    "median": 28,
+    "statuses": {
+      "REVISION_REQUIRED": 21,
+      "REJECT": 12
+    },
+    "scores": {
+      "18": 8,
+      "19": 2,
+      "24": 2,
+      "25": 3,
+      "26": 1,
+      "28": 2,
+      "31": 2,
+      "32": 3,
+      "33": 4,
+      "35": 1,
+      "36": 2,
+      "38": 1,
+      "44": 1,
+      "46": 1
+    }
+  },
+  "structured": {
+    "count": 33,
+    "min": 25,
+    "max": 100,
+    "mean": 59.60606060606061,
+    "median": 63,
+    "statuses": {
+      "REVISION_REQUIRED": 29,
+      "PASS": 4
+    },
+    "scores": {
+      "25": 5,
+      "26": 2,
+      "41": 2,
+      "42": 2,
+      "43": 1,
+      "46": 1,
+      "54": 1,
+      "55": 1,
+      "56": 1,
+      "63": 3,
+      "64": 1,
+      "69": 2,
+      "72": 1,
+      "77": 1,
+      "78": 1,
+      "83": 1,
+      "85": 1,
+      "93": 2,
+      "99": 2,
+      "100": 2
+    }
+  },
+  "newlyEligible": [
+    "raw-013"
+  ],
+  "sfePassCount": 4,
+  "humanReviewCount": 18,
+  "providerCalls": 0
+}

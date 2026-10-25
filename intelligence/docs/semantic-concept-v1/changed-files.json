@@ -1,0 +1,34 @@
+{
+  "newSourceAndFixtureFiles": [
+    "intelligence/ml-service/app/workflow/semantic_concept_provider.py",
+    "intelligence/ml-service/app/workflow/semantic_concept_adapter.py",
+    "intelligence/ml-service/app/workflow/semantic_concept_generation.py",
+    "intelligence/ml-service/app/workflow/semantic_concept_benchmark.py",
+    "intelligence/ml-service/app/workflow/semantic_concept_analysis_v1.json",
+    "intelligence/ml-service/app/workflow/semantic_concept_mock_v1.json",
+    "intelligence/ml-service/tests/test_semantic_concept_provider.py",
+    "intelligence/ml-service/tests/test_semantic_concept_generation.py",
+    "intelligence/ml-service/tests/fixtures/semantic_mock_expectations_v1.json"
+  ],
+  "additiveIntegrationFiles": [
+    "intelligence/ml-service/app/workflow/api.py",
+    "intelligence/scripts/generate-short-concepts.py",
+    "intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+    "intelligence/frontend/src/app/pages/concept-generation.page.spec.ts"
+  ],
+  "sourceSha256": {
+    "intelligence/ml-service/app/workflow/semantic_concept_provider.py": "6b02ad77b6e2434ca14467404dc473c2f5bf1c41027ba8ef74d807ff2c932c82",
+    "intelligence/ml-service/app/workflow/semantic_concept_adapter.py": "d476af1818e4b249934b16b45ef37d634f66d6a3781c08c025f916c7487a2c1d",
+    "intelligence/ml-service/app/workflow/semantic_concept_generation.py": "88567711151a9be8d33570bedd02ac3bde958e494ca95b27b8bf6ff68b0952cd",
+    "intelligence/ml-service/app/workflow/semantic_concept_benchmark.py": "20b478da2e4490714fe2f67e2ef2d81b2a5bab24cc4e3fe235e112190dfcc9f9",
+    "intelligence/ml-service/app/workflow/semantic_concept_analysis_v1.json": "b9ca657aef967254d19b78bd74b1d5e2c8a13d093178dd1e9948eafd3ec4136a",
+    "intelligence/ml-service/app/workflow/semantic_concept_mock_v1.json": "bfb36e9f1809a3568a02b5d1b244d843d5b34d4d5b9df345f00487f14fcf8aee",
+    "intelligence/ml-service/tests/test_semantic_concept_provider.py": "152bfeaf636e9539a6d07f86170ac66a8f95165a1481e63bcef2c526b2ba9138",
+    "intelligence/ml-service/tests/test_semantic_concept_generation.py": "1180ea90751b0fc57a0fff9e9bb83c48fcbe02c783c09bd8e952dcd1b2acabb9",
+    "intelligence/ml-service/tests/fixtures/semantic_mock_expectations_v1.json": "f1a82e194077ad86b314d545e29a8072ff1204f6bdf6eca261b282f2553810f0",
+    "intelligence/ml-service/app/workflow/api.py": "7b57505e161b511b0b411f4e8038cd65857f2dd8a160abf36a97a1888118cb31",
+    "intelligence/scripts/generate-short-concepts.py": "d82040e7351063141cc87f9e954a6e0f5b7595cc8720a25d7d783e82d95cd07c",
+    "intelligence/frontend/src/app/pages/concept-ranking.page.ts": "3c33853ad0c36c94fa61ebb2613812dd06c2724aa004e2e0c158fefb7c06cdcf",
+    "intelligence/frontend/src/app/pages/concept-generation.page.spec.ts": "5f8e3983851f432093b12463dc68a00908f111bc2f654f20ead49afd0bc6ccb9"
+  }
+}

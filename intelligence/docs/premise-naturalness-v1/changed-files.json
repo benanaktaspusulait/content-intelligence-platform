@@ -1,0 +1,32 @@
+{
+  "newSourceAndFixtureFiles": [
+    "intelligence/ml-service/app/workflow/affordance_expectations_v1.json",
+    "intelligence/ml-service/app/workflow/premise_naturalness.py",
+    "intelligence/ml-service/app/workflow/premise_generation.py",
+    "intelligence/ml-service/app/workflow/premise_benchmark.py",
+    "intelligence/ml-service/tests/test_premise_naturalness.py",
+    "intelligence/ml-service/tests/test_premise_generation.py",
+    "intelligence/ml-service/tests/fixtures/premise_naturalness_v1_cases.json",
+    "intelligence/ml-service/tests/fixtures/premise_generation_v1_golden.json"
+  ],
+  "additiveIntegrationFiles": [
+    "intelligence/ml-service/app/workflow/api.py",
+    "intelligence/scripts/generate-short-concepts.py",
+    "intelligence/frontend/src/app/pages/concept-ranking.page.ts",
+    "intelligence/frontend/src/app/pages/concept-generation.page.spec.ts"
+  ],
+  "sourceSha256": {
+    "intelligence/ml-service/app/workflow/affordance_expectations_v1.json": "3ef1c75f2a725eb67609005f95004446286615f1f50cae5a348e2b64960086b4",
+    "intelligence/ml-service/app/workflow/premise_naturalness.py": "0069e6f4ca56d47b277339ab03ecc9af6643160f53cd2184808b1c48b5b40fc8",
+    "intelligence/ml-service/app/workflow/premise_generation.py": "b316d2f904af7ffad57b123a596e3374a3405c72b239ef87cb3d88a231693d67",
+    "intelligence/ml-service/app/workflow/premise_benchmark.py": "73200e1ccb48167c2cd3786063fb8461141cf5bfb059b51a51e67e8eaf84e87c",
+    "intelligence/ml-service/tests/test_premise_naturalness.py": "f3688fe1ba8338d0b0dc57804199559fd3c5dcfe0882ca6e9145457756cd5194",
+    "intelligence/ml-service/tests/test_premise_generation.py": "0f26a92f320f283498bc08036c3a4a86f7278cf0fa856f6aa11c236a76508c59",
+    "intelligence/ml-service/tests/fixtures/premise_naturalness_v1_cases.json": "11b941a58ecf1cf6781bdcaa81ae25d6b4ffac12dc36490492fd37b66816b1f5",
+    "intelligence/ml-service/tests/fixtures/premise_generation_v1_golden.json": "15628e4d83a332eb7c6ba45da27409fa6f35aea7a3a4593b1d94606ef85670b2",
+    "intelligence/ml-service/app/workflow/api.py": "6d7062102be78da038078bdccefe8240d538c4f9ba861505544e68c19adc8cf9",
+    "intelligence/scripts/generate-short-concepts.py": "8db83fd0fd780a1792ce9a79ae4733e7b714b233435141189073bf284d9e163e",
+    "intelligence/frontend/src/app/pages/concept-ranking.page.ts": "937afb3a03b6f7386faa4b0dca7276c6a6e5b0c0678138f29f84371087a4c620",
+    "intelligence/frontend/src/app/pages/concept-generation.page.spec.ts": "88d111fe78b989b75ec72ed82a9138e40132a5bd3ba21f7658d5aaf9e15b351d"
+  }
+}

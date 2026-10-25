@@ -1,0 +1,314 @@
+{
+  "$defs": {
+    "BeatAcquisition": {
+      "additionalProperties": false,
+      "properties": {
+        "resultTokens": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Resulttokens",
+          "type": "array"
+        },
+        "magnitudeRises": {
+          "title": "Magnituderises",
+          "type": "boolean"
+        },
+        "endingPatterns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Endingpatterns",
+          "type": "array"
+        },
+        "terminalStateChange": {
+          "title": "Terminalstatechange",
+          "type": "boolean"
+        },
+        "recreatedSuccess": {
+          "title": "Recreatedsuccess",
+          "type": "boolean"
+        },
+        "openingLogicalExtreme": {
+          "title": "Openinglogicalextreme",
+          "type": "boolean"
+        },
+        "mechanismIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Mechanismids",
+          "type": "array"
+        },
+        "references": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "References",
+          "type": "array"
+        }
+      },
+      "required": [
+        "resultTokens",
+        "magnitudeRises",
+        "endingPatterns",
+        "terminalStateChange",
+        "recreatedSuccess",
+        "openingLogicalExtreme",
+        "mechanismIds"
+      ],
+      "title": "BeatAcquisition",
+      "type": "object"
+    },
+    "BeatFeatures": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "sourceSpan": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sourcespan"
+        },
+        "visual": {
+          "title": "Visual",
+          "type": "string"
+        },
+        "rules": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Rules",
+          "type": "array"
+        },
+        "strategies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Strategies",
+          "type": "array"
+        },
+        "changes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changes",
+          "type": "array"
+        },
+        "stateSignals": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Statesignals",
+          "type": "array"
+        },
+        "goal": {
+          "title": "Goal",
+          "type": "boolean"
+        },
+        "result": {
+          "title": "Result",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "start",
+        "end",
+        "quote",
+        "sourceSpan",
+        "visual",
+        "rules",
+        "strategies",
+        "changes",
+        "stateSignals",
+        "goal",
+        "result"
+      ],
+      "title": "BeatFeatures",
+      "type": "object"
+    },
+    "CommonFacts": {
+      "additionalProperties": false,
+      "properties": {
+        "openingDelayed": {
+          "title": "Openingdelayed",
+          "type": "boolean"
+        },
+        "goalDeclared": {
+          "title": "Goaldeclared",
+          "type": "boolean"
+        },
+        "mechanismIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Mechanismids",
+          "type": "array"
+        },
+        "classifiedRules": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Classifiedrules",
+          "type": "array"
+        },
+        "confusion": {
+          "title": "Confusion",
+          "type": "boolean"
+        },
+        "loopCue": {
+          "title": "Loopcue",
+          "type": "boolean"
+        },
+        "speechWords": {
+          "title": "Speechwords",
+          "type": "integer"
+        },
+        "longSpeech": {
+          "title": "Longspeech",
+          "type": "boolean"
+        },
+        "audioRequired": {
+          "title": "Audiorequired",
+          "type": "boolean"
+        },
+        "reactionVisible": {
+          "title": "Reactionvisible",
+          "type": "boolean"
+        },
+        "stagingRisks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Stagingrisks",
+          "type": "array"
+        },
+        "productionRisks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Productionrisks",
+          "type": "array"
+        },
+        "duplicateSignature": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Duplicatesignature",
+          "type": "object"
+        }
+      },
+      "required": [
+        "openingDelayed",
+        "goalDeclared",
+        "mechanismIds",
+        "classifiedRules",
+        "confusion",
+        "loopCue",
+        "speechWords",
+        "longSpeech",
+        "audioRequired",
+        "reactionVisible",
+        "stagingRisks",
+        "productionRisks",
+        "duplicateSignature"
+      ],
+      "title": "CommonFacts",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "short-form-canonical-evidence-v1",
+      "default": "short-form-canonical-evidence-v1",
+      "title": "Version",
+      "type": "string"
+    },
+    "sourceKind": {
+      "enum": [
+        "TIMED_TEXT_V1",
+        "STRUCTURED_CANONICAL_V1"
+      ],
+      "title": "Sourcekind",
+      "type": "string"
+    },
+    "beats": {
+      "items": {
+        "$ref": "#/$defs/BeatFeatures"
+      },
+      "title": "Beats",
+      "type": "array"
+    },
+    "acquisition": {
+      "items": {
+        "$ref": "#/$defs/BeatAcquisition"
+      },
+      "title": "Acquisition",
+      "type": "array"
+    },
+    "facts": {
+      "$ref": "#/$defs/CommonFacts"
+    },
+    "dimensions": {
+      "additionalProperties": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "default": {},
+      "title": "Dimensions",
+      "type": "object"
+    }
+  },
+  "required": [
+    "sourceKind",
+    "beats",
+    "acquisition",
+    "facts"
+  ],
+  "title": "ShortFormCanonicalEvidence",
+  "type": "object"
+}

@@ -1,0 +1,732 @@
+Continue from the current repository state.
+
+The latest read-only review of the 18 semantic HUMAN_REVIEW_SET candidates exposed a cross-layer evidence inconsistency.
+
+DO NOT generate new concepts.
+
+DO NOT call any provider.
+
+DO NOT change thresholds.
+
+DO NOT expand taxonomies.
+
+DO NOT render media.
+
+======================================================================
+PROVEN PROBLEM
+======================================================================
+
+Structured Evidence Input V1 fixed evidence consumption inside SHORT_FORM_ENGINE.
+
+This produced major score changes:
+
+legacy mean:
+27.64
+
+structured mean:
+59.61
+
+SFE PASS:
+raw-007
+raw-013
+raw-026
+raw-027
+
+However downstream systems are still not consistently consuming the same canonical structured evidence.
+
+Examples:
+
+raw-007
+raw-026
+raw-027
+
+all receive:
+
+DECLARED_GOAL_UNSUPPORTED
+
+Source:
+
+SHORT_FORM_ENGINE_GOAL_PATTERN
+
+Field:
+
+protagonistGoal
+
+despite structured SFE recognizing enough evidence for each concept to score PASS.
+
+This strongly suggests downstream ranking/admission still depends on legacy lexical/timed-text evidence.
+
+raw-013 demonstrates another cross-layer contradiction:
+
+SHORT_FORM_ENGINE:
+99 PASS
+
+individual ranking:
+97.6
+
+but production preselection reports:
+
+OPENING_EVIDENCE_INSUFFICIENT
+naturalness opening legibility = 15
+
+BEAT_GRAMMAR_QUALITY_FLOOR
+Beat Grammar = MECHANICAL
+
+PREMISE_NOT_ADMITTED
+Premise = BROKEN
+admitted = false
+UNSUPPORTED_RESPONSE
+
+The same concept is therefore being evaluated against inconsistent evidence representations across layers.
+
+======================================================================
+PRIMARY GOAL
+======================================================================
+
+Create a source-independent:
+
+CANONICAL CREATIVE EVIDENCE CONTEXT
+
+that can be consumed consistently by:
+
+- SHORT_FORM_ENGINE
+- Premise Naturalness
+- Beat Grammar
+- ranking eligibility/admission
+- Creative Shape where relevant
+- production preselection where relevant
+
+Do NOT unify the scoring systems.
+
+Unify only their factual evidence source.
+
+======================================================================
+1. ONE FACT BASE, MULTIPLE EVALUATORS
+======================================================================
+
+Target architecture:
+
+RAW / TIMED / SEMANTIC INPUT
+            ↓
+CANONICAL CREATIVE EVIDENCE
+            ↓
+ ┌──────────┬────────────┬────────────┬───────────────┐
+ SFE     Naturalness   BeatGrammar   Ranking/Admission
+ └──────────┴────────────┴────────────┴───────────────┘
+
+Each evaluator keeps its own rules.
+
+But all evaluators should agree on basic factual questions such as:
+
+- is a goal declared?
+- is it visible in the opening?
+- is there a rule?
+- is there a trigger?
+- what beats are described?
+- what consequences are explicit?
+- is a payoff present?
+
+======================================================================
+2. DO NOT FORCE SCORE AGREEMENT
+======================================================================
+
+Different engines may still disagree legitimately.
+
+Example:
+
+SFE may say:
+goal is visible enough
+
+Premise Naturalness may say:
+object-response relationship is weak
+
+That is acceptable.
+
+What is NOT acceptable:
+
+one layer says:
+goal missing
+
+while another layer has explicit canonical evidence that the same goal is present.
+
+Distinguish:
+
+FACT DISAGREEMENT
+
+from
+
+QUALITY JUDGMENT DIFFERENCE.
+
+======================================================================
+3. FACTUAL EVIDENCE FIELDS
+======================================================================
+
+Use or extend the existing canonical evidence structure.
+
+At minimum centralize:
+
+goal:
+- declared
+- visibleInOpening
+- everyday
+- source
+
+opening:
+- goalPresent
+- anomalyPresent
+- problemPresent
+- causalRelationshipVisible
+
+rule:
+- present
+- visible
+- dominant
+- goalRelated
+- classificationStatus
+
+trigger:
+- present
+- visible
+- classificationStatus
+
+beats:
+- described beats
+- strategy
+- visible consequence
+- new information
+- supported state changes
+
+payoff:
+- present
+- ruleLinked
+- stateChanging
+- visual
+- classificationStatus
+
+loop:
+- declared
+- supported
+
+Keep strict provenance.
+
+======================================================================
+4. RANKING / ELIGIBILITY MIGRATION
+======================================================================
+
+The most urgent downstream issue is ranking admission.
+
+Trace exactly how findings such as:
+
+DECLARED_GOAL_UNSUPPORTED
+
+are currently produced.
+
+If they independently re-parse text using:
+
+SHORT_FORM_ENGINE_GOAL_PATTERN
+
+or similar legacy lexical assumptions,
+
+allow ranking/admission to consume canonical goal evidence when structured evidence mode is selected.
+
+DO NOT change the meaning of the eligibility rule.
+
+Change only evidence acquisition.
+
+======================================================================
+5. RAW-007 / RAW-026 / RAW-027 GOLDEN CASES
+======================================================================
+
+These three candidates are required regression cases.
+
+Currently:
+
+SFE = PASS
+
+full ranking = INELIGIBLE
+
+because:
+
+DECLARED_GOAL_UNSUPPORTED
+
+For each candidate determine:
+
+A. Does canonical structured evidence truly support a visible everyday goal?
+
+If YES:
+the downstream finding should no longer be caused by missing lexical recognition.
+
+If NO:
+the finding may remain, but must be supported by canonical evidence showing why visibility is insufficient.
+
+Do NOT automatically make them eligible.
+
+======================================================================
+6. RAW-013 CONSISTENCY AUDIT
+======================================================================
+
+raw-013:
+
+SFE = 99 PASS
+individual ranking = 97.6
+full ranking eligible
+
+but production preselection blocks it with:
+
+OPENING_EVIDENCE_INSUFFICIENT
+BEAT_GRAMMAR_QUALITY_FLOOR
+PREMISE_NOT_ADMITTED
+
+Audit each of these separately.
+
+For each report:
+
+FACT USED
+
+EVIDENCE SOURCE
+
+QUALITY RULE
+
+WHY IT DIFFERS FROM SFE
+
+Determine whether the disagreement is:
+
+LEGITIMATE_QUALITY_DIFFERENCE
+
+or
+
+EVIDENCE_SOURCE_MISMATCH
+
+or
+
+TAXONOMY_COVERAGE_LIMIT
+
+or
+
+BUG
+
+Do not change behavior until classified.
+
+======================================================================
+7. PREMISE NATURALNESS MIGRATION
+======================================================================
+
+Premise Naturalness currently may depend on assumptions from deterministic generation.
+
+Allow it to consume canonical facts such as:
+
+- normal expectation
+- impossible rule
+- why-this-object relation
+- visible trigger
+- opening state
+
+Do NOT automatically mark a semantic concept STRONG.
+
+Naturalness still applies its own quality rules.
+
+======================================================================
+8. UNSUPPORTED_RESPONSE AUDIT
+======================================================================
+
+raw-013 currently receives:
+
+UNSUPPORTED_RESPONSE
+
+Investigate exactly what “response” means in this rule.
+
+Determine whether:
+
+A. response is genuinely absent
+
+B. response is explicit in structured evidence but taxonomy cannot classify it
+
+C. response exists but compatibility table does not include it
+
+D. lexical extraction failed
+
+Do NOT expand compatibility/taxonomy yet.
+
+Return exact category.
+
+======================================================================
+9. BEAT GRAMMAR MIGRATION
+======================================================================
+
+Beat Grammar should be able to consume:
+
+structured strategies
+structured consequences
+newInformation
+body/spatial state where available
+
+without relying on deterministic-generator-specific prose.
+
+However:
+
+MECHANICAL may remain if the actual beat sequence is genuinely formulaic.
+
+For raw-013 report exactly why:
+
+BeatGrammarQuality = MECHANICAL.
+
+Distinguish:
+
+actual repetitive choreography
+
+from
+
+structured evidence not recognized.
+
+======================================================================
+10. OPENING EVIDENCE CONSISTENCY
+======================================================================
+
+There are currently 18/18 HUMAN_REVIEW candidates with opening evidence uncertainty.
+
+This is suspicious after Structured SFE.
+
+Build an opening evidence audit across all 18.
+
+For each candidate report:
+
+canonical opening goal present?
+canonical anomaly present?
+canonical problem present?
+causal relation visible?
+SFE opening judgment
+Naturalness opening judgment
+ranking opening judgment
+
+Classify disagreement.
+
+======================================================================
+11. NO SHARED SCORE
+======================================================================
+
+Do NOT create one global creative score.
+
+We still want independent evaluators.
+
+Only factual evidence should be shared.
+
+======================================================================
+12. SOURCE-INDEPENDENT MODE
+======================================================================
+
+Canonical evidence should eventually work for:
+
+TIMED_TEXT
+SEMANTIC
+MANUAL
+
+The downstream evaluator must not know or care that a fact originally came from DeepSeek.
+
+Keep provenance for auditing, not scoring preference.
+
+======================================================================
+13. PRESENT_UNCLASSIFIED HANDLING
+======================================================================
+
+Current structured replay reports:
+
+29 unclassified engines
+25 unclassified triggers
+33 unclassified payoffs
+
+Do NOT expand taxonomy.
+
+But downstream systems must distinguish:
+
+MISSING
+
+from
+
+PRESENT_UNCLASSIFIED.
+
+A rule must not fail “rule presence” because taxonomy lacks its name.
+
+Quality rules that specifically require classification may still remain unresolved.
+
+======================================================================
+14. DISAGREEMENT MATRIX
+======================================================================
+
+For all 18 HUMAN_REVIEW candidates build a matrix:
+
+FACT:
+goal declared
+goal visible
+opening anomaly
+rule present
+trigger present
+beat count
+payoff present
+
+VERSUS:
+
+SFE
+Premise Naturalness
+Beat Grammar
+Ranking/Admission
+
+Mark:
+
+AGREE
+LEGITIMATE_RULE_DIFFERENCE
+EVIDENCE_SOURCE_MISMATCH
+TAXONOMY_LIMIT
+UNKNOWN
+
+This is a major required artifact.
+
+======================================================================
+15. OFFLINE ONLY
+======================================================================
+
+Use the existing stored DeepSeek response and structured replay.
+
+External provider calls:
+0
+
+New concepts:
+0
+
+Render:
+0
+
+======================================================================
+16. FIRST RUN AS AUDIT
+======================================================================
+
+Before changing downstream consumers:
+
+run an audit-only analysis.
+
+Identify all evidence-source mismatches.
+
+Persist this baseline.
+
+Then implement canonical-evidence consumption.
+
+Then run the same 18 candidates again.
+
+Compare.
+
+======================================================================
+17. DO NOT FORCE ELIGIBILITY
+======================================================================
+
+After migration:
+
+some concepts may remain INELIGIBLE.
+
+That is expected.
+
+The target is NOT:
+
+more passes.
+
+The target is:
+
+correct reasons.
+
+If raw-007 remains blocked because the goal truly is not visually supported:
+
+good.
+
+If it was blocked only because lexical extraction missed an explicit visible goal:
+
+fix that.
+
+======================================================================
+18. DO NOT FORCE RAW-013 INTO PRODUCTION
+======================================================================
+
+raw-013 is a diagnostic case.
+
+Do not promote it manually.
+
+After evidence propagation, let all existing quality rules run normally.
+
+If it still fails because:
+
+Beat Grammar genuinely mechanical
+or premise genuinely broken
+
+that is valid.
+
+======================================================================
+19. ALL 18 BEFORE / AFTER
+======================================================================
+
+Return every HUMAN_REVIEW candidate with:
+
+BEFORE:
+SFE status
+Naturalness
+Beat Grammar
+eligibility
+production-preselection blockers
+
+AFTER:
+same fields
+
+DELTA
+
+CAUSE OF DELTA
+
+Do not return only changed candidates.
+
+======================================================================
+20. DOWNSTREAM BLOCKER RECOUNT
+======================================================================
+
+Current blocker counts include:
+
+ranking threshold record: 17
+eligibility/admission: 18
+taxonomy/coverage-related premise blocker: 18
+opening evidence uncertainty: 18
+Beat Grammar blocker: 18
+SFE quality blocker: 11
+
+After canonical evidence propagation, report the same counts.
+
+Do not interpret lower counts automatically as improvement.
+
+======================================================================
+21. GOLDEN TESTS
+======================================================================
+
+Add tests proving:
+
+A. all evaluators consume the same declared-goal fact
+
+B. evaluators may legitimately disagree on goal quality
+
+C. ranking does not re-parse goal text when canonical structured evidence is selected
+
+D. explicit structured rule is not treated as missing downstream
+
+E. PRESENT_UNCLASSIFIED is distinct from missing
+
+F. explicit payoff presence propagates downstream
+
+G. Naturalness still applies independent quality judgment
+
+H. Beat Grammar still applies independent quality judgment
+
+I. raw-007 evidence mismatch is correctly audited
+
+J. raw-026 evidence mismatch is correctly audited
+
+K. raw-027 evidence mismatch is correctly audited
+
+L. raw-013 preselection blockers are individually classified
+
+M. canonical evidence cannot inject scores
+
+N. canonical evidence cannot inject pass/fail
+
+O. legacy timed-text behavior remains unchanged
+
+P. structured SFE results remain unchanged
+
+Q. no provider calls occur
+
+R. historical evidence remains unchanged
+
+======================================================================
+22. LEGACY SAFETY
+======================================================================
+
+Do NOT alter default legacy timed-text production behavior unless explicitly selecting structured canonical evidence mode.
+
+All historical accepted fixtures must remain stable.
+
+======================================================================
+23. TEST INTEGRITY
+======================================================================
+
+Full regression must end with:
+
+only the accepted 36 baseline failures
+
+and the existing skips.
+
+No new integrity failures.
+
+Use the newly approved active-code hash mechanism correctly if active implementation files must change.
+
+Do not modify frozen historical manifests.
+
+======================================================================
+24. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. architecture summary
+2. files changed
+3. canonical creative evidence context
+4. audit-only disagreement matrix
+5. evidence-source mismatch count before
+6. all 18 before/after results
+7. raw-007 exact result
+8. raw-026 exact result
+9. raw-027 exact result
+10. raw-013 deep consistency result
+11. opening evidence comparison across all 18
+12. Naturalness changes
+13. Beat Grammar changes
+14. ranking/admission changes
+15. production-preselection changes
+16. blocker counts before/after
+17. legitimate quality disagreements that remain
+18. taxonomy-limit disagreements that remain
+19. exact test results
+20. proof provider calls = 0
+21. proof Structured SFE results remain unchanged
+22. proof historical evidence remains unchanged
+23. proof only accepted 36 baseline failures remain
+
+======================================================================
+25. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+more concepts become eligible.
+
+Success is:
+
+all creative evaluators operate from the same factual evidence while retaining their own independent quality judgments.
+
+After this change, when one layer rejects a concept, we should be able to say:
+
+"It saw the same facts and disagreed on quality."
+
+not:
+
+"It never saw the fact at all."
+
+======================================================================
+26. STOP
+======================================================================
+
+After canonical evidence propagation and offline replay:
+
+STOP.
+
+Do NOT:
+
+expand taxonomy
+change thresholds
+call DeepSeek
+generate new ideas
+change semantic prompt
+create video prompts
+render media.
+
+Implement Canonical Evidence Propagation V1 and replay only the existing 18 HUMAN_REVIEW candidates offline.

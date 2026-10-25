@@ -1,0 +1,16 @@
+{
+  "experimentId": "semantic-live-v1-seed-42-count-40",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "maxRequestCount": 1,
+  "requestedRawCount": 40,
+  "requestedFinalCount": 20,
+  "seed": 42,
+  "maxOutputTokens": 64000,
+  "timeoutSeconds": 90,
+  "automaticRetries": 0,
+  "fallback": false,
+  "maxCostUsd": 2,
+  "liveGenerationByteDeterministic": false,
+  "allowExternalGeneration": false
+}

@@ -1,0 +1,25 @@
+{
+  "protectedFileCount": 249,
+  "protectedFilesUnchanged": true,
+  "changedProtectedFiles": [],
+  "validatorsModified": false,
+  "acceptedSemanticV1Modified": false,
+  "frozenHistoricalEvidenceModified": false,
+  "implementationUnchangedSincePreLiveTests": true,
+  "liveProviderRequestCount": 1,
+  "automaticRetries": 0,
+  "productionPromptCalls": 0,
+  "imageGenerationCalls": 0,
+  "videoGenerationCalls": 0,
+  "renders": 0,
+  "replayProviderCalls": 0,
+  "liveByteDeterminismClaimed": false,
+  "storedResponseReplayByteIdentical": true,
+  "analysisSha256": "33b564509e71f87a64ad1419ee9eed761e3db4567953be08f6b64942d1cba50a",
+  "replaySha256": "33b564509e71f87a64ad1419ee9eed761e3db4567953be08f6b64942d1cba50a",
+  "actualCostMetadataAvailable": false,
+  "limitations": [
+    "A 90-second SDK timeout is an HTTP inactivity setting, not an overall wall-clock deadline. Recorded live timestamps span about 530 seconds.",
+    "Inherited V1 orchestration labels/counters remain unchanged; provider-metadata.json is authoritative for live calls."
+  ]
+}

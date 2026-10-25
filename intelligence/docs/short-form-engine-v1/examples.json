@@ -1,0 +1,2264 @@
+{
+  "scope": "OFFLINE_SOURCE_PLAN_SCREENING_NOT_VIDEO_OR_AUDIENCE_EVIDENCE",
+  "examples": {
+    "historical_winner": {
+      "provenance": "FROZEN_REAL_PRODUCTION_PROMPT_WITH_EXISTING_WINNER_LABEL",
+      "text": "Create a highly engaging 15\u201318 second vertical 9:16 Pompom Hills Instagram Reel.\n\nUse the official existing Pompom Hills character references exactly.\nMAIN CHARACTER: KIKO\n\nDo not redesign Kiko.\nDo not replace her with a generic child.\n\nSERIES:\nPompom English \u2014 What\u2019s Wrong?\n\nCORE ENGLISH:\nCHAIR\nUP\nDOWN\n\u201cIt\u2019s upside down!\u201d\n\nSETTING:\nBright Pompom Hills playroom or garden patio.\nKeep the environment simple and instantly readable.\n\n--------------------------------------------------\n0.0\u20130.8 SEC \u2014 HARD SCROLL-STOP HOOK\n--------------------------------------------------\n\nStart immediately.\n\nKiko runs toward a chair to sit down.\n\nBUT THE CHAIR IS COMPLETELY UPSIDE DOWN.\n\nLegs pointing into the air.\n\nKiko is already halfway into the sitting motion before noticing.\n\nShe freezes inches above it.\n\nEyes huge.\n\nShe blurts:\n\n\u201cWHAT?!\u201d\n\nNO establishing shot.\nThe upside-down chair must dominate the first frame.\n\n--------------------------------------------------\n0.8\u20133.5 SEC\n--------------------------------------------------\n\nKiko points:\n\n\u201cA CHAIR!\u201d\n\nThen looks confused.\n\nShe says clearly:\n\n\u201cIt\u2019s upside down!\u201d\n\nShe grabs the chair and flips it correctly.\n\n--------------------------------------------------\n3.5\u20136.0 SEC\n--------------------------------------------------\n\nKiko smiles proudly.\n\n\u201cUp\u2026 down!\u201d\n\nShe points upward while saying UP.\nThen downward while saying DOWN.\n\nShe turns around to sit.\n\n--------------------------------------------------\n6.0\u20138.5 SEC \u2014 FIRST ESCALATION\n--------------------------------------------------\n\nThe instant Kiko turns away\u2014\n\nFLIP!\n\nThe chair turns upside down by itself.\n\nKiko sits toward empty space and catches herself at the last second.\n\nShe spins around.\n\n--------------------------------------------------\n8.5\u201311.5 SEC\n--------------------------------------------------\n\nKiko flips it back.\n\nShe stares directly at the chair.\n\nChair stays normal.\n\nKiko slowly turns her head away.\n\nFLIP!\n\nShe immediately looks back.\n\nChair is upside down.\n\n--------------------------------------------------\n11.5\u201314.5 SEC \u2014 COMEDY PAYOFF\n--------------------------------------------------\n\nKiko becomes determined.\n\nShe keeps staring at the chair.\n\nShe slowly walks backward toward it without looking away.\n\nShe says:\n\n\u201cStay DOWN!\u201d\n\nThe chair behaves.\n\nKiko smiles.\n\n--------------------------------------------------\n14.5\u201317.0 SEC \u2014 TWIST + LOOP\n--------------------------------------------------\n\nKiko finally sits.\n\nThe ENTIRE chair suddenly flips upside down WITH Kiko on it.\n\nKiko ends upside down and shouts:\n\n\u201cAGAIN?!\u201d\n\nCut immediately.\n\nLoop back to the first upside-down chair.\n\n--------------------------------------------------\nMANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK\n--------------------------------------------------\n\nExact English dialogue REQUIRED:\n\nKiko:\n\u201cWHAT?!\u201d\n\nKiko:\n\u201cA CHAIR!\u201d\n\nKiko:\n\u201cIt\u2019s upside down!\u201d\n\nKiko:\n\u201cUp\u2026 down!\u201d\n\nKiko:\n\u201cStay DOWN!\u201d\n\nKiko:\n\u201cAGAIN?!\u201d\n\nAll lines must be clearly audible English.\n\nVisible mouth movement.\nAccurate lip-sync.\n\nDo not:\n- remove dialogue\n- translate it\n- replace dialogue with subtitles\n- create a silent version\n- add narration\n\n--------------------------------------------------\nINSTAGRAM RETENTION RULES\n--------------------------------------------------\n\nSomething must change every 1\u20132 seconds.\n\nThe problem must be understandable without sound.\n\nDo not make the chair movement subtle.\n\nChair flips must be fast and visually obvious.\n\nNo moral lesson.\nNo slow ending.\nNo waiting after final joke.\nNo text generated inside scene.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "PASS_WITH_WARNINGS",
+        "shortFormScore": 94,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 85,
+        "progressDensityScore": 86,
+        "escalationScore": 78,
+        "payoffScore": 100,
+        "rewatchScore": 100,
+        "silentLegibilityScore": 100,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "INVERSION"
+        ],
+        "majorCausalBeatCount": 6,
+        "describedBlockCount": 7,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 0.8,
+            "quote": "--------------------------------------------------\n\nStart immediately.\n\nKiko runs toward a chair to sit down.\n\nBUT THE CHAIR IS COMPLETELY UPSIDE DOWN.\n\nLegs pointing into the air.\n\nKiko is already halfway into the sitting motion before noticing.\n\nShe freezes inches above it.\n\nEyes huge.\n\nShe blurts:\n\n\u201cWHAT?!\u201d\n\nNO establishing shot.\nThe upside-down chair must dominate the first frame.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              521,
+              960
+            ],
+            "visual": "-------------------------------------------------- Start immediately. Kiko runs toward a chair to sit down. BUT THE CHAIR IS COMPLETELY UPSIDE DOWN. Legs pointing into the air. Kiko is already halfway into the sitting motion before noticing. She freezes inches above it. Eyes huge. She blurts: --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [],
+            "changes": [
+              "MAGNITUDE"
+            ],
+            "stateSignals": [
+              "MAGNITUDE:huge"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 0.8,
+            "end": 3.5,
+            "quote": "--------------------------------------------------\n\nKiko points:\n\n\u201cA CHAIR!\u201d\n\nThen looks confused.\n\nShe says clearly:\n\n\u201cIt\u2019s upside down!\u201d\n\nShe grabs the chair and flips it correctly.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              973,
+              1208
+            ],
+            "visual": "-------------------------------------------------- Kiko points: Then looks confused. She grabs the chair and flips it correctly. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "GRAB_HOLD",
+              "INVERT"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B3",
+            "start": 3.5,
+            "end": 6.0,
+            "quote": "--------------------------------------------------\n\nKiko smiles proudly.\n\n\u201cUp\u2026 down!\u201d\n\nShe points upward while saying UP.\nThen downward while saying DOWN.\n\nShe turns around to sit.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              1221,
+              1453
+            ],
+            "visual": "-------------------------------------------------- Kiko smiles proudly. She points upward while saying UP. Then downward while saying DOWN. She turns around to sit. --------------------------------------------------",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B4",
+            "start": 6.0,
+            "end": 8.5,
+            "quote": "--------------------------------------------------\n\nThe instant Kiko turns away\u2014\n\nFLIP!\n\nThe chair turns upside down by itself.\n\nKiko sits toward empty space and catches herself at the last second.\n\nShe spins around.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              1485,
+              1753
+            ],
+            "visual": "-------------------------------------------------- The instant Kiko turns away\u2014 FLIP! The chair turns upside down by itself. Kiko sits toward empty space and catches herself at the last second. She spins around. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "BREAK_GAZE",
+              "INVERT"
+            ],
+            "changes": [
+              "CONSTRAINT",
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "CONSTRAINT:pins",
+              "INFORMATION:turns away"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B5",
+            "start": 8.5,
+            "end": 11.5,
+            "quote": "--------------------------------------------------\n\nKiko flips it back.\n\nShe stares directly at the chair.\n\nChair stays normal.\n\nKiko slowly turns her head away.\n\nFLIP!\n\nShe immediately looks back.\n\nChair is upside down.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              1767,
+              2039
+            ],
+            "visual": "-------------------------------------------------- Kiko flips it back. She stares directly at the chair. Chair stays normal. Kiko slowly turns her head away. FLIP! She immediately looks back. Chair is upside down. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "INVERT",
+              "OBSERVE",
+              "BREAK_GAZE"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:stays normal",
+              "INFORMATION:turns her head away",
+              "INFORMATION:looks back"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B6",
+            "start": 11.5,
+            "end": 14.5,
+            "quote": "--------------------------------------------------\n\nKiko becomes determined.\n\nShe keeps staring at the chair.\n\nShe slowly walks backward toward it without looking away.\n\nShe says:\n\n\u201cStay DOWN!\u201d\n\nThe chair behaves.\n\nKiko smiles.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              2070,
+              2349
+            ],
+            "visual": "-------------------------------------------------- Kiko becomes determined. She keeps staring at the chair. She slowly walks backward toward it without looking away. The chair behaves. Kiko smiles. --------------------------------------------------",
+            "rules": [],
+            "strategies": [
+              "BACKWARD_APPROACH"
+            ],
+            "changes": [
+              "POSITION",
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "POSITION:backward",
+              "INFORMATION:behaves"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B7",
+            "start": 14.5,
+            "end": 17.0,
+            "quote": "--------------------------------------------------\n\nKiko finally sits.\n\nThe ENTIRE chair suddenly flips upside down WITH Kiko on it.\n\nKiko ends upside down and shouts:\n\n\u201cAGAIN?!\u201d\n\nCut immediately.\n\nLoop back to the first upside-down chair.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              2379,
+              2670
+            ],
+            "visual": "-------------------------------------------------- Kiko finally sits. The ENTIRE chair suddenly flips upside down WITH Kiko on it. Kiko ends upside down and shouts: Cut immediately. Loop back to the first upside-down chair. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "INVERT"
+            ],
+            "changes": [
+              "POSITION"
+            ],
+            "stateSignals": [
+              "POSITION:with kiko on it"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "ESCALATION",
+              "CONSEQUENCE",
+              "PAYOFF"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "ESCALATION_PLATEAU",
+            "severity": "WARNING",
+            "message": "Longest gap between supported developments is 5.2s; aim for change every 2\u20134s.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 5.2,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Next materially different attempt, consequence or final physical state.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "INTENTIONAL_REWATCH",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 100,
+          "reaction": 100,
+          "payoff": 100
+        },
+        "dialogue": {
+          "words": 11,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 17.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "PASS_WITH_WARNINGS: short-form 94/100; 6 causal beats in 7 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    },
+    "structurally_different": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Mimi tries to close the lid, but it pops open against her hands. Her eyes widen.\n3-6s: Mimi pushes harder with both hands; the lid springs open and spills crumbs.\n6-9s: She clamps the lid underneath her arm; it pops open and traps her arm against the table.\n9-12s: She wedges the lid behind her back; it stays normal only when she looks back.\n12-15s: Mimi finally closes the lid and relaxes. Behind her back it pops open again, recreating the opening. Loop back to the first frame.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "PASS",
+        "shortFormScore": 100,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 100,
+        "progressDensityScore": 100,
+        "escalationScore": 100,
+        "payoffScore": 100,
+        "rewatchScore": 100,
+        "silentLegibilityScore": 100,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "RECURRENCE"
+        ],
+        "majorCausalBeatCount": 5,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Mimi tries to close the lid, but it pops open against her hands. Her eyes widen.",
+            "sourceSpan": [
+              6,
+              86
+            ],
+            "visual": "Mimi tries to close the lid, but it pops open against her hands. Her eyes widen.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Mimi pushes harder with both hands; the lid springs open and spills crumbs.",
+            "sourceSpan": [
+              93,
+              168
+            ],
+            "visual": "Mimi pushes harder with both hands; the lid springs open and spills crumbs.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [
+              "MAGNITUDE"
+            ],
+            "stateSignals": [
+              "MAGNITUDE:harder",
+              "MAGNITUDE:both hands"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "She clamps the lid underneath her arm; it pops open and traps her arm against the table.",
+            "sourceSpan": [
+              175,
+              263
+            ],
+            "visual": "She clamps the lid underneath her arm; it pops open and traps her arm against the table.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "CLAMP"
+            ],
+            "changes": [
+              "CONSTRAINT",
+              "POSITION"
+            ],
+            "stateSignals": [
+              "CONSTRAINT:traps",
+              "POSITION:underneath"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "She wedges the lid behind her back; it stays normal only when she looks back.",
+            "sourceSpan": [
+              271,
+              348
+            ],
+            "visual": "She wedges the lid behind her back; it stays normal only when she looks back.",
+            "rules": [],
+            "strategies": [
+              "WEDGE"
+            ],
+            "changes": [
+              "CONSTRAINT",
+              "POSITION",
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "CONSTRAINT:wedges",
+              "POSITION:behind her back",
+              "INFORMATION:stays normal",
+              "INFORMATION:only when",
+              "INFORMATION:looks back"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "Mimi finally closes the lid and relaxes. Behind her back it pops open again, recreating the opening. Loop back to the first frame.",
+            "sourceSpan": [
+              357,
+              487
+            ],
+            "visual": "Mimi finally closes the lid and relaxes. Behind her back it pops open again, recreating the opening. Loop back to the first frame.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [],
+            "changes": [
+              "POSITION"
+            ],
+            "stateSignals": [
+              "POSITION:behind her back"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "PAYOFF"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          }
+        ],
+        "findings": [],
+        "escalationCurve": {
+          "longestPlateauSeconds": 3.0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Next materially different attempt, consequence or final physical state.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "INTENTIONAL_REWATCH",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 100,
+          "reaction": 100,
+          "payoff": 100
+        },
+        "dialogue": {
+          "words": 0,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "PASS: short-form 100/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "5e31bda75094f407091490ee645e3f9c851c1a46b4be82acddd0fab0944c9de9",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    },
+    "activity_without_progress": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Kiko tries to sit on an upside-down chair. Her eyes widen.\n3-6s: Kiko runs around and looks surprised.\n6-9s: She jumps, waves, spins and smiles.\n9-12s: Kiko runs around and looks surprised again.\n12-15s: She smiles and celebrates.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "REVISION_REQUIRED",
+        "shortFormScore": 56,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 25,
+        "progressDensityScore": 20,
+        "escalationScore": 0,
+        "payoffScore": 15,
+        "rewatchScore": 60,
+        "silentLegibilityScore": 79,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "INVERSION"
+        ],
+        "majorCausalBeatCount": 1,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Kiko tries to sit on an upside-down chair. Her eyes widen.",
+            "sourceSpan": [
+              6,
+              64
+            ],
+            "visual": "Kiko tries to sit on an upside-down chair. Her eyes widen.",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Kiko runs around and looks surprised.",
+            "sourceSpan": [
+              71,
+              108
+            ],
+            "visual": "Kiko runs around and looks surprised.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "She jumps, waves, spins and smiles.",
+            "sourceSpan": [
+              115,
+              150
+            ],
+            "visual": "She jumps, waves, spins and smiles.",
+            "rules": [],
+            "strategies": [],
+            "changes": [
+              "CONSTRAINT"
+            ],
+            "stateSignals": [
+              "CONSTRAINT:pins"
+            ],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "Kiko runs around and looks surprised again.",
+            "sourceSpan": [
+              158,
+              201
+            ],
+            "visual": "Kiko runs around and looks surprised again.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "She smiles and celebrates.",
+            "sourceSpan": [
+              210,
+              236
+            ],
+            "visual": "She smiles and celebrates.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "TOO_FEW_CAUSAL_BEATS",
+            "severity": "REVISION_REQUIRED",
+            "message": "1 supported causal beats; target 4\u20135, normally 4\u20136.",
+            "beatIds": []
+          },
+          {
+            "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+            "severity": "REVISION_REQUIRED",
+            "message": "5 described blocks contain only 1 supported causal developments.",
+            "beatIds": []
+          },
+          {
+            "code": "ESCALATION_PLATEAU",
+            "severity": "WARNING",
+            "message": "Longest gap between supported developments is 15s; aim for change every 2\u20134s.",
+            "beatIds": []
+          },
+          {
+            "code": "WEAK_VISUAL_PAYOFF",
+            "severity": "REVISION_REQUIRED",
+            "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 15.0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Not established beyond repeated activity.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 100,
+          "reaction": 100,
+          "payoff": 15
+        },
+        "dialogue": {
+          "words": 0,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "REVISION_REQUIRED: short-form 56/100; 1 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "b3e5e773e520df01f041cc52175434368ba9a8097fda27bfa2f70f225c475d8d",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    },
+    "beautiful_unclear": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Beautiful golden light fills a sparkling garden. Kiko looks surprised.\n3-6s: Kiko tries to close the lid but it pops open.\n6-9s: She pushes harder with both hands; it springs open and spills crumbs.\n9-12s: She wedges it behind her back; it pops open and traps her arm.\n12-15s: It pops open again and spills crumbs; loop back to the opening.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "REVISION_REQUIRED",
+        "shortFormScore": 41,
+        "hookScore": 10,
+        "goalScore": 55,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 25,
+        "progressDensityScore": 40,
+        "escalationScore": 64,
+        "payoffScore": 15,
+        "rewatchScore": 60,
+        "silentLegibilityScore": 56,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 10,
+          "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+        },
+        "alreadyInTrouble": false,
+        "rules": [
+          "RECURRENCE"
+        ],
+        "majorCausalBeatCount": 2,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Beautiful golden light fills a sparkling garden. Kiko looks surprised.",
+            "sourceSpan": [
+              6,
+              76
+            ],
+            "visual": "Beautiful golden light fills a sparkling garden. Kiko looks surprised.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Kiko tries to close the lid but it pops open.",
+            "sourceSpan": [
+              83,
+              128
+            ],
+            "visual": "Kiko tries to close the lid but it pops open.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "She pushes harder with both hands; it springs open and spills crumbs.",
+            "sourceSpan": [
+              135,
+              204
+            ],
+            "visual": "She pushes harder with both hands; it springs open and spills crumbs.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [
+              "MAGNITUDE"
+            ],
+            "stateSignals": [
+              "MAGNITUDE:harder",
+              "MAGNITUDE:both hands"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "She wedges it behind her back; it pops open and traps her arm.",
+            "sourceSpan": [
+              212,
+              274
+            ],
+            "visual": "She wedges it behind her back; it pops open and traps her arm.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "WEDGE"
+            ],
+            "changes": [
+              "CONSTRAINT",
+              "POSITION"
+            ],
+            "stateSignals": [
+              "CONSTRAINT:wedges",
+              "CONSTRAINT:traps",
+              "POSITION:behind her back"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "It pops open again and spills crumbs; loop back to the opening.",
+            "sourceSpan": [
+              283,
+              346
+            ],
+            "visual": "It pops open again and spills crumbs; loop back to the opening.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "OPENING_NOT_IN_TROUBLE",
+            "severity": "REVISION_REQUIRED",
+            "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+            "beatIds": []
+          },
+          {
+            "code": "EVERYDAY_GOAL_UNCLEAR",
+            "severity": "REVISION_REQUIRED",
+            "message": "An immediate visible everyday goal must be understandable at the opening.",
+            "beatIds": []
+          },
+          {
+            "code": "TOO_FEW_CAUSAL_BEATS",
+            "severity": "REVISION_REQUIRED",
+            "message": "2 supported causal beats; target 4\u20135, normally 4\u20136.",
+            "beatIds": []
+          },
+          {
+            "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+            "severity": "REVISION_REQUIRED",
+            "message": "5 described blocks contain only 2 supported causal developments.",
+            "beatIds": []
+          },
+          {
+            "code": "ESCALATION_PLATEAU",
+            "severity": "WARNING",
+            "message": "Longest gap between supported developments is 6s; aim for change every 2\u20134s.",
+            "beatIds": []
+          },
+          {
+            "code": "WEAK_VISUAL_PAYOFF",
+            "severity": "REVISION_REQUIRED",
+            "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 6.0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Not established beyond repeated activity.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+        "silentLegibility": {
+          "goal": 55,
+          "rule": 100,
+          "reaction": 55,
+          "payoff": 15
+        },
+        "dialogue": {
+          "words": 0,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "REVISION_REQUIRED: short-form 41/100; 2 causal beats in 5 blocks. Opening goal/anomaly or immediate timing is not sufficiently supported.",
+        "sourceSha256": "d80929959658b151cdaf7052a3d9e0ce9cf0a25db52a4534d0c1b14b7e1283d9",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    },
+    "identical_attempts": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Kiko tries to close the lid, but it pops open against her hands.\n3-6s: Kiko pushes the lid; it pops open.\n6-9s: Kiko pushes the lid; it pops open.\n9-12s: Kiko pushes the lid; it pops open.\n12-15s: Kiko pushes the lid; it pops open.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "REVISION_REQUIRED",
+        "shortFormScore": 59,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 25,
+        "progressDensityScore": 40,
+        "escalationScore": 0,
+        "payoffScore": 15,
+        "rewatchScore": 60,
+        "silentLegibilityScore": 68,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "RECURRENCE"
+        ],
+        "majorCausalBeatCount": 2,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Kiko tries to close the lid, but it pops open against her hands.",
+            "sourceSpan": [
+              6,
+              70
+            ],
+            "visual": "Kiko tries to close the lid, but it pops open against her hands.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Kiko pushes the lid; it pops open.",
+            "sourceSpan": [
+              77,
+              111
+            ],
+            "visual": "Kiko pushes the lid; it pops open.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "Kiko pushes the lid; it pops open.",
+            "sourceSpan": [
+              118,
+              152
+            ],
+            "visual": "Kiko pushes the lid; it pops open.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "Kiko pushes the lid; it pops open.",
+            "sourceSpan": [
+              160,
+              194
+            ],
+            "visual": "Kiko pushes the lid; it pops open.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "Kiko pushes the lid; it pops open.",
+            "sourceSpan": [
+              203,
+              237
+            ],
+            "visual": "Kiko pushes the lid; it pops open.",
+            "rules": [
+              "RECURRENCE"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "TOO_FEW_CAUSAL_BEATS",
+            "severity": "REVISION_REQUIRED",
+            "message": "2 supported causal beats; target 4\u20135, normally 4\u20136.",
+            "beatIds": []
+          },
+          {
+            "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+            "severity": "REVISION_REQUIRED",
+            "message": "5 described blocks contain only 2 supported causal developments.",
+            "beatIds": []
+          },
+          {
+            "code": "IDENTICAL_ATTEMPTS",
+            "severity": "REVISION_REQUIRED",
+            "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+            "beatIds": [
+              "B3",
+              "B4"
+            ]
+          },
+          {
+            "code": "ESCALATION_PLATEAU",
+            "severity": "WARNING",
+            "message": "Longest gap between supported developments is 12s; aim for change every 2\u20134s.",
+            "beatIds": []
+          },
+          {
+            "code": "WEAK_VISUAL_PAYOFF",
+            "severity": "REVISION_REQUIRED",
+            "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 12.0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Not established beyond repeated activity.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 100,
+          "reaction": 55,
+          "payoff": 15
+        },
+        "dialogue": {
+          "words": 0,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "REVISION_REQUIRED: short-form 59/100; 2 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "5d9c5ea437eb923562a7870025080165a8dddd515f978a95a280969a8581f6d1",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    },
+    "unrelated_rules": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Kiko tries to sit on an upside-down chair.\n3-6s: Kiko pushes harder; a spoon grows bigger.\n6-9s: A new cat flies across the room while the chair transforms into a rocket.\n9-12s: Hundreds of balls multiply and float in another room.\n12-15s: A giant spoon fills the room and reveals a tiny text sign.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "REVISION_REQUIRED",
+        "shortFormScore": 52,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 10,
+        "beatDensityScore": 45,
+        "progressDensityScore": 60,
+        "escalationScore": 10,
+        "payoffScore": 15,
+        "rewatchScore": 60,
+        "silentLegibilityScore": 45,
+        "productionFeasibilityScore": 28,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "INVERSION",
+          "GROWTH",
+          "FLIGHT",
+          "TRANSFORMATION",
+          "MULTIPLICATION"
+        ],
+        "majorCausalBeatCount": 3,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Kiko tries to sit on an upside-down chair.",
+            "sourceSpan": [
+              6,
+              48
+            ],
+            "visual": "Kiko tries to sit on an upside-down chair.",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Kiko pushes harder; a spoon grows bigger.",
+            "sourceSpan": [
+              55,
+              96
+            ],
+            "visual": "Kiko pushes harder; a spoon grows bigger.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [
+              "PUSH"
+            ],
+            "changes": [
+              "MAGNITUDE"
+            ],
+            "stateSignals": [
+              "MAGNITUDE:harder",
+              "MAGNITUDE:bigger"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "A new cat flies across the room while the chair transforms into a rocket.",
+            "sourceSpan": [
+              103,
+              176
+            ],
+            "visual": "A new cat flies across the room while the chair transforms into a rocket.",
+            "rules": [
+              "FLIGHT",
+              "TRANSFORMATION"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "Hundreds of balls multiply and float in another room.",
+            "sourceSpan": [
+              184,
+              237
+            ],
+            "visual": "Hundreds of balls multiply and float in another room.",
+            "rules": [
+              "MULTIPLICATION",
+              "FLIGHT"
+            ],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "A giant spoon fills the room and reveals a tiny text sign.",
+            "sourceSpan": [
+              246,
+              304
+            ],
+            "visual": "A giant spoon fills the room and reveals a tiny text sign.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [],
+            "changes": [
+              "MAGNITUDE",
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "MAGNITUDE:giant",
+              "INFORMATION:reveals"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "MULTIPLE_UNRELATED_RULES",
+            "severity": "REVISION_REQUIRED",
+            "message": "Potential independent rule families ['INVERSION', 'GROWTH', 'FLIGHT', 'TRANSFORMATION', 'MULTIPLICATION']; explain their causal relationship.",
+            "beatIds": []
+          },
+          {
+            "code": "TOO_FEW_CAUSAL_BEATS",
+            "severity": "REVISION_REQUIRED",
+            "message": "3 supported causal beats; target 4\u20135, normally 4\u20136.",
+            "beatIds": []
+          },
+          {
+            "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+            "severity": "REVISION_REQUIRED",
+            "message": "5 described blocks contain only 3 supported causal developments.",
+            "beatIds": []
+          },
+          {
+            "code": "ESCALATION_PLATEAU",
+            "severity": "WARNING",
+            "message": "Longest gap between supported developments is 9s; aim for change every 2\u20134s.",
+            "beatIds": []
+          },
+          {
+            "code": "WEAK_VISUAL_PAYOFF",
+            "severity": "REVISION_REQUIRED",
+            "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+            "beatIds": []
+          },
+          {
+            "code": "SIMULTANEOUS_OBJECTS",
+            "severity": "WARNING",
+            "message": "Production continuity risk; review feasibility separately from premise quality.",
+            "beatIds": []
+          },
+          {
+            "code": "TINY_TEXT",
+            "severity": "WARNING",
+            "message": "Production continuity risk; review feasibility separately from premise quality.",
+            "beatIds": []
+          },
+          {
+            "code": "MULTI_LOCATION",
+            "severity": "WARNING",
+            "message": "Production continuity risk; review feasibility separately from premise quality.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 9.0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Not established beyond repeated activity.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 10,
+          "reaction": 55,
+          "payoff": 15
+        },
+        "dialogue": {
+          "words": 0,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [
+          "SIMULTANEOUS_OBJECTS",
+          "TINY_TEXT",
+          "MULTI_LOCATION",
+          "MULTIPLE_PHYSICS_SYSTEMS"
+        ],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "REVISION_REQUIRED: short-form 52/100; 3 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "ae64575767b9c8aa64f1af6514b3921c417ef68c85ad7592aaecfbfaf4ad6064",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    },
+    "boogeyman_compressed": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Moro explains that he must pass an exam by scaring Noah, only through dialogue.\n3-6s: Moro roars and Noah smiles.\n6-9s: Moro and Noah become friends and discuss trust.\n9-12s: After a long explanation of the badge, Moro refuses the exam, shields Noah and loses the badge.\n12-15s: Noah smiles, says \"The moral lesson is that friendship matters more than winning the exam\" and celebrates.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "REJECT",
+        "shortFormScore": 18,
+        "hookScore": 10,
+        "goalScore": 0,
+        "ruleClarityScore": 0,
+        "beatDensityScore": 25,
+        "progressDensityScore": 0,
+        "escalationScore": 100,
+        "payoffScore": 15,
+        "rewatchScore": 60,
+        "silentLegibilityScore": 18,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 10,
+          "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+        },
+        "alreadyInTrouble": false,
+        "rules": [],
+        "majorCausalBeatCount": 0,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Moro explains that he must pass an exam by scaring Noah, only through dialogue.",
+            "sourceSpan": [
+              6,
+              85
+            ],
+            "visual": "",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Moro roars and Noah smiles.",
+            "sourceSpan": [
+              92,
+              119
+            ],
+            "visual": "Moro roars and Noah smiles.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "Moro and Noah become friends and discuss trust.",
+            "sourceSpan": [
+              126,
+              173
+            ],
+            "visual": "Moro and Noah become friends and discuss trust.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "After a long explanation of the badge, Moro refuses the exam, shields Noah and loses the badge.",
+            "sourceSpan": [
+              181,
+              276
+            ],
+            "visual": "After a long explanation of the badge, Moro refuses the exam, shields Noah and loses the badge.",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "Noah smiles, says \"The moral lesson is that friendship matters more than winning the exam\" and celebrates.",
+            "sourceSpan": [
+              285,
+              391
+            ],
+            "visual": "",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "OPENING_NOT_IN_TROUBLE",
+            "severity": "REVISION_REQUIRED",
+            "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+            "beatIds": []
+          },
+          {
+            "code": "EVERYDAY_GOAL_UNCLEAR",
+            "severity": "REVISION_REQUIRED",
+            "message": "An immediate visible everyday goal must be understandable at the opening.",
+            "beatIds": []
+          },
+          {
+            "code": "CORE_RULE_UNSUPPORTED",
+            "severity": "REVISION_REQUIRED",
+            "message": "No supported dominant visible rule was found.",
+            "beatIds": []
+          },
+          {
+            "code": "TOO_FEW_CAUSAL_BEATS",
+            "severity": "REVISION_REQUIRED",
+            "message": "0 supported causal beats; target 4\u20135, normally 4\u20136.",
+            "beatIds": []
+          },
+          {
+            "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+            "severity": "REVISION_REQUIRED",
+            "message": "5 described blocks contain only 0 supported causal developments.",
+            "beatIds": []
+          },
+          {
+            "code": "WEAK_VISUAL_PAYOFF",
+            "severity": "REVISION_REQUIRED",
+            "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+            "beatIds": []
+          },
+          {
+            "code": "DIALOGUE_LOAD",
+            "severity": "WARNING",
+            "message": "Explanatory dialogue, long lip-sync or word load competes with visual escalation.",
+            "beatIds": []
+          },
+          {
+            "code": "AUDIO_DEPENDENT_CAUSALITY",
+            "severity": "REVISION_REQUIRED",
+            "message": "Essential causality depends on speech or text.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Not established beyond repeated activity.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+        "silentLegibility": {
+          "goal": 0,
+          "rule": 0,
+          "reaction": 55,
+          "payoff": 15
+        },
+        "dialogue": {
+          "words": 12,
+          "audioDependent": true
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "REJECT: short-form 18/100; 0 causal beats in 5 blocks. Opening goal/anomaly or immediate timing is not sufficiently supported.",
+        "sourceSha256": "4ebdb217f64334261ae906ea2748885116f49d216c5cc81463fd0e5951a69607",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      },
+      "separateLongFormReference": {
+        "sourceSha256": "7d6cc71128fa14254387b4cda3eafd0bc6639389ff3a8aa4fafcf58930812712",
+        "status": "PASS_WITH_WARNINGS",
+        "score": 91,
+        "relationship": "Different source: short-form adaptation/compression fixture; the original 60-second text was not rewritten or relabeled."
+      }
+    },
+    "garden_guardian_short": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "0-3s: Arda tries to water the garden; birds flee from his scary costume and knock his watering can aside. His eyes widen.\n3-6s: Arda lifts the can overhead; the birds flinch and spill water onto the seedlings.\n6-9s: Arda holds the can behind his back; the birds flee underneath the fence and water spills onto a dry plant.\n9-12s: Arda turns away and waters the garden; only when his costume faces the birds do they flee toward the dry plants.\n12-15s: Arda reveals that the birds are actually watering the last dry plant as they flee, reinterpreting the opening. His scary costume guards the garden. Loop back to the opening.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "PASS",
+        "shortFormScore": 100,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 100,
+        "progressDensityScore": 100,
+        "escalationScore": 100,
+        "payoffScore": 100,
+        "rewatchScore": 100,
+        "silentLegibilityScore": 100,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "AVOIDANCE"
+        ],
+        "majorCausalBeatCount": 5,
+        "describedBlockCount": 5,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.0,
+            "quote": "Arda tries to water the garden; birds flee from his scary costume and knock his watering can aside. His eyes widen.",
+            "sourceSpan": [
+              6,
+              121
+            ],
+            "visual": "Arda tries to water the garden; birds flee from his scary costume and knock his watering can aside. His eyes widen.",
+            "rules": [
+              "AVOIDANCE"
+            ],
+            "strategies": [
+              "WATER"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B2",
+            "start": 3.0,
+            "end": 6.0,
+            "quote": "Arda lifts the can overhead; the birds flinch and spill water onto the seedlings.",
+            "sourceSpan": [
+              128,
+              209
+            ],
+            "visual": "Arda lifts the can overhead; the birds flinch and spill water onto the seedlings.",
+            "rules": [
+              "AVOIDANCE"
+            ],
+            "strategies": [
+              "LIFT",
+              "WATER"
+            ],
+            "changes": [
+              "POSITION"
+            ],
+            "stateSignals": [
+              "POSITION:overhead"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B3",
+            "start": 6.0,
+            "end": 9.0,
+            "quote": "Arda holds the can behind his back; the birds flee underneath the fence and water spills onto a dry plant.",
+            "sourceSpan": [
+              216,
+              322
+            ],
+            "visual": "Arda holds the can behind his back; the birds flee underneath the fence and water spills onto a dry plant.",
+            "rules": [
+              "AVOIDANCE"
+            ],
+            "strategies": [
+              "HOLD",
+              "WATER"
+            ],
+            "changes": [
+              "POSITION"
+            ],
+            "stateSignals": [
+              "POSITION:behind his back",
+              "POSITION:underneath"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B4",
+            "start": 9.0,
+            "end": 12.0,
+            "quote": "Arda turns away and waters the garden; only when his costume faces the birds do they flee toward the dry plants.",
+            "sourceSpan": [
+              330,
+              442
+            ],
+            "visual": "Arda turns away and waters the garden; only when his costume faces the birds do they flee toward the dry plants.",
+            "rules": [
+              "AVOIDANCE"
+            ],
+            "strategies": [
+              "BREAK_GAZE",
+              "WATER"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:turns away",
+              "INFORMATION:only when"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B5",
+            "start": 12.0,
+            "end": 15.0,
+            "quote": "Arda reveals that the birds are actually watering the last dry plant as they flee, reinterpreting the opening. His scary costume guards the garden. Loop back to the opening.",
+            "sourceSpan": [
+              451,
+              624
+            ],
+            "visual": "Arda reveals that the birds are actually watering the last dry plant as they flee, reinterpreting the opening. His scary costume guards the garden. Loop back to the opening.",
+            "rules": [
+              "AVOIDANCE"
+            ],
+            "strategies": [],
+            "changes": [
+              "INFORMATION",
+              "STAKES"
+            ],
+            "stateSignals": [
+              "INFORMATION:reveals",
+              "STAKES:last dry plant"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "ESCALATION",
+              "CONSEQUENCE",
+              "PAYOFF"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          }
+        ],
+        "findings": [],
+        "escalationCurve": {
+          "longestPlateauSeconds": 3.0,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Next materially different attempt, consequence or final physical state.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "INTENTIONAL_REWATCH",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 100,
+          "reaction": 100,
+          "payoff": 100
+        },
+        "dialogue": {
+          "words": 0,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "NO_MATCH_IN_LIMITED_CORPUS",
+          "matches": [],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 15.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "PASS: short-form 100/100; 5 causal beats in 5 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "e9d9d25740dc6e030cd4e9331b98f062e82601c93c8979484b07e0d515a98fa6",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      },
+      "separateLongFormReference": {
+        "sourceSha256": "a452af25caaea3fa3e10f340a0baf578864db75a1c9ec0b866410a0ae3dffcae",
+        "status": "STORY_REVISION_REQUIRED",
+        "score": 0,
+        "relationship": "Different source: short-form adaptation/compression fixture; the original 60-second text was not rewritten or relabeled."
+      }
+    },
+    "duplicate_object_swap": {
+      "provenance": "SYNTHETIC_EDITORIAL_FIXTURE_NOT_A_PRODUCTION_RESULT",
+      "text": "Create a highly engaging 15\u201318 second vertical 9:16 Pompom Hills Instagram Reel.\n\nUse the official existing Pompom Hills character references exactly.\nMAIN CHARACTER: KIKO\n\nDo not redesign Kiko.\nDo not replace her with a generic child.\n\nSERIES:\nPompom English \u2014 What\u2019s Wrong?\n\nCORE ENGLISH:\nSTOOL\nUP\nDOWN\n\u201cIt\u2019s upside down!\u201d\n\nSETTING:\nBright Pompom Hills playroom or garden patio.\nKeep the environment simple and instantly readable.\n\n--------------------------------------------------\n0.0\u20130.8 SEC \u2014 HARD SCROLL-STOP HOOK\n--------------------------------------------------\n\nStart immediately.\n\nKiko runs toward a stool to sit down.\n\nBUT THE STOOL IS COMPLETELY UPSIDE DOWN.\n\nLegs pointing into the air.\n\nKiko is already halfway into the sitting motion before noticing.\n\nShe freezes inches above it.\n\nEyes huge.\n\nShe blurts:\n\n\u201cWHAT?!\u201d\n\nNO establishing shot.\nThe upside-down stool must dominate the first frame.\n\n--------------------------------------------------\n0.8\u20133.5 SEC\n--------------------------------------------------\n\nKiko points:\n\n\u201cA STOOL!\u201d\n\nThen looks confused.\n\nShe says clearly:\n\n\u201cIt\u2019s upside down!\u201d\n\nShe grabs the stool and flips it correctly.\n\n--------------------------------------------------\n3.5\u20136.0 SEC\n--------------------------------------------------\n\nKiko smiles proudly.\n\n\u201cUp\u2026 down!\u201d\n\nShe points upward while saying UP.\nThen downward while saying DOWN.\n\nShe turns around to sit.\n\n--------------------------------------------------\n6.0\u20138.5 SEC \u2014 FIRST ESCALATION\n--------------------------------------------------\n\nThe instant Kiko turns away\u2014\n\nFLIP!\n\nThe stool turns upside down by itself.\n\nKiko sits toward empty space and catches herself at the last second.\n\nShe spins around.\n\n--------------------------------------------------\n8.5\u201311.5 SEC\n--------------------------------------------------\n\nKiko flips it back.\n\nShe stares directly at the stool.\n\nChair stays normal.\n\nKiko slowly turns her head away.\n\nFLIP!\n\nShe immediately looks back.\n\nChair is upside down.\n\n--------------------------------------------------\n11.5\u201314.5 SEC \u2014 COMEDY PAYOFF\n--------------------------------------------------\n\nKiko becomes determined.\n\nShe keeps staring at the stool.\n\nShe slowly walks backward toward it without looking away.\n\nShe says:\n\n\u201cStay DOWN!\u201d\n\nThe stool behaves.\n\nKiko smiles.\n\n--------------------------------------------------\n14.5\u201317.0 SEC \u2014 TWIST + LOOP\n--------------------------------------------------\n\nKiko finally sits.\n\nThe ENTIRE stool suddenly flips upside down WITH Kiko on it.\n\nKiko ends upside down and shouts:\n\n\u201cAGAIN?!\u201d\n\nCut immediately.\n\nLoop back to the first upside-down stool.\n\n--------------------------------------------------\nMANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK\n--------------------------------------------------\n\nExact English dialogue REQUIRED:\n\nKiko:\n\u201cWHAT?!\u201d\n\nKiko:\n\u201cA STOOL!\u201d\n\nKiko:\n\u201cIt\u2019s upside down!\u201d\n\nKiko:\n\u201cUp\u2026 down!\u201d\n\nKiko:\n\u201cStay DOWN!\u201d\n\nKiko:\n\u201cAGAIN?!\u201d\n\nAll lines must be clearly audible English.\n\nVisible mouth movement.\nAccurate lip-sync.\n\nDo not:\n- remove dialogue\n- translate it\n- replace dialogue with subtitles\n- create a silent version\n- add narration\n\n--------------------------------------------------\nINSTAGRAM RETENTION RULES\n--------------------------------------------------\n\nSomething must change every 1\u20132 seconds.\n\nThe problem must be understandable without sound.\n\nDo not make the stool movement subtle.\n\nChair flips must be fast and visually obvious.\n\nNo moral lesson.\nNo slow ending.\nNo waiting after final joke.\nNo text generated inside scene.",
+      "shortFormEngine": {
+        "engine": "SHORT_FORM_ENGINE",
+        "version": "short-form-engine-v1",
+        "status": "REVISION_REQUIRED",
+        "shortFormScore": 94,
+        "hookScore": 100,
+        "goalScore": 100,
+        "ruleClarityScore": 100,
+        "beatDensityScore": 85,
+        "progressDensityScore": 86,
+        "escalationScore": 78,
+        "payoffScore": 100,
+        "rewatchScore": 100,
+        "silentLegibilityScore": 100,
+        "productionFeasibilityScore": 100,
+        "instantPremiseLegibility": {
+          "score": 100,
+          "reason": "Opening contains a visible everyday goal and anomaly."
+        },
+        "alreadyInTrouble": true,
+        "rules": [
+          "INVERSION"
+        ],
+        "majorCausalBeatCount": 6,
+        "describedBlockCount": 7,
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 0.8,
+            "quote": "--------------------------------------------------\n\nStart immediately.\n\nKiko runs toward a stool to sit down.\n\nBUT THE STOOL IS COMPLETELY UPSIDE DOWN.\n\nLegs pointing into the air.\n\nKiko is already halfway into the sitting motion before noticing.\n\nShe freezes inches above it.\n\nEyes huge.\n\nShe blurts:\n\n\u201cWHAT?!\u201d\n\nNO establishing shot.\nThe upside-down stool must dominate the first frame.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              521,
+              960
+            ],
+            "visual": "-------------------------------------------------- Start immediately. Kiko runs toward a stool to sit down. BUT THE STOOL IS COMPLETELY UPSIDE DOWN. Legs pointing into the air. Kiko is already halfway into the sitting motion before noticing. She freezes inches above it. Eyes huge. She blurts: --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [],
+            "changes": [
+              "MAGNITUDE"
+            ],
+            "stateSignals": [
+              "MAGNITUDE:huge"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "UNDERSTANDING"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          },
+          {
+            "id": "B2",
+            "start": 0.8,
+            "end": 3.5,
+            "quote": "--------------------------------------------------\n\nKiko points:\n\n\u201cA STOOL!\u201d\n\nThen looks confused.\n\nShe says clearly:\n\n\u201cIt\u2019s upside down!\u201d\n\nShe grabs the stool and flips it correctly.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              973,
+              1208
+            ],
+            "visual": "-------------------------------------------------- Kiko points: Then looks confused. She grabs the stool and flips it correctly. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "GRAB_HOLD",
+              "INVERT"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B3",
+            "start": 3.5,
+            "end": 6.0,
+            "quote": "--------------------------------------------------\n\nKiko smiles proudly.\n\n\u201cUp\u2026 down!\u201d\n\nShe points upward while saying UP.\nThen downward while saying DOWN.\n\nShe turns around to sit.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              1221,
+              1453
+            ],
+            "visual": "-------------------------------------------------- Kiko smiles proudly. She points upward while saying UP. Then downward while saying DOWN. She turns around to sit. --------------------------------------------------",
+            "rules": [],
+            "strategies": [],
+            "changes": [],
+            "stateSignals": [],
+            "goal": true,
+            "result": false,
+            "progressTypes": [],
+            "materialProgress": false,
+            "newStrategy": false
+          },
+          {
+            "id": "B4",
+            "start": 6.0,
+            "end": 8.5,
+            "quote": "--------------------------------------------------\n\nThe instant Kiko turns away\u2014\n\nFLIP!\n\nThe stool turns upside down by itself.\n\nKiko sits toward empty space and catches herself at the last second.\n\nShe spins around.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              1485,
+              1753
+            ],
+            "visual": "-------------------------------------------------- The instant Kiko turns away\u2014 FLIP! The stool turns upside down by itself. Kiko sits toward empty space and catches herself at the last second. She spins around. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "BREAK_GAZE",
+              "INVERT"
+            ],
+            "changes": [
+              "CONSTRAINT",
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "CONSTRAINT:pins",
+              "INFORMATION:turns away"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B5",
+            "start": 8.5,
+            "end": 11.5,
+            "quote": "--------------------------------------------------\n\nKiko flips it back.\n\nShe stares directly at the stool.\n\nChair stays normal.\n\nKiko slowly turns her head away.\n\nFLIP!\n\nShe immediately looks back.\n\nChair is upside down.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              1767,
+              2039
+            ],
+            "visual": "-------------------------------------------------- Kiko flips it back. She stares directly at the stool. Chair stays normal. Kiko slowly turns her head away. FLIP! She immediately looks back. Chair is upside down. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "INVERT",
+              "OBSERVE",
+              "BREAK_GAZE"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:stays normal",
+              "INFORMATION:turns her head away",
+              "INFORMATION:looks back"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B6",
+            "start": 11.5,
+            "end": 14.5,
+            "quote": "--------------------------------------------------\n\nKiko becomes determined.\n\nShe keeps staring at the stool.\n\nShe slowly walks backward toward it without looking away.\n\nShe says:\n\n\u201cStay DOWN!\u201d\n\nThe stool behaves.\n\nKiko smiles.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              2070,
+              2349
+            ],
+            "visual": "-------------------------------------------------- Kiko becomes determined. She keeps staring at the stool. She slowly walks backward toward it without looking away. The stool behaves. Kiko smiles. --------------------------------------------------",
+            "rules": [],
+            "strategies": [
+              "BACKWARD_APPROACH"
+            ],
+            "changes": [
+              "POSITION",
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "POSITION:backward",
+              "INFORMATION:behaves"
+            ],
+            "goal": false,
+            "result": true,
+            "progressTypes": [
+              "STRATEGY",
+              "ESCALATION",
+              "CONSEQUENCE"
+            ],
+            "materialProgress": true,
+            "newStrategy": true
+          },
+          {
+            "id": "B7",
+            "start": 14.5,
+            "end": 17.0,
+            "quote": "--------------------------------------------------\n\nKiko finally sits.\n\nThe ENTIRE stool suddenly flips upside down WITH Kiko on it.\n\nKiko ends upside down and shouts:\n\n\u201cAGAIN?!\u201d\n\nCut immediately.\n\nLoop back to the first upside-down stool.\n\n--------------------------------------------------",
+            "sourceSpan": [
+              2379,
+              2670
+            ],
+            "visual": "-------------------------------------------------- Kiko finally sits. The ENTIRE stool suddenly flips upside down WITH Kiko on it. Kiko ends upside down and shouts: Cut immediately. Loop back to the first upside-down stool. --------------------------------------------------",
+            "rules": [
+              "INVERSION"
+            ],
+            "strategies": [
+              "INVERT"
+            ],
+            "changes": [
+              "POSITION"
+            ],
+            "stateSignals": [
+              "POSITION:with kiko on it"
+            ],
+            "goal": true,
+            "result": true,
+            "progressTypes": [
+              "ESCALATION",
+              "CONSEQUENCE",
+              "PAYOFF"
+            ],
+            "materialProgress": true,
+            "newStrategy": false
+          }
+        ],
+        "findings": [
+          {
+            "code": "ESCALATION_PLATEAU",
+            "severity": "WARNING",
+            "message": "Longest gap between supported developments is 5.2s; aim for change every 2\u20134s.",
+            "beatIds": []
+          },
+          {
+            "code": "ENGINE_DUPLICATE_RISK",
+            "severity": "REVISION_REQUIRED",
+            "message": "Opening/progression/final structure overlaps a known reference; object renaming is not novelty.",
+            "beatIds": []
+          }
+        ],
+        "escalationCurve": {
+          "longestPlateauSeconds": 5.2,
+          "targetSeconds": [
+            2,
+            4
+          ]
+        },
+        "continuationReason": "Next materially different attempt, consequence or final physical state.",
+        "earlyRuleUnderstandingPenalized": false,
+        "rewatchType": "INTENTIONAL_REWATCH",
+        "silentLegibility": {
+          "goal": 100,
+          "rule": 100,
+          "reaction": 100,
+          "payoff": 100
+        },
+        "dialogue": {
+          "words": 11,
+          "audioDependent": false
+        },
+        "stagingRisks": [],
+        "productionRisks": [],
+        "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+        "duplicateEngineRisk": {
+          "status": "HIGH",
+          "matches": [
+            {
+              "referenceId": "upside-chair-01",
+              "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+              "matchingAxes": [
+                "opening",
+                "progression",
+                "ending"
+              ],
+              "risk": "HIGH"
+            }
+          ],
+          "comparedReferences": 2,
+          "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+        },
+        "requestedDurationSeconds": 17.0,
+        "timingVerifiedFromPlan": true,
+        "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+        "humanReadableReport": "REVISION_REQUIRED: short-form 94/100; 6 causal beats in 7 blocks. Opening contains a visible everyday goal and anomaly.",
+        "sourceSha256": "50aedadfc026654932e95cfca856679bddea207eaa7c8016f9a0b251105895c1",
+        "evidenceLimitations": [
+          "Source text describes intended visuals; no actual video frames inspected.",
+          "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+          "Unknown mechanics, implicit goals and unsupported wording need human review.",
+          "Long-form quality, canonical gates and production risk are independent."
+        ],
+        "canonicalRulesetUnchanged": true,
+        "renderAuthorized": false,
+        "providerCalls": 0
+      }
+    }
+  }
+}

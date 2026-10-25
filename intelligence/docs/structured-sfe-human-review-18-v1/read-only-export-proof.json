@@ -1,0 +1,42 @@
+{
+  "sourceFileSha256": {
+    "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/verified-analysis/analysis.json": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9",
+    "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/analysis.json": "33b564509e71f87a64ad1419ee9eed761e3db4567953be08f6b64942d1cba50a",
+    "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/response.txt": "298c928c74e7a5add47ab9f0ddda51576ea3674cfd0683e744e2034dddeaf95c",
+    "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/configuration.json": "22f448c9fedc0883b87bd7e34b64365d5ac905a158e4d8e233f577225fde222e"
+  },
+  "sourceFilesUnchanged": true,
+  "codeFileCount": 737,
+  "codeFilesUnchanged": true,
+  "codeManifestSha256": "38acfe9657c383771e6efafc6f3a3829b0eec6a43fe2becbe935acaa67588b2e",
+  "providerCalls": 0,
+  "validatorsExecuted": 0,
+  "newConceptsGenerated": 0,
+  "renders": 0,
+  "networkAndSubprocessDenied": true,
+  "writesRestrictedToNewReportDirectory": true,
+  "fullRawStoriesMatchedOriginalResponse": true,
+  "exactReviewSetCount": 18,
+  "orderedIdeaIds": [
+    "raw-007",
+    "raw-013",
+    "raw-026",
+    "raw-027",
+    "raw-005",
+    "raw-006",
+    "raw-018",
+    "raw-008",
+    "raw-004",
+    "raw-019",
+    "raw-020",
+    "raw-032",
+    "raw-003",
+    "raw-015",
+    "raw-016",
+    "raw-001",
+    "raw-009",
+    "raw-031"
+  ],
+  "noNewScores": true,
+  "noStoryEdits": true
+}

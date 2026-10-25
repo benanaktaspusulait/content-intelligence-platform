@@ -1,0 +1,2680 @@
+{
+  "towel_transfer": {
+    "legacy": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "REJECT",
+      "shortFormScore": 18,
+      "hookScore": 10,
+      "goalScore": 0,
+      "ruleClarityScore": 0,
+      "beatDensityScore": 25,
+      "progressDensityScore": 0,
+      "escalationScore": 100,
+      "payoffScore": 15,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 18,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 10,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      },
+      "alreadyInTrouble": false,
+      "rules": [],
+      "majorCausalBeatCount": 0,
+      "describedBlockCount": 4,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.75,
+          "quote": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill. Kiko wipes the small spill with the towel. A wet patch disappears from the table and appears on Kiko sleeve. The water has moved to clothing instead of remaining in the towel.",
+          "sourceSpan": [
+            9,
+            347
+          ],
+          "visual": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill. Kiko wipes the small spill with the towel. A wet patch disappears from the table and appears on Kiko sleeve. The water has moved to clothing instead of remaining in the towel.",
+          "rules": [],
+          "strategies": [
+            "WATER"
+          ],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": true,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.75,
+          "end": 7.5,
+          "quote": "Kiko folds the towel to use a dry corner. The next wet stripe disappears from the table and appears across the shirt. A dry corner still transfers the same water pattern.",
+          "sourceSpan": [
+            359,
+            529
+          ],
+          "visual": "Kiko folds the towel to use a dry corner. The next wet stripe disappears from the table and appears across the shirt. A dry corner still transfers the same water pattern.",
+          "rules": [],
+          "strategies": [
+            "WATER"
+          ],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        },
+        {
+          "id": "B3",
+          "start": 7.5,
+          "end": 11.25,
+          "quote": "Kiko guides the towel along the far table edge. The final wet rectangle disappears and leaves matching patches across the sleeves and shirt. Every removed shape is preserved on clothing.",
+          "sourceSpan": [
+            542,
+            728
+          ],
+          "visual": "Kiko guides the towel along the far table edge. The final wet rectangle disappears and leaves matching patches across the sleeves and shirt. Every removed shape is preserved on clothing.",
+          "rules": [],
+          "strategies": [],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        },
+        {
+          "id": "B4",
+          "start": 11.25,
+          "end": 15.0,
+          "quote": "Kiko turns the towel to wipe the last circle. The table is finally dry; Kiko clothes display the exact complete pattern of the former spill. The everyday goal is achieved at the cost of wearing the water.",
+          "sourceSpan": [
+            740,
+            944
+          ],
+          "visual": "Kiko turns the towel to wipe the last circle. The table is finally dry; Kiko clothes display the exact complete pattern of the former spill. The everyday goal is achieved at the cost of wearing the water.",
+          "rules": [],
+          "strategies": [
+            "WATER"
+          ],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": true,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        }
+      ],
+      "findings": [
+        {
+          "code": "OPENING_NOT_IN_TROUBLE",
+          "severity": "REVISION_REQUIRED",
+          "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+          "beatIds": []
+        },
+        {
+          "code": "EVERYDAY_GOAL_UNCLEAR",
+          "severity": "REVISION_REQUIRED",
+          "message": "An immediate visible everyday goal must be understandable at the opening.",
+          "beatIds": []
+        },
+        {
+          "code": "CORE_RULE_UNSUPPORTED",
+          "severity": "REVISION_REQUIRED",
+          "message": "No supported dominant visible rule was found.",
+          "beatIds": []
+        },
+        {
+          "code": "TOO_FEW_CAUSAL_BEATS",
+          "severity": "REVISION_REQUIRED",
+          "message": "0 supported causal beats; target 4\u20135, normally 4\u20136.",
+          "beatIds": []
+        },
+        {
+          "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+          "severity": "REVISION_REQUIRED",
+          "message": "4 described blocks contain only 0 supported causal developments.",
+          "beatIds": []
+        },
+        {
+          "code": "IDENTICAL_ATTEMPTS",
+          "severity": "REVISION_REQUIRED",
+          "message": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+          "beatIds": [
+            "B2"
+          ]
+        },
+        {
+          "code": "WEAK_VISUAL_PAYOFF",
+          "severity": "REVISION_REQUIRED",
+          "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+          "beatIds": []
+        }
+      ],
+      "escalationCurve": {
+        "longestPlateauSeconds": 0,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Not established beyond repeated activity.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 0,
+        "rule": 0,
+        "reaction": 55,
+        "payoff": 15
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15.0,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "REJECT: short-form 18/100; 0 causal beats in 4 blocks. Opening goal/anomaly or immediate timing is not sufficiently supported.",
+      "sourceSha256": "0fffb9d069920d8ba33afffe361ad148f26504127faf7ed11f801eec50177e44",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0
+    },
+    "structured": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "PASS",
+      "shortFormScore": 99,
+      "hookScore": 100,
+      "goalScore": 100,
+      "ruleClarityScore": 100,
+      "beatDensityScore": 100,
+      "progressDensityScore": 100,
+      "escalationScore": 100,
+      "payoffScore": 100,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 89,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      },
+      "alreadyInTrouble": true,
+      "rules": [],
+      "majorCausalBeatCount": 4,
+      "describedBlockCount": 4,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.75,
+          "quote": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill. Kiko wipes the small spill with the towel. A wet patch disappears from the table and appears on Kiko sleeve. The water has moved to clothing instead of remaining in the towel.",
+          "sourceSpan": null,
+          "visual": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill. Kiko wipes the small spill with the towel. A wet patch disappears from the table and appears on Kiko sleeve. The water has moved to clothing instead of remaining in the towel.",
+          "rules": [],
+          "strategies": [
+            "strategy:eb0261c3ca16f2f4"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:e62ab5a3f485e9f4"
+          ],
+          "goal": true,
+          "result": true,
+          "progressTypes": [
+            "UNDERSTANDING"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.75,
+          "end": 7.5,
+          "quote": "Kiko folds the towel to use a dry corner. The next wet stripe disappears from the table and appears across the shirt. A dry corner still transfers the same water pattern.",
+          "sourceSpan": null,
+          "visual": "Kiko folds the towel to use a dry corner. The next wet stripe disappears from the table and appears across the shirt. A dry corner still transfers the same water pattern.",
+          "rules": [],
+          "strategies": [
+            "strategy:a24b50d6ce2ec8ee"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:01a8f28ed5dee14c"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B3",
+          "start": 7.5,
+          "end": 11.25,
+          "quote": "Kiko guides the towel along the far table edge. The final wet rectangle disappears and leaves matching patches across the sleeves and shirt. Every removed shape is preserved on clothing.",
+          "sourceSpan": null,
+          "visual": "Kiko guides the towel along the far table edge. The final wet rectangle disappears and leaves matching patches across the sleeves and shirt. Every removed shape is preserved on clothing.",
+          "rules": [],
+          "strategies": [
+            "strategy:af5148b0012478cc"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:3ab366e7c111984b"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B4",
+          "start": 11.25,
+          "end": 15.0,
+          "quote": "Kiko turns the towel to wipe the last circle. The table is finally dry; Kiko clothes display the exact complete pattern of the former spill. The everyday goal is achieved at the cost of wearing the water.",
+          "sourceSpan": null,
+          "visual": "Kiko turns the towel to wipe the last circle. The table is finally dry; Kiko clothes display the exact complete pattern of the former spill. The everyday goal is achieved at the cost of wearing the water.",
+          "rules": [],
+          "strategies": [
+            "strategy:8036f23517e551a0"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:93c712154cb0f695"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE",
+            "PAYOFF"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        }
+      ],
+      "findings": [],
+      "escalationCurve": {
+        "longestPlateauSeconds": 3.75,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Next materially different attempt, consequence or final physical state.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 100,
+        "rule": 100,
+        "reaction": 55,
+        "payoff": 100
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "PASS: short-form 99/100; 4 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+      "sourceSha256": "0fffb9d069920d8ba33afffe361ad148f26504127faf7ed11f801eec50177e44",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0,
+      "evidenceSourceVersion": "structured-canonical-v1",
+      "canonicalEvidence": {
+        "version": "short-form-canonical-evidence-v1",
+        "sourceKind": "STRUCTURED_CANONICAL_V1",
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.75,
+            "quote": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill. Kiko wipes the small spill with the towel. A wet patch disappears from the table and appears on Kiko sleeve. The water has moved to clothing instead of remaining in the towel.",
+            "sourceSpan": null,
+            "visual": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill. Kiko wipes the small spill with the towel. A wet patch disappears from the table and appears on Kiko sleeve. The water has moved to clothing instead of remaining in the towel.",
+            "rules": [],
+            "strategies": [
+              "strategy:eb0261c3ca16f2f4"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:e62ab5a3f485e9f4"
+            ],
+            "goal": true,
+            "result": true
+          },
+          {
+            "id": "B2",
+            "start": 3.75,
+            "end": 7.5,
+            "quote": "Kiko folds the towel to use a dry corner. The next wet stripe disappears from the table and appears across the shirt. A dry corner still transfers the same water pattern.",
+            "sourceSpan": null,
+            "visual": "Kiko folds the towel to use a dry corner. The next wet stripe disappears from the table and appears across the shirt. A dry corner still transfers the same water pattern.",
+            "rules": [],
+            "strategies": [
+              "strategy:a24b50d6ce2ec8ee"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:01a8f28ed5dee14c"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B3",
+            "start": 7.5,
+            "end": 11.25,
+            "quote": "Kiko guides the towel along the far table edge. The final wet rectangle disappears and leaves matching patches across the sleeves and shirt. Every removed shape is preserved on clothing.",
+            "sourceSpan": null,
+            "visual": "Kiko guides the towel along the far table edge. The final wet rectangle disappears and leaves matching patches across the sleeves and shirt. Every removed shape is preserved on clothing.",
+            "rules": [],
+            "strategies": [
+              "strategy:af5148b0012478cc"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:3ab366e7c111984b"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B4",
+            "start": 11.25,
+            "end": 15.0,
+            "quote": "Kiko turns the towel to wipe the last circle. The table is finally dry; Kiko clothes display the exact complete pattern of the former spill. The everyday goal is achieved at the cost of wearing the water.",
+            "sourceSpan": null,
+            "visual": "Kiko turns the towel to wipe the last circle. The table is finally dry; Kiko clothes display the exact complete pattern of the former spill. The everyday goal is achieved at the cost of wearing the water.",
+            "rules": [],
+            "strategies": [
+              "strategy:8036f23517e551a0"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:93c712154cb0f695"
+            ],
+            "goal": false,
+            "result": true
+          }
+        ],
+        "acquisition": [
+          {
+            "resultTokens": [
+              "appear",
+              "disappear",
+              "patch",
+              "sleev",
+              "tabl",
+              "wet"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:ce3d147f88e1e63f"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "wipes the small spill with the towel",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "A wet patch disappears from the table and appears on Kiko sleeve.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "The water has moved to clothing instead of remaining in the towel.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "acros",
+              "appear",
+              "disappear",
+              "shirt",
+              "strip",
+              "tabl",
+              "wet"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:ce3d147f88e1e63f"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "folds the towel to use a dry corner",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The next wet stripe disappears from the table and appears across the shirt.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "A dry corner still transfers the same water pattern.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "acros",
+              "disappear",
+              "final",
+              "leav",
+              "match",
+              "patch",
+              "rectangl",
+              "shirt",
+              "sleev",
+              "wet"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:ce3d147f88e1e63f"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "guides the towel along the far table edge",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The final wet rectangle disappears and leaves matching patches across the sleeves and shirt.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "Every removed shape is preserved on clothing.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "cloth",
+              "display",
+              "dry",
+              "finally",
+              "former",
+              "pattern",
+              "spill",
+              "tabl"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": true,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:ce3d147f88e1e63f"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "turns the towel to wipe the last circle",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The everyday goal is achieved at the cost of wearing the water.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "facts": {
+          "openingDelayed": false,
+          "goalDeclared": true,
+          "mechanismIds": [
+            "source-rule:ce3d147f88e1e63f"
+          ],
+          "classifiedRules": [],
+          "confusion": false,
+          "loopCue": false,
+          "speechWords": 0,
+          "longSpeech": false,
+          "audioRequired": false,
+          "reactionVisible": false,
+          "stagingRisks": [],
+          "productionRisks": [],
+          "duplicateSignature": {
+            "opening": [],
+            "progression": [
+              "strategy:eb0261c3ca16f2f4",
+              "strategy:a24b50d6ce2ec8ee",
+              "strategy:af5148b0012478cc",
+              "strategy:8036f23517e551a0"
+            ],
+            "ending": []
+          }
+        },
+        "dimensions": {
+          "goal": {
+            "declared": true,
+            "openingVisible": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "dry the table without soaking clothes",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "opening": {
+            "problemPresent": true,
+            "anomalySupported": true,
+            "goalSupported": true,
+            "anchorMatches": [
+              "remov",
+              "tabl",
+              "wet",
+              "wip"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "coreRule": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "supported": true,
+            "classification": [],
+            "mechanismIds": [
+              "source-rule:ce3d147f88e1e63f"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "Every wipe removes water from the table but transfers the exact wet patch onto the character clothes.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Normal use activates the stated rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "payoff": {
+            "presence": "PRESENT_CLASSIFIED",
+            "ruleLinked": true,
+            "stateChanging": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The everyday goal is achieved at the cost of wearing the water.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "No automatic reset required.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "verification": {
+            "method": "SOURCE_FIELD_OVERLAP_AND_STRUCTURAL_CHANGE_V1",
+            "confidence": "STRUCTURED_INFERENCE",
+            "candidateId": "sem1-9bee2b1a35b93ff0",
+            "normalizedFieldsSha256": "588f7675551900323d0224139a1c0262a91ebe11e186d088747b76f470ee256d",
+            "ruleAnchorMinimum": 2,
+            "consequenceNearDuplicateJaccard": 0.8,
+            "limitation": "Deterministic support checks, not semantic understanding or observed visual proof. Unknown quality remains unresolved; declaration alone does not grant goal visibility, rule support or payoff linkage."
+          }
+        }
+      },
+      "findingEvidence": {}
+    }
+  },
+  "eraser_transfer": {
+    "legacy": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "REJECT",
+      "shortFormScore": 19,
+      "hookScore": 10,
+      "goalScore": 0,
+      "ruleClarityScore": 0,
+      "beatDensityScore": 25,
+      "progressDensityScore": 0,
+      "escalationScore": 100,
+      "payoffScore": 15,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 29,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 10,
+        "reason": "Opening goal/anomaly or immediate timing is not sufficiently supported."
+      },
+      "alreadyInTrouble": false,
+      "rules": [],
+      "majorCausalBeatCount": 0,
+      "describedBlockCount": 4,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.75,
+          "quote": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve. Kiko rubs the eraser across the first line. The first pencil mark disappears from paper and appears on Kiko sleeve. Erasing relocates the mark.",
+          "sourceSpan": [
+            9,
+            277
+          ],
+          "visual": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve. Kiko rubs the eraser across the first line. The first pencil mark disappears from paper and appears on Kiko sleeve. Erasing relocates the mark.",
+          "rules": [],
+          "strategies": [],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        },
+        {
+          "id": "B2",
+          "start": 3.75,
+          "end": 7.5,
+          "quote": "Kiko folds the paper and uses another edge of the eraser. A second mark leaves the paper and appears across the shirt. Changing the eraser edge changes no transfer rule.",
+          "sourceSpan": [
+            289,
+            458
+          ],
+          "visual": "Kiko folds the paper and uses another edge of the eraser. A second mark leaves the paper and appears across the shirt. Changing the eraser edge changes no transfer rule.",
+          "rules": [],
+          "strategies": [],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        },
+        {
+          "id": "B3",
+          "start": 7.5,
+          "end": 11.25,
+          "quote": "Kiko guides the paper along the table surface. The remaining scribble appears across the nearby wall as it disappears from paper. The surroundings can become the destination.",
+          "sourceSpan": [
+            471,
+            645
+          ],
+          "visual": "Kiko guides the paper along the table surface. The remaining scribble appears across the nearby wall as it disappears from paper. The surroundings can become the destination.",
+          "rules": [],
+          "strategies": [],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        },
+        {
+          "id": "B4",
+          "start": 11.25,
+          "end": 15.0,
+          "quote": "Kiko turns the paper to erase the final line. The paper is clean; the sleeve, shirt and wall carry the exact former scribble. The page is clean while the room now contains its drawing.",
+          "sourceSpan": [
+            657,
+            841
+          ],
+          "visual": "Kiko turns the paper to erase the final line. The paper is clean; the sleeve, shirt and wall carry the exact former scribble. The page is clean while the room now contains its drawing.",
+          "rules": [],
+          "strategies": [],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": false
+        }
+      ],
+      "findings": [
+        {
+          "code": "OPENING_NOT_IN_TROUBLE",
+          "severity": "REVISION_REQUIRED",
+          "message": "First beat lacks a source-supported visible goal plus anomaly, or establishes them too slowly.",
+          "beatIds": []
+        },
+        {
+          "code": "EVERYDAY_GOAL_UNCLEAR",
+          "severity": "REVISION_REQUIRED",
+          "message": "An immediate visible everyday goal must be understandable at the opening.",
+          "beatIds": []
+        },
+        {
+          "code": "CORE_RULE_UNSUPPORTED",
+          "severity": "REVISION_REQUIRED",
+          "message": "No supported dominant visible rule was found.",
+          "beatIds": []
+        },
+        {
+          "code": "TOO_FEW_CAUSAL_BEATS",
+          "severity": "REVISION_REQUIRED",
+          "message": "0 supported causal beats; target 4\u20135, normally 4\u20136.",
+          "beatIds": []
+        },
+        {
+          "code": "HIGH_ACTIVITY_LOW_PROGRESS",
+          "severity": "REVISION_REQUIRED",
+          "message": "4 described blocks contain only 0 supported causal developments.",
+          "beatIds": []
+        },
+        {
+          "code": "WEAK_VISUAL_PAYOFF",
+          "severity": "REVISION_REQUIRED",
+          "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+          "beatIds": []
+        }
+      ],
+      "escalationCurve": {
+        "longestPlateauSeconds": 0,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Not established beyond repeated activity.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 0,
+        "rule": 0,
+        "reaction": 100,
+        "payoff": 15
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15.0,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "REJECT: short-form 19/100; 0 causal beats in 4 blocks. Opening goal/anomaly or immediate timing is not sufficiently supported.",
+      "sourceSha256": "f5ba40e30f437748d1c89cf3ce9cd4a8d8d619eb5340856b2fd74c4d1edcdea3",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0
+    },
+    "structured": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "REVISION_REQUIRED",
+      "shortFormScore": 70,
+      "hookScore": 100,
+      "goalScore": 100,
+      "ruleClarityScore": 100,
+      "beatDensityScore": 45,
+      "progressDensityScore": 75,
+      "escalationScore": 37,
+      "payoffScore": 15,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 79,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      },
+      "alreadyInTrouble": true,
+      "rules": [],
+      "majorCausalBeatCount": 3,
+      "describedBlockCount": 4,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.75,
+          "quote": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve. Kiko rubs the eraser across the first line. The first pencil mark disappears from paper and appears on Kiko sleeve. Erasing relocates the mark.",
+          "sourceSpan": null,
+          "visual": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve. Kiko rubs the eraser across the first line. The first pencil mark disappears from paper and appears on Kiko sleeve. Erasing relocates the mark.",
+          "rules": [],
+          "strategies": [
+            "strategy:facd3988a63667a0"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:0eedd472634fd5b4"
+          ],
+          "goal": true,
+          "result": true,
+          "progressTypes": [
+            "UNDERSTANDING"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.75,
+          "end": 7.5,
+          "quote": "Kiko folds the paper and uses another edge of the eraser. A second mark leaves the paper and appears across the shirt. Changing the eraser edge changes no transfer rule.",
+          "sourceSpan": null,
+          "visual": "Kiko folds the paper and uses another edge of the eraser. A second mark leaves the paper and appears across the shirt. Changing the eraser edge changes no transfer rule.",
+          "rules": [],
+          "strategies": [
+            "strategy:c04a5aa68e7a7b40"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:da2d2f171afb52ed"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B3",
+          "start": 7.5,
+          "end": 11.25,
+          "quote": "Kiko guides the paper along the table surface. The remaining scribble appears across the nearby wall as it disappears from paper. The surroundings can become the destination.",
+          "sourceSpan": null,
+          "visual": "Kiko guides the paper along the table surface. The remaining scribble appears across the nearby wall as it disappears from paper. The surroundings can become the destination.",
+          "rules": [],
+          "strategies": [
+            "strategy:41bab71d6affb8c1"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:b1384b06f34f68a7"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B4",
+          "start": 11.25,
+          "end": 15.0,
+          "quote": "Kiko turns the paper to erase the final line. The paper is clean; the sleeve, shirt and wall carry the exact former scribble. The page is clean while the room now contains its drawing.",
+          "sourceSpan": null,
+          "visual": "Kiko turns the paper to erase the final line. The paper is clean; the sleeve, shirt and wall carry the exact former scribble. The page is clean while the room now contains its drawing.",
+          "rules": [],
+          "strategies": [
+            "strategy:747ea8227fdf9fa8"
+          ],
+          "changes": [],
+          "stateSignals": [],
+          "goal": false,
+          "result": false,
+          "progressTypes": [],
+          "materialProgress": false,
+          "newStrategy": true
+        }
+      ],
+      "findings": [
+        {
+          "code": "TOO_FEW_CAUSAL_BEATS",
+          "severity": "REVISION_REQUIRED",
+          "message": "3 supported causal beats; target 4\u20135, normally 4\u20136.",
+          "beatIds": []
+        },
+        {
+          "code": "ESCALATION_PLATEAU",
+          "severity": "WARNING",
+          "message": "Longest gap between supported developments is 7.5s; aim for change every 2\u20134s.",
+          "beatIds": []
+        },
+        {
+          "code": "WEAK_VISUAL_PAYOFF",
+          "severity": "REVISION_REQUIRED",
+          "message": "Ending needs a source-supported rule-linked reversal, reveal, extreme state or recreated problem.",
+          "beatIds": []
+        }
+      ],
+      "escalationCurve": {
+        "longestPlateauSeconds": 7.5,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Not established beyond repeated activity.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 100,
+        "rule": 100,
+        "reaction": 100,
+        "payoff": 15
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "REVISION_REQUIRED: short-form 70/100; 3 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+      "sourceSha256": "f5ba40e30f437748d1c89cf3ce9cd4a8d8d619eb5340856b2fd74c4d1edcdea3",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0,
+      "evidenceSourceVersion": "structured-canonical-v1",
+      "canonicalEvidence": {
+        "version": "short-form-canonical-evidence-v1",
+        "sourceKind": "STRUCTURED_CANONICAL_V1",
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.75,
+            "quote": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve. Kiko rubs the eraser across the first line. The first pencil mark disappears from paper and appears on Kiko sleeve. Erasing relocates the mark.",
+            "sourceSpan": null,
+            "visual": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve. Kiko rubs the eraser across the first line. The first pencil mark disappears from paper and appears on Kiko sleeve. Erasing relocates the mark.",
+            "rules": [],
+            "strategies": [
+              "strategy:facd3988a63667a0"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:0eedd472634fd5b4"
+            ],
+            "goal": true,
+            "result": true
+          },
+          {
+            "id": "B2",
+            "start": 3.75,
+            "end": 7.5,
+            "quote": "Kiko folds the paper and uses another edge of the eraser. A second mark leaves the paper and appears across the shirt. Changing the eraser edge changes no transfer rule.",
+            "sourceSpan": null,
+            "visual": "Kiko folds the paper and uses another edge of the eraser. A second mark leaves the paper and appears across the shirt. Changing the eraser edge changes no transfer rule.",
+            "rules": [],
+            "strategies": [
+              "strategy:c04a5aa68e7a7b40"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:da2d2f171afb52ed"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B3",
+            "start": 7.5,
+            "end": 11.25,
+            "quote": "Kiko guides the paper along the table surface. The remaining scribble appears across the nearby wall as it disappears from paper. The surroundings can become the destination.",
+            "sourceSpan": null,
+            "visual": "Kiko guides the paper along the table surface. The remaining scribble appears across the nearby wall as it disappears from paper. The surroundings can become the destination.",
+            "rules": [],
+            "strategies": [
+              "strategy:41bab71d6affb8c1"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:b1384b06f34f68a7"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B4",
+            "start": 11.25,
+            "end": 15.0,
+            "quote": "Kiko turns the paper to erase the final line. The paper is clean; the sleeve, shirt and wall carry the exact former scribble. The page is clean while the room now contains its drawing.",
+            "sourceSpan": null,
+            "visual": "Kiko turns the paper to erase the final line. The paper is clean; the sleeve, shirt and wall carry the exact former scribble. The page is clean while the room now contains its drawing.",
+            "rules": [],
+            "strategies": [
+              "strategy:747ea8227fdf9fa8"
+            ],
+            "changes": [],
+            "stateSignals": [],
+            "goal": false,
+            "result": false
+          }
+        ],
+        "acquisition": [
+          {
+            "resultTokens": [
+              "appear",
+              "disappear",
+              "mark",
+              "paper",
+              "pencil",
+              "sleev"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:26eeda7ca53c96cb"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "rubs the eraser across the first line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The first pencil mark disappears from paper and appears on Kiko sleeve.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Erasing relocates the mark.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "acros",
+              "appear",
+              "leav",
+              "mark",
+              "paper",
+              "second",
+              "shirt"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:26eeda7ca53c96cb"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "folds the paper and uses another edge of the eraser",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "A second mark leaves the paper and appears across the shirt.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Changing the eraser edge changes no transfer rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "acros",
+              "appear",
+              "disappear",
+              "nearby",
+              "paper",
+              "remain",
+              "scribbl",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "source-rule:26eeda7ca53c96cb"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "guides the paper along the table surface",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The remaining scribble appears across the nearby wall as it disappears from paper.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The surroundings can become the destination.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": true,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "turns the paper to erase the final line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The page is clean while the room now contains its drawing.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "facts": {
+          "openingDelayed": false,
+          "goalDeclared": true,
+          "mechanismIds": [
+            "source-rule:26eeda7ca53c96cb"
+          ],
+          "classifiedRules": [],
+          "confusion": false,
+          "loopCue": false,
+          "speechWords": 0,
+          "longSpeech": false,
+          "audioRequired": false,
+          "reactionVisible": true,
+          "stagingRisks": [],
+          "productionRisks": [],
+          "duplicateSignature": {
+            "opening": [],
+            "progression": [
+              "strategy:facd3988a63667a0",
+              "strategy:c04a5aa68e7a7b40",
+              "strategy:41bab71d6affb8c1",
+              "strategy:747ea8227fdf9fa8"
+            ],
+            "ending": []
+          }
+        },
+        "dimensions": {
+          "goal": {
+            "declared": true,
+            "openingVisible": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "erase the pencil mark",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "opening": {
+            "problemPresent": true,
+            "anomalySupported": true,
+            "goalSupported": true,
+            "anchorMatches": [
+              "appear",
+              "eras",
+              "mark",
+              "paper",
+              "pencil"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko tries to erase a pencil mark with an eraser; she removes a mark from the paper and the same mark appears on her sleeve.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "coreRule": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "supported": true,
+            "classification": [],
+            "mechanismIds": [
+              "source-rule:26eeda7ca53c96cb"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "Every erased pencil mark disappears from paper but appears on another nearby surface.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Normal use activates the stated rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "payoff": {
+            "presence": "PRESENT_CLASSIFIED",
+            "ruleLinked": false,
+            "stateChanging": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The page is clean while the room now contains its drawing.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "No automatic reset required.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "verification": {
+            "method": "SOURCE_FIELD_OVERLAP_AND_STRUCTURAL_CHANGE_V1",
+            "confidence": "STRUCTURED_INFERENCE",
+            "candidateId": "sem1-4d5b8897f40dad36",
+            "normalizedFieldsSha256": "7d8915fc7ab8adf813821b64112c421e884b5272d1fc5387d4a3be74d3ff435d",
+            "ruleAnchorMinimum": 2,
+            "consequenceNearDuplicateJaccard": 0.8,
+            "limitation": "Deterministic support checks, not semantic understanding or observed visual proof. Unknown quality remains unresolved; declaration alone does not grant goal visibility, rule support or payoff linkage."
+          }
+        }
+      },
+      "findingEvidence": {
+        "TOO_FEW_CAUSAL_BEATS": [
+          {
+            "beatId": "B1",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "rubs the eraser across the first line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The first pencil mark disappears from paper and appears on Kiko sleeve.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Erasing relocates the mark.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B2",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "folds the paper and uses another edge of the eraser",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "A second mark leaves the paper and appears across the shirt.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Changing the eraser edge changes no transfer rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B3",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "guides the paper along the table surface",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The remaining scribble appears across the nearby wall as it disappears from paper.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The surroundings can become the destination.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B4",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "turns the paper to erase the final line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The page is clean while the room now contains its drawing.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "ESCALATION_PLATEAU": [
+          {
+            "beatId": "B1",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "rubs the eraser across the first line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The first pencil mark disappears from paper and appears on Kiko sleeve.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Erasing relocates the mark.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B2",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "folds the paper and uses another edge of the eraser",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "A second mark leaves the paper and appears across the shirt.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Changing the eraser edge changes no transfer rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B3",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "guides the paper along the table surface",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The remaining scribble appears across the nearby wall as it disappears from paper.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The surroundings can become the destination.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B4",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "turns the paper to erase the final line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The page is clean while the room now contains its drawing.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "WEAK_VISUAL_PAYOFF": [
+          {
+            "beatId": "B1",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "rubs the eraser across the first line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The first pencil mark disappears from paper and appears on Kiko sleeve.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Erasing relocates the mark.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B2",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "folds the paper and uses another edge of the eraser",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "A second mark leaves the paper and appears across the shirt.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Changing the eraser edge changes no transfer rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B3",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "guides the paper along the table surface",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The remaining scribble appears across the nearby wall as it disappears from paper.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The surroundings can become the destination.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "beatId": "B4",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "turns the paper to erase the final line",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The paper is clean; the sleeve, shirt and wall carry the exact former scribble.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The page is clean while the room now contains its drawing.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "lid_room": {
+    "legacy": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "PASS",
+      "shortFormScore": 100,
+      "hookScore": 100,
+      "goalScore": 100,
+      "ruleClarityScore": 100,
+      "beatDensityScore": 100,
+      "progressDensityScore": 100,
+      "escalationScore": 100,
+      "payoffScore": 100,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 100,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      },
+      "alreadyInTrouble": true,
+      "rules": [
+        "GROWTH"
+      ],
+      "majorCausalBeatCount": 4,
+      "describedBlockCount": 4,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.75,
+          "quote": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen. Kiko pushes the lid toward the container rim. The lid grows one size step and pushes the rim out of reach. Normal closing pressure enlarges the obstruction.",
+          "sourceSpan": [
+            9,
+            313
+          ],
+          "visual": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen. Kiko pushes the lid toward the container rim. The lid grows one size step and pushes the rim out of reach. Normal closing pressure enlarges the obstruction.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "PUSH"
+          ],
+          "changes": [
+            "CONSTRAINT"
+          ],
+          "stateSignals": [
+            "CONSTRAINT:blocks"
+          ],
+          "goal": true,
+          "result": true,
+          "progressTypes": [
+            "UNDERSTANDING"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.75,
+          "end": 7.5,
+          "quote": "Kiko turns the lid sideways and grabs its opposite edge. The lid grows larger than before and blocks the route around the container. Changing the approach cannot preserve usable clearance.",
+          "sourceSpan": [
+            325,
+            513
+          ],
+          "visual": "Kiko turns the lid sideways and grabs its opposite edge. The lid grows larger than before and blocks the route around the container. Changing the approach cannot preserve usable clearance.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "GRAB_HOLD"
+          ],
+          "changes": [
+            "MAGNITUDE",
+            "CONSTRAINT"
+          ],
+          "stateSignals": [
+            "MAGNITUDE:larger",
+            "CONSTRAINT:blocks"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B3",
+          "start": 7.5,
+          "end": 11.25,
+          "quote": "Kiko guides the lid along the table and wedges its edge. The lid grows larger than before and squeezes the usable space beside the wall. The attempted surface guide becomes a room constraint.",
+          "sourceSpan": [
+            526,
+            717
+          ],
+          "visual": "Kiko guides the lid along the table and wedges its edge. The lid grows larger than before and squeezes the usable space beside the wall. The attempted surface guide becomes a room constraint.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "WEDGE",
+            "SQUEEZE"
+          ],
+          "changes": [
+            "MAGNITUDE",
+            "CONSTRAINT"
+          ],
+          "stateSignals": [
+            "MAGNITUDE:larger",
+            "CONSTRAINT:wedges"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B4",
+          "start": 11.25,
+          "end": 15.0,
+          "quote": "Kiko lifts the last reachable edge toward the opening. The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her. The room becomes the space controlled by the same growing lid.",
+          "sourceSpan": [
+            729,
+            967
+          ],
+          "visual": "Kiko lifts the last reachable edge toward the opening. The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her. The room becomes the space controlled by the same growing lid.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "LIFT"
+          ],
+          "changes": [
+            "MAGNITUDE"
+          ],
+          "stateSignals": [
+            "MAGNITUDE:enormous"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE",
+            "PAYOFF"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        }
+      ],
+      "findings": [],
+      "escalationCurve": {
+        "longestPlateauSeconds": 3.75,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Next materially different attempt, consequence or final physical state.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 100,
+        "rule": 100,
+        "reaction": 100,
+        "payoff": 100
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15.0,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "PASS: short-form 100/100; 4 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+      "sourceSha256": "e66754926d95f003b28a6ffb06d0cce954f6ad69f14ee8c46bcb22d5a75bc8c8",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0
+    },
+    "structured": {
+      "engine": "SHORT_FORM_ENGINE",
+      "version": "short-form-engine-v1",
+      "status": "PASS",
+      "shortFormScore": 100,
+      "hookScore": 100,
+      "goalScore": 100,
+      "ruleClarityScore": 100,
+      "beatDensityScore": 100,
+      "progressDensityScore": 100,
+      "escalationScore": 100,
+      "payoffScore": 100,
+      "rewatchScore": 60,
+      "silentLegibilityScore": 100,
+      "productionFeasibilityScore": 100,
+      "instantPremiseLegibility": {
+        "score": 100,
+        "reason": "Opening contains a visible everyday goal and anomaly."
+      },
+      "alreadyInTrouble": true,
+      "rules": [
+        "GROWTH"
+      ],
+      "majorCausalBeatCount": 4,
+      "describedBlockCount": 4,
+      "beats": [
+        {
+          "id": "B1",
+          "start": 0.0,
+          "end": 3.75,
+          "quote": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen. Kiko pushes the lid toward the container rim. The lid grows one size step and pushes the rim out of reach. Normal closing pressure enlarges the obstruction.",
+          "sourceSpan": null,
+          "visual": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen. Kiko pushes the lid toward the container rim. The lid grows one size step and pushes the rim out of reach. Normal closing pressure enlarges the obstruction.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "strategy:9bafc8ce9e7e1fe5"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:a9a094e7addaaa07"
+          ],
+          "goal": true,
+          "result": true,
+          "progressTypes": [
+            "UNDERSTANDING"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B2",
+          "start": 3.75,
+          "end": 7.5,
+          "quote": "Kiko turns the lid sideways and grabs its opposite edge. The lid grows larger than before and blocks the route around the container. Changing the approach cannot preserve usable clearance.",
+          "sourceSpan": null,
+          "visual": "Kiko turns the lid sideways and grabs its opposite edge. The lid grows larger than before and blocks the route around the container. Changing the approach cannot preserve usable clearance.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "strategy:dd80a0dea6c25991"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:52165a8377afdce4"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B3",
+          "start": 7.5,
+          "end": 11.25,
+          "quote": "Kiko guides the lid along the table and wedges its edge. The lid grows larger than before and squeezes the usable space beside the wall. The attempted surface guide becomes a room constraint.",
+          "sourceSpan": null,
+          "visual": "Kiko guides the lid along the table and wedges its edge. The lid grows larger than before and squeezes the usable space beside the wall. The attempted surface guide becomes a room constraint.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "strategy:0ace6f8bc8b6c300"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:2d1f8c63b52c2cf3"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        },
+        {
+          "id": "B4",
+          "start": 11.25,
+          "end": 15.0,
+          "quote": "Kiko lifts the last reachable edge toward the opening. The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her. The room becomes the space controlled by the same growing lid.",
+          "sourceSpan": null,
+          "visual": "Kiko lifts the last reachable edge toward the opening. The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her. The room becomes the space controlled by the same growing lid.",
+          "rules": [
+            "GROWTH"
+          ],
+          "strategies": [
+            "strategy:1bcb4c684869bef3"
+          ],
+          "changes": [
+            "INFORMATION"
+          ],
+          "stateSignals": [
+            "INFORMATION:1d5d722335dd9aae"
+          ],
+          "goal": false,
+          "result": true,
+          "progressTypes": [
+            "STRATEGY",
+            "ESCALATION",
+            "CONSEQUENCE",
+            "PAYOFF"
+          ],
+          "materialProgress": true,
+          "newStrategy": true
+        }
+      ],
+      "findings": [],
+      "escalationCurve": {
+        "longestPlateauSeconds": 3.75,
+        "targetSeconds": [
+          2,
+          4
+        ]
+      },
+      "continuationReason": "Next materially different attempt, consequence or final physical state.",
+      "earlyRuleUnderstandingPenalized": false,
+      "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+      "silentLegibility": {
+        "goal": 100,
+        "rule": 100,
+        "reaction": 100,
+        "payoff": 100
+      },
+      "dialogue": {
+        "words": 0,
+        "audioDependent": false
+      },
+      "stagingRisks": [],
+      "productionRisks": [],
+      "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+      "duplicateEngineRisk": {
+        "status": "NO_MATCH_IN_LIMITED_CORPUS",
+        "matches": [],
+        "comparedReferences": 2,
+        "limitation": "Source-bound structural comparison against a small curated corpus; not proof of originality. Names are excluded."
+      },
+      "requestedDurationSeconds": 15,
+      "timingVerifiedFromPlan": true,
+      "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+      "humanReadableReport": "PASS: short-form 100/100; 4 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+      "sourceSha256": "e66754926d95f003b28a6ffb06d0cce954f6ad69f14ee8c46bcb22d5a75bc8c8",
+      "evidenceLimitations": [
+        "Source text describes intended visuals; no actual video frames inspected.",
+        "English pattern screening is conservative, not semantic verification or a watch-performance forecast.",
+        "Unknown mechanics, implicit goals and unsupported wording need human review.",
+        "Long-form quality, canonical gates and production risk are independent."
+      ],
+      "canonicalRulesetUnchanged": true,
+      "renderAuthorized": false,
+      "providerCalls": 0,
+      "evidenceSourceVersion": "structured-canonical-v1",
+      "canonicalEvidence": {
+        "version": "short-form-canonical-evidence-v1",
+        "sourceKind": "STRUCTURED_CANONICAL_V1",
+        "beats": [
+          {
+            "id": "B1",
+            "start": 0.0,
+            "end": 3.75,
+            "quote": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen. Kiko pushes the lid toward the container rim. The lid grows one size step and pushes the rim out of reach. Normal closing pressure enlarges the obstruction.",
+            "sourceSpan": null,
+            "visual": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen. Kiko pushes the lid toward the container rim. The lid grows one size step and pushes the rim out of reach. Normal closing pressure enlarges the obstruction.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [
+              "strategy:9bafc8ce9e7e1fe5"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:a9a094e7addaaa07"
+            ],
+            "goal": true,
+            "result": true
+          },
+          {
+            "id": "B2",
+            "start": 3.75,
+            "end": 7.5,
+            "quote": "Kiko turns the lid sideways and grabs its opposite edge. The lid grows larger than before and blocks the route around the container. Changing the approach cannot preserve usable clearance.",
+            "sourceSpan": null,
+            "visual": "Kiko turns the lid sideways and grabs its opposite edge. The lid grows larger than before and blocks the route around the container. Changing the approach cannot preserve usable clearance.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [
+              "strategy:dd80a0dea6c25991"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:52165a8377afdce4"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B3",
+            "start": 7.5,
+            "end": 11.25,
+            "quote": "Kiko guides the lid along the table and wedges its edge. The lid grows larger than before and squeezes the usable space beside the wall. The attempted surface guide becomes a room constraint.",
+            "sourceSpan": null,
+            "visual": "Kiko guides the lid along the table and wedges its edge. The lid grows larger than before and squeezes the usable space beside the wall. The attempted surface guide becomes a room constraint.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [
+              "strategy:0ace6f8bc8b6c300"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:2d1f8c63b52c2cf3"
+            ],
+            "goal": false,
+            "result": true
+          },
+          {
+            "id": "B4",
+            "start": 11.25,
+            "end": 15.0,
+            "quote": "Kiko lifts the last reachable edge toward the opening. The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her. The room becomes the space controlled by the same growing lid.",
+            "sourceSpan": null,
+            "visual": "Kiko lifts the last reachable edge toward the opening. The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her. The room becomes the space controlled by the same growing lid.",
+            "rules": [
+              "GROWTH"
+            ],
+            "strategies": [
+              "strategy:1bcb4c684869bef3"
+            ],
+            "changes": [
+              "INFORMATION"
+            ],
+            "stateSignals": [
+              "INFORMATION:1d5d722335dd9aae"
+            ],
+            "goal": false,
+            "result": true
+          }
+        ],
+        "acquisition": [
+          {
+            "resultTokens": [
+              "grow",
+              "lid",
+              "out",
+              "push",
+              "reach",
+              "rim",
+              "siz",
+              "step"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "GROWTH"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].strategy",
+                "sourceText": "pushes the lid toward the container rim",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].visibleConsequence",
+                "sourceText": "The lid grows one size step and pushes the rim out of reach.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[0].newInformation",
+                "sourceText": "Normal closing pressure enlarges the obstruction.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "around",
+              "befor",
+              "block",
+              "container",
+              "grow",
+              "larger",
+              "lid",
+              "rout",
+              "than"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "GROWTH"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].strategy",
+                "sourceText": "turns the lid sideways and grabs its opposite edge",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].visibleConsequence",
+                "sourceText": "The lid grows larger than before and blocks the route around the container.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "Changing the approach cannot preserve usable clearance.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "befor",
+              "besid",
+              "grow",
+              "larger",
+              "lid",
+              "spac",
+              "squeez",
+              "than",
+              "usabl",
+              "wall"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": false,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "GROWTH"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].strategy",
+                "sourceText": "guides the lid along the table and wedges its edge",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The lid grows larger than before and squeezes the usable space beside the wall.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The attempted surface guide becomes a room constraint.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          {
+            "resultTokens": [
+              "behind",
+              "beneath",
+              "container",
+              "crouch",
+              "enormou",
+              "fill",
+              "grow",
+              "lid",
+              "open",
+              "remain",
+              "room",
+              "until"
+            ],
+            "magnitudeRises": false,
+            "endingPatterns": [],
+            "terminalStateChange": true,
+            "recreatedSuccess": false,
+            "openingLogicalExtreme": false,
+            "mechanismIds": [
+              "GROWTH"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].strategy",
+                "sourceText": "lifts the last reachable edge toward the opening",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The room becomes the space controlled by the same growing lid.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        ],
+        "facts": {
+          "openingDelayed": false,
+          "goalDeclared": true,
+          "mechanismIds": [
+            "GROWTH"
+          ],
+          "classifiedRules": [
+            "GROWTH"
+          ],
+          "confusion": false,
+          "loopCue": false,
+          "speechWords": 0,
+          "longSpeech": false,
+          "audioRequired": false,
+          "reactionVisible": true,
+          "stagingRisks": [],
+          "productionRisks": [],
+          "duplicateSignature": {
+            "opening": [
+              "GROWTH"
+            ],
+            "progression": [
+              "strategy:9bafc8ce9e7e1fe5",
+              "strategy:dd80a0dea6c25991",
+              "strategy:0ace6f8bc8b6c300",
+              "strategy:1bcb4c684869bef3"
+            ],
+            "ending": [
+              "LOGICAL_EXTREME"
+            ]
+          }
+        },
+        "dimensions": {
+          "goal": {
+            "declared": true,
+            "openingVisible": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "close the lid",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "opening": {
+            "problemPresent": true,
+            "anomalySupported": true,
+            "goalSupported": true,
+            "anchorMatches": [
+              "grow",
+              "siz",
+              "step"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko is already trying to close the lid; she pushes the lid toward its rim. The lid grows another size step and blocks the opening; her eyes widen.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "coreRule": {
+            "presence": "PRESENT_CLASSIFIED",
+            "supported": true,
+            "classification": [
+              "GROWTH"
+            ],
+            "mechanismIds": [
+              "GROWTH"
+            ],
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "The lid grows one size step whenever pressure is applied to it.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "presence": "PRESENT_UNCLASSIFIED",
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "Normal use activates the stated rule.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "payoff": {
+            "presence": "PRESENT_CLASSIFIED",
+            "ruleLinked": true,
+            "stateChanging": true,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "finalPayoff",
+                "sourceText": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The enormous lid grows until it fills the room; Kiko is crouched beneath it while the container remains open behind her.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+                "confidence": "EXPLICIT"
+              },
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The room becomes the space controlled by the same growing lid.",
+                "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "loop": {
+            "declared": true,
+            "supported": false,
+            "references": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "loopPotential",
+                "sourceText": "No automatic reset required.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "verification": {
+            "method": "SOURCE_FIELD_OVERLAP_AND_STRUCTURAL_CHANGE_V1",
+            "confidence": "STRUCTURED_INFERENCE",
+            "candidateId": "sem1-e90b6e3c7c252034",
+            "normalizedFieldsSha256": "93a255d127311515849fd144e7b930bbfbdf42e0ee9b3195c47ec02dbe8385c9",
+            "ruleAnchorMinimum": 2,
+            "consequenceNearDuplicateJaccard": 0.8,
+            "limitation": "Deterministic support checks, not semantic understanding or observed visual proof. Unknown quality remains unresolved; declaration alone does not grant goal visibility, rule support or payoff linkage."
+          }
+        }
+      },
+      "findingEvidence": {}
+    }
+  }
+}

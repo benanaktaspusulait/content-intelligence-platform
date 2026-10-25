@@ -1,0 +1,567 @@
+{
+  "workflow": "STRUCTURED_SFE_OFFLINE_REPLAY",
+  "shortFormEvidenceSourceVersion": "structured-canonical-v1",
+  "dualEvidenceAudit": true,
+  "baselineExact": true,
+  "legacy": {
+    "count": 33,
+    "min": 18,
+    "max": 46,
+    "mean": 27.636363636363637,
+    "median": 28,
+    "statuses": {
+      "REVISION_REQUIRED": 21,
+      "REJECT": 12
+    },
+    "scores": {
+      "18": 8,
+      "19": 2,
+      "24": 2,
+      "25": 3,
+      "26": 1,
+      "28": 2,
+      "31": 2,
+      "32": 3,
+      "33": 4,
+      "35": 1,
+      "36": 2,
+      "38": 1,
+      "44": 1,
+      "46": 1
+    }
+  },
+  "structured": {
+    "count": 33,
+    "min": 25,
+    "max": 100,
+    "mean": 59.60606060606061,
+    "median": 63,
+    "statuses": {
+      "REVISION_REQUIRED": 29,
+      "PASS": 4
+    },
+    "scores": {
+      "25": 5,
+      "26": 2,
+      "41": 2,
+      "42": 2,
+      "43": 1,
+      "46": 1,
+      "54": 1,
+      "55": 1,
+      "56": 1,
+      "63": 3,
+      "64": 1,
+      "69": 2,
+      "72": 1,
+      "77": 1,
+      "78": 1,
+      "83": 1,
+      "85": 1,
+      "93": 2,
+      "99": 2,
+      "100": 2
+    }
+  },
+  "recognitionCounts": {
+    "legacy": {
+      "goalDeclared": 7,
+      "openingVisibleGoal": 3,
+      "openingAnomaly": 9,
+      "coreRulePresent": 21,
+      "ruleSupported": 21,
+      "triggerPresent": 13,
+      "causalBeats": 38,
+      "describedBeats": 165,
+      "payoffPresent": 0,
+      "payoffRuleLinked": 0,
+      "loopSupported": 0
+    },
+    "structured": {
+      "goalDeclared": 33,
+      "openingVisibleGoal": 9,
+      "openingAnomaly": 27,
+      "coreRulePresent": 33,
+      "ruleSupported": 26,
+      "triggerPresent": 33,
+      "causalBeats": 90,
+      "describedBeats": 165,
+      "payoffPresent": 33,
+      "payoffRuleLinked": 17,
+      "loopSupported": 0
+    }
+  },
+  "taxonomyCoverage": {
+    "engine": {
+      "PRESENT_UNCLASSIFIED": 29,
+      "PRESENT_CLASSIFIED": 4
+    },
+    "trigger": {
+      "PRESENT_CLASSIFIED": 8,
+      "PRESENT_UNCLASSIFIED": 25
+    },
+    "payoff": {
+      "PRESENT_UNCLASSIFIED": 33
+    }
+  },
+  "legacyTaxonomyCoverage": {
+    "engine": {
+      "CLASSIFIED": 21,
+      "NOT_DETECTED": 12
+    },
+    "payoff": {
+      "CLASSIFIED": 0,
+      "NOT_DETECTED": 33
+    }
+  },
+  "recognitionMetricNotes": "Legacy trigger recognition is the existing normalized composition trigger (13/33); SFE timed text had no independent trigger report. Structured trigger presence is explicit-field evidence, with classification reported separately.",
+  "scoreDeltaDistribution": {
+    "-6": 2,
+    "0": 2,
+    "1": 1,
+    "6": 2,
+    "7": 2,
+    "9": 1,
+    "13": 1,
+    "19": 1,
+    "25": 1,
+    "27": 1,
+    "28": 1,
+    "29": 1,
+    "30": 1,
+    "32": 1,
+    "36": 1,
+    "37": 1,
+    "39": 1,
+    "40": 1,
+    "51": 2,
+    "54": 1,
+    "59": 1,
+    "60": 2,
+    "61": 1,
+    "65": 1,
+    "66": 1,
+    "68": 1,
+    "81": 1
+  },
+  "increaseAtLeast10": [
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-024",
+    "raw-026",
+    "raw-027",
+    "raw-030",
+    "raw-032",
+    "raw-036",
+    "raw-037",
+    "raw-039"
+  ],
+  "increaseAtLeast20": [
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-010",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-024",
+    "raw-026",
+    "raw-027",
+    "raw-030",
+    "raw-032",
+    "raw-036",
+    "raw-039"
+  ],
+  "materialChanges": [
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-024",
+    "raw-026",
+    "raw-027",
+    "raw-030",
+    "raw-032",
+    "raw-036",
+    "raw-037",
+    "raw-039"
+  ],
+  "statusTransitions": [
+    {
+      "ideaId": "raw-002",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-003",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-007",
+      "transition": "REVISION_REQUIRED -> PASS"
+    },
+    {
+      "ideaId": "raw-008",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-010",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-012",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-013",
+      "transition": "REVISION_REQUIRED -> PASS"
+    },
+    {
+      "ideaId": "raw-015",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-018",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-019",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-026",
+      "transition": "REJECT -> PASS"
+    },
+    {
+      "ideaId": "raw-027",
+      "transition": "REVISION_REQUIRED -> PASS"
+    },
+    {
+      "ideaId": "raw-034",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-036",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    },
+    {
+      "ideaId": "raw-038",
+      "transition": "REJECT -> REVISION_REQUIRED"
+    }
+  ],
+  "newlyEligible": [
+    "raw-013"
+  ],
+  "newProductionCandidates": [],
+  "HUMAN_REVIEW_SET": [
+    {
+      "ideaId": "raw-001",
+      "candidateId": "sem1-70ee2b7099c48d36",
+      "title": "The Inward Umbrella",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-003",
+      "candidateId": "sem1-5cf30c7094c804b1",
+      "title": "Spiraling Shopping Cart",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-004",
+      "candidateId": "sem1-11beb05a18d36fdb",
+      "title": "Sweep-Back Broom",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY"
+      ]
+    },
+    {
+      "ideaId": "raw-005",
+      "candidateId": "sem1-913bc9ae39a3c15e",
+      "title": "Vacuum Blows",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY",
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-006",
+      "candidateId": "sem1-d1e9d5ce1154b96b",
+      "title": "Mirrored Doorway",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY",
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-007",
+      "candidateId": "sem1-bbdb302fefb48bd5",
+      "title": "Backward Alarm Clock",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY",
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-008",
+      "candidateId": "sem1-8a6fb30b4a11976b",
+      "title": "Neighbor's TV Remote",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY"
+      ]
+    },
+    {
+      "ideaId": "raw-009",
+      "candidateId": "sem1-dd72ae9a5bebad5a",
+      "title": "Ceiling Pancake",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-013",
+      "candidateId": "sem1-8d1da895a1fb41af",
+      "title": "Tangling Hairbrush",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY",
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-015",
+      "candidateId": "sem1-90670eeaf4ee0468",
+      "title": "Bottom-Opening Zipper",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-016",
+      "candidateId": "sem1-6c8721485468a0f0",
+      "title": "Bottomless Backpack",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-018",
+      "candidateId": "sem1-91ea45894fa28d7b",
+      "title": "Random Fridge Interior",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY"
+      ]
+    },
+    {
+      "ideaId": "raw-019",
+      "candidateId": "sem1-63760a23881b08d8",
+      "title": "Microwave Hot Plate",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY"
+      ]
+    },
+    {
+      "ideaId": "raw-020",
+      "candidateId": "sem1-c2b6225333ed3cda",
+      "title": "Wrong-Room Light Switch",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-026",
+      "candidateId": "sem1-23a3c991b8104bee",
+      "title": "Bending Nail Hammer",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY",
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-027",
+      "candidateId": "sem1-2ae718e8672f18cc",
+      "title": "Opposite-Color Paintbrush",
+      "reasons": [
+        "EXISTING_REVIEW_POLICY"
+      ]
+    },
+    {
+      "ideaId": "raw-031",
+      "candidateId": "sem1-c85a677474d9ed27",
+      "title": "Shadow Flashlight",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    },
+    {
+      "ideaId": "raw-032",
+      "candidateId": "sem1-cfeed66616185cb0",
+      "title": "Delayed Mirror",
+      "reasons": [
+        "UNCLASSIFIED_WITH_COMPLETE_SOURCE_AND_EXISTING_BG_DIVERSITY_INFORMATION"
+      ]
+    }
+  ],
+  "humanReviewEntering": [
+    "raw-004",
+    "raw-008",
+    "raw-018",
+    "raw-019",
+    "raw-027"
+  ],
+  "humanReviewLeaving": [],
+  "stillBelow60CompleteDeclaredEvidence": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-009",
+    "raw-011",
+    "raw-015",
+    "raw-016",
+    "raw-022",
+    "raw-025",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-033",
+    "raw-034",
+    "raw-038",
+    "raw-039"
+  ],
+  "presentUnclassifiedEngines": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-008",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038"
+  ],
+  "presentUnclassifiedPayoffs": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-016",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038",
+    "raw-039"
+  ],
+  "likelyContentFailures": [],
+  "remainingEvidenceSourceFailures": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-015",
+    "raw-016",
+    "raw-019",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038",
+    "raw-039"
+  ],
+  "providerCalls": 0,
+  "externalProviderCalls": 0,
+  "newConceptsGenerated": 0,
+  "renders": 0,
+  "scoresBlended": false,
+  "limitations": [
+    "Scoring weights/thresholds/findings are unchanged; acquisition verification is a versioned deterministic heuristic, not semantic truth.",
+    "Declared presence is not automatic visible goal, coherent rule, causal beat, strong payoff or intentional loop.",
+    "Remaining ranking goal/rule consistency checks and downstream naturalness/BG/shape gates retain their accepted behavior.",
+    "Unknown source support must not be reported as proof an idea is bad. Human creative review remains final."
+  ]
+}

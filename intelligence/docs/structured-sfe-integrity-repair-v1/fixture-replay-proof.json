@@ -1,0 +1,24 @@
+{
+  "providerCalls": 0,
+  "networkDenied": true,
+  "fixtures": {
+    "towel_transfer": {
+      "legacyScore": 18,
+      "structuredScore": 99,
+      "status": "PASS",
+      "fullStructuredReportIdentical": true
+    },
+    "eraser_transfer": {
+      "legacyScore": 19,
+      "structuredScore": 70,
+      "status": "REVISION_REQUIRED",
+      "fullStructuredReportIdentical": true
+    },
+    "lid_room": {
+      "legacyScore": 100,
+      "structuredScore": 100,
+      "status": "PASS",
+      "fullStructuredReportIdentical": true
+    }
+  }
+}

@@ -1,0 +1,61 @@
+Shoe / Reset To Start / Goal Distance Reversal
+FRAME ZERO: At frame zero, beside the fixed working boundary, Kiko is already trying to put the shoe on; Kiko pulls the shoe over the foot. The shoe slides back to the original start mark. The original goal is out of reach again.
+GOAL: put the shoe on
+OBJECT: shoe
+ENGINE: RESET_TO_START
+RULE: The shoe slides back to its starting position whenever it is pulled.
+BEAT 1: At frame zero, beside the fixed working boundary, Kiko is already trying to put the shoe on; Kiko pulls the shoe over the foot. The shoe slides back to the original start mark. The original goal is out of reach again.
+Strategy: DIRECT_USE
+Consequence: The original goal is out of reach again.
+New information: VISIBLE_TRIGGER_AND_OBSTRUCTION
+BEAT 2: Kiko wedges the shoe against the fixed boundary. Kiko pulls the shoe over the foot. The shoe slides back to the original start mark. The fixed boundary blocks the direct route, forcing the body to reposition.
+Strategy: ANCHOR_TO_ENVIRONMENT
+Consequence: The fixed boundary blocks the direct route, forcing the body to reposition.
+New information: BOUNDARY_CONSTRAINS_SAME_TRANSITION
+BEAT 3: Kiko plants the feet and holds the shoe at arm length. Kiko pulls the shoe over the foot. The shoe slides back to the original start mark. The held object drags the braced character backward.
+Strategy: BRACE_BODY
+Consequence: The held object drags the braced character backward.
+New information: BODY_TAKES_REACTION_OF_RULE
+BEAT 4: Kiko stops the trigger and aligns the body with the stationary working point. The stationary object exposes the unchanged working state while the trigger is absent. With the trigger stopped, the body aligns with the usable point and the goal appears reached.
+Strategy: TEMPORARILY_STOP_TRIGGER
+Consequence: With the trigger stopped, the body aligns with the usable point and the goal appears reached.
+New information: BODY_CAN_ALIGN_WITHOUT_NEW_TRIGGER
+BEAT 5 / PAYOFF: Kiko resumes the original everyday action. Kiko pulls the shoe over the foot. The shoe slides back to the original start mark again. The original goal is out of reach again. Apparent success ends as normal use repeats the visible trigger; the starting problem returns.
+Strategy: FIRST_NORMAL_USE
+Consequence: The original goal is out of reach again.
+New information: NORMAL_USE_RECREATES_OPENING
+PAYOFF STATE CHANGE: OPENING_PROBLEM_RETURNS
+strategyDiversityScore=100.0; consequenceDiversityScore=100.0; bodyStateProgressionScore=100.0; spatialProgressionScore=71.43; payoffDistance=0.75; beatGrammarQuality=STRONG
+shortFormScore=99; rankingScore=97.6; eligibility=ELIGIBLE; productionSlateRank=1
+Accepted failures: 
+
+Lid / Reversal / Body Escalation
+FRAME ZERO: At frame zero, beside the fixed working boundary, Arda is already trying to close the lid; Arda presses the lid toward its rim. The lid flips its usable surface away from the body. The usable surface faces away from the intended body contact.
+GOAL: close the lid
+OBJECT: lid
+ENGINE: REVERSAL
+RULE: The lid flips its usable surface away from the character whenever pressure is applied to it.
+BEAT 1: At frame zero, beside the fixed working boundary, Arda is already trying to close the lid; Arda presses the lid toward its rim. The lid flips its usable surface away from the body. The usable surface faces away from the intended body contact.
+Strategy: DIRECT_USE
+Consequence: The usable surface faces away from the intended body contact.
+New information: VISIBLE_TRIGGER_AND_OBSTRUCTION
+BEAT 2: Arda grabs the opposite broad contact surface. Arda presses the lid toward its rim. The lid flips its usable surface away from the body. The character shifts the body into the remaining working space beside the object.
+Strategy: SWITCH_CONTACT_POINT
+Consequence: The character shifts the body into the remaining working space beside the object.
+New information: NEW_CONTACT_CHANGES_BODY_EXPOSURE
+BEAT 3: Arda plants the feet and holds the lid at arm length. Arda presses the lid toward its rim. The lid flips its usable surface away from the body. Following the rotating contact pulls the body off balance.
+Strategy: BRACE_BODY
+Consequence: Following the rotating contact pulls the body off balance.
+New information: BODY_TAKES_REACTION_OF_RULE
+BEAT 4: Arda stops the trigger and aligns the body with the stationary working point. The stationary object exposes the unchanged working state while the trigger is absent. With the trigger stopped, the body aligns with the usable point and the goal appears reached.
+Strategy: TEMPORARILY_STOP_TRIGGER
+Consequence: With the trigger stopped, the body aligns with the usable point and the goal appears reached.
+New information: BODY_CAN_ALIGN_WITHOUT_NEW_TRIGGER
+BEAT 5 / PAYOFF: Arda resumes the original everyday action. Arda presses the lid toward its rim. The lid flips upside down with the character still holding it. The character must follow the object; the object now determines the final body pose.
+Strategy: FIRST_NORMAL_USE
+Consequence: The character must follow the object; the object now determines the final body pose.
+New information: RULE_REVERSES_CHARACTER_OBJECT_CONTROL
+PAYOFF STATE CHANGE: OBJECT_CONTROLS_CHARACTER
+strategyDiversityScore=100.0; consequenceDiversityScore=100.0; bodyStateProgressionScore=80.0; spatialProgressionScore=42.86; payoffDistance=0.75; beatGrammarQuality=STRONG
+shortFormScore=99; rankingScore=97.6; eligibility=ELIGIBLE; productionSlateRank=2
+Accepted failures: 

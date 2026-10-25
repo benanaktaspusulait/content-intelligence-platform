@@ -1,0 +1,363 @@
+{
+  "provenance": "USER_REQUESTED_TEST_REFERENCE_NOT_GENERATOR_RECIPE",
+  "composition": {
+    "goalId": "shoe",
+    "goalFamily": "DRESSING",
+    "objectId": "shoe",
+    "objectCategory": "footwear",
+    "engineFamily": "RESET_TO_START",
+    "trigger": "PULL",
+    "escalationTopology": "STRATEGY_RESPONSE",
+    "payoffTopology": "OPENING_RECREATED",
+    "environment": "entryway",
+    "stateTransition": "RETURN_ORIGIN"
+  },
+  "shoeGolden": [
+    {
+      "beatNumber": 1,
+      "beatRole": "HOOK_PROBLEM",
+      "characterStrategy": "DIRECT_USE",
+      "trigger": "PULL",
+      "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+      "objectResponse": "The shoe slides back to the original start mark.",
+      "characterConsequence": "The original goal is out of reach again.",
+      "bodyStateBefore": "NORMAL_CONTROL",
+      "bodyStateAfter": "LEANING",
+      "objectStateBefore": {
+        "kind": "USABLE_START",
+        "applicationCount": 0
+      },
+      "objectStateAfter": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 1
+      },
+      "spatialChange": {
+        "distanceToGoal": "FARTHER",
+        "distanceToObject": "UNCHANGED",
+        "verticalPosition": "UNCHANGED",
+        "horizontalDisplacement": "UNCHANGED",
+        "availableFreeSpace": "UNCHANGED",
+        "objectRelativePosition": "UNCHANGED",
+        "environmentUse": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [
+        "VISIBLE_TRIGGER_AND_OBSTRUCTION"
+      ],
+      "contactPattern": "PRIMARY_WORKING_CONTACT",
+      "consequenceType": "PROBLEM_RESETS",
+      "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffContribution": "ESTABLISH_CONSTRAINT",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah pulls the shoe onto the foot; it slides back to the original start mark."
+    },
+    {
+      "beatNumber": 2,
+      "beatRole": "ENVIRONMENTAL_LEVERAGE",
+      "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+      "trigger": "PULL",
+      "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+      "objectResponse": "The shoe slides back to the original start mark.",
+      "characterConsequence": "The fixed boundary blocks the direct route, forcing the body to reposition.",
+      "bodyStateBefore": "LEANING",
+      "bodyStateAfter": "BRACED",
+      "objectStateBefore": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 1
+      },
+      "objectStateAfter": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 2
+      },
+      "spatialChange": {
+        "distanceToGoal": "UNCHANGED",
+        "distanceToObject": "UNCHANGED",
+        "verticalPosition": "UNCHANGED",
+        "horizontalDisplacement": "UNCHANGED",
+        "availableFreeSpace": "REDUCED",
+        "objectRelativePosition": "UNCHANGED",
+        "environmentUse": "BOUNDARY_CONTACT"
+      },
+      "goalProgress": "UNCHANGED",
+      "newInformation": [
+        "BOUNDARY_CONSTRAINS_SAME_TRANSITION"
+      ],
+      "contactPattern": "FIXED_SURFACE_CONTACT",
+      "consequenceType": "PATH_BLOCKED",
+      "relationshipAfter": "ENVIRONMENT_LIMITS_CONTROL",
+      "payoffContribution": "CHANGE_STRATEGY_OR_INFORMATION",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah braces the shoe against the wall and pulls. The reset slides the shoe back along the wall toward its original start mark."
+    },
+    {
+      "beatNumber": 3,
+      "beatRole": "BODY_LEVERAGE",
+      "characterStrategy": "BRACE_BODY",
+      "trigger": "PULL",
+      "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+      "objectResponse": "The shoe slides back to the original start mark.",
+      "characterConsequence": "The held object drags the braced character backward.",
+      "bodyStateBefore": "BRACED",
+      "bodyStateAfter": "DRAGGED",
+      "objectStateBefore": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 2
+      },
+      "objectStateAfter": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 3
+      },
+      "spatialChange": {
+        "distanceToGoal": "FARTHER",
+        "distanceToObject": "UNCHANGED",
+        "verticalPosition": "UNCHANGED",
+        "horizontalDisplacement": "BACKWARD",
+        "availableFreeSpace": "UNCHANGED",
+        "objectRelativePosition": "UNCHANGED",
+        "environmentUse": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [
+        "BODY_TAKES_REACTION_OF_RULE"
+      ],
+      "contactPattern": "BODY_BRACED_GRIP",
+      "consequenceType": "CHARACTER_IS_DRAGGED",
+      "relationshipAfter": "OBJECT_DISPLACES_BODY",
+      "payoffContribution": "CHANGE_STRATEGY_OR_INFORMATION",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah sits behind the shoe, holds it and pulls. The returning shoe drags Noah backward."
+    },
+    {
+      "beatNumber": 4,
+      "beatRole": "FALSE_SUCCESS",
+      "characterStrategy": "TEMPORARILY_STOP_TRIGGER",
+      "trigger": "NONE",
+      "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+      "objectResponse": "The stationary object exposes the unchanged working state while the trigger is absent.",
+      "characterConsequence": "With the trigger stopped, the body aligns with the usable point and the goal appears reached.",
+      "bodyStateBefore": "DRAGGED",
+      "bodyStateAfter": "FALSE_SUCCESS",
+      "objectStateBefore": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 3
+      },
+      "objectStateAfter": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 3
+      },
+      "spatialChange": {
+        "distanceToGoal": "AT_GOAL",
+        "distanceToObject": "UNCHANGED",
+        "verticalPosition": "UNCHANGED",
+        "horizontalDisplacement": "UNCHANGED",
+        "availableFreeSpace": "UNCHANGED",
+        "objectRelativePosition": "BODY_ALIGNED",
+        "environmentUse": "UNCHANGED"
+      },
+      "goalProgress": "AT_GOAL",
+      "newInformation": [
+        "BODY_CAN_ALIGN_WITHOUT_NEW_TRIGGER"
+      ],
+      "contactPattern": "STATIONARY_WORKING_CONTACT",
+      "consequenceType": "GOAL_APPEARS_REACHED",
+      "relationshipAfter": "APPARENT_CONTROL_WITHOUT_TRIGGER",
+      "payoffContribution": "CHANGE_STRATEGY_OR_INFORMATION",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah pins the shoe against the floor, stops pulling and slips the foot inside. False success: the shoe stays put while the trigger is absent."
+    },
+    {
+      "beatNumber": 5,
+      "beatRole": "LOOP_RESET",
+      "characterStrategy": "FIRST_NORMAL_USE",
+      "trigger": "PULL",
+      "impossibleRule": "The shoe slides back to its starting position whenever it is pulled.",
+      "objectResponse": "The shoe slides back to the original start mark again.",
+      "characterConsequence": "The original goal is out of reach again.",
+      "bodyStateBefore": "FALSE_SUCCESS",
+      "bodyStateAfter": "FINAL_DEFEAT",
+      "objectStateBefore": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 3
+      },
+      "objectStateAfter": {
+        "kind": "RETURN_ORIGIN",
+        "applicationCount": 4
+      },
+      "spatialChange": {
+        "distanceToGoal": "FARTHER",
+        "distanceToObject": "UNCHANGED",
+        "verticalPosition": "UNCHANGED",
+        "horizontalDisplacement": "UNCHANGED",
+        "availableFreeSpace": "UNCHANGED",
+        "objectRelativePosition": "UNCHANGED",
+        "environmentUse": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [
+        "NORMAL_USE_RECREATES_OPENING"
+      ],
+      "contactPattern": "ORIGINAL_TASK_CONTACT",
+      "consequenceType": "PROBLEM_RESETS",
+      "relationshipAfter": "OPENING_PROBLEM_RETURNS",
+      "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+      "payoffStateChange": "OPENING_PROBLEM_RETURNS",
+      "referenceText": "Noah takes the first normal step; the foot visibly pulls against the shoe. It slides back to the original mark, leaving Noah in a sock and recreating the opening problem."
+    }
+  ],
+  "mechanicalNegative": [
+    {
+      "beatNumber": 1,
+      "beatRole": "HOOK_PROBLEM",
+      "characterStrategy": "DIRECT_USE",
+      "trigger": "PULL",
+      "impossibleRule": "The object grows whenever pulled.",
+      "objectResponse": "The shoe slides back to the original start mark.",
+      "characterConsequence": "The original goal is out of reach again.",
+      "bodyStateBefore": "NORMAL_CONTROL",
+      "bodyStateAfter": "LEANING",
+      "objectStateBefore": {
+        "kind": "USABLE_START",
+        "applicationCount": 0
+      },
+      "objectStateAfter": {
+        "kind": "SCALE_UP",
+        "applicationCount": 1
+      },
+      "spatialChange": {
+        "objectRelativePosition": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [
+        "RULE_VISIBLE"
+      ],
+      "contactPattern": "WORKING_CONTACT",
+      "consequenceType": "OBJECT_GROWS",
+      "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffContribution": "ESTABLISH_CONSTRAINT",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah pulls the shoe onto the foot; it slides back to the original start mark."
+    },
+    {
+      "beatNumber": 2,
+      "beatRole": "FIRST_OBVIOUS_FIX",
+      "characterStrategy": "TWO_HAND_FORCE",
+      "trigger": "PULL",
+      "impossibleRule": "The object grows whenever pulled.",
+      "objectResponse": "The shoe slides back to the original start mark.",
+      "characterConsequence": "The fixed boundary blocks the direct route, forcing the body to reposition.",
+      "bodyStateBefore": "LEANING",
+      "bodyStateAfter": "LEANING",
+      "objectStateBefore": {
+        "kind": "SCALE_UP",
+        "applicationCount": 1
+      },
+      "objectStateAfter": {
+        "kind": "SCALE_UP",
+        "applicationCount": 2
+      },
+      "spatialChange": {
+        "objectRelativePosition": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [
+        "MAGNITUDE"
+      ],
+      "contactPattern": "WORKING_CONTACT",
+      "consequenceType": "OBJECT_GROWS",
+      "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffContribution": "CHANGE_STRATEGY_OR_INFORMATION",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah braces the shoe against the wall and pulls. The reset slides the shoe back along the wall toward its original start mark."
+    },
+    {
+      "beatNumber": 3,
+      "beatRole": "FIRST_OBVIOUS_FIX",
+      "characterStrategy": "INCREASE_FORCE",
+      "trigger": "PULL",
+      "impossibleRule": "The object grows whenever pulled.",
+      "objectResponse": "The shoe slides back to the original start mark.",
+      "characterConsequence": "The held object drags the braced character backward.",
+      "bodyStateBefore": "LEANING",
+      "bodyStateAfter": "LEANING",
+      "objectStateBefore": {
+        "kind": "SCALE_UP",
+        "applicationCount": 2
+      },
+      "objectStateAfter": {
+        "kind": "SCALE_UP",
+        "applicationCount": 3
+      },
+      "spatialChange": {
+        "objectRelativePosition": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [],
+      "contactPattern": "WORKING_CONTACT",
+      "consequenceType": "OBJECT_GROWS",
+      "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffContribution": "CHANGE_STRATEGY_OR_INFORMATION",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah sits behind the shoe, holds it and pulls. The returning shoe drags Noah backward."
+    },
+    {
+      "beatNumber": 4,
+      "beatRole": "FIRST_OBVIOUS_FIX",
+      "characterStrategy": "MOVE_UNDER_OBJECT",
+      "trigger": "NONE",
+      "impossibleRule": "The object grows whenever pulled.",
+      "objectResponse": "The stationary object exposes the unchanged working state while the trigger is absent.",
+      "characterConsequence": "With the trigger stopped, the body aligns with the usable point and the goal appears reached.",
+      "bodyStateBefore": "LEANING",
+      "bodyStateAfter": "CROUCHED",
+      "objectStateBefore": {
+        "kind": "SCALE_UP",
+        "applicationCount": 3
+      },
+      "objectStateAfter": {
+        "kind": "SCALE_UP",
+        "applicationCount": 3
+      },
+      "spatialChange": {
+        "objectRelativePosition": "BELOW_OBJECT"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [],
+      "contactPattern": "WORKING_CONTACT",
+      "consequenceType": "CHARACTER_MOVES",
+      "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffContribution": "CHANGE_STRATEGY_OR_INFORMATION",
+      "payoffStateChange": "NONE",
+      "referenceText": "Noah pins the shoe against the floor, stops pulling and slips the foot inside. False success: the shoe stays put while the trigger is absent."
+    },
+    {
+      "beatNumber": 5,
+      "beatRole": "PAYOFF",
+      "characterStrategy": "DIRECT_USE",
+      "trigger": "PULL",
+      "impossibleRule": "The object grows whenever pulled.",
+      "objectResponse": "The shoe slides back to the original start mark again.",
+      "characterConsequence": "The original goal is out of reach again.",
+      "bodyStateBefore": "CROUCHED",
+      "bodyStateAfter": "LEANING",
+      "objectStateBefore": {
+        "kind": "SCALE_UP",
+        "applicationCount": 3
+      },
+      "objectStateAfter": {
+        "kind": "SCALE_UP",
+        "applicationCount": 4
+      },
+      "spatialChange": {
+        "objectRelativePosition": "UNCHANGED"
+      },
+      "goalProgress": "FARTHER",
+      "newInformation": [],
+      "contactPattern": "WORKING_CONTACT",
+      "consequenceType": "OBJECT_GROWS",
+      "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+      "payoffStateChange": "MAGNITUDE_ONLY",
+      "referenceText": "Noah takes the first normal step; the foot visibly pulls against the shoe. It slides back to the original mark, leaving Noah in a sock and recreating the opening problem."
+    }
+  ]
+}

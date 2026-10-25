@@ -1,0 +1,218 @@
+{
+  "HUMAN_REVIEW_SET": [],
+  "topProductionSlate": [],
+  "bucketCounts": {
+    "REVISION_REQUIRED": 21,
+    "REJECTED": 12,
+    "MALFORMED": 7
+  },
+  "eligibilityCounts": {
+    "INELIGIBLE": 33,
+    "MALFORMED": 7
+  },
+  "comparison": {
+    "semantic": {
+      "rawCandidateCount": 40,
+      "normalizedCount": 33,
+      "validNormalizationRate": 0.825,
+      "eligibilityCount": 0,
+      "eligibilityRate": 0.0,
+      "meanShortFormScore": 27.636363636363637,
+      "medianShortFormScore": 28,
+      "scoreDistribution": {
+        "<60": 33
+      },
+      "meanStoryShapeDistance": 0.113089,
+      "payoffFamilyDistribution": {
+        "UNKNOWN": 33
+      },
+      "templateShapeHighRate": 1.0,
+      "historicalCollisionRate": 0.0,
+      "productionCandidateCount": 0,
+      "humanReviewCount": 0,
+      "denominator": "ALL_NORMALIZED_POOL; eligibility is canonical before selection suppression"
+    },
+    "deterministic": {
+      "rawCandidateCount": 480,
+      "normalizedCount": 480,
+      "validNormalizationRate": 1.0,
+      "eligibilityCount": 122,
+      "eligibilityRate": 0.25416666666666665,
+      "meanShortFormScore": 65.92291666666667,
+      "medianShortFormScore": 78.0,
+      "scoreDistribution": {
+        "<60": 187,
+        "75-89": 127,
+        "90-100": 141,
+        "60-74": 25
+      },
+      "meanStoryShapeDistance": 0.390193,
+      "payoffFamilyDistribution": {
+        "CONTROL_REVERSAL": 358,
+        "CONTACT_ENTANGLEMENT": 29,
+        "OPENING_RECREATED": 35,
+        "FALSE_SUCCESS_COLLAPSE": 58
+      },
+      "templateShapeHighRate": 1.0,
+      "historicalCollisionRate": 0.07708333333333334,
+      "productionCandidateCount": 3,
+      "humanReviewCount": 425,
+      "denominator": "ALL_NORMALIZED_POOL; eligibility is canonical before selection suppression"
+    }
+  },
+  "limitations": [
+    "One live run does not establish semantic superiority.",
+    "Extraction diagnostics are observations/hypotheses, not manual score corrections.",
+    "No genuinely novel shape is certified automatically; inspect raw stories alongside structured differences."
+  ],
+  "providerMetadata": {
+    "startedAt": "2026-10-25T01:00:55.323625+00:00",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "requestCount": 1,
+    "status": "COMPLETED",
+    "usage": {
+      "completion_tokens": 56297,
+      "prompt_tokens": 2863,
+      "total_tokens": 59160,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27369,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 2863
+    },
+    "actualCostUsd": null,
+    "finishedAt": "2026-10-25T01:09:45.638288+00:00",
+    "providerResponseMetadata": {
+      "requestId": "66a292a5-cac0-4de4-b4e6-0930b7cc09fe",
+      "finishReason": "stop",
+      "apiStatus": "COMPLETED",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro"
+    }
+  },
+  "schemaAndNormalizationEvidence": {
+    "providerName": "deepseek",
+    "providerModel": "deepseek-v4-pro",
+    "providerPromptVersion": "semantic-concept-prompt-v1.1",
+    "responseSha256": "0d0e63063f51b6f22c303cfa0ef08f8bed892d02dcc0aee97353c3212ad88103",
+    "receivedRawCount": 40,
+    "schemaValidCount": 38,
+    "normalizedCount": 33,
+    "schemaRejectedCount": 2,
+    "normalizationRejectedCount": 5,
+    "externalProviderCalls": 0,
+    "execution": "STORED_RESPONSE_REPLAY_NO_TRANSPORT",
+    "automaticRetries": 0
+  },
+  "allLowScoreIdeaIds": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-007",
+    "raw-008",
+    "raw-009",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-016",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-030",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038",
+    "raw-039"
+  ],
+  "unclassifiedCausalEngineIdeaIds": [
+    "raw-001",
+    "raw-002",
+    "raw-003",
+    "raw-004",
+    "raw-005",
+    "raw-006",
+    "raw-008",
+    "raw-010",
+    "raw-011",
+    "raw-012",
+    "raw-013",
+    "raw-015",
+    "raw-018",
+    "raw-019",
+    "raw-020",
+    "raw-022",
+    "raw-024",
+    "raw-025",
+    "raw-026",
+    "raw-027",
+    "raw-029",
+    "raw-031",
+    "raw-032",
+    "raw-033",
+    "raw-034",
+    "raw-036",
+    "raw-037",
+    "raw-038"
+  ],
+  "extractionAuditCounts": {
+    "everydayGoal": {
+      "not recognized": 30,
+      "recognized": 3
+    },
+    "frameZeroAnomaly": {
+      "ambiguous": 33
+    },
+    "coreRule": {
+      "recognized": 21,
+      "not recognized": 12
+    },
+    "trigger": {
+      "recognized": 13,
+      "ambiguous": 20
+    },
+    "beatCount": {
+      "not recognized": 33
+    },
+    "causalProgression": {
+      "not recognized": 29,
+      "recognized": 4
+    },
+    "payoff": {
+      "not recognized": 33
+    },
+    "loop": {
+      "ambiguous": 33
+    }
+  },
+  "genuinelyNovelShapeVerified": false,
+  "noveltyReason": "All 33 normalized payoff-family extractions are UNKNOWN. Structured differences cannot certify a new causal story shape.",
+  "scoreMinimum": 18,
+  "scoreMaximum": 46
+}

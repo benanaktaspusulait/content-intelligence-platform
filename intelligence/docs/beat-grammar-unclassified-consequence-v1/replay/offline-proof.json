@@ -1,0 +1,21 @@
+{
+  "candidateCount": 18,
+  "beatCount": 90,
+  "providerCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "attemptedNetworkOrSubprocess": {},
+  "oldCanonicalModeExactlyUnchanged": true,
+  "structuredSFEExactlyUnchanged": true,
+  "fullRankingReportsExactlyUnchanged": true,
+  "naturalnessExactlyUnchanged": true,
+  "noTaxonomyExpansion": true,
+  "noThresholdChanges": true,
+  "onlyExplicitNewEvidenceModeChanged": true,
+  "qualityDistribution": {
+    "ACCEPTABLE": 16,
+    "MECHANICAL": 2
+  },
+  "productionSlateBefore": [],
+  "productionSlateAfter": []
+}

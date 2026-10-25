@@ -1,0 +1,3281 @@
+{
+  "derivation": "Read-only expansion of the original pre-change baseline stored consumer inputs/reports; no evaluator execution. UNKNOWN is not false. Classifications distinguish acquisition paths, coverage, and independent quality.",
+  "candidates": [
+    {
+      "ideaId": "raw-007",
+      "candidateId": "sem1-bbdb302fefb48bd5",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "LEGITIMATE_RULE_DIFFERENCE"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-013",
+      "candidateId": "sem1-8d1da895a1fb41af",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "UNKNOWN",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "STROKE",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-026",
+      "candidateId": "sem1-23a3c991b8104bee",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-027",
+      "candidateId": "sem1-2ae718e8672f18cc",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "STROKE",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-005",
+      "candidateId": "sem1-913bc9ae39a3c15e",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-006",
+      "candidateId": "sem1-d1e9d5ce1154b96b",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-018",
+      "candidateId": "sem1-91ea45894fa28d7b",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-008",
+      "candidateId": "sem1-8a6fb30b4a11976b",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "PRESSURE",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-004",
+      "candidateId": "sem1-11beb05a18d36fdb",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-019",
+      "candidateId": "sem1-63760a23881b08d8",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-020",
+      "candidateId": "sem1-c2b6225333ed3cda",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-032",
+      "candidateId": "sem1-cfeed66616185cb0",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-003",
+      "candidateId": "sem1-5cf30c7094c804b1",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-015",
+      "candidateId": "sem1-90670eeaf4ee0468",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "PULL",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-016",
+      "candidateId": "sem1-6c8721485468a0f0",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "LEGITIMATE_RULE_DIFFERENCE"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-001",
+      "candidateId": "sem1-70ee2b7099c48d36",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "PRESSURE",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-009",
+      "candidateId": "sem1-dd72ae9a5bebad5a",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "LEGITIMATE_RULE_DIFFERENCE"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    },
+    {
+      "ideaId": "raw-031",
+      "candidateId": "sem1-c85a677474d9ed27",
+      "facts": {
+        "goalDeclared": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Original candidate.everydayGoal; Naturalness broken-presence condition"
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No declared-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": true,
+            "source": "SHORT_FORM_ENGINE_GOAL_PATTERN plus structured SFE report",
+            "note": "Declared field is present; DECLARED_GOAL_UNSUPPORTED is independently acquired lexical goal support, not an absent source string."
+          }
+        },
+        "goalVisible": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "Generic object goalPatterns on raw opening; no canonical opening goal consumed",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-goal fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "openingAnomaly": {
+          "canonical": false,
+          "SFE": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "infer_response(frame) equality to infer_response(rule); unsupported response excluded",
+            "qualityResult": 15
+          },
+          "BeatGrammar": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "No opening-anomaly fact read by original BG"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": false,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "rulePresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "actualImpossibleResponse",
+            "coverageClassification": "TAXONOMY_LIMIT"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredBeatPlan[*].impossibleRule"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "triggerPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "EVIDENCE_SOURCE_MISMATCH",
+            "value": null,
+            "source": "composition.trigger / legacy trigger classifier",
+            "classificationValue": "UNSPECIFIED",
+            "note": "UNSPECIFIED class is not missing trigger evidence"
+          },
+          "BeatGrammar": {
+            "classification": "TAXONOMY_LIMIT",
+            "value": null,
+            "source": "structuredBeatPlan[*].trigger",
+            "note": "Category may be unresolved; explicit source trigger exists"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "beatCount": {
+          "canonical": 5,
+          "SFE": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "Not a Naturalness criterion; original source beats remain on candidate"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "len(structuredBeatPlan)",
+            "contentClassification": "EVIDENCE_SOURCE_MISMATCH"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": 5,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        },
+        "payoffPresent": {
+          "canonical": true,
+          "SFE": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structured.canonicalEvidence.dimensions"
+          },
+          "Naturalness": {
+            "classification": "UNKNOWN",
+            "value": null,
+            "source": "physicalPayoffPotential is a quality estimate, not payoff presence"
+          },
+          "BeatGrammar": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "Final beat objectResponse and PAYOFF role",
+            "note": "PayoffDistance measures quality; it does not deny explicit consequence presence"
+          },
+          "RankingAdmission": {
+            "classification": "AGREE",
+            "value": true,
+            "source": "structuredValidation.shortFormEngine",
+            "note": "Ranking sees structured SFE report; independent goal regex can still contradict its support."
+          }
+        }
+      }
+    }
+  ]
+}

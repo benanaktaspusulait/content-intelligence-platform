@@ -1,0 +1,58 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> intelligence/ml-service/app/workflow/semantic_evidence_replay.py:3:1
+   |
+ 1 |   """Offline stored-response evidence replay; no live transport or generation path."""
+ 2 |
+ 3 | / import json
+ 4 | | from collections import Counter
+ 5 | | from copy import deepcopy
+ 6 | | from pathlib import Path
+ 7 | | from statistics import mean, median
+ 8 | | from typing import Literal
+ 9 | |
+10 | | from pydantic import BaseModel, ConfigDict
+11 | |
+12 | | from . import concept_ranking as ranking
+13 | | from . import semantic_concept_generation as generation
+14 | | from . import short_form_engine as short
+15 | | from . import semantic_live_diagnostics as prior_diagnostics
+16 | | from .concept_fingerprint import digest
+17 | | from .semantic_evidence_adapter import FIELD_MAP, VERSION, project_candidate
+18 | | from .semantic_live_experiment import StoredResponseGenerator
+   | |_____________________________________________________________^
+19 |
+20 |   EXPERIMENT_ID = "semantic-live-v1-seed-42-count-40"
+   |
+help: Organize imports
+   |
+13 | from . import semantic_concept_generation as generation
+14 + from . import semantic_live_diagnostics as prior_diagnostics
+15 | from . import short_form_engine as short
+   - from . import semantic_live_diagnostics as prior_diagnostics
+16 | from .concept_fingerprint import digest
+   |
+
+E501 Line too long (131 > 110)
+   --> intelligence/ml-service/app/workflow/semantic_evidence_replay.py:345:111
+    |
+343 |                     acceptedRawOpeningNaturalness=c["premiseNaturalness"],
+344 |                     actualVisualEvidenceInspected=False,
+345 |                     limitation="Lexical recognition and declared fields are separate; no semantic/visual verification is claimed.",
+    |                                                                                                               ^^^^^^^^^^^^^^^^^^^^^
+346 |                 ),
+347 |                 payoffExtractionAudit=dict(
+    |
+
+E501 Line too long (345 > 110)
+   --> intelligence/ml-service/app/workflow/semantic_evidence_replay.py:409:111
+    |
+407 | …"])
+408 | …
+409 | …nvironment patterns; Creative Shape returns UNKNOWN for unsupported terminal relations. SFE independently reads timed prose with fixed goal/rule/payoff patterns. Neither UNKNOWN nor an unsupported phrase proves the source field is absent.",
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+410 | …
+411 | …
+    |
+
+Found 3 errors.
+[*] 1 fixable with `--fix`.

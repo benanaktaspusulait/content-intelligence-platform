@@ -1,0 +1,25 @@
+{
+  "generatorVersion": "short-concept-generator-v1",
+  "seed42CandidateHash": "92709b6cc6f6ea46d4a6cb51ac35c1d83cc0d0d8a7e066df0ec76b3344987bfe",
+  "repeatCandidateHash": "92709b6cc6f6ea46d4a6cb51ac35c1d83cc0d0d8a7e066df0ec76b3344987bfe",
+  "fullRunHash": "9aac56478a0f8a3e960cf161d81d42d4044da947e854ff50ef684532b72a6878",
+  "repeatFullRunHash": "9aac56478a0f8a3e960cf161d81d42d4044da947e854ff50ef684532b72a6878",
+  "seed43CandidateHash": "a2bd956e4b71a4189d1bf4411c0f11aa3d92072bd04a9bb3ca27f8ad1cbbb7d7",
+  "seed42OnlyStructuralCores": 4,
+  "seed43OnlyStructuralCores": 4,
+  "catalogHash": {
+    "generatorVersion": "short-concept-generator-v1",
+    "seed": 42,
+    "recipeId": "backward-brush-stroke",
+    "catalogVersion": "short-concept-engine-catalog-v1",
+    "catalogSha256": "1b4ea22127d320755aacb6d908f9a73396d1925ba2b21f7023b6806ef1207ee2",
+    "characterAssignedAfterEngine": true,
+    "catalogCycle": 0,
+    "recipeReuseIndex": 0
+  },
+  "castEvidence": {
+    "source": "REPOSITORY_CANONICAL_SEED_SNAPSHOT_NOT_LIVE_REGISTRY",
+    "sha256": "48ef53eaa0e124bd646b54979387f2130c6b44db7788d375e09a710eb211dc08",
+    "visualIdentityVerified": false
+  }
+}

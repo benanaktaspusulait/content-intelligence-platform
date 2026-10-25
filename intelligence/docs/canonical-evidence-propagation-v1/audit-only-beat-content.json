@@ -1,0 +1,2230 @@
+[
+  {
+    "ideaId": "raw-007",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Opa manually winds the clock forward to 6:59, expecting the alarm soon.",
+          "visibleConsequence": "As soon as he releases, the hands spin backward rapidly to 3:00.",
+          "newInformation": "Manual forward adjustment is undone by the reverse mechanism."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Opa turns the alarm off and just watches the clock to see what time it shows.",
+          "visibleConsequence": "The hands freeze, then twitch backward one minute for every real second that passes.",
+          "newInformation": "Without alarm set, the clock still runs backward but slower."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Opa sets the alarm for a time that already appears behind the current hand position, like 2:00, hoping it will trigger quickly.",
+          "visibleConsequence": "The alarm rings immediately, but the hands jump forward to noon, and the ringing reverses itself into a silent vacuum of sound.",
+          "newInformation": "Triggering the alarm causes time to jump forward to noon and sound to invert."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Opa unplugs the clock and uses his phone to check the actual time.",
+          "visibleConsequence": "The clock's display reappears on his phone screen, showing the same backward time, and the phone's alarm icon turns into an hourglass.",
+          "newInformation": "The clock's impossible rule spreads to other time-keeping devices."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Opa gives up and falls back asleep.",
+          "visibleConsequence": "The clock chimes twelve times in reverse, and Opa wakes up at 7 AM, but the clock reads 7 PM.",
+          "newInformation": "The backward time eventually catches up to the correct wake hour, but day and night are swapped."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-013",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+          "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+          "newInformation": "Pulling the brush out causes the hair to cinch, not loosen."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+          "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+          "newInformation": "Any grooming tool multiplies knots instead of removing them."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "SPACE_REDUCES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "OBJECT_DISPLACES_BODY"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Opa applies hair conditioner to make strands slippery.",
+          "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+          "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+          "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+          "newInformation": "The hair's tangling now acts like a living trap, consuming objects."
+        },
+        "adapterUsed": {
+          "characterStrategy": "TEMPORARILY_STOP_TRIGGER",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:TEMPORARILY_STOP_TRIGGER"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Opa uses scissors to cut the hair away.",
+          "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+          "newInformation": "Cutting triggers accelerated regrowth with more tangles."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "SPACE_REDUCES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "OBJECT_DISPLACES_BODY"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-026",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+          "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+          "newInformation": "The nail's bending is directional and can ensnare nearby tools."
+        },
+        "adapterUsed": {
+          "characterStrategy": "REDUCE_FORCE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:REDUCE_FORCE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+          "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+          "newInformation": "Nail length increases elasticity, causing projectile bending."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Kiko pre-drills a hole, then taps the nail.",
+          "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+          "newInformation": "The nail bends at a specific depth, damaging the wall."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Kiko gives up on nails and uses adhesive strips.",
+          "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+          "newInformation": "The hammer can install nails only when not held by Kiko."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+          "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+          "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-027",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+          "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+          "newInformation": "Complementary inversion doesn't cancel but separates into two colors."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+          "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+          "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Mimi uses a roller instead of brush.",
+          "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+          "newInformation": "The inversion applies to any painting tool, increasing area."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "SPACE_REDUCES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "OBJECT_DISPLACES_BODY"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+          "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+          "newInformation": "The brush inverts color in the open areas, not just strokes."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Mimi gives up and paints the wall back white.",
+          "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+          "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-005",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Luca checks the bag and points nozzle away, turning it on again.",
+          "visibleConsequence": "A blast of air shoots out, knocking over a plant and spraying soil across the floor.",
+          "newInformation": "The motor polarity is reversed, so it's now a leaf blower."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Luca reverses the vacuum's hose, attaching the other end to the front.",
+          "visibleConsequence": "The machine still blows, but now it sends air into its own bag, inflating it like a balloon until it pops.",
+          "newInformation": "Reversing the hose doesn't change airflow; it just pressurizes the containment."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Luca holds the vacuum bag shut with his hand and tilts the nozzle toward a window.",
+          "visibleConsequence": "The bag inflates, lifts the vacuum off the floor, and starts flying around the room, spraying dust in circles.",
+          "newInformation": "The trapped air turns the vacuum into a thruster, causing uncontrolled flight."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Luca unplugs the vacuum to stop the chaos.",
+          "visibleConsequence": "The vacuum falls to the floor and lets out a final puff of dust that settles exactly back onto the carpet.",
+          "newInformation": "Without power, the debris returns to its original position due to the reversed air pressure."
+        },
+        "adapterUsed": {
+          "characterStrategy": "TEMPORARILY_STOP_TRIGGER",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:TEMPORARILY_STOP_TRIGGER"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Luca plugs it back in, but this time turns the power dial to 'max' hoping it will suck.",
+          "visibleConsequence": "The vacuum rockets forward, dragging Luca across the carpet and out the door, leaving a trail of sucked-up crumbs behind.",
+          "newInformation": "Max power reverses thrust direction, so the vacuum now sucks only when moving backward, dragging the user."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-006",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Noah steps through the doorway quickly, expecting to enter kitchen.",
+          "visibleConsequence": "He lands in a mirrored hallway, with door now behind him showing the kitchen as a reflection.",
+          "newInformation": "Passing through flips his orientation and swaps which side is real."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Noah backs through the doorway, hoping to reverse the mirror effect.",
+          "visibleConsequence": "He ends up in the original hallway but now the door is on his left instead of right, and the kitchen is behind him.",
+          "newInformation": "Backing through does not cancel the flip; it just reorients his body."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Noah tries to open the door from the mirrored hallway's other side.",
+          "visibleConsequence": "The door opens to an identical mirrored hallway nested inside, and Noah sees multiple copies of himself standing in doorways.",
+          "newInformation": "Each crossing creates a new mirrored copy of the same hallway, like an infinite recursion."
+        },
+        "adapterUsed": {
+          "characterStrategy": "SWITCH_CONTACT_POINT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:SWITCH_CONTACT_POINT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Noah holds the door open with one hand and reaches through to touch the kitchen counter he can see in the reflection.",
+          "visibleConsequence": "His arm disappears through the doorway and emerges from a door behind him, tapping his own shoulder.",
+          "newInformation": "Space is folded so any object poked through wraps around to the starting side."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Noah closes the door entirely, then opens it again while looking at his feet.",
+          "visibleConsequence": "He steps through and finds himself in the kitchen, but everything is mirrored\u2014cabinets open the wrong way, and the clock runs backward.",
+          "newInformation": "The door finally allows entry, but the entire kitchen's handedness is reversed, so using it remains confusing."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-018",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Noah closes and reopens the fridge, hoping for the normal interior.",
+          "visibleConsequence": "Now the interior is a tropical rainforest with waterfalls; a pineapple rolls out.",
+          "newInformation": "Each opening cycles through random biome, never the kitchen fridge."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Noah reaches in past the environment to feel for the milk carton.",
+          "visibleConsequence": "His hand comes back holding a coconut, and the rainforest interior shuts around his arm, trapping him briefly.",
+          "newInformation": "Objects inside are real and can interact, but not his groceries."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Noah holds the door open and waits, watching the interior change.",
+          "visibleConsequence": "The environment morphs every three seconds, cycling through desert, ocean, wardrobe, and a copy of the kitchen seen from behind.",
+          "newInformation": "The fridge's interior is a portal to other places, not a storage space."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Noah puts on a coat and steps into the fridge to search.",
+          "visibleConsequence": "The door closes and reopens, showing Noah inside a snowy tundra waving from behind a glass door in another country.",
+          "newInformation": "Entering the fridge transports the person to the biome, not to the groceries."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Noah unplugs the fridge, expecting it to reset.",
+          "visibleConsequence": "The door pops open, and a blast of cold air covers the kitchen in frost; the milk carton appears on top of the fridge, frozen solid.",
+          "newInformation": "Turning off power deposits the missing milk outside the fridge, but frozen and unusable."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-008",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Kiko moves closer to his TV, pressing power repeatedly.",
+          "visibleConsequence": "The neighbor's TV volume increases to maximum, shaking the wall, while Kiko's screen stays off.",
+          "newInformation": "Distance doesn't matter; the remote's signal is hardwired to the neighbor's set."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Kiko covers the remote's IR emitter with his hand, hoping to block scatter.",
+          "visibleConsequence": "The neighbor's TV turns off and on rapidly, causing a strobe effect through the window.",
+          "newInformation": "Blocking the emitter still sends an encoded signal that only the neighbor's TV understands."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Kiko opens his TV's manual buttons and tries to change channel directly.",
+          "visibleConsequence": "The neighbor's TV switches to a karaoke channel, and the neighbor starts singing loudly, while Kiko's TV ignores the manual buttons.",
+          "newInformation": "Any input intended for Kiko's TV is transferred to the neighbor's TV due to a crossed signal wire."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Kiko unplugs his TV to 'reset' the remote link.",
+          "visibleConsequence": "The neighbor's TV turns off and then on, now showing Kiko's living room via a hidden camera feed.",
+          "newInformation": "The link is now bidirectional; the neighbor's TV displays Kiko's actions."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Kiko goes next door to ask the neighbor to change their channel to Kiko's show.",
+          "visibleConsequence": "The neighbor agrees, but when they press their own remote, Kiko's TV turns on and changes to a cooking show.",
+          "newInformation": "The cross-wiring is symmetrical: neighbor's remote controls Kiko's TV."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-004",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Arda sweeps quickly and immediately tilts dustpan to catch pile.",
+          "visibleConsequence": "As he tilts pan, the pile dissolves and dirt races back to the original spot, leaving pan empty.",
+          "newInformation": "The delay is exactly two seconds, and any pause lets dirt escape."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Arda sweeps while holding dustpan in the other hand, moving both together.",
+          "visibleConsequence": "Dirt enters the pan but then flies out backward through the bristles, returning to start.",
+          "newInformation": "The broom's bristles repel dirt when the pan is close, so dirt cannot be trapped."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Arda turns the broom over and uses the handle to push dirt like a rake.",
+          "visibleConsequence": "The dirt stays put for a full three seconds, then jumps back even faster, scattering across a wider area.",
+          "newInformation": "Using a non-bristle part changes the delay to three seconds but increases speed of return."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Arda sweeps dirt into an open shoebox and quickly closes the lid.",
+          "visibleConsequence": "The box shakes, dirt bursts out the seams, and returns to the original spot, leaving box empty.",
+          "newInformation": "Containment fails; dirt always phases back to start regardless of barrier."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Arda gives up and simply walks away, leaving the broom on the floor.",
+          "visibleConsequence": "The broom starts sweeping itself in small arcs, and the dirt forms one neat pile in the center of the room.",
+          "newInformation": "The broom can only sweep effectively when no one is trying to collect the dirt."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-019",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Opa uses oven mitts to remove the hot plate.",
+          "visibleConsequence": "The mitts start smoking, and the plate's heat melts a hole through the mitt, dropping the plate onto the counter, which sizzles.",
+          "newInformation": "The plate is hotter than expected; it transfers heat outward."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Opa runs the plate under cold water to cool it.",
+          "visibleConsequence": "The water flashes to steam, and the food thaws instantly but is now soggy and boiling.",
+          "newInformation": "Water contact transfers heat to food but also overcooks it."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Opa puts the frozen food on a different plate and microwaves again.",
+          "visibleConsequence": "The new plate heats red, food remains frozen, and the microwave's glass window fogs.",
+          "newInformation": "The microwave always targets the plate material, not food."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Opa tries to microwave the food without a plate, directly on the turntable.",
+          "visibleConsequence": "The microwave refuses to start, beeping and displaying 'PLATE REQUIRED' in glowing letters.",
+          "newInformation": "The appliance demands a plate to activate, ensuring impossible heating."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Opa gives up and eats the frozen food directly.",
+          "visibleConsequence": "The hot plate jumps from counter onto Opa's lap, thawing the food on his fork instantly but also scorching his pants.",
+          "newInformation": "The plate can transfer its heat to the food when close, but always at the cost of burning surroundings."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-020",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Kiko flips the switch repeatedly, hoping to get the right room.",
+          "visibleConsequence": "Various lights in the house turn on and off in a pattern, but the living room stays dark while the porch light blinks.",
+          "newInformation": "The switch cycles through all other rooms except the one he's in."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Kiko walks to the bathroom to flip that switch.",
+          "visibleConsequence": "The bathroom light turns off, and the living room light turns on.",
+          "newInformation": "Switches are paired with opposite rooms; you must be in the room you don't want lit."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Kiko stands in the doorway between rooms to flip both switches.",
+          "visibleConsequence": "Both rooms go dark, and a flickering light appears in the attic.",
+          "newInformation": "Simultaneous toggles transfer power to an unswitched room."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Kiko uses a flashlight to see while navigating the switch panel.",
+          "visibleConsequence": "The flashlight turns on, but its beam illuminates the wrong room through a window, and Kiko stumbles.",
+          "newInformation": "The cross-wiring extends to all light sources, including portable ones."
+        },
+        "adapterUsed": {
+          "characterStrategy": "REDUCE_FORCE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:REDUCE_FORCE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Kiko gives up and uses candles.",
+          "visibleConsequence": "The candles' flames cast shadows that point to a hidden switch behind a bookshelf; flipping that switch turns on the sun outside, causing full daylight indoors.",
+          "newInformation": "There is a master switch that controls daylight, not indoor lights, solving the darkness but at absurd scale."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-032",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Kiko moves slowly, watching the mirror to adjust to delay.",
+          "visibleConsequence": "The mirror's delay increases to three seconds, and her reflection starts combing hair that Kiko hasn't touched yet.",
+          "newInformation": "The lag can grow when she tries to compensate."
+        },
+        "adapterUsed": {
+          "characterStrategy": "REDUCE_FORCE",
+          "consequenceType": "OBJECT_GROWS",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:REDUCE_FORCE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Kiko touches her hair while looking down, ignoring the mirror.",
+          "visibleConsequence": "The mirror shows her reflection looking up and smiling, then her own head tilts involuntarily to match.",
+          "newInformation": "The delayed reflection can control her current actions, not just display."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Kiko covers the mirror with a towel.",
+          "visibleConsequence": "The covered mirror continues to reflect, showing a delayed image on the towel's surface like a screen.",
+          "newInformation": "The reflection can project onto coverings."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Kiko turns the mirror around to face the wall.",
+          "visibleConsequence": "The back of the mirror shows a live feed of Kiko from a second ago on the wall, and she sees herself walking backward.",
+          "newInformation": "The mirror's delay effect transfers to the wall surface."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Kiko stands perfectly still until the reflection catches up.",
+          "visibleConsequence": "The reflection catches up and then freezes, while Kiko's own image splits into two identical Kikos in the room.",
+          "newInformation": "Synchronizing the delay creates a duplicate Kiko, solving the grooming by having the duplicate fix her hair."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-003",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Mimi pushes harder and straightens handle to go down aisle.",
+          "visibleConsequence": "The cart jerks right, then left, tracing a spiral that wraps around a cereal display.",
+          "newInformation": "Force increases turning radius instability, not direction control."
+        },
+        "adapterUsed": {
+          "characterStrategy": "BRACE_BODY",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:BRACE_BODY"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Mimi tries to pull the cart backward, hoping the wheels unlock.",
+          "visibleConsequence": "The cart spins in place like a top, cans rattling, then accelerates forward in a new spiral toward the produce section.",
+          "newInformation": "Backward motion resets wheel angles to new random locks, worsening path."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Mimi leans over and tries to rotate one wheel by hand while holding cart steady.",
+          "visibleConsequence": "The other three wheels snap to new positions, causing the cart to lurch sideways and knock over a stack of oranges.",
+          "newInformation": "Wheel directions are interdependent; adjusting one changes all."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Mimi abandons pushing and drags the cart along the floor by its front corner.",
+          "visibleConsequence": "The cart tilts and rolls on two wheels, then slams down and spirals toward the automatic entrance, triggering doors to open.",
+          "newInformation": "The cart is stable only when moving sideways, but that still leads to exit."
+        },
+        "adapterUsed": {
+          "characterStrategy": "USE_ENVIRONMENT_SURFACE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:USE_ENVIRONMENT_SURFACE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Mimi lets go of the cart and runs toward checkout, hoping to grab items and leave.",
+          "visibleConsequence": "The cart, still spiraling, bumps into Mimi from behind, pushing her through the checkout line and out the exit.",
+          "newInformation": "The cart's uncontrollable motion actively pursues Mimi, forcing her out of the store without paying."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-015",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Mimi pulls zipper down to close the bottom gap.",
+          "visibleConsequence": "The bottom zips shut but the top splits down to her chest.",
+          "newInformation": "The zipper has a pivot point; one end opens as the other closes."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Mimi holds the bottom together with one hand while zipping up with the other.",
+          "visibleConsequence": "The zipper teeth at her hand pop apart, and her fingers get caught between them.",
+          "newInformation": "Physical holding doesn't prevent separation; the zipper actively parts around any obstruction."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Mimi zips halfway, hoping the middle stays closed.",
+          "visibleConsequence": "Both top and bottom open outward like a mouth, and the jacket flaps open completely.",
+          "newInformation": "Halfway position opens both ends simultaneously."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Mimi turns the jacket inside out and zips from the other side.",
+          "visibleConsequence": "The zipper now unzips from the middle, splitting the jacket into two separate halves that fall to the floor.",
+          "newInformation": "The zipper's failure mode changes with orientation, now bisects the garment."
+        },
+        "adapterUsed": {
+          "characterStrategy": "SWITCH_CONTACT_POINT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:SWITCH_CONTACT_POINT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Mimi grabs a safety pin to pin the bottom closed.",
+          "visibleConsequence": "The safety pin zips itself into the zipper track and the entire jacket rolls up like a window blind, squeezing Mimi's torso.",
+          "newInformation": "The zipper treats any inserted object as a pull tab and activates full closure upward, trapping Mimi."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "SPACE_REDUCES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "CROUCHED",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-016",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Arda turns the backpack upside down to use the sealed bottom as top.",
+          "visibleConsequence": "The original top zipper opens, and books pour out onto his head.",
+          "newInformation": "The pack has two openings, and gravity always finds the open one."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Arda holds the backpack sideways and loads books through the side.",
+          "visibleConsequence": "A new side seam splits open, and all contents slide out horizontally.",
+          "newInformation": "Any orientation creates a new opening at the lowest point."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Arda stuffs clothes into the bottom to block it, then adds books.",
+          "visibleConsequence": "The clothes squeeze through the bottom seam, pulling the books with them, leaving an empty flattened pack.",
+          "newInformation": "The bottom opening acts like a drain that vacuums contents out."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "SPACE_REDUCES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "CROUCHED",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Arda puts the backpack on his back, hoping body pressure seals the bottom.",
+          "visibleConsequence": "The pack inflates and launches off his shoulders, spinning in midair as contents rainbow out.",
+          "newInformation": "Wearing the pack triggers ejection, not sealing."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "CROUCHED",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Arda gives up and carries books in his arms.",
+          "visibleConsequence": "The backpack slides over and swallows the books from his arms, then spits them out the bottom into a neat pile at his feet.",
+          "newInformation": "The pack wants to be filled but immediately empties itself as soon as it contains anything."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-001",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Opa pulls the inverted canopy off his head and points the handle skyward, pressing button again to close.",
+          "visibleConsequence": "The wet fabric slides up his arm and seals around his neck like a collar, while rain soaks his exposed face.",
+          "newInformation": "The umbrella can't be removed by pulling; it migrates to the highest point of his body."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Opa crouches low to the ground, hoping the umbrella will slide up to his raised hand.",
+          "visibleConsequence": "The canopy promptly engulfs his crouched back and legs, leaving only his feet sticking out, while rain pools on the fabric.",
+          "newInformation": "The umbrella always moves to cover the lowest body part, not the highest."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Opa lies flat on the ground, spreading arms and legs to prevent any body part from being lowest.",
+          "visibleConsequence": "The umbrella flattens over his entire body like a tarp, but water runs off the edges and forms a puddle around him, soaking him from below.",
+          "newInformation": "Being covered doesn't stop water; it collects and soaks from ground contact."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Opa rolls sideways toward a bus shelter, hoping to escape the rain while still covered.",
+          "visibleConsequence": "The umbrella rolls with him, wrapping around his torso like a soggy cocoon, and his head remains in the rain as he bumps into the shelter wall.",
+          "newInformation": "The umbrella's coverage deflects all rain away from any part it touches, concentrating rain onto uncovered head."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Opa sits up inside the shelter, folds the umbrella manually by hand, and uses it as a normal hat.",
+          "visibleConsequence": "The umbrella stays open upside-down over his head, collecting rainwater that pours down his face inside the shelter.",
+          "newInformation": "The impossible orientation persists even when manually adjusted; any use creates a personal rain cloud."
+        },
+        "adapterUsed": {
+          "characterStrategy": "SWITCH_CONTACT_POINT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:SWITCH_CONTACT_POINT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-009",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Mimi scrapes the pancake off the ceiling with a spatula, then tries a gentler flip.",
+          "visibleConsequence": "The pancake still leaps up and splats on ceiling, sticking even harder.",
+          "newInformation": "The launch force is independent of wrist strength."
+        },
+        "adapterUsed": {
+          "characterStrategy": "DIRECT_USE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Mimi holds a plate over the pan and flips, hoping to catch the pancake.",
+          "visibleConsequence": "The pancake punches through the plate, sending shards flying, and both pancake and plate fragments stick to ceiling.",
+          "newInformation": "The launched food has enough force to penetrate obstacles."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Mimi turns off the stove and waits for the pancake to fall.",
+          "visibleConsequence": "The pancake slowly peels off the ceiling and falls back into the pan, but immediately turns black and smokes.",
+          "newInformation": "The pancake's fall is controlled by cooking timer, not gravity; it returns overcooked."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Mimi tries to cook without flipping, using a lid to steam.",
+          "visibleConsequence": "The pan's handle starts vibrating, and all the batter in the pan spontaneously flips itself to the ceiling in one big sheet.",
+          "newInformation": "The pan's flipping rule applies to any batter inside, even without a wrist motion."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Mimi gives up and turns off the stove, leaving the pan on the counter.",
+          "visibleConsequence": "The pan itself flips upward, sticks to the ceiling, and the pancake falls onto Mimi's head.",
+          "newInformation": "The pan's upward launch now applies to itself, completing the role reversal."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  },
+  {
+    "ideaId": "raw-031",
+    "classification": "EVIDENCE_SOURCE_MISMATCH",
+    "beatCountAgreement": true,
+    "beats": [
+      {
+        "beatNumber": 1,
+        "source": {
+          "strategy": "Opa shakes the flashlight and changes batteries.",
+          "visibleConsequence": "The darkness beam becomes wider, swallowing a chair and half the room into blackness.",
+          "newInformation": "More power increases darkness, not light."
+        },
+        "adapterUsed": {
+          "characterStrategy": "REDUCE_FORCE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:REDUCE_FORCE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 2,
+        "source": {
+          "strategy": "Opa points the flashlight at the ceiling, hoping reflected light reveals keys.",
+          "visibleConsequence": "The ceiling turns black and starts dripping shadow like ink, covering the floor.",
+          "newInformation": "The darkness is a substance that can drip and spread."
+        },
+        "adapterUsed": {
+          "characterStrategy": "ANCHOR_TO_ENVIRONMENT",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:ANCHOR_TO_ENVIRONMENT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 3,
+        "source": {
+          "strategy": "Opa turns on a lamp instead.",
+          "visibleConsequence": "The lamp works normally, but the flashlight's shadow beam seeks out the lamp and extinguishes it.",
+          "newInformation": "The darkness beam actively cancels any other light source."
+        },
+        "adapterUsed": {
+          "characterStrategy": "CHANGE_ANGLE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [
+            "TACTIC:CHANGE_ANGLE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 4,
+        "source": {
+          "strategy": "Opa uses the flashlight in reverse, pointing it at his own eyes.",
+          "visibleConsequence": "Instead of darkness, a bright beam shines out the back of the flashlight, illuminating a corner where keys are visible.",
+          "newInformation": "The flashlight has reversed polarity: front emits dark, back emits light."
+        },
+        "adapterUsed": {
+          "characterStrategy": "REDUCE_FORCE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      },
+      {
+        "beatNumber": 5,
+        "source": {
+          "strategy": "Opa picks up the keys using the light from the back.",
+          "visibleConsequence": "The keys glow and float into the flashlight's front beam, where they vanish into shadow, never to be found.",
+          "newInformation": "The flashlight's front beam can erase objects, not just darken them."
+        },
+        "adapterUsed": {
+          "characterStrategy": "REDUCE_FORCE",
+          "consequenceType": "CHARACTER_MOVES",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL"
+        },
+        "factLoss": "source newInformation replaced by generic tactic/category flags; body/spatial defaults not source observations"
+      }
+    ]
+  }
+]

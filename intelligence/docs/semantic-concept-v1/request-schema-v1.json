@@ -1,0 +1,318 @@
+{
+  "$defs": {
+    "CastMember": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 150,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "CastMember",
+      "type": "object"
+    },
+    "SemanticProviderConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "maxLength": 80,
+          "minLength": 2,
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "maxLength": 120,
+          "minLength": 2,
+          "title": "Model",
+          "type": "string"
+        },
+        "temperature": {
+          "default": 0.7,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Temperature",
+          "type": "number"
+        },
+        "maxCandidates": {
+          "default": 60,
+          "maximum": 60,
+          "minimum": 1,
+          "title": "Maxcandidates",
+          "type": "integer"
+        },
+        "maxOutputTokens": {
+          "default": 16000,
+          "maximum": 64000,
+          "minimum": 1000,
+          "title": "Maxoutputtokens",
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "default": 30,
+          "exclusiveMinimum": 0,
+          "maximum": 90,
+          "title": "Timeoutseconds",
+          "type": "number"
+        },
+        "mockCorpus": {
+          "const": "review-v1",
+          "default": "review-v1",
+          "title": "Mockcorpus",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model"
+      ],
+      "title": "SemanticProviderConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "generatorVersion": {
+      "default": "short-concept-generator-v1",
+      "enum": [
+        "short-concept-generator-v1",
+        "short-concept-generator-v2",
+        "v1",
+        "v2"
+      ],
+      "title": "Generatorversion",
+      "type": "string"
+    },
+    "count": {
+      "default": 20,
+      "maximum": 100,
+      "minimum": 10,
+      "title": "Count",
+      "type": "integer"
+    },
+    "seed": {
+      "default": 42,
+      "maximum": 2147483647,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "duration": {
+      "default": 15,
+      "maximum": 20,
+      "minimum": 10,
+      "title": "Duration",
+      "type": "number"
+    },
+    "characterIds": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Characterids",
+      "type": "array"
+    },
+    "excludeEngineFamilies": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Excludeenginefamilies",
+      "type": "array"
+    },
+    "excludeObjects": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Excludeobjects",
+      "type": "array"
+    },
+    "excludeObjectCategories": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Excludeobjectcategories",
+      "type": "array"
+    },
+    "canonicalCast": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/CastMember"
+          },
+          "maxItems": 100,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Canonicalcast"
+    },
+    "rank": {
+      "default": true,
+      "title": "Rank",
+      "type": "boolean"
+    },
+    "internalPoolSize": {
+      "default": 240,
+      "maximum": 600,
+      "minimum": 20,
+      "title": "Internalpoolsize",
+      "type": "integer"
+    },
+    "beatGrammarVersion": {
+      "anyOf": [
+        {
+          "enum": [
+            "v2",
+            "beat-grammar-v2"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Beatgrammarversion"
+    },
+    "premiseNaturalnessGateVersion": {
+      "anyOf": [
+        {
+          "enum": [
+            "v1",
+            "premise-naturalness-v1"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Premisenaturalnessgateversion"
+    },
+    "premisePoolSize": {
+      "default": 480,
+      "maximum": 1200,
+      "minimum": 20,
+      "title": "Premisepoolsize",
+      "type": "integer"
+    },
+    "creativeShapeVersion": {
+      "anyOf": [
+        {
+          "enum": [
+            "v1",
+            "creative-shape-v1"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Creativeshapeversion"
+    },
+    "minimumStoryShapeDistance": {
+      "default": 0.22,
+      "maximum": 0.8,
+      "minimum": 0.1,
+      "title": "Minimumstoryshapedistance",
+      "type": "number"
+    },
+    "minimumShapeShortFormScore": {
+      "default": 85,
+      "maximum": 100,
+      "minimum": 80,
+      "title": "Minimumshapeshortformscore",
+      "type": "number"
+    },
+    "minimumShapeRankingScore": {
+      "default": 75,
+      "maximum": 100,
+      "minimum": 70,
+      "title": "Minimumshaperankingscore",
+      "type": "number"
+    },
+    "allowHighHistoricalTerritoryRisk": {
+      "default": false,
+      "title": "Allowhighhistoricalterritoryrisk",
+      "type": "boolean"
+    },
+    "generatorMode": {
+      "anyOf": [
+        {
+          "enum": [
+            "deterministic",
+            "semantic",
+            "hybrid"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generatormode"
+    },
+    "semanticProvider": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SemanticProviderConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "semanticRawCount": {
+      "anyOf": [
+        {
+          "maximum": 60,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Semanticrawcount"
+    },
+    "semanticConceptPromptVersion": {
+      "default": "v1",
+      "enum": [
+        "v1",
+        "semantic-concept-prompt-v1"
+      ],
+      "title": "Semanticconceptpromptversion",
+      "type": "string"
+    },
+    "allowExternalGeneration": {
+      "default": false,
+      "title": "Allowexternalgeneration",
+      "type": "boolean"
+    }
+  },
+  "title": "GenerationRequest",
+  "type": "object"
+}
