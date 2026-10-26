@@ -1,0 +1,22 @@
+{
+  "candidateCount": 18,
+  "providerCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "attemptedNetworkOrSubprocess": {},
+  "SFEExactlyUnchanged": true,
+  "fullRankingExactlyUnchanged": true,
+  "BeatGrammarExactlyUnchanged": true,
+  "CreativeShapeExactlyUnchanged": true,
+  "defaultCanonicalNaturalnessExactlyUnchanged": true,
+  "admittedCandidateCount": 0,
+  "productionAdmissibleCount": 0,
+  "productionSlateCount": 0,
+  "productionSlate": [],
+  "newProductionCandidates": [],
+  "openingBlockerCounts": {
+    "MOTION_DEPENDENT_OPENING": 4,
+    "CAUSAL_RELATION_NOT_VISIBLE": 11,
+    "EVIDENCE_SOURCE_MISMATCH": 1
+  }
+}

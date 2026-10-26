@@ -1,0 +1,18 @@
+{
+  "legacyAssessorBodyExact": true,
+  "legacyThresholdsAndFormulasUnchanged": true,
+  "changedOnlyExplicitDispatch": true,
+  "unchangedAdmissionPredicate": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+  "existingOpeningBranches": {
+    "strongCausal": 90,
+    "directWithoutFrame": 60,
+    "sourceFactsOnly": 35,
+    "unsupported": 15,
+    "strongStatic": 85,
+    "directStatic": 65,
+    "sourceStatic": 25,
+    "unsupportedStatic": 15
+  },
+  "sourceStrongBranch": "Explicit use pose, visible goal/object/character/problem, source-matched expected/actual property opposition, no temporal/text/context dependency. No candidate-ID checks and no named response requirement.",
+  "limitation": "Unknown object/function counterfactual criteria remain unresolved; this does not claim fully taxonomy-independent merit grading."
+}

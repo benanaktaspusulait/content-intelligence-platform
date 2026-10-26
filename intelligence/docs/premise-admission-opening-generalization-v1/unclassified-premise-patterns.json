@@ -1,0 +1,402 @@
+[
+  {
+    "discoveryGroupId": "premise-audit-01",
+    "structuralCue": "use produces reversed/inverse output",
+    "literalSignature": "instead|opposite|complementary|reverse|invert",
+    "candidateIds": [
+      "sem1-bbdb302fefb48bd5",
+      "sem1-2ae718e8672f18cc",
+      "sem1-913bc9ae39a3c15e",
+      "sem1-70ee2b7099c48d36"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "sourceBehavior": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+        "normalExpectation": "Alarm rings at set time; hands move forward.",
+        "objectRelationship": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+        "goalRelationship": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+        "sourceCues": [
+          "reverse"
+        ],
+        "whyNotMapped": "Response class exists, but object/archetype compatibility is not covered.",
+        "responseState": "RESPONSE_PRESENT_CLASSIFIED"
+      },
+      {
+        "ideaId": "raw-027",
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "sourceBehavior": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "normalExpectation": "Brush applies paint color loaded on it.",
+        "objectRelationship": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+        "goalRelationship": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+        "sourceCues": [
+          "complementary"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-005",
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "sourceBehavior": "The vacuum blows air outward instead of sucking, scattering dust and crumbs toward the user's face and across the room.",
+        "normalExpectation": "Vacuum sucks air and debris into bag.",
+        "objectRelationship": "Vacuum's core function is negative pressure; reversing polarity turns cleaning into a debris storm.",
+        "goalRelationship": "The action meant to remove crumbs instead propels them everywhere, making the room dirtier and preventing cleaning.",
+        "sourceCues": [
+          "instead"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-001",
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "sourceBehavior": "The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.",
+        "normalExpectation": "Pressing the button opens the canopy above, creating a dry shield.",
+        "objectRelationship": "An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.",
+        "goalRelationship": "The action meant to create dry overhead space instead traps the body and concentrates rain onto the uncovered head, directly preventing dryness.",
+        "sourceCues": [
+          "instead"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      }
+    ],
+    "scope": "AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored."
+  },
+  {
+    "discoveryGroupId": "premise-audit-02",
+    "structuralCue": "use selects or changes another target",
+    "literalSignature": "other|neighbor|elsewhere|different room",
+    "candidateIds": [
+      "sem1-8a6fb30b4a11976b",
+      "sem1-c2b6225333ed3cda"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-008",
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "sourceBehavior": "The remote's signal always targets the neighbor's television through the wall, changing their channel while your TV stays off.",
+        "normalExpectation": "Pressing buttons changes your own TV channel.",
+        "objectRelationship": "Remote is designed to control one specific TV; misdirecting signal to wrong TV makes it useless for your goal.",
+        "goalRelationship": "The intended action of controlling your TV instead controls someone else's, so your show cannot be selected.",
+        "sourceCues": [
+          "neighbor"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-020",
+        "candidateId": "sem1-c2b6225333ed3cda",
+        "sourceBehavior": "The switch controls the light in a different room (e.g., bathroom), while the room you're in stays dark; each switch in house controls a random other room.",
+        "normalExpectation": "Flipping switch controls nearest room's light.",
+        "objectRelationship": "Light switches are spatially tied to their room; cross-wiring makes them useless for local control.",
+        "goalRelationship": "The action to illuminate your room instead lights a distant room, leaving you in dark.",
+        "sourceCues": [
+          "different room",
+          "other"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      }
+    ],
+    "scope": "AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored."
+  },
+  {
+    "discoveryGroupId": "premise-audit-03",
+    "structuralCue": "attempted movement loops/returns",
+    "literalSignature": "return|back|original location|reappear",
+    "candidateIds": [
+      "sem1-bbdb302fefb48bd5",
+      "sem1-11beb05a18d36fdb",
+      "sem1-6c8721485468a0f0"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "sourceBehavior": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+        "normalExpectation": "Alarm rings at set time; hands move forward.",
+        "objectRelationship": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+        "goalRelationship": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+        "sourceCues": [
+          "back",
+          "return"
+        ],
+        "whyNotMapped": "Response class exists, but object/archetype compatibility is not covered.",
+        "responseState": "RESPONSE_PRESENT_CLASSIFIED"
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "sourceBehavior": "Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.",
+        "normalExpectation": "Sweeping moves dirt forward into a pile.",
+        "objectRelationship": "Broom bristles are meant to displace particles; if the displacement is temporary, sweeping becomes a time-delayed loop.",
+        "goalRelationship": "The action of sweeping creates only a brief illusion of cleanliness; dirt returns before it can be collected, preventing the goal.",
+        "sourceCues": [
+          "reappear",
+          "original location",
+          "back"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-016",
+        "candidateId": "sem1-6c8721485468a0f0",
+        "sourceBehavior": "The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.",
+        "normalExpectation": "Items placed in top stay inside until you open it.",
+        "objectRelationship": "Backpack is a container; if gravity works against the orientation, it cannot hold items.",
+        "goalRelationship": "The act of placing items inside directly causes them to exit through bottom, preventing packing.",
+        "sourceCues": [
+          "back"
+        ],
+        "whyNotMapped": "Response class exists, but object/archetype compatibility is not covered.",
+        "responseState": "RESPONSE_PRESENT_CLASSIFIED"
+      }
+    ],
+    "scope": "AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored."
+  },
+  {
+    "discoveryGroupId": "premise-audit-04",
+    "structuralCue": "object keeps or ejects material contrary to intended containment",
+    "literalSignature": "opens|spills|spill|bottom|store|retriev",
+    "candidateIds": [
+      "sem1-d1e9d5ce1154b96b",
+      "sem1-91ea45894fa28d7b",
+      "sem1-5cf30c7094c804b1",
+      "sem1-90670eeaf4ee0468",
+      "sem1-6c8721485468a0f0",
+      "sem1-70ee2b7099c48d36"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-006",
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "sourceBehavior": "Whichever side of the door Noah opens, he steps into the same hallway but mirrored left-right.",
+        "normalExpectation": "Opening a door leads to the room on the other side.",
+        "objectRelationship": "A door is a threshold; if it teleports you back but mirrored, the transition is impossible to complete.",
+        "goalRelationship": "The act of crossing to the kitchen instead returns him to the hallway, preventing the goal.",
+        "sourceCues": [
+          "opens"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "sourceBehavior": "Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.",
+        "normalExpectation": "Opening door reveals same contents each time.",
+        "objectRelationship": "Fridge is a stable storage box; if interior is random, it can't store food.",
+        "goalRelationship": "The action of opening to get milk reveals random non-milk content, preventing goal.",
+        "sourceCues": [
+          "opens",
+          "retriev"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-003",
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "sourceBehavior": "Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.",
+        "normalExpectation": "All four wheels swivel and roll straight when pushed.",
+        "objectRelationship": "Cart wheels are meant to provide straight mobility; locking their directions converts steering into a chaotic orbit.",
+        "goalRelationship": "The push intended to move cart forward instead causes a spiral away from checkout, preventing reaching the goal.",
+        "sourceCues": [
+          "store"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-015",
+        "candidateId": "sem1-90670eeaf4ee0468",
+        "sourceBehavior": "As you pull the zipper tab upward, the bottom of the zipper separates, so the jacket opens from bottom while top closes; when you pull down, the bottom closes but top opens.",
+        "normalExpectation": "Pulling zipper up closes the jacket.",
+        "objectRelationship": "Zipper is designed to interlock teeth sequentially; if it opens opposite end, the closure is incomplete.",
+        "goalRelationship": "The action to close the jacket creates an opening elsewhere, so warmth cannot be retained.",
+        "sourceCues": [
+          "bottom",
+          "opens",
+          "bottom",
+          "bottom",
+          "opens"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-016",
+        "candidateId": "sem1-6c8721485468a0f0",
+        "sourceBehavior": "The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.",
+        "normalExpectation": "Items placed in top stay inside until you open it.",
+        "objectRelationship": "Backpack is a container; if gravity works against the orientation, it cannot hold items.",
+        "goalRelationship": "The act of placing items inside directly causes them to exit through bottom, preventing packing.",
+        "sourceCues": [
+          "bottom",
+          "opens",
+          "bottom",
+          "opens",
+          "spill"
+        ],
+        "whyNotMapped": "Response class exists, but object/archetype compatibility is not covered.",
+        "responseState": "RESPONSE_PRESENT_CLASSIFIED"
+      },
+      {
+        "ideaId": "raw-001",
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "sourceBehavior": "The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.",
+        "normalExpectation": "Pressing the button opens the canopy above, creating a dry shield.",
+        "objectRelationship": "An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.",
+        "goalRelationship": "The action meant to create dry overhead space instead traps the body and concentrates rain onto the uncovered head, directly preventing dryness.",
+        "sourceCues": [
+          "opens"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      }
+    ],
+    "scope": "AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored."
+  },
+  {
+    "discoveryGroupId": "premise-audit-05",
+    "structuralCue": "feedback relies on temporal comparison",
+    "literalSignature": "time|second|delayed|lag|slow",
+    "candidateIds": [
+      "sem1-bbdb302fefb48bd5",
+      "sem1-91ea45894fa28d7b",
+      "sem1-11beb05a18d36fdb",
+      "sem1-cfeed66616185cb0",
+      "sem1-5cf30c7094c804b1"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-007",
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "sourceBehavior": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+        "normalExpectation": "Alarm rings at set time; hands move forward.",
+        "objectRelationship": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+        "goalRelationship": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+        "sourceCues": [
+          "time"
+        ],
+        "whyNotMapped": "Response class exists, but object/archetype compatibility is not covered.",
+        "responseState": "RESPONSE_PRESENT_CLASSIFIED"
+      },
+      {
+        "ideaId": "raw-018",
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "sourceBehavior": "Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.",
+        "normalExpectation": "Opening door reveals same contents each time.",
+        "objectRelationship": "Fridge is a stable storage box; if interior is random, it can't store food.",
+        "goalRelationship": "The action of opening to get milk reveals random non-milk content, preventing goal.",
+        "sourceCues": [
+          "time"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-004",
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "sourceBehavior": "Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.",
+        "normalExpectation": "Sweeping moves dirt forward into a pile.",
+        "objectRelationship": "Broom bristles are meant to displace particles; if the displacement is temporary, sweeping becomes a time-delayed loop.",
+        "goalRelationship": "The action of sweeping creates only a brief illusion of cleanliness; dirt returns before it can be collected, preventing the goal.",
+        "sourceCues": [
+          "second",
+          "slow"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-032",
+        "candidateId": "sem1-cfeed66616185cb0",
+        "sourceBehavior": "The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself.",
+        "normalExpectation": "Mirror shows real-time reflection.",
+        "objectRelationship": "Mirror's function is immediate visual feedback; delay makes self-grooming impossible.",
+        "goalRelationship": "The action to style hair is based on outdated visual, so hands miss, preventing fixing.",
+        "sourceCues": [
+          "delayed",
+          "second",
+          "lag"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-003",
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "sourceBehavior": "Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.",
+        "normalExpectation": "All four wheels swivel and roll straight when pushed.",
+        "objectRelationship": "Cart wheels are meant to provide straight mobility; locking their directions converts steering into a chaotic orbit.",
+        "goalRelationship": "The push intended to move cart forward instead causes a spiral away from checkout, preventing reaching the goal.",
+        "sourceCues": [
+          "time"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      }
+    ],
+    "scope": "AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored."
+  },
+  {
+    "discoveryGroupId": "premise-audit-06",
+    "structuralCue": "normal function leads to trapping/contact",
+    "literalSignature": "knot|coils|trap|wrap|stick|adhes",
+    "candidateIds": [
+      "sem1-8d1da895a1fb41af",
+      "sem1-70ee2b7099c48d36",
+      "sem1-dd72ae9a5bebad5a"
+    ],
+    "examples": [
+      {
+        "ideaId": "raw-013",
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "sourceBehavior": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+        "normalExpectation": "Brushing untangles hair and smooths it.",
+        "objectRelationship": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+        "goalRelationship": "The action of brushing makes hair worse, so smooth hair is impossible.",
+        "sourceCues": [
+          "knot",
+          "knot",
+          "coils"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-001",
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "sourceBehavior": "The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.",
+        "normalExpectation": "Pressing the button opens the canopy above, creating a dry shield.",
+        "objectRelationship": "An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.",
+        "goalRelationship": "The action meant to create dry overhead space instead traps the body and concentrates rain onto the uncovered head, directly preventing dryness.",
+        "sourceCues": [
+          "wrap"
+        ],
+        "whyNotMapped": "Primary response has no matching existing response classifier; no response/policy added.",
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED"
+      },
+      {
+        "ideaId": "raw-009",
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "sourceBehavior": "The pan exerts a vertical launch force so strong that any food flies upward and sticks to the ceiling; the pan then becomes too slippery to hold.",
+        "normalExpectation": "A quick wrist flip sends pancake up and back into pan.",
+        "objectRelationship": "Pan's function is to toss food for cooking; if toss becomes permanent adhesion, cooking is impossible.",
+        "goalRelationship": "The flipping action meant to turn the pancake instead removes it from the pan and glues it overhead, preventing eating.",
+        "sourceCues": [
+          "stick"
+        ],
+        "whyNotMapped": "Response class exists, but object/archetype compatibility is not covered.",
+        "responseState": "RESPONSE_PRESENT_CLASSIFIED"
+      }
+    ],
+    "scope": "AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored."
+  }
+]

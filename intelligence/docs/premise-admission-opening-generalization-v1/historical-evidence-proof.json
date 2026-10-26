@@ -1,0 +1,26 @@
+{
+  "historicalFilesChecked": 1541,
+  "historicalChanges": [],
+  "protectedFilesChecked": 1893,
+  "unchangedProtectedFiles": 1890,
+  "approvedSourceChanges": [
+    "intelligence/ml-service/app/workflow/premise_naturalness.py",
+    "intelligence/ml-service/tests/protected_integrity.py",
+    "intelligence/ml-service/tests/test_protected_integrity_policy.py"
+  ],
+  "unapprovedChanges": [],
+  "unchangedProtectedImplementations": {
+    "short_form_engine.py": true,
+    "short_form_evidence.py": true,
+    "beat_grammar.py": true,
+    "beat_consequence_evidence.py": true,
+    "canonical_creative_evidence.py": true,
+    "concept_ranking.py": true,
+    "creative_shape.py": true,
+    "creative_distance.py": true,
+    "concept_production_selection.py": true,
+    "shape_generation.py": true
+  },
+  "allTaxonomyAndModelJsonUnchanged": true,
+  "previousIntegrityPoliciesUnchanged": true
+}

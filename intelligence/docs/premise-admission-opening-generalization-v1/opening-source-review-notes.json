@@ -1,0 +1,152 @@
+[
+  {
+    "ideaId": "raw-007",
+    "candidateId": "sem1-bbdb302fefb48bd5",
+    "frameZeroDescription": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "sourceSha256": "97703959d9a2bb09557fcffc57625847a6943f8491dc6fa20b50af0ba8ca4f51",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-013",
+    "candidateId": "sem1-8d1da895a1fb41af",
+    "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+    "sourceSha256": "2dd7456c04d6a7fb58f7186850ed3adcaca7564d7f39b2b60c65b71913f84d64",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-026",
+    "candidateId": "sem1-23a3c991b8104bee",
+    "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "sourceSha256": "62364b0cdf8f08aaafb3fb887c4d73b216a9c18135458980e490de2225529813",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-027",
+    "candidateId": "sem1-2ae718e8672f18cc",
+    "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "sourceSha256": "a30c4007fa98fe42cb7d895b5191d241b7b49f1d9bfb0ddc33364ecbe37d4b65",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-005",
+    "candidateId": "sem1-913bc9ae39a3c15e",
+    "frameZeroDescription": "Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.",
+    "sourceSha256": "581f07dddf5dbc8f69ba305e2abea887be7fdff35211b3b6ae4680f77b4b4841",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-006",
+    "candidateId": "sem1-d1e9d5ce1154b96b",
+    "frameZeroDescription": "Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.",
+    "sourceSha256": "b776d0e0b7914d46d93b7047b101a5d3921ee2521dfa1437c3780d01b7f7d1b1",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-018",
+    "candidateId": "sem1-91ea45894fa28d7b",
+    "frameZeroDescription": "Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.",
+    "sourceSha256": "3c5e08746081ea545bdfb25f154921695b0c4ab7bf22975da37c49822ca25344",
+    "computedObjectVisible": null,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring",
+    "manualObjectVisible": true,
+    "evidenceQuote": "Noah holds fridge door open",
+    "reason": "The frame source explicitly describes a fridge. The literal label checker does not resolve Refrigerator\u2192fridge; source is not missing. No alias/model entry or score changed."
+  },
+  {
+    "ideaId": "raw-008",
+    "candidateId": "sem1-8a6fb30b4a11976b",
+    "frameZeroDescription": "Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.",
+    "sourceSha256": "c84f07ad96208a690015e3d113ce5a67750b4322f5dbae48946b556142617a6d",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-004",
+    "candidateId": "sem1-11beb05a18d36fdb",
+    "frameZeroDescription": "Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.",
+    "sourceSha256": "b8485d08d63c550efaf780eb480014a708d8bb7a492369614f37d0ed15c389b0",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-019",
+    "candidateId": "sem1-63760a23881b08d8",
+    "frameZeroDescription": "Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.",
+    "sourceSha256": "67da877837fd5ea25513410581d2ce2322cc776a624a1d85e441e225df5379cd",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-020",
+    "candidateId": "sem1-c2b6225333ed3cda",
+    "frameZeroDescription": "Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.",
+    "sourceSha256": "c675149cddbbf18159399938eaa297898281cc0a0ab1ebdc8814468a752e7f35",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-032",
+    "candidateId": "sem1-cfeed66616185cb0",
+    "frameZeroDescription": "Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.",
+    "sourceSha256": "c3232a91f85dcd169058ed7a03bfb5b84808687f5a040e2226dd603ff5dabc01",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-003",
+    "candidateId": "sem1-5cf30c7094c804b1",
+    "frameZeroDescription": "Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.",
+    "sourceSha256": "5e5ef89659b115b08f808e1e6210e128d508061f554479b30836e9ff0bcf734c",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-015",
+    "candidateId": "sem1-90670eeaf4ee0468",
+    "frameZeroDescription": "Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.",
+    "sourceSha256": "02faf0ef0208941e89e4a06f0ec50bb2a56ad58c6a026e8f34cace1cdb4534d9",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-016",
+    "candidateId": "sem1-6c8721485468a0f0",
+    "frameZeroDescription": "Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.",
+    "sourceSha256": "00ec61eca2483eb149aabd19ceb30c6f79de1c5adb6ffa610f57081dedf9a126",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-001",
+    "candidateId": "sem1-70ee2b7099c48d36",
+    "frameZeroDescription": "Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.",
+    "sourceSha256": "5415c7a6d8937831c7e3f6c02c435543712c5cba68e38befff96afd28d3fa691",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-009",
+    "candidateId": "sem1-dd72ae9a5bebad5a",
+    "frameZeroDescription": "Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.",
+    "sourceSha256": "0eab8036163df6b7cdb29a8283d505e987c4d5e72e0206fd3164145dc63c27af",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring"
+  },
+  {
+    "ideaId": "raw-031",
+    "candidateId": "sem1-c85a677474d9ed27",
+    "frameZeroDescription": "Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.",
+    "sourceSha256": "ee9dfbb165b50057d1a8f049d6a49b429d70805d12294b624c66e03e5f7c295f",
+    "computedObjectVisible": true,
+    "scope": "MANUAL_SOURCE_TEXT_INFERENCE_NOT_PIXELS; diagnostic only, never passed into scoring",
+    "manualObjectVisible": true,
+    "evidenceQuote": "Opa points a flashlight at the floor",
+    "reason": "Raw source contains character/object. Existing _visual filters the sentence containing should; preserved SFE is unchanged, and opening audit records EVIDENCE_SOURCE_MISMATCH."
+  }
+]

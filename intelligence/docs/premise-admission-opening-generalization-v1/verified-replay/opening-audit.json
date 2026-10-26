@@ -1,0 +1,892 @@
+[
+  {
+    "ideaId": "raw-007",
+    "candidateId": "sem1-bbdb302fefb48bd5",
+    "frameZeroDescription": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "sourceFrameVisual": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "clock",
+        "alarm"
+      ],
+      "sourceShortName": "alarm"
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": true,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "MOTION_DEPENDENT_OPENING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 35
+  },
+  {
+    "ideaId": "raw-013",
+    "candidateId": "sem1-8d1da895a1fb41af",
+    "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+    "sourceFrameVisual": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "brush",
+        "hair"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 35
+  },
+  {
+    "ideaId": "raw-026",
+    "candidateId": "sem1-23a3c991b8104bee",
+    "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "sourceFrameVisual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "hammer"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": "straight",
+        "shown": "bent"
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 90
+  },
+  {
+    "ideaId": "raw-027",
+    "candidateId": "sem1-2ae718e8672f18cc",
+    "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "sourceFrameVisual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "paint",
+        "brush"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": [
+          "blue"
+        ],
+        "shown": [
+          "orange"
+        ]
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 90
+  },
+  {
+    "ideaId": "raw-005",
+    "candidateId": "sem1-913bc9ae39a3c15e",
+    "frameZeroDescription": "Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.",
+    "sourceFrameVisual": "Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "vacuum"
+      ],
+      "sourceShortName": "vacuum"
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": false,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-006",
+    "candidateId": "sem1-d1e9d5ce1154b96b",
+    "frameZeroDescription": "Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.",
+    "sourceFrameVisual": "Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "door"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 35
+  },
+  {
+    "ideaId": "raw-018",
+    "candidateId": "sem1-91ea45894fa28d7b",
+    "frameZeroDescription": "Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.",
+    "sourceFrameVisual": "Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": null,
+    "objectEvidence": {
+      "present": null,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": []
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_INCOMPLETE",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 35
+  },
+  {
+    "ideaId": "raw-008",
+    "candidateId": "sem1-8a6fb30b4a11976b",
+    "frameZeroDescription": "Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.",
+    "sourceFrameVisual": "Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.",
+    "requiresTextOrDialogue": true,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "remote"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": true,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "MOTION_DEPENDENT_OPENING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-004",
+    "candidateId": "sem1-11beb05a18d36fdb",
+    "frameZeroDescription": "Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.",
+    "sourceFrameVisual": "Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "broom"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": true,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "MOTION_DEPENDENT_OPENING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 35
+  },
+  {
+    "ideaId": "raw-019",
+    "candidateId": "sem1-63760a23881b08d8",
+    "frameZeroDescription": "Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.",
+    "sourceFrameVisual": "Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "microwave"
+      ],
+      "sourceShortName": "microwave"
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-020",
+    "candidateId": "sem1-c2b6225333ed3cda",
+    "frameZeroDescription": "Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.",
+    "sourceFrameVisual": "Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "switch",
+        "light"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 35,
+    "afterScore": 35
+  },
+  {
+    "ideaId": "raw-032",
+    "candidateId": "sem1-cfeed66616185cb0",
+    "frameZeroDescription": "Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.",
+    "sourceFrameVisual": "Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "mirror"
+      ],
+      "sourceShortName": "mirror"
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": true,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "MOTION_DEPENDENT_OPENING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-003",
+    "candidateId": "sem1-5cf30c7094c804b1",
+    "frameZeroDescription": "Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.",
+    "sourceFrameVisual": "Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "shopping",
+        "cart"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-015",
+    "candidateId": "sem1-90670eeaf4ee0468",
+    "frameZeroDescription": "Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.",
+    "sourceFrameVisual": "Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "zipper",
+        "jacket"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-016",
+    "candidateId": "sem1-6c8721485468a0f0",
+    "frameZeroDescription": "Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.",
+    "sourceFrameVisual": "Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "backpack"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [
+      {
+        "expected": "open",
+        "shown": "closed"
+      }
+    ],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-001",
+    "candidateId": "sem1-70ee2b7099c48d36",
+    "frameZeroDescription": "Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.",
+    "sourceFrameVisual": "Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "umbrella"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-009",
+    "candidateId": "sem1-dd72ae9a5bebad5a",
+    "frameZeroDescription": "Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.",
+    "sourceFrameVisual": "Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "frying",
+        "pan"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  },
+  {
+    "ideaId": "raw-031",
+    "candidateId": "sem1-c85a677474d9ed27",
+    "frameZeroDescription": "Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.",
+    "sourceFrameVisual": "",
+    "requiresTextOrDialogue": false,
+    "characterVisible": false,
+    "goalDeclared": true,
+    "goalVisible": false,
+    "objectVisible": null,
+    "objectEvidence": {
+      "present": null,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": []
+    },
+    "problemVisible": true,
+    "anomalyVisible": false,
+    "triggerVisible": true,
+    "goalProblemRelationship": false,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": false,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_INCOMPLETE",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "SOURCE_MISSING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.",
+    "beforeScore": 15,
+    "afterScore": 15
+  }
+]

@@ -85,6 +85,31 @@ def load_beat_evidence(root):
     return policy["files"]
 
 
+PREMISE_EVIDENCE_PATH = Path(__file__).parent / "fixtures/premise_evidence_integrity_v1.json"
+PREMISE_EVIDENCE_SHA256 = "e510ecb33cb294a22ddb0b30e2ba0baa50f2de5ca85d2cf51c80640801c70b9c"
+PREMISE_EVIDENCE_IMPLEMENTATIONS = frozenset({'intelligence/ml-service/app/workflow/premise_naturalness.py'})
+
+
+def load_premise_evidence(root):
+    assert sha256(PREMISE_EVIDENCE_PATH) == PREMISE_EVIDENCE_SHA256, "Premise evidence policy differs from reviewed pin"
+    policy=json.loads(PREMISE_EVIDENCE_PATH.read_text())
+    assert set(policy) == {"version", "files", "evidence"}, "Unexpected premise evidence sections"
+    assert policy["version"] == "premise-evidence-integrity-v1"
+    assert set(policy["files"]) == PREMISE_EVIDENCE_IMPLEMENTATIONS, "Unreviewed premise evidence scope"
+    bound={}
+    for ref in policy["evidence"]:
+        path=(root/ref["path"]).resolve()
+        assert path.is_relative_to(root.resolve()), "Premise evidence approval outside repository"
+        assert sha256(path)==ref["sha256"], "Premise evidence approval changed"
+        if ref["role"] in {"historical","approved"}:bound[ref["role"]]=json.loads(path.read_text())
+    for role,key in [("historical","previousSha256"),("approved","approvedSha256")]:
+        assert bound[role]=={p:v[key] for p,v in policy["files"].items()}, "Premise evidence differs from reviewed record"
+    for entry in policy["files"].values():
+        assert set(entry)=={"previousSha256","approvedSha256"}
+        assert all(len(v)==64 and set(v)<=set("0123456789abcdef") for v in entry.values())
+    return policy["files"]
+
+
 def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -133,6 +158,10 @@ def load_policy(root):
         if previous:
             assert previous["approvedSha256"] == entry["previousSha256"], "Beat evidence chain is not contiguous"
         approvals[name]={"historicalSha256":previous["historicalSha256"] if previous else entry["previousSha256"],"approvedSha256":entry["approvedSha256"]}
+    for name,entry in load_premise_evidence(root).items():
+        previous=approvals.get(name)
+        assert previous and previous["approvedSha256"]==entry["previousSha256"], "Premise evidence chain is not contiguous"
+        approvals[name]={"historicalSha256":previous["historicalSha256"],"approvedSha256":entry["approvedSha256"]}
     return approvals
 
 
@@ -162,6 +191,9 @@ def assert_manifest_integrity(root, manifest):
             beat_evidence = load_beat_evidence(root).get(relative)
             if beat_evidence:
                 revisions.add(beat_evidence["previousSha256"])
+            premise_evidence=load_premise_evidence(root).get(relative)
+            if premise_evidence:
+                revisions.add(premise_evidence["previousSha256"])
             assert historical in revisions, (
                 f"Unapproved historical active revision: {relative}"
             )

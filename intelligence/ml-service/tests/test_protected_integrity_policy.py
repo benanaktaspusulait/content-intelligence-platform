@@ -47,6 +47,15 @@ def workspace(tmp_path):
         p = tmp_path / name
         p.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, p)
+    premise_evidence=json.loads(integrity.PREMISE_EVIDENCE_PATH.read_text())
+    for ref in premise_evidence["evidence"]:
+        p=tmp_path/ref["path"]
+        p.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(ROOT/ref["path"],p)
+    for name in premise_evidence["files"]:
+        p=tmp_path/name
+        p.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(ROOT/name,p)
     return tmp_path, policy
 
 

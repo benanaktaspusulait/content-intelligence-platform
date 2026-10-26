@@ -1,0 +1,72 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "state": {
+      "enum": [
+        "RESPONSE_MISSING",
+        "RESPONSE_PRESENT_CLASSIFIED",
+        "RESPONSE_PRESENT_UNCLASSIFIED",
+        "RESPONSE_PRESENT_INCOMPATIBLE",
+        "RESPONSE_AMBIGUOUS"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "sourceText": {
+      "title": "Sourcetext",
+      "type": "string"
+    },
+    "classification": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Classification"
+    },
+    "diagnosisCategory": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "KNOWN_SUPPORTED"
+      ],
+      "title": "Diagnosiscategory",
+      "type": "string"
+    },
+    "compatibility": {
+      "enum": [
+        "SUPPORTED",
+        "INCOMPATIBLE",
+        "UNRESOLVED",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Compatibility",
+      "type": "string"
+    },
+    "evidenceRefs": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Evidencerefs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "state",
+    "sourceText",
+    "classification",
+    "diagnosisCategory",
+    "compatibility",
+    "evidenceRefs"
+  ],
+  "title": "ResponseEvidence",
+  "type": "object"
+}

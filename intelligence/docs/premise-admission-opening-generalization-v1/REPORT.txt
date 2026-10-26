@@ -1,0 +1,1717 @@
+PREMISE ADMISSION & OPENING EVIDENCE GENERALIZATION V1
+
+Accepted output: final-replay/. replay/ and verified-replay/ are development snapshots. Audit-before-modification.json was persisted before source edits; all1541 prior historical files remain byte-identical.
+
+ARCHITECTURE
+Existing canonical context → opt-in premise response/expectation/goal/trigger/opening evidence projection → independent partial quality criteria → unchanged admission predicate → unchanged production preselection.
+New mode requires generalized_premise_evidence=True with strict canonical structured context. Existing timed/deterministic/default canonical Naturalness assessor is untouched except explicit dispatch. No SFE/BG/ranking/Creative Shape/historical-territory sources are modified.
+Presence is not classification and not quality. Source claims are not independent truth or counterfactual proof. Response naming is not a presence/admission prerequisite, but configured functional compatibility/counterfactual criteria are still unresolved for these18. TAXONOMY_COUPLED_ADMISSION is explicitly retained as an audit diagnosis; this implementation does not pretend to prove object specificity from a whyThisObject claim.
+
+BEFORE / AFTER ADMISSION RULES
+Before: unmatched response→UNSUPPORTED_RESPONSE→broken=True. Direct quality also requires configured archetype/response policy, expected-goal regex, and natural trigger>=70. Specificity uses configured functional swaps. Unknown labels/objects implicitly erase the functional dependency route.
+After: missing response and ambiguous response remain distinct blocking evidence states. Explicit unclassified behavior is never called missing or BROKEN solely because the response label is unknown. Linked goal interference and independent still functional contrasts remain assessable. Unverified exact-object/counterfactual quality remains unresolved and NOT_ADMITTED. Known covered incompatible object/response pairs retain arbitrary-magic filtering.
+Final predicate remains: naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION
+No automatic unclassified PASS, STRONG or admission. The legacy compatibility-grade field may read CONTRIVED while qualityAssessmentStatus=UNRESOLVED; that is a conservative filter result, not evidence that the source idea is genuinely weak. PRESENT_BUT_LOW_QUALITY is reserved for supported incompatible/portable/ordinary cases. In the stored18 all overall quality assessments remain UNRESOLVED, not proved arbitrary.
+Configured numeric specificity/trigger estimates are preserved and explicitly labeled lower/model coverage estimates. Unknown coverage is not observed low specificity or a missing trigger. No speculative cross-object swaps are manufactured.
+
+RESPONSE EVIDENCE STATE MODEL
+RESPONSE_MISSING / RESPONSE_PRESENT_CLASSIFIED / RESPONSE_PRESENT_UNCLASSIFIED / RESPONSE_PRESENT_INCOMPATIBLE / RESPONSE_AMBIGUOUS.
+A: absent. B: explicit primary behavior not represented by current classifier. C: existing known-object/known-response pair unsupported by configured admission compatibility (not a physical impossibility claim). D: response class exists but object/admission compatibility coverage unresolved. E: ambiguous source. F: independently proven extraction failure (none established for primary response in these18).
+Current corpus:15 B,3 D;0 missing,0 C,0 E,0 verified F. No response/contradiction/object taxonomy entries or mappings added.
+
+OPENING EVIDENCE MODEL
+Canonical goal declared/visible, problem/anomaly, trigger and goal/problem linkage are preserved exactly. Character/object source descriptions, explicit use pose and literal expected/actual property witnesses augment diagnostics. The same canonical fact receipt is attached; SFE remains byte-identical.
+OPENING_FACTS_PRESENT is different from OPENING_LEGIBILITY_STRONG. A strong source still witness requires goal+object+character+problem, an explicit use pose and source-matched functional property opposition, with no temporal/text/prior-context dependency. The existing90/85 branch is used only for two source-supported contrasts, independently of response label. No ID-specific grading exists.
+Black/white/color words or a labeled explanation alone do not qualify; input and painted-output relation must be explicit. Known-character/object co-occurrence alone is insufficient. Temporal behavior such as backward motion, reappearance, channel flickering and lag cannot be verified from one literal still; the problem itself may nevertheless be visible.
+All opening diagnostics are SOURCE_TEXT_PLAN estimates, not observed video frames. None means not established, not absent. A textual dependency cue is a conservative gate, not observed proof that dialogue is indispensable. The Refrigerator/fridge label alias stays unresolved in the literal checker; separate manually sourced diagnostic notes identify the object without adding a mapping or changing scores.
+raw031 raw frame is present; existing visual sanitizer returns empty on the sentence containing should. This is EVIDENCE_SOURCE_MISMATCH, not SOURCE_MISSING. Character/object declarations are retained. SFE filter and scores remain unchanged as requested.
+
+TAXONOMY COVERAGE
+{
+  "response": {
+    "classified": 3,
+    "present-unclassified": 15,
+    "missing": 0
+  },
+  "contradiction": {
+    "present-unclassified": 18,
+    "classified": 0,
+    "missing": 0
+  },
+  "goalInterference": {
+    "classified": 16,
+    "present-unclassified": 2,
+    "missing": 0
+  }
+}
+
+CURRENT RESULTS
+{
+  "candidateCount": 18,
+  "providerCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "attemptedNetworkOrSubprocess": {},
+  "SFEExactlyUnchanged": true,
+  "fullRankingExactlyUnchanged": true,
+  "BeatGrammarExactlyUnchanged": true,
+  "CreativeShapeExactlyUnchanged": true,
+  "defaultCanonicalNaturalnessExactlyUnchanged": true,
+  "admittedCandidateCount": 0,
+  "productionAdmissibleCount": 0,
+  "productionSlateCount": 0,
+  "productionSlate": [],
+  "newProductionCandidates": [],
+  "openingBlockerCounts": {
+    "MOTION_DEPENDENT_OPENING": 4,
+    "CAUSAL_RELATION_NOT_VISIBLE": 11,
+    "EVIDENCE_SOURCE_MISMATCH": 1
+  }
+}
+Opening preselection18→16 blocked. Two clear source contrasts (raw026 straight/bent nail; raw027 loaded blue paint/orange painted patch) reach90. All18 remain not admitted, production-admissible0, slate0. No manual promotion.
+
+ALL 18 BEFORE / AFTER NATURALNESS
+
+raw-007 | sem1-bbdb302fefb48bd5 | Backward Alarm Clock
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": "RETURN_ORIGIN", "goalInterference": "CONTRIVED", "findings": [{"code": "ARBITRARY_MAGIC_RELATIONSHIP", "reason": "No configured functional or material dependency connects this response to the object affordance."}, {"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": "RETURN_ORIGIN", "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "ARBITRARY_MAGIC_RELATIONSHIP", "reason": "No configured functional or material dependency connects this response to the object affordance."}, {"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+raw-013 | sem1-8d1da895a1fb41af | Tangling Hairbrush
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "PREMISE_NOT_ADMITTED"]
+
+raw-026 | sem1-23a3c991b8104bee | Bending Nail Hammer
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 90, "staticScore": 85, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"openingScore": {"before": 35, "after": 90}, "staticScore": {"before": 25, "after": 85}, "naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["PREMISE_NOT_ADMITTED"]
+
+raw-027 | sem1-2ae718e8672f18cc | Opposite-Color Paintbrush
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 90, "staticScore": 85, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"openingScore": {"before": 35, "after": 90}, "staticScore": {"before": 25, "after": 85}, "naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["PREMISE_NOT_ADMITTED"]
+
+raw-005 | sem1-913bc9ae39a3c15e | Vacuum Blows
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-006 | sem1-d1e9d5ce1154b96b | Mirrored Doorway
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-018 | sem1-91ea45894fa28d7b | Random Fridge Interior
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-008 | sem1-8a6fb30b4a11976b | Neighbor's TV Remote
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-004 | sem1-11beb05a18d36fdb | Sweep-Back Broom
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-019 | sem1-63760a23881b08d8 | Microwave Hot Plate
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": null, "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": null}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-020 | sem1-c2b6225333ed3cda | Wrong-Room Light Switch
+BEFORE: {"openingScore": 35, "staticScore": 25, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 35, "staticScore": 25, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": true, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-032 | sem1-cfeed66616185cb0 | Delayed Mirror
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "MOTION_DEPENDENT_OPENING"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-003 | sem1-5cf30c7094c804b1 | Spiraling Shopping Cart
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-015 | sem1-90670eeaf4ee0468 | Bottom-Opening Zipper
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-016 | sem1-6c8721485468a0f0 | Bottomless Backpack
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": "INVERT_ORIENTATION", "goalInterference": "CONTRIVED", "findings": [{"code": "ARBITRARY_MAGIC_RELATIONSHIP", "reason": "No configured functional or material dependency connects this response to the object affordance."}, {"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": "INVERT_ORIENTATION", "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "ARBITRARY_MAGIC_RELATIONSHIP", "reason": "No configured functional or material dependency connects this response to the object affordance."}, {"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-001 | sem1-70ee2b7099c48d36 | The Inward Umbrella
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-009 | sem1-dd72ae9a5bebad5a | Ceiling Pancake
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": "CONTACT_RETAINS", "goalInterference": "CONTRIVED", "findings": [{"code": "ARBITRARY_MAGIC_RELATIONSHIP", "reason": "No configured functional or material dependency connects this response to the object affordance."}, {"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": "CONTACT_RETAINS", "goalInterference": "DIRECT", "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"goalInterference": {"before": "CONTRIVED", "after": "DIRECT"}, "findings": {"before": [{"code": "ARBITRARY_MAGIC_RELATIONSHIP", "reason": "No configured functional or material dependency connects this response to the object affordance."}, {"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-031 | sem1-c85a677474d9ed27 | Shadow Flashlight
+BEFORE: {"openingScore": 15, "staticScore": 15, "naturalness": "BROKEN", "admitted": false, "response": "UNSUPPORTED_RESPONSE", "goalInterference": "CONTRIVED", "findings": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}]}
+AFTER: {"openingScore": 15, "staticScore": 15, "naturalness": "CONTRIVED", "admitted": false, "response": null, "goalInterference": null, "findings": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "EVIDENCE_SOURCE_MISMATCH"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged."}]}
+QUALITY STATUS: UNRESOLVED; admission evidence=UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED
+DELTA: {"naturalness": {"before": "BROKEN", "after": "CONTRIVED"}, "response": {"before": "UNSUPPORTED_RESPONSE", "after": null}, "goalInterference": {"before": "CONTRIVED", "after": null}, "findings": {"before": [{"code": "GENERIC_ENGINE_APPLICATION", "reason": "The effect has insufficient supported dependence on this object function."}, {"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Canonical opening facts are attached. The configured direct object-response contradiction is not established; this legacy-named quality flag does not assert that a declared goal, anomaly, rule or trigger is absent.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT"}], "after": [{"code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO", "reason": "Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged.", "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION", "canonicalCausalRelationshipVisible": false, "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT", "openingEvidenceClassification": "EVIDENCE_SOURCE_MISMATCH"}, {"code": "RESPONSE_PRESENT_UNCLASSIFIED", "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"}, {"code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED", "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."}, {"code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED", "reason": "Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged."}]}}
+CAUSE: Explicit response and linked goal interference remain available without response class. Unknown compatibility/counterfactual quality is unresolved rather than absent; still-frame property witnesses are evaluated independently of taxonomy.
+REMAINING BLOCKERS: ["OPENING_EVIDENCE_INSUFFICIENT", "ACCEPTED_VALIDATOR_INELIGIBLE", "SHORT_FORM_QUALITY_FLOOR", "RANKING_QUALITY_FLOOR", "BEAT_GRAMMAR_QUALITY_FLOOR", "PREMISE_NOT_ADMITTED"]
+
+raw-013 END-TO-END AUDIT — Tangling Hairbrush
+{
+  "ideaId": "raw-013",
+  "candidateId": "sem1-8d1da895a1fb41af",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Brushing untangles hair and smooths it.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+      "evidenceSource": "impossibleRule",
+      "classification": "UNSUPPORTED_RESPONSE",
+      "qualityJudgment": "UNSUPPORTED_RESPONSE",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Opa brushes once, hair stands up in a giant knot.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "The action of brushing makes hair worse, so smooth hair is impossible.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Brushing untangles hair and smooths it.",
+      "functionGoalMatches": [
+        "brush",
+        "hair",
+        "smooth"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "brush"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "expected": "Brushing untangles hair and smooths it.",
+      "actual": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary."
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The action of brushing makes hair worse, so smooth hair is impossible.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "brush",
+        "hair",
+        "smooth"
+      ],
+      "relationMatchesRule": [
+        "brush",
+        "hair"
+      ],
+      "visibleEffectGoalMatches": [
+        "brush",
+        "hair"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Opa brushes once, hair stands up in a giant knot.",
+      "classificationStatus": "PRESENT_UNCLASSIFIED",
+      "configuredScore": 0,
+      "sourceExpectationMatches": [
+        "brush",
+        "hair"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+    },
+    "physicalRelationship": {
+      "source": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+      "qualitySupport": "UNRESOLVED"
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Brushing untangles hair and smooths it.",
+      "sourceActual": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+      "qualitySupport": "UNRESOLVED"
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+    "classification": null,
+    "diagnosisCategory": "B",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+    "sourceFrameVisual": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "brush",
+        "hair"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": false,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "exactObjectRelevance",
+      "expectedBehaviorContradiction",
+      "triggerNaturalness",
+      "physicalRelationship",
+      "arbitraryMagicRisk",
+      "functionalIrony"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 99,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}
+
+raw-007 END-TO-END AUDIT — Backward Alarm Clock
+{
+  "ideaId": "raw-007",
+  "candidateId": "sem1-bbdb302fefb48bd5",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Alarm rings at set time; hands move forward.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "evidenceSource": "impossibleRule",
+      "classification": "RETURN_ORIGIN",
+      "qualityJudgment": "RETURN_ORIGIN",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Opa sets alarm for 7:00, the hour hand starts cranking counterclockwise.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Alarm rings at set time; hands move forward.",
+      "functionGoalMatches": [],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "clock",
+        "forward",
+        "hand",
+        "revers",
+        "tim",
+        "up",
+        "wak"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "expected": "Alarm rings at set time; hands move forward.",
+      "actual": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight."
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "alarm",
+        "am",
+        "sett"
+      ],
+      "relationMatchesRule": [
+        "alarm",
+        "backward",
+        "clock",
+        "mov",
+        "ring",
+        "so",
+        "tim"
+      ],
+      "visibleEffectGoalMatches": [
+        "am",
+        "up",
+        "wak"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Opa sets alarm for 7:00, the hour hand starts cranking counterclockwise.",
+      "classificationStatus": "PRESENT_UNCLASSIFIED",
+      "configuredScore": 0,
+      "sourceExpectationMatches": [
+        "alarm",
+        "hand",
+        "set"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+    },
+    "physicalRelationship": {
+      "source": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "qualitySupport": "UNRESOLVED"
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Alarm rings at set time; hands move forward.",
+      "sourceActual": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "qualitySupport": "UNRESOLVED"
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_CLASSIFIED",
+    "sourceText": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+    "classification": "RETURN_ORIGIN",
+    "diagnosisCategory": "D",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "sourceFrameVisual": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "clock",
+        "alarm"
+      ],
+      "sourceShortName": "alarm"
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": true,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "MOTION_DEPENDENT_OPENING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": false,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "normalExpectation",
+      "exactObjectRelevance",
+      "expectedBehaviorContradiction",
+      "triggerNaturalness",
+      "physicalRelationship",
+      "arbitraryMagicRisk",
+      "functionalIrony"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 100,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}
+
+raw-026 END-TO-END AUDIT — Bending Nail Hammer
+{
+  "ideaId": "raw-026",
+  "candidateId": "sem1-23a3c991b8104bee",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Hammering a nail drives it straight into wall.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "evidenceSource": "impossibleRule",
+      "classification": "UNSUPPORTED_RESPONSE",
+      "qualityJudgment": "UNSUPPORTED_RESPONSE",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Kiko hits nail; it curves 90 degrees without entering wall.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Hammering a nail drives it straight into wall.",
+      "functionGoalMatches": [],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "forc",
+        "hammer",
+        "nail"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "expected": "Hammering a nail drives it straight into wall.",
+      "actual": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "fram",
+        "hang"
+      ],
+      "relationMatchesRule": [
+        "nail"
+      ],
+      "visibleEffectGoalMatches": [
+        "pictur"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Kiko hits nail; it curves 90 degrees without entering wall.",
+      "classificationStatus": "PRESENT_UNCLASSIFIED",
+      "configuredScore": 0,
+      "sourceExpectationMatches": [
+        "nail",
+        "wall"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model.",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    },
+    "physicalRelationship": {
+      "source": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Hammering a nail drives it straight into wall.",
+      "sourceActual": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+    "classification": null,
+    "diagnosisCategory": "B",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "sourceFrameVisual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "hammer"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": "straight",
+        "shown": "bent"
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": true,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "normalExpectation",
+      "exactObjectRelevance",
+      "arbitraryMagicRisk"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 100,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}
+
+raw-027 END-TO-END AUDIT — Opposite-Color Paintbrush
+{
+  "ideaId": "raw-027",
+  "candidateId": "sem1-2ae718e8672f18cc",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Brush applies paint color loaded on it.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "evidenceSource": "impossibleRule",
+      "classification": "UNSUPPORTED_RESPONSE",
+      "qualityJudgment": "UNSUPPORTED_RESPONSE",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Mimi strokes blue paint; wall turns orange.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 40,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Brush applies paint color loaded on it.",
+      "functionGoalMatches": [
+        "paint"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "brush",
+        "color",
+        "paint"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "expected": "Brush applies paint color loaded on it.",
+      "actual": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "blu",
+        "paint",
+        "wall"
+      ],
+      "relationMatchesRule": [
+        "blu",
+        "orang",
+        "paint"
+      ],
+      "visibleEffectGoalMatches": [
+        "blu",
+        "paint",
+        "wall"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Mimi strokes blue paint; wall turns orange.",
+      "classificationStatus": "PRESENT_CLASSIFIED",
+      "configuredScore": 40,
+      "sourceExpectationMatches": [
+        "paint"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model.",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    },
+    "physicalRelationship": {
+      "source": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Brush applies paint color loaded on it.",
+      "sourceActual": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+    "classification": null,
+    "diagnosisCategory": "B",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "sourceFrameVisual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "brush",
+        "paint"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": [
+          "blue"
+        ],
+        "shown": [
+          "orange"
+        ]
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": true,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "normalExpectation",
+      "exactObjectRelevance",
+      "arbitraryMagicRisk"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 99,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}
+
+ALL 18 OPENING EVIDENCE AUDITS
+
+raw-007 Backward Alarm Clock
+FRAME ZERO: Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: True
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 35 → 35
+FINDING CLASSIFICATION: MOTION_DEPENDENT_OPENING; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-013 Tangling Hairbrush
+FRAME ZERO: Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 35 → 35
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-026 Bending Nail Hammer
+FRAME ZERO: Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): True
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=SUPPORTED
+PROPERTY WITNESSES: [{"expected": "straight", "shown": "bent"}]
+OPENING SCORE: 35 → 90
+FINDING CLASSIFICATION: OTHER; No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.
+
+raw-027 Opposite-Color Paintbrush
+FRAME ZERO: Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): True
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=SUPPORTED
+PROPERTY WITNESSES: [{"expected": ["blue"], "shown": ["orange"]}]
+OPENING SCORE: 35 → 90
+FINDING CLASSIFICATION: OTHER; No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.
+
+raw-005 Vacuum Blows
+FRAME ZERO: Luca pushes a vacuum over a carpet, but a cloud of dust and crumbs is erupting from the nozzle, covering his shoes and floating upward.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-006 Mirrored Doorway
+FRAME ZERO: Noah holds a door open; through the doorway is a reversed hallway identical to the one behind him, while a kitchen is visible in the mirror behind him.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 35 → 35
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-018 Random Fridge Interior
+FRAME ZERO: Noah holds fridge door open, but inside is a miniature glacier with a penguin; no shelves or milk carton.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): None
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 35 → 35
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-008 Neighbor's TV Remote
+FRAME ZERO: Kiko points remote at his dark TV, but through the apartment wall, the neighbor's TV screen is visibly flickering channels, and the neighbor's shouting bubble appears.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: True
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: True
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: MOTION_DEPENDENT_OPENING; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-004 Sweep-Back Broom
+FRAME ZERO: Arda stands with broom in mid-sweep, a neat pile near dustpan; behind him, the original dirt patch is slowly reappearing on the floor.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: True
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 35 → 35
+FINDING CLASSIFICATION: MOTION_DEPENDENT_OPENING; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-019 Microwave Hot Plate
+FRAME ZERO: Opa opens microwave, steam rises from the plate, but the food on it is visibly frozen with frost.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-020 Wrong-Room Light Switch
+FRAME ZERO: Kiko stands in dark living room flipping a switch; through the doorway, the bathroom light is on, and the living room remains dark.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): True
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=True; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 35 → 35
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-032 Delayed Mirror
+FRAME ZERO: Kiko stands before mirror, her hand raised, but the reflection's hand is still lowered; a ghostly lag overlay is visible.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: True
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: MOTION_DEPENDENT_OPENING; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-003 Spiraling Shopping Cart
+FRAME ZERO: Mimi stands behind a shopping cart in an aisle, hands on handle, but all four wheels are pointed in different fixed angles; the cart has already begun a curved path back toward the entrance doors.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-015 Bottom-Opening Zipper
+FRAME ZERO: Mimi holds zipper tab at neck, jacket top is closed, but the bottom half hangs open, cold air whooshing through.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-016 Bottomless Backpack
+FRAME ZERO: Arda holds a backpack upright with several books halfway falling through the open bottom, while the top zipper is closed.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: [{"expected": "open", "shown": "closed"}]
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-001 The Inward Umbrella
+FRAME ZERO: Opa stands in rain with a closed umbrella raised; the button has been pressed but the canopy has opened downward around his arm and upper body, his head exposed to downpour.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-009 Ceiling Pancake
+FRAME ZERO: Mimi holds a frying pan, looking up; a pancake is stuck flat on the ceiling, and a second pancake arcs upward from the pan.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): True
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: CAUSAL_RELATION_NOT_VISIBLE; Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.
+
+raw-031 Shadow Flashlight
+FRAME ZERO: Opa points a flashlight at the floor, but a black beam covers the area where keys should be, while the rest of the room is faint.
+CAN SEE CHARACTER (source declaration): True
+CAN SEE GOAL (accepted canonical support): False
+CAN SEE OBJECT (literal/source-name evidence): True
+CAN SEE PROBLEM (canonical plan evidence): True
+CAN SEE ANOMALY (accepted canonical support): False
+CAN SEE IMPOSSIBLE RELATION (still witness): None
+NEEDS MOTION TO VERIFY TEMPORAL CLAIM: None
+NEEDS PRIOR CONTEXT: None
+TEXT/DIALOGUE DEPENDENCY CUE: False
+CAUSAL LEGIBILITY: canonical=False; still=UNRESOLVED
+PROPERTY WITNESSES: []
+OPENING SCORE: 15 → 15
+FINDING CLASSIFICATION: EVIDENCE_SOURCE_MISMATCH; Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged.
+
+EXACT ADMISSION PATH / CONFIGURATION
+Object→archetype→primaryExpectedBehaviors/materialProperties/naturalTriggers/goalPatterns. Unknown object maps to GENERIC in the unchanged legacy model. Policy lookup matches archetype AND response. No negative compatibility table is invented; covered-but-unconfigured pairs retain the legacy arbitrary-filter meaning, while unknown object coverage is D/unresolved.
+Legacy direct=policy AND goal_match AND no declared noun conflict AND natural_trigger>=70. RelationshipStrength comes from existing policy. Object-swap test holds violated function fixed across configured comparisonArchetypes; specificity=round(100*(1-portableFraction)*min(1,relationshipStrength/80)), capped45 if not direct. STRONG requires relationship>=80 and trigger>=70; admitted further requires DIRECT and CLEAR_CONTRADICTION.
+Generalized mode does not grant any source-dependent replacement score for unverified swap evidence. Missing labels no longer manufacture BROKEN or portable magic. All applicable criteria retain source text and support status, and remaining table-coupled quality is declared unresolved.
+Object categories: {"shoe": {"archetype": "FOOTWEAR"}, "boot": {"archetype": "FOOTWEAR"}, "chair": {"archetype": "SEATING"}, "stool": {"archetype": "SEATING"}, "lid": {"archetype": "CLOSURE"}, "snack box lid": {"archetype": "CLOSURE"}, "brush": {"archetype": "GROOMING"}, "comb": {"archetype": "GROOMING"}, "spoon": {"archetype": "EATING"}, "fork": {"archetype": "EATING"}, "drawer": {"archetype": "SLIDING_STORAGE"}, "soap": {"archetype": "WASHING"}, "soap bar": {"archetype": "WASHING"}, "pencil": {"archetype": "DRAWING"}, "crayon": {"archetype": "DRAWING"}, "eraser": {"archetype": "ERASING"}, "towel": {"archetype": "ABSORBENT_TEXTILE"}, "cloth": {"archetype": "ABSORBENT_TEXTILE"}, "shirt": {"archetype": "CLOTHING"}, "coat": {"archetype": "CLOTHING"}, "hat": {"archetype": "HEADWEAR"}, "ball": {"archetype": "RETRIEVABLE_BALL"}, "watering can": {"archetype": "POURING"}, "book": {"archetype": "PLACED_ITEM"}, "notebook": {"archetype": "PLACED_ITEM"}, "rubber band": {"archetype": "ELASTIC"}, "balloon": {"archetype": "BUOYANT"}, "magnet": {"archetype": "MAGNETIC"}, "umbrella": {"archetype": "RAIN_COVER"}, "object": {"archetype": "GENERIC"}, "generic object": {"archetype": "GENERIC"}}
+Configured contradiction policies (unchanged): [{"archetypes": ["FOOTWEAR", "HEADWEAR"], "responses": ["RETURN_ORIGIN", "MOVE_AWAY"], "contradictionType": "DIRECT_NEGATION", "expectedBehaviorIndex": 1, "goalInterferenceType": "DIRECT", "relationshipStrength": 95, "functionalIrony": "HIGH", "materialConnection": "retention", "strangeButIntuitive": false}, {"archetypes": ["SEATING"], "responses": ["INVERT_ORIENTATION", "MOVE_AWAY", "RETURN_ORIGIN"], "contradictionType": "REFUSAL", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 92, "functionalIrony": "HIGH", "materialConnection": "support", "strangeButIntuitive": false}, {"archetypes": ["CLOSURE"], "responses": ["INVERT_ORIENTATION", "MOVE_AWAY", "RETURN_ORIGIN"], "contradictionType": "OPPOSITE_BEHAVIOR", "expectedBehaviorIndex": 2, "goalInterferenceType": "DIRECT", "relationshipStrength": 93, "functionalIrony": "HIGH", "materialConnection": "alignment", "strangeButIntuitive": false}, {"archetypes": ["SLIDING_STORAGE"], "responses": ["RETURN_ORIGIN"], "contradictionType": "OPPOSITE_BEHAVIOR", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 96, "functionalIrony": "HIGH", "materialConnection": "guided translation", "strangeButIntuitive": false}, {"archetypes": ["SLIDING_STORAGE", "FOOTWEAR"], "responses": ["EXTEND_CONTACT"], "contradictionType": "OVERCOMPLIANCE", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 82, "functionalIrony": "HIGH", "materialConnection": "travel limit", "strangeButIntuitive": true}, {"archetypes": ["GROOMING"], "responses": ["SCALE_UP"], "contradictionType": "SELF_DEFEATING_FUNCTION", "expectedBehaviorIndex": 1, "goalInterferenceType": "DIRECT", "relationshipStrength": 93, "functionalIrony": "HIGH", "materialConnection": "hand-sized grip", "strangeButIntuitive": true}, {"archetypes": ["GROOMING"], "responses": ["CONTACT_RETAINS"], "contradictionType": "DIRECT_NEGATION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 85, "functionalIrony": "HIGH", "materialConnection": "bristles", "strangeButIntuitive": false}, {"archetypes": ["FOOTWEAR", "HEADWEAR", "CLOSURE"], "responses": ["SCALE_UP"], "contradictionType": "SELF_DEFEATING_FUNCTION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 85, "functionalIrony": "HIGH", "materialConnection": "fit", "strangeButIntuitive": true}, {"archetypes": ["SEATING"], "responses": ["SCALE_UP", "SCALE_DOWN"], "contradictionType": "SELF_DEFEATING_FUNCTION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 80, "functionalIrony": "HIGH", "materialConnection": "support", "strangeButIntuitive": true}, {"archetypes": ["GROOMING", "EATING"], "responses": ["SCALE_DOWN"], "contradictionType": "SELF_DEFEATING_FUNCTION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 73, "functionalIrony": "MEDIUM", "materialConnection": "hand-sized grip", "strangeButIntuitive": true}, {"archetypes": ["EATING"], "responses": ["SCALE_UP"], "contradictionType": "SELF_DEFEATING_FUNCTION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 77, "functionalIrony": "MEDIUM", "materialConnection": "hand-sized grip", "strangeButIntuitive": true}, {"archetypes": ["EATING", "PLACED_ITEM"], "responses": ["RETURN_ORIGIN"], "contradictionType": "DIRECT_NEGATION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 76, "functionalIrony": "MEDIUM", "materialConnection": "position retention", "strangeButIntuitive": false}, {"archetypes": ["WASHING"], "responses": ["CONTACT_RETAINS"], "contradictionType": "OPPOSITE_BEHAVIOR", "expectedBehaviorIndex": 1, "goalInterferenceType": "DIRECT", "relationshipStrength": 83, "functionalIrony": "HIGH", "materialConnection": "slipperiness", "strangeButIntuitive": false}, {"archetypes": ["WASHING"], "responses": ["SLIP_INCREASE"], "contradictionType": "PROPERTY_EXAGGERATION", "expectedBehaviorIndex": 1, "goalInterferenceType": "DIRECT", "relationshipStrength": 95, "functionalIrony": "HIGH", "materialConnection": "slipperiness", "strangeButIntuitive": true}, {"archetypes": ["ERASING"], "responses": ["MARK_TRANSFER"], "contradictionType": "TRANSFER", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 97, "functionalIrony": "HIGH", "materialConnection": "mark removal", "strangeButIntuitive": true}, {"archetypes": ["ABSORBENT_TEXTILE"], "responses": ["WETTER"], "contradictionType": "FUNCTION_REVERSAL", "expectedBehaviorIndex": 1, "goalInterferenceType": "DIRECT", "relationshipStrength": 97, "functionalIrony": "HIGH", "materialConnection": "absorption", "strangeButIntuitive": false}, {"archetypes": ["RAIN_COVER"], "responses": ["RAIN_ATTRACTION"], "contradictionType": "FUNCTION_REVERSAL", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 94, "functionalIrony": "HIGH", "materialConnection": "water shedding", "strangeButIntuitive": true}, {"archetypes": ["RETRIEVABLE_BALL"], "responses": ["WEIGHT_PER_BOUNCE"], "contradictionType": "PROPERTY_EXAGGERATION", "expectedBehaviorIndex": 1, "goalInterferenceType": "DIRECT", "relationshipStrength": 86, "functionalIrony": "HIGH", "materialConnection": "bounce", "strangeButIntuitive": true}, {"archetypes": ["ELASTIC"], "responses": ["EXTEND_CONTACT", "RETURN_ORIGIN"], "contradictionType": "PROPERTY_EXAGGERATION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 88, "functionalIrony": "HIGH", "materialConnection": "elasticity", "strangeButIntuitive": true}, {"archetypes": ["RETRIEVABLE_BALL"], "responses": ["SCALE_UP", "MOVE_AWAY"], "contradictionType": "SELF_DEFEATING_FUNCTION", "expectedBehaviorIndex": 0, "goalInterferenceType": "DIRECT", "relationshipStrength": 68, "functionalIrony": "MEDIUM", "materialConnection": "graspable size", "strangeButIntuitive": true}]
+
+RECURRING UNCLASSIFIED PREMISE PATTERNS — AUDIT ONLY
+
+premise-audit-01 use produces reversed/inverse output
+Candidate IDs: ["sem1-bbdb302fefb48bd5", "sem1-2ae718e8672f18cc", "sem1-913bc9ae39a3c15e", "sem1-70ee2b7099c48d36"]
+Scope: AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored.
+raw-007: The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.
+Object relationship: Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.
+Why not mapped: Response class exists, but object/archetype compatibility is not covered.
+raw-027: Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.
+Object relationship: Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-005: The vacuum blows air outward instead of sucking, scattering dust and crumbs toward the user's face and across the room.
+Object relationship: Vacuum's core function is negative pressure; reversing polarity turns cleaning into a debris storm.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-001: The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.
+Object relationship: An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+
+premise-audit-02 use selects or changes another target
+Candidate IDs: ["sem1-8a6fb30b4a11976b", "sem1-c2b6225333ed3cda"]
+Scope: AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored.
+raw-008: The remote's signal always targets the neighbor's television through the wall, changing their channel while your TV stays off.
+Object relationship: Remote is designed to control one specific TV; misdirecting signal to wrong TV makes it useless for your goal.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-020: The switch controls the light in a different room (e.g., bathroom), while the room you're in stays dark; each switch in house controls a random other room.
+Object relationship: Light switches are spatially tied to their room; cross-wiring makes them useless for local control.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+
+premise-audit-03 attempted movement loops/returns
+Candidate IDs: ["sem1-bbdb302fefb48bd5", "sem1-11beb05a18d36fdb", "sem1-6c8721485468a0f0"]
+Scope: AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored.
+raw-007: The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.
+Object relationship: Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.
+Why not mapped: Response class exists, but object/archetype compatibility is not covered.
+raw-004: Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.
+Object relationship: Broom bristles are meant to displace particles; if the displacement is temporary, sweeping becomes a time-delayed loop.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-016: The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.
+Object relationship: Backpack is a container; if gravity works against the orientation, it cannot hold items.
+Why not mapped: Response class exists, but object/archetype compatibility is not covered.
+
+premise-audit-04 object keeps or ejects material contrary to intended containment
+Candidate IDs: ["sem1-d1e9d5ce1154b96b", "sem1-91ea45894fa28d7b", "sem1-5cf30c7094c804b1", "sem1-90670eeaf4ee0468", "sem1-6c8721485468a0f0", "sem1-70ee2b7099c48d36"]
+Scope: AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored.
+raw-006: Whichever side of the door Noah opens, he steps into the same hallway but mirrored left-right.
+Object relationship: A door is a threshold; if it teleports you back but mirrored, the transition is impossible to complete.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-018: Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.
+Object relationship: Fridge is a stable storage box; if interior is random, it can't store food.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-003: Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.
+Object relationship: Cart wheels are meant to provide straight mobility; locking their directions converts steering into a chaotic orbit.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-015: As you pull the zipper tab upward, the bottom of the zipper separates, so the jacket opens from bottom while top closes; when you pull down, the bottom closes but top opens.
+Object relationship: Zipper is designed to interlock teeth sequentially; if it opens opposite end, the closure is incomplete.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-016: The bottom of the backpack opens whenever it is upright; when turned upside down, the bottom seals but the top opens, so contents always spill.
+Object relationship: Backpack is a container; if gravity works against the orientation, it cannot hold items.
+Why not mapped: Response class exists, but object/archetype compatibility is not covered.
+raw-001: The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.
+Object relationship: An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+
+premise-audit-05 feedback relies on temporal comparison
+Candidate IDs: ["sem1-bbdb302fefb48bd5", "sem1-91ea45894fa28d7b", "sem1-11beb05a18d36fdb", "sem1-cfeed66616185cb0", "sem1-5cf30c7094c804b1"]
+Scope: AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored.
+raw-007: The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.
+Object relationship: Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.
+Why not mapped: Response class exists, but object/archetype compatibility is not covered.
+raw-018: Each time the fridge door opens, the interior is a different environment (a desert, a freezer landscape, a tropical beach, etc.), making food retrieval impossible.
+Object relationship: Fridge is a stable storage box; if interior is random, it can't store food.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-004: Dirt swept forward reappears in its original location exactly two seconds later, while the broom's bristles leave a clean trail that slowly fills back.
+Object relationship: Broom bristles are meant to displace particles; if the displacement is temporary, sweeping becomes a time-delayed loop.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-032: The mirror shows a reflection delayed by one second, so Kiko sees her previous movement; when she moves to adjust, the lag causes her to misreach and bump herself.
+Object relationship: Mirror's function is immediate visual feedback; delay makes self-grooming impossible.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-003: Each wheel locks in alternating directions every time the cart moves, causing cart to travel in tightening spirals toward the store entrance.
+Object relationship: Cart wheels are meant to provide straight mobility; locking their directions converts steering into a chaotic orbit.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+
+premise-audit-06 normal function leads to trapping/contact
+Candidate IDs: ["sem1-8d1da895a1fb41af", "sem1-70ee2b7099c48d36", "sem1-dd72ae9a5bebad5a"]
+Scope: AUDIT_ONLY_EDITORIAL_CUE_GROUP; no canonical response/premise labels or table rows added; never scored.
+raw-013: Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.
+Object relationship: Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-001: The umbrella opens downward, wrapping around the user's body instead of above it, and always migrates to cover the lowest point.
+Object relationship: An umbrella's entire purpose is to open into a dome over your head; inverting that dome makes it wrap you in wet fabric while rain still hits your exposed head.
+Why not mapped: Primary response has no matching existing response classifier; no response/policy added.
+raw-009: The pan exerts a vertical launch force so strong that any food flies upward and sticks to the ceiling; the pan then becomes too slippery to hold.
+Object relationship: Pan's function is to toss food for cooking; if toss becomes permanent adhesion, cooking is impossible.
+Why not mapped: Response class exists, but object/archetype compatibility is not covered.
+
+PRESELECTION BEFORE / AFTER
+{
+  "before": {
+    "OPENING_EVIDENCE_INSUFFICIENT": 18,
+    "PREMISE_NOT_ADMITTED": 18,
+    "ACCEPTED_VALIDATOR_INELIGIBLE": 14,
+    "RANKING_QUALITY_FLOOR": 14,
+    "SHORT_FORM_QUALITY_FLOOR": 11,
+    "BEAT_GRAMMAR_QUALITY_FLOOR": 3
+  },
+  "after": {
+    "OPENING_EVIDENCE_INSUFFICIENT": 16,
+    "PREMISE_NOT_ADMITTED": 18,
+    "ACCEPTED_VALIDATOR_INELIGIBLE": 14,
+    "RANKING_QUALITY_FLOOR": 14,
+    "SHORT_FORM_QUALITY_FLOOR": 11,
+    "BEAT_GRAMMAR_QUALITY_FLOOR": 3
+  }
+}
+No production-admissible candidates and no new slate candidates. Raw013 exactly retains OPENING_EVIDENCE_INSUFFICIENT and PREMISE_NOT_ADMITTED. Raw007 likewise retains both. Raw026/raw027 retain only PREMISE_NOT_ADMITTED after strong still-source opening witnesses.
+
+FILES CHANGED
+Existing runtime changed: app/workflow/premise_naturalness.py, explicit dispatch only. New runtime: app/workflow/premise_admission_evidence.py.
+New offline tool: intelligence/scripts/replay-premise-admission-evidence.py. New tests: test_premise_admission_evidence.py; test_premise_evidence_integrity.py.
+Integrity support updated: protected_integrity.py and test_protected_integrity_policy.py. New exact single-source approval: fixtures/premise_evidence_integrity_v1.json, bound to authorization, pre-change audit and before/after source digests. All previous policies and frozen manifests remain byte-identical.
+
+GOLDEN COVERAGE A–U
+A/B/K/L: explicit unclassified response stays present, not missing/BROKEN/automatic strong; raw013 remains unresolved-not-admitted for documented quality proof/still limitations.
+C/D/E/F: covered incompatible fork/float remains filtered; absent/ambiguous behavior stays distinct; exact-object dependency required; explicitly portable unrelated magic remains penalized.
+G/H/I/J: direct source goal interference without response name; canonical receipt/goal facts shared; facts alone do not establish still strength; motion/time case stays35; source literal contrast cases90. Caption/color background counterexamples cannot qualify.
+M/N/O: four diagnostic cases source-consistent; exact response categories and remaining blockers recorded.
+P: old Naturalness source oracle across all deterministic fixture reports and all18 default canonical reports. Q/R/S: entire18 SFE/ranking/BG reports exactly equal accepted stored reports, Creative Shape equality, source/module hash protection.
+T/U: offline audit guard denies network/subprocesses; no generation invocation; all historical files are hashed. Required regression exercises existing mocks/deterministic fixtures only.
+
+VERIFICATION
+Exact final test counts, accepted36 failure ID comparison, source fingerprints and historical byte proof are finalized in verification.json / full-regression-comparison.json / historical-evidence-proof.json.
+Provider calls0; new concepts from replay0; renders0. No taxonomy/model/prompt expansion. STOP after offline replay/regression.
+
+FINAL EXACT TEST / INTEGRITY RESULT
+2885 passed,36 failed,2 skipped,3030 warnings in200.42seconds. The36 failure IDs exactly equal the accepted baseline;0 new or missing failure IDs. No new skip was added. New tests44 passed in1.17seconds; focused regression787 passed in12.39seconds. Entire current-source suite is in full-regression-final.log. The first full-regression.log passed the prior source state before the raw031 source-presence diagnostic correction; final log is authoritative.
+All1541 historical files are byte-identical. Only3 previously present files differ: the Naturalness dispatch, strict integrity helper, and its workspace fixture. All other protected sources/model JSON/old approval policies are unchanged. Source fingerprints were captured before final regression and verified unchanged afterward.
+SFE, Beat Grammar, full ranking and Creative Shape reports are exact-equal for every one of the18 candidates. Historical territory data/source unchanged. Provider calls0,new replay concepts0,renders0.
+The task does not establish that the18 premises are genuinely weak: response existence is resolved, partial independent qualities are recognized, while object-specific admission proof remains unresolved. Raw013 remains not admitted with exactly the same2 production blockers; raw026/raw027 retain only PREMISE_NOT_ADMITTED after corrected source-still recognition.

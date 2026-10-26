@@ -1,0 +1,644 @@
+{
+  "ideaId": "raw-013",
+  "candidateId": "sem1-8d1da895a1fb41af",
+  "title": "Tangling Hairbrush",
+  "normalExpectation": "Brushing untangles hair and smooths it.",
+  "response": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+  "whyThisObject": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+  "trigger": "Opa brushes once, hair stands up in a giant knot.",
+  "goalInterference": "The action of brushing makes hair worse, so smooth hair is impossible.",
+  "frameZero": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+  "admission": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": true,
+    "status": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": false,
+    "openingPassed": false,
+    "corePremiseSupported": true,
+    "productionOpeningRequirementSatisfied": false,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": true,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "Hairbrush",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "hair"
+        ],
+        "triggerAnchors": [
+          "hair"
+        ],
+        "supportedBeats": [
+          3,
+          5
+        ],
+        "identityTerms": [
+          "brush",
+          "hairbrush"
+        ],
+        "effectSubjects": [
+          {
+            "beatNumber": 1,
+            "subject": [
+              "knot"
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "subject": [
+              "comb"
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "subject": [
+              "hair"
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "subject": [
+              "hat"
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "subject": [
+              "hair"
+            ]
+          }
+        ],
+        "sourceShortName": [
+          "brush"
+        ]
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Opa brushes once, hair stands up in a giant knot.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "brush",
+          "target": [
+            "onc"
+          ],
+          "sourceClause": "brushes once",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": true,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The action of brushing makes hair worse, so smooth hair is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The action of brushing makes hair worse, so smooth hair is impossible.",
+          "classification": "DIRECT",
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "relationMatchesGoal": [
+            "brush",
+            "hair",
+            "smooth"
+          ],
+          "relationMatchesRule": [
+            "brush",
+            "hair"
+          ],
+          "visibleEffectGoalMatches": [
+            "brush",
+            "hair"
+          ],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": true,
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": true,
+        "dominantRule": true,
+        "violations": [],
+        "reviewNotes": [
+          {
+            "beatNumber": 3,
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "reason": "A simile is not proof of literal material transformation; inspect whether this remains a rule-linked state escalation."
+          }
+        ]
+      },
+      "nonArbitrary": {
+        "supported": true,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": true,
+        "reason": "The impossible effect changes the object\u2019s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": false,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 35,
+        "required": false,
+        "standard": {
+          "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+          "sourceFrameVisual": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": true,
+          "objectEvidence": {
+            "present": true,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "hair",
+              "brush"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": null,
+          "ruleInferableFromStill": null,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "UNRESOLVED",
+          "openingFactsState": "OPENING_FACTS_PRESENT",
+          "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+          "stillPropertyContrast": [],
+          "explicitUsePose": false,
+          "sourceFunctionalContrastSupported": false,
+          "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+          "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [],
+    "sourceContextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "openingMandatoryAdmission": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": false,
+    "status": "NOT_ADMITTED_OPENING_WEAK",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": true,
+    "openingPassed": false,
+    "corePremiseSupported": true,
+    "productionOpeningRequirementSatisfied": false,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": true,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "Hairbrush",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "hair"
+        ],
+        "triggerAnchors": [
+          "hair"
+        ],
+        "supportedBeats": [
+          3,
+          5
+        ],
+        "identityTerms": [
+          "brush",
+          "hairbrush"
+        ],
+        "effectSubjects": [
+          {
+            "beatNumber": 1,
+            "subject": [
+              "knot"
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "subject": [
+              "comb"
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "subject": [
+              "hair"
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "subject": [
+              "hat"
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "subject": [
+              "hair"
+            ]
+          }
+        ],
+        "sourceShortName": [
+          "brush"
+        ]
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Opa brushes once, hair stands up in a giant knot.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "brush",
+          "target": [
+            "onc"
+          ],
+          "sourceClause": "brushes once",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": true,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The action of brushing makes hair worse, so smooth hair is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The action of brushing makes hair worse, so smooth hair is impossible.",
+          "classification": "DIRECT",
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "relationMatchesGoal": [
+            "brush",
+            "hair",
+            "smooth"
+          ],
+          "relationMatchesRule": [
+            "brush",
+            "hair"
+          ],
+          "visibleEffectGoalMatches": [
+            "brush",
+            "hair"
+          ],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": true,
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": true,
+        "dominantRule": true,
+        "violations": [],
+        "reviewNotes": [
+          {
+            "beatNumber": 3,
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "reason": "A simile is not proof of literal material transformation; inspect whether this remains a rule-linked state escalation."
+          }
+        ]
+      },
+      "nonArbitrary": {
+        "supported": true,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": true,
+        "reason": "The impossible effect changes the object\u2019s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brushing untangles hair and smooths it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": false,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 35,
+        "required": true,
+        "standard": {
+          "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+          "sourceFrameVisual": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": true,
+          "objectEvidence": {
+            "present": true,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "hair",
+              "brush"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": null,
+          "ruleInferableFromStill": null,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "UNRESOLVED",
+          "openingFactsState": "OPENING_FACTS_PRESENT",
+          "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+          "stillPropertyContrast": [],
+          "explicitUsePose": false,
+          "sourceFunctionalContrastSupported": false,
+          "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+          "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [
+      {
+        "code": "OPENING_BELOW_EXISTING_FLOOR",
+        "score": 35,
+        "minimum": 60,
+        "reason": "No fallback can make an opening below60 production-admissible."
+      }
+    ],
+    "sourceContextSha256": "832ae03482ba0d91c7797d264e1a3f6d72241e71675b56d27612986527c84eb0",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "productionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT"
+  ],
+  "naturalnessLegacyGrade": "CONTRIVED",
+  "SFE": 99,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "sourceBeats": [
+    {
+      "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+      "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+      "newInformation": "Pulling the brush out causes the hair to cinch, not loosen."
+    },
+    {
+      "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+      "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+      "newInformation": "Any grooming tool multiplies knots instead of removing them."
+    },
+    {
+      "strategy": "Opa applies hair conditioner to make strands slippery.",
+      "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+      "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded."
+    },
+    {
+      "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+      "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+      "newInformation": "The hair's tangling now acts like a living trap, consuming objects."
+    },
+    {
+      "strategy": "Opa uses scissors to cut the hair away.",
+      "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+      "newInformation": "Cutting triggers accelerated regrowth with more tangles."
+    }
+  ]
+}

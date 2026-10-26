@@ -1,0 +1,751 @@
+Continue from the current repository state.
+
+Premise Admission & Opening Evidence Generalization V1 is ACCEPTED.
+
+CURRENT VERIFIED STATE:
+
+Across the 18 semantic HUMAN_REVIEW candidates:
+
+- response missing = 0
+- 15 responses are PRESENT_UNCLASSIFIED
+- 3 responses are classified but compatibility remains unresolved
+- admitted candidates = 0
+- production slate = 0
+
+Important diagnostic cases:
+
+raw-026:
+- opening = 90
+- SFE = PASS
+- ranking = 97.6
+- remaining production blocker:
+  PREMISE_NOT_ADMITTED
+
+raw-027:
+- opening = 90
+- SFE = PASS
+- ranking = 97.6
+- remaining production blocker:
+  PREMISE_NOT_ADMITTED
+
+raw-013:
+- opening = 35
+- SFE = 99 PASS
+- ranking = 97.6
+- Beat Grammar = ACCEPTABLE
+- remaining blockers:
+  OPENING_EVIDENCE_INSUFFICIENT
+  PREMISE_NOT_ADMITTED
+
+The evidence system now proves that the premise responses are not missing.
+
+The remaining architectural problem is:
+
+PREMISE ADMISSION IS TOO STRONGLY COUPLED TO KNOWN RESPONSE / COMPATIBILITY TAXONOMY.
+
+This task must introduce an evidence-supported admission path for coherent but unclassified premise behavior.
+
+Do NOT expand response taxonomy.
+
+Do NOT expand contradiction taxonomy.
+
+Do NOT lower quality thresholds.
+
+Do NOT call any provider.
+
+Do NOT generate new concepts.
+
+Do NOT render media.
+
+======================================================================
+1. PRIMARY GOAL
+======================================================================
+
+Allow Premise Admission to distinguish:
+
+KNOWN_TAXONOMY_SUPPORTED
+
+from
+
+EVIDENCE_SUPPORTED_UNCLASSIFIED
+
+from
+
+UNSUPPORTED
+
+from
+
+INCOMPATIBLE.
+
+An explicit, coherent premise must not automatically fail admission solely because its response behavior has no canonical taxonomy label yet.
+
+======================================================================
+2. IMPORTANT PRINCIPLE
+======================================================================
+
+Taxonomy is a tool for classification.
+
+Taxonomy must NOT become a closed whitelist of all creativity.
+
+Unknown behavior may still be:
+
+- physically legible
+- object-specific
+- causally coherent
+- directly goal-interfering
+- non-arbitrary
+- visually strong
+
+Such a premise may be admissible without inventing a taxonomy label.
+
+======================================================================
+3. KEEP EXISTING KNOWN-TAXONOMY PATH
+======================================================================
+
+If:
+
+response classification is known
+
+and
+
+existing compatibility rules can evaluate it,
+
+use the existing admission behavior unchanged.
+
+Do not weaken known compatibility checks.
+
+======================================================================
+4. NEW EVIDENCE-SUPPORTED FALLBACK PATH
+======================================================================
+
+When:
+
+response = PRESENT_UNCLASSIFIED
+
+OR
+
+response is present/classified but compatibility taxonomy cannot resolve it,
+
+evaluate an evidence-supported admission path.
+
+Do NOT automatically admit.
+
+Require evidence sufficient to establish premise coherence.
+
+======================================================================
+5. REQUIRED FACTORS FOR EVIDENCE-SUPPORTED ADMISSION
+======================================================================
+
+Use existing evidence and existing quality dimensions.
+
+The fallback should require strong support for the relevant facts.
+
+At minimum evaluate:
+
+A. NORMAL EXPECTATION
+
+Is the object's ordinary expected behavior/function clear?
+
+B. IMPOSSIBLE RESPONSE
+
+Is the abnormal response explicit and visually describable?
+
+C. OBJECT SPECIFICITY
+
+Does the impossible behavior meaningfully relate to this exact object?
+
+D. TRIGGER
+
+Is the behavior tied to a concrete, understandable trigger?
+
+E. GOAL INTERFERENCE
+
+Does the behavior directly interfere with the protagonist's everyday goal?
+
+F. CAUSAL COHERENCE
+
+Can viewer understand:
+
+action → response → problem
+
+without arbitrary invisible logic?
+
+G. ARBITRARY MAGIC RISK
+
+Is the rule merely random magic?
+
+Random magic must remain non-admissible / weak.
+
+H. FUNCTIONAL / AFFORDANCE RELATIONSHIP
+
+Does the contradiction derive from:
+
+function
+affordance
+expected motion
+material/property
+normal outcome
+
+where applicable?
+
+I. OPENING LEGIBILITY
+
+Does frame zero provide sufficient immediate evidence for the premise?
+
+Do not bypass existing opening quality standards.
+
+======================================================================
+6. ADMISSION RESULT MODEL
+======================================================================
+
+Introduce explicit admission provenance/status.
+
+Conceptually:
+
+ADMITTED_KNOWN_COMPATIBILITY
+
+ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED
+
+NOT_ADMITTED_INSUFFICIENT_EVIDENCE
+
+NOT_ADMITTED_INCOMPATIBLE
+
+NOT_ADMITTED_ARBITRARY
+
+NOT_ADMITTED_OPENING_WEAK
+
+Exact naming should follow repository conventions.
+
+Do NOT reduce this to a Boolean only.
+
+Keep existing Boolean projection if downstream requires it.
+
+======================================================================
+7. NO TAXONOMY INVENTION
+======================================================================
+
+For:
+
+ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED
+
+do NOT assign a fake response type.
+
+Keep:
+
+responseClassificationStatus = PRESENT_UNCLASSIFIED
+
+Admission and classification must remain separate.
+
+======================================================================
+8. NO FREE PASS
+======================================================================
+
+PRESENT_UNCLASSIFIED alone is NOT sufficient.
+
+A candidate should still fail if:
+
+- object relationship is arbitrary
+- trigger is unclear
+- goal interference is weak
+- normal expectation is unclear
+- opening is weak
+- causal relation requires explanation
+- impossible behavior is inconsistent
+- premise requires multiple unrelated rules
+
+======================================================================
+9. RAW-026 GOLDEN CASE
+======================================================================
+
+raw-026 is a critical diagnostic case.
+
+Current:
+
+opening = 90
+SFE = PASS
+ranking = 97.6
+only production blocker = PREMISE_NOT_ADMITTED
+
+Audit its premise against every evidence-supported admission requirement.
+
+Do NOT assume it should pass.
+
+Return:
+
+normal expectation
+response
+why this object
+trigger
+goal interference
+causal coherence
+arbitrary-magic risk
+opening support
+
+Then determine:
+
+ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED
+
+or
+
+a concrete quality-based rejection.
+
+======================================================================
+10. RAW-027 GOLDEN CASE
+======================================================================
+
+Perform the exact same audit for raw-027.
+
+Again:
+
+do not promote automatically.
+
+Its current single blocker must either:
+
+- become a truthful evidence-supported admission
+
+or
+- be replaced by a real quality reason.
+
+======================================================================
+11. RAW-013 MUST REMAIN SEPARATE
+======================================================================
+
+raw-013 currently has:
+
+opening = 35
+
+Do NOT let fallback admission bypass:
+
+OPENING_EVIDENCE_INSUFFICIENT.
+
+Even if its response is evidence-supported, production may still remain blocked by opening quality.
+
+This is an important control case.
+
+Report premise admission separately from production admission.
+
+======================================================================
+12. OPENING GATE REMAINS AUTHORITATIVE
+======================================================================
+
+Evidence-supported premise admission must not imply:
+
+production ready.
+
+A concept can have:
+
+premise admitted = true
+
+while:
+
+opening preselection = fail.
+
+Keep these dimensions independent.
+
+======================================================================
+13. DIRECT GOAL INTERFERENCE
+======================================================================
+
+Use existing canonical evidence.
+
+Admission fallback should strongly prefer:
+
+DIRECT
+
+goal interference.
+
+INDIRECT may remain lower confidence / non-admissible according to existing policy.
+
+CONTRIVED must not gain admission merely because response exists.
+
+Do not alter current quality standards silently.
+
+======================================================================
+14. OBJECT SPECIFICITY
+======================================================================
+
+Preserve the key test:
+
+WHY THIS EXACT OBJECT?
+
+A rule should not pass because:
+
+"anything could magically do this."
+
+Evidence-supported admission should require meaningful object-rule relationship.
+
+======================================================================
+15. ARBITRARY MAGIC CONTROL
+======================================================================
+
+Add/retain regression examples showing:
+
+explicit + visible + goal-interfering
+
+is still insufficient if:
+
+the rule has no meaningful relationship to the object.
+
+Example class:
+
+touch fork → ceiling teleports
+
+should remain rejected unless existing evidence genuinely establishes an object-specific causal relationship.
+
+Do not hard-code this exact example as production taxonomy.
+
+======================================================================
+16. KNOWN INCOMPATIBILITY MUST REMAIN REJECTED
+======================================================================
+
+If existing taxonomy explicitly says:
+
+known response X
++
+known contradiction/trigger Y
+
+is incompatible,
+
+do NOT route it through the unclassified fallback to escape rejection.
+
+Fallback is for:
+
+taxonomy coverage gaps
+
+not:
+
+known incompatible combinations.
+
+======================================================================
+17. COMPATIBILITY_UNRESOLVED
+======================================================================
+
+For the 3 currently classified-but-unresolved cases:
+
+distinguish:
+
+KNOWN_INCOMPATIBLE
+
+from
+
+COMPATIBILITY_NOT_COVERED.
+
+Only the latter may use evidence-supported admission.
+
+======================================================================
+18. ALL 18 OFFLINE REPLAY
+======================================================================
+
+Replay all existing 18 candidates.
+
+For each return:
+
+BEFORE:
+premise admission
+admission reason
+opening score
+production blockers
+
+AFTER:
+premise admission
+admission provenance
+opening score
+production blockers
+
+DELTA
+
+WHY
+
+No new generation.
+
+======================================================================
+19. PRODUCTION PRESELECTION
+======================================================================
+
+After admission replay:
+
+run existing production preselection unchanged.
+
+Do NOT lower any threshold.
+
+Report:
+
+production-admissible candidates
+
+production slate
+
+remaining blockers for every candidate.
+
+======================================================================
+20. IMPORTANT EXPECTATION
+======================================================================
+
+Do NOT define success as:
+
+raw-026 and raw-027 enter production.
+
+The correct outcome may be:
+
+they remain blocked.
+
+But if they remain blocked, the reason must be a real quality failure, not:
+
+"taxonomy does not know this behavior."
+
+======================================================================
+21. ADMISSION QUALITY AUDIT
+======================================================================
+
+For every newly admitted candidate report the evidence supporting:
+
+- object specificity
+- direct goal interference
+- trigger coherence
+- rule coherence
+- non-arbitrary behavior
+- opening legibility
+
+This allows human inspection of whether fallback is too permissive.
+
+======================================================================
+22. NEGATIVE CONTROLS
+======================================================================
+
+Use existing weak semantic/deterministic fixtures to ensure evidence-supported admission does NOT admit:
+
+- arbitrary magic
+- weak object specificity
+- indirect/contrived goal interference
+- missing trigger
+- incoherent response
+- weak opening where opening is mandatory
+- multiple unrelated rules
+
+Do not fabricate new production concepts.
+
+Test fixtures may be minimal synthetic cases.
+
+======================================================================
+23. ADMISSION VS NATURALNESS
+======================================================================
+
+Do not merge:
+
+Premise Naturalness score
+
+with
+
+admission status.
+
+Admission may use Naturalness evidence, but they remain separate outputs.
+
+Do not create one mega-score.
+
+======================================================================
+24. STRUCTURED VS LEGACY SAFETY
+======================================================================
+
+Existing deterministic known-taxonomy admission behavior must remain unchanged.
+
+Legacy historical fixtures must preserve exact results.
+
+Evidence-supported fallback should only activate when:
+
+canonical evidence is present
+
+AND
+
+taxonomy coverage is genuinely insufficient.
+
+======================================================================
+25. NO DOWNSTREAM SOURCE BONUS
+======================================================================
+
+Downstream ranking / production selection must not care whether admission came from:
+
+KNOWN_COMPATIBILITY
+
+or
+
+EVIDENCE_SUPPORTED_UNCLASSIFIED
+
+except for displaying provenance.
+
+No ranking bonus.
+
+No penalty merely for semantic source.
+
+======================================================================
+26. HUMAN REVIEW SIGNAL
+======================================================================
+
+For candidates admitted through fallback, expose:
+
+ADMISSION_PROVENANCE = EVIDENCE_SUPPORTED_UNCLASSIFIED
+
+in human review.
+
+This is useful editorial information.
+
+It must not alter score automatically.
+
+======================================================================
+27. TAXONOMY EXPANSION CANDIDATES
+======================================================================
+
+After replay, group recurring fallback-admitted response patterns.
+
+Report:
+
+pattern signature
+candidate IDs
+object relationship
+trigger relationship
+goal interference
+
+Do NOT add them to taxonomy.
+
+This will tell us whether a later taxonomy expansion is actually worthwhile.
+
+======================================================================
+28. GOLDEN TESTS
+======================================================================
+
+Add tests proving:
+
+A. known compatible premise uses legacy admission path
+
+B. known incompatible premise remains rejected
+
+C. present-unclassified response can enter evidence-supported evaluation
+
+D. present-unclassified does not automatically admit
+
+E. strong object-specific unclassified premise can be admitted
+
+F. arbitrary-magic unclassified premise remains rejected
+
+G. contrived goal interference remains rejected
+
+H. clear trigger is required according to existing policy
+
+I. taxonomy coverage gap differs from known incompatibility
+
+J. classified-but-unresolved coverage gap may use fallback
+
+K. raw-026 receives a truthful evidence-supported decision
+
+L. raw-027 receives a truthful evidence-supported decision
+
+M. raw-013 opening blocker is not bypassed
+
+N. fallback admission does not assign taxonomy label
+
+O. fallback admission does not modify SFE score
+
+P. fallback admission does not modify Beat Grammar
+
+Q. fallback admission does not modify ranking score
+
+R. production thresholds remain unchanged
+
+S. deterministic historical admission remains unchanged
+
+T. provider calls remain zero
+
+U. historical evidence remains unchanged
+
+======================================================================
+29. FULL REGRESSION
+======================================================================
+
+Run:
+
+premise admission tests
+Naturalness tests
+canonical evidence tests
+production preselection
+ranking
+SFE parity
+Beat Grammar parity
+Creative Shape parity
+legacy fixtures
+full regression
+
+Target:
+
+only accepted 36 baseline failures
+2 existing skips
+
+No new failures.
+
+======================================================================
+30. REQUIRED REPORT
+======================================================================
+
+Provide:
+
+1. architecture summary
+2. files changed
+3. admission status/provenance model
+4. known-taxonomy path
+5. evidence-supported fallback path
+6. negative-control behavior
+7. raw-026 full audit
+8. raw-027 full audit
+9. raw-013 full audit
+10. all 18 before/after admission results
+11. new fallback-admitted candidates
+12. rejected fallback candidates and real quality reasons
+13. production preselection before/after
+14. production slate before/after
+15. remaining blockers
+16. recurring unclassified response patterns
+17. possible future taxonomy candidates
+18. exact tests
+19. provider calls = 0
+20. proof SFE unchanged
+21. proof Beat Grammar unchanged
+22. proof ranking scores unchanged
+23. proof historical evidence unchanged
+24. proof only accepted baseline failures remain
+
+======================================================================
+31. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+more concepts become admitted.
+
+Success is:
+
+Premise Admission no longer treats:
+
+"our taxonomy has no label for this"
+
+as equivalent to:
+
+"this premise is invalid."
+
+Admission must still reject genuinely weak, arbitrary, incoherent or visually unclear ideas.
+
+======================================================================
+32. STOP
+======================================================================
+
+After offline replay:
+
+STOP.
+
+Do NOT:
+
+expand taxonomy
+change thresholds
+change generation prompt
+call provider
+generate new concepts
+create production prompts
+render anything.
+
+Implement Evidence-Supported Premise Admission V2 using only the existing stored candidates and deterministic fixtures.

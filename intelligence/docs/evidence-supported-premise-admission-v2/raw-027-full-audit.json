@@ -1,0 +1,821 @@
+{
+  "ideaId": "raw-027",
+  "candidateId": "sem1-2ae718e8672f18cc",
+  "title": "Opposite-Color Paintbrush",
+  "normalExpectation": "Brush applies paint color loaded on it.",
+  "response": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+  "whyThisObject": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+  "trigger": "Mimi strokes blue paint; wall turns orange.",
+  "goalInterference": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+  "frameZero": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+  "admission": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": false,
+    "status": "NOT_ADMITTED_RULE_INCOHERENT",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "UNSUPPORTED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": false,
+    "openingPassed": true,
+    "corePremiseSupported": false,
+    "productionOpeningRequirementSatisfied": true,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": true,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "Paintbrush",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "color",
+          "load",
+          "paint"
+        ],
+        "triggerAnchors": [
+          "paint"
+        ],
+        "supportedBeats": [
+          1,
+          5
+        ],
+        "identityTerms": [
+          "brush",
+          "paintbrush"
+        ],
+        "effectSubjects": [
+          {
+            "beatNumber": 1,
+            "subject": [
+              "brush"
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "subject": [
+              "wall"
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "subject": [
+              "roller"
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "subject": [
+              "stencil"
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "subject": [
+              "paint"
+            ]
+          }
+        ],
+        "sourceShortName": []
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Mimi strokes blue paint; wall turns orange.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "strok",
+          "target": [
+            "blu",
+            "paint"
+          ],
+          "sourceClause": "strokes blue paint",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": true,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+          "classification": "DIRECT",
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "relationMatchesGoal": [
+            "blu",
+            "paint",
+            "wall"
+          ],
+          "relationMatchesRule": [
+            "blu",
+            "orang",
+            "paint"
+          ],
+          "visibleEffectGoalMatches": [
+            "blu",
+            "paint",
+            "wall"
+          ],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": false,
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": true,
+        "dominantRule": true,
+        "violations": [
+          {
+            "code": "RULE_MODEL_CHANGED",
+            "beatNumber": 2,
+            "sourceField": "beats[1].newInformation",
+            "sourceFields": [
+              "beats[1].newInformation"
+            ],
+            "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "reason": "New information explicitly changes the response mapping/allowed outcome rather than only its magnitude.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          },
+          {
+            "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+            "beatNumber": 5,
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceFields": [
+              "beats[4].visibleConsequence"
+            ],
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          }
+        ],
+        "reviewNotes": []
+      },
+      "nonArbitrary": {
+        "supported": true,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": true,
+        "reason": "The impossible effect changes the object\u2019s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": true,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 90,
+        "required": false,
+        "standard": {
+          "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+          "sourceFrameVisual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": true,
+          "objectEvidence": {
+            "present": true,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "paint",
+              "brush"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": true,
+          "ruleInferableFromStill": true,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "SUPPORTED",
+          "openingFactsState": "OPENING_FACTS_PRESENT",
+          "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+          "stillPropertyContrast": [
+            {
+              "expected": [
+                "blue"
+              ],
+              "shown": [
+                "orange"
+              ]
+            }
+          ],
+          "explicitUsePose": true,
+          "sourceFunctionalContrastSupported": true,
+          "blockerClassification": "OTHER",
+          "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "causalCoherence",
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats."
+      },
+      {
+        "code": "RULE_MODEL_CHANGED",
+        "beatNumber": 2,
+        "sourceField": "beats[1].newInformation",
+        "sourceFields": [
+          "beats[1].newInformation"
+        ],
+        "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[1].newInformation",
+            "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "reason": "New information explicitly changes the response mapping/allowed outcome rather than only its magnitude.",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      },
+      {
+        "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+        "beatNumber": 5,
+        "sourceField": "beats[4].visibleConsequence",
+        "sourceFields": [
+          "beats[4].visibleConsequence"
+        ],
+        "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      }
+    ],
+    "sourceContextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "openingMandatoryAdmission": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": false,
+    "status": "NOT_ADMITTED_RULE_INCOHERENT",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "UNSUPPORTED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": true,
+    "openingPassed": true,
+    "corePremiseSupported": false,
+    "productionOpeningRequirementSatisfied": true,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": true,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "Paintbrush",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "color",
+          "load",
+          "paint"
+        ],
+        "triggerAnchors": [
+          "paint"
+        ],
+        "supportedBeats": [
+          1,
+          5
+        ],
+        "identityTerms": [
+          "brush",
+          "paintbrush"
+        ],
+        "effectSubjects": [
+          {
+            "beatNumber": 1,
+            "subject": [
+              "brush"
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "subject": [
+              "wall"
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "subject": [
+              "roller"
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "subject": [
+              "stencil"
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "subject": [
+              "paint"
+            ]
+          }
+        ],
+        "sourceShortName": []
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Mimi strokes blue paint; wall turns orange.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "strok",
+          "target": [
+            "blu",
+            "paint"
+          ],
+          "sourceClause": "strokes blue paint",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": true,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+          "classification": "DIRECT",
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "relationMatchesGoal": [
+            "blu",
+            "paint",
+            "wall"
+          ],
+          "relationMatchesRule": [
+            "blu",
+            "orang",
+            "paint"
+          ],
+          "visibleEffectGoalMatches": [
+            "blu",
+            "paint",
+            "wall"
+          ],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": false,
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": true,
+        "dominantRule": true,
+        "violations": [
+          {
+            "code": "RULE_MODEL_CHANGED",
+            "beatNumber": 2,
+            "sourceField": "beats[1].newInformation",
+            "sourceFields": [
+              "beats[1].newInformation"
+            ],
+            "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[1].newInformation",
+                "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "reason": "New information explicitly changes the response mapping/allowed outcome rather than only its magnitude.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          },
+          {
+            "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+            "beatNumber": 5,
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceFields": [
+              "beats[4].visibleConsequence"
+            ],
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[4].visibleConsequence",
+                "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          }
+        ],
+        "reviewNotes": []
+      },
+      "nonArbitrary": {
+        "supported": true,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": true,
+        "reason": "The impossible effect changes the object\u2019s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Brush applies paint color loaded on it.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": true,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 90,
+        "required": true,
+        "standard": {
+          "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+          "sourceFrameVisual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": true,
+          "objectEvidence": {
+            "present": true,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "paint",
+              "brush"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": true,
+          "ruleInferableFromStill": true,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "SUPPORTED",
+          "openingFactsState": "OPENING_FACTS_PRESENT",
+          "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+          "stillPropertyContrast": [
+            {
+              "expected": [
+                "blue"
+              ],
+              "shown": [
+                "orange"
+              ]
+            }
+          ],
+          "explicitUsePose": true,
+          "sourceFunctionalContrastSupported": true,
+          "blockerClassification": "OTHER",
+          "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "causalCoherence",
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats."
+      },
+      {
+        "code": "RULE_MODEL_CHANGED",
+        "beatNumber": 2,
+        "sourceField": "beats[1].newInformation",
+        "sourceFields": [
+          "beats[1].newInformation"
+        ],
+        "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[1].newInformation",
+            "sourceText": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "reason": "New information explicitly changes the response mapping/allowed outcome rather than only its magnitude.",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      },
+      {
+        "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+        "beatNumber": 5,
+        "sourceField": "beats[4].visibleConsequence",
+        "sourceFields": [
+          "beats[4].visibleConsequence"
+        ],
+        "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      }
+    ],
+    "sourceContextSha256": "7a859b4a3d2c0d3a742fe09defb75fe80496213db6a39bc7a18c637457e53140",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "productionBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "naturalnessLegacyGrade": "CONTRIVED",
+  "SFE": 99,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "sourceBeats": [
+    {
+      "strategy": "Mimi mixes a custom color equal parts blue and orange, hoping inversion cancels.",
+      "visibleConsequence": "The brush paints a shimmering gray that immediately splits into blue and orange stripes.",
+      "newInformation": "Complementary inversion doesn't cancel but separates into two colors."
+    },
+    {
+      "strategy": "Mimi tries to paint the wall orange, expecting inversion to give blue.",
+      "visibleConsequence": "The wall turns blue-green, not pure blue, and the brush swirls automatically.",
+      "newInformation": "The inversion rule includes a hue shift, so aiming for orange doesn't yield blue."
+    },
+    {
+      "strategy": "Mimi uses a roller instead of brush.",
+      "visibleConsequence": "The roller paints the opposite color at triple scale, covering the wall in a giant orange sunburst.",
+      "newInformation": "The inversion applies to any painting tool, increasing area."
+    },
+    {
+      "strategy": "Mimi puts a stencil on the wall to paint a pattern.",
+      "visibleConsequence": "The stencil areas stay original color, while the exposed wall turns complementary, creating a negative of the pattern.",
+      "newInformation": "The brush inverts color in the open areas, not just strokes."
+    },
+    {
+      "strategy": "Mimi gives up and paints the wall back white.",
+      "visibleConsequence": "The white paint turns black, then the entire wall flashes and becomes a mirror reflecting the room in inverted colors.",
+      "newInformation": "Painting white triggers a full-wall color inversion, turning the wall into a funhouse mirror."
+    }
+  ]
+}

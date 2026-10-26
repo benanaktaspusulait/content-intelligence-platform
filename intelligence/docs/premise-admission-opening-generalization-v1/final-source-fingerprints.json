@@ -1,0 +1,10 @@
+{
+  "intelligence/ml-service/app/workflow/premise_naturalness.py": "8b8305ac53dd7eafce56d243c3814121fae9a7c3b84e5745df5bacc11e9072c7",
+  "intelligence/ml-service/app/workflow/premise_admission_evidence.py": "b3e84e5bda44d226c74b13addbec2a5637379eb0d6505b15e1fb77251c00f71e",
+  "intelligence/ml-service/tests/protected_integrity.py": "70a6dd963d8685c2625332f3164e154167e4d1ff7f09e5f898f955b9133dcba6",
+  "intelligence/ml-service/tests/test_protected_integrity_policy.py": "82eae71bb64b7515250c43d1f65233a0bdcdded5f903c88ce736247ecaa72e51",
+  "intelligence/ml-service/tests/test_premise_admission_evidence.py": "f261376b77d3a0b1d0fc12377923d85ecbd51602ec00dfbf9ef0165396cf03e4",
+  "intelligence/ml-service/tests/test_premise_evidence_integrity.py": "10dec44d14fea25af5d07d0680657bf6aee97d0be26c2f6c482125891a4e0fc8",
+  "intelligence/ml-service/tests/fixtures/premise_evidence_integrity_v1.json": "e510ecb33cb294a22ddb0b30e2ba0baa50f2de5ca85d2cf51c80640801c70b9c",
+  "intelligence/scripts/replay-premise-admission-evidence.py": "677477ccd4f8169edaf1b3b349b6c5505b6745a892c1ba87cc41a92e0b989f66"
+}

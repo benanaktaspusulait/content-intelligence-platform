@@ -1,0 +1,9 @@
+{
+  "existingOpeningCondition": "c['premiseNaturalness']['instantCausalLegibility'] < 60",
+  "fallbackOpeningFloor": 60,
+  "thresholdChanged": false,
+  "knownCompatibilityAndNaturalnessPath": "Calls unchanged premise_naturalness.assess; never recalculates known-path admission or bypasses known incompatibility.",
+  "productionPolicyFilesUnchanged": true,
+  "rankingWeightsUnchanged": true,
+  "allExistingRuntimeSourcesUnchanged": true
+}

@@ -1,0 +1,264 @@
+{
+  "ideaId": "raw-026",
+  "candidateId": "sem1-23a3c991b8104bee",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Hammering a nail drives it straight into wall.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "evidenceSource": "impossibleRule",
+      "classification": "UNSUPPORTED_RESPONSE",
+      "qualityJudgment": "UNSUPPORTED_RESPONSE",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Kiko hits nail; it curves 90 degrees without entering wall.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Hammering a nail drives it straight into wall.",
+      "functionGoalMatches": [],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "forc",
+        "hammer",
+        "nail"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "expected": "Hammering a nail drives it straight into wall.",
+      "actual": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "fram",
+        "hang"
+      ],
+      "relationMatchesRule": [
+        "nail"
+      ],
+      "visibleEffectGoalMatches": [
+        "pictur"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Kiko hits nail; it curves 90 degrees without entering wall.",
+      "classificationStatus": "PRESENT_UNCLASSIFIED",
+      "configuredScore": 0,
+      "sourceExpectationMatches": [
+        "nail",
+        "wall"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model.",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    },
+    "physicalRelationship": {
+      "source": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Hammering a nail drives it straight into wall.",
+      "sourceActual": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": "straight",
+          "shown": "bent"
+        }
+      ]
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+    "classification": null,
+    "diagnosisCategory": "B",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "sourceFrameVisual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "hammer"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": "straight",
+        "shown": "bent"
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": true,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "normalExpectation",
+      "exactObjectRelevance",
+      "arbitraryMagicRisk"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 100,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}

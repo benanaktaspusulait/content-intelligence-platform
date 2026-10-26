@@ -1,0 +1,857 @@
+{
+  "ideaId": "raw-026",
+  "candidateId": "sem1-23a3c991b8104bee",
+  "title": "Bending Nail Hammer",
+  "normalExpectation": "Hammering a nail drives it straight into wall.",
+  "response": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+  "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+  "trigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+  "goalInterference": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+  "frameZero": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+  "admission": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": false,
+    "status": "NOT_ADMITTED_RULE_INCOHERENT",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "UNSUPPORTED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": false,
+    "openingPassed": true,
+    "corePremiseSupported": false,
+    "productionOpeningRequirementSatisfied": true,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": true,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "Hammer",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[1].visibleConsequence",
+            "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "nail",
+          "wall"
+        ],
+        "triggerAnchors": [
+          "nail",
+          "wall"
+        ],
+        "supportedBeats": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "identityTerms": [
+          "hammer"
+        ],
+        "effectSubjects": [
+          {
+            "beatNumber": 1,
+            "subject": [
+              "nail"
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "subject": [
+              "nail"
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "subject": [
+              "nail"
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "subject": [
+              "hammer"
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "subject": [
+              "nail"
+            ]
+          }
+        ],
+        "sourceShortName": []
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "hit",
+          "target": [
+            "nail"
+          ],
+          "sourceClause": "hits nail",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": true,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+          "classification": "DIRECT",
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "relationMatchesGoal": [
+            "fram",
+            "hang"
+          ],
+          "relationMatchesRule": [
+            "nail"
+          ],
+          "visibleEffectGoalMatches": [
+            "pictur"
+          ],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": false,
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": true,
+        "dominantRule": true,
+        "violations": [
+          {
+            "code": "DECLARED_RULE_OUTCOME_REVERSED",
+            "beatNumber": 4,
+            "sourceField": null,
+            "sourceFields": [
+              "beats[3].visibleConsequence",
+              "beats[3].newInformation"
+            ],
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "DERIVED_COMPARISON_WITH_EXACT_REFS",
+            "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "reason": "A source outcome asserts the opposite of the declared response without a declared exception.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          },
+          {
+            "code": "UNDECLARED_TRIGGER_RESTRICTION",
+            "beatNumber": 4,
+            "sourceField": "beats[3].newInformation",
+            "sourceFields": [
+              "beats[3].newInformation"
+            ],
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "reason": "A new exclusive input/actor condition is asserted outside the declared rule; no invisible exception is assumed.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          }
+        ],
+        "reviewNotes": []
+      },
+      "nonArbitrary": {
+        "supported": true,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": true,
+        "reason": "The impossible effect changes the object\u2019s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": true,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 90,
+        "required": false,
+        "standard": {
+          "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "sourceFrameVisual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": true,
+          "objectEvidence": {
+            "present": true,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "hammer"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": true,
+          "ruleInferableFromStill": true,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "SUPPORTED",
+          "openingFactsState": "OPENING_FACTS_PRESENT",
+          "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+          "stillPropertyContrast": [
+            {
+              "expected": "straight",
+              "shown": "bent"
+            }
+          ],
+          "explicitUsePose": true,
+          "sourceFunctionalContrastSupported": true,
+          "blockerClassification": "OTHER",
+          "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "causalCoherence",
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats."
+      },
+      {
+        "code": "DECLARED_RULE_OUTCOME_REVERSED",
+        "beatNumber": 4,
+        "sourceField": null,
+        "sourceFields": [
+          "beats[3].visibleConsequence",
+          "beats[3].newInformation"
+        ],
+        "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "DERIVED_COMPARISON_WITH_EXACT_REFS",
+        "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "reason": "A source outcome asserts the opposite of the declared response without a declared exception.",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      },
+      {
+        "code": "UNDECLARED_TRIGGER_RESTRICTION",
+        "beatNumber": 4,
+        "sourceField": "beats[3].newInformation",
+        "sourceFields": [
+          "beats[3].newInformation"
+        ],
+        "sourceText": "The hammer can install nails only when not held by Kiko.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "reason": "A new exclusive input/actor condition is asserted outside the declared rule; no invisible exception is assumed.",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      }
+    ],
+    "sourceContextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "openingMandatoryAdmission": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": false,
+    "status": "NOT_ADMITTED_RULE_INCOHERENT",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "UNSUPPORTED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": true,
+    "openingPassed": true,
+    "corePremiseSupported": false,
+    "productionOpeningRequirementSatisfied": true,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": true,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "Hammer",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The nail bends around the pliers and grips them, trapping the tool.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[1].visibleConsequence",
+            "sourceText": "The long nail curls into a spiral, then springs back and pings off the wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[4].visibleConsequence",
+            "sourceText": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "nail",
+          "wall"
+        ],
+        "triggerAnchors": [
+          "nail",
+          "wall"
+        ],
+        "supportedBeats": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "identityTerms": [
+          "hammer"
+        ],
+        "effectSubjects": [
+          {
+            "beatNumber": 1,
+            "subject": [
+              "nail"
+            ]
+          },
+          {
+            "beatNumber": 2,
+            "subject": [
+              "nail"
+            ]
+          },
+          {
+            "beatNumber": 3,
+            "subject": [
+              "nail"
+            ]
+          },
+          {
+            "beatNumber": 4,
+            "subject": [
+              "hammer"
+            ]
+          },
+          {
+            "beatNumber": 5,
+            "subject": [
+              "nail"
+            ]
+          }
+        ],
+        "sourceShortName": []
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Kiko hits nail; it curves 90 degrees without entering wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "hit",
+          "target": [
+            "nail"
+          ],
+          "sourceClause": "hits nail",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": true,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+          "classification": "DIRECT",
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "relationMatchesGoal": [
+            "fram",
+            "hang"
+          ],
+          "relationMatchesRule": [
+            "nail"
+          ],
+          "visibleEffectGoalMatches": [
+            "pictur"
+          ],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": false,
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": true,
+        "dominantRule": true,
+        "violations": [
+          {
+            "code": "DECLARED_RULE_OUTCOME_REVERSED",
+            "beatNumber": 4,
+            "sourceField": null,
+            "sourceFields": [
+              "beats[3].visibleConsequence",
+              "beats[3].newInformation"
+            ],
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "DERIVED_COMPARISON_WITH_EXACT_REFS",
+            "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "reason": "A source outcome asserts the opposite of the declared response without a declared exception.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          },
+          {
+            "code": "UNDECLARED_TRIGGER_RESTRICTION",
+            "beatNumber": 4,
+            "sourceField": "beats[3].newInformation",
+            "sourceFields": [
+              "beats[3].newInformation"
+            ],
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[3].newInformation",
+                "sourceText": "The hammer can install nails only when not held by Kiko.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "reason": "A new exclusive input/actor condition is asserted outside the declared rule; no invisible exception is assumed.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          }
+        ],
+        "reviewNotes": []
+      },
+      "nonArbitrary": {
+        "supported": true,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": true,
+        "reason": "The impossible effect changes the object\u2019s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Hammering a nail drives it straight into wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": true,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 90,
+        "required": true,
+        "standard": {
+          "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "sourceFrameVisual": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": true,
+          "objectEvidence": {
+            "present": true,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "hammer"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": true,
+          "ruleInferableFromStill": true,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "SUPPORTED",
+          "openingFactsState": "OPENING_FACTS_PRESENT",
+          "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+          "stillPropertyContrast": [
+            {
+              "expected": "straight",
+              "shown": "bent"
+            }
+          ],
+          "explicitUsePose": true,
+          "sourceFunctionalContrastSupported": true,
+          "blockerClassification": "OTHER",
+          "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "causalCoherence",
+        "reason": "Action\u2192response\u2192problem must be canonically grounded and preserve declared source constraints across beats."
+      },
+      {
+        "code": "DECLARED_RULE_OUTCOME_REVERSED",
+        "beatNumber": 4,
+        "sourceField": null,
+        "sourceFields": [
+          "beats[3].visibleConsequence",
+          "beats[3].newInformation"
+        ],
+        "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall. The hammer can install nails only when not held by Kiko.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "DERIVED_COMPARISON_WITH_EXACT_REFS",
+        "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "reason": "A source outcome asserts the opposite of the declared response without a declared exception.",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      },
+      {
+        "code": "UNDECLARED_TRIGGER_RESTRICTION",
+        "beatNumber": 4,
+        "sourceField": "beats[3].newInformation",
+        "sourceFields": [
+          "beats[3].newInformation"
+        ],
+        "sourceText": "The hammer can install nails only when not held by Kiko.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "The hammer can install nails only when not held by Kiko.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "reason": "A new exclusive input/actor condition is asserted outside the declared rule; no invisible exception is assumed.",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      }
+    ],
+    "sourceContextSha256": "4122d13a06629964cea1eb6d66fb5adbe236715d4afac3e931f5c203fcf40434",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "productionBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "naturalnessLegacyGrade": "CONTRIVED",
+  "SFE": 100,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "sourceBeats": [
+    {
+      "strategy": "Kiko holds the nail straight with pliers and hammers gently.",
+      "visibleConsequence": "The nail bends around the pliers and grips them, trapping the tool.",
+      "newInformation": "The nail's bending is directional and can ensnare nearby tools."
+    },
+    {
+      "strategy": "Kiko uses a longer nail, hoping it will go straight.",
+      "visibleConsequence": "The long nail curls into a spiral, then springs back and pings off the wall.",
+      "newInformation": "Nail length increases elasticity, causing projectile bending."
+    },
+    {
+      "strategy": "Kiko pre-drills a hole, then taps the nail.",
+      "visibleConsequence": "The nail passes halfway, then bends sideways and splits the wallboard, making a large hole.",
+      "newInformation": "The nail bends at a specific depth, damaging the wall."
+    },
+    {
+      "strategy": "Kiko gives up on nails and uses adhesive strips.",
+      "visibleConsequence": "The hammer leaps from his hand, straightens the bent nail with one tap, then hammers it perfectly into the wall.",
+      "newInformation": "The hammer can install nails only when not held by Kiko."
+    },
+    {
+      "strategy": "Kiko grabs the hammer to adjust the picture, but the hammer now bends every nail in the house.",
+      "visibleConsequence": "All nails in the room curve, pictures crash, and the original nail pings into Kiko's hand, bending his thumb comically.",
+      "newInformation": "The hammer's bent-nail effect spreads to all previously straight nails."
+    }
+  ]
+}

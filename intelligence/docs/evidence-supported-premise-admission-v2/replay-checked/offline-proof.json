@@ -1,0 +1,29 @@
+{
+  "candidateCount": 18,
+  "providerCalls": 0,
+  "newConcepts": 0,
+  "renders": 0,
+  "attemptedNetworkOrSubprocess": {},
+  "SFEExactlyUnchanged": true,
+  "BeatGrammarExactlyUnchanged": true,
+  "fullRankingExactlyUnchanged": true,
+  "NaturalnessMetricsExactlyUnchanged": true,
+  "openingScoresExactlyUnchanged": true,
+  "newFallbackAdmittedCandidates": [],
+  "admittedCount": 0,
+  "productionAdmissibleCount": 0,
+  "productionSlateBefore": [],
+  "productionSlateAfter": [],
+  "legacyDiagnosticOrderingOnly": [
+    "raw-007",
+    "raw-013",
+    "raw-027",
+    "raw-003",
+    "raw-015"
+  ],
+  "decisionCounts": {
+    "NOT_ADMITTED_RULE_INCOHERENT": 14,
+    "NOT_ADMITTED_INSUFFICIENT_EVIDENCE": 3,
+    "NOT_ADMITTED_ARBITRARY": 1
+  }
+}

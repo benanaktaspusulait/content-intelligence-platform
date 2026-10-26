@@ -1,0 +1,256 @@
+{
+  "ideaId": "raw-007",
+  "candidateId": "sem1-bbdb302fefb48bd5",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Alarm rings at set time; hands move forward.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "evidenceSource": "impossibleRule",
+      "classification": "RETURN_ORIGIN",
+      "qualityJudgment": "RETURN_ORIGIN",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Opa sets alarm for 7:00, the hour hand starts cranking counterclockwise.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Alarm rings at set time; hands move forward.",
+      "functionGoalMatches": [],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "clock",
+        "forward",
+        "hand",
+        "revers",
+        "tim",
+        "up",
+        "wak"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "expected": "Alarm rings at set time; hands move forward.",
+      "actual": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight."
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "Setting the alarm to a future time causes the clock to move backward away from that time, so the alarm will never ring at 7 AM.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "alarm",
+        "am",
+        "sett"
+      ],
+      "relationMatchesRule": [
+        "alarm",
+        "backward",
+        "clock",
+        "mov",
+        "ring",
+        "so",
+        "tim"
+      ],
+      "visibleEffectGoalMatches": [
+        "am",
+        "up",
+        "wak"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Opa sets alarm for 7:00, the hour hand starts cranking counterclockwise.",
+      "classificationStatus": "PRESENT_UNCLASSIFIED",
+      "configuredScore": 0,
+      "sourceExpectationMatches": [
+        "alarm",
+        "hand",
+        "set"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+    },
+    "physicalRelationship": {
+      "source": "Clock is meant to measure forward time; reversing hands makes scheduled wake-up impossible.",
+      "qualitySupport": "UNRESOLVED"
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Alarm rings at set time; hands move forward.",
+      "sourceActual": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+      "qualitySupport": "UNRESOLVED"
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_CLASSIFIED",
+    "sourceText": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+    "classification": "RETURN_ORIGIN",
+    "diagnosisCategory": "D",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "The clock's hands move backward whenever the alarm is set, so time appears to run in reverse; the alarm rings only when the hands return to midnight.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "sourceFrameVisual": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "clock",
+        "alarm"
+      ],
+      "sourceShortName": "alarm"
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": true,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "MOTION_DEPENDENT_OPENING",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Opa sits up in bed, staring at a bedside clock whose hour hand is moving backward past 6, while the alarm hand points to 7.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": false,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "normalExpectation",
+      "exactObjectRelevance",
+      "expectedBehaviorContradiction",
+      "triggerNaturalness",
+      "physicalRelationship",
+      "arbitraryMagicRisk",
+      "functionalIrony"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 100,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}

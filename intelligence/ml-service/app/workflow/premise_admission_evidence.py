@@ -62,14 +62,16 @@ def response_evidence(fields,canonical,baseline,model):
 
 
 def opening_evidence(candidate,canonical,baseline):
-    fields=canonical.fields;facts=canonical.facts;frame=fields['frameZeroDescription'];obj=object_support(fields['primaryObject'],frame)
+    from .short_form_engine import _visual
+    fields=canonical.fields;facts=canonical.facts;raw_frame=fields['frameZeroDescription'];frame=_visual(raw_frame);obj=object_support(fields['primaryObject'],raw_frame)
+    requires_text=bool(re.search(r'caption|dialogue|narration|shouting bubble|speech bubble|reading text|text explains',raw_frame,re.I))
     source_short_name=fields['normalExpectation'].split()[0].casefold() if fields['normalExpectation'].split() else ''
-    if source_short_name in fields['primaryObject'].casefold().split() and re.search(r'\b'+re.escape(source_short_name)+r'\b',frame,re.I):
+    if source_short_name in fields['primaryObject'].casefold().split() and re.search(r'\b'+re.escape(source_short_name)+r'\b',raw_frame,re.I):
         obj['present']=True;obj['sourceShortName']=source_short_name
-    character=bool(candidate.get('protagonist') and re.search(r'\b'+re.escape(candidate['protagonist'])+r'\b',frame,re.I))
+    character=bool(candidate.get('protagonist') and re.search(r'\b'+re.escape(candidate['protagonist'])+r'\b',raw_frame,re.I))
     # These phrases explicitly ask the reader to infer temporal behavior. A still
     # may show the problem but cannot establish the elapsed-time/direction claim.
-    motion=bool(re.search(r'moving backward|slowly reappearing|reappearing|flickering|delayed|lag overlay|begun a curved path|arcs upward|migrat|one second|two seconds',frame,re.I))
+    motion=bool(re.search(r'moving backward|slowly reappearing|reappearing|flickering|delayed|lag overlay|one second|two seconds',frame,re.I))
     prior=True if re.search(r'earlier|previous scene|as before|remember|already seen|prior context',frame,re.I) else None
     # Source property comparison is independent of response/object taxonomy.
     # It is a still-plan witness only with an explicit use pose and visible goal.
@@ -79,31 +81,32 @@ def opening_evidence(candidate,canonical,baseline):
     colors={'blue','orange','red','green','white','black','yellow','purple','pink','gray','grey'}
     goal_colors=colors & set(re.findall(r'[a-z]+',fields['everydayGoal'].casefold()))
     frame_colors=colors & set(re.findall(r'[a-z]+',frame.casefold()))
-    expected_color_witness=any(re.search(r'\b'+c+r'\b.{0,25}(?:paint|bucket|brush)',frame,re.I) for c in goal_colors)
-    actual_color_witness=[c for c in frame_colors-goal_colors if re.search(r'(?:painted|patch|wall).{0,45}\b'+c+r'\b',frame,re.I)]
+    expected_color_witness=any(re.search(r'\b'+c+r'\s+(?:paint|bucket|brush)\b',frame,re.I) for c in goal_colors)
+    actual_color_witness=[c for c in frame_colors-goal_colors if re.search(r'(?:painted\s+(?:patch|area|surface)|patch|wall)\s+(?:(?:is|turns?|becomes?|looks?|has become)\s+)?(?:(?:vivid|bright|pure|solid|now)\s+)*'+c+r'\b',frame,re.I)]
     if expected_color_witness and actual_color_witness and re.search(r'paint|color|colour',fields['normalExpectation'],re.I):
         contrasts.append(dict(expected=sorted(goal_colors),shown=sorted(actual_color_witness)))
     use_pose=bool(re.search(r'mid.stroke|mid.swing|mid.sweep|flipping|striking|brushing|painting',frame,re.I))
     source_contrast=bool(contrasts and use_pose and character and obj['present'] and facts['goal']['visibleInOpening']
                          and facts['opening']['anomalyPresent'] and facts['opening']['causalRelationshipVisible'])
     legacy_static=bool(baseline['staticFrameLegibility'] is not None and baseline['staticFrameLegibility']>=65)
-    still_supported=bool(not motion and not prior and (source_contrast or legacy_static))
-    classification=('SOURCE_MISSING' if not frame else 'MOTION_DEPENDENT_OPENING' if motion else
+    still_supported=bool(not motion and not prior and not requires_text and character and obj['present'] and facts['goal']['visibleInOpening'] and facts['opening']['problemPresent'] and (source_contrast or legacy_static))
+    classification=('SOURCE_MISSING' if not raw_frame else 'EVIDENCE_SOURCE_MISMATCH' if not frame else 'MOTION_DEPENDENT_OPENING' if motion else
         'CAUSAL_RELATION_NOT_VISIBLE' if not facts['opening']['causalRelationshipVisible'] or not still_supported else
         'PRESENT_BUT_WEAK' if baseline['instantCausalLegibility']<60 else 'OTHER')
-    return dict(frameZeroDescription=frame,characterVisible=character,goalDeclared=facts['goal']['declared'],
+    return dict(frameZeroDescription=raw_frame,sourceFrameVisual=frame,requiresTextOrDialogue=requires_text,characterVisible=character,goalDeclared=facts['goal']['declared'],
         goalVisible=facts['goal']['visibleInOpening'],objectVisible=obj['present'],objectEvidence=obj,
         problemVisible=facts['opening']['problemPresent'],anomalyVisible=facts['opening']['anomalyPresent'],
         triggerVisible=facts['trigger']['visible'],goalProblemRelationship=facts['opening']['causalRelationshipVisible'],
         impossibleRelationVisible=True if still_supported else None,
         ruleInferableFromStill=True if still_supported else None,needsMotionToUnderstand=True if motion else None,
+        motionInferenceScope='Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.',
         needsPriorContext=prior,canonicalCausalLegibility=facts['opening']['causalRelationshipVisible'],
         stillCausalLegibility='SUPPORTED' if still_supported else 'UNRESOLVED',
         openingFactsState='OPENING_FACTS_PRESENT' if all([character,obj['present'],facts['opening']['problemPresent'],facts['goal']['declared']]) else 'OPENING_FACTS_INCOMPLETE',
         openingQualityState='OPENING_LEGIBILITY_STRONG' if still_supported else 'OPENING_LEGIBILITY_NOT_ESTABLISHED',
         stillPropertyContrast=contrasts,explicitUsePose=use_pose,sourceFunctionalContrastSupported=source_contrast,
         blockerClassification=classification,
-        blockerReason='Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.',
+        blockerReason=('Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged.' if raw_frame and not frame else 'Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.'),
         evidenceRefs=facts['opening']['source'],
         scope='SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.')
 
@@ -119,7 +122,7 @@ def quality_evidence(fields,canonical,baseline,response,model):
     direct=bool(canonical.facts['rule']['visible'] and rule_goal_relation and effect_matches and prevention)
     explicitly_portable=bool(re.search(r'any object|unrelated|arbitrary magic|random magic|no functional|regardless of (?:the )?object',fields['whyThisObject']+' '+fields['impossibleRule'],re.I))
     compatible=response.compatibility=='SUPPORTED'
-    incompatible=response.compatibility=='INCOMPATIBLE'
+    incompatible=response.compatibility=='INCOMPATIBLE' and response.classification!='ORDINARY_RESPONSE'
     goal_type='DIRECT' if direct else 'CONTRIVED' if incompatible or explicitly_portable else None
     if re.search(r'does not interfere|no interference',fields['goalRuleRelationship'],re.I):goal_type='NONE'
     known_dependency=compatible and baseline['objectSpecificityScore']>=70
@@ -150,7 +153,7 @@ def quality_evidence(fields,canonical,baseline,response,model):
             qualitySupport='SUPPORTED' if compatible and baseline['triggerNaturalness']>=70 else 'UNRESOLVED',
             limitation='An explicit use-trigger is not automatically compatible with every object model.'),
         physicalRelationship=dict(source=fields['whyThisObject'],qualitySupport='SUPPORTED' if compatible else 'CONTRADICTED' if incompatible or explicitly_portable else 'UNRESOLVED'),
-        arbitraryMagicRisk=dict(qualitySupport='HIGH' if incompatible or explicitly_portable else 'LOW' if compatible else 'UNRESOLVED',
+        arbitraryMagicRisk=dict(qualitySupport='HIGH' if incompatible or explicitly_portable else 'LOW' if compatible or response.classification=='ORDINARY_RESPONSE' else 'UNRESOLVED',
             explicitlyPortable=explicitly_portable,reason='Unknown taxonomy alone does not establish arbitrary magic.'),
         functionalIrony=dict(sourceExpected=fields['normalExpectation'],sourceActual=fields['impossibleRule'],
             qualitySupport='SUPPORTED' if compatible and baseline['functionalIrony']=='HIGH' else 'UNRESOLVED'),
@@ -164,6 +167,10 @@ def assess(candidate,model,canonical):
     fields=canonical.fields;response=response_evidence(fields,canonical,baseline,model)
     opening=opening_evidence(candidate,canonical,baseline)
     quality=quality_evidence(fields,canonical,baseline,response,model)
+    if opening['sourceFunctionalContrastSupported']:
+        for dimension in ('expectedBehaviorContradiction','functionalIrony','physicalRelationship','triggerNaturalness'):
+            quality[dimension]['qualitySupport']='SUPPORTED_SOURCE_LINK'
+            quality[dimension]['sourceWitness']=opening['stillPropertyContrast']
     result=deepcopy(baseline)
     unresolved=response.compatibility=='UNRESOLVED'
     missing=response.state=='RESPONSE_MISSING' or not fields['everydayGoal'] or not fields['primaryObject']
@@ -193,6 +200,7 @@ def assess(candidate,model,canonical):
         # witnessed without a response name. No admission or object-swap credit.
         result['instantCausalLegibility']=90
         result['staticFrameLegibility']=85
+        result['expectationDistance']='CLEAR_CONTRADICTION'
         opening['openingQualityState']='OPENING_LEGIBILITY_STRONG'
         opening['blockerClassification']='OTHER'
         opening['blockerReason']='No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.'
@@ -221,7 +229,7 @@ def assess(candidate,model,canonical):
     result['responseEvidence']=response.model_dump()
     result['openingEvidence']=opening
     result['qualityEvidence']=quality
-    result['qualityAssessmentStatus']='MISSING_OR_AMBIGUOUS' if missing or ambiguous else 'PRESENT_BUT_LOW_QUALITY' if low else 'UNRESOLVED' if unresolved else 'ASSESSED'
+    result['qualityAssessmentStatus']='MISSING_OR_AMBIGUOUS' if missing or ambiguous else 'PRESENT_BUT_LOW_QUALITY' if low or response.classification=='ORDINARY_RESPONSE' else 'UNRESOLVED' if unresolved else 'ASSESSED'
     result['admissionEvidenceStatus']='UNSUPPORTED' if missing or ambiguous or low else 'KNOWN_SUPPORTED' if response.compatibility=='SUPPORTED' else 'UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED'
     result['metricInterpretation']=dict(objectSpecificityScore='UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unresolved comparison is not observed low specificity',
         triggerNaturalness='UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unknown classification is not missing trigger',

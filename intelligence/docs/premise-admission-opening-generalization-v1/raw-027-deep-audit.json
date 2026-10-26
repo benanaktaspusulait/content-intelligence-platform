@@ -1,0 +1,291 @@
+{
+  "ideaId": "raw-027",
+  "candidateId": "sem1-2ae718e8672f18cc",
+  "before": [
+    {
+      "dimension": "object expectation",
+      "factualEvidence": "Brush applies paint color loaded on it.",
+      "evidenceSource": "normalExpectation",
+      "classification": null,
+      "qualityJudgment": [
+        "moves when handled"
+      ],
+      "exactRule": "configured model object lookup; unknown object \u2192 GENERIC expectation",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "response",
+      "factualEvidence": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "evidenceSource": "impossibleRule",
+      "classification": "UNSUPPORTED_RESPONSE",
+      "qualityJudgment": "UNSUPPORTED_RESPONSE",
+      "exactRule": "infer_response regex; unmatched\u2192UNSUPPORTED_RESPONSE; broken=True",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "trigger",
+      "factualEvidence": "Mimi strokes blue paint; wall turns orange.",
+      "evidenceSource": "visibleTrigger",
+      "classification": null,
+      "qualityJudgment": 40,
+      "exactRule": "100 if known natural trigger;40 if named nonnatural;0 if UNSPECIFIED",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "object function",
+      "factualEvidence": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "evidenceSource": "whyThisObject",
+      "classification": null,
+      "qualityJudgment": 0,
+      "exactRule": "configured response-policy relationshipStrength and archetype swaps required",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "goal interference",
+      "factualEvidence": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+      "evidenceSource": "goalRuleRelationship",
+      "classification": null,
+      "qualityJudgment": "CONTRIVED",
+      "exactRule": "policy AND expected goal regex AND trigger>=70; otherwise CONTRIVED/INDIRECT",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    },
+    {
+      "dimension": "opening",
+      "factualEvidence": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+      "evidenceSource": "frameZeroDescription",
+      "classification": null,
+      "qualityJudgment": 35,
+      "exactRule": "90 direct+source;60 direct+no frame;35 source-supported;15 otherwise",
+      "failureClassification": "STATIC_CAUSALITY_NOT_ESTABLISHED_BY_CANONICAL_OVERLAP",
+      "exactFailureReason": "Canonical goal/anomaly/trigger overlap is present, but direct configured contradiction remains unproven; legacy35 is below60."
+    },
+    {
+      "dimension": "admission",
+      "factualEvidence": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "evidenceSource": "impossibleRule",
+      "classification": null,
+      "qualityJudgment": false,
+      "exactRule": "Naturalness STRONG/ACCEPTABLE AND DIRECT interference AND CLEAR_CONTRADICTION",
+      "failureClassification": "TAXONOMY_COUPLED_ADMISSION",
+      "exactFailureReason": "Configured object/response policy unresolved; explicit source fields do not satisfy the configured functional contradiction/counterfactual proof."
+    }
+  ],
+  "afterDimensions": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Brush applies paint color loaded on it.",
+      "functionGoalMatches": [
+        "paint"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "brush",
+        "color",
+        "paint"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "expected": "Brush applies paint color loaded on it.",
+      "actual": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The action to apply blue paint produces orange, so the wall never becomes blue.",
+      "classification": "DIRECT",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "relationMatchesGoal": [
+        "blu",
+        "paint",
+        "wall"
+      ],
+      "relationMatchesRule": [
+        "blu",
+        "orang",
+        "paint"
+      ],
+      "visibleEffectGoalMatches": [
+        "blu",
+        "paint",
+        "wall"
+      ],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Mimi strokes blue paint; wall turns orange.",
+      "classificationStatus": "PRESENT_CLASSIFIED",
+      "configuredScore": 40,
+      "sourceExpectationMatches": [
+        "paint"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model.",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    },
+    "physicalRelationship": {
+      "source": "Brush is a transfer tool for pigment; if it inverts color, painting a chosen color is impossible.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Brush applies paint color loaded on it.",
+      "sourceActual": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "sourceWitness": [
+        {
+          "expected": [
+            "blue"
+          ],
+          "shown": [
+            "orange"
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+    "classification": null,
+    "diagnosisCategory": "B",
+    "compatibility": "UNRESOLVED",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "impossibleRule",
+        "sourceText": "Whatever color you load, the brush deposits the complementary color; loading blue paints orange, loading red paints green.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ]
+  },
+  "opening": {
+    "frameZeroDescription": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "sourceFrameVisual": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "brush",
+        "paint"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": true,
+    "ruleInferableFromStill": true,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "SUPPORTED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_STRONG",
+    "stillPropertyContrast": [
+      {
+        "expected": [
+          "blue"
+        ],
+        "shown": [
+          "orange"
+        ]
+      }
+    ],
+    "explicitUsePose": true,
+    "sourceFunctionalContrastSupported": true,
+    "blockerClassification": "OTHER",
+    "blockerReason": "No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Mimi stands at a wall with a blue paint bucket and brush mid-stroke; the painted patch is vivid orange.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "admission": {
+    "naturalnessSupported": false,
+    "directGoalInterference": true,
+    "clearContradiction": true,
+    "exactObjectDependency": "UNRESOLVED",
+    "responseCompatibility": "UNRESOLVED",
+    "knownResponseLabelRequiredAtPresenceStage": false,
+    "taxonomyCoupledAdmissionDetected": true,
+    "taxonomyDependentCriteriaRemainUnresolved": true,
+    "unresolvedCriteria": [
+      "normalExpectation",
+      "exactObjectRelevance",
+      "arbitraryMagicRisk"
+    ],
+    "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+    "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+  },
+  "remainingBlockers": [
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "SFE": 99,
+  "ranking": 97.6,
+  "BeatGrammar": "ACCEPTABLE",
+  "exactFailureReason": "No absent response: source behavior is explicit. Exact-object functional/counterfactual quality is not independently verified by the supplied sources, and source-bound compatible contradiction criteria remain unresolved. This is not evidence of a genuinely poor premise.",
+  "taxonomyCoupledAdmissionRemaining": true
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "patternSignature": {
+      "normalExpectation": "Brushing untangles hair and smooths it.",
+      "declaredResponse": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+      "functionalOperands": [
+        "hair"
+      ]
+    },
+    "candidateIds": [
+      "sem1-8d1da895a1fb41af"
+    ],
+    "ideaIds": [
+      "raw-013"
+    ],
+    "objectRelationship": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+    "triggerRelationship": "Opa brushes once, hair stands up in a giant knot.",
+    "goalInterference": "The action of brushing makes hair worse, so smooth hair is impossible.",
+    "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "responseClassification": null,
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "recurring": false,
+    "scope": "EDITORIAL_ONLY; one admitted source is not evidence of recurrence or a reason to add a taxonomy label."
+  }
+]

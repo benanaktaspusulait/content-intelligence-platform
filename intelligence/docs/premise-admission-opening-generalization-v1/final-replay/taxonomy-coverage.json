@@ -1,0 +1,17 @@
+{
+  "response": {
+    "classified": 3,
+    "present-unclassified": 15,
+    "missing": 0
+  },
+  "contradiction": {
+    "present-unclassified": 18,
+    "classified": 0,
+    "missing": 0
+  },
+  "goalInterference": {
+    "classified": 16,
+    "present-unclassified": 2,
+    "missing": 0
+  }
+}

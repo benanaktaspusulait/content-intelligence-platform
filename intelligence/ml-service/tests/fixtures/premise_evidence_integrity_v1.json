@@ -1,0 +1,31 @@
+{
+  "version": "premise-evidence-integrity-v1",
+  "files": {
+    "intelligence/ml-service/app/workflow/premise_naturalness.py": {
+      "previousSha256": "f50ae4f2dc7649298e708189a9a639556468b740dea47cf4f3a148447e6c1457",
+      "approvedSha256": "8b8305ac53dd7eafce56d243c3814121fae9a7c3b84e5745df5bacc11e9072c7"
+    }
+  },
+  "evidence": [
+    {
+      "path": "intelligence/docs/premise-admission-opening-generalization-v1/authorized-active-before.json",
+      "sha256": "9c736caa3d44a0a26cfbc5a04a03eef148b8cfde3b59e7a1f6286c7b9bb493aa",
+      "role": "historical"
+    },
+    {
+      "path": "intelligence/docs/premise-admission-opening-generalization-v1/authorized-active-after.json",
+      "sha256": "9c50b150a6c9c6f274b314101cc926783b1dabda6cf0560480db83e89e81b828",
+      "role": "approved"
+    },
+    {
+      "path": "intelligence/docs/premise-admission-opening-generalization-v1/audit-before-modification.json",
+      "sha256": "a2e09bb2780ffee803ecb43ccb1440811dc4fa6cf11bda4daeb9e91dc42448f2",
+      "role": "baseline"
+    },
+    {
+      "path": "intelligence/docs/premise-admission-opening-generalization-v1/authorization.txt",
+      "sha256": "f9aedf2cdc0262e0c2596d930ccec32ec4e380f8932e31c97318e8cbd8d2a3c3",
+      "role": "authorization"
+    }
+  ]
+}

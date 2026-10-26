@@ -1,0 +1,16 @@
+{
+  "protectedFilesChecked": 1952,
+  "allExistingFilesByteIdentical": true,
+  "existingFileChanges": [],
+  "historicalFilesChecked": 1596,
+  "historicalChanges": [],
+  "existingRuntimeSourcesUnchanged": true,
+  "allExistingTaxonomyAndModelJsonUnchanged": true,
+  "allPreviousIntegrityPoliciesAndManifestsUnchanged": true,
+  "newSourceFiles": [
+    "intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py",
+    "intelligence/ml-service/tests/test_evidence_supported_admission_v2.py",
+    "intelligence/scripts/replay-evidence-supported-admission-v2.py"
+  ],
+  "noActiveHashMigrationNeeded": true
+}
