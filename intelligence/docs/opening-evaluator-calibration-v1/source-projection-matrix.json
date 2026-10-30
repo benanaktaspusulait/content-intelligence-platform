@@ -1,0 +1,506 @@
+{
+  "classificationLegend": [
+    "SOURCE_ABSENT",
+    "SOURCE_PRESENT_PROJECTED",
+    "SOURCE_PRESENT_NOT_PROJECTED",
+    "SOURCE_AMBIGUOUS"
+  ],
+  "cases": [
+    {
+      "caseId": "REFERENCE-0",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Mimi kneels beside a partly open door whose bottom edge meets a broad puddle. Her hands compress a swollen sponge above a transparent water cube resting in the puddle; the cube has flat faces and sharp square corners, with a wet imprint beneath it. Her shoulder is against the door, and the cube occupies its opening arc.",
+        "everydayGoal": "Clear a puddle from the floor so the door can open.",
+        "primaryObject": "Sponge",
+        "impossibleRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+        "visibleTrigger": "Mimi compresses the visibly swollen sponge between her palms."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": true
+      }
+    },
+    {
+      "caseId": "micro-b",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Kiko leans over a broom whose bristles press against the foot of an ankle-high, doubled fold in the hallway floor. The dirt heap sits on the fold's narrow crest, directly between the broom and an empty dustpan on the flat floor beyond. The floorboards visibly continue up and over the fold.",
+        "everydayGoal": "Sweep a small heap of dirt into a dustpan.",
+        "primaryObject": "Broom",
+        "impossibleRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+        "visibleTrigger": "The broom head pressed against the floor during a forward push."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": true
+      }
+    },
+    {
+      "caseId": "micro-c",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Mimi stands at an ironing board with an iron planted on a shirt. One sleeve is smooth above a sharply zigzagged section of board; the remaining shirt is heavily wrinkled on the still-flat section. The board's padded edge visibly follows the deep zigzag beneath the smooth sleeve.",
+        "everydayGoal": "Iron a wrinkled shirt flat.",
+        "primaryObject": "Clothes iron",
+        "impossibleRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+        "visibleTrigger": "The iron presses a raised shirt crease flat."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": true
+      }
+    },
+    {
+      "caseId": "compact.1",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+        "everydayGoal": "Cut a square out of a large sheet of paper along its thick square outline.",
+        "primaryObject": "Blunt craft scissors",
+        "impossibleRule": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+        "visibleTrigger": "The scissors' blades closing through the paper."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": true
+      }
+    },
+    {
+      "caseId": "compact.2",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug.",
+        "everydayGoal": "Sweep a broad pile of crumbs off a small rug onto the bare floor.",
+        "primaryObject": "Broom",
+        "impossibleRule": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+        "visibleTrigger": "The broom's bristles pushing forward across the rug."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": true
+      }
+    },
+    {
+      "caseId": "phase-a-a",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+        "everydayGoal": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+        "primaryObject": "Rolling pin",
+        "impossibleRule": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+        "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": false
+      }
+    },
+    {
+      "caseId": "phase-a-b",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+        "everydayGoal": "Roll a sheet of dough flat on a kitchen table.",
+        "primaryObject": "Rolling pin",
+        "impossibleRule": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+        "visibleTrigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": false
+      }
+    },
+    {
+      "caseId": "phase-a-c",
+      "score": 35,
+      "dimensions": {
+        "CHARACTER_PRESENT": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Character name is stated in frame text."
+        },
+        "GOAL_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Goal wording and frame support are retained in canonical goalVisible."
+        },
+        "OBJECT_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Object label/head appears in frame text and objectVisible."
+        },
+        "ACTIVE_PROBLEM_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Frame text states the abnormal state; canonical anomalyVisible records it."
+        },
+        "IMPOSSIBLE_RELATIONSHIP_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Source states contact/action and abnormal result together; dedicated still relation remains null."
+        },
+        "GOAL_INTERFERENCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_PROJECTED",
+          "basis": "Source goal/rule relationship and canonical goalProblemRelationship are present."
+        },
+        "STILL_FRAME_LEGIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Text provides a current physical state, but the dedicated static-causality evaluator remains unresolved."
+        },
+        "NO_PRIOR_CONTEXT_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "No explicit prior-context requirement appears; evaluator records None, which is unknown rather than a proven negative."
+        },
+        "NO_MOTION_REQUIRED": {
+          "classification": "SOURCE_AMBIGUOUS",
+          "basis": "Current trigger/result state is described; evaluator records None rather than a dedicated affirmative still proof."
+        },
+        "RULE_INSTANCE_VISIBLE": {
+          "classification": "SOURCE_PRESENT_NOT_PROJECTED",
+          "basis": "Rule outcome appears in frame text and rule is present; canonical rule.visible is false or unavailable without beat witnesses."
+        }
+      },
+      "sourceQuote": {
+        "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+        "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+        "primaryObject": "Rolling pin",
+        "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+        "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles."
+      },
+      "canonical": {
+        "goalVisible": true,
+        "objectVisible": true,
+        "anomalyVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "ruleVisible": false
+      }
+    }
+  ]
+}

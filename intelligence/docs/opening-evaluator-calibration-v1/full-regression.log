@@ -1,0 +1,163 @@
+............................F........................................... [  2%]
+.......................F................................................ [  4%]
+........................................................................ [  6%]
+........................................................................ [  8%]
+.........................F..................F.......F................... [ 10%]
+..........................................F............................. [ 12%]
+........................................................................ [ 14%]
+.......................FFFFFFFFF........................................ [ 16%]
+....F................................................................... [ 18%]
+...................................................................FFFFF [ 20%]
+F.FF.F.................................................................. [ 22%]
+....................F.......................FFF......................... [ 24%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+...............................F........................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 34%]
+........................................................................ [ 36%]
+......FFF.............................................F................. [ 39%]
+................F....................................................... [ 41%]
+........................................................................ [ 43%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 53%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+........................................................................ [ 63%]
+.............................................................s.......... [ 65%]
+..................................................................s..... [ 67%]
+........................................................................ [ 69%]
+........................................................................ [ 71%]
+........................................................................ [ 73%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 90%]
+........................................................................ [ 92%]
+........................................................................ [ 94%]
+............................................................F........... [ 96%]
+........................................................................ [ 98%]
+...................................................                      [100%]
+=============================== warnings summary ===============================
+tests/test_actor_source_attempts.py: 29 warnings
+tests/test_adaptive_optimization_v3.py: 244 warnings
+tests/test_api_conversions.py: 11 warnings
+tests/test_authoring_contract_repair_v2.py: 393 warnings
+tests/test_autofix_loop.py: 2 warnings
+tests/test_canonical_beat_evidence.py: 12 warnings
+tests/test_creative_reconstruction_v2.py: 115 warnings
+tests/test_creative_roles.py: 64 warnings
+tests/test_creative_v2_generation_evidence.py: 109 warnings
+tests/test_curiosity_positive_control.py: 6 warnings
+tests/test_duration_parsing.py: 2 warnings
+tests/test_f8_authorization.py: 19 warnings
+tests/test_failed_cases.py: 4 warnings
+tests/test_family10_freeze_gate.py: 9 warnings
+tests/test_family2_escalation.py: 6 warnings
+tests/test_family3_goal_realization.py: 1 warning
+tests/test_family4_mechanic_payoff.py: 4 warnings
+tests/test_family5_specialized_applicability.py: 9 warnings
+tests/test_family6_golden_contract.py: 2 warnings
+tests/test_family7_aggregation_representation.py: 2 warnings
+tests/test_family7_missing_evaluation.py: 1 warning
+tests/test_family8_integration.py: 2 warnings
+tests/test_family9_golden_representation.py: 8 warnings
+tests/test_family9_representation_consistency.py: 5 warnings
+tests/test_golden_provenance.py: 1 warning
+tests/test_golden_representation_contract.py: 1 warning
+tests/test_hook_002_metamorphic_stability.py: 31 warnings
+tests/test_integration_e2e.py: 6 warnings
+tests/test_isolated_fixture_transport.py: 1 warning
+tests/test_model_authored_execution.py: 890 warnings
+tests/test_motion_token_policy.py: 6 warnings
+tests/test_optimization_comparison.py: 34 warnings
+tests/test_optimization_distinctness.py: 62 warnings
+tests/test_optimization_failure_contract.py: 25 warnings
+tests/test_optimization_loop.py: 376 warnings
+tests/test_optimization_profile_contract.py: 40 warnings
+tests/test_optimization_split_coverage.py: 29 warnings
+tests/test_parser_contract.py: 23 warnings
+tests/test_plan_first_optimization.py: 299 warnings
+tests/test_pompom_golden_baseline.py: 11 warnings
+tests/test_post_family_execution.py: 12 warnings
+tests/test_post_family_workflow.py: 18 warnings
+tests/test_prompt_quality_consistency_golden.py: 1 warning
+tests/test_prompt_quality_second_pass.py: 20 warnings
+tests/test_quality_router.py: 1 warning
+tests/test_quality_scorer.py: 5 warnings
+tests/test_regression_checker.py: 4 warnings
+tests/test_rule_engine_contract.py: 4 warnings
+tests/test_ruleset_1_11_measurements.py: 11 warnings
+tests/test_ruleset_1_12_long_form_policy.py: 1 warning
+tests/test_ruleset_1_3_new_rules.py: 1 warning
+tests/test_ruleset_1_6_story_density.py: 1 warning
+tests/test_ruleset_1_8_dispatch.py: 8 warnings
+tests/test_short_form_integration.py: 1 warning
+tests/test_step5_source_contract.py: 11 warnings
+tests/test_story_premise_integration.py: 3 warnings
+tests/test_story_review_contract.py: 8 warnings
+tests/test_story_stage_canonical_evidence.py: 2 warnings
+tests/test_temporal_source_evidence.py: 2 warnings
+tests/test_workflow_impact_amendment.py: 21 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:214: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+tests/test_llm_providers.py::test_get_provider_gemini
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/llm/gemini_provider.py:3: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration
+FAILED tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta
+FAILED tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline
+FAILED tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates
+FAILED tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts
+FAILED tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]
+FAILED tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]
+FAILED tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable
+FAILED tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\nPRODUCTION NOTE: Keep later contact readable.]
+FAILED tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens
+FAILED tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence
+FAILED tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score
+FAILED tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates
+FAILED tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]
+FAILED tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]
+FAILED tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]
+FAILED tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates
+FAILED tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]
+FAILED tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]
+FAILED tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]
+FAILED tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation
+FAILED tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison
+FAILED tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt
+36 failed, 3469 passed, 2 skipped, 3030 warnings in 217.82s (0:03:37)

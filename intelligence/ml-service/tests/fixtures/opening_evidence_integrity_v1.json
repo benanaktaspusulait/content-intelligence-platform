@@ -1,0 +1,71 @@
+{
+  "version": "opening-evidence-supported-coverage-v1",
+  "files": {
+    "intelligence/ml-service/app/workflow/premise_admission_evidence.py": {
+      "previousSha256": "b3e84e5bda44d226c74b13addbec2a5637379eb0d6505b15e1fb77251c00f71e",
+      "approvedSha256": "e3d41299669392cd50907df4b4d1fb2553b34a299279824d25c041041db40400"
+    },
+    "intelligence/ml-service/tests/test_protected_integrity_policy.py": {
+      "previousSha256": [
+        "54bf0858c14f1d000d4b2ef9162d1084da4b75e5318e7fab6937592da295f32d",
+        "7998048f2b86a1b4647919cccb0b35799574c82f62071bf415991aaea0d1ea7b",
+        "82eae71bb64b7515250c43d1f65233a0bdcdded5f903c88ce736247ecaa72e51",
+        "e4778bc503f4f24aace0efa7af55fafcb7751ef71bb30fb416cbc0c82043227c"
+      ],
+      "approvedSha256": "442f95c495206ee1dc350a534926a5af3e35890b640c24cc0e28c0df58fc0f3d"
+    },
+    "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py": {
+      "previousSha256": [
+        "1ad849d464fbedf42869bc9debb3c73ce81354bad7d5167ccedc2c9732e6617a"
+      ],
+      "approvedSha256": "280dd4ec23e4b6d881ae9a8cd86d3d40fda8e4cc0adb928ce49e3c46d17e7438"
+    },
+    "intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py": {
+      "previousSha256": [
+        "818644fbba2a2503939d19f435579daf07f0fa5cce2895570e28b1d415b9daa6"
+      ],
+      "approvedSha256": "0eeddbaaa549582bf3c615b499b6e952a6ec1214e43e8fc1c8fc503b39e6e14e"
+    },
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py": {
+      "previousSha256": [
+        "4af0dc0dae8ded897d7e052c39fcfcaa5210de1394dc3da5af3e850a817822bf"
+      ],
+      "approvedSha256": "d4d98aadf4e5a4987a1fea98d5fbc411fa4c15b1ca6712d4116a81fd1fc694b6"
+    },
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py": {
+      "previousSha256": [
+        "0f831fac461b7275b49a6995dc7be89bf97764ce79fda6a6b509c4b6c62f3721"
+      ],
+      "approvedSha256": "53196555cd218035cbc870284df518ddbb65782bd7d083dd8903338e1bd7c9e4"
+    },
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py": {
+      "previousSha256": [
+        "d6673833c95a7561ee3a8088916f4067f289d6266ceac0e0c6ba75e803f9108e"
+      ],
+      "approvedSha256": "1513db7a4bda9844896420d03cded041444e209d32954dea10c4c4b45726aa4e"
+    },
+    "intelligence/ml-service/tests/test_semantic_two_stage_v1.py": {
+      "previousSha256": [
+        "88e98e7138b38b6ab06b0fc20f94566e5908bdcf079c097062a92200d7ff6c79"
+      ],
+      "approvedSha256": "71a9515c1b2c318c7e07f0ffb5d89bb83475f52f457cedbca32e6ce9e6e492b8"
+    }
+  },
+  "evidence": [
+    {
+      "path": "intelligence/docs/opening-evaluator-coverage-v1/authorized-active-before.json",
+      "sha256": "d2caf1f08600950ef1df879141d71af9305c88d81be6d002bf3bcb8ce858bcf1",
+      "role": "historical"
+    },
+    {
+      "path": "intelligence/docs/opening-evaluator-coverage-v1/authorized-active-after.json",
+      "sha256": "ceb7ed8e4873fdb6cd0a0ab6f88377875811da16b12093f13719ea5b4cbd52c4",
+      "role": "approved"
+    },
+    {
+      "path": "intelligence/docs/opening-evaluator-coverage-v1/authorization.txt",
+      "sha256": "a78814b57ca085165bdd3e73bd6f3e286cc5a38a943491088418cd4dd09ee9b0",
+      "role": "authorization"
+    }
+  ]
+}

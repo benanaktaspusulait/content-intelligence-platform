@@ -1,0 +1,3 @@
+User authorization source: /Users/benanaktas/.codex/attachments/05ed9811-5df6-474c-bc1b-a3ec1dd13594/Pasted text.txt
+
+The user explicitly authorized OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1 and directed use of the existing narrow approved-change mechanism if hash protection requires it. The approved transition scope is exactly the file set in tests/fixtures/opening_evidence_integrity_v1.json. It includes the active evaluator implementation and the exact test integrity adapters needed to recognize that transition. Every prior digest and current digest is pinned in authorized-active-before.json and authorized-active-after.json. Historical experiment records, prompts, schemas, and thresholds are not rewritten.

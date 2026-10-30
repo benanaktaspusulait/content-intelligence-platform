@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "generationArchitecture": {
+      "const": "TWO_STAGE_V1",
+      "default": "TWO_STAGE_V1",
+      "title": "Generationarchitecture",
+      "type": "string"
+    },
+    "openingSeedId": {
+      "title": "Openingseedid",
+      "type": "string"
+    },
+    "openingSeedPromptVersion": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Openingseedpromptversion",
+      "type": "string"
+    },
+    "storyExpansionPromptVersion": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Storyexpansionpromptversion",
+      "type": "string"
+    },
+    "provider": {
+      "const": "openai",
+      "default": "openai",
+      "title": "Provider",
+      "type": "string"
+    },
+    "model": {
+      "const": "gpt-6.1-sol",
+      "default": "gpt-6.1-sol",
+      "title": "Model",
+      "type": "string"
+    },
+    "reasoningProfile": {
+      "const": "low",
+      "default": "low",
+      "title": "Reasoningprofile",
+      "type": "string"
+    },
+    "openingSeedRunId": {
+      "title": "Openingseedrunid",
+      "type": "string"
+    },
+    "storyExpansionRunId": {
+      "title": "Storyexpansionrunid",
+      "type": "string"
+    }
+  },
+  "required": [
+    "openingSeedId",
+    "openingSeedRunId",
+    "storyExpansionRunId"
+  ],
+  "title": "SeedProvenance",
+  "type": "object"
+}

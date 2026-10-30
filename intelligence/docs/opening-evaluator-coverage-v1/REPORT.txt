@@ -1,0 +1,74 @@
+OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1 — implementation and offline replay
+
+## 1. Diagnosis and prior failure branch
+
+Accepted diagnosis: `OPENING_EVALUATOR_COVERAGE_FAILURE`. The evaluator already preserved `RESPONSE_PRESENT_UNCLASSIFIED`, but opening credit depended on the existing recognized relation/source contrast path or legacy static score. For explicit unfamiliar relations, canonical goal/trigger/anomaly facts were present while `stillCausalLegibility` stayed `UNRESOLVED`; the conservative score consequence was 35 (or 15 when canonical causal overlap was absent).
+
+## 2. Minimal repair
+
+Added a deterministic frame-zero-only evidence receipt for `RESPONSE_PRESENT_UNCLASSIFIED`. It reuses canonical goal, anomaly, trigger and causal facts plus source-text overlap checks. Only when all required conditions pass does it reuse the existing strong opening branch values (instant 90, static 85); no threshold, weight, acceptance formula, taxonomy, prompt, schema or provider behavior changed. The existing recognized mechanic paths remain active.
+
+Fallback conditions (all required): protagonist present; primary object present; abnormal state visible; character/object interaction visible; goal interference visible; source-supported causal link; rule/opening agreement with no explicit polarity contradiction; frame-zero-only evidence; temporally independent (no motion, prior context or text/dialogue dependency).
+
+| Evidence state | Evaluator behavior |
+|---|---|
+| MISSING | No credit; existing missing-evidence policy |
+| AMBIGUOUS | No fallback; existing ambiguous policy |
+| PRESENT_UNCLASSIFIED | Eligible only for the evidence-supported gate above |
+| CLASSIFIED_COMPATIBLE | Existing normal credit path |
+| CLASSIFIED_INCOMPATIBLE | Existing rejection/no-credit path |
+
+Missing conditions receive no fallback. Ambiguous responses do not enter the fallback. Classified-compatible responses retain their existing path; classified-incompatible responses retain their existing rejection behavior. Novel mechanics remain unclassified; no new mechanism labels were added.
+
+Files changed for this repair: `intelligence/ml-service/app/workflow/premise_admission_evidence.py`, the opening evaluator test/fixture and exact integrity approval artifacts, the six legacy hash-check adapters, and the versioned report/replay evidence under `intelligence/docs/opening-evaluator-coverage-v1/`. No prompt, schema, threshold or historical experiment artifact was edited.
+
+## 3. Provenance and leakage controls
+
+The output records per-condition booleans, missing conditions, source field references and matched terms for goal, interaction, abnormal state, interference, causal relationship and rule/opening agreement. For `REFERENCE-0`, for example, the receipt cites `everydayGoal` and `frameZeroDescription` for goal terms, `protagonist`, `primaryObject`, `visibleTrigger` and `frameZeroDescription` for interaction, and `impossibleRule`, `goalRuleRelationship` and the frame for interference. All nine conditions pass, with no missing conditions. It explicitly records `laterStoryEvidence.used=false`, excludes beats/payoff/rationale/provider suggestions, and marks source scope as frame-zero source text rather than observed pixels. Motion dependency remains a failure gate.
+
+## 4. Gold calibration fixture replay
+
+| Fixture | Old direct/structured | New direct/structured | Fallback |
+|---|---:|---:|---|
+| GOLD-OPENING-01 | 15/15 | 15/15 | not used |
+| GOLD-OPENING-02 | 15/15 | 15/15 | not used |
+| GOLD-OPENING-03 | 35/35 | 35/35 | not used |
+| GOLD-OPENING-04 | 90/90 | 90/90 | used |
+| GOLD-OPENING-05 | 90/90 | 90/90 | used |
+| GOLD-OPENING-06 | 35/35 | 90/90 | used |
+
+Known classified strong cases 04 and 05 stayed at 90 with their existing source-contrast path; incompatible/weak fixtures did not gain credit. Direct canonical and structured projection remain exactly equal in every fixture. Fixture 06 is the source-supported unclassified novel relation and moves 35→90. The ambiguous, missing-goal, reaction-only, motion-dependent, contradiction and later-story-only cases remain unsupported by the added matrix tests.
+
+## 5. Stored semantic candidates and downstream state
+
+| Candidate | Old score/state | New score/state | Fallback | Admission | Ranking / remaining blockers |
+|---|---|---|---|---|---|
+| REFERENCE-0 | 35 / UNRESOLVED | 90 / SUPPORTED | True | NOT_ADMITTED_INSUFFICIENT_EVIDENCE | INELIGIBLE; rank None; ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, PREMISE_NOT_ADMITTED |
+| micro-b | 35 / UNRESOLVED | 90 / SUPPORTED | True | NOT_ADMITTED_INSUFFICIENT_EVIDENCE | INELIGIBLE; rank None; ACCEPTED_VALIDATOR_INELIGIBLE, RANKING_QUALITY_FLOOR, PREMISE_NOT_ADMITTED |
+| micro-c | 35 / UNRESOLVED | 90 / SUPPORTED | True | NOT_ADMITTED_INSUFFICIENT_EVIDENCE | INELIGIBLE; rank None; ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, PREMISE_NOT_ADMITTED |
+| compact.1 | 35 / UNRESOLVED | 90 / SUPPORTED | True | NOT_ADMITTED_INSUFFICIENT_EVIDENCE | ELIGIBLE; rank None; PREMISE_NOT_ADMITTED |
+| compact.2 | 35 / UNRESOLVED | 90 / SUPPORTED | True | NOT_ADMITTED_INSUFFICIENT_EVIDENCE | ELIGIBLE; rank None; PREMISE_NOT_ADMITTED |
+
+The five stored full candidates replay without provider calls or renders. None is admitted: each retains `NOT_ADMITTED_INSUFFICIENT_EVIDENCE`. The two compact candidates are ranking-eligible (score 97.6) but have no production slate rank because `PREMISE_NOT_ADMITTED` remains; the other three remain ineligible with validator/quality-floor blockers. The opening score repair therefore improves only the targeted evaluator evidence and does not bypass downstream gates.
+
+## 6. TWO_STAGE_V1 Phase A replay
+
+| Seed | Old→new opening score | Accepted for expansion? | Remaining blockers |
+|---|---:|---|---|
+| mimi-rolling-pin-ridge | 35→90 | False | RULE_UNCLEAR |
+| mimi-rolling-pin-dough-wall | 35→90 | True | none |
+| mimi-rolling-pin-dough-column | 35→90 | False | RULE_UNCLEAR |
+
+Only `mimi-rolling-pin-dough-wall` now qualifies for expansion under the existing Phase A rules. Phase B was not called. The ridge and column seeds retain `RULE_UNCLEAR`.
+
+## 7. Tests and regression
+
+Added tests cover recognized strong and incompatible behavior, unclassified strong/ambiguous/motion-dependent/missing-goal cases, novel geometry/material, rule/opening contradiction, later-story-only evidence, provenance, exact output parity, and offline stored replays.
+
+Focused evaluator, evidence integrity, policy and related regression set: 138 passed. Full suite: 36 failed, 3481 passed, 2 skipped, 3030 warnings in 229.83s (0:03:49). Failure IDs exactly match the stored baseline: 36 baseline, 36 current, 0 added, 0 removed. Two skips. Provider calls = 0; renders = 0.
+
+## 8. Historical protection and remaining issue
+
+The opening evaluator change is classified `OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1`. The narrow approved transition pins the active evaluator source and the exact test integrity adapter files updated to route legacy hash checks through the migration mechanism. Historical prompt/schema/experiment bytes and thresholds were not rewritten. `historical-immutability.json` records seven changed paths in the 814-file calibration input snapshot: the evaluator and six exact test adapter files. Every changed path is in the reviewed transition map; no unapproved path changed, and the before snapshot remains intact.
+
+Known separate issue remains: `PHASE_A_DIVERSITY_COLLAPSE`. No diversity changes were made. All requested work stops at offline replay; no live generation or Phase B execution occurred.

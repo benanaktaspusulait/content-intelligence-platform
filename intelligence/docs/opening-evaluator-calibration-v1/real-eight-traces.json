@@ -1,0 +1,795 @@
+{
+  "source": "immutable stored experiment responses and evaluator receipts; deterministic read only",
+  "cases": [
+    {
+      "caseId": "REFERENCE-0",
+      "title": "A Very Square Spill",
+      "source": {
+        "protagonist": null,
+        "everydayGoal": "Clear a puddle from the floor so the door can open.",
+        "primaryObject": "Sponge",
+        "normalExpectation": "A sponge absorbs spilled water and releases liquid when squeezed.",
+        "impossibleRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+        "visibleTrigger": "Mimi compresses the visibly swollen sponge between her palms.",
+        "goalRuleRelationship": "Absorbing the puddle removes the liquid obstruction while squeezing creates a solid obstruction in the same working area.",
+        "frameZeroDescription": "Mimi kneels beside a partly open door whose bottom edge meets a broad puddle. Her hands compress a swollen sponge above a transparent water cube resting in the puddle; the cube has flat faces and sharp square corners, with a wet imprint beneath it. Her shoulder is against the door, and the cube occupies its opening arc."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi kneels beside a partly open door whose bottom edge meets a broad puddle. Her hands compress a swollen sponge above a transparent water cube resting in the puddle; the cube has flat faces and sharp square corners, with a wet imprint beneath it. Her shoulder is against the door, and the cube occupies its opening arc.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Clear a puddle from the floor so the door can open.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25
+    },
+    {
+      "caseId": "micro-b",
+      "title": "Sweeping Uphill",
+      "source": {
+        "protagonist": null,
+        "everydayGoal": "Sweep a small heap of dirt into a dustpan.",
+        "primaryObject": "Broom",
+        "normalExpectation": "Pushing the broom along the floor moves dirt toward the dustpan.",
+        "impossibleRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+        "visibleTrigger": "The broom head pressed against the floor during a forward push.",
+        "goalRuleRelationship": "Every useful forward sweep raises the dirt instead of delivering it to the dustpan.",
+        "frameZeroDescription": "Kiko leans over a broom whose bristles press against the foot of an ankle-high, doubled fold in the hallway floor. The dirt heap sits on the fold's narrow crest, directly between the broom and an empty dustpan on the flat floor beyond. The floorboards visibly continue up and over the fold."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Kiko leans over a broom whose bristles press against the foot of an ankle-high, doubled fold in the hallway floor. The dirt heap sits on the fold's narrow crest, directly between the broom and an empty dustpan on the flat floor beyond. The floorboards visibly continue up and over the fold.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Sweep a small heap of dirt into a dustpan.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25
+    },
+    {
+      "caseId": "micro-c",
+      "title": "The Wrinkle Has to Go Somewhere",
+      "source": {
+        "protagonist": null,
+        "everydayGoal": "Iron a wrinkled shirt flat.",
+        "primaryObject": "Clothes iron",
+        "normalExpectation": "Pressing an iron over a shirt removes its creases while the ironing board provides flat support.",
+        "impossibleRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+        "visibleTrigger": "The iron presses a raised shirt crease flat.",
+        "goalRuleRelationship": "Every crease Mimi removes from the shirt makes the board less able to support the next ironing stroke.",
+        "frameZeroDescription": "Mimi stands at an ironing board with an iron planted on a shirt. One sleeve is smooth above a sharply zigzagged section of board; the remaining shirt is heavily wrinkled on the still-flat section. The board's padded edge visibly follows the deep zigzag beneath the smooth sleeve."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands at an ironing board with an iron planted on a shirt. One sleeve is smooth above a sharply zigzagged section of board; the remaining shirt is heavily wrinkled on the still-flat section. The board's padded edge visibly follows the deep zigzag beneath the smooth sleeve.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Iron a wrinkled shirt flat.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25
+    },
+    {
+      "caseId": "compact.1",
+      "title": "Cut Out, Fold In",
+      "source": {
+        "protagonist": null,
+        "everydayGoal": "Cut a square out of a large sheet of paper along its thick square outline.",
+        "primaryObject": "Blunt craft scissors",
+        "normalExpectation": "Closing the blades through paper separates it along the cutting line.",
+        "impossibleRule": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+        "visibleTrigger": "The scissors' blades closing through the paper.",
+        "goalRuleRelationship": "Each attempted side of the square remains attached and gains an upright outer flap, progressively obstructing access to the remaining outline.",
+        "frameZeroDescription": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Cut a square out of a large sheet of paper along its thick square outline.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25
+    },
+    {
+      "caseId": "compact.2",
+      "title": "Sweeping Up the Rug",
+      "source": {
+        "protagonist": null,
+        "everydayGoal": "Sweep a broad pile of crumbs off a small rug onto the bare floor.",
+        "primaryObject": "Broom",
+        "normalExpectation": "Pushing the broom across the rug moves the crumbs ahead of its bristles.",
+        "impossibleRule": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+        "visibleTrigger": "The broom's bristles pushing forward across the rug.",
+        "goalRuleRelationship": "Every stroke intended to remove crumbs instead packages part of the dirty rug around the broom.",
+        "frameZeroDescription": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": true,
+        "dominant": true,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Sweep a broad pile of crumbs off a small rug onto the bare floor.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25
+    },
+    {
+      "caseId": "phase-a-a",
+      "title": "mimi-rolling-pin-ridge",
+      "source": {
+        "protagonist": "Mimi",
+        "everydayGoal": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+        "primaryObject": "Rolling pin",
+        "normalExpectation": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+        "impossibleRule": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+        "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge.",
+        "goalRuleRelationship": "Mimi needs the dough low and flat, but the pressure used to flatten it holds the contacted dough in a tall ridge.",
+        "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": false,
+        "dominant": false,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25,
+      "gate": [
+        "OPENING_TOO_WEAK",
+        "RULE_UNCLEAR"
+      ],
+      "seedRunPath": "semantic-two-stage-v1-run-001/opening-a"
+    },
+    {
+      "caseId": "phase-a-b",
+      "title": "mimi-rolling-pin-dough-wall",
+      "source": {
+        "protagonist": "Mimi",
+        "everydayGoal": "Roll a sheet of dough flat on a kitchen table.",
+        "primaryObject": "Rolling pin",
+        "normalExpectation": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+        "impossibleRule": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+        "visibleTrigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+        "goalRuleRelationship": "The pressure Mimi needs to flatten the dough instead makes the contacted dough taller, holding the rolling pin above the surrounding flat sheet.",
+        "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": false,
+        "dominant": false,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Roll a sheet of dough flat on a kitchen table.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25,
+      "gate": [
+        "OPENING_TOO_WEAK"
+      ],
+      "seedRunPath": "semantic-two-stage-v1-run-001/opening-b"
+    },
+    {
+      "caseId": "phase-a-c",
+      "title": "mimi-rolling-pin-dough-column",
+      "source": {
+        "protagonist": "Mimi",
+        "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+        "primaryObject": "Rolling pin",
+        "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+        "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+        "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+        "goalRuleRelationship": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+        "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible."
+      },
+      "score": 35,
+      "components": {
+        "characterVisible": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "needsMotionToUnderstand": null,
+        "needsPriorContext": null,
+        "stillCausalLegibility": "UNRESOLVED",
+        "explicitUsePose": false,
+        "stillPropertyContrast": [],
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      "canonicalOpeningFacts": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "canonicalRule": {
+        "present": true,
+        "visible": false,
+        "dominant": false,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "canonicalGoal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "causeEarned": true,
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "staticFrameLegibility": 25,
+      "gate": [
+        "OPENING_TOO_WEAK",
+        "RULE_UNCLEAR"
+      ],
+      "seedRunPath": "semantic-two-stage-v1-run-001/opening-c"
+    }
+  ]
+}

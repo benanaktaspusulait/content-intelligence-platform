@@ -1,0 +1,40 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 787,
+    "prompt_tokens": 1006,
+    "total_tokens": 1793,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 303,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 20006.281917,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 20014.366667,
+  "providerRequestId": "chatcmpl-Eegdk4VFHQzNS6NoNPBEXYfbt8inp",
+  "httpRequestId": "req_4ddb84bf134f458f8e60c0b802c0d16c",
+  "providerMetadata": {
+    "requestId": "chatcmpl-Eegdk4VFHQzNS6NoNPBEXYfbt8inp",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1
+}

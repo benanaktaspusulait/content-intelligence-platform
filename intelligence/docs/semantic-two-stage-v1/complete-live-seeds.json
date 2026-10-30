@@ -1,0 +1,82 @@
+[
+  {
+    "requestId": "opening-a",
+    "openingSeedId": "semantic-two-stage-v1-run-001/opening-a/mimi-rolling-pin-ridge",
+    "seed": {
+      "seedId": "mimi-rolling-pin-ridge",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+      "primaryObject": "Rolling pin",
+      "normalExpectation": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+      "impossibleRule": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+      "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge.",
+      "whyThisObject": "A rolling pin normally flattens dough through pressure along its barrel; here that same contact produces conspicuous height instead of flatness.",
+      "goalRuleRelationship": "Mimi needs the dough low and flat, but the pressure used to flatten it holds the contacted dough in a tall ridge.",
+      "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+      "openingPhysicalState": "“The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges.”",
+      "openingGoalEvidence": "“both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose” and “A broad piece of dough lies on the counter with low, flat edges on either side.”",
+      "openingProblemEvidence": "“Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides.”",
+      "environment": "A simple kitchen with a plain counter, framed frontally so Mimi, the rolling pin, and the full dough ridge are visible.",
+      "dialogueNeed": "NONE"
+    },
+    "openingScore": 35,
+    "acceptedForExpansion": false,
+    "blockers": [
+      "OPENING_TOO_WEAK",
+      "RULE_UNCLEAR"
+    ]
+  },
+  {
+    "requestId": "opening-b",
+    "openingSeedId": "semantic-two-stage-v1-run-001/opening-b/mimi-rolling-pin-dough-wall",
+    "seed": {
+      "seedId": "mimi-rolling-pin-dough-wall",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Roll a sheet of dough flat on a kitchen table.",
+      "primaryObject": "Rolling pin",
+      "normalExpectation": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+      "impossibleRule": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "visibleTrigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "whyThisObject": "A rolling pin applies broad downward pressure specifically to flatten dough; the upward wall visibly contradicts that ordinary use at the barrel's contact surface.",
+      "goalRuleRelationship": "The pressure Mimi needs to flatten the dough instead makes the contacted dough taller, holding the rolling pin above the surrounding flat sheet.",
+      "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+      "openingPhysicalState": "\"The barrel rests across the wall's narrow top, far above the flat dough on either side.\"",
+      "openingGoalEvidence": "\"Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin.\" \"A broad, thin sheet of dough lies on the tabletop.\"",
+      "openingProblemEvidence": "\"Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip.\"",
+      "environment": "A simple kitchen with one clear tabletop and a plain background.",
+      "dialogueNeed": "NONE"
+    },
+    "openingScore": 35,
+    "acceptedForExpansion": false,
+    "blockers": [
+      "OPENING_TOO_WEAK"
+    ]
+  },
+  {
+    "requestId": "opening-c",
+    "openingSeedId": "semantic-two-stage-v1-run-001/opening-c/mimi-rolling-pin-dough-column",
+    "seed": {
+      "seedId": "mimi-rolling-pin-dough-column",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+      "primaryObject": "Rolling pin",
+      "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+      "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+      "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+      "whyThisObject": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+      "goalRuleRelationship": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+      "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+      "openingPhysicalState": "\"The barrel sits in a shallow groove across the column's top.\"",
+      "openingGoalEvidence": "\"Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin.\"",
+      "openingProblemEvidence": "\"the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base.\"",
+      "environment": "An uncluttered kitchen counter against a plain kitchen wall.",
+      "dialogueNeed": "NONE"
+    },
+    "openingScore": 35,
+    "acceptedForExpansion": false,
+    "blockers": [
+      "OPENING_TOO_WEAK",
+      "RULE_UNCLEAR"
+    ]
+  }
+]

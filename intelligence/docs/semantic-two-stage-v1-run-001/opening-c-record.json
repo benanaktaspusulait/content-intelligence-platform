@@ -1,0 +1,1022 @@
+{
+  "requestId": "opening-c",
+  "execution": {
+    "status": "COMPLETED",
+    "usage": {
+      "completion_tokens": 787,
+      "prompt_tokens": 1006,
+      "total_tokens": 1793,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 303,
+        "rejected_prediction_tokens": 0,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": null
+      }
+    },
+    "httpStatus": 200,
+    "timeToHeadersMs": 20006.281917,
+    "firstTokenMs": null,
+    "firstUsableContentMs": 20014.366667,
+    "providerRequestId": "chatcmpl-Eegdk4VFHQzNS6NoNPBEXYfbt8inp",
+    "httpRequestId": "req_4ddb84bf134f458f8e60c0b802c0d16c",
+    "providerMetadata": {
+      "requestId": "chatcmpl-Eegdk4VFHQzNS6NoNPBEXYfbt8inp",
+      "finishReason": "stop",
+      "apiStatus": "COMPLETED",
+      "provider": "openai",
+      "model": "gpt-6.1-sol"
+    },
+    "finishReason": "stop",
+    "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+    "providerReportedCostUsd": null,
+    "SDKRequestsForwarded": 1,
+    "HTTPRequestsObserved": 1,
+    "timing": {
+      "wallClockStartUTC": "2026-10-30T13:08:55.862702+00:00",
+      "wallClockEndUTC": "2026-10-30T13:09:16.541871+00:00",
+      "monotonicElapsedSeconds": 20.67898775,
+      "wallClockSpanSeconds": 20.679169,
+      "wallMinusMonotonicSeconds": 0.0001812500000006878,
+      "recordingToleranceSeconds": 1.0,
+      "timingConsistent": true,
+      "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+    },
+    "responseBytes": 2261,
+    "retries": 0,
+    "fallbacks": 0,
+    "DeepSeekCalls": 0,
+    "renders": 0,
+    "requestId": "opening-c",
+    "phase": "A"
+  },
+  "seed": {
+    "seedId": "mimi-rolling-pin-dough-column",
+    "protagonistSuggestion": "Mimi",
+    "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+    "primaryObject": "Rolling pin",
+    "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+    "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+    "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+    "whyThisObject": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+    "goalRuleRelationship": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+    "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+    "openingPhysicalState": "\"The barrel sits in a shallow groove across the column's top.\"",
+    "openingGoalEvidence": "\"Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin.\"",
+    "openingProblemEvidence": "\"the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base.\"",
+    "environment": "An uncluttered kitchen counter against a plain kitchen wall.",
+    "dialogueNeed": "NONE"
+  },
+  "gate": {
+    "seedId": "mimi-rolling-pin-dough-column",
+    "seedSha256": "9d3e44a81e9d49313c80e258481276ed3689c0f0fe46ec59e6efad198ff86845",
+    "openingSeedId": "semantic-two-stage-v1-run-001/opening-c/mimi-rolling-pin-dough-column",
+    "openingScore": 35,
+    "acceptedFloor": 60,
+    "acceptedForExpansion": false,
+    "disposition": "OPENING_TOO_WEAK",
+    "blockers": [
+      "OPENING_TOO_WEAK",
+      "RULE_UNCLEAR"
+    ],
+    "Naturalness": {
+      "gateVersion": "premise-naturalness-v1",
+      "canonicalCreativeEvidence": {
+        "version": "canonical-creative-evidence-v1",
+        "contextSha256": "e174c28a612c33630a33042e7ac473d796bdc22633e7b311de727d0ef744edcd",
+        "facts": {
+          "goal": {
+            "declared": true,
+            "visibleInOpening": true,
+            "everyday": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+          },
+          "opening": {
+            "goalPresent": true,
+            "anomalyPresent": true,
+            "problemPresent": true,
+            "causalRelationshipVisible": true,
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+          },
+          "rule": {
+            "present": true,
+            "visible": false,
+            "dominant": false,
+            "goalRelated": true,
+            "classificationStatus": "PRESENT_UNCLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "trigger": {
+            "present": true,
+            "visible": true,
+            "classificationStatus": "PRESENT_CLASSIFIED",
+            "source": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "beats": [],
+          "payoff": {
+            "present": false,
+            "ruleLinked": false,
+            "stateChanging": false,
+            "visual": false,
+            "classificationStatus": "MISSING",
+            "source": []
+          },
+          "loop": {
+            "declared": false,
+            "supported": false,
+            "references": []
+          }
+        },
+        "provenance": {
+          "sourceKind": "SEMANTIC",
+          "structuredSourceSha256": "9d3e44a81e9d49313c80e258481276ed3689c0f0fe46ec59e6efad198ff86845",
+          "normalizedFieldsSha256": "2e7f9b7c7776bd8b7909e91768e6c70247418982adeee3900ae34d3860ed67be",
+          "textSha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+        },
+        "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+      },
+      "sourceExpectations": {
+        "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+        "whyThisObject": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+        "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles."
+      },
+      "responseDiagnosis": {
+        "responsePresent": true,
+        "category": "B",
+        "classification": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "compatibility": "UNRESOLVED",
+        "meaning": "Source behavior existence and configured response/admission compatibility are separate."
+      },
+      "modelVersion": "affordance-expectations-v1",
+      "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+      "primaryExpectedBehaviors": [
+        "moves when handled"
+      ],
+      "expectedResponse": [
+        "moves when handled"
+      ],
+      "actualImpossibleResponse": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+      "responseType": null,
+      "contradictionType": null,
+      "expectationDistance": null,
+      "premiseNaturalness": "CONTRIVED",
+      "premiseReviewStatus": "CONTRIVED",
+      "goalInterferenceType": null,
+      "triggerNaturalness": 40,
+      "objectSpecificityScore": 0,
+      "objectSpecificity": "LOW",
+      "functionalIrony": null,
+      "physicalPayoffPotential": 10,
+      "instantCausalLegibility": 35,
+      "staticFrameLegibility": 25,
+      "materialPropertyConnection": {
+        "property": null,
+        "supportedInObjectData": false
+      },
+      "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+      "objectSwapTest": {
+        "classification": null,
+        "portableArchetypeFraction": null,
+        "comparisons": [],
+        "scope": "UNRESOLVED_SOURCE_BOUND_COUNTERFACTUAL; absence of a mapped policy is not proof of portable random magic."
+      },
+      "premiseEnergy": "LOW_ENERGY",
+      "admitted": false,
+      "flags": [
+        {
+          "code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO",
+          "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+          "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION",
+          "canonicalCausalRelationshipVisible": true,
+          "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT",
+          "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+        },
+        {
+          "code": "RESPONSE_PRESENT_UNCLASSIFIED",
+          "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"
+        },
+        {
+          "code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED",
+          "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+        },
+        {
+          "code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED",
+          "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."
+        }
+      ],
+      "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+      "limitations": [
+        "Curated expectation/response coverage; absence of a policy is a review/filter decision, not proof that an idea is bad.",
+        "Static-frame and causal legibility are text-plan estimates, not observed pixels. Object specificity is function-family dependence, not unique-object originality."
+      ],
+      "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+      "evidenceMode": "premise-admission-opening-evidence-v1",
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "openingEvidence": {
+        "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+        "sourceFrameVisual": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+        "requiresTextOrDialogue": false,
+        "characterVisible": true,
+        "goalDeclared": true,
+        "goalVisible": true,
+        "objectVisible": true,
+        "objectEvidence": {
+          "present": true,
+          "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+          "matches": [
+            "rolling",
+            "pin"
+          ]
+        },
+        "problemVisible": true,
+        "anomalyVisible": true,
+        "triggerVisible": true,
+        "goalProblemRelationship": true,
+        "impossibleRelationVisible": null,
+        "ruleInferableFromStill": null,
+        "needsMotionToUnderstand": null,
+        "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+        "needsPriorContext": null,
+        "canonicalCausalLegibility": true,
+        "stillCausalLegibility": "UNRESOLVED",
+        "openingFactsState": "OPENING_FACTS_PRESENT",
+        "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+        "stillPropertyContrast": [],
+        "explicitUsePose": false,
+        "sourceFunctionalContrastSupported": false,
+        "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+        "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+      },
+      "qualityEvidence": {
+        "normalExpectation": {
+          "present": true,
+          "source": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+          "functionGoalMatches": [
+            "dough",
+            "sheet"
+          ],
+          "qualitySupport": "SUPPORTED_SOURCE_LINK",
+          "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+        },
+        "exactObjectRelevance": {
+          "source": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+          "present": true,
+          "sourceFunctionMatches": [
+            "barrel",
+            "dough",
+            "pin",
+            "roll",
+            "upward"
+          ],
+          "qualitySupport": "UNRESOLVED",
+          "independentlyVerified": false,
+          "independentCounterfactualEvidence": null,
+          "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+        },
+        "expectedBehaviorContradiction": {
+          "present": true,
+          "classification": null,
+          "qualitySupport": "UNRESOLVED",
+          "expected": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+          "actual": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening."
+        },
+        "goalInterference": {
+          "present": true,
+          "source": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+          "classification": null,
+          "qualitySupport": "UNRESOLVED",
+          "relationMatchesGoal": [
+            "dough",
+            "thin"
+          ],
+          "relationMatchesRule": [
+            "column",
+            "dough",
+            "flatten",
+            "tall"
+          ],
+          "visibleEffectGoalMatches": [],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        },
+        "triggerNaturalness": {
+          "present": true,
+          "source": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+          "classificationStatus": "PRESENT_CLASSIFIED",
+          "configuredScore": 40,
+          "sourceExpectationMatches": [
+            "against",
+            "dough",
+            "pin",
+            "press",
+            "roll"
+          ],
+          "qualitySupport": "UNRESOLVED",
+          "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+        },
+        "physicalRelationship": {
+          "source": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+          "qualitySupport": "UNRESOLVED"
+        },
+        "arbitraryMagicRisk": {
+          "qualitySupport": "UNRESOLVED",
+          "explicitlyPortable": false,
+          "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+        },
+        "functionalIrony": {
+          "sourceExpected": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+          "sourceActual": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+          "qualitySupport": "UNRESOLVED"
+        }
+      },
+      "qualityAssessmentStatus": "UNRESOLVED",
+      "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+      "metricInterpretation": {
+        "objectSpecificityScore": "UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unresolved comparison is not observed low specificity",
+        "triggerNaturalness": "UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unknown classification is not missing trigger",
+        "premiseNaturalness": "CONSERVATIVE_COMPATIBILITY_GRADE; qualityAssessmentStatus distinguishes unresolved from proved weak"
+      },
+      "admissionCriteria": {
+        "naturalnessSupported": false,
+        "directGoalInterference": false,
+        "clearContradiction": false,
+        "exactObjectDependency": "UNRESOLVED",
+        "responseCompatibility": "UNRESOLVED",
+        "knownResponseLabelRequiredAtPresenceStage": false,
+        "taxonomyCoupledAdmissionDetected": true,
+        "taxonomyDependentCriteriaRemainUnresolved": true,
+        "unresolvedCriteria": [
+          "exactObjectRelevance",
+          "expectedBehaviorContradiction",
+          "goalInterference",
+          "triggerNaturalness",
+          "physicalRelationship",
+          "arbitraryMagicRisk",
+          "functionalIrony"
+        ],
+        "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+        "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+      }
+    },
+    "admissionEvidence": {
+      "version": "evidence-supported-premise-admission-v2",
+      "admitted": false,
+      "status": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "coverage": "UNSUPPORTED",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "openingMandatory": true,
+      "openingPassed": false,
+      "corePremiseSupported": false,
+      "productionOpeningRequirementSatisfied": false,
+      "factors": {
+        "normalExpectation": {
+          "supported": true,
+          "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+          "evidenceRefs": [
+            {
+              "sourceField": "normalExpectation",
+              "sourceText": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ],
+          "knownObjectFunctionAligned": true
+        },
+        "impossibleResponse": {
+          "supported": true,
+          "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+          "evidenceRefs": [
+            {
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ]
+        },
+        "objectSpecificity": {
+          "supported": false,
+          "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+          "evidenceRefs": [
+            {
+              "sourceField": "primaryObject",
+              "sourceText": "Rolling pin",
+              "confidence": "EXPLICIT_SOURCE"
+            },
+            {
+              "sourceField": "normalExpectation",
+              "sourceText": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+              "confidence": "EXPLICIT_SOURCE"
+            },
+            {
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+              "confidence": "EXPLICIT_SOURCE"
+            },
+            {
+              "sourceField": "whyThisObject",
+              "sourceText": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ],
+          "functionAnchors": [
+            "against",
+            "dough",
+            "press"
+          ],
+          "triggerAnchors": [
+            "against",
+            "dough",
+            "press"
+          ],
+          "supportedBeats": [],
+          "identityTerms": [
+            "pin",
+            "roll"
+          ],
+          "effectSubjects": [],
+          "sourceShortName": [
+            "roll"
+          ],
+          "normalActionEvidence": {
+            "predicate": "press",
+            "target": [
+              "against",
+              "compress",
+              "dough",
+              "pin",
+              "roll"
+            ],
+            "sourceClause": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet",
+            "supported": true
+          },
+          "goalActionEvidence": {
+            "predicate": "roll",
+            "target": [
+              "dough",
+              "piec",
+              "thin"
+            ],
+            "sourceClause": "Roll a piece of dough into a thin",
+            "supported": true
+          },
+          "matchedFunctionOperations": [
+            "press",
+            "roll"
+          ]
+        },
+        "trigger": {
+          "supported": false,
+          "reason": "A concrete source action is linked to the declared abnormal behavior.",
+          "evidenceRefs": [
+            {
+              "sourceField": "visibleTrigger",
+              "sourceText": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ],
+          "actionEvidence": {
+            "predicate": null,
+            "target": [],
+            "sourceClause": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough",
+            "supported": false
+          }
+        },
+        "goalInterference": {
+          "supported": false,
+          "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+          "evidenceRefs": [
+            {
+              "sourceField": "goalRuleRelationship",
+              "sourceText": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ],
+          "sourceJudgment": {
+            "present": true,
+            "source": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+            "classification": null,
+            "qualitySupport": "UNRESOLVED",
+            "relationMatchesGoal": [
+              "dough",
+              "thin"
+            ],
+            "relationMatchesRule": [
+              "column",
+              "dough",
+              "flatten",
+              "tall"
+            ],
+            "visibleEffectGoalMatches": [],
+            "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+          }
+        },
+        "causalCoherence": {
+          "supported": false,
+          "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats.",
+          "evidenceRefs": [
+            {
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ],
+          "ruleSupported": false,
+          "dominantRule": false,
+          "violations": [],
+          "reviewNotes": []
+        },
+        "nonArbitrary": {
+          "supported": false,
+          "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+          "evidenceRefs": [
+            {
+              "sourceField": "normalExpectation",
+              "sourceText": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+              "confidence": "EXPLICIT_SOURCE"
+            },
+            {
+              "sourceField": "whyThisObject",
+              "sourceText": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ],
+          "explicitlyArbitrary": false
+        },
+        "functionalAffordanceRelationship": {
+          "supported": false,
+          "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name.",
+          "evidenceRefs": [
+            {
+              "sourceField": "normalExpectation",
+              "sourceText": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+              "confidence": "EXPLICIT_SOURCE"
+            },
+            {
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+              "confidence": "EXPLICIT_SOURCE"
+            },
+            {
+              "sourceField": "whyThisObject",
+              "sourceText": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+              "confidence": "EXPLICIT_SOURCE"
+            }
+          ]
+        },
+        "openingLegibility": {
+          "supported": false,
+          "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "score": 35,
+          "required": true,
+          "standard": {
+            "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+            "sourceFrameVisual": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+            "requiresTextOrDialogue": false,
+            "characterVisible": true,
+            "goalDeclared": true,
+            "goalVisible": true,
+            "objectVisible": true,
+            "objectEvidence": {
+              "present": true,
+              "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+              "matches": [
+                "rolling",
+                "pin"
+              ]
+            },
+            "problemVisible": true,
+            "anomalyVisible": true,
+            "triggerVisible": true,
+            "goalProblemRelationship": true,
+            "impossibleRelationVisible": null,
+            "ruleInferableFromStill": null,
+            "needsMotionToUnderstand": null,
+            "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+            "needsPriorContext": null,
+            "canonicalCausalLegibility": true,
+            "stillCausalLegibility": "UNRESOLVED",
+            "openingFactsState": "OPENING_FACTS_PRESENT",
+            "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+            "stillPropertyContrast": [],
+            "explicitUsePose": false,
+            "sourceFunctionalContrastSupported": false,
+            "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+            "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+            "evidenceRefs": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ],
+            "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+          }
+        }
+      },
+      "reasons": [
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "objectSpecificity",
+          "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "trigger",
+          "reason": "A concrete source action is linked to the declared abnormal behavior."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "goalInterference",
+          "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "causalCoherence",
+          "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "nonArbitrary",
+          "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "functionalAffordanceRelationship",
+          "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+        },
+        {
+          "code": "OPENING_BELOW_EXISTING_FLOOR",
+          "score": 35,
+          "minimum": 60,
+          "reason": "No fallback can make an opening below60 production-admissible."
+        }
+      ],
+      "sourceContextSha256": "e174c28a612c33630a33042e7ac473d796bdc22633e7b311de727d0ef744edcd",
+      "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+    },
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE",
+    "storyDependentCriteriaUnavailable": [
+      "two supporting beat consequences",
+      "across-beat causal coherence",
+      "payoff"
+    ],
+    "ruleClarity": {
+      "responseEvidence": {
+        "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+        "classification": null,
+        "diagnosisCategory": "B",
+        "compatibility": "UNRESOLVED",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "triggerActionEvidence": {
+        "predicate": null,
+        "target": [],
+        "sourceClause": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough",
+        "supported": false
+      },
+      "findings": []
+    },
+    "structuredCanonicalInput": {
+      "projection": {
+        "version": "semantic-evidence-adapter-v1",
+        "sourceSha256": "9d3e44a81e9d49313c80e258481276ed3689c0f0fe46ec59e6efad198ff86845",
+        "normalizedFieldsSha256": "2e7f9b7c7776bd8b7909e91768e6c70247418982adeee3900ae34d3860ed67be",
+        "candidateId": "semantic-two-stage-v1-run-001/opening-c/mimi-rolling-pin-dough-column",
+        "fields": {
+          "visibleGoalEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "everydayGoal",
+                "sourceText": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "primaryObjectEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "primaryObject",
+                "sourceText": "Rolling pin",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "expectedAffordanceEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "normalExpectation",
+                "sourceText": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "coreRuleEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED_CAUSAL_ENGINE",
+            "classificationBasis": "EXISTING_NORMALIZER",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "impossibleRule",
+                "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "triggerEvidence": {
+            "presence": "PRESENT",
+            "classification": "PRESSURE",
+            "classificationBasis": "EXISTING_NORMALIZER",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "visibleTrigger",
+                "sourceText": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "openingProblemEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "payoffEvidence": {
+            "presence": "MISSING",
+            "classification": "UNCLASSIFIED_PAYOFF_PATTERN",
+            "classificationBasis": "EXISTING_CREATIVE_SHAPE",
+            "evidence": []
+          },
+          "loopEvidence": {
+            "presence": "MISSING",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": []
+          },
+          "affordanceRelationshipEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "whyThisObject",
+                "sourceText": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          },
+          "goalRuleRelationshipEvidence": {
+            "presence": "PRESENT",
+            "classification": "UNCLASSIFIED",
+            "classificationBasis": "NOT_CLASSIFIED",
+            "evidence": [
+              {
+                "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+                "sourceField": "goalRuleRelationship",
+                "sourceText": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+                "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+                "confidence": "EXPLICIT"
+              }
+            ]
+          }
+        },
+        "beats": [],
+        "describedBeatCount": 0,
+        "enginePresence": "PRESENT",
+        "engineClassification": "UNCLASSIFIED_CAUSAL_ENGINE",
+        "payoffPresence": "MISSING",
+        "payoffClassification": "UNCLASSIFIED_PAYOFF_PATTERN",
+        "payoffStatus": "PAYOFF_MISSING",
+        "providerDeclaredLoop": {
+          "presence": "MISSING",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": []
+        },
+        "structurePresence": "MISSING",
+        "structureClassification": "PRESENT_UNCLASSIFIED_EVIDENCE",
+        "fullySpecifiedBeatCount": 0
+      },
+      "semanticFields": {
+        "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+        "primaryObject": "Rolling pin",
+        "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+        "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+        "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+        "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+        "finalPayoff": "",
+        "loopPotential": "",
+        "whyThisObject": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+        "goalRuleRelationship": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+        "beats": []
+      },
+      "protagonist": "Mimi",
+      "timing": []
+    },
+    "canonicalReceipt": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "e174c28a612c33630a33042e7ac473d796bdc22633e7b311de727d0ef744edcd",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": false,
+          "dominant": false,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_CLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [],
+        "payoff": {
+          "present": false,
+          "ruleLinked": false,
+          "stateChanging": false,
+          "visual": false,
+          "classificationStatus": "MISSING",
+          "source": []
+        },
+        "loop": {
+          "declared": false,
+          "supported": false,
+          "references": []
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "9d3e44a81e9d49313c80e258481276ed3689c0f0fe46ec59e6efad198ff86845",
+        "normalizedFieldsSha256": "2e7f9b7c7776bd8b7909e91768e6c70247418982adeee3900ae34d3860ed67be",
+        "textSha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "providerCalls": 0,
+    "scope": "No score bonus from seed annotation fields. Unknown taxonomy is not itself a rejection; unsupported story-dependent admission is not fabricated or treated as an automatic seed failure."
+  }
+}

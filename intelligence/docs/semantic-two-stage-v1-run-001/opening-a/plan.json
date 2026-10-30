@@ -1,0 +1,20 @@
+{
+  "requestId": "opening-a",
+  "phase": "A",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "maximumTotalRequests": 4,
+  "maximumPhaseA": 3,
+  "maximumPhaseB": 1,
+  "SDKRetries": 0,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192,
+  "streaming": "NON_STREAMING"
+}

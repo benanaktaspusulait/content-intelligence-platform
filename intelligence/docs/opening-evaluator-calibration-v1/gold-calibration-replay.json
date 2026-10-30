@@ -1,0 +1,138 @@
+{
+  "architecture": "OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1",
+  "providerCalls": 0,
+  "results": [
+    {
+      "id": "GOLD-OPENING-01",
+      "directCanonicalOldScore": 15,
+      "structuredOldScore": 15,
+      "directCanonicalNewScore": 15,
+      "structuredNewScore": 15,
+      "newStillCausalLegibility": "UNRESOLVED",
+      "fallbackUsed": false,
+      "fallbackConditions": {
+        "protagonistPresent": true,
+        "primaryObjectPresent": true,
+        "abnormalStateVisible": false,
+        "interactionVisible": true,
+        "goalInterferenceVisible": false,
+        "sourceCausalLinkSupported": false,
+        "ruleOpeningAgreement": false,
+        "frameZeroOnly": true,
+        "temporallyIndependent": true
+      },
+      "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "directStructuredDelta": 0
+    },
+    {
+      "id": "GOLD-OPENING-02",
+      "directCanonicalOldScore": 15,
+      "structuredOldScore": 15,
+      "directCanonicalNewScore": 15,
+      "structuredNewScore": 15,
+      "newStillCausalLegibility": "UNRESOLVED",
+      "fallbackUsed": false,
+      "fallbackConditions": {
+        "protagonistPresent": false,
+        "primaryObjectPresent": true,
+        "abnormalStateVisible": true,
+        "interactionVisible": false,
+        "goalInterferenceVisible": false,
+        "sourceCausalLinkSupported": false,
+        "ruleOpeningAgreement": true,
+        "frameZeroOnly": true,
+        "temporallyIndependent": true
+      },
+      "responseState": "RESPONSE_PRESENT_CLASSIFIED",
+      "directStructuredDelta": 0
+    },
+    {
+      "id": "GOLD-OPENING-03",
+      "directCanonicalOldScore": 35,
+      "structuredOldScore": 35,
+      "directCanonicalNewScore": 35,
+      "structuredNewScore": 35,
+      "newStillCausalLegibility": "UNRESOLVED",
+      "fallbackUsed": false,
+      "fallbackConditions": {
+        "protagonistPresent": true,
+        "primaryObjectPresent": true,
+        "abnormalStateVisible": true,
+        "interactionVisible": true,
+        "goalInterferenceVisible": true,
+        "sourceCausalLinkSupported": true,
+        "ruleOpeningAgreement": false,
+        "frameZeroOnly": true,
+        "temporallyIndependent": true
+      },
+      "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "directStructuredDelta": 0
+    },
+    {
+      "id": "GOLD-OPENING-04",
+      "directCanonicalOldScore": 90,
+      "structuredOldScore": 90,
+      "directCanonicalNewScore": 90,
+      "structuredNewScore": 90,
+      "newStillCausalLegibility": "SUPPORTED",
+      "fallbackUsed": true,
+      "fallbackConditions": {
+        "protagonistPresent": true,
+        "primaryObjectPresent": true,
+        "abnormalStateVisible": true,
+        "interactionVisible": true,
+        "goalInterferenceVisible": true,
+        "sourceCausalLinkSupported": true,
+        "ruleOpeningAgreement": true,
+        "frameZeroOnly": true,
+        "temporallyIndependent": true
+      },
+      "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "directStructuredDelta": 0
+    },
+    {
+      "id": "GOLD-OPENING-05",
+      "directCanonicalOldScore": 90,
+      "structuredOldScore": 90,
+      "directCanonicalNewScore": 90,
+      "structuredNewScore": 90,
+      "newStillCausalLegibility": "SUPPORTED",
+      "fallbackUsed": true,
+      "fallbackConditions": {
+        "protagonistPresent": true,
+        "primaryObjectPresent": true,
+        "abnormalStateVisible": true,
+        "interactionVisible": true,
+        "goalInterferenceVisible": true,
+        "sourceCausalLinkSupported": true,
+        "ruleOpeningAgreement": true,
+        "frameZeroOnly": true,
+        "temporallyIndependent": true
+      },
+      "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "directStructuredDelta": 0
+    },
+    {
+      "id": "GOLD-OPENING-06",
+      "directCanonicalOldScore": 35,
+      "structuredOldScore": 35,
+      "directCanonicalNewScore": 90,
+      "structuredNewScore": 90,
+      "newStillCausalLegibility": "SUPPORTED",
+      "fallbackUsed": true,
+      "fallbackConditions": {
+        "protagonistPresent": true,
+        "primaryObjectPresent": true,
+        "abnormalStateVisible": true,
+        "interactionVisible": true,
+        "goalInterferenceVisible": true,
+        "sourceCausalLinkSupported": true,
+        "ruleOpeningAgreement": true,
+        "frameZeroOnly": true,
+        "temporallyIndependent": true
+      },
+      "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "directStructuredDelta": 0
+    }
+  ]
+}

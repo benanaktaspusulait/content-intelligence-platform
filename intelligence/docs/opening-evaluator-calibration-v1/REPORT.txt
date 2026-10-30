@@ -1,0 +1,170 @@
+OPENING EVALUATOR CALIBRATION AND EVIDENCE COVERAGE AUDIT — V1
+Date: 2026-10-30
+Scope: offline diagnostic only. Provider calls: 0. Production evaluator, thresholds, prompts, schemas, validators, history, ranking, and selection were not changed.
+
+EXECUTIVE DIAGNOSIS
+
+Primary classification: C — OPENING_EVALUATOR_COVERAGE_FAILURE.
+
+The exact 35 is not a constant default. It is a real branch in the existing formula and all eight stored outputs reached it: canonical semantic acquisition marked goal, anomaly, trigger, and causal overlap present; the known direct-response branch did not support the opening, and the more demanding still-frame test also remained unresolved. In the eight stored records, un-generalized and generalized scores are both 35 and staticFrameLegibility is 25. This is a repeatable evidence-tier score, not a calibrated human judgment of opening quality.
+
+Hand-authored strong fixtures scored 90 through both MANUAL canonical input and semantic structured projection. That proves the evaluator can produce high scores for a narrow pattern it already recognizes. It does not validate geometry-based openings such as rolling pressure making dough rise. The unfamiliar but explicit GOLD-OPENING-06 remains present/unclassified and is not turned into MISSING; it nevertheless receives only the low source-evidence branch because the opening still-frame acceptance test does not recognize its unfamiliar state contrast. The existing semantic path preserves the text and fields; evidence is lost at the evaluator's derived still-frame support decision, not at semantic field projection.
+
+For the three rolling-pin seeds, the source text explicitly describes Mimi, a flattening goal, the rolling pin, downward pressure, a tall dough ridge/wall/column already under the barrel, and surrounding flat dough. Each is a single still-state description; none requires prior context or a future action to state the visible contradiction. The current evaluator does not classify pressing as its accepted `explicitUsePose` and does not compare flat-vs-tall geometry. Source text is stronger than the score says on these dimensions. This audit does not assign a new numeric quality rating or claim observed-pixel legibility. Separately, the three seeds are a clear diversity-collapse signal.
+
+Why classification C, not A or D: the hand-authored positive controls show a functioning evaluator path and the source records contain explicit opening information, so generation weakness is not established by the score. The positive controls also show evidence coverage is asymmetric. No stored canonical “Lid opening” annotation suitable for calibration was found in the semantic experiment folders; the hand-authored controls serve as the calibration evidence. These findings do not prove that every seed is a good opening. They show that 35 alone cannot decide that question.
+
+1. CURRENT PROBLEM
+
+Historical monolithic semantic candidates: 5/5 received 35. TWO_STAGE_V1 Phase A: 3/3 received 35. The 8 complete stored receipts were read without regenerating candidates. Their full traces are in `real-eight-traces.json`. All eight have canonical opening causalRelationshipVisible=true, score 35, staticFrameLegibility=25, stillCausalLegibility=UNRESOLVED, sourceFunctionalContrastSupported=false. Their source records and immutable run folders remain unchanged.
+
+2. EXECUTABLE CALL GRAPH
+
+Monolithic semantic path: saved semantic response → semantic_prompt_v2_experiment.analyze → normalize/evaluate → semantic structured input → canonical_creative_evidence.from_structured → premise_naturalness.assess(... generalized_premise_evidence=True) → premise_admission_evidence.assess → premise_admission_evidence.opening_evidence. `observe()` reports candidate.premiseNaturalness.instantCausalLegibility; the admission opening floor is 60. Semantic evidence projection is in semantic_evidence_adapter.project and StructuredCanonicalEvidenceSource.acquire; canonical fact construction is in canonical_creative_evidence.CanonicalCreativeEvidenceContext.__init__.
+
+TWO_STAGE_V1 Phase A: saved opening seed → semantic_two_stage_v1.seed_projection → semantic_evidence_adapter.project → canonical_creative_evidence.from_structured → premise_naturalness.assess(... generalized_premise_evidence=True) → premise_admission_evidence.opening_evidence; gate_seed then applies the existing OPENING_FLOOR=60. Seed annotations do not add score facts.
+
+The opening evaluator consumes canonical structured fields/facts directly. It is not the SFE text-only validation route. Some sub-decisions still use derived text heuristics: canonical overlap for goal/anomaly/trigger support; premise_naturalness.infer_response and configured compatibility policy for `direct`; and opening_evidence’s `_visual` sanitizer plus narrow use-pose and property/color pattern recognizers for still-frame support. There is no separate semantic “opening score projection” that drops the frame text. `opening_evidence` consumes canonical fields and facts but does not treat their presence alone as proof of a clear static contradiction.
+
+3. EXACT SCORING FORMULA AND COMPONENTS
+
+No additive point components exist. The function emits branch values. The production structured/generalized path uses premise_naturalness.py’s `full_causal` branches, then premise_admission_evidence.py’s still-frame guard:
+
+| Branch | Points | Exact condition |
+|---|---:|---|
+| covered direct cause + supported source | 90 | `direct and source_supported` |
+| covered direct cause, no frame | 60 | `direct and not frame` |
+| source facts overlap but direct cause unsupported | 35 | `source_supported` |
+| otherwise | 15 | no supported source overlap |
+| strong static contrast override | 90 | `sourceFunctionalContrastSupported and stillCausalLegibility == SUPPORTED` |
+| guard clamp | 35 or 15 | preliminary score >=60 but still support unresolved; 35 when canonical causal overlap is true, else 15 |
+
+The component decisions, with provenance, are:
+
+| Evidence component | Max / points | Pass condition | Fail / unknown behavior | Source and canonical fields |
+|---|---:|---|---|---|
+| `direct` (configured cause/goal/trigger) | no independent points | existing object response policy, goal match, no noun conflict, natural trigger >=70 | absent/unknown policy yields false, not a semantic proof of poor idea | semantic rule, goal, trigger; `impossibleRule`, `everydayGoal`, `visibleTrigger`; affordance_expectations_v1 |
+| `source_supported` (canonical opening overlap) | 35 branch | literal object + expected-use action + frame anomaly; with structured input, canonical `opening.causalRelationshipVisible` | false branch yields 15; missing/unknown support is not promoted | `frameZeroDescription`, structured `goal/opening/trigger` facts |
+| `stillCausalLegibility` | no points itself | no motion/prior-context/text requirement; character, object, visible goal/problem; plus recognized source contrast or legacy static >=65 | unresolved remains `None`/UNRESOLVED; never inferred true from fact presence | `frameZeroDescription`, `everydayGoal`, `primaryObject`, candidate `protagonist`, baseline `staticFrameLegibility` |
+| `sourceFunctionalContrastSupported` | 90 override | explicit-use pattern AND a fixed state/color contrast AND character/object/goal/anomaly/causal evidence | otherwise false; geometry differences outside fixed pair list are uncredited | `normalExpectation`, `everydayGoal`, `frameZeroDescription`, canonical goal/opening facts |
+| motion / prior context / text dependency | veto only | no matching motion, prior-context, or explanatory-text pattern | matching motion/context/text prevents still-supported result; unknown is `None` | sanitized frame-zero source text |
+
+Total possible under the ungeneralized legacy formula: 15, 35, 60, 90. In the current generalized structured opening/admission route, reachable branch totals are 15, 35, and 90; the 60 no-frame branch is clamped because no still-frame evidence can support it. 60 is therefore not accepted-floor reachable in this route. 80 and 100 are not emitted anywhere in the opening formula. Maximum emitted opening score is 90, not 100. The opening floor is 60. 35 is a natural conditional plateau: any source-supported but not `direct` result starts at 35; a score >=60 that fails the static guard is also reset to 35 when canonical causal overlap exists.
+
+For the eight real cases the exact path is: `direct=false` → canonical `source_supported=true` → preliminary score 35; staticFrameLegibility=25 and no accepted still property contrast → still support unresolved → no override → final score remains 35. There were no points “earned then missed” in an additive ledger: 35 is the output of a categorical branch. This explains all eight identically without postulating a default constant.
+
+4. SCORE-RANGE AND 35/FALLBACK AUDIT
+
+Code search found the formula literals in premise_naturalness.py and the generalized still-guard assignment in premise_admission_evidence.py. No `defaultOpeningScore=35`, `fallbackScore=35`, `partialEvidenceBaseScore=35`, minimum score 35, or score-returning special branch was found beyond those explicit formulas. 35 is deliberately returned by two conditional paths; it is therefore a floor-like plateau, but it is not unconditional. The other 35 uses found by broad repository search concern unrelated SFE silent penalties and are not opening score defaults.
+
+Evidence states: rule response presence is distinguished as RESPONSE_PRESENT_UNCLASSIFIED; canonical `rule.present=true` with `classificationStatus=PRESENT_UNCLASSIFIED`; missing fields remain MISSING. Opening `None` values mean “not established,” not false. This respects PRESENT_UNCLASSIFIED != MISSING for rule/response presence. However, the opening score formula itself does not expose a presence-state vector: it reduces recognized source support to 15/35/60/90, and the still-frame gate asks a narrower recognized-contrast question. Thus presence is preserved in receipts but is not enough to escape the 35 evidence tier.
+
+5. HAND-AUTHORED GOLD SET AND DIRECT/STRUCTURED RESULTS
+
+Fixture definitions are in `../ml-service/tests/fixtures/opening_evaluator_calibration_v1.json`; component-level result receipts are in `gold-calibration-results.json`. No fixture was generated by a model. “Direct canonical” below means the same exact semantic field values placed in the canonical MANUAL structured source contract; “structured semantic” runs those values through semantic_evidence_adapter.project and the canonical SEMANTIC source contract. The scorer does not accept a free-standing caller-authored score/fact object. Source kind is provenance only, so exact parity is expected when the canonical field values match.
+
+| Fixture | Intended probe | Direct canonical | Structured semantic | Delta | Main findings |
+|---|---|---:|---:|---:|---|
+| GOLD-OPENING-01 | visible character/object, no active anomaly | 15 | 15 | 0 | anomaly absent; low |
+| GOLD-OPENING-02 | impossible state, no character goal | 15 | 15 | 0 | goal support absent; below floor |
+| GOLD-OPENING-03 | goal/rule, but action-consequence must unfold | 35 | 35 | 0 | current text shows no active contact/result; below floor |
+| GOLD-OPENING-04 | strong recognized still-frame conflict | 90 | 90 | 0 | recognized painting pose and blue-vs-orange contrast |
+| GOLD-OPENING-05 | maximally explicit supported contrast | 90 | 90 | 0 | reaches current maximum; no path to 100 |
+| GOLD-OPENING-06 | clear unfamiliar map/crease spiral mechanism | 35 | 35 | 0 | PRESENT_UNCLASSIFIED is preserved; geometry/taxonomy support remains unresolved |
+
+The critical condition “strong direct >=60, equivalent structured =35” did not occur for these fixtures; no semantic field was lost between these two source contracts. The diagnostic failure for GOLD-OPENING-06 is evaluator coverage, not projection delta. Its frame has map, folding attempt, a tower extruding from the crease, lifted sheet, and visibly unfolded corners, but current still contrast support does not recognize these relations.
+
+Component proof: 01 has character/object but no anomaly or causal relation; 02 has anomaly but no goal/character; 03 declares the goal/rule but its frame lacks a supported current cause/result link; 04 and 05 pass `explicitUsePose`, color expectation witness, actual painted-patch witness, character/object/goal/anomaly, and canonical causal overlap; 06 preserves a present-unclassified rule but lacks the fixed recognized contrast branch. Tests assert weak below-floor, strong >=60, near maximum >=80, exact parity, motion/context rejection, active problem, exact 90 explanation, and unclassified presence.
+
+6. EIGHT STORED REAL CASES: SOURCE AND CANONICAL TRACE
+
+All eight full source field values, exact component outcomes, response classification, canonical facts, and run path are in `real-eight-traces.json`. The ten-dimension per-case classification matrix is in `source-projection-matrix.json`. Each receipt has canonical causalRelationshipVisible=true, opening score 35, static frame score 25, stillCausalLegibility=UNRESOLVED, sourceFunctionalContrastSupported=false, and no recognized still property contrasts. Each source has named character, a declared everyday goal, primary object, a declared trigger/rule, and a nonempty frame; evaluator receipts show goalVisible/objectVisible/problemVisible/anomalyVisible/triggerVisible/goalProblemRelationship true. `impossibleRelationVisible` remains null for all eight.
+
+| Case | Source goal / object | Rule and trigger source summary | Frame-zero source | Why exactly 35 / source-to-canonical finding |
+|---|---|---|---|---|
+| REFERENCE-0 “A Very Square Spill” | clear puddle so door opens / sponge | squeezing wet sponge releases rigid water cube; hands compress sponge | Mimi, partly open door, puddle, cube in door arc | source overlap true, response mechanism is outside supported direct object policy; no recognized still contrast; 35 branch |
+| micro-b “Sweeping Uphill” | sweep dirt into dustpan / broom | forward push folds traversed floor into upright pleat | broom at ankle-high fold, dirt on crest, dustpan beyond | source and goal/object/problem facts present; floor pleat is not an accepted response/property contrast; 35 branch |
+| micro-c “The Wrinkle Has to Go Somewhere” | iron shirt flat / clothes iron | crease pressed out of shirt reappears in board | iron on shirt, smooth sleeve above zigzag board, remaining wrinkles | text explicitly gives the functional conflict; exact ironing relation is not credited by current source contrast matcher; 35 branch |
+| compact.1 “Cut Out, Fold In” | cut square from paper / blunt craft scissors | closing blades folds paper upright instead of separating | Mimi holds scissors through outlined sheet; paper wall at blade; square attached | active opening overlap true; `folded`/upright is outside contrast list and no recognized pose phrase; 35 branch |
+| compact.2 “Sweeping Up the Rug” | sweep crumbs from rug / broom | forward bristle push winds traversed rug around head | rug curl traps crumbs; broom planted on curl | source overlap true; winding/curled rug vs flat surface is not recognized contrast; 35 branch |
+| Phase A A “mimi-rolling-pin-ridge” | roll dough flat / rolling pin | downward pressure makes contact dough rise into supporting ridge | pin embedded on chest-high ridge, low flat dough edges, Mimi pressing | explicit state conflict present; `pressing` is not an accepted use-pose pattern and flat/tall is not a recognized property pair; direct=false, overlap=true →35 |
+| Phase A B “mimi-rolling-pin-dough-wall” | roll dough flat / rolling pin | downward press makes contact dough thicken into wall | barrel on chest-high wall above flat sheet, Mimi braced | same uncredited press + flat/tall contrast; action trigger itself is supported; direct=false, overlap=true →35 |
+| Phase A C “mimi-rolling-pin-dough-column” | roll dough thin/flat / rolling pin | downward pressure makes dough under barrel rise into column | chest-high column joined to flat dough skirt; barrel in groove; Mimi bearing down | same state contrast and pose coverage gap; source explicitly states rule instance; direct=false, overlap=true →35 |
+
+For all eight, source contains an explicit goal/problem relationship. Source frames describe a static state; no source asks the viewer to wait for a later action or recall a prior scene. Compact-family source fields sometimes append later action prose to the frameZeroDescription field; those appended beat passages do not erase the initial stated frame, but the field is not a clean still-only carrier. Their existing receipts show `needsMotionToUnderstand=null` and `needsPriorContext=null`. Treat the source as text evidence, not observed pixels.
+
+Per-case explanation categories: the common 35 is caused by evaluator design/coverage (`direct` requires an existing compatibility policy; still contrast requires fixed phrase patterns). Evidence projection did preserve the important facts (all `opening` canonical fact booleans true). Taxonomy coverage contributes to `direct=false` for unclassified responses, but does not convert rule presence to missing. Some source prompts may still have generation weaknesses, particularly field contamination and one-family repetition; their contribution cannot be isolated from this evaluator score.
+
+7. SOURCE-VS-PROJECTION MATRIX
+
+The per-case exact canonical records live in `real-eight-traces.json`, and source/projected/ambiguous classifications are in `source-projection-matrix.json`. For all eight: CHARACTER_PRESENT, GOAL_VISIBLE, OBJECT_VISIBLE, ACTIVE_PROBLEM_VISIBLE, and GOAL_INTERFERENCE_VISIBLE are SOURCE_PRESENT_PROJECTED. The authored descriptions state a still physical relation and current rule instance, but the dedicated IMPOSSIBLE_RELATIONSHIP_VISIBLE, STILL_FRAME_LEGIBLE and RULE_INSTANCE_VISIBLE results remain unresolved: SOURCE_PRESENT_NOT_PROJECTED. NO_PRIOR_CONTEXT_REQUIRED and NO_MOTION_REQUIRED are SOURCE_AMBIGUOUS because the sources contain no explicit dependence, while absence of such wording does not prove independence. `impossibleRelationVisible=null` is the specific lost evaluator conclusion, not missing source text. `opening.problemVisible` is a weak field: it is true for any nonempty frame and must not be read as a positive quality label.
+
+8. PRESENCE, TAXONOMY, AND LEXICAL DEPENDENCE
+
+Semantic evidence adapter maps frameZeroDescription and other allowed fields losslessly as source text (`semantic_evidence_adapter.py`, FIELD_MAP / `project`). Canonical acquisition projects source overlap, not truth. The opening quality code then applies additional vocabulary tests. `explicitUsePose` currently recognizes `mid.stroke`, `mid.swing`, `mid.sweep`, `flipping`, `striking`, `brushing`, and `painting`; it does not recognize `pressing`, `bearing down`, or `a barrel embedded against dough`. Functional contrasts are hard-coded to straight/bent, closed/open, open/closed, dry/wet, clean/dirty, and a narrow paint-color pattern. There is no geometry opposition such as flat/tall, sheet/wall, low/high or surface/column. `stillCausalLegibility` therefore stays unresolved despite present facts. This is analogous to an evidence-coverage issue, but unlike the historical SFE suppression case, the source fields survive and canonical opening presence booleans are true; the loss occurs in opening evaluator recognition/decision.
+
+Response handling does preserve PRESENT_UNCLASSIFIED versus MISSING. The score does not, however, report a named “evidence present but still-frame matcher unsupported” component; 35 obscures that distinction unless the detailed receipt is inspected. The evaluator is taxonomy-coupled through `direct`, but does not require a known taxonomy label for every presence fact. The recognized static-contrast override can reach 90 even when no known response policy supports the premise, as GOLD-OPENING-04 demonstrates.
+
+9. TWO-STAGE PHASE A HUMAN-READABLE AUDIT CARDS
+
+SEED A — mimi-rolling-pin-ridge
+Frame zero: “Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges.”
+What is visible in the source: Mimi; rolling pin; downward pressing pose; low flat dough; connected chest-high ridge; barrel contact/support. What requires inference: exact viewer interpretation that Mimi intends rolling/flattening from pose + flat edges; pixel-space scale and contact clarity. Motion required: no. Goal legible: source says roll lump into flat sheet, frame gives low flat edges. Problem legible: yes in text. Rule instance legible: yes in text, contact and ridge co-occur. Likely true opening issue: evaluator misses pressing and flat/tall geometry. The source does not prove what rendered pixels would communicate.
+
+SEED B — mimi-rolling-pin-dough-wall
+Frame zero: “Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side.”
+What is visible: Mimi; table; rolling pin; downward palms; flat sheet; same sheet as tall wall; barrel resting on wall. What requires inference: intended flattening is reinforced by the declared goal and surrounding sheet. Motion required: no. Goal legible: yes in source. Problem legible: yes. Rule instance legible: yes in source. Likely true opening issue: the evaluator’s geometry and pose vocabulary, plus repeated mechanic; actual rendering legibility remains unobserved.
+
+SEED C — mimi-rolling-pin-dough-column
+Frame zero: “Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base.”
+What is visible: Mimi; counter; rolling pin; downward bearing posture; continuous dough; tall column and thin skirt; barrel groove. What requires inference: exact intention to flatten, although declared goal and thin skirt support it. Motion required: no. Goal legible: yes in source. Problem legible: yes. Rule instance legible: yes in source. Likely true opening issue: same recognition gap and diversity collapse; no pixel-level conclusion.
+
+10. DIVERSITY COLLAPSE (SEPARATE SIGNAL)
+
+Classification: DIVERSITY_COLLAPSE_SIGNAL. Shared object family: rolling pin + dough. Goal family: flatten/roll dough thin on a counter/table. Mechanism: downward barrel pressure causes contacted dough to rise/thicken instead. Silhouette: Mimi pressing horizontally over a flat dough base with an elevated ridge/wall/column under the barrel. Environment: simple kitchen counter/table. Trigger: pressure/contact from pin barrel/handles. Payoff potential: none exists in the stored seed; no story was expanded, so payoff is unavailable rather than inferred. These are three wording/shape variants of one central mechanic, not three distinct concept families. This does not cause or explain the score by itself.
+
+11. HISTORICAL GOOD OPENINGS
+
+Repository search found no suitable stored canonical Lid opening annotation tied to this evaluator in the semantic experiment records. No view-count or performance label was used. GOLD-OPENING-04 and 05 prove the current evaluator can reach 90 when existing contrast patterns are explicit; GOLD-OPENING-06 probes unfamiliar evidence and remains 35. There is no 80/100 output path.
+
+12. PROPOSED REPAIR PLAN (NOT IMPLEMENTED)
+
+Defect 1: opening-evidence coverage misses explicit use poses and geometric state contrasts.
+Root cause: `premise_admission_evidence.opening_evidence` has narrow pose and contrast regexes; source fact overlap does not express held-frame geometry.
+Minimal code area: opening evidence diagnostic/support function and its focused tests only.
+Expected behavior change: explicit source-supported pose/geometry pairs could establish still-causal support even when response taxonomy is unknown.
+Regression risk: prose may claim visual relations that a render would not show; false positive static support.
+Historical compatibility risk: prior stored 35 outcomes may change if old source frames happen to match added patterns.
+Tests required: positive/negative pairs for pressing, flat/tall, sheet/wall, contact/support; motion/context negation; unclassified-but-present; all eight frozen records; exact before/after score and admission diffs.
+
+Defect 2: score 35 hides whether source facts exist but the still matcher is unresolved.
+Root cause: categorical score branches reuse 35 for both source-overlap-only and unresolved static guard outcomes.
+Minimal code area: diagnostics/reporting only if the owner wants a more inspectable explanation; no score change is required for that improvement.
+Expected behavior change: separate evidence-state explanation, unchanged score unless separately authorized.
+Regression risk: downstream consumers may rely on exact report keys/statuses.
+Historical compatibility risk: output receipt shape and snapshot fixtures.
+Tests required: exact JSON compatibility or versioned additive diagnostics, with all legacy scores unchanged.
+
+Defect 3: Phase A concept diversity is low in this sample.
+Root cause: three independent samples selected the same rolling-pin/dough pressure response family; three observations are a signal, not a frequency estimate.
+Minimal code area: future generation diversity policy/prompt only after evaluator calibration and separate authorization.
+Expected behavior change: widen object/mechanism families.
+Regression risk: constraints may reduce coherence or obscure evaluator diagnostics.
+Historical compatibility risk: changes to frozen Phase A prompt/schema/experiment comparisons.
+Tests required: offline diversity fixtures first; any future live sampling needs a separate capped authorization. No such change is made here.
+
+13. HASH / IMMUTABILITY AND PROVIDER-PROOF
+
+`protected-before.json` records hashes for 814 existing production evaluator/projection/validator/prompt files and historical semantic experiment/run artifacts. It includes all previously existing files under semantic experiment docs and relevant semantic source/test contracts. A matching `protected-after.json` verifies exact path, byte-size, and SHA-256 identity. Only this versioned diagnostic report/fixture, the new diagnostic test, and audit-only proof files were added. Production scorer, evidence adapters, validators, thresholds, prompts, schemas, and historical experiments were unchanged.
+
+Provider calls: 0. No OpenAI/DeepSeek/fallback call, seed generation, story expansion, or render occurred. Gold fixtures are hand-authored. Real examples are read from their saved immutable records. Regression tests use the repository’s existing offline test setup.
+
+14. TESTS AND REGRESSION
+
+Focused diagnostic suite: `test_opening_evaluator_calibration_v1.py` — 6 passed. Provider calls: 0.
+
+Full regression from `intelligence/ml-service` with `POMPOM_DATA_ROOT` set to the repository data root: 3,469 passed, 36 failed, 2 skipped, 3,030 warnings in 217.82s. The accepted baseline was 3,463 passed, the same 36 failed IDs, and 2 skipped in 214.40s. Exact failed-test identifier sets compare equal (0 added, 0 removed); see `regression-comparison.json` and `full-regression.log`. Difference of six passes is the new diagnostic suite. No new production regressions.
+
+15. STOP
+
+This report diagnoses only. No opening score, threshold, admission rule, taxonomy, prompt, schema, SFE, Beat Grammar, Creative Shape, ranking, or production selection change was implemented. No TWO_STAGE_V2 or compact.3 was created. No live generation, expansion, or render was performed. The next action is owner review of the measurement diagnosis before any repair.

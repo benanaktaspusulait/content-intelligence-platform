@@ -1,0 +1,14 @@
+{
+  "inputTokens": 3018,
+  "outputTokens": 2209,
+  "reasoningTokens": 705,
+  "totalTokens": 5227,
+  "providerReportedCostUsd": null,
+  "costEstimated": false,
+  "PhaseBUsage": null,
+  "monotonicDurationsSeconds": {
+    "opening-a": 33.109327875,
+    "opening-b": 38.122749375,
+    "opening-c": 20.67898775
+  }
+}

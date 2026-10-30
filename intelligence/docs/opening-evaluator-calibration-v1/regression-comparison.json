@@ -1,0 +1,11 @@
+{
+  "baselineLog": "../semantic-two-stage-v1/full-regression.log",
+  "currentLog": "full-regression.log",
+  "baselineFailureCount": 36,
+  "currentFailureCount": 36,
+  "exactFailureIdsMatch": true,
+  "addedFailureIds": [],
+  "removedFailureIds": [],
+  "currentSummary": "36 failed, 3469 passed, 2 skipped, 3030 warnings in 217.82s (0:03:37)",
+  "diagnosticTestsAdded": 6
+}

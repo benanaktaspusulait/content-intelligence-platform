@@ -1,0 +1,10 @@
+{
+  "intelligence/ml-service/app/workflow/premise_admission_evidence.py": "e3d41299669392cd50907df4b4d1fb2553b34a299279824d25c041041db40400",
+  "intelligence/ml-service/tests/test_protected_integrity_policy.py": "442f95c495206ee1dc350a534926a5af3e35890b640c24cc0e28c0df58fc0f3d",
+  "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py": "280dd4ec23e4b6d881ae9a8cd86d3d40fda8e4cc0adb928ce49e3c46d17e7438",
+  "intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py": "0eeddbaaa549582bf3c615b499b6e952a6ec1214e43e8fc1c8fc503b39e6e14e",
+  "intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py": "d4d98aadf4e5a4987a1fea98d5fbc411fa4c15b1ca6712d4116a81fd1fc694b6",
+  "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py": "53196555cd218035cbc870284df518ddbb65782bd7d083dd8903338e1bd7c9e4",
+  "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py": "1513db7a4bda9844896420d03cded041444e209d32954dea10c4c4b45726aa4e",
+  "intelligence/ml-service/tests/test_semantic_two_stage_v1.py": "71a9515c1b2c318c7e07f0ffb5d89bb83475f52f457cedbca32e6ce9e6e492b8"
+}

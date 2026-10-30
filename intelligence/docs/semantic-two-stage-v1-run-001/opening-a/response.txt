@@ -1,0 +1,21 @@
+{
+  "seeds": [
+    {
+      "seedId": "mimi-rolling-pin-ridge",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+      "primaryObject": "Rolling pin",
+      "normalExpectation": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+      "impossibleRule": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+      "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge.",
+      "whyThisObject": "A rolling pin normally flattens dough through pressure along its barrel; here that same contact produces conspicuous height instead of flatness.",
+      "goalRuleRelationship": "Mimi needs the dough low and flat, but the pressure used to flatten it holds the contacted dough in a tall ridge.",
+      "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+      "openingPhysicalState": "“The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges.”",
+      "openingGoalEvidence": "“both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose” and “A broad piece of dough lies on the counter with low, flat edges on either side.”",
+      "openingProblemEvidence": "“Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides.”",
+      "environment": "A simple kitchen with a plain counter, framed frontally so Mimi, the rolling pin, and the full dough ridge are visible.",
+      "dialogueNeed": "NONE"
+    }
+  ]
+}

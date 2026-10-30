@@ -1,0 +1,42 @@
+{
+  "source": "Read-only existing records; no regeneration or rescoring.",
+  "candidates": [
+    {
+      "id": "REFERENCE-0",
+      "title": "A Very Square Spill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS"
+    },
+    {
+      "id": "micro-b",
+      "title": "Sweeping Uphill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS"
+    },
+    {
+      "id": "micro-c",
+      "title": "The Wrinkle Has to Go Somewhere",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS"
+    },
+    {
+      "id": "compact.1",
+      "title": "Cut Out, Fold In",
+      "openingScore": 35,
+      "ruleConsistency": "RULE_CONSISTENT"
+    },
+    {
+      "id": "compact.2",
+      "title": "Sweeping Up the Rug",
+      "openingScore": 35,
+      "ruleConsistency": "RULE_CONSISTENT"
+    }
+  ],
+  "openingScores": [
+    35,
+    35,
+    35,
+    35,
+    35
+  ]
+}

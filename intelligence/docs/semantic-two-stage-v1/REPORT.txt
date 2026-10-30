@@ -1,0 +1,1800 @@
+TWO-STAGE SEMANTIC IDEATION V1 — FINAL REPORT
+
+LIVE RESULT: OPENING_SEED_GENERATION_STILL_WEAK
+STOPPED after 3 Phase A requests. Phase B requests=0. Total live requests=3/4 cap.
+
+Architecture implemented: opening seed -> existing opening/applicable premise
+gate -> frozen accepted seed -> one story expansion -> seed-drift boundary ->
+existing full validation pipeline. No v2-compact.3 or monolithic prompt patch.
+
+All three live seed responses were HTTP 200, schema-valid and canonically
+projected. Opening scores: 35 / 35 / 35. Existing expansion floor remains 60.
+Accepted seeds=0. Selected seed=none. Expansions=0. No expanded story, seed-drift
+live audit, full story scores or production slate exists for this live run.
+Production disposition: NO_STORY_GENERATED; each seed is DO_NOT_EXPAND.
+SFE was not computed or compared for live seeds because Phase B was never reached.
+
+Historical compact-family baseline: 5/5 successful stories scored opening=35.
+Dedicated opening-only generation produced 0/3 at or above60 and did not break
+the measured opening-35 pattern in this experiment. The architecture's control
+boundary worked: it spent zero semantic story-expansion calls on rejected seeds.
+This is a small experiment, not statistical proof of production quality or a
+causal diagnosis of all reasons for the score plateau.
+
+All three independent requests clustered on closely related rolling-pin/dough
+ridge/wall/column variants. They are independent transports under identical
+policy, not three distinct creative territories. No previous response was fed
+into later calls, and no prompt patch occurred during the experiment.
+
+Important diagnostic limit: all three raw frame descriptions contain explicit
+downward pressing poses and a tall dough obstruction. The unchanged opening
+report nevertheless has explicitUsePose=false, stillPropertyContrast=[], and
+impossibleRelationVisible=null. The scoring evidence therefore remains unresolved.
+RULE_UNCLEAR for A/C reflects the existing action extractor rejecting noun-led
+trigger phrasing, not a new assertion that their physically specific rule text
+is semantically vague. No score/gate was overridden. This result does not isolate
+generation weakness from evaluator coverage or establish human paused-frame
+illegibility. No rendered images or human watch test were used.
+
+Premise interpretation: all live responses have unclassified/UNRESOLVED mechanics.
+The conservative Naturalness grade CONTRIVED and object-specificity estimate 0
+are retained unchanged and are not relabelled proved arbitrary magic. Full
+Admission V2 is NOT_ADMITTED_INSUFFICIENT_EVIDENCE. Its multi-consequence/story
+requirements are unavailable at seed stage; no beats or payoff were fabricated.
+The live hard opening floor alone rejected all three, regardless of that partial
+premise evidence. B's trigger action was supported but its opening still failed.
+
+Execution profile: OpenAI / gpt-6.1-sol / reasoning LOW; one seed per request;
+new seed native json_schema, strict=false; NON_STREAMING; max_completion_tokens
+8192; accepted connect/read/write/pool=15/90/60/15s, wall cap=180s. No retry,
+replacement, fallback, DeepSeek, production prompt or render. Phase B retains
+the unchanged corrected full semantic schema (hash below) and is not called.
+
+Request    Monotonic duration  Bytes  Input Output Reasoning Total Finish
+opening-a  33.1093s            2302   1006  628    111       1634  stop
+opening-b  38.1227s            2329   1006  794    291       1800  stop
+opening-c  20.6790s            2261   1006  787    303       1793  stop
+Totals: input3018, output2209 including705 reasoning, total5227 tokens.
+Provider cost unavailable; no cost estimate. First-token timing unavailable in
+non-streaming mode. Header/usable-content times and request IDs are below.
+A's UTC span disagrees with its monotonic duration; original values and the
+inconsistency flag are preserved. Monotonic timing controls deadlines.
+
+Verification: implementation/tests made ZERO provider calls. 54 new tests;
+391 focused passes; full regression 3463 passed, exactly the accepted 36 failure
+IDs, 2 skips, no new failures (214.40s). Ruff F checks passed. All 2645 protected
+preexisting files and all tested new-source hashes remain unchanged after live
+execution. Existing prompts, validators, thresholds, taxonomies, historical
+experiments and default generation routes were not changed.
+
+
+1. ARCHITECTURE
+TWO-STAGE SEMANTIC IDEATION V1
+
+Phase A: one opening seed per independent request, three planned slots.
+  New versioned seed prompt and 15-field seed schema. No beats/payoff/scores.
+  Strict parser -> canonical source projection with ZERO beats/payoff.
+  Existing generalized Naturalness/opening evaluator and Admission V2 evidence.
+  Hard gate: existing OPENING_FLOOR=60. Existing clear premise/rule/trigger blockers.
+  Unknown story-dependent evidence remains unavailable; no fabricated consequences.
+
+Select at most one accepted seed after all three planned Phase A slots.
+  Highest existing opening score; existing Naturalness specificity/trigger scores
+  only for ties, then stable request order. Provider never selects.
+
+Freeze source seed + evaluated gate receipt + provenance with content hashes.
+
+Phase B: one expansion request, only if an accepted seed exists.
+  New expansion prompt + existing corrected full native candidate schema.
+  Same provider/model/LOW profile, native non-streaming mode, token cap/timeouts.
+  Exact frozen-field boundary + explicit first-beat reset check; reject seed drift.
+  Existing source-coherence check; no repair/retry/alternate story.
+  Existing full analyze pipeline with canonical evidence, Naturalness, Admission,
+  Beat Grammar, Structured SFE, Creative Shape, historical territory, ranking,
+  and production preselection. Append architecture provenance; no score override.
+
+Budgets: Phase A <=3, Phase B <=1, total <=4. SDK retries disabled, HTTP cap one
+per slot. Whole-run exclusive directory prevents rerunning/resuming/replacements.
+If no seed passes, zero Phase B calls. If all three are below60, stop with
+OPENING_SEED_GENERATION_STILL_WEAK.
+
+Existing prompts, full candidate schema, validators, thresholds, taxonomies,
+historical sources and default generation routing remain unchanged.
+
+2. FILES ADDED FOR THIS TASK
+intelligence/ml-service/app/workflow/semantic_two_stage_v1.py
+intelligence/ml-service/app/workflow/semantic_two_stage_experiment_v1.py
+intelligence/ml-service/app/workflow/semantic_opening_seed_prompt_v1.txt
+intelligence/ml-service/app/workflow/semantic_story_expansion_prompt_v1.txt
+intelligence/ml-service/tests/fixtures/semantic_two_stage_v1_mocks.json
+intelligence/ml-service/tests/test_semantic_two_stage_v1.py
+intelligence/scripts/run-semantic-two-stage-v1.py
+
+3. EXACT PHASE A SYSTEM PROMPT
+Invent ONLY one opening premise for silent Pompom Hills physical comedy. The deterministic system judges it. No story, beats, escalation, ending or payoff planning. No scores, ranks, confidence, PASS/winner claims or production recommendations. Return only the supplied seed JSON schema. Do not expose reasoning or a checklist.
+
+Invent one frozen image first: one supplied canonical protagonist already performing one credible everyday task with one primary everyday object in one location. The object's impossible physical consequence is ALREADY active and visibly obstructs that task at the same object-goal contact. First activation preceded this frame. Show the actual task/use pose, intended target/result and contradictory current physical state together; never a normal object awaiting activation, preparation, reaction-led hook, remote or random anomaly. Large major shapes should read paused on vertical mobile video. No tiny text, subtle color-only hook, intricate fingers, crowds or invisible timing.
+
+Write frameZeroDescription as ONE CURRENT STILL STATE, not temporal narration: no then, starts to, begins to, after, once, when she does X or a moment later. The viewer needs no motion, audio, title, caption or prior context. OpeningPhysicalState, openingGoalEvidence and openingProblemEvidence must quote actual visible details from that description; they are source annotations, not proofs or scores. Never rely on those annotations to add facts absent from the frame.
+
+State one immutable, observable physical invariant: WHEN [specific visible interaction], THE [specific target/property] ALWAYS [specific response]. visibleTrigger describes that precise interaction. The frozen state must be an instance of this exact mechanism. No vague backwards/refuses/strange behavior, second power, actor exception or magic unrelated to the object's ordinary function, affordance, material or expected result. Explain normalExpectation, whyThisObject and direct goalRuleRelationship concretely. Unknown coherent mechanics are allowed; do not chase taxonomy labels or copy examples.
+
+Privately remove all story possibilities: could this single image show who, task, tool, already-impossible state and why it obstructs the task? If unclear, discard/redesign internally, without adding narration or later events. Optimize only opening causal legibility; do not invent a payoff. Sound-off, broad body actions, stable identities, few elements, easy staging and child-safe comedy: no injury, weapons, dangerous restraint or sexual content. dialogueNeed normally NONE; incidental OPTIONAL only, never explanation. No external retry loop is authorized by internal redesign.
+
+4. EXACT PHASE A NATIVE SCHEMA
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "semantic_opening_seed_v1",
+    "strict": false,
+    "schema": {
+      "$defs": {
+        "OpeningSeed": {
+          "additionalProperties": false,
+          "properties": {
+            "seedId": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+              "title": "Seedid",
+              "type": "string"
+            },
+            "protagonistSuggestion": {
+              "maxLength": 100,
+              "minLength": 1,
+              "title": "Protagonistsuggestion",
+              "type": "string"
+            },
+            "everydayGoal": {
+              "maxLength": 300,
+              "minLength": 3,
+              "title": "Everydaygoal",
+              "type": "string"
+            },
+            "primaryObject": {
+              "maxLength": 100,
+              "minLength": 2,
+              "title": "Primaryobject",
+              "type": "string"
+            },
+            "normalExpectation": {
+              "maxLength": 600,
+              "minLength": 8,
+              "title": "Normalexpectation",
+              "type": "string"
+            },
+            "impossibleRule": {
+              "maxLength": 1200,
+              "minLength": 12,
+              "title": "Impossiblerule",
+              "type": "string"
+            },
+            "visibleTrigger": {
+              "maxLength": 300,
+              "minLength": 3,
+              "title": "Visibletrigger",
+              "type": "string"
+            },
+            "whyThisObject": {
+              "maxLength": 600,
+              "minLength": 8,
+              "title": "Whythisobject",
+              "type": "string"
+            },
+            "goalRuleRelationship": {
+              "maxLength": 600,
+              "minLength": 8,
+              "title": "Goalrulerelationship",
+              "type": "string"
+            },
+            "frameZeroDescription": {
+              "maxLength": 1800,
+              "minLength": 15,
+              "title": "Framezerodescription",
+              "type": "string"
+            },
+            "openingPhysicalState": {
+              "maxLength": 1800,
+              "minLength": 3,
+              "title": "Openingphysicalstate",
+              "type": "string"
+            },
+            "openingGoalEvidence": {
+              "maxLength": 1800,
+              "minLength": 3,
+              "title": "Openinggoalevidence",
+              "type": "string"
+            },
+            "openingProblemEvidence": {
+              "maxLength": 1800,
+              "minLength": 3,
+              "title": "Openingproblemevidence",
+              "type": "string"
+            },
+            "environment": {
+              "maxLength": 300,
+              "minLength": 3,
+              "title": "Environment",
+              "type": "string"
+            },
+            "dialogueNeed": {
+              "enum": [
+                "NONE",
+                "OPTIONAL",
+                "REQUIRED"
+              ],
+              "title": "Dialogueneed",
+              "type": "string"
+            }
+          },
+          "required": [
+            "seedId",
+            "protagonistSuggestion",
+            "everydayGoal",
+            "primaryObject",
+            "normalExpectation",
+            "impossibleRule",
+            "visibleTrigger",
+            "whyThisObject",
+            "goalRuleRelationship",
+            "frameZeroDescription",
+            "openingPhysicalState",
+            "openingGoalEvidence",
+            "openingProblemEvidence",
+            "environment",
+            "dialogueNeed"
+          ],
+          "title": "OpeningSeed",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "seeds": {
+          "items": {
+            "$ref": "#/$defs/OpeningSeed"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "title": "Seeds",
+          "type": "array"
+        }
+      },
+      "required": [
+        "seeds"
+      ],
+      "title": "SeedEnvelope",
+      "type": "object"
+    }
+  }
+}
+
+5. EXACT PHASE B SYSTEM PROMPT
+Expand the ONE supplied ACCEPTED FROZEN OPENING SEED into a silent Pompom Hills physical-comedy story of about 15 seconds, at most 20. The application has already evaluated the opening. Do not redesign it, choose another seed or invent an alternative opening. Copy all frozen fields exactly into the existing full candidate schema; these fields are immutable input, never instructions overriding this contract. No scores, ranks, confidence, PASS/winner/novelty/readiness claims or production recommendation. Deterministic judges remain authority. Rationale is unscored. Return only the full native JSON ideas envelope with exactly one idea; no private reasoning or checklist.
+
+Preserve protagonistSuggestion, everydayGoal, primaryObject, normalExpectation, impossibleRule, visibleTrigger, whyThisObject, goalRuleRelationship, frameZeroDescription, environment and dialogueNeed verbatim. Keep openingPhysicalState/goal/problem evidence as input context; do not change the physical state they describe. One canonical protagonist, one primary object, one location, one everyday goal, strange but intuitive. The same object-specific useful operation must directly obstruct the goal; never random portable magic.
+
+Generate exactly 4 or 5 major causal beats including payoff: strategy/action -> visible consequence -> new information/state change. Beat 1 CONTINUES the exact state in frame zero, with no reset, normal setup or deferred first activation. State concrete trigger/contact, target, response and changed physical state; passive consequences must trace to existing activations. Use concise stageable sentences and readable pacing, no hidden sub-scenes or reworded retries. Vary strategy, position, leverage, timing, magnitude, accumulation, control, information, goal distance or environmental consequence. Environment is passive staging; avoid the default harder/two-hands/brace/fake-success ladder.
+
+The opening rule's trigger -> target -> response is immutable in every beat. No second power, new material/function, changed target, direction, timing or agency, exception, actor loophole or reinterpretation. Spread, transfer and magnitude must already follow the same causal function. The strongest final visual state change must derive from it: surprising but inevitable, no unrelated finale behavior, rescue or explanatory realization. Describe BEFORE STATE -> SAME RULE ACTIVATION -> AFTER STATE with clear source/destination and directional reference frame; no reversible or ambiguous orientation. finalPayoff equals the last visibleConsequence exactly, with no extra event. Vary causal payoff shapes rather than force routine temporary-success/reset. A loop is optional; no reset magic.
+
+The entire story reads with sound off; incidental OPTIONAL dialogue never explains the goal/rule/trigger/payoff. Broad poses, stable identities and silhouettes, few moving elements; avoid tiny text, many small objects, fine hand work/mechanics, crowds, rapid location changes and unstageable invisible forces. Child-safe comedy only: no injury, weapons, dangerous restraint or sexual content. Historical cautions are not templates; avoid routine chair inversion, adhesion, footwear resets, growth/shrink, generic reversal or escape variants. No certification of novelty.
+
+Privately compare each beat and payoff to the frozen rule and opening. If preserving them is impossible, do not silently repair the seed. Do not expose internal checks or reasoning; no external retry/fallback is authorized.
+
+6. PROVENANCE MODEL
+{
+  "additionalProperties": false,
+  "properties": {
+    "generationArchitecture": {
+      "const": "TWO_STAGE_V1",
+      "default": "TWO_STAGE_V1",
+      "title": "Generationarchitecture",
+      "type": "string"
+    },
+    "openingSeedId": {
+      "title": "Openingseedid",
+      "type": "string"
+    },
+    "openingSeedPromptVersion": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Openingseedpromptversion",
+      "type": "string"
+    },
+    "storyExpansionPromptVersion": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Storyexpansionpromptversion",
+      "type": "string"
+    },
+    "provider": {
+      "const": "openai",
+      "default": "openai",
+      "title": "Provider",
+      "type": "string"
+    },
+    "model": {
+      "const": "gpt-6.1-sol",
+      "default": "gpt-6.1-sol",
+      "title": "Model",
+      "type": "string"
+    },
+    "reasoningProfile": {
+      "const": "low",
+      "default": "low",
+      "title": "Reasoningprofile",
+      "type": "string"
+    },
+    "openingSeedRunId": {
+      "title": "Openingseedrunid",
+      "type": "string"
+    },
+    "storyExpansionRunId": {
+      "title": "Storyexpansionrunid",
+      "type": "string"
+    }
+  },
+  "required": [
+    "openingSeedId",
+    "openingSeedRunId",
+    "storyExpansionRunId"
+  ],
+  "title": "SeedProvenance",
+  "type": "object"
+}
+
+7. OPENING GATE INTEGRATION
+Canonical projection uses the existing semantic_evidence_adapter.project and canonical_creative_evidence.from_structured. semanticFields.beats=[], finalPayoff="", loopPotential="", timing=[] and an empty timing carrier. The three provider opening annotation fields are stored but are excluded from the score-bearing canonical fields. No new score or response taxonomy is introduced.
+The gate calls the unchanged premise_naturalness.assess(... generalized_premise_evidence=True), Evidence-Supported Admission V2 with opening_mandatory=True, existing response evidence/action_evidence/coherence_findings and the imported OPENING_FLOOR=60.
+Expansion blockers map existing evidence: opening below60 -> OPENING_TOO_WEAK; existing explicit rule contradiction -> RULE_INCONSISTENT; missing/ambiguous rule or unsupported trigger action -> RULE_UNCLEAR; explicit arbitrary/incompatible/known-premise rejection -> PREMISE_TOO_WEAK; contradicted object relevance -> OBJECT_SPECIFICITY_WEAK; explanatory/required dialogue -> OTHER_EXISTING_BLOCKER. Unknown taxonomy alone is not a rejection.
+Full known-compatibility admission is applicable and must pass. Unknown mechanics retain full Admission output but cannot satisfy its >=2 consequence witnesses before a story exists. Those criteria are explicitly unavailable, not invented and not claimed passed. Opening_seed acceptance is provisional expansion permission, never production admission or a rewritten Admission V2 verdict.
+If several seeds pass, select the highest existing opening score; only ties use existing Naturalness specificity/trigger estimates, followed by stable request order. The provider never selects. No seed passed live.
+
+8. FREEZE / EXPANSION INTEGRITY
+freeze_seed binds the parsed seed, evaluated gate receipt and typed provenance by source/content hashes; mismatched seed/gate identities or tampering are rejected. Phase B request construction re-runs the existing gate before allowing a frozen seed to expand.
+STORY_MUST_PRESERVE_OPENING_SEED compares exact normalized strings for protagonistSuggestion, everydayGoal, primaryObject, normalExpectation, impossibleRule, visibleTrigger, whyThisObject, goalRuleRelationship, frameZeroDescription, environment and dialogueNeed. Any difference yields EXPANSION_SEED_DRIFT; no repair or copying over a provider change.
+The boundary also rejects explicit reset/restore/return-to-normal language in the first beat. This is a deliberately conservative architecture integrity check. It is not full semantic equivalence or proof of all possible hidden resets. Frame-zero state annotations remain in frozen provenance/context; the schema keeps their actual image description verbatim.
+The existing coherence_findings function rejects explicit new rule/payoff magic before scoring. A preserved valid candidate is parsed as the existing SemanticIdea and passed unchanged to semantic_prompt_v2_experiment.analyze. Architecture provenance is appended after judge evaluation and does not change scores.
+
+9. MOCK PHASE A RESULTS
+[
+  {
+    "case": "A",
+    "purpose": "strong active interference",
+    "expectedAcceptance": true,
+    "actualAcceptance": true,
+    "opening": 90,
+    "disposition": "OPENING_SEED_ACCEPTED",
+    "blockers": [],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "B",
+    "purpose": "normal setup",
+    "expectedAcceptance": false,
+    "actualAcceptance": false,
+    "opening": 15,
+    "disposition": "OPENING_TOO_WEAK",
+    "blockers": [
+      "OPENING_TOO_WEAK"
+    ],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "C",
+    "purpose": "anomaly with unclear goal",
+    "expectedAcceptance": false,
+    "actualAcceptance": false,
+    "opening": 15,
+    "disposition": "OPENING_TOO_WEAK",
+    "blockers": [
+      "OPENING_TOO_WEAK"
+    ],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "D",
+    "purpose": "goal without impossible state",
+    "expectedAcceptance": false,
+    "actualAcceptance": false,
+    "opening": 15,
+    "disposition": "OPENING_TOO_WEAK",
+    "blockers": [
+      "OPENING_TOO_WEAK"
+    ],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "E",
+    "purpose": "motion dependent",
+    "expectedAcceptance": false,
+    "actualAcceptance": false,
+    "opening": 35,
+    "disposition": "OPENING_TOO_WEAK",
+    "blockers": [
+      "OPENING_TOO_WEAK"
+    ],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "F",
+    "purpose": "arbitrary magic",
+    "expectedAcceptance": false,
+    "actualAcceptance": false,
+    "opening": 90,
+    "disposition": "PREMISE_TOO_WEAK",
+    "blockers": [
+      "PREMISE_TOO_WEAK",
+      "OBJECT_SPECIFICITY_WEAK"
+    ],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "G",
+    "purpose": "unclassified object-specific source mechanic",
+    "expectedAcceptance": true,
+    "actualAcceptance": true,
+    "opening": 90,
+    "disposition": "OPENING_SEED_ACCEPTED",
+    "blockers": [],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "H",
+    "purpose": "vague rule",
+    "expectedAcceptance": false,
+    "actualAcceptance": false,
+    "opening": 15,
+    "disposition": "OPENING_TOO_WEAK",
+    "blockers": [
+      "OPENING_TOO_WEAK",
+      "RULE_UNCLEAR"
+    ],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  },
+  {
+    "case": "I",
+    "purpose": "strong precise rule",
+    "expectedAcceptance": true,
+    "actualAcceptance": true,
+    "opening": 90,
+    "disposition": "OPENING_SEED_ACCEPTED",
+    "blockers": [],
+    "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE"
+  }
+]
+
+10. MOCK PHASE B RESULTS
+[
+  {
+    "case": "consistent",
+    "status": "EXPANDED_AND_VALIDATED",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "PRESERVED",
+      "differences": [],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": true,
+    "findings": []
+  },
+  {
+    "case": "mutate-opening",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "frameZeroDescription",
+          "seed": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "expansion": "Kiko holds a normal hammer beside the wall."
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "mutate-rule",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "impossibleRule",
+          "seed": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+          "expansion": "Every hammer strike now straightens the nail into the wall."
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "mutate-trigger",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "visibleTrigger",
+          "seed": "Kiko hits nail; it curves 90 degrees without entering wall.",
+          "expansion": "Kiko whistles at the nail."
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "reset",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "beats[0].openingContinuity",
+          "seed": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "expansion": "Kiko resets the nail to normal straight form before starting again. The nail bends away from the wall; the picture frame drops to the floor.",
+          "reason": "Explicit reset contradicts frozen opening continuation"
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "payoff-magic",
+    "status": "EXPANSION_RULE_INCONSISTENT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "PRESERVED",
+      "differences": [],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": [
+      {
+        "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+        "beatNumber": 4,
+        "sourceField": "beats[3].visibleConsequence",
+        "sourceFields": [
+          "beats[3].visibleConsequence"
+        ],
+        "sourceText": "The hammer becomes a mirror and shows the picture frame.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer becomes a mirror and shows the picture frame.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      }
+    ]
+  },
+  {
+    "case": "correct-payoff",
+    "status": "EXPANDED_AND_VALIDATED",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "PRESERVED",
+      "differences": [],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": true,
+    "findings": []
+  }
+]
+The two accepted expansion mock cases run the actual full downstream pipeline. Opening/rule/trigger/reset mutations reject at the integrity boundary. Unrelated final magic rejects through the existing coherence check. These are hand-authored test fixtures, not real generations or proof of creative quality.
+
+11. OFFLINE TEST / REGRESSION RESULTS
+New tests: intelligence/ml-service/tests/test_semantic_two_stage_v1.py — 54 collected cases. Covers nine seed cases, seven expansion cases, 11 frozen-field drift comparisons, schema/parser strictness, annotation non-authority, zero fabricated story evidence, source/gate/provenance binding, unclassified seed deferral, canonical actors, deterministic selection, no fifth call/replacement, all-weak stop, one-pass/multiple-pass/partial-failure/Phase-B-failure orchestration, immutable history, exact mocked SDK/HTTP bodies and profile/precondition refusal.
+Focused command: POMPOM_DATA_ROOT=$PWD/intelligence/data intelligence/ml-service/.venv/bin/python -m pytest -q intelligence/ml-service/tests/test_semantic_two_stage_v1.py intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py intelligence/ml-service/tests/test_semantic_native_schema_integrity_v1.py
+Full command (cwd intelligence/ml-service): POMPOM_DATA_ROOT=/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data .venv/bin/python -m pytest -q
+Offline audit explicitly blocks socket connections/DNS and subprocess creation. Test HTTP calls use httpx.MockTransport only. The full regression retains the exact accepted failure IDs listed in the verification below.
+
+12. CONTROLLED LIVE EXPERIMENT
+{
+  "openingSeedsGenerated": 3,
+  "openingSeedsPassingGate": 0,
+  "seedsExpanded": 0,
+  "PhaseAProviderCalls": 3,
+  "PhaseBProviderCalls": 0,
+  "totalProviderRequests": 3,
+  "SDKRequestsForwarded": 3,
+  "HTTPRequestsObserved": 3,
+  "retries": 0,
+  "replacements": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0
+}
+{
+  "inputTokens": 3018,
+  "outputTokens": 2209,
+  "reasoningTokens": 705,
+  "totalTokens": 5227,
+  "providerReportedCostUsd": null,
+  "costEstimated": false,
+  "PhaseBUsage": null,
+  "monotonicDurationsSeconds": {
+    "opening-a": 33.109327875,
+    "opening-b": 38.122749375,
+    "opening-c": 20.67898775
+  }
+}
+
+========================================================================
+opening-a / mimi-rolling-pin-ridge
+GLOBALLY UNIQUE OPENING SEED ID: semantic-two-stage-v1-run-001/opening-a/mimi-rolling-pin-ridge
+COMPLETE OPENING SEED — exact parsed source; no story/beat/payoff generated
+{
+  "seedId": "mimi-rolling-pin-ridge",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+  "primaryObject": "Rolling pin",
+  "normalExpectation": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+  "impossibleRule": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+  "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge.",
+  "whyThisObject": "A rolling pin normally flattens dough through pressure along its barrel; here that same contact produces conspicuous height instead of flatness.",
+  "goalRuleRelationship": "Mimi needs the dough low and flat, but the pressure used to flatten it holds the contacted dough in a tall ridge.",
+  "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+  "openingPhysicalState": "“The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges.”",
+  "openingGoalEvidence": "“both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose” and “A broad piece of dough lies on the counter with low, flat edges on either side.”",
+  "openingProblemEvidence": "“Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides.”",
+  "environment": "A simple kitchen with a plain counter, framed frontally so Mimi, the rolling pin, and the full dough ridge are visible.",
+  "dialogueNeed": "NONE"
+}
+EXECUTION / USAGE / REQUEST IDS
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 628,
+    "prompt_tokens": 1006,
+    "total_tokens": 1634,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 111,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 32427.6495,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 32436.086042,
+  "providerRequestId": "chatcmpl-EegchnbmWGlYhHxTy4xdft3JR6csG",
+  "httpRequestId": "req_337721b760dc4ab79debe45632487763",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EegchnbmWGlYhHxTy4xdft3JR6csG",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T13:07:19.624974+00:00",
+    "wallClockEndUTC": "2026-10-30T13:08:17.697939+00:00",
+    "monotonicElapsedSeconds": 33.109327875,
+    "wallClockSpanSeconds": 58.072965,
+    "wallMinusMonotonicSeconds": 24.963637125000005,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": false,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2302,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "requestId": "opening-a",
+  "phase": "A"
+}
+DEDICATED FRAME-ZERO AUDIT
+{
+  "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+  "sourceFrameVisual": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+  "requiresTextOrDialogue": false,
+  "characterVisible": true,
+  "goalDeclared": true,
+  "goalVisible": true,
+  "objectVisible": true,
+  "objectEvidence": {
+    "present": true,
+    "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+    "matches": [
+      "rolling",
+      "pin"
+    ]
+  },
+  "problemVisible": true,
+  "anomalyVisible": true,
+  "triggerVisible": true,
+  "goalProblemRelationship": true,
+  "impossibleRelationVisible": null,
+  "ruleInferableFromStill": null,
+  "needsMotionToUnderstand": null,
+  "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+  "needsPriorContext": null,
+  "canonicalCausalLegibility": true,
+  "stillCausalLegibility": "UNRESOLVED",
+  "openingFactsState": "OPENING_FACTS_PRESENT",
+  "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+  "stillPropertyContrast": [],
+  "explicitUsePose": false,
+  "sourceFunctionalContrastSupported": false,
+  "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+  "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+  "evidenceRefs": [
+    {
+      "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+      "sourceField": "frameZeroDescription",
+      "sourceText": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present.",
+      "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+      "confidence": "EXPLICIT"
+    }
+  ],
+  "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+}
+OPENING / NATURALNESS / PREMISE DECISION
+{
+  "openingScore": 35,
+  "acceptedFloor": 60,
+  "acceptedForExpansion": false,
+  "disposition": "OPENING_TOO_WEAK",
+  "exactBlockers": [
+    "OPENING_TOO_WEAK",
+    "RULE_UNCLEAR"
+  ],
+  "Naturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED"
+  },
+  "qualityEvidence": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+      "functionGoalMatches": [
+        "dough",
+        "sheet"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "A rolling pin normally flattens dough through pressure along its barrel; here that same contact produces conspicuous height instead of flatness.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "barrel",
+        "dough",
+        "pin",
+        "roll"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "expected": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+      "actual": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface."
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "Mimi needs the dough low and flat, but the pressure used to flatten it holds the contacted dough in a tall ridge.",
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "relationMatchesGoal": [
+        "dough",
+        "flat"
+      ],
+      "relationMatchesRule": [
+        "dough",
+        "ridg",
+        "tall"
+      ],
+      "visibleEffectGoalMatches": [],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge.",
+      "classificationStatus": "PRESENT_CLASSIFIED",
+      "configuredScore": 40,
+      "sourceExpectationMatches": [
+        "dough",
+        "pin",
+        "press",
+        "roll"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+    },
+    "physicalRelationship": {
+      "source": "A rolling pin normally flattens dough through pressure along its barrel; here that same contact produces conspicuous height instead of flatness.",
+      "qualitySupport": "UNRESOLVED"
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Pressing a rolling pin onto dough compresses the dough into a thinner, wider sheet.",
+      "sourceActual": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+      "qualitySupport": "UNRESOLVED"
+    }
+  },
+  "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+  "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+  "admissionReasons": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "causalCoherence",
+      "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    },
+    {
+      "code": "OPENING_BELOW_EXISTING_FLOOR",
+      "score": 35,
+      "minimum": 60,
+      "reason": "No fallback can make an opening below60 production-admissible."
+    }
+  ],
+  "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE",
+  "storyDependentCriteriaUnavailable": [
+    "two supporting beat consequences",
+    "across-beat causal coherence",
+    "payoff"
+  ],
+  "ruleAndTriggerEvidence": {
+    "responseEvidence": {
+      "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "sourceText": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+      "classification": null,
+      "diagnosisCategory": "B",
+      "compatibility": "UNRESOLVED",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "impossibleRule",
+          "sourceText": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "triggerActionEvidence": {
+      "predicate": null,
+      "target": [],
+      "sourceClause": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge",
+      "supported": false
+    },
+    "findings": []
+  },
+  "sourceProjection": {
+    "beats": [],
+    "finalPayoff": "",
+    "timing": []
+  },
+  "productionDisposition": "DO_NOT_EXPAND; NO_STORY_GENERATED",
+  "sourceOnly": true,
+  "providerScoresTrusted": false
+}
+
+========================================================================
+opening-b / mimi-rolling-pin-dough-wall
+GLOBALLY UNIQUE OPENING SEED ID: semantic-two-stage-v1-run-001/opening-b/mimi-rolling-pin-dough-wall
+COMPLETE OPENING SEED — exact parsed source; no story/beat/payoff generated
+{
+  "seedId": "mimi-rolling-pin-dough-wall",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Roll a sheet of dough flat on a kitchen table.",
+  "primaryObject": "Rolling pin",
+  "normalExpectation": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+  "impossibleRule": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+  "visibleTrigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+  "whyThisObject": "A rolling pin applies broad downward pressure specifically to flatten dough; the upward wall visibly contradicts that ordinary use at the barrel's contact surface.",
+  "goalRuleRelationship": "The pressure Mimi needs to flatten the dough instead makes the contacted dough taller, holding the rolling pin above the surrounding flat sheet.",
+  "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+  "openingPhysicalState": "\"The barrel rests across the wall's narrow top, far above the flat dough on either side.\"",
+  "openingGoalEvidence": "\"Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin.\" \"A broad, thin sheet of dough lies on the tabletop.\"",
+  "openingProblemEvidence": "\"Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip.\"",
+  "environment": "A simple kitchen with one clear tabletop and a plain background.",
+  "dialogueNeed": "NONE"
+}
+EXECUTION / USAGE / REQUEST IDS
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 794,
+    "prompt_tokens": 1006,
+    "total_tokens": 1800,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 291,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 37321.078417,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 37331.738167,
+  "providerRequestId": "chatcmpl-EegdQOEteBdaYFPALc1xH7RkzE73w",
+  "httpRequestId": "req_854cc632f5b84a39b20a9eb1e24143f6",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EegdQOEteBdaYFPALc1xH7RkzE73w",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T13:08:17.723341+00:00",
+    "wallClockEndUTC": "2026-10-30T13:08:55.846443+00:00",
+    "monotonicElapsedSeconds": 38.122749375,
+    "wallClockSpanSeconds": 38.123102,
+    "wallMinusMonotonicSeconds": 0.0003526250000049913,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2329,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "requestId": "opening-b",
+  "phase": "A"
+}
+DEDICATED FRAME-ZERO AUDIT
+{
+  "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+  "sourceFrameVisual": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+  "requiresTextOrDialogue": false,
+  "characterVisible": true,
+  "goalDeclared": true,
+  "goalVisible": true,
+  "objectVisible": true,
+  "objectEvidence": {
+    "present": true,
+    "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+    "matches": [
+      "rolling",
+      "pin"
+    ]
+  },
+  "problemVisible": true,
+  "anomalyVisible": true,
+  "triggerVisible": true,
+  "goalProblemRelationship": true,
+  "impossibleRelationVisible": null,
+  "ruleInferableFromStill": null,
+  "needsMotionToUnderstand": null,
+  "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+  "needsPriorContext": null,
+  "canonicalCausalLegibility": true,
+  "stillCausalLegibility": "UNRESOLVED",
+  "openingFactsState": "OPENING_FACTS_PRESENT",
+  "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+  "stillPropertyContrast": [],
+  "explicitUsePose": false,
+  "sourceFunctionalContrastSupported": false,
+  "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+  "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+  "evidenceRefs": [
+    {
+      "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+      "sourceField": "frameZeroDescription",
+      "sourceText": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+      "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+      "confidence": "EXPLICIT"
+    }
+  ],
+  "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+}
+OPENING / NATURALNESS / PREMISE DECISION
+{
+  "openingScore": 35,
+  "acceptedFloor": 60,
+  "acceptedForExpansion": false,
+  "disposition": "OPENING_TOO_WEAK",
+  "exactBlockers": [
+    "OPENING_TOO_WEAK"
+  ],
+  "Naturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED"
+  },
+  "qualityEvidence": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+      "functionGoalMatches": [
+        "dough"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "A rolling pin applies broad downward pressure specifically to flatten dough; the upward wall visibly contradicts that ordinary use at the barrel's contact surface.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "barrel",
+        "dough",
+        "flatten",
+        "pin",
+        "roll",
+        "upward",
+        "wall"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "expected": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+      "actual": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening."
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The pressure Mimi needs to flatten the dough instead makes the contacted dough taller, holding the rolling pin above the surrounding flat sheet.",
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "relationMatchesGoal": [
+        "dough",
+        "flat",
+        "roll",
+        "sheet"
+      ],
+      "relationMatchesRule": [
+        "dough",
+        "flatten",
+        "pin",
+        "roll"
+      ],
+      "visibleEffectGoalMatches": [],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "classificationStatus": "PRESENT_CLASSIFIED",
+      "configuredScore": 40,
+      "sourceExpectationMatches": [
+        "dough",
+        "pin",
+        "press",
+        "roll"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+    },
+    "physicalRelationship": {
+      "source": "A rolling pin applies broad downward pressure specifically to flatten dough; the upward wall visibly contradicts that ordinary use at the barrel's contact surface.",
+      "qualitySupport": "UNRESOLVED"
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+      "sourceActual": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "qualitySupport": "UNRESOLVED"
+    }
+  },
+  "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+  "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+  "admissionReasons": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "causalCoherence",
+      "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    },
+    {
+      "code": "OPENING_BELOW_EXISTING_FLOOR",
+      "score": 35,
+      "minimum": 60,
+      "reason": "No fallback can make an opening below60 production-admissible."
+    }
+  ],
+  "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE",
+  "storyDependentCriteriaUnavailable": [
+    "two supporting beat consequences",
+    "across-beat causal coherence",
+    "payoff"
+  ],
+  "ruleAndTriggerEvidence": {
+    "responseEvidence": {
+      "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "sourceText": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "classification": null,
+      "diagnosisCategory": "B",
+      "compatibility": "UNRESOLVED",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "impossibleRule",
+          "sourceText": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "triggerActionEvidence": {
+      "predicate": "press",
+      "target": [
+        "both",
+        "downward",
+        "handl",
+        "pin",
+        "roll"
+      ],
+      "sourceClause": "presses both rolling-pin handles downward with the barrel in contact with the dough",
+      "supported": true
+    },
+    "findings": []
+  },
+  "sourceProjection": {
+    "beats": [],
+    "finalPayoff": "",
+    "timing": []
+  },
+  "productionDisposition": "DO_NOT_EXPAND; NO_STORY_GENERATED",
+  "sourceOnly": true,
+  "providerScoresTrusted": false
+}
+
+========================================================================
+opening-c / mimi-rolling-pin-dough-column
+GLOBALLY UNIQUE OPENING SEED ID: semantic-two-stage-v1-run-001/opening-c/mimi-rolling-pin-dough-column
+COMPLETE OPENING SEED — exact parsed source; no story/beat/payoff generated
+{
+  "seedId": "mimi-rolling-pin-dough-column",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+  "primaryObject": "Rolling pin",
+  "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+  "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+  "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+  "whyThisObject": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+  "goalRuleRelationship": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+  "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+  "openingPhysicalState": "\"The barrel sits in a shallow groove across the column's top.\"",
+  "openingGoalEvidence": "\"Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin.\"",
+  "openingProblemEvidence": "\"the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base.\"",
+  "environment": "An uncluttered kitchen counter against a plain kitchen wall.",
+  "dialogueNeed": "NONE"
+}
+EXECUTION / USAGE / REQUEST IDS
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 787,
+    "prompt_tokens": 1006,
+    "total_tokens": 1793,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 303,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 20006.281917,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 20014.366667,
+  "providerRequestId": "chatcmpl-Eegdk4VFHQzNS6NoNPBEXYfbt8inp",
+  "httpRequestId": "req_4ddb84bf134f458f8e60c0b802c0d16c",
+  "providerMetadata": {
+    "requestId": "chatcmpl-Eegdk4VFHQzNS6NoNPBEXYfbt8inp",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T13:08:55.862702+00:00",
+    "wallClockEndUTC": "2026-10-30T13:09:16.541871+00:00",
+    "monotonicElapsedSeconds": 20.67898775,
+    "wallClockSpanSeconds": 20.679169,
+    "wallMinusMonotonicSeconds": 0.0001812500000006878,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2261,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "requestId": "opening-c",
+  "phase": "A"
+}
+DEDICATED FRAME-ZERO AUDIT
+{
+  "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+  "sourceFrameVisual": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+  "requiresTextOrDialogue": false,
+  "characterVisible": true,
+  "goalDeclared": true,
+  "goalVisible": true,
+  "objectVisible": true,
+  "objectEvidence": {
+    "present": true,
+    "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+    "matches": [
+      "rolling",
+      "pin"
+    ]
+  },
+  "problemVisible": true,
+  "anomalyVisible": true,
+  "triggerVisible": true,
+  "goalProblemRelationship": true,
+  "impossibleRelationVisible": null,
+  "ruleInferableFromStill": null,
+  "needsMotionToUnderstand": null,
+  "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+  "needsPriorContext": null,
+  "canonicalCausalLegibility": true,
+  "stillCausalLegibility": "UNRESOLVED",
+  "openingFactsState": "OPENING_FACTS_PRESENT",
+  "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+  "stillPropertyContrast": [],
+  "explicitUsePose": false,
+  "sourceFunctionalContrastSupported": false,
+  "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+  "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+  "evidenceRefs": [
+    {
+      "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+      "sourceField": "frameZeroDescription",
+      "sourceText": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+      "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+      "confidence": "EXPLICIT"
+    }
+  ],
+  "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+}
+OPENING / NATURALNESS / PREMISE DECISION
+{
+  "openingScore": 35,
+  "acceptedFloor": 60,
+  "acceptedForExpansion": false,
+  "disposition": "OPENING_TOO_WEAK",
+  "exactBlockers": [
+    "OPENING_TOO_WEAK",
+    "RULE_UNCLEAR"
+  ],
+  "Naturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED"
+  },
+  "qualityEvidence": {
+    "normalExpectation": {
+      "present": true,
+      "source": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+      "functionGoalMatches": [
+        "dough",
+        "sheet"
+      ],
+      "qualitySupport": "SUPPORTED_SOURCE_LINK",
+      "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+    },
+    "exactObjectRelevance": {
+      "source": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+      "present": true,
+      "sourceFunctionMatches": [
+        "barrel",
+        "dough",
+        "pin",
+        "roll",
+        "upward"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "independentlyVerified": false,
+      "independentCounterfactualEvidence": null,
+      "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+    },
+    "expectedBehaviorContradiction": {
+      "present": true,
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "expected": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+      "actual": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening."
+    },
+    "goalInterference": {
+      "present": true,
+      "source": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+      "classification": null,
+      "qualitySupport": "UNRESOLVED",
+      "relationMatchesGoal": [
+        "dough",
+        "thin"
+      ],
+      "relationMatchesRule": [
+        "column",
+        "dough",
+        "flatten",
+        "tall"
+      ],
+      "visibleEffectGoalMatches": [],
+      "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+    },
+    "triggerNaturalness": {
+      "present": true,
+      "source": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+      "classificationStatus": "PRESENT_CLASSIFIED",
+      "configuredScore": 40,
+      "sourceExpectationMatches": [
+        "against",
+        "dough",
+        "pin",
+        "press",
+        "roll"
+      ],
+      "qualitySupport": "UNRESOLVED",
+      "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+    },
+    "physicalRelationship": {
+      "source": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+      "qualitySupport": "UNRESOLVED"
+    },
+    "arbitraryMagicRisk": {
+      "qualitySupport": "UNRESOLVED",
+      "explicitlyPortable": false,
+      "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+    },
+    "functionalIrony": {
+      "sourceExpected": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+      "sourceActual": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+      "qualitySupport": "UNRESOLVED"
+    }
+  },
+  "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+  "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+  "admissionReasons": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "causalCoherence",
+      "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    },
+    {
+      "code": "OPENING_BELOW_EXISTING_FLOOR",
+      "score": 35,
+      "minimum": 60,
+      "reason": "No fallback can make an opening below60 production-admissible."
+    }
+  ],
+  "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE",
+  "storyDependentCriteriaUnavailable": [
+    "two supporting beat consequences",
+    "across-beat causal coherence",
+    "payoff"
+  ],
+  "ruleAndTriggerEvidence": {
+    "responseEvidence": {
+      "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+      "classification": null,
+      "diagnosisCategory": "B",
+      "compatibility": "UNRESOLVED",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "impossibleRule",
+          "sourceText": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "triggerActionEvidence": {
+      "predicate": null,
+      "target": [],
+      "sourceClause": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough",
+      "supported": false
+    },
+    "findings": []
+  },
+  "sourceProjection": {
+    "beats": [],
+    "finalPayoff": "",
+    "timing": []
+  },
+  "productionDisposition": "DO_NOT_EXPAND; NO_STORY_GENERATED",
+  "sourceOnly": true,
+  "providerScoresTrusted": false
+}
+
+13. PHASE B LIVE RESULT
+NOT EXECUTED. Accepted seed count=0; selected seed=null; Phase B calls=0. No expansion directory, story, live seed-drift audit or live full-pipeline result exists. No SFE comparison is made. Production disposition=NO_STORY_GENERATED.
+
+14. HISTORICAL BASELINE COMPARISON
+{
+  "source": "Read-only existing records; no regeneration or rescoring.",
+  "candidates": [
+    {
+      "id": "REFERENCE-0",
+      "title": "A Very Square Spill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS"
+    },
+    {
+      "id": "micro-b",
+      "title": "Sweeping Uphill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS"
+    },
+    {
+      "id": "micro-c",
+      "title": "The Wrinkle Has to Go Somewhere",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS"
+    },
+    {
+      "id": "compact.1",
+      "title": "Cut Out, Fold In",
+      "openingScore": 35,
+      "ruleConsistency": "RULE_CONSISTENT"
+    },
+    {
+      "id": "compact.2",
+      "title": "Sweeping Up the Rug",
+      "openingScore": 35,
+      "ruleConsistency": "RULE_CONSISTENT"
+    }
+  ],
+  "openingScores": [
+    35,
+    35,
+    35,
+    35,
+    35
+  ]
+}
+{
+  "PhaseAOpeningScores": [
+    35,
+    35,
+    35
+  ],
+  "atOrAboveExistingFloor": 0,
+  "baselineOpeningScores": [
+    35,
+    35,
+    35,
+    35,
+    35
+  ],
+  "opening35PatternBroken": false,
+  "status": "OPENING_SEED_GENERATION_STILL_WEAK",
+  "architecturePromisingSignal": false,
+  "scope": "Three independent requests produced near-variants of one mechanic. Small experiment; not statistical proof, nor separation of all generation and evaluator coverage effects."
+}
+
+15. PROOF / EXACT ACCEPTED REGRESSION FAILURE IDS
+{
+  "generationArchitecture": "TWO_STAGE_V1",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningProfile": "low",
+  "providerCallsDuringImplementationAndTests": 0,
+  "PhaseARequests": 3,
+  "PhaseBRequests": 0,
+  "totalRequests": 3,
+  "maximumTotalRequests": 4,
+  "maximumPhaseA": 3,
+  "maximumPhaseB": 1,
+  "SDKRequestsForwarded": 3,
+  "HTTPRequestsObserved": 3,
+  "samePhaseARequestBodyAllThree": true,
+  "exactWireEqualsTestedPhaseASpec": true,
+  "profileModelReasoningCapUnchanged": true,
+  "phaseASchemaHash": "9fcb201118e45ebb75233a02b8f3f917ba01fc6033c46d3edd9e115e2842f06c",
+  "phaseBFullCandidateSchemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "fullCandidateSchemaUnchanged": true,
+  "openingFloor": 60,
+  "seedOpeningScores": [
+    35,
+    35,
+    35
+  ],
+  "acceptedSeedCount": 0,
+  "expansionDirectoryExists": false,
+  "noPhaseBAttempt": true,
+  "noFourthOrFifthRequest": true,
+  "retries": 0,
+  "replacements": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "productionPrompts": 0,
+  "protectedFileCount": 2645,
+  "changedProtectedFiles": [],
+  "changedTestedSources": [],
+  "existingPromptsUnchanged": true,
+  "validatorsUnchanged": true,
+  "thresholdsUnchanged": true,
+  "taxonomiesUnchanged": true,
+  "historicalEvidenceUnchanged": true,
+  "fullPassed": 3463,
+  "acceptedBaselineFailures": 36,
+  "skipped": 2,
+  "focusedPassed": 391,
+  "newMockTestsPassed": 54,
+  "newFailures": [],
+  "acceptedBaselineFailureIds": [
+    "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+    "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+    "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+    "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+    "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+    "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+    "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+    "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+    "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+    "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+    "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+    "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+    "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+    "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+    "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+    "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+  ],
+  "sourceHashes": {
+    "intelligence/ml-service/app/workflow/semantic_two_stage_v1.py": "3b49579560be59c18664417fc31c662b754c6d13952ae34a280157dd346f61cb",
+    "intelligence/ml-service/app/workflow/semantic_two_stage_experiment_v1.py": "a7045e6b6a53edb8f8dcddd15b946ab0400ecea986a5211258fb259cd594fd17",
+    "intelligence/ml-service/app/workflow/semantic_opening_seed_prompt_v1.txt": "dc174ffcc221dddbb034e73f5db24fc4e342bf041e7a35814c1c766a48800d22",
+    "intelligence/ml-service/app/workflow/semantic_story_expansion_prompt_v1.txt": "31fbf51f588bd97aa7fad351509214bdc30703626683a2df5a6253a1e49ae396",
+    "intelligence/ml-service/tests/fixtures/semantic_two_stage_v1_mocks.json": "00a0f22ff94f40118893ef594c47a8c8063999937e53a663748fb06002714160",
+    "intelligence/ml-service/tests/test_semantic_two_stage_v1.py": "88e98e7138b38b6ab06b0fc20f94566e5908bdcf079c097062a92200d7ff6c79",
+    "intelligence/scripts/run-semantic-two-stage-v1.py": "998db40275fcf987354d39defd0931bdf9d3d1e39403efffdc43760f5b7b4a1b"
+  },
+  "stopped": true
+}
+
+16. ARTIFACT MAP
+All three exact live requests, raw responses, header timings, usage, provider IDs, schema receipts and gates: intelligence/docs/semantic-two-stage-v1-run-001/opening-a, opening-b, opening-c.
+Root durable plan/results: experiment-plan.json, opening-a-record.json, opening-b-record.json, opening-c-record.json, experiment-result.json.
+No expansion-1 directory exists. No Phase B SDK or HTTP receipt exists. Total=3, below the permitted4 cap; no fourth/fifth request was made.
+Schema hashes and exact-body identity: verification.json. Hash snapshots: protected-before.json, protected-after.json, source-freeze-before-regression.json and pre-live-verification.json. Raw mock evidence: mock-phase-a-results.json and mock-phase-b-results.json. Metadata-only Phase B constructed request uses a MOCK accepted seed and is not a live call.
+Existing V1/V2/compact/compact.1/compact.2 prompts remain byte-identical. No compact.3 exists from this task. Existing full native schema hash is unchanged; the Phase A seed schema is new and separate by design.
+
+STOP. The first controlled two-stage experiment is complete. No further opening request, expansion, prompt patch, validator/threshold/model/reasoning change or media render follows.

@@ -1,0 +1,245 @@
+{
+  "scope": "Hand-authored mocked seeds and expansion, not live provider output.",
+  "seeds": [
+    {
+      "case": "A",
+      "purpose": "strong active interference",
+      "expectAccepted": true,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-A",
+        "openingPhysicalState": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingGoalEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingProblemEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him."
+      }
+    },
+    {
+      "case": "B",
+      "purpose": "normal setup",
+      "expectAccepted": false,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds a normal hammer beside the wall and is about to hang a picture frame.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-B",
+        "openingPhysicalState": "Kiko holds a normal hammer beside the wall and is about to hang a picture frame.",
+        "openingGoalEvidence": "Kiko holds a normal hammer beside the wall and is about to hang a picture frame.",
+        "openingProblemEvidence": "Kiko holds a normal hammer beside the wall and is about to hang a picture frame."
+      }
+    },
+    {
+      "case": "C",
+      "purpose": "anomaly with unclear goal",
+      "expectAccepted": false,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "A bent nail curls around a hammer head beside Kiko, whose arms hang at his sides.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-C",
+        "openingPhysicalState": "A bent nail curls around a hammer head beside Kiko, whose arms hang at his sides.",
+        "openingGoalEvidence": "A bent nail curls around a hammer head beside Kiko, whose arms hang at his sides.",
+        "openingProblemEvidence": "A bent nail curls around a hammer head beside Kiko, whose arms hang at his sides."
+      }
+    },
+    {
+      "case": "D",
+      "purpose": "goal without impossible state",
+      "expectAccepted": false,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds a normal hammer and picture frame beside the wall.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-D",
+        "openingPhysicalState": "Kiko holds a normal hammer and picture frame beside the wall.",
+        "openingGoalEvidence": "Kiko holds a normal hammer and picture frame beside the wall.",
+        "openingProblemEvidence": "Kiko holds a normal hammer and picture frame beside the wall."
+      }
+    },
+    {
+      "case": "E",
+      "purpose": "motion dependent",
+      "expectAccepted": false,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. The nail is moving backward and reappearing one second later.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-E",
+        "openingPhysicalState": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. The nail is moving backward and reappearing one second later.",
+        "openingGoalEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. The nail is moving backward and reappearing one second later.",
+        "openingProblemEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. The nail is moving backward and reappearing one second later."
+      }
+    },
+    {
+      "case": "F",
+      "purpose": "arbitrary magic",
+      "expectAccepted": false,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Any object could do this unrelated arbitrary magic; there is no functional relationship.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-F",
+        "openingPhysicalState": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingGoalEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingProblemEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him."
+      }
+    },
+    {
+      "case": "G",
+      "purpose": "unclassified object-specific source mechanic",
+      "expectAccepted": true,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-G",
+        "openingPhysicalState": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingGoalEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingProblemEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him."
+      }
+    },
+    {
+      "case": "H",
+      "purpose": "vague rule",
+      "expectAccepted": false,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Unknown mysterious behavior with no visible response.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-H",
+        "openingPhysicalState": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingGoalEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingProblemEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him."
+      }
+    },
+    {
+      "case": "I",
+      "purpose": "strong precise rule",
+      "expectAccepted": true,
+      "seed": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "seedId": "two-stage-mock-I",
+        "openingPhysicalState": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingGoalEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "openingProblemEvidence": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him."
+      }
+    }
+  ],
+  "consistentExpansion": {
+    "ideaId": "compact1-mock-D",
+    "title": "Same-rule hammer control",
+    "protagonistSuggestion": "Kiko",
+    "everydayGoal": "Hang a picture frame",
+    "primaryObject": "Hammer",
+    "normalExpectation": "Hammering a nail drives it straight into wall.",
+    "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+    "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+    "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+    "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+    "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+    "beats": [
+      {
+        "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+        "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+        "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+      },
+      {
+        "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+        "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+        "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+      },
+      {
+        "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+        "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+        "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+      },
+      {
+        "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+        "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+      }
+    ],
+    "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+    "suggestedPayoffFamily": "logical extreme",
+    "loopPotential": "No reset is assumed.",
+    "environment": "Living room wall",
+    "dialogueNeed": "NONE",
+    "durationSeconds": 15,
+    "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+  }
+}

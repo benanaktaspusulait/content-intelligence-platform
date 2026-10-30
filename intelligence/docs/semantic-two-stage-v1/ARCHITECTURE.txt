@@ -1,0 +1,31 @@
+TWO-STAGE SEMANTIC IDEATION V1
+
+Phase A: one opening seed per independent request, three planned slots.
+  New versioned seed prompt and 15-field seed schema. No beats/payoff/scores.
+  Strict parser -> canonical source projection with ZERO beats/payoff.
+  Existing generalized Naturalness/opening evaluator and Admission V2 evidence.
+  Hard gate: existing OPENING_FLOOR=60. Existing clear premise/rule/trigger blockers.
+  Unknown story-dependent evidence remains unavailable; no fabricated consequences.
+
+Select at most one accepted seed after all three planned Phase A slots.
+  Highest existing opening score; existing Naturalness specificity/trigger scores
+  only for ties, then stable request order. Provider never selects.
+
+Freeze source seed + evaluated gate receipt + provenance with content hashes.
+
+Phase B: one expansion request, only if an accepted seed exists.
+  New expansion prompt + existing corrected full native candidate schema.
+  Same provider/model/LOW profile, native non-streaming mode, token cap/timeouts.
+  Exact frozen-field boundary + explicit first-beat reset check; reject seed drift.
+  Existing source-coherence check; no repair/retry/alternate story.
+  Existing full analyze pipeline with canonical evidence, Naturalness, Admission,
+  Beat Grammar, Structured SFE, Creative Shape, historical territory, ranking,
+  and production preselection. Append architecture provenance; no score override.
+
+Budgets: Phase A <=3, Phase B <=1, total <=4. SDK retries disabled, HTTP cap one
+per slot. Whole-run exclusive directory prevents rerunning/resuming/replacements.
+If no seed passes, zero Phase B calls. If all three are below60, stop with
+OPENING_SEED_GENERATION_STILL_WEAK.
+
+Existing prompts, full candidate schema, validators, thresholds, taxonomies,
+historical sources and default generation routing remain unchanged.

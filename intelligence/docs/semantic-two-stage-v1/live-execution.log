@@ -1,0 +1,19 @@
+{
+  "status": "OPENING_SEED_GENERATION_STILL_WEAK",
+  "selectedOpeningSeedId": null,
+  "metrics": {
+    "openingSeedsGenerated": 3,
+    "openingSeedsPassingGate": 0,
+    "seedsExpanded": 0,
+    "PhaseAProviderCalls": 3,
+    "PhaseBProviderCalls": 0,
+    "totalProviderRequests": 3,
+    "SDKRequestsForwarded": 3,
+    "HTTPRequestsObserved": 3,
+    "retries": 0,
+    "replacements": 0,
+    "fallbacks": 0,
+    "DeepSeekCalls": 0,
+    "renders": 0
+  }
+}

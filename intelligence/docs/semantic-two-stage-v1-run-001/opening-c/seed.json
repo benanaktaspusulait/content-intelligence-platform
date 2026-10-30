@@ -1,0 +1,17 @@
+{
+  "seedId": "mimi-rolling-pin-dough-column",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+  "primaryObject": "Rolling pin",
+  "normalExpectation": "Pressing a rolling pin against dough compresses and spreads the dough into a thinner sheet.",
+  "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+  "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough, with Mimi bearing down on both handles.",
+  "whyThisObject": "A rolling pin normally reduces dough's thickness through direct pressure; its broad horizontal barrel makes the contradictory upward thickness easy to see.",
+  "goalRuleRelationship": "The pressure needed to flatten the dough instead creates a tall column at the exact place Mimi is trying to make thin.",
+  "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible.",
+  "openingPhysicalState": "\"The barrel sits in a shallow groove across the column's top.\"",
+  "openingGoalEvidence": "\"Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin.\"",
+  "openingProblemEvidence": "\"the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base.\"",
+  "environment": "An uncluttered kitchen counter against a plain kitchen wall.",
+  "dialogueNeed": "NONE"
+}

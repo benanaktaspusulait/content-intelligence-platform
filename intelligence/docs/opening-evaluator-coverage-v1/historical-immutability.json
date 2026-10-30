@@ -1,0 +1,15 @@
+{
+  "protectedInputCount": 814,
+  "changedPaths": [
+    "intelligence/ml-service/app/workflow/premise_admission_evidence.py",
+    "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py",
+    "intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py",
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py",
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py",
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py",
+    "intelligence/ml-service/tests/test_semantic_two_stage_v1.py"
+  ],
+  "allChangesMatchExactApprovedTransition": true,
+  "unapprovedChangedPaths": [],
+  "historicalNonEvaluatorInputsUnchanged": true
+}

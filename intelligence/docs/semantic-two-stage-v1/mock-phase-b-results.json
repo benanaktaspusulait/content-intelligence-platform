@@ -1,0 +1,146 @@
+[
+  {
+    "case": "consistent",
+    "status": "EXPANDED_AND_VALIDATED",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "PRESERVED",
+      "differences": [],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": true,
+    "findings": []
+  },
+  {
+    "case": "mutate-opening",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "frameZeroDescription",
+          "seed": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "expansion": "Kiko holds a normal hammer beside the wall."
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "mutate-rule",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "impossibleRule",
+          "seed": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+          "expansion": "Every hammer strike now straightens the nail into the wall."
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "mutate-trigger",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "visibleTrigger",
+          "seed": "Kiko hits nail; it curves 90 degrees without entering wall.",
+          "expansion": "Kiko whistles at the nail."
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "reset",
+    "status": "EXPANSION_SEED_DRIFT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "EXPANSION_SEED_DRIFT",
+      "differences": [
+        {
+          "field": "beats[0].openingContinuity",
+          "seed": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+          "expansion": "Kiko resets the nail to normal straight form before starting again. The nail bends away from the wall; the picture frame drops to the floor.",
+          "reason": "Explicit reset contradicts frozen opening continuation"
+        }
+      ],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": []
+  },
+  {
+    "case": "payoff-magic",
+    "status": "EXPANSION_RULE_INCONSISTENT",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "PRESERVED",
+      "differences": [],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": false,
+    "findings": [
+      {
+        "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+        "beatNumber": 4,
+        "sourceField": "beats[3].visibleConsequence",
+        "sourceFields": [
+          "beats[3].visibleConsequence"
+        ],
+        "sourceText": "The hammer becomes a mirror and shows the picture frame.",
+        "evidenceRefs": [
+          {
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The hammer becomes a mirror and shows the picture frame.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceTextScope": "EXACT_FIELD",
+        "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+        "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+      }
+    ]
+  },
+  {
+    "case": "correct-payoff",
+    "status": "EXPANDED_AND_VALIDATED",
+    "drift": {
+      "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+      "status": "PRESERVED",
+      "differences": [],
+      "exactComparison": true,
+      "repairPerformed": false,
+      "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+    },
+    "pipelineRan": true,
+    "findings": []
+  }
+]

@@ -1,0 +1,4082 @@
+{
+  "count": 814,
+  "files": [
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/configuration.json",
+      "sha256": "dddc135e7ee57b318bd8cc4ae0fd533c8d0095038261642fa6439d71b9cfaacf",
+      "bytes": 904
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/http-headers.json",
+      "sha256": "e4b8a48908e0d2e9f78e3b1a0e6d04c6ce4b0f7dc96a3c22e0f159a61ba38a4d",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/http-request-started.json",
+      "sha256": "3fced132f9913d5853a82dbc67cbecc337852a8310af2cf818ee1dbde535518d",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/inspection.json",
+      "sha256": "9b6e4b454b3cf09153a2e9ec37f11cb381f648f23735cf9eeb99a3a8c47fe0b5",
+      "bytes": 355582
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/last-mile-sdk-request.json",
+      "sha256": "ee5584198d132a48778351ff421fa4b8b201586b18e45aa9bafcc60da7245a4a",
+      "bytes": 14610
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/offline-schema-validation.json",
+      "sha256": "28b7e71b32960db7a95b5a7e910e722f5ec5fc827acb011069f791c215365dcb",
+      "bytes": 704
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/pipeline.json",
+      "sha256": "c8f26567141a18ebcfa28a7cfe6908f96b30ab2fb2b2665efbcfb760f23bc4ee",
+      "bytes": 319149
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/plan.json",
+      "sha256": "3ff4297c964410e69471044c24f0064178806905b00bd5f57b29a09b7be4f77d",
+      "bytes": 6994
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/pre-pipeline-creative-contract.json",
+      "sha256": "e7c400e0793078b525f21494507a54e9be5f80a4c22cc57229d08e31911bd4ec",
+      "bytes": 3697
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/prompt.json",
+      "sha256": "a930832c14ebe47bc291c343766f6ec5f5f9e336df7111f2723f93b943afad30",
+      "bytes": 8467
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/request-before-sdk.json",
+      "sha256": "a916eda45fad952fa3653bdb8676bb84cd56cb7c0272c1730bdf374352103b07",
+      "bytes": 15281
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/request-diff.json",
+      "sha256": "f5bcb274d88a4eb0ea288d48a05499dbca550c9882346b0ecfe9345423227538",
+      "bytes": 15526
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/request-started.json",
+      "sha256": "404d970f65c2315c86cdbeeff2b096d62a451e33f57f1b605429ab325aba28ec",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/response.txt",
+      "sha256": "38408e2603a1494f8982b8561aee5bec79005df63ae947cd831438f6fa948bb7",
+      "bytes": 3744
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/result.json",
+      "sha256": "84e90f5a9e5d0393ff9389b27951088f6db17c49cd6f121796cefdce80d16040",
+      "bytes": 2093
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/sdk-request-forwarded.json",
+      "sha256": "e0636f37e2dd8de44da154c13f2b29b5f7b2347645d9f8b660367bebd21b9df0",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-1-low-probe-1-run-001/worker-result.json",
+      "sha256": "23ac494091c7f94f01156f5107c7f1b2633f220eb89c666e5b873352e82c8034",
+      "bytes": 1178
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/configuration.json",
+      "sha256": "89297a2cc28493092527ff36679a3a51244c57081e831c210c6292e5a8e3d140",
+      "bytes": 904
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/http-headers.json",
+      "sha256": "0c31645b521b08c349ae06cc01dff5d33a457821acab1a57a28ba095b32eebfe",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/http-request-started.json",
+      "sha256": "4f85fbf6fc8919bdf74469d9e3105b0f077840a21716308715380cfa02e75a81",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/inspection.json",
+      "sha256": "06088f4dbf4d59c2aeabae26cd75115c4f611d43372b36e9ab655575381e8c64",
+      "bytes": 360811
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/last-mile-sdk-request.json",
+      "sha256": "3f34b0b305555dc67de7a0119c92203d67cc8b5901e223d7ac61e50275799c95",
+      "bytes": 15276
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/offline-schema-validation.json",
+      "sha256": "28b7e71b32960db7a95b5a7e910e722f5ec5fc827acb011069f791c215365dcb",
+      "bytes": 704
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/pipeline.json",
+      "sha256": "ac67ec87d16ea9ab1d38903a8d394d7d9eb13616b4841df66a1737f88508d988",
+      "bytes": 323785
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/plan.json",
+      "sha256": "70f9acc94fe2bb557be247b667b37644b249c00b6fcd885d910072719ff86490",
+      "bytes": 7136
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/pre-pipeline-creative-contract.json",
+      "sha256": "4b28f3270798d99461afd365a8bc601d92fff70a3fc80618c674845aad9142ee",
+      "bytes": 3742
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/prompt.json",
+      "sha256": "a5f89d5a28620746e004319a0b9429bf465ce1ba79854c880cdbd4219834869c",
+      "bytes": 9133
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/request-before-sdk.json",
+      "sha256": "d3741bcee3123ccf7a6add51bcb9f3a54bd69092998817141ef2586ffbadeee4",
+      "bytes": 15947
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/request-diff.json",
+      "sha256": "73b11ef3b39c4ef393c8d8a84a958a5dc0c3d18f2ab12240fb596c0660162811",
+      "bytes": 17003
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/request-started.json",
+      "sha256": "9ce212f092d1936b891c3b2141e822b151ab3501134e3ad0997d0f639d854070",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/response.txt",
+      "sha256": "d7fa26a5aee825b79a9700abaab99901a7e18759b36c5c03615e022694237fe0",
+      "bytes": 3851
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/result.json",
+      "sha256": "43049ff44de8fd21e9f043ec00cb38bed35caace64ea2d938f0c34f2fddb8105",
+      "bytes": 2095
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/sdk-request-forwarded.json",
+      "sha256": "2609e9c035ff60df026b37e1779e77c78c2cd8ac7e985fb3c21dc66db97a651f",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-2-low-probe-1-run-001/worker-result.json",
+      "sha256": "012c5a97aa21f1b618fcb0d798a7d2557bd7a9db4c3398ae9d0de22d4b0cee2e",
+      "bytes": 1181
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/attempt-manifest.json",
+      "sha256": "1d6743232e3cc9f172da32ec5614d5f60617cf337558715aebdd1c7ca2b3a96e",
+      "bytes": 1326
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/configuration.json",
+      "sha256": "a82ef207f9d455e3ec95e952065e7d95cce340150a230e98378809688dfd1170",
+      "bytes": 896
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/http-request-started.json",
+      "sha256": "988a9fdcb8a1996bd39f0e1bf42ffc057f3c6499e3417681ad0b76a3a34dd075",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/last-mile-sdk-request.json",
+      "sha256": "388a97dac9f7d06f234c8bbb190fb80f35d456635c3390e1d541e2f0ae0fcc77",
+      "bytes": 13800
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/offline-schema-validation.json",
+      "sha256": "1e3ac4680b4c91c1edc0fe2552f91af997061178e1f936799f85de74130c0bec",
+      "bytes": 2915
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/plan.json",
+      "sha256": "ecc2af5d3f52d2e8cb250a91b89d122188f26fbbd3d224b48e52d35412ad039b",
+      "bytes": 11402
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/prompt.json",
+      "sha256": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+      "bytes": 7652
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/request-before-sdk.json",
+      "sha256": "9b7419e66270eafc55d6aee095c72c3fefec1ea8d5c555ce56eb5f381d2d19d2",
+      "bytes": 14471
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/request-started.json",
+      "sha256": "46ed6c1db46bf3e2f2d22b1e5487c1c4fae48c77d3dfb0077c895638b3afbcd0",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/result.json",
+      "sha256": "abec5cbfd938cdd30ffa9c7f86aaf92dc08cc4742a3bf02ff26337b99001cb9d",
+      "bytes": 2944
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/sdk-request-forwarded.json",
+      "sha256": "0a69c774faf127ef3ca3e96214cc5796070b686c02e79d69ca479a3d513e2e6e",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/worker-result.json",
+      "sha256": "dc3978a6088d95d52dfb16f0b2116d095e29b40e113b4ba39e0b7914a08087ad",
+      "bytes": 1870
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/REPORT.txt",
+      "sha256": "15c9443f7de06cfca9a2361de76f52ff6a50c9bfe01eb1615127b35db6fc7191",
+      "bytes": 33495
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/artifact-manifest.json",
+      "sha256": "bdc7e6ff4455e7f8596bf524fec9fe02f86c6a96490d6d7798fdede89e81099e",
+      "bytes": 4215
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/authorization.txt",
+      "sha256": "9ec3403ddfbeb1af4480d3754741931ad25eb28f7efde5bbd7d92a38261e677c",
+      "bytes": 12843
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/comparison.json",
+      "sha256": "cf344d8c2d23adc8f6f1c60e07d17ec9b0b1151796574732efd291b489782f82",
+      "bytes": 1388
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/focused-tests.log",
+      "sha256": "fddceedcd0c135a4b7a0f125d6085f312ea7c6918ee0592eee6e0ec0eb9ce5b4",
+      "bytes": 260
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/full-regression.log",
+      "sha256": "10445cd843b25e8dab2c06eb98f201ad4ba47b136723061acbdcc2e9d1c05d3e",
+      "bytes": 36181
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/live-command.log",
+      "sha256": "abec5cbfd938cdd30ffa9c7f86aaf92dc08cc4742a3bf02ff26337b99001cb9d",
+      "bytes": 2944
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/pre-live-verification.json",
+      "sha256": "1408401256a69cd2ad0437dc81968abd08376897319ccdb54c5ef7190e4d8595",
+      "bytes": 367331
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/protected-after.json",
+      "sha256": "ef4ff51bda4d593eb2a0eef4e1a5d741214df93bde85a7d05c73b82fa191e0bf",
+      "bytes": 352491
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/protected-before.json",
+      "sha256": "ef4ff51bda4d593eb2a0eef4e1a5d741214df93bde85a7d05c73b82fa191e0bf",
+      "bytes": 352491
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/source-freeze-before-full-regression.json",
+      "sha256": "c90c3906324961d27eeb1888b71e995ac61b789b361767906d4423a352644c76",
+      "bytes": 424
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-full-contract-probe-v1/verification.json",
+      "sha256": "6701af7c8f04f1329118770fa304e5de5b560d60b255c8b87e758901d891c025",
+      "bytes": 1376
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/REPORT.txt",
+      "sha256": "b08f554eeb02f0956842e0a890c1be3651738e2aedad63ac37cfd70ff7c33e49",
+      "bytes": 79094
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/artifact-manifest.json",
+      "sha256": "5e6566ef16506c063a70cff3421bdd5c44de3c0d92f4138742dec8f78c5a89c1",
+      "bytes": 13163
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/authorization.txt",
+      "sha256": "7cf48ad020c5d8e38d8b15e6af8c86e48a0d22ca63e66bcd4a93686432479561",
+      "bytes": 14601
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/expanded-evidence-report.txt",
+      "sha256": "784e5a5f4c7d7bd4b7e5e2d9df3915b028a1fe6254224aab9b8a85af70ecbdfc",
+      "bytes": 537380
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/full-regression.log",
+      "sha256": "0e10432d85ae8f5ff2304b7f5704de15b5806c81177410159224e60641e2c14e",
+      "bytes": 76683
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/live-execution.log",
+      "sha256": "c928af5c762691ba4c91a01686015c1c4d865c49d8e126d49ae4e4424b4518c0",
+      "bytes": 944
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/micro-b-offline-replay-inspection.json",
+      "sha256": "85791985b2c9e5909ae23470d18959fa2e9375fe548edf67bcd73e74662078b9",
+      "bytes": 360985
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/micro-b-offline-replay.json",
+      "sha256": "f3fbe5cf3d94ad95bb4aa3f343d3625df6046f0ca50a3edf548b7b1b006fbae5",
+      "bytes": 269
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/micro-c-offline-replay-inspection.json",
+      "sha256": "427fbe1c656dd47310ed0cdd21410bf840bb7abc223d28114f89f227ab673895",
+      "bytes": 362667
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/micro-c-offline-replay.json",
+      "sha256": "1987dcfb886c9846df1b9e246005c0335a3eebe3a0e28ff4092d76ad03afe5f2",
+      "bytes": 2059
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/mock-tests.log",
+      "sha256": "c64a9cb355c558e483ded8bac24d4b11fbf194c09a9dd80dff3ee011d85c4ce7",
+      "bytes": 180
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/offline-plan.json",
+      "sha256": "5fde66d77d480a33a04a7bb550de8d3e753333fdd2ff865d0df351fe476ba6f3",
+      "bytes": 15453
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/pre-live-verification.json",
+      "sha256": "1086fe7cdfb20646fbcba671bd3b8317a03d866c5c34bb89c2fa01bfcfcfc971",
+      "bytes": 376015
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/protected-after.json",
+      "sha256": "22fc3444ea238786a954b2fce144be5bb961b61ac39c758312d2a050cf592161",
+      "bytes": 365590
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/protected-before.json",
+      "sha256": "22fc3444ea238786a954b2fce144be5bb961b61ac39c758312d2a050cf592161",
+      "bytes": 365590
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/review-cards.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/source-audits.json",
+      "sha256": "99a5f63ad0a65b48cf30b13dac3b07e9304b0b7c0e97cb91b11c20648fecbe92",
+      "bytes": 23014
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1/verification.json",
+      "sha256": "425b9913a84f2ac738a81287b9461b1638428ac3acbafca8c4a93764e585dc78",
+      "bytes": 6985
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/combined-analysis.json",
+      "sha256": "4f29ef1d6782b7a2a14fb7c74d39c30661a4c3570615ec2b1718bca72c9c43e4",
+      "bytes": 1020623
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/execution-proof.json",
+      "sha256": "efa6bc30898c16fb7e25e2b092fb32c3796e206317a19c78e5b367064d65ac12",
+      "bytes": 294
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/configuration.json",
+      "sha256": "a82ef207f9d455e3ec95e952065e7d95cce340150a230e98378809688dfd1170",
+      "bytes": 896
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/discovery.json",
+      "sha256": "6b3a53f59e801a5c2426c18761953bb9a38e6524b75822409069b8e9a941f3d6",
+      "bytes": 815
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/http-request-started.json",
+      "sha256": "95e1a620b7f85b1bebed71d05b35c61def3e9543fb3011dfa7c8c427c99d6887",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/last-mile-sdk-request.json",
+      "sha256": "b8f1b97801c93f4ed4117dc4354797ba257d79cf9c72a5258575fbc48b172341",
+      "bytes": 13799
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/offline-schema-validation.json",
+      "sha256": "1e3ac4680b4c91c1edc0fe2552f91af997061178e1f936799f85de74130c0bec",
+      "bytes": 2915
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/plan.json",
+      "sha256": "7241228f5a7a00fa0efdcae2fb7c541633e2757d676f751a9bde4dcd7b0866d3",
+      "bytes": 6776
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/pre-request-diff.json",
+      "sha256": "00a96a10240d3501b8c781b8785b584a2344004d8a2dad6c61404c9f87c78ed2",
+      "bytes": 30424
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/prompt.json",
+      "sha256": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+      "bytes": 7652
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/request-before-sdk.json",
+      "sha256": "6a8b73bf6f5339ed192c232fa46f6ef165690468769b523f3ee561ac9ba6e91f",
+      "bytes": 14470
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/request-started.json",
+      "sha256": "8e90bcc90036d6551f03821e86c73200600726f3fc5f72fec95bb95fc7d1039d",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/result.json",
+      "sha256": "2c9e07887521c613eff13fe04da53b7989afc443be713f70dc8f9da5bed7c4fd",
+      "bytes": 3076
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/sdk-request-forwarded.json",
+      "sha256": "9f69b62122bd3774c5de93ba97d5ca0d563e943a98a4873eb521d378403aacac",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a/worker-result.json",
+      "sha256": "dc3978a6088d95d52dfb16f0b2116d095e29b40e113b4ba39e0b7914a08087ad",
+      "bytes": 1870
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a-provenance.json",
+      "sha256": "a84a7b3f840b4df52a65bac2aea4932c4feffa4cdcea3bb61a531f4a83ee94eb",
+      "bytes": 290
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a-result.json",
+      "sha256": "2c9e07887521c613eff13fe04da53b7989afc443be713f70dc8f9da5bed7c4fd",
+      "bytes": 3076
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/complete-candidate-and-pipeline.txt",
+      "sha256": "7686a7114f45a704f2787072477cdd1f59c5c960b7562fb92429141ea652c331",
+      "bytes": 240290
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/configuration.json",
+      "sha256": "a82ef207f9d455e3ec95e952065e7d95cce340150a230e98378809688dfd1170",
+      "bytes": 896
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/discovery.json",
+      "sha256": "6b3a53f59e801a5c2426c18761953bb9a38e6524b75822409069b8e9a941f3d6",
+      "bytes": 815
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/http-headers.json",
+      "sha256": "8e613a2b22826c1f659caafd134fe9fc45baf83be947f471943eb08d530f24d4",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/http-request-started.json",
+      "sha256": "95e1a620b7f85b1bebed71d05b35c61def3e9543fb3011dfa7c8c427c99d6887",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/inspection.json",
+      "sha256": "c30c8274ec23a3d4e16205d3454105cfc2da166ae74f6d0e87507dde7f5211aa",
+      "bytes": 360926
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/last-mile-sdk-request.json",
+      "sha256": "b8f1b97801c93f4ed4117dc4354797ba257d79cf9c72a5258575fbc48b172341",
+      "bytes": 13799
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/offline-schema-validation.json",
+      "sha256": "1e3ac4680b4c91c1edc0fe2552f91af997061178e1f936799f85de74130c0bec",
+      "bytes": 2915
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/pipeline.json",
+      "sha256": "335580ae7afd9adceb60c10c3883084a62394f8df3edc984e9d672f4918ece16",
+      "bytes": 325191
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/plan.json",
+      "sha256": "7241228f5a7a00fa0efdcae2fb7c541633e2757d676f751a9bde4dcd7b0866d3",
+      "bytes": 6776
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/pre-pipeline-creative-contract.json",
+      "sha256": "dc87b0f8a0ba9b28a8865ae4c758701943b3de3435a57965861e0687d1802455",
+      "bytes": 3475
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/pre-request-diff.json",
+      "sha256": "00a96a10240d3501b8c781b8785b584a2344004d8a2dad6c61404c9f87c78ed2",
+      "bytes": 30424
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/prompt.json",
+      "sha256": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+      "bytes": 7652
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/request-before-sdk.json",
+      "sha256": "6a8b73bf6f5339ed192c232fa46f6ef165690468769b523f3ee561ac9ba6e91f",
+      "bytes": 14470
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/request-started.json",
+      "sha256": "b5b6af52e21c08731efabde296a5efde0f2ca3c82b62b52b6d77ad67b3629d55",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/response.txt",
+      "sha256": "26d9c814a1c44f4856e62e53e94bc3564c165180100ac6163896ab54c44a3375",
+      "bytes": 3477
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/result.json",
+      "sha256": "5fe3d8bc9c67038427327c314d74fbc93fb7ec769772a31938b54c05cbbce6fd",
+      "bytes": 2434
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/sdk-request-forwarded.json",
+      "sha256": "9f69b62122bd3774c5de93ba97d5ca0d563e943a98a4873eb521d378403aacac",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b/worker-result.json",
+      "sha256": "c3ce3320aa06c77a44339e380254dc8651e7d2792b4f058d363061d36e8cdf46",
+      "bytes": 1180
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b-provenance.json",
+      "sha256": "3b95240be64e07d058e8af77174070e8f5deb31f583238d789a49d7d32fb6a6e",
+      "bytes": 290
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-b-result.json",
+      "sha256": "5fe3d8bc9c67038427327c314d74fbc93fb7ec769772a31938b54c05cbbce6fd",
+      "bytes": 2434
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/complete-candidate-and-pipeline.txt",
+      "sha256": "e759e2237bed56c2229558efcbb22b75d1dcfe8ed9b44102b0b9d24ec559564a",
+      "bytes": 241405
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/configuration.json",
+      "sha256": "a82ef207f9d455e3ec95e952065e7d95cce340150a230e98378809688dfd1170",
+      "bytes": 896
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/discovery.json",
+      "sha256": "6b3a53f59e801a5c2426c18761953bb9a38e6524b75822409069b8e9a941f3d6",
+      "bytes": 815
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/http-headers.json",
+      "sha256": "2f8c1910c0b2efe8ad939b5fcd869a4e97c175a15d97225a9c179fcb7c9b1ec8",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/http-request-started.json",
+      "sha256": "95e1a620b7f85b1bebed71d05b35c61def3e9543fb3011dfa7c8c427c99d6887",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/inspection.json",
+      "sha256": "a423fafbef9028cc2086d58a41be10586394dcf4e7ceb27f9070e9186bd28dee",
+      "bytes": 362608
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/last-mile-sdk-request.json",
+      "sha256": "b8f1b97801c93f4ed4117dc4354797ba257d79cf9c72a5258575fbc48b172341",
+      "bytes": 13799
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/offline-schema-validation.json",
+      "sha256": "1e3ac4680b4c91c1edc0fe2552f91af997061178e1f936799f85de74130c0bec",
+      "bytes": 2915
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/pipeline.json",
+      "sha256": "c29be7ea128452d566431a1202fa9dc0e32a52e53a5706fe4b751728d7cdac4a",
+      "bytes": 326255
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/plan.json",
+      "sha256": "7241228f5a7a00fa0efdcae2fb7c541633e2757d676f751a9bde4dcd7b0866d3",
+      "bytes": 6776
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/pre-pipeline-creative-contract.json",
+      "sha256": "b57ed3e032360e38d8cf845545147976ca4428c0cba3d4913aef139c9d53ed34",
+      "bytes": 3500
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/pre-request-diff.json",
+      "sha256": "00a96a10240d3501b8c781b8785b584a2344004d8a2dad6c61404c9f87c78ed2",
+      "bytes": 30424
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/prompt.json",
+      "sha256": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+      "bytes": 7652
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/request-before-sdk.json",
+      "sha256": "6a8b73bf6f5339ed192c232fa46f6ef165690468769b523f3ee561ac9ba6e91f",
+      "bytes": 14470
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/request-started.json",
+      "sha256": "ce8d45ead889eb1a46e5db82b5a059fab7c6d7c61de74018ee354c94c55a08c7",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/response.txt",
+      "sha256": "0fba1505075daac47b8f1da2294d24a8e1cbb24dcc1fe479b0209235b667fb30",
+      "bytes": 3416
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/result.json",
+      "sha256": "9a6a7ce1b12db32f9da484f803cf88891f4d907de0846f0976c5583011f206f5",
+      "bytes": 2423
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/sdk-request-forwarded.json",
+      "sha256": "9f69b62122bd3774c5de93ba97d5ca0d563e943a98a4873eb521d378403aacac",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c/worker-result.json",
+      "sha256": "323f53855afc2937c60f7cccd241181844237a8252b119ade4e7a7caa2749de2",
+      "bytes": 1181
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c-provenance.json",
+      "sha256": "725e75cd691e6d26911c1d417036edc47b07f45e627a04f475ef55fada1933da",
+      "bytes": 290
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-c-result.json",
+      "sha256": "9a6a7ce1b12db32f9da484f803cf88891f4d907de0846f0976c5583011f206f5",
+      "bytes": 2423
+    },
+    {
+      "path": "intelligence/docs/semantic-compact-micro-batch-v1-run-001/plan.json",
+      "sha256": "981822c040c5ee082bbdf8ffe0d1fb8d32a68d5e40457641de39a74f069f146b",
+      "bytes": 15426
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/REPORT.txt",
+      "sha256": "dc66cc5d59dd2ef5f8106789d118521c95ca95b255f900a2b5d4c70f0b0973d0",
+      "bytes": 26586
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/artifact-manifest.json",
+      "sha256": "94bf8d7187f37b5778c2745246033b4803a5ed025fa45d518c8656c6e3408409",
+      "bytes": 2495
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/authorization.txt",
+      "sha256": "7fe8177ab4bc6379148cc8cc6fae343b6ff557980dc81aa44f6ebb8af4c3ec7a",
+      "bytes": 25682
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/changed-files.json",
+      "sha256": "4ca626c7ccdda4bfed4f2f6000ba6f549dec6a80c8e64826d07d9bbf1a98a92b",
+      "bytes": 913
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/coverage-gap-report.json",
+      "sha256": "847c30d19f91c54c74a674dbcffcf03ba9c30374c2c4af32f1d6185c7cbcdb00",
+      "bytes": 583232
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/exact-prompt-v2.json",
+      "sha256": "1bd4d7d6e4d080e4da0230a0e31b8441fd4a62b17580eff802acff694c050ee1",
+      "bytes": 15588
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/exact-prompt-v2.txt",
+      "sha256": "ccd4f0f441656fcac36db7bed8fe119550faba144f06dd61b651d82aaec33cfa",
+      "bytes": 14598
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/focused-tests.log",
+      "sha256": "c04fbd784240beef17f34489d93bd90b494fc9a0e4bddca53bd9f8b7439f7708",
+      "bytes": 878
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/full-regression-comparison.json",
+      "sha256": "f1f0ac0f757b5c769210dbbf5acba00da6c6e3e689739883a5704095922d835b",
+      "bytes": 10458
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/full-regression.log",
+      "sha256": "86e4aff208269ee7bf8a5b76015ffa0a27ab5bc55b3e74faa7fbc8089b2f65e1",
+      "bytes": 35941
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/historical-evidence-proof.json",
+      "sha256": "9eed3e422f6165eca42a64b1877e95ae2b2d7b072cdd372c38029cd7c8b3f1f4",
+      "bytes": 15585
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/live-execution.log",
+      "sha256": "99c0fb97848e80cd7fb529f5483ab72d954c842b0b2d33984c5c7f760994d25a",
+      "bytes": 482
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/mock-comparison.json",
+      "sha256": "520d308cef34b8a5f220d3b70373f8a5a84e0e24df805d4a2d66578f99b8560a",
+      "bytes": 422373
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/mock-v1-results.json",
+      "sha256": "744f0a278b393934d32d0eee1baf9ff2ff0e126920b3300c2e8d5bf7000d8aad",
+      "bytes": 3323314
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/mock-v2-results.json",
+      "sha256": "301f9b39fe1ce52a4a0774c547d9fc8551fac4e50445c6b78b49c7e4c6459e45",
+      "bytes": 3282728
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/new-tests-final.log",
+      "sha256": "b00d59eb278f657f0a1f1ab7670f3c9c8d306d350ed99cd749841dffd359ab93",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/new-tests.log",
+      "sha256": "c921530e966da62cd547ab079a12cf65f91715fdebab8626582dc1c05821de2f",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/pre-live-test-verification.json",
+      "sha256": "f1f0ac0f757b5c769210dbbf5acba00da6c6e3e689739883a5704095922d835b",
+      "bytes": 10458
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/protected-after-tests.json",
+      "sha256": "64441d88b276ddaad5fae6c3cda4455301da1f9a41378733a11d564bbcc7bc07",
+      "bytes": 295843
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/protected-after.json",
+      "sha256": "64441d88b276ddaad5fae6c3cda4455301da1f9a41378733a11d564bbcc7bc07",
+      "bytes": 295843
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/protected-before.json",
+      "sha256": "64441d88b276ddaad5fae6c3cda4455301da1f9a41378733a11d564bbcc7bc07",
+      "bytes": 295843
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/source-hashes-before-regression.json",
+      "sha256": "ec0d0273a468b5bbb21648c0d117afb8e8117ded7e0e7a73a07b87b41864008d",
+      "bytes": 824
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/v1-current-stack-metrics.json",
+      "sha256": "6b7ee38a95c31c3971c423cf756bac0ca2af9b697e71d20adfed6e3957bc8230",
+      "bytes": 15556
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/v1-current-stack-replay.json",
+      "sha256": "af29a09da73674b03cd4ad68827287695c39c27b21925584938c49f2b07820a2",
+      "bytes": 12096625
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/v1-v2-live-comparison.json",
+      "sha256": "4d032a62f43a437114f1b631b5a32b7748161d3b7319b58ccc676253ae118a30",
+      "bytes": 18158
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-prompt-v2/verification.json",
+      "sha256": "c775a93585dbd3ec14b84a5352129084896b4ee756df6a7743bd060657d7ea53",
+      "bytes": 12799
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/README.md",
+      "sha256": "8c1e9d69c9b714c4f7dd011d7da9eb91893f8557a5d57b8be57850cee05e41f8",
+      "bytes": 15189
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/baseline-comparison.json",
+      "sha256": "2de20c1d1d76add34d80e20f90e48dfa803bbc4a2dd0a48d5a89e3abcf2cdada",
+      "bytes": 9372
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/changed-files.json",
+      "sha256": "64d947b74528bc70b827625c5828469f4ad8212b1d1123a59d4e91c4812d4165",
+      "bytes": 2821
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/focused-tests-final.log",
+      "sha256": "b5cef17ed6486114527a1f73b0fa4b71ee41112b1a1d1cfe6c20b7ee0211ae0c",
+      "bytes": 1589
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/focused-tests-release.log",
+      "sha256": "8cb029dd38d9c496c5680c3cf7743ca2f3983edb4fe51c8464d87eb8b1b08c27",
+      "bytes": 1589
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/full-regression-final.log",
+      "sha256": "4d6441150029061cff700af11e004010aefd1282a316a8d048270079b58c71ea",
+      "bytes": 34981
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/full-regression-release.log",
+      "sha256": "7d1fb671c4149c0d810c909e7c5111f45213cfff7258a1fe5a4b3117fbe24eba",
+      "bytes": 34981
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/immutable-after.json",
+      "sha256": "f3345ec548072c0cf1ddee1dbba968d08197a0cced1dcd45ef73f5375b61a65a",
+      "bytes": 29469
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/immutable-before.json",
+      "sha256": "f3345ec548072c0cf1ddee1dbba968d08197a0cced1dcd45ef73f5375b61a65a",
+      "bytes": 29469
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/java-results.json",
+      "sha256": "5e43f0746a2ba558c133df108c3ce22ae35c8092a72eabe5f5f09d33faef1fbc",
+      "bytes": 431
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/java-tests-final.log",
+      "sha256": "dd46e2f0e8076b0a857318fc9c7e7149a744dbee0eb59a7388ac354d3f3b2033",
+      "bytes": 902
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/mock-comparison-abc.json",
+      "sha256": "2481ccb9816b29a07341789240a29f3421cdb4b34feb6b02bb101e4b096e3eb0",
+      "bytes": 5542
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/mock-comparison-deterministic-seed-42.json.gz",
+      "sha256": "b60008476ad09e213d66ec688c031ab168837ff7cb9204a2f26778ad1cfed804",
+      "bytes": 11694436
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/mock-comparison-hybrid-seed-42.json.gz",
+      "sha256": "a13baa45a4db55f3cefd79c85d57f795e8468efe5a2b49f9c5d20be4f8317073",
+      "bytes": 11884690
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/mock-semantic-review.md",
+      "sha256": "e361e0763b0ecbde5abbfe4d4ca7dba226853da4b75a5099569706008f84c6a3",
+      "bytes": 17376
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/mock-semantic-seed-42.json",
+      "sha256": "9a988f5d0fff92f8d7cfc9839f8b7bf518ab202695b8c45f2b1d917fc0578b3c",
+      "bytes": 1567949
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/new-tests-final.log",
+      "sha256": "ad47e5f9b7d435478ffd6aceb47a36b259a1904162742c748f6702d31747328e",
+      "bytes": 100
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/new-tests-initial.log",
+      "sha256": "c944eda516cbcd22b5fa508c18ec749bb2bffac02e5538fea116d5ac4c9f0cb7",
+      "bytes": 100
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/reproducibility.json",
+      "sha256": "e135106b3f13b866f3e513fa884b2607898f398bb1b247653757cd85a6f4577e",
+      "bytes": 776
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/request-schema-v1.json",
+      "sha256": "8613d0a975cf80974b4c49502a59abbb4d1ffbaceebe56f88f5aa3892ab2e666",
+      "bytes": 6751
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/response-schema-v1.json",
+      "sha256": "bed6c5ff38bae0ff106df2aa12bae5357f6c335e80d062c303ced789f0fcfee3",
+      "bytes": 4744
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/ruff-final.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/semantic-prompt-v1.txt",
+      "sha256": "1ff1420fd7abb6f0df067b379e446c92d299618cc20facc242cda67154a4464c",
+      "bytes": 6069
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/ui-tests-final.log",
+      "sha256": "e21fba2c490f266d71448148e12c5d338e8a42c4fb5d7e952ae3640e253da348",
+      "bytes": 5273
+    },
+    {
+      "path": "intelligence/docs/semantic-concept-v1/verification.json",
+      "sha256": "3c15bf3e5f703dfcc95d41a1e04a4b33c5d1de656a3feed0190f565b1a81bee9",
+      "bytes": 11632
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/README.md",
+      "sha256": "934001971fa2b05998e2cbb23e213f84921001789944825e6a62a17ece1a6aa9",
+      "bytes": 5758
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/all-40-concepts-human-review.txt",
+      "sha256": "1b28b24c8298ed369087bd2a97b885ff637eec0f621b646597dc1d990624d0f8",
+      "bytes": 535578
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/baseline-comparison.json",
+      "sha256": "ee048b8f186065e8a44eeda4229fe7b2e50a8724299703ca11308b01c826e086",
+      "bytes": 9366
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/evidence-manifest.json",
+      "sha256": "8eba21bbbd60e4ef99f9ad4859afd73245f57f820c98a760d67328e5c586b3af",
+      "bytes": 2740
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/final-verification.json",
+      "sha256": "eb2015c2bfdf2d5bc6198e3499bbd29f1844ec5d6b1a7075c1b5f422deb6ecd0",
+      "bytes": 1047
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/focused-tests.log",
+      "sha256": "2ab31fa17a483607b012e328566247102d4c8887e51e2b188b490700f0a8c3c5",
+      "bytes": 1589
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/full-regression.log",
+      "sha256": "730e8b27052284ed85e6006f475dd109e47e6da1419785acc76b654be7fd4ecd",
+      "bytes": 34981
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/implementation-files.json",
+      "sha256": "d2354761afd7e2917a532c9756220db5945867f441cd6270054969be5cabe16c",
+      "bytes": 542
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/all-concepts-review.md",
+      "sha256": "0777efe1961a214fe96f94c69220574bd6ab589f6ee9dd4f59611fcbd8b11bf2",
+      "bytes": 6502679
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/analysis-status.json",
+      "sha256": "ef9bb7aa9fd0cfeacb3da5aedd70fe74160a4d7e2b2f2e191c430b26b0a50140",
+      "bytes": 71
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/analysis.json",
+      "sha256": "33b564509e71f87a64ad1419ee9eed761e3db4567953be08f6b64942d1cba50a",
+      "bytes": 14094230
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/configuration.json",
+      "sha256": "22f448c9fedc0883b87bd7e34b64365d5ac905a158e4d8e233f577225fde222e",
+      "bytes": 2334
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/manifest.json",
+      "sha256": "73be49daf1974beb845cd43e85ba8635711bebdc75a6ecb7a052629600dfbf89",
+      "bytes": 902
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/plan.json",
+      "sha256": "477416e0eefe989f29a0a5d2d26708d495a777728ef690db849ee6e12f5bf140",
+      "bytes": 582
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/prompt.json",
+      "sha256": "09c02bc8ea8fc25aaf351638a31b0f9ffb484a7373619b7ee4520a2cabef26bb",
+      "bytes": 8176
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/provider-metadata.json",
+      "sha256": "7bffe68e40120c7075cc2b16804f6f94606a8ec1845a417f96eacb1e0acc5cf2",
+      "bytes": 1012
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/request-started.json",
+      "sha256": "d2f1545e0cb7e5a35e6782796d03b272d9a0a1f4ce555ae38463b0f0defa9eba",
+      "bytes": 204
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/request.json",
+      "sha256": "a0e1ccbebdc798d871754a61f677336ad33e7beeab2e2e6c8ed1ce9d7d6d72f8",
+      "bytes": 11555
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-attempt/response.txt",
+      "sha256": "298c928c74e7a5add47ab9f0ddda51576ea3674cfd0683e744e2034dddeaf95c",
+      "bytes": 130023
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-execution.log",
+      "sha256": "64fe135d587e10846a63bb03b788e5fabb7cc7c9e5860b89d4959c5e09474f87",
+      "bytes": 1558
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/live-results-summary.json",
+      "sha256": "e3fffcfe1c5ca39a8c9ea615455e94d183719e6c7856f4b5bf9ef9ab0955e975",
+      "bytes": 5487
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/model-selection.json",
+      "sha256": "967ad5e5db03bd019bfc909457c201b2a78f7c6d80823d2946652b827bfff719",
+      "bytes": 425
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/new-tests.log",
+      "sha256": "d86b2f02362ab639577d4b637d5cdd94d0d157717aba14ccfee7510f15859d38",
+      "bytes": 100
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/preflight-plan.json",
+      "sha256": "28cad59078d6eed1cb111248c3a730dff88f5656a61dbd44a35d9d8b2599be0d",
+      "bytes": 405
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/protected-after.json",
+      "sha256": "a008f7aceb0d8f94bfef55b1e09025b084fe60cf1972d01934cefdf2e6d7c9b4",
+      "bytes": 34230
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/protected-before.json",
+      "sha256": "a008f7aceb0d8f94bfef55b1e09025b084fe60cf1972d01934cefdf2e6d7c9b4",
+      "bytes": 34230
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/replay-proof/replay-analysis.json",
+      "sha256": "33b564509e71f87a64ad1419ee9eed761e3db4567953be08f6b64942d1cba50a",
+      "bytes": 14094230
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/replay.log",
+      "sha256": "12debb3e12da6b84ad33b1b2a140ad0053f24e40f01eb5572e0be172ab45fe93",
+      "bytes": 43
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40/test-verification.json",
+      "sha256": "4942837bd9e69f0ed124282290513f707a88f2adeb40bc40dd6e5738504bfba5",
+      "bytes": 452
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/README.md",
+      "sha256": "f411a470bab67a97b543e986381fca3db2157f57456f7a55a06a61baccb02dde",
+      "bytes": 10907
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/all-33-three-view-audit.txt",
+      "sha256": "f95d2f2cd0f449e31b7db57723c7f8366b1c9018fffe10574ec5b3da57e7e057",
+      "bytes": 5676001
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/canonical-evidence-schema-v1.json",
+      "sha256": "4d2b9a0dde5a15e05959e38e8d452979d0d1655341faeccaf886fd58afed2dae",
+      "bytes": 6047
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/changed-files.json",
+      "sha256": "cd11f18cfd98f9742f59a7cea449fc9652a189225514a9dd7d91fefccfa4845c",
+      "bytes": 1304
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/evidence-manifest.json",
+      "sha256": "fbcf904cd94cb07229d028e75c4e08c87b4d0bc2c4892842b6a5e79b15da86a5",
+      "bytes": 2466
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/focused-tests-final.log",
+      "sha256": "f263cf5b802ec620716a23450b89a64a8a8778487021b3bc8be23165215310dc",
+      "bytes": 260
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/focused-tests.log",
+      "sha256": "f74664aaabf5860427f125ee52803276a625f3aea8dedba5a0b407a394d133ae",
+      "bytes": 260
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/java-results.json",
+      "sha256": "a8ba90123a0a5f0341bf32c79082aa49fe052e9667f45dd4e20f908354224c03",
+      "bytes": 589
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/java-tests.log",
+      "sha256": "dd46e2f0e8076b0a857318fc9c7e7149a744dbee0eb59a7388ac354d3f3b2033",
+      "bytes": 902
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/mapping-rules-v1.json",
+      "sha256": "bc119af778887231c21a879194f8fed654c5f558e9ad7fb19f3605365d49a401",
+      "bytes": 1229
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/new-tests.log",
+      "sha256": "becbd885545462756c9f7b738399849f81930d5be3a599afb05a82327c1badb9",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/protected-after.json",
+      "sha256": "e27762b8db07cb8277b2c1566dddb62ed7b49594ac67d6b21ca20313d4affd85",
+      "bytes": 39110
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/protected-before.json",
+      "sha256": "e27762b8db07cb8277b2c1566dddb62ed7b49594ac67d6b21ca20313d4affd85",
+      "bytes": 39110
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay/analysis.json",
+      "sha256": "7dfbb7a46951ee85592a42774c12e6651ca05358036c79d7ae4d8767c996d98f",
+      "bytes": 8774029
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay/offline-execution-proof.json",
+      "sha256": "aa4b7088705891906f6d0bf8838ce8e9560d8d7857c8b40631fba0eac0304130",
+      "bytes": 218
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay-final/analysis.json",
+      "sha256": "4fa7f681341ba3791beac27f0ee212483b2ae9cc94a03f3ba8de5fc0b4950e41",
+      "bytes": 9077750
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay-final/offline-execution-proof.json",
+      "sha256": "ed57bd315260c48aedf387fe0efb56d6778d165896504ed245d24657ff8ca3e6",
+      "bytes": 218
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay-final.log",
+      "sha256": "bb747f44e915695c68c4ac3240a88c06d9032a79558134d756004ec32d008766",
+      "bytes": 9472
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay-repro/analysis.json",
+      "sha256": "4fa7f681341ba3791beac27f0ee212483b2ae9cc94a03f3ba8de5fc0b4950e41",
+      "bytes": 9077750
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay-repro/offline-execution-proof.json",
+      "sha256": "ed57bd315260c48aedf387fe0efb56d6778d165896504ed245d24657ff8ca3e6",
+      "bytes": 218
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay-repro.log",
+      "sha256": "bb747f44e915695c68c4ac3240a88c06d9032a79558134d756004ec32d008766",
+      "bytes": 9472
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/replay.log",
+      "sha256": "ef84b52fa03210670e8d4cb2a977a5d0fd4082cd540b0db28e3520a0245e40bf",
+      "bytes": 8792
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/results-summary.json",
+      "sha256": "46b2a74f1a6e3f4ceae1c93d4e13e48808e743c1b672475264964f01ec31bca5",
+      "bytes": 9875
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/ruff.log",
+      "sha256": "119ef453eb2fb4a66b3c406b1d807a696eec0cca15da83fc9b2eae58e86d4f2e",
+      "bytes": 2703
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/ui-tests-final.log",
+      "sha256": "3caab55a1f071cd9708bddb24d6525aba130c9aebcf8463c626616dcfc1310ca",
+      "bytes": 5401
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/ui-tests.log",
+      "sha256": "16533197aedd023d2f319b852d7674cc7a1ecaaa6139100ede3099a7059a8fe7",
+      "bytes": 5609
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-evidence-adapter-v1/verification.json",
+      "sha256": "dfefaabec37a2f7ae93dcfb713dbc824250c2ccc3b559abbdba7128a22401670",
+      "bytes": 1561
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/REPORT.txt",
+      "sha256": "84a82ca6a480650812009bb7bde841c4c5e957216bfa07be3eace61ea525955f",
+      "bytes": 12542
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/all-33-human-readable-results.txt",
+      "sha256": "e0994f75b5490f70a913e47d9df45d5bc2e3dc6a7ea3ecc4ae52d65ee0da9942",
+      "bytes": 118574
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/authorized-refactor-after.json",
+      "sha256": "2085113f9343fa3bc6cc72eae199f0b95cda88d2bb0674aee7874728c320f70c",
+      "bytes": 263
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/authorized-refactor-before.json",
+      "sha256": "15a3d041f02cb7bb8c22ef13c8198191db7de0b340effdc4b84423e864fd44e3",
+      "bytes": 263
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/canonical-evidence-schema.json",
+      "sha256": "8764c29d8a2c7e9cec5589f7aafeeec8b4b3cf453e323569df57ab513939d78d",
+      "bytes": 6972
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/changed-files.json",
+      "sha256": "717424ca1cad62d1d4dbc5867f0fa1955856d42d35c03cfd8b501ec814d366a4",
+      "bytes": 1686
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/evidence-manifest.json",
+      "sha256": "fd5d177cb91773105b7d4e828b0c37189875aea8ffaadc8fd82d068f8aff0783",
+      "bytes": 3586
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/fixture-results.json",
+      "sha256": "860a0cb0a4a0aca7119dc3630b474226ed69ee384d6d65075f9e951040c98d37",
+      "bytes": 108128
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/focused-tests.log",
+      "sha256": "99266c83c56c3a6f6b28ccf87d1db7c6445f7171e3eea7a68ca22ea6bd767175",
+      "bytes": 2378
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/full-regression-comparison.json",
+      "sha256": "f7c3a53d5c25098900de706dace3cb32fce16399828713ce0757be9f580dbc24",
+      "bytes": 12917
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/full-regression.log",
+      "sha256": "a74ceec94cf079619c98292463dd2d7a53896114b746a3f854b28a12b3673a8e",
+      "bytes": 40818
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/java-results.json",
+      "sha256": "7ec4b9c457eada8336209ca40b139d8fc205a7450eaebf9033b0b03daa0fa95d",
+      "bytes": 664
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/java-tests.log",
+      "sha256": "dd46e2f0e8076b0a857318fc9c7e7149a744dbee0eb59a7388ac354d3f3b2033",
+      "bytes": 902
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/legacy-parity-cases.json.gz",
+      "sha256": "3b9a01a72149162af424ee69556b03c38c0e6bba1e5894e980d7eeb52c7bd680",
+      "bytes": 190108
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/legacy-short-form-engine.py.txt",
+      "sha256": "10c6395871eb5eb77f04755ef51d9c20e75b93e55fa096b1fd30b1b1d3b14658",
+      "bytes": 21879
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/new-tests-final.log",
+      "sha256": "15912618ffcd16fe845807a3845f57809c0e7aa6b07dafa837162a935621ff48",
+      "bytes": 660
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/new-tests.log",
+      "sha256": "2b9b3644f607ea9a1aee452f1d7294f5ed3ae89646a1f588992a73ef09e98f63",
+      "bytes": 660
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/protected-after.json",
+      "sha256": "ab978f9911e9a9a86862d32a0513fd15dadb4cd13ee2c5bbfeeb386b98ab6f2c",
+      "bytes": 43892
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/protected-before.json",
+      "sha256": "ab978f9911e9a9a86862d32a0513fd15dadb4cd13ee2c5bbfeeb386b98ab6f2c",
+      "bytes": 43892
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay/analysis.json",
+      "sha256": "f27c18400f0f23a43d27a3d9746bc63860b5842e333a307c321cd2adf899cd25",
+      "bytes": 7358166
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay/offline-proof.json",
+      "sha256": "cce66c55d3cad074e7e1c720c8a5e4c7a2f2951556b56f509be54520a1f521cf",
+      "bytes": 138
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay-final/analysis.json",
+      "sha256": "c7313b5c10cdd8b48c741c7373009296fc160862358b5e4f7183f0c3e959543b",
+      "bytes": 7358070
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay-final/offline-proof.json",
+      "sha256": "cce66c55d3cad074e7e1c720c8a5e4c7a2f2951556b56f509be54520a1f521cf",
+      "bytes": 138
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay-final.log",
+      "sha256": "bba77831c190777804c50f4a9162929c72338a80ed38c86dea3458569c2c306c",
+      "bytes": 12042
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay-repro/analysis.json",
+      "sha256": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9",
+      "bytes": 7361945
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay-repro/offline-proof.json",
+      "sha256": "cce66c55d3cad074e7e1c720c8a5e4c7a2f2951556b56f509be54520a1f521cf",
+      "bytes": 138
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay-repro.log",
+      "sha256": "bba77831c190777804c50f4a9162929c72338a80ed38c86dea3458569c2c306c",
+      "bytes": 12042
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/replay.log",
+      "sha256": "3adb6eb1b014fe544f601ce6059b5cc2fb8bf81c9d66d089109144613c8c4f17",
+      "bytes": 11603
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/results-summary.json",
+      "sha256": "32358cb16fa4fb10065a1aa566a2f9e3c82e1747562adf884ec51069e2e0830c",
+      "bytes": 19415
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/scoring-parity-proof.json",
+      "sha256": "c1feb2a9a4365cf121f2b737e0c29cd7d5902a7fc9bdb440157010c768511215",
+      "bytes": 388
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/source-bound-content-review-notes.json",
+      "sha256": "89589ac778bdec9600b2b9ce4bf12c5b6e83fa77d476769199a11de9014b1ca3",
+      "bytes": 6701
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/structured-source-input-schema.json",
+      "sha256": "51bba1a2ec0fab2f44a8de48eb9c952bb2802906888dd826b8d428532efddd3e",
+      "bytes": 9932
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/ui-tests.log",
+      "sha256": "2bed9f38255d362b0043c55b554ccc8c2bbff9216bf955f665ec13603ea3ff57",
+      "bytes": 5657
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/verification.json",
+      "sha256": "56ebd573d09fc46eff3a3d9fddb13eaa08866cd065e96b385009335b538d824c",
+      "bytes": 2814
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/verified-analysis/analysis.json",
+      "sha256": "e076c071a79499eb93224b2e240d1b40a53ea9f0c71d8561d7333700716dcdc9",
+      "bytes": 7361945
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/verified-analysis/offline-proof.json",
+      "sha256": "cce66c55d3cad074e7e1c720c8a5e4c7a2f2951556b56f509be54520a1f521cf",
+      "bytes": 138
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v1-seed-42-count-40-structured-sfe-v1/verified-analysis.log",
+      "sha256": "bba77831c190777804c50f4a9162929c72338a80ed38c86dea3458569c2c306c",
+      "bytes": 12042
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/experiment-manifest.json",
+      "sha256": "4f78600981eb6fb5a7fdeea8f257294fbaeb64b97c2fa534ff2883d1270d2884",
+      "bytes": 1337
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/configuration.json",
+      "sha256": "eb5d1b6d82722c49f7785f6d575e08fc7344e2e2fb1865d0406a7213931bb57e",
+      "bytes": 2334
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/preflight.json",
+      "sha256": "f0704dbf42407d12e7478eb3e399d68a5c46a6551b5b51de7e193630c562c382",
+      "bytes": 11648
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/prompt.json",
+      "sha256": "1bd4d7d6e4d080e4da0230a0e31b8441fd4a62b17580eff802acff694c050ee1",
+      "bytes": 15588
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/provider-metadata.json",
+      "sha256": "99c0fb97848e80cd7fb529f5483ab72d954c842b0b2d33984c5c7f760994d25a",
+      "bytes": 482
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/request-started.json",
+      "sha256": "ff85f63857ad8ba6a97e6d24218b23083de6898a7e07ef3a028cbde116ecc0b6",
+      "bytes": 294
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/request.json",
+      "sha256": "3e24fd38c0f732d402760186a9385e132d121b8dbfd0b9ba6314482eea1fe804",
+      "bytes": 18895
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/live-attempt/transport-manifest.json",
+      "sha256": "414796801749f35d275694d40a04121552043672142b316d54839c7b1113b82a",
+      "bytes": 630
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/offline-status/all-40-ideas-NOT_AVAILABLE.txt",
+      "sha256": "ee2bdcd8093125d7acfd1ac5420387d44a3d4eab4857f7304004fd0ec81ceb43",
+      "bytes": 340
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/offline-status/analysis-status.json",
+      "sha256": "f1519dda45da239e32e7e63fecb0e4de52e7ae5589fea29b2970d75201076874",
+      "bytes": 1159
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001/offline-status/human-review-set.json",
+      "sha256": "9bc4ae247641e29919253f698aece24d77ee29904a380c553d8a3efb5abf80a4",
+      "bytes": 125
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/all-returned-stories.txt",
+      "sha256": "a3c13196e66abbc2a6f41ff0038444bead47103cd6d52bff494dc69c0fe3e28e",
+      "bytes": 410
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/analysis-status.json",
+      "sha256": "16589f79095c7f962391ceb9fb3e381ef29114e1b4a9483ed2e5641b1be3e979",
+      "bytes": 167
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/combined-corpus.json",
+      "sha256": "811376eaa996218c965acbf378b85c0ec1611031de4d206ab5b247dceb6bc896",
+      "bytes": 18
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/cross-shard-duplicate-status.json",
+      "sha256": "8b5bda63539a47003c91d6bac7cc95fb60b718d7abbb02a04ce5c460550b3d01",
+      "bytes": 97
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/human-review-set.json",
+      "sha256": "08e17649c52bb075c638a84d96309bc3d71082dffb44d930b80ab558db482e2a",
+      "bytes": 114
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/shard-envelopes.json",
+      "sha256": "15747acec0d84235ad631deba6dd732a075d6e998b5d22bc182f016502a09074",
+      "bytes": 277
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/combined-analysis/source-provenance.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/configuration.json",
+      "sha256": "199ace45eeb8aa35feeb2990a4d390e6fa0a5d2c2ca2e4c180c500316ba6d03b",
+      "bytes": 2537
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/experiment-manifest.json",
+      "sha256": "bf8dfeb2568e543d052a38ee008995a717faf24174baf8fa919424d43934b3e1",
+      "bytes": 2453
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/plan.json",
+      "sha256": "3dcf22dd4fbc0d11d824b210bf8df2bef38897b645e5d80957eca27441d1ede0",
+      "bytes": 11013
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-a/prompt.json",
+      "sha256": "142531bf7fcf0230dfee68c12400c65578ce04b353bae4ca9fb61c1c470cbca5",
+      "bytes": 15787
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-a/provider-metadata.json",
+      "sha256": "6f9df31e9220a895c3889c327cca729f11f6e5279a6f83f47e1db6e7274603e1",
+      "bytes": 737
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-a/request-started.json",
+      "sha256": "bf26fe9381802128e9ac7faf6b3d0bfdb571434b0ffc19b2bb65aefc05568908",
+      "bytes": 157
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-a/request.json",
+      "sha256": "9ee2611604d6ea11cb0748b1e99b5e543d05166a15e935c19e02f48ea33e8719",
+      "bytes": 19171
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-a/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-a/sdk-call-started.json",
+      "sha256": "8a56234e52637db0d7da07b9d981843693766c1a827070dc2fcce178d8371586",
+      "bytes": 56
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-b/prompt.json",
+      "sha256": "c0141d07dceec58a56c27ec3862a1f229c6022b9cbee50aa1462a1627c978dd4",
+      "bytes": 15787
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-b/provider-metadata.json",
+      "sha256": "180a9970c7f61756a07bd3cf7561cc4ef906b1c2ec81e8e089e4824375000caa",
+      "bytes": 741
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-b/request-started.json",
+      "sha256": "c5ca58138c7668fd46cfbec5cb37cb5468812e1ef1601ba013f4cd04f1d80993",
+      "bytes": 157
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-b/request.json",
+      "sha256": "1f92a131206669eaa206afae3d337fb4eb2745a0b3b9e7557cb472d543ccd0e3",
+      "bytes": 19171
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-b/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/shard-b/sdk-call-started.json",
+      "sha256": "8a56234e52637db0d7da07b9d981843693766c1a827070dc2fcce178d8371586",
+      "bytes": 56
+    },
+    {
+      "path": "intelligence/docs/semantic-live-v2-count-40-run-001-recovery-001/transport-summary.json",
+      "sha256": "5f431ca620b9676a2f78637b1ecd1862c8b1ad3bfce8e10a2aa4a8f85d9540f4",
+      "bytes": 2074
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/attempt-manifest.json",
+      "sha256": "fa9c34076b75fa5d816f4a5cd9c913462da6a6d54b22cea27b2910e52a9cfbaa",
+      "bytes": 1994
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/complete-candidate-and-pipeline.txt",
+      "sha256": "922a178813ae927c722fd017154cea1d1852eb37bd5a9b4e6e44156c79aaf1aa",
+      "bytes": 233187
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/configuration.json",
+      "sha256": "a82ef207f9d455e3ec95e952065e7d95cce340150a230e98378809688dfd1170",
+      "bytes": 896
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/discovery.json",
+      "sha256": "6b3a53f59e801a5c2426c18761953bb9a38e6524b75822409069b8e9a941f3d6",
+      "bytes": 815
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/http-headers.json",
+      "sha256": "1cde507bbaf512f80ad3d1b59cf742257985eb36f50d026e8abf5ce16794fcbe",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/http-request-started.json",
+      "sha256": "95e1a620b7f85b1bebed71d05b35c61def3e9543fb3011dfa7c8c427c99d6887",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/inspection.json",
+      "sha256": "fa9c06cfb990f6d0a882a0f8f207d28dfcdb7f8a27787e0648e549065bc7c36d",
+      "bytes": 351084
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/last-mile-sdk-request.json",
+      "sha256": "b8f1b97801c93f4ed4117dc4354797ba257d79cf9c72a5258575fbc48b172341",
+      "bytes": 13799
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/offline-schema-validation.json",
+      "sha256": "1e3ac4680b4c91c1edc0fe2552f91af997061178e1f936799f85de74130c0bec",
+      "bytes": 2915
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/pipeline.json",
+      "sha256": "dda38c6eef136cd11a6bde5d78f5fb9c2b800a2bb2023080eb4c89cbc7aed921",
+      "bytes": 316503
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/plan.json",
+      "sha256": "94a9949f24955b5f7b37ba22fba759d4f3eaeec79a3271a28d1edf4c3e86f129",
+      "bytes": 11465
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/pre-pipeline-creative-contract.json",
+      "sha256": "988bff6446aebdcf1fa9b693d0ccd6ad1497128bcce0b601b7690f0a94f275ed",
+      "bytes": 3326
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/pre-request-diff.json",
+      "sha256": "00a96a10240d3501b8c781b8785b584a2344004d8a2dad6c61404c9f87c78ed2",
+      "bytes": 30424
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/prompt.json",
+      "sha256": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+      "bytes": 7652
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/request-before-sdk.json",
+      "sha256": "6a8b73bf6f5339ed192c232fa46f6ef165690468769b523f3ee561ac9ba6e91f",
+      "bytes": 14470
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/request-started.json",
+      "sha256": "1c13a919377cc990a4fdeddea0330bbd06f73dd8e6b59204381bbd2ec0370b3d",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/response.txt",
+      "sha256": "f89e8c15a18a466c44d86e76d567060813ae47dadee00dd0b7c8bcd78a0d093b",
+      "bytes": 3345
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/result.json",
+      "sha256": "93c74654048ab747436f7c3207446288e2e7eed6d80931ff60dc1fc6367cce27",
+      "bytes": 2431
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/sdk-request-forwarded.json",
+      "sha256": "9f69b62122bd3774c5de93ba97d5ca0d563e943a98a4873eb521d378403aacac",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-full-contract-probe-1-run-001/worker-result.json",
+      "sha256": "4051cf7b808176604d6666df6b867644e32959801a7432608fd42911dd16f7bf",
+      "bytes": 1181
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/REPORT.txt",
+      "sha256": "f625a8bd3acaf13770678a8ef07b6dc46979d33d13519d0723b6d141f1dd441a",
+      "bytes": 290009
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/artifact-manifest.json",
+      "sha256": "35dc35711f2e1495911dcbeeb4cfabb0f543ec31b3974be247131e9a892cccc7",
+      "bytes": 6013
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/authorization.txt",
+      "sha256": "dedb3e7827c2707f6a8e98b63350bbc537fa541b2b301513440cdd4f6481ee9c",
+      "bytes": 10571
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/comparison.json",
+      "sha256": "58e25061d9d35d5c5fce55c19c6123933b9836d0a4f08acc8a553097dde1448d",
+      "bytes": 1181
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/complete-returned-candidate.txt",
+      "sha256": "de155cea3d6fb169103525fdd7d1dc5968cd79c98dec8a66b72350f448be1b9e",
+      "bytes": 2885
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/focused-tests.log",
+      "sha256": "c08111c9378dfb2010817cb5ad053993ed7fd5c117d6ec4d36ca6d5eb182a650",
+      "bytes": 260
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/full-regression.log",
+      "sha256": "0cea9a56db738af31d4cba321e649830853523c4fe87807b4f088690e136175d",
+      "bytes": 36181
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/live-command.log",
+      "sha256": "93c74654048ab747436f7c3207446288e2e7eed6d80931ff60dc1fc6367cce27",
+      "bytes": 2431
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/offline-request-comparison.json",
+      "sha256": "6020af578f5825e310e4f91af502ebead8dd87b90265bc1779e8eb349b470d22",
+      "bytes": 31379
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/pipeline-results.json",
+      "sha256": "44e623fe701b8675e4c194ec7a81e37d0cf899dc7aa0ae8b91c98f52ac490213",
+      "bytes": 241921
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/pre-live-verification.json",
+      "sha256": "f57e6caa22a25c31cdab405926c491eaf5a85fedbb48933824d0f84b1085ac97",
+      "bytes": 372026
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/protected-after.json",
+      "sha256": "0ca18dbc7b87ecb0afb121631dfdbcb19732898d0c01d551a5426fbbcc084afd",
+      "bytes": 357130
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/protected-before.json",
+      "sha256": "0ca18dbc7b87ecb0afb121631dfdbcb19732898d0c01d551a5426fbbcc084afd",
+      "bytes": 357130
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/report-verification-output.txt",
+      "sha256": "45b9f7398f331fe8098749c38b74c8b1e614a066027d4603dca77b8ce09b714d",
+      "bytes": 1390
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/source-freeze-before-full-regression.json",
+      "sha256": "9e325dc7ba86a6d74611da146f9dfce1a9d47642efe818644c45c61cbc31c89d",
+      "bytes": 420
+    },
+    {
+      "path": "intelligence/docs/semantic-low-reasoning-probe-v1/verification.json",
+      "sha256": "45b9f7398f331fe8098749c38b74c8b1e614a066027d4603dca77b8ce09b714d",
+      "bytes": 1390
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/attempt-manifest.json",
+      "sha256": "f14222b191f89a129aab7802a661b0db68a6f7b20a76e9ba2cbdbb8c030fcfa6",
+      "bytes": 1213
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/final-provider-schema-validation.json",
+      "sha256": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+      "bytes": 850
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/last-mile-sdk-request.json",
+      "sha256": "1ae38a97d909fd0655deca9d5ea53816d5e03cf27950c130ee3411c4263aca9f",
+      "bytes": 6646
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/offline-schema-validation.json",
+      "sha256": "ca1d2de1d7cd56f025a051fe4119ce24c46181278c3e37cf80cc998844c34bb4",
+      "bytes": 3806
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/plan.json",
+      "sha256": "3151369a3758c056a0a241a12ced631caf04a4024164f8b8be01972555fc3a27",
+      "bytes": 11564
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/request-before-sdk.json",
+      "sha256": "83cdf6c5ac199b6fdb4bf75fb1cb8a4c596d1ada731234138258f7e8872be6b5",
+      "bytes": 7317
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/request-started.json",
+      "sha256": "9a7fe90e7d5844cf5427d3ce89031d95d3e3c6402b3d0e2c62c6fda2f592bbd6",
+      "bytes": 90
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/response.txt",
+      "sha256": "9a8db3d9fa3666ef451b802602805b423edead46fd5ec2f49d392a5c87cab48f",
+      "bytes": 2078
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/result.json",
+      "sha256": "aac1a8807dd5b8ddb94dd7d22df454d07625ced6442dc077743013f88fd66c2a",
+      "bytes": 2428
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/sdk-call-started.json",
+      "sha256": "f99601f8eb5f9f7187a11d6475cc7f602cac9a06dfea2a88b4819ea22b4a8892",
+      "bytes": 96
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/sdk-request-forwarded.json",
+      "sha256": "33f83bf992453944bc147dcf395f3a2f3d2ad64fbafbada1996bbb916d3c6d0a",
+      "bytes": 46
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-probe-1-run-001/worker-result.json",
+      "sha256": "8263e3348032393e342f5f787de0b49a6c4986ae23725475568e76cf38606164",
+      "bytes": 1055
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/REPORT.txt",
+      "sha256": "774a4832d18248805a756fd040bd70817d420c06081aa10bc4c417f275eed824",
+      "bytes": 24816
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/actual-live-last-mile-proof.json",
+      "sha256": "1c8bf816fe309b51c00ae2108e028154d35919b18b462ff997c2cc479feb67ea",
+      "bytes": 2395
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/artifact-manifest.json",
+      "sha256": "3c1d211b089bf32b19194ddfaa7f30429db28388cf1bb777212c289540fbcb31",
+      "bytes": 3529
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/authorization.txt",
+      "sha256": "e4249dc288759b4206330ae55831ed05769f221281d2fb7411f530606adbc069",
+      "bytes": 16063
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/canonical-candidate-schema.json",
+      "sha256": "48be2e977e55f7daeacfe08ad475b0623d8a8dd18cbf60b7ff4d0bcf44a2d09e",
+      "bytes": 3897
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/canonical-reference-audit.json",
+      "sha256": "d00fb732d4061cc924d1da5525d8ae26848388d7c9b055179c38a2301b225658",
+      "bytes": 299
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/changed-files.json",
+      "sha256": "cfaa1b24b3351b50cae1321e0707f55d686317725e0a87595df739fa964c940c",
+      "bytes": 835
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/corrected-native-envelope.json",
+      "sha256": "f08d500961e3e57cf31cc5047240c07135235b82d0407eddb5ec08381d99c5c4",
+      "bytes": 5878
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/corrected-probe-preflight-schema.json",
+      "sha256": "ca1d2de1d7cd56f025a051fe4119ce24c46181278c3e37cf80cc998844c34bb4",
+      "bytes": 3806
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/corrected-probe-request-offline.json",
+      "sha256": "9901887b2c3269a60f82cb2c6fcb594acf6c74f902baf9fdd47a8079e4de4c22",
+      "bytes": 7301
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/corrected-reference-audit.json",
+      "sha256": "95327cc72c969a74574a3a46a2e1a0b7ec264614d3549cde22c97419f0dbf99b",
+      "bytes": 322
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/corrected-schema-metrics.json",
+      "sha256": "a42eea6cf08871a8402454f5cfa289220f672871a3c21a5e709544e042aa1b23",
+      "bytes": 1706
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/final-provider-schema-validation.json",
+      "sha256": "28b7e71b32960db7a95b5a7e910e722f5ec5fc827acb011069f791c215365dcb",
+      "bytes": 704
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/full-regression.log",
+      "sha256": "4a3b044c4a03a1e38d22a0f457c1e084a9bd34ab1ae832733d0f5eafee2e4fb9",
+      "bytes": 36021
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/historical-evidence-proof.json",
+      "sha256": "7fca1de0b2eec4a462a7fd837ff63abf94ee81d4079389074829bcee7943c166",
+      "bytes": 385
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/historical-structural-compatibility.json",
+      "sha256": "5472dabac8e6347d6ce4c8a07d080566229d26b0f4902940e3e44fc04e521908",
+      "bytes": 825
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/last-mile-mock-wire-proof.json",
+      "sha256": "23576e8a9f8d0ce1116e3784e38ac3c33788244dbdeacaf7308675e03439fa83",
+      "bytes": 9115
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/live-constraint-errors.json",
+      "sha256": "0d00445942b8044a88c17b8a12c0e5ce58bb3ae47ef94e74a5e21fa3dcb8e30e",
+      "bytes": 667
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/live-execution.log",
+      "sha256": "aac1a8807dd5b8ddb94dd7d22df454d07625ced6442dc077743013f88fd66c2a",
+      "bytes": 2428
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/native-compatibility-audit.json",
+      "sha256": "4f8c9aeb03f46519f9a2df7a1556ecbef27c90f42492b2f2c378b5e8f43b0da3",
+      "bytes": 2213
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/new-tests-final.log",
+      "sha256": "585ad77db71454a791369b571271f79e4d855a79341287aad6decf8eae42e120",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/new-tests.log",
+      "sha256": "0cfe3b7f3415d8185de61ea6ceb99a50074a7f7c8499ce38bf74609845bc954f",
+      "bytes": 2767
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/old-native-envelope.json",
+      "sha256": "447a33659332ead777bf6e97b0461439f8c3a013a31be39d078eecddf4c03293",
+      "bytes": 6070
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/old-reference-audit-before-patch.json",
+      "sha256": "e8ece300cd8a5f8912c17f66fa35940fb2039572b3ebfa6416f340f193e1db1e",
+      "bytes": 185
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/old-reference-audit.json",
+      "sha256": "2866049fb3ff803ae82d3270f9c8b70270f40869909f2f968e5a1896f489e0b6",
+      "bytes": 307
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/pre-live-verification.json",
+      "sha256": "999870a8df190d544b2ea7b7e83c8e1de6c2387be8ccfbf541ad9861fd2f03e7",
+      "bytes": 10650
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/protected-after-tests.json",
+      "sha256": "0e4e8a7831918086fda015ffeb22d4d528a9dba6c45d7b3d5757612b20c9a0c3",
+      "bytes": 336183
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/protected-after.json",
+      "sha256": "0e4e8a7831918086fda015ffeb22d4d528a9dba6c45d7b3d5757612b20c9a0c3",
+      "bytes": 336183
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/protected-before.json",
+      "sha256": "0e4e8a7831918086fda015ffeb22d4d528a9dba6c45d7b3d5757612b20c9a0c3",
+      "bytes": 336183
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/protection-boundary.json",
+      "sha256": "59f505ebcd86d8d537eae0bf527c284074fac8acaaed2c8f031a46b514fd5d34",
+      "bytes": 968
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/round-trip-proof.json",
+      "sha256": "e577afb0765032bdfdf63c3941f04ee10a0ba3eb0bc4aa447f5bddd4c095ec53",
+      "bytes": 30113
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/schema-path-before-patch.txt",
+      "sha256": "92a1801fdfaf1743be263d0d7e52ac85dfa251d3b97140793627899a05986567",
+      "bytes": 1943
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/semantic-equivalence-proof.json",
+      "sha256": "d565a9c4b87bd39cdf4d0522a1b9687dc3f7a1a05349e8198ac821e71ef490e9",
+      "bytes": 590
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/source-hashes-before-regression.json",
+      "sha256": "f281b9bf13d63143f4bebb754a630521d60b0b99058d17cfa5302b65a1c10223",
+      "bytes": 739
+    },
+    {
+      "path": "intelligence/docs/semantic-native-schema-integrity-v1/verification.json",
+      "sha256": "f4fa54e6a193382b272d801c2045d6f197f59586a7ef4e3afdcb20101a8bcfc1",
+      "bytes": 18428
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/REPORT.txt",
+      "sha256": "14fe85eec4711113a52a5acbbd0adb69cd1d4e9dba924ddebd9e8f7bcaf9d3c7",
+      "bytes": 83138
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/adversarial-results.json",
+      "sha256": "1712be4ac8f4d1e1febfd3ecb2efdb897711c7dbd1a38e2f5741d7f90e661874",
+      "bytes": 8842
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/artifact-manifest.json",
+      "sha256": "2490bd6cfd3e5f35e91107a2440ec27e8ca4ddc95f78593e8b02aa21ccb1ceaf",
+      "bytes": 6453
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/authorization.txt",
+      "sha256": "890910ccdb6173c9cd499b63b6dcd7fbc2cee17641be651dc241e3a4649a0c13",
+      "bytes": 18432
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/baseline-three-summary.json",
+      "sha256": "081a820455a3c346f39013a6bbd3b5fbb6b040fb0ab28dc57b52298cca5b77bb",
+      "bytes": 1591
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/complete-returned-story.txt",
+      "sha256": "a0d6297896a49b51b2f4552c973937d5af1dc8225837931d6ef8d8ca0c07482c",
+      "bytes": 3556
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/focused-tests.log",
+      "sha256": "254bb61a764403ce70fb6bec434dd883d0782137289af6084d7dbb007d4ffd41",
+      "bytes": 340
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/full-regression.log",
+      "sha256": "1a9a32fa4bcd4e0c99cf9641fc113c29a09d895a279500cbecb6840fcfbf9e9b",
+      "bytes": 76763
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/live-creative-audit.json",
+      "sha256": "c2ca48188f9f78a0f616f64817ddaa1b530628fe1f2978103983b68f35ffa3c9",
+      "bytes": 7561
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/live-execution.log",
+      "sha256": "84e90f5a9e5d0393ff9389b27951088f6db17c49cd6f121796cefdce80d16040",
+      "bytes": 2093
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/new-tests.log",
+      "sha256": "f847fd9915b4c0261199cbb298c17f43622ad2dad6c41bc60c682dc490572324",
+      "bytes": 2846
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/offline-audit.log",
+      "sha256": "dfe37b355c6c65c96679ed6c3367a9575d6f4d93082989a280ce940f9400310b",
+      "bytes": 207
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/offline-native-request.json",
+      "sha256": "ef730708509cfdb301a7e0c028480142b1f6ecac6e70a3a24ea9dab611d05013",
+      "bytes": 42444
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/policy-equivalence.json",
+      "sha256": "a4d6a2beb5ff548273616007481b284a923cc05afcc59ff0a45e8f0d6bd1ef64",
+      "bytes": 18366
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/policy-equivalence.txt",
+      "sha256": "8f01d17ca7e5a77188f5836ce6d53ec24f2b98b08f870747e5fdfd8adea24a4c",
+      "bytes": 12712
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/pre-live-verification.json",
+      "sha256": "906a26628963fd0628a59e5fe4ea252af71371a9faad2ed21b62880b63f8b185",
+      "bytes": 390606
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/prompt-exact.txt",
+      "sha256": "8f46729ebc88b3c08e99b39bd42c595376a87c68801c381fa3329736532bfba8",
+      "bytes": 6498
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/prompt.diff",
+      "sha256": "58de005285e384c24fab8b7a6fdbd573a749a9ece239123ba389a2f3e3f8d827",
+      "bytes": 8657
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/prompt.json",
+      "sha256": "e309a0dd667351eb1602c5b959199097ebe1295447a80fdf48b3ec1a4d09be58",
+      "bytes": 8466
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/protected-after.json",
+      "sha256": "b2d9584c3c15652ad97970f008903590cf364d51a1961f2a88bb2a8de1edce96",
+      "bytes": 379454
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/protected-before.json",
+      "sha256": "b2d9584c3c15652ad97970f008903590cf364d51a1961f2a88bb2a8de1edce96",
+      "bytes": 379454
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/request-diff.json",
+      "sha256": "fa1545b424c405209e918acd36591cd60301b9951629b6c7ad2a057135313c5c",
+      "bytes": 15525
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/sizes.json",
+      "sha256": "ea9074802d5abb8c3de75c7c823d807b796794cdc62ba8c9dbf5aa806d34885c",
+      "bytes": 6163
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/source-freeze-before-regression.json",
+      "sha256": "ac2ac50de70c67af5ae8a6ae9fb43ddb6041dd73cd620e9c92cd24cb7c5b162d",
+      "bytes": 1014
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-1-v1/verification.json",
+      "sha256": "93e2864cba60d6a57faecdcf873209c35f24c0fb6e35c820cfdc3ade2308a34c",
+      "bytes": 6877
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/REPORT.txt",
+      "sha256": "51ee85e5dab2c0de787ef36644a8aa64c1557db6134614c2b0d5e78bb2d3d461",
+      "bytes": 84762
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/adversarial-results.json",
+      "sha256": "9c40736d7593952918494d9565bdc48413ac6b2b18553c7db265f2c8c7c6e854",
+      "bytes": 8326
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/artifact-manifest.json",
+      "sha256": "41fcb053a392c070943dd35eb4553407a7766f547a885ec3428c98a3e3a5d4d0",
+      "bytes": 6452
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/authorization.txt",
+      "sha256": "374b97d56bdc1c8b607d306a0976a51d314d6054fb2e2bd28193edb754774224",
+      "bytes": 18688
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/baseline-four-summary.json",
+      "sha256": "f3b1e8640c17439af34cb8ceb0571a88f19a4fcb07068a5b680cc8b1e4a7cff9",
+      "bytes": 2113
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/complete-returned-story.txt",
+      "sha256": "37cb0c2c776980e32cac1d32d6e0af9a0c80f91afb9676972c71c02b7697d8e8",
+      "bytes": 3663
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/focused-tests.log",
+      "sha256": "e7c44720f9a082599eafefaa9f2d680180eed7166fd95235ff4b9bb005d77438",
+      "bytes": 421
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/full-regression.log",
+      "sha256": "105c6da5d7a585e46b51269ba0c893b8053465390c2e00fe250f5fab5f22e737",
+      "bytes": 76843
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/live-creative-audit.json",
+      "sha256": "e1e093202ecb8d74a13457e5c2e8c4ac5232d73ad6e4ef4171f317532dde605c",
+      "bytes": 8672
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/live-execution.log",
+      "sha256": "43049ff44de8fd21e9f043ec00cb38bed35caace64ea2d938f0c34f2fddb8105",
+      "bytes": 2095
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/new-tests.log",
+      "sha256": "061473b0dfe33f89504c182aac280ffc468b5212f7fd1b676d5231f8fcf17a2a",
+      "bytes": 179
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/offline-audit.log",
+      "sha256": "9b7c7dd528c0a7c5a76feb966d64325a7dbb8075fc4a6d00ca23f0e3aa70ed34",
+      "bytes": 190
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/offline-native-request.json",
+      "sha256": "4ece750afa7532e72cbbd5d613d3a92e714852754ec311a8c9603300c8836b90",
+      "bytes": 45253
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/policy-equivalence.json",
+      "sha256": "ff229b3c1364c027f43d0ea5b406d7e7008429889121d2d5def6616df4aac5be",
+      "bytes": 17212
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/policy-equivalence.txt",
+      "sha256": "9ada9a369a3a223c86fc4fb8aecbccc10ffca4b064085883af847223be97fc3a",
+      "bytes": 11794
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/pre-live-verification.json",
+      "sha256": "139b1644106e153adcec6c980b12a9ef0b9b816f293489edea59dbc6dd286263",
+      "bytes": 398365
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/prompt-exact.txt",
+      "sha256": "275c5be432a7b112bbe489b15a0e9dff18f2f13d6708c1ab993da85184642999",
+      "bytes": 7156
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/prompt.diff",
+      "sha256": "03c1ef8b316b629f326a28806b6dee0c56e3665bd10ec86794e06827d19ce6dd",
+      "bytes": 8398
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/prompt.json",
+      "sha256": "9e2d1ed94d849dd7d2e63000374a49fe05ad38186b519e64b161e914d4f7e008",
+      "bytes": 9132
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/protected-after.json",
+      "sha256": "f71df45006808a646b1b652245a11b6c9d4948104e1ecbb2c19cd07c486a6065",
+      "bytes": 387063
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/protected-before.json",
+      "sha256": "f71df45006808a646b1b652245a11b6c9d4948104e1ecbb2c19cd07c486a6065",
+      "bytes": 387063
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/request-diff.json",
+      "sha256": "ab83bded55360515274140117f91687a0d6e500a1f41c0267901f5eff9dbd1d6",
+      "bytes": 17002
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/sizes.json",
+      "sha256": "045a1edc56ea2335319f3a112796977bab0f3480838c2d5fbe93c55040e38b23",
+      "bytes": 6148
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/source-freeze-before-regression.json",
+      "sha256": "c6d255f344b3f83651ff936f55fba7e3d53a531304aab01844329e8540c46fcf",
+      "bytes": 1014
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-2-v1/verification.json",
+      "sha256": "07d9a77a147493951a136fd24963b48040fd5bac12826fa462f9fce53ca461c1",
+      "bytes": 6939
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/REPORT.txt",
+      "sha256": "9351b54255a5213796e1bc2d18bd117979b826e13c5ad6902b16af76972d1a8c",
+      "bytes": 75458
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/artifact-manifest.json",
+      "sha256": "d6c8bf70ad408b72baeef4d3ffc5cc958e2d4120fdfb633f8d64e099bf628d0e",
+      "bytes": 1345
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/audit.json",
+      "sha256": "4f6edc452a11b1c432b50abf5f8611ab13489efcd46fe06dbe6669409eee8125",
+      "bytes": 804398
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/authorization.txt",
+      "sha256": "39e4e1ccf13ba869eb4d52685ba49d0487d2815d2bea4ed2f1e5f19581766af0",
+      "bytes": 18064
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/changed-files.json",
+      "sha256": "e07a86a894adb5046a5e4e34092d56af3fbfda0b02377fde7bfe31f4916dadf7",
+      "bytes": 648
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/compact-prompt-exact.txt",
+      "sha256": "9f386c84c0281918117a4ec1fb49e19d20fe48512d21f7bcb1b65c5070c91340",
+      "bytes": 5701
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/compact-prompt.json",
+      "sha256": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+      "bytes": 7652
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/focused-tests.log",
+      "sha256": "4414f0e756d344a1b233010a812141eb55b38a52f58687515267e52d99130d49",
+      "bytes": 180
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/full-regression.log",
+      "sha256": "22b423cbed8df1ae3d7e157cc9a427df0b98fb70c975bba03825b2e25c76a1c0",
+      "bytes": 36181
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/offline-native-request.json",
+      "sha256": "3122d30e7266e62653b42047616e33a03f800fead558026d485900d0d1948525",
+      "bytes": 23461
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/protected-after.json",
+      "sha256": "8e29419a1c1cb881598b16c27409ec49b568754009214c775f3e34f38e0faf3a",
+      "bytes": 344105
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/protected-before.json",
+      "sha256": "8e29419a1c1cb881598b16c27409ec49b568754009214c775f3e34f38e0faf3a",
+      "bytes": 344105
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/source-freeze-before-full-regression.json",
+      "sha256": "02cfd16a3a941015d5c5aedaf408ab620ac0088335243feb1805d44f7301fe7d",
+      "bytes": 875
+    },
+    {
+      "path": "intelligence/docs/semantic-prompt-v2-compact-v1/verification.json",
+      "sha256": "7ee9fbd68eff1db035e59df9c2a592466f098adcee1dc75de6a329943f7950d2",
+      "bytes": 11016
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/REPORT.txt",
+      "sha256": "15d01b96db39cfef48fe7bbebc9b4f3480d4d755e11e3a02b7248348baddb99d",
+      "bytes": 37264
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/abcde-execution-matrix.json",
+      "sha256": "3488f656fa47b2a968479c326577d003ecdfc08fbdbcb7c136df9a59a76f3247",
+      "bytes": 1091
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/artifact-manifest.json",
+      "sha256": "1ed4ffb21e1ef217ca0e40e62a70dc9174254e37a721fbf18e4c1eaaa09be41c",
+      "bytes": 2134
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/authorization.txt",
+      "sha256": "5944b62753f904256a923133602e765eb5a638007c5f71112abfcb94742958d8",
+      "bytes": 13026
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/changed-files.json",
+      "sha256": "c3f9df9c6549e6f9ed78733f9e491c89c26cc936c2b54d323bb9daa1ad0a23f9",
+      "bytes": 498
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/failure-assessment.json",
+      "sha256": "de91831a4a03c082aa4433cd05e04c97671f03388ec36b62e619aefada5ae3ca",
+      "bytes": 1422
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/full-regression.log",
+      "sha256": "e44dc1ba3383fc5231719f034d870fd497092d9c27beded98ad133dcb51f0407",
+      "bytes": 36021
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/hash-identity-proof.json",
+      "sha256": "1d246e18a9e002c771d79ecae6c77dcabaf4218bb8b5bedd27da952f6b2cb9b5",
+      "bytes": 1134
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/historical-evidence-proof.json",
+      "sha256": "14fb735e4dea3b2d89cd2ac522fcb503d8ce7c5c00f4a661a3a5352e74639a26",
+      "bytes": 34080
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/live-execution.log",
+      "sha256": "b890dcae192a27672e0b49ae110d4d988a57d020552e4bc0b9ad9891c7851ef8",
+      "bytes": 5748
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/new-tests-final.log",
+      "sha256": "594cd3e5298ca6c344e41e30205fbc2091f70b03bfae1b18a6ac404b9a3b3ccc",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/new-tests.log",
+      "sha256": "bf7a1d0628e6aaf6bc37f469528edee31d32aee62d7cb5c56ab1d669d8d51f22",
+      "bytes": 49271
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/pre-live-verification.json",
+      "sha256": "55c89e05fb7b6aff8ad9b8badbfb26c43412fec1be74b3452520a0f7af46d266",
+      "bytes": 10042
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/protected-after-tests.json",
+      "sha256": "ee5df7a3d2871d14e48b94a782a9241c171a870ad9f6ed494010914444778bb4",
+      "bytes": 328938
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/protected-after.json",
+      "sha256": "ee5df7a3d2871d14e48b94a782a9241c171a870ad9f6ed494010914444778bb4",
+      "bytes": 328938
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/protected-before.json",
+      "sha256": "ee5df7a3d2871d14e48b94a782a9241c171a870ad9f6ed494010914444778bb4",
+      "bytes": 328938
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/schema-reference-finding.json",
+      "sha256": "ec9d66d5dff9428fcb2d7e9a70af666a28628681bded053b3be099a791458b11",
+      "bytes": 867
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/source-hashes-before-regression.json",
+      "sha256": "4fa26786d9fa77e99557d8db4c59d0662c48d4eab4a9a0d3b2f8bab8a9f2ea74",
+      "bytes": 425
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/static-analysis-before-live.json",
+      "sha256": "0273d9c30d8534a03fd30b7a47f2abb06a178a353042d049a2ce431c920a6aee",
+      "bytes": 25202
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/static-analysis-final-before-live.json",
+      "sha256": "909fc6938a3ff1d015e63aee72a0dcfe03edbf4f1840c495f6f525766661c1a3",
+      "bytes": 25430
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/timing-consistency-audit.json",
+      "sha256": "634e5e6d2faf6a7645fbf60db2909debf63a5868ad1021910afd59daef51fa75",
+      "bytes": 705
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1/verification.json",
+      "sha256": "ebfc4c27a09761d60fa5b7722441b529190b2892c7c9896a61caf79f09a48073",
+      "bytes": 13946
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/experiment-manifest.json",
+      "sha256": "90d0653471f6a7aa12beb0fab8b40bc1809e6be8fc110e7a53d8ab469f26298e",
+      "bytes": 2066
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/plan.json",
+      "sha256": "2ef4345b005ba11f3e3f64a6dd62ef7b7c664bd90e865e033d7e78fc370e8599",
+      "bytes": 11105
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/request-started.json",
+      "sha256": "fc333b049a777b45df7ddac3ae23248d3ccee4d768d9ca6972e8a90932a1d41b",
+      "bytes": 113
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/request.json",
+      "sha256": "f94bb327ebc0a22c5beb2913d54d04d07516008ae800741f06dd35bc80f43766",
+      "bytes": 16672
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/result.json",
+      "sha256": "addb4a44fc54369f2c379dd3cfae11f76645733bc587d110272523e4a3089507",
+      "bytes": 2144
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/sdk-call-started.json",
+      "sha256": "35f93d318f03367537c8a6f8d98fd977a756d508628a8300c3328e697985a88d",
+      "bytes": 91
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/specification.json",
+      "sha256": "309f5b561d3f86aff22908d2870c25f9d2b95c0742bd8a2801419de80a7213ad",
+      "bytes": 34302
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-d/worker-result.json",
+      "sha256": "ac1e6c4c68ea35236095520a5168d6edd982c76facd6398e574d488549c010f7",
+      "bytes": 1682
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/request-started.json",
+      "sha256": "b6de870d60169cd70a762e2e1bff8d765897f0e4f5b79633a17507b7ac91602d",
+      "bytes": 113
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/request.json",
+      "sha256": "a7a5a8a24c3cab9d1f097f1bdf2a5166fcadd88559e322b362622ecf63ba6bd5",
+      "bytes": 7509
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/result.json",
+      "sha256": "89f5a5f713a44404a1bc8597aa2c5d81efafe171fad5f358c7b163f8ec089c79",
+      "bytes": 2157
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/sdk-call-started.json",
+      "sha256": "543095fbaef8036775c2b01c4f2f82cfe6ca9497644c3346298e19066d0f3e3e",
+      "bytes": 91
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/specification.json",
+      "sha256": "40e2ec3020bdafc80ecd2742cab9917bcb0f481bd30a7224811409cf079a5602",
+      "bytes": 16136
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/probe-e/worker-result.json",
+      "sha256": "3784ead3a22d83e7239932b95cc2b0401bfcb68be4425ea49029bee0dac6bd27",
+      "bytes": 1692
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/profile.json",
+      "sha256": "6c567f4fa99a12b27fbcdd2398c2aeee92572f258702cf3c2c28488a55832a1a",
+      "bytes": 806
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/stored-c-request.json",
+      "sha256": "e21f6d1576ae2fcd62b3ab156891ebe51e7c5e9c440deb07ca2d8b091671d937",
+      "bytes": 22595
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/structural-metrics.json",
+      "sha256": "0cf8763a1ca2edb199cca7fcda7c7a678559285cacd2a2ec5e996fefebed998e",
+      "bytes": 20590
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-contract-decomposition-v1-run-001/summary.json",
+      "sha256": "1630f80dc483feb566a91181171bdf6db328b83cb95fd9c48d1fc6e8a6de2416",
+      "bytes": 5608
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/REPORT.txt",
+      "sha256": "b88046d339a8bdc0cb06978593a775df68e587819472d06d2559e76f4e6b9cc5",
+      "bytes": 15605
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/artifact-manifest.json",
+      "sha256": "a14b485f628aedca489395de5a8053493966dfffe8f7eb9eb42f066a3a9c311f",
+      "bytes": 3569
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/audit-source-hashes.json",
+      "sha256": "b5eece913d1551ee8f597f5138f689e495cba300304478ec585d20c3ca6cea3a",
+      "bytes": 785
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/authorization.txt",
+      "sha256": "04856e2e37b74421cb79d9a5099e4f4a3831a9976494d7a30c91a8ce316c2a93",
+      "bytes": 9585
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/changed-files.json",
+      "sha256": "f767b2793857a977f7c325bf827f87e9fb793011351112b31c56e35fc48998ca",
+      "bytes": 506
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/full-regression.log",
+      "sha256": "ae563b2cca08367886b4ded0d8bc6d0ea61b40767e2ac9f4c2a5e3c985803189",
+      "bytes": 35941
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/historical-evidence-proof.json",
+      "sha256": "aacd578c86ca6cbc5e955415df40c3d64e70d3f1d225e2f8381f900b1dc55343",
+      "bytes": 5937
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/live-execution.log",
+      "sha256": "960f675bb3d049233717749e8fca0c3bb1c27beeddf1991fec951001fba2ca39",
+      "bytes": 1311
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/new-tests-final.log",
+      "sha256": "eddd0dbb48e8c4cf20c5904f994b11c6327830e2997f61a4930236b40b038e03",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/new-tests.log",
+      "sha256": "9934fa8282a1035629e95e67fb1b1e5fd6627cf9e63daa1f8f046fc049b7c78e",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/pre-live-verification.json",
+      "sha256": "2a1117f7e0a3cc891612f7559171698b5ad096335e69210fbeec97a88e773afc",
+      "bytes": 10057
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/analysis-status.json",
+      "sha256": "076ee946168d411ccaab49023e1478f41103d665198428517e33401265da58cb",
+      "bytes": 82
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/attempt-manifest.json",
+      "sha256": "66e6aeb39283bb5e498180e488334644709687eb24ab3f9fab479b53301e5f78",
+      "bytes": 1266
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/benchmark-record.json",
+      "sha256": "8c5b8a6c1ea965866b436e456b02ac0006c30aec77fa3535653dafe3c7a2dfc6",
+      "bytes": 1116
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/capability-assessment.json",
+      "sha256": "41d738a47acabef53f38a912f46d78249265cec53de0098e151bef40fd2d90b3",
+      "bytes": 1510
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/configuration.json",
+      "sha256": "306e54ed3313b6204365008e6225b448d9f336eccc5090c7d1de141345a74cba",
+      "bytes": 1802
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/http-observation.json",
+      "sha256": "722061924d966b803d009cd4539ede8c3d914b604474e16b3faad6d482b34e56",
+      "bytes": 293
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/plan.json",
+      "sha256": "bc0b485b732e6e03795a659f41fbe8687cdb9fb568a1438edb4dd6009f7ea880",
+      "bytes": 10927
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/prompt.json",
+      "sha256": "12283c6416cc389a3cec54f8a1b936fa0d3c6d7353b967eb51bb0eaf5a05b0df",
+      "bytes": 15584
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/provider-discovery.json",
+      "sha256": "d0ffe74d5d8909f7864e2bc33ae2c667c58edf2cef4e248650be439feb0e7f87",
+      "bytes": 3302
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/request-started.json",
+      "sha256": "fbd9694a33b88841f43b6e73bb805fe2a8811c3075c1ecb9f3710cfc3d728018",
+      "bytes": 153
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/request.json",
+      "sha256": "cd1a47fe2dc793a83f8b31b39bed8f47ba3dbd8feed72993de587ce3c8688ea9",
+      "bytes": 18965
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/sdk-call-started.json",
+      "sha256": "e50747d916ff3e2d0346e27f210d55edee4950ddc5193f45eb9672bb3d880c30",
+      "bytes": 84
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/probe-deepseek-5-run-001/worker-result.json",
+      "sha256": "6949e6942c7bbac19308dc00f82599712000edb4401bdc0c1f0d5b3699f1dfef",
+      "bytes": 310
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/prompt-unchanged-proof.json",
+      "sha256": "7e43f028cdbf0142d19c8412a647f08525647273625a285d4f28f9a2d604400e",
+      "bytes": 273
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/protected-after-tests.json",
+      "sha256": "4e94abbd11df0e6e29a29a785ea1dede73904810b3de30c0e7a3b49c5b914191",
+      "bytes": 309751
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/protected-after.json",
+      "sha256": "4e94abbd11df0e6e29a29a785ea1dede73904810b3de30c0e7a3b49c5b914191",
+      "bytes": 309751
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/protected-before.json",
+      "sha256": "4e94abbd11df0e6e29a29a785ea1dede73904810b3de30c0e7a3b49c5b914191",
+      "bytes": 309751
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/provider-discovery.json",
+      "sha256": "d0ffe74d5d8909f7864e2bc33ae2c667c58edf2cef4e248650be439feb0e7f87",
+      "bytes": 3302
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/source-hashes-before-regression.json",
+      "sha256": "eb58c8d0077afd3febfbc8ee152dddfac7b80ab29cd1d60f50e325f7d229571f",
+      "bytes": 433
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/streaming-audit.json",
+      "sha256": "11e9e1c7b9d8e71b4b735716ce51cdebff6b8f74c8986b94bf5fbaf8698226a9",
+      "bytes": 1110
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/timeout-and-token-audit.json",
+      "sha256": "d18b22accfe551fe726e6cf2416caa13967bedd422976a782fbd14c5b8a88013",
+      "bytes": 2398
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-execution-benchmark-v1/verification.json",
+      "sha256": "d88fbbcd712a86a43464cb2fad1704c4f4c776d73be450d6a80f1bdbc9094977",
+      "bytes": 14244
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/all-returned-concepts.txt",
+      "sha256": "9e0c287e662c728485cb32e3163f1e5462082a114e13de07ad1ae98d9acc13ea",
+      "bytes": 396
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/analysis-status.json",
+      "sha256": "215ac7bcf92d5f81c8f28e5f9df8c9d14e8e0b4c036f8e0e4c818c2961112a65",
+      "bytes": 105
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/attempt-manifest.json",
+      "sha256": "cf744fa147bf3cdf5dd52c789b282ec24fb6f119833550dc8225c39d240e1b93",
+      "bytes": 1177
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/benchmark-record.json",
+      "sha256": "fcd81d10f4ebe7f5e4cad887e029356473b351152a573f71439d228a7376c213",
+      "bytes": 2240
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/configuration.json",
+      "sha256": "dc5f0f0af090f2eb4989f51d4bf709aa43672ebd6421d3f5dcc822363b9640ad",
+      "bytes": 1838
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/plan.json",
+      "sha256": "06f24e9515b15fb78a5535962249dfc6ff743944e9c6f23f5b13c7972d92ae9d",
+      "bytes": 11092
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/prompt.json",
+      "sha256": "12283c6416cc389a3cec54f8a1b936fa0d3c6d7353b967eb51bb0eaf5a05b0df",
+      "bytes": 15584
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/request-started.json",
+      "sha256": "90a85c50282ff03e58c5aaa6befc2534c519c392631490e9c3bba41859d2d55e",
+      "bytes": 95
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/request.json",
+      "sha256": "e4f645204a24dff3c6dd06c6d69c8ee6df035a3a592fff29340f84218046cf1e",
+      "bytes": 22571
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/sdk-call-started.json",
+      "sha256": "8a6a3096d46bb2b3ec9d1431d0b8e81c5e987ae41db4505e0e8760f0ce8912db",
+      "bytes": 184
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/unavailable-concept-results.json",
+      "sha256": "e9d627927513fb28f9c1a651ad46b581a8c4df4d684b939405c63338f0b4c254",
+      "bytes": 424
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-gpt-6-1-sol-probe-5-run-001/worker-result.json",
+      "sha256": "2d3c7056fc5a1cdeefecccaec8ac45de89048b238a6c92bb7993539cdd31f26c",
+      "bytes": 1433
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/REPORT.txt",
+      "sha256": "837b32e718c8c903042e38f095a4f65d58d6f3f2b639a756133b8c153ab729a1",
+      "bytes": 12373
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/adapter-audit.json",
+      "sha256": "d9793afaa9e2a671d5b058ee52fb75ab784f7dadce9c5be0c4b4bf0e8ab2dd9f",
+      "bytes": 1434
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/artifact-manifest.json",
+      "sha256": "f49e43d57b76e05bed1fe28321f49deef0b0e78f8bcb4299d8eb939f3927f12a",
+      "bytes": 1606
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/authorization.txt",
+      "sha256": "9d511ef1423671ab5e7753672c2bf7c7a7efa5d4777424a81bf08fe9b090ab80",
+      "bytes": 10914
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/changed-files.json",
+      "sha256": "76e533c5c4c25d33aa8b02174520055cdc4f32dfb9e5f0fa56aaf3e0ba81e0b9",
+      "bytes": 486
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/execution-comparison.json",
+      "sha256": "495817926b1e206463ecf1dd0d09e274050af1211e5b0eaab74b52f48d79d674",
+      "bytes": 3323
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/full-regression.log",
+      "sha256": "40edaba9788ed637e3776e0a20b2e296a5e66ee36edcca1ca64993cea736ebe6",
+      "bytes": 36021
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/historical-evidence-proof.json",
+      "sha256": "6c260597d4f1e0593ac631a47b104f7f95864880ad9b6676ca9f9c68a956e6ea",
+      "bytes": 26970
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/live-execution.log",
+      "sha256": "ab08c9f0f9a7c8031208a9d8fb0d021413522969acfd8942add5741961ab91fe",
+      "bytes": 2553
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/new-tests.log",
+      "sha256": "7a16feb8c93664cc7a068b3d42a9876c777899dcf75de1e562d130143b9213ae",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/pre-live-verification.json",
+      "sha256": "cfcfca401c86d2352680840620caec684e25b410de5e803d0634e448a00f2897",
+      "bytes": 10033
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/prompt-immutability-proof.json",
+      "sha256": "af7eca087d6e29825a867bd2008c8c1f6e07d2d10a6c27a1bdde718438663884",
+      "bytes": 478
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/protected-after-tests.json",
+      "sha256": "34580e8e73bc398cb2a5c4e85ec2d6b1b6077e82daf27f27b5e95de7068e0908",
+      "bytes": 315740
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/protected-after.json",
+      "sha256": "34580e8e73bc398cb2a5c4e85ec2d6b1b6077e82daf27f27b5e95de7068e0908",
+      "bytes": 315740
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/protected-before.json",
+      "sha256": "34580e8e73bc398cb2a5c4e85ec2d6b1b6077e82daf27f27b5e95de7068e0908",
+      "bytes": 315740
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/source-hashes-before-regression.json",
+      "sha256": "0edc8f6db88b2d04599e0e9c5112e2e464ebeacb39449b9e1458b4089de412e0",
+      "bytes": 417
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-openai-probe-v1/verification.json",
+      "sha256": "a27683a34395affb4cbd795c65e042105d8e674723757ba8907ad1e1e1a681cd",
+      "bytes": 14151
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/REPORT.txt",
+      "sha256": "64e214dd1fdd4906b67b9c10899ca6b1ea008f699addfd78a249369fc15bd662",
+      "bytes": 13050
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/artifact-manifest.json",
+      "sha256": "050fbabdb0ef636d250c4a678084b54708f856a5a2e32c5e95a8b5e134daafbb",
+      "bytes": 1711
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/authorization.txt",
+      "sha256": "007ff15a061f91cef181a926f81f7b8b1bfd08ce46e8e0a4c78e72bcc1877182",
+      "bytes": 15148
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/changed-files.json",
+      "sha256": "e83396175f34a7f669346c65f5ef04e1ef7e7d2d5dfccf570d82bcc8df54c8c0",
+      "bytes": 491
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/failure-boundary.json",
+      "sha256": "43139366b8855d674ff0199cf44ab87da91c4b2dbc6750c6ab909c870a2a5e76",
+      "bytes": 1135
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/full-regression.log",
+      "sha256": "c3851fc76c7e9790dcac1159ed2d6a616e8f9c24dd5ad7e064fca1e46e3a1401",
+      "bytes": 36021
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/historical-evidence-proof.json",
+      "sha256": "1bb6dc88cc8dcca74b9e513552316d642333b77bd5a4d63dcd7b1998ad93f28c",
+      "bytes": 29072
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/live-execution.log",
+      "sha256": "0f1f3ef39ef437fdddc7f8dc4c3fdbf37803e305c9439038f742df311f913a49",
+      "bytes": 7013
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/new-tests-final.log",
+      "sha256": "df0b0ca49696a80d3eee26b2f0dad34a7a3d022a455da9bba970f217054e74f2",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/new-tests.log",
+      "sha256": "2b0a6d0cfda5bf6d98803f51d3c27abfab7913e1849ba1331823d446a349eed9",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/pre-live-verification.json",
+      "sha256": "7cbe455d9ec81a8ec6194dd86946e397f29cf5d35bb935d234b490b221935040",
+      "bytes": 10035
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/prompt-immutability-proof.json",
+      "sha256": "2e03f6293dc49ed930fc1078d614d980993e8ea570b649c7523d637516b44ccf",
+      "bytes": 351
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/protected-after-tests.json",
+      "sha256": "e04ed6285a8457e71eb8725faef9e3e62cccf4a53af34603dc407ad34b65d9fb",
+      "bytes": 320787
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/protected-after.json",
+      "sha256": "e04ed6285a8457e71eb8725faef9e3e62cccf4a53af34603dc407ad34b65d9fb",
+      "bytes": 320787
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/protected-before.json",
+      "sha256": "e04ed6285a8457e71eb8725faef9e3e62cccf4a53af34603dc407ad34b65d9fb",
+      "bytes": 320787
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/request-metrics-before-live.json",
+      "sha256": "ee106d273fe9f9bc1c4ce6b7a3419fbd7611483bd758dff7a7674268b9c2ba9e",
+      "bytes": 5084
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/source-hashes-before-regression.json",
+      "sha256": "bc64edfdbe27fca492bfedd3522f890d13491b39d7fe25b9fb8e96f8b323e1c9",
+      "bytes": 418
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1/verification.json",
+      "sha256": "519ad4c75cfb4962d7871a8aa4e6ba5113259ce9d485e795baba232170a23b17",
+      "bytes": 13004
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/experiment-manifest.json",
+      "sha256": "be5a1ce2210be47f476349223a46fe63b4f2bc41a6927fb22da51b0379d0f852",
+      "bytes": 3019
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/plan.json",
+      "sha256": "1ebe88b6ea13e369b2a9b1a3e7e6ffb1276aaf5de9dfe080501d8f94858e6bae",
+      "bytes": 10944
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/metrics-before-execution.json",
+      "sha256": "e30d368c0bd4b7353b287062ad720d9cee879e8c3d4de8383bc5d32b7c030e06",
+      "bytes": 626
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/request-started.json",
+      "sha256": "28bcf158226436bda1043bf1e4479cb03a8b49ada08039b4170248a6df24e43b",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/request.json",
+      "sha256": "29c35101ccd9e86c9ac284f13428be2c3aa6b4af82a2f8ee70e6587305804a88",
+      "bytes": 633
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/response.txt",
+      "sha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "bytes": 15
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/result.json",
+      "sha256": "391997725abea4e5a31359b3323539ef508413f78249db5bde858acbe7f727c5",
+      "bytes": 1473
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/sdk-call-started.json",
+      "sha256": "e960141613b2a0baa2a2c59894cacf2fe01deae14726dcc6c60fdadf5c5e4662",
+      "bytes": 91
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/specification.json",
+      "sha256": "6c515dbc05c1d2078d1861b86dc9b4bc04b96f7bdf4a537ab6d62e932129ac82",
+      "bytes": 2423
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-a/worker-result.json",
+      "sha256": "72b880560e08af7e4bf201057a65a0732729f8d1f1d6eae9f9705ecf8442bf07",
+      "bytes": 1036
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/metrics-before-execution.json",
+      "sha256": "7c4822dbb4139a9a3551839090025b4b4d69d2653df3cba5fd91521fa992ff42",
+      "bytes": 748
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/request-started.json",
+      "sha256": "70b288f303b485bbfa8ecd705d3b07c77cd7b178800c09102202df56efa209ed",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/request.json",
+      "sha256": "a18f0459c469786ac2594b699fc4fc3a332c8f6610ac7eb5783f03419cdbbb89",
+      "bytes": 1222
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/response.txt",
+      "sha256": "09926fc804b250128c3f192e2d158a2bd2344c71265958c4462260a0dfa43648",
+      "bytes": 124
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/result.json",
+      "sha256": "50d4c9a55ce21fb7108476d943069df1d914da8e63a8982029a24515bbd33c4e",
+      "bytes": 1479
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/sdk-call-started.json",
+      "sha256": "9c12b40902867a438382c7e1213f38f6f7f30c3a802e6502e5dc78a3370e8fe9",
+      "bytes": 91
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/specification.json",
+      "sha256": "d5b0a9da32061f10ec6edce2f2f4721ec8284be077277d298e5096f4e8594357",
+      "bytes": 3707
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-b/worker-result.json",
+      "sha256": "4204a2cedbaac74c6d380f8e04ff594150fb1dc171f00e0f2f0ef32742c078ce",
+      "bytes": 1041
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/metrics-before-execution.json",
+      "sha256": "38c7923e5c78ace3857579fd790cf2b02d96cbd3e87d43cc4cb0957d89b9823f",
+      "bytes": 1416
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/request-started.json",
+      "sha256": "efbc73e0cdc9d1aeed862fd5c5a265eb32c4248bb0496021560400905f2965c0",
+      "bytes": 109
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/request.json",
+      "sha256": "e21f6d1576ae2fcd62b3ab156891ebe51e7c5e9c440deb07ca2d8b091671d937",
+      "bytes": 22595
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/response.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/result.json",
+      "sha256": "f4e82f88ea2166a0ea902abc0ee89f3c667c8954e1475c6bda3ccf493e5451fa",
+      "bytes": 2130
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/sdk-call-started.json",
+      "sha256": "174a397d17cb6d7c565dc5e5d4d2d42c983a388d2c29bcc013e46f4d19a9f242",
+      "bytes": 91
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/specification.json",
+      "sha256": "0a2191fabf95d760f034272bc55dbdc4f3ea2dba69f99a1d6d66ace38a70696f",
+      "bytes": 62429
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/probe-c/worker-result.json",
+      "sha256": "bd0fd4a70dac510c0ca22e43c2ba735c1052c2d8b78eb07488832a3bbfe9ec62",
+      "bytes": 1697
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/profile.json",
+      "sha256": "6c567f4fa99a12b27fbcdd2398c2aeee92572f258702cf3c2c28488a55832a1a",
+      "bytes": 806
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/secondary-analysis.json",
+      "sha256": "f0f5dee46e0178bbd2a1c61f82e9c368067fea42154cd8c8a5d9f4c16ae57b54",
+      "bytes": 61
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/static-comparison.json",
+      "sha256": "ee106d273fe9f9bc1c4ce6b7a3419fbd7611483bd758dff7a7674268b9c2ba9e",
+      "bytes": 5084
+    },
+    {
+      "path": "intelligence/docs/semantic-provider-transport-isolation-v1-run-001/summary.json",
+      "sha256": "92943fd51ded33383eea759dcaff0dd9c24211e8bdef354950df21db8db3ad4d",
+      "bytes": 6280
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/ARCHITECTURE.txt",
+      "sha256": "013754c0f5c825db33f9354c926bf2d203ad0eb4d02a66bdf952de15573aa898",
+      "bytes": 1843
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/REPORT.txt",
+      "sha256": "5f879074c676e3c44637f2f6cbbcfc8754075736a5e5470a5d35f40b30978ec3",
+      "bytes": 91153
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/artifact-manifest.json",
+      "sha256": "0588f0abd4157ad89e57003688fc98737c8faef1dc7014f2b34a7aa898779eb6",
+      "bytes": 11004
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/authorization.txt",
+      "sha256": "6c404b705472aa0ff56d0c74bd76e0608fc6b9b29ef8881a901550ddbcc0ed7c",
+      "bytes": 20916
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/baseline-five-summary.json",
+      "sha256": "7e78a2c426c1f929a4aba5ebabec59f3cc40cb43b02c519cd70006394be358be",
+      "bytes": 872
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/complete-live-seeds.json",
+      "sha256": "6fc3c9dd7ee5bcea3d5337de928d16161af0e6c9e69237a98d4d97ff41200268",
+      "bytes": 7619
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/focused-tests.log",
+      "sha256": "62578d9713d9d4b4a8756537a3b8763d61cbcc56cc07415ef3dde7e6dda24dfb",
+      "bytes": 501
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/full-regression.log",
+      "sha256": "fc17115fe530b30e7fbeefa67a89d7e852925752612d49e30cd18c74fbef2e99",
+      "bytes": 76923
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/live-execution.log",
+      "sha256": "326a468a21e4d03278a0a3e67927857a7e1cdf863fe29ee60634d4279fd0418f",
+      "bytes": 452
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/mock-phase-a-results.json",
+      "sha256": "c1a3b8d360f7108691c86e01fd34c834b08858d35eb0f9547ea2a1c93205bf4c",
+      "bytes": 394762
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/mock-phase-b-results.json",
+      "sha256": "bfa2e39aadbeab3008fcd2d08fae11025087e8efb6fbd07e075a651eadedad24",
+      "bytes": 6027
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/new-tests.log",
+      "sha256": "eea3541a9e899d4227c263cc8f277b4e04d7f5c35ed3cd8d5c46f96af1a0453a",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/offline-audit.log",
+      "sha256": "a4e4feda247693c7c673a6145f65116c383447bf3907bd3a91063dc2abfaaf0d",
+      "bytes": 126
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/offline-summary.json",
+      "sha256": "31389c29b2f14358c5eac592224b8c8347efae38a3ef8c116275b8599ae36d44",
+      "bytes": 139
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/opening-seed-schema.json",
+      "sha256": "61c92606fcb9552d6edfb6342a8e83f554c655cc4c0debb96de2dc21e9b7669d",
+      "bytes": 4048
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/phase-a-prompt-exact.txt",
+      "sha256": "1f1b5d1f6de3bdfc89f45c781b709e395a5c91a1820e05e896c6b563879059b4",
+      "bytes": 2671
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/phase-a-request.json",
+      "sha256": "203afb154eac58cdfaadde11125904e0b9f93155345a44e91ade38d96218522d",
+      "bytes": 13907
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/phase-b-mock-request.json",
+      "sha256": "08e4c7ffd5547031070fc7bb5b2cd2463f3032aefdc9d838ff6e5d1eefdfa4f8",
+      "bytes": 21075
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/phase-b-prompt-exact.txt",
+      "sha256": "5b859c4e812c2c4e3c3900d4e573dab94f5941375eea743f592a924b58e60b48",
+      "bytes": 3495
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/pre-live-verification.json",
+      "sha256": "d53ade41a712e2b24398e2eebb196577f077dd288d3957cf167555afe08f191b",
+      "bytes": 406041
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/protected-after.json",
+      "sha256": "77b5015f54644073d45cd43e4968c3ff6bf71bbff683cf8b1886a5ee62cb7701",
+      "bytes": 394671
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/protected-before.json",
+      "sha256": "77b5015f54644073d45cd43e4968c3ff6bf71bbff683cf8b1886a5ee62cb7701",
+      "bytes": 394671
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/provenance-model.json",
+      "sha256": "845d39b636714fe2defe01f091d85196568e97a2c1bdce330d7754081817a6e2",
+      "bytes": 1341
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/source-freeze-before-regression.json",
+      "sha256": "139a8de5e29cde17f10668a9bcc080e86599f6e41df3b4933dc88e335b97099e",
+      "bytes": 979
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/usage-summary.json",
+      "sha256": "dfd65c69a0baa461a6c88cab90fc7335b92bfdc6de3898fcede4a7d8f3221fab",
+      "bytes": 311
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1/verification.json",
+      "sha256": "95bcafe4e7508a215105de0a20becebde349ec764f40a10a5ff3733e86ba07e8",
+      "bytes": 7148
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/experiment-plan.json",
+      "sha256": "ceb2d2b13fd68a4c64076cd5dac6d9b699a629d485c14a375a43779042b3b05b",
+      "bytes": 6830
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/experiment-result.json",
+      "sha256": "d880505adf196b1f2c774b5d32ac46c512b3fd4be2e1b8e7247671f5971d5486",
+      "bytes": 172726
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/final-provider-schema-validation.json",
+      "sha256": "ba3869b8092d887bfbc57ace756b1bc94ad4b8e53085370f791b0b22b4fcef7f",
+      "bytes": 824
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/gate.json",
+      "sha256": "e47c97d952c3670d63f6115c59893c273ac8ba7f2cb3355d978b71ac1da2e60c",
+      "bytes": 46295
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/http-headers.json",
+      "sha256": "3dd8c91d2bbefb07a1bc41631f007867ecae27987fa26284e2b4bf25314a6c9f",
+      "bytes": 180
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/http-request-started.json",
+      "sha256": "23fc925c2401340151c26abadb92ba5dc223cc9a80593d8f44f325b94d0f965a",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/last-mile-sdk-request.json",
+      "sha256": "c0f6f4aa485f104f006d5940cbb0ef8abe98eb075c632605f4bd659657df3662",
+      "bytes": 7790
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/offline-schema-validation.json",
+      "sha256": "f996df494c0d99eb6fd733e8e453a7eeadb92faf99ef4bc5f3ed133795f8a51f",
+      "bytes": 678
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/plan.json",
+      "sha256": "376852fabc98a2f91675561130eb15453efcfac97b1279bb530bb042b787d298",
+      "bytes": 415
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/prompt.json",
+      "sha256": "788320f69b76d6226e3767387719824ffb2d355405c9a42518e9be6bc14530bf",
+      "bytes": 3373
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/request-before-sdk.json",
+      "sha256": "c72ecb3c55e971400ef22531a054bffd42951b2b2ad0e22022517dca4fadf6ea",
+      "bytes": 8349
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/response.txt",
+      "sha256": "b107f68f2ccc78b84a00554bb86f23528a3b1aa8954650b66761b2627ba78d49",
+      "bytes": 2302
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/result.json",
+      "sha256": "fcaf1d967274017f6238e1179c6bbd141908dce313b82e6a8922a3692a6fc1bd",
+      "bytes": 1776
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/sdk-request-forwarded.json",
+      "sha256": "fcb2981c8a6ce7893085109cbf3d9f8db55de190a65ab8e1852ab4a732fb2301",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/seed.json",
+      "sha256": "9bde97bbc49b99198f140031392d6c22f5271abf73a1af5a721fec5db6e9991f",
+      "bytes": 2214
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a/worker-result.json",
+      "sha256": "00de5a1c013c65ca61edcfe50564bfc28e6889a147297afc57ac06c3a7fee69b",
+      "bytes": 1174
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-a-record.json",
+      "sha256": "ca2c0ced58f2036e16403d4f2dd0c1b3c8a321f2a06a1484e7d12cfb53e3a550",
+      "bytes": 52382
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/final-provider-schema-validation.json",
+      "sha256": "ba3869b8092d887bfbc57ace756b1bc94ad4b8e53085370f791b0b22b4fcef7f",
+      "bytes": 824
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/gate.json",
+      "sha256": "bd1b760c52be55b4632f37120f2d2d61c18fb6d4924723a09c72e8a680c6684d",
+      "bytes": 47289
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/http-headers.json",
+      "sha256": "9bfba8f43b6ea82658a438fd27030f5450faf98a60ea2e2b6a1601d673204327",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/http-request-started.json",
+      "sha256": "23fc925c2401340151c26abadb92ba5dc223cc9a80593d8f44f325b94d0f965a",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/last-mile-sdk-request.json",
+      "sha256": "c0f6f4aa485f104f006d5940cbb0ef8abe98eb075c632605f4bd659657df3662",
+      "bytes": 7790
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/offline-schema-validation.json",
+      "sha256": "f996df494c0d99eb6fd733e8e453a7eeadb92faf99ef4bc5f3ed133795f8a51f",
+      "bytes": 678
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/plan.json",
+      "sha256": "f81c9c3230e7e9668d83ccde56b108b0a547cd1e8ba492cf0b927ef73060beb9",
+      "bytes": 415
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/prompt.json",
+      "sha256": "788320f69b76d6226e3767387719824ffb2d355405c9a42518e9be6bc14530bf",
+      "bytes": 3373
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/request-before-sdk.json",
+      "sha256": "c72ecb3c55e971400ef22531a054bffd42951b2b2ad0e22022517dca4fadf6ea",
+      "bytes": 8349
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/response.txt",
+      "sha256": "9017ed48a4ade6e31e9ed147ccd1f03b498089b263deb127f4eff0208cf7704d",
+      "bytes": 2329
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/result.json",
+      "sha256": "06c79d877b13093251beae86b4837ee7f69998cf990261339b4abbdce3203200",
+      "bytes": 1780
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/sdk-request-forwarded.json",
+      "sha256": "fcb2981c8a6ce7893085109cbf3d9f8db55de190a65ab8e1852ab4a732fb2301",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/seed.json",
+      "sha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+      "bytes": 2241
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b/worker-result.json",
+      "sha256": "7235d49c01bcbb6db991659aaac4a6051dceb7c6f4b71436421b074b35335fa5",
+      "bytes": 1176
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-b-record.json",
+      "sha256": "e10f907a8c5879715bd9a4e2a9738f2838c1313f0a413e6ac1b57dfb58b43617",
+      "bytes": 53437
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/final-provider-schema-validation.json",
+      "sha256": "ba3869b8092d887bfbc57ace756b1bc94ad4b8e53085370f791b0b22b4fcef7f",
+      "bytes": 824
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/gate.json",
+      "sha256": "875f504033b3e34339c2c8299a0bd217ba01067723fe858e558ffd476a97634b",
+      "bytes": 47907
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/http-headers.json",
+      "sha256": "2d77b8e3ccc971557397267d8b85bb330c44246acc2b86249e1b24f783e6ea53",
+      "bytes": 182
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/http-request-started.json",
+      "sha256": "23fc925c2401340151c26abadb92ba5dc223cc9a80593d8f44f325b94d0f965a",
+      "bytes": 150
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/last-mile-sdk-request.json",
+      "sha256": "c0f6f4aa485f104f006d5940cbb0ef8abe98eb075c632605f4bd659657df3662",
+      "bytes": 7790
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/offline-schema-validation.json",
+      "sha256": "f996df494c0d99eb6fd733e8e453a7eeadb92faf99ef4bc5f3ed133795f8a51f",
+      "bytes": 678
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/plan.json",
+      "sha256": "381ebcf559dff6a4cebdee3de4c4357667578f0ed2d8729c9bbf96bf44e19441",
+      "bytes": 415
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/prompt.json",
+      "sha256": "788320f69b76d6226e3767387719824ffb2d355405c9a42518e9be6bc14530bf",
+      "bytes": 3373
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/request-before-sdk.json",
+      "sha256": "c72ecb3c55e971400ef22531a054bffd42951b2b2ad0e22022517dca4fadf6ea",
+      "bytes": 8349
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/response.txt",
+      "sha256": "15607355802deffa42dfde3b2bfed10bfd339d936e2c25b4cb7b05db9422ac7e",
+      "bytes": 2261
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/result.json",
+      "sha256": "a29f8d416667888e90795759f2be5bff625be1ca2f272edb98b1b81d3e85b77b",
+      "bytes": 1779
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/sdk-call-started.json",
+      "sha256": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+      "bytes": 103
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/sdk-request-forwarded.json",
+      "sha256": "fcb2981c8a6ce7893085109cbf3d9f8db55de190a65ab8e1852ab4a732fb2301",
+      "bytes": 300
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/seed.json",
+      "sha256": "b7732d4b43fc065a8a0205c768d1004a1a5bbe0967be4c19d8c88553779a13ed",
+      "bytes": 2173
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c/worker-result.json",
+      "sha256": "b81de4b35a3a9c420c012bb79e018d45142cbde506eea1de9df0148923c6f395",
+      "bytes": 1176
+    },
+    {
+      "path": "intelligence/docs/semantic-two-stage-v1-run-001/opening-c-record.json",
+      "sha256": "73bd57a43bc516e6342711e9f3a744414d1ce4ae753b49f83b0780a6796d2be5",
+      "bytes": 53960
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/REPORT.txt",
+      "sha256": "6ce465cf58c00ff9310d166e1bf0c096517ed344b46ad88725e73dbdaab54ce5",
+      "bytes": 27648
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/artifact-manifest.json",
+      "sha256": "fb01186e469d4d52a19c17c7f75e9c4abb7d51c74070d473b5ec6d7f7566f32c",
+      "bytes": 1711
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/authorization.txt",
+      "sha256": "8fa0da40e5474979587ab800ced1394396f4f7aba10b55359956e108c6574953",
+      "bytes": 17529
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/changed-files.json",
+      "sha256": "da58f8ca8bd835d12159f347c77639769ab7ece944f1b7b3c0f9d6fc9da4f6d6",
+      "bytes": 480
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/failure-reason-distribution.json",
+      "sha256": "25f0b21219c91e5fd40789480f3601d10142829cead1d70588b897edb3925f20",
+      "bytes": 526
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/full-regression.log",
+      "sha256": "9ef797db53fdb106999101083eb712cc839cc6aeeec9467fd8d427532020a9ff",
+      "bytes": 35941
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/historical-evidence-proof.json",
+      "sha256": "348bda96d4a145b03be07cc36de510ac12d263c30f291d4779d985c8d71c0ca6",
+      "bytes": 17484
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/live-execution.log",
+      "sha256": "4a9518a0c4d215343895f2b3fa0a47ecd63b97142c8349c02cbdce374c91cc50",
+      "bytes": 327
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/new-tests-final.log",
+      "sha256": "accb25e30ebc719b818a7293939392a590b1a8f728fbf1db9265d49fb6865c93",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/new-tests.log",
+      "sha256": "1d6c35dac33fc336b71c9d90682107c342bc2c89068fb9a1c848e14cd6328087",
+      "bytes": 99
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/pre-live-verification.json",
+      "sha256": "a8a913d8a4b0647f8b15cc1a30ff987b93b7ab1155aa8cd84917a5d76fc97a4e",
+      "bytes": 10031
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/prompt-immutability-proof.json",
+      "sha256": "ff266eb803045c8efb8403e480673943a09f47cae4113ec01990270b5ddd51bd",
+      "bytes": 1357
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/protected-after-tests.json",
+      "sha256": "440ed29220a2fd22fd197c1dfdfc1a796a944b7f8485a723138c661b87aee214",
+      "bytes": 302070
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/protected-after.json",
+      "sha256": "440ed29220a2fd22fd197c1dfdfc1a796a944b7f8485a723138c661b87aee214",
+      "bytes": 302070
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/protected-before.json",
+      "sha256": "440ed29220a2fd22fd197c1dfdfc1a796a944b7f8485a723138c661b87aee214",
+      "bytes": 302070
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/source-hashes-before-regression.json",
+      "sha256": "9f0d7699ad2f45e2550bab38eb67a0f19bca34f8b16e9c266ac16145f07071d4",
+      "bytes": 409
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/v1-v2-comparison.json",
+      "sha256": "af508743dc037b4da59f3d9679102fd834758325301a857753c9574a3e2a8224",
+      "bytes": 17622
+    },
+    {
+      "path": "intelligence/docs/semantic-v2-sharded-recovery/verification.json",
+      "sha256": "6781fa9fdcc748a7bfb663d144b15922654381d278f2f6bea997492271c7c4e0",
+      "bytes": 15911
+    },
+    {
+      "path": "intelligence/ml-service/app/llm/semantic_checks.py",
+      "sha256": "efa87e69a4408c69ba0bf941168b953280621f62af75099049d64229def7a344",
+      "bytes": 34823
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_evidence.py",
+      "sha256": "1f8554af9099068241910a05f9111c34e6234a95938a8ff1a33af64d2ad3844f",
+      "bytes": 14274
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_frame_selector.py",
+      "sha256": "ee8542c2d7194b58970be740ee231bd859848d5d2d9d55176de3dec9580c2b96",
+      "bytes": 8190
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_fusion.py",
+      "sha256": "10d9274347a6031d134f82ba59c48fab88cb6d3358f74d28d06ac149604a6ef8",
+      "bytes": 9223
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_provider.py",
+      "sha256": "ada64bdcbe535ab58e14514262c6b5e7a6545934ccfc29f053f28b043eefb230",
+      "bytes": 1456
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_quality_gate.py",
+      "sha256": "b3c8ce456d3c8a6a5d8b986d44c93533be3e0e4f8dc66c40054bff6fbfb0df63",
+      "bytes": 4083
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_reproducibility.py",
+      "sha256": "64c554e7b535bf0de0237fa40a37c2721f5f162cb204a72b0baaa8abbe1c7c69",
+      "bytes": 6907
+    },
+    {
+      "path": "intelligence/ml-service/app/semantic_routing.py",
+      "sha256": "231df1dfbbe0c92fed6c48a358f1bf132ddc6a3bb20f85094f4acde6684ba02e",
+      "bytes": 1693
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/canonical_creative_evidence.py",
+      "sha256": "7cc885aa0203a96b393c0b11ae4264677df9dbc6352ca28efb5e7d85f59a868e",
+      "bytes": 12648
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py",
+      "sha256": "64f899da96cf9d4661d0c2e6d91f5e3f8f3c9db25665def58f0bab431c2a618f",
+      "bytes": 22526
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/premise_admission_evidence.py",
+      "sha256": "b3e84e5bda44d226c74b13addbec2a5637379eb0d6505b15e1fb77251c00f71e",
+      "bytes": 21361
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/premise_naturalness.py",
+      "sha256": "8b8305ac53dd7eafce56d243c3814121fae9a7c3b84e5745df5bacc11e9072c7",
+      "bytes": 14939
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_compact_1_probe_v1.py",
+      "sha256": "74368f1d1d5fb65509a74c0173bbbe0b4837b85cfe77571d3ee4e9227dfa7281",
+      "bytes": 11369
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_compact_2_probe_v1.py",
+      "sha256": "e38054a2c77923d49175339fe2571879fe2ef4a1bbf755a5f4dbc5315c34b1aa",
+      "bytes": 5114
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_compact_capability_probe_v1.py",
+      "sha256": "6cd0dc23b9ab0a7fbaed67081389c725f0da20100554304ebb4f99f8f5ae8ba7",
+      "bytes": 19574
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_compact_micro_batch_v1.py",
+      "sha256": "1f6b40421839c447bcd05bc60f15e56efd606be7a4745fc18b4d51c4c6203886",
+      "bytes": 6730
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_adapter.py",
+      "sha256": "d476af1818e4b249934b16b45ef37d634f66d6a3781c08c025f916c7487a2c1d",
+      "bytes": 13892
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_analysis_v1.json",
+      "sha256": "b9ca657aef967254d19b78bd74b1d5e2c8a13d093178dd1e9948eafd3ec4136a",
+      "bytes": 841
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_benchmark.py",
+      "sha256": "20b478da2e4490714fe2f67e2ef2d81b2a5bab24cc4e3fe235e112190dfcc9f9",
+      "bytes": 2362
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_generation.py",
+      "sha256": "88567711151a9be8d33570bedd02ac3bde958e494ca95b27b8bf6ff68b0952cd",
+      "bytes": 13112
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_mock_v1.json",
+      "sha256": "bfb36e9f1809a3568a02b5d1b244d843d5b34d4d5b9df345f00487f14fcf8aee",
+      "bytes": 39027
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.py",
+      "sha256": "f2a22e66eb47db9a3dfae21bd136671121942025d3c70bb7a35d5b9e63f95052",
+      "bytes": 1868
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt",
+      "sha256": "706b4ffc5434874f49a3c8832490e6e9649b25b02eeb4d93ff7c8617c96bc858",
+      "bytes": 9910
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.py",
+      "sha256": "e5a6c7de9b657dd4c4c3253919dd00654951c8aaf272ca3d0feae64470c7d414",
+      "bytes": 3799
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.txt",
+      "sha256": "b99a6f10a7987613a4ff968c19b4532162295803fe4726e94e62a939689bf85d",
+      "bytes": 5702
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_1.py",
+      "sha256": "de107dc849c256e004bcdf7f5f688a94f4cd48015ae3ef429923fc5a2f2f586e",
+      "bytes": 3356
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_1.txt",
+      "sha256": "2610fd5d5b748a601255b4a0f3157f8f37ddf9aaa932cd6d2e21a8da03c6b8ad",
+      "bytes": 6499
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_2.py",
+      "sha256": "a3e732377a57f4be12370df30a3556bb6f73a1633fc3da75e5260e9813d45265",
+      "bytes": 2145
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_2.txt",
+      "sha256": "56e1cfc9442b4c2dc78e11c9073196b334a3adea09a4e81882c125f04366bf0b",
+      "bytes": 7157
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_concept_provider.py",
+      "sha256": "6b02ad77b6e2434ca14467404dc473c2f5bf1c41027ba8ef74d807ff2c932c82",
+      "bytes": 12446
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_contract_decomposition_v1.py",
+      "sha256": "37ac720a220fef16c8242a619008c531fc16e46a8ed35f4d02d76263f44ef9ab",
+      "bytes": 15260
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_evidence_adapter.py",
+      "sha256": "678e8f1470e58cbacbcbffcdf3b87befd4e49e187c0ac5fec3e32b32cf583134",
+      "bytes": 10394
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_evidence_replay.py",
+      "sha256": "d60d71fb6f11c48b381ce61e55f3da0343dbb11aa2b13fd2ed7773bf2f0ee96e",
+      "bytes": 22695
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_live_diagnostics.py",
+      "sha256": "b33a1f2603abda1e3106730c924127787e80b35332d4505ab78506d786b86ec3",
+      "bytes": 16075
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_live_experiment.py",
+      "sha256": "d5387e4e63d74e7532db0021a122e2bc2b3322310f74f21e1e5f19b5d9c9f6a1",
+      "bytes": 12976
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_low_reasoning_probe_v1.py",
+      "sha256": "cbf22e5550899f4db7a47019df840d8d4a7c5a5ac58301ec5ffd2e5a6aa054cc",
+      "bytes": 10372
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_native_schema_integrity_v1.py",
+      "sha256": "55a6018bf30c04d3008045726aaa266a9a9698df80085bc6d2bc37edf459bba2",
+      "bytes": 9187
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_opening_seed_prompt_v1.txt",
+      "sha256": "dc174ffcc221dddbb034e73f5db24fc4e342bf041e7a35814c1c766a48800d22",
+      "bytes": 2672
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_prompt_v2_experiment.py",
+      "sha256": "68d9442f609ed634474a9a0f84433d3ea7ad1c17e17661a3ee4ba86490f57796",
+      "bytes": 20143
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_provider_execution_benchmark_v1.py",
+      "sha256": "969771059ddfb705160beec7f718e5750d096a879740c0cfe492922cfb0898f9",
+      "bytes": 11833
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_provider_openai_probe_v1.py",
+      "sha256": "e19dc6356199cc84e25ab57cd34dcc93abb0e1eb429fee5d2e3b1c0172f5d526",
+      "bytes": 8828
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_schema_integrity_probe_v1.py",
+      "sha256": "ab45a726e9e7122af86b85465b9bd0ba342e258258982a964e12ba6b32213629",
+      "bytes": 9161
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_story_expansion_prompt_v1.txt",
+      "sha256": "31fbf51f588bd97aa7fad351509214bdc30703626683a2df5a6253a1e49ae396",
+      "bytes": 3496
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_transport_isolation_v1.py",
+      "sha256": "005aa4755717cf363607614c0e1ccce34e50ffeabf919e1c171bb2b09b30cd15",
+      "bytes": 13192
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_two_stage_experiment_v1.py",
+      "sha256": "a7045e6b6a53edb8f8dcddd15b946ab0400ecea986a5211258fb259cd594fd17",
+      "bytes": 6471
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_two_stage_v1.py",
+      "sha256": "3b49579560be59c18664417fc31c662b754c6d13952ae34a280157dd346f61cb",
+      "bytes": 13746
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/semantic_v2_sharded_recovery.py",
+      "sha256": "c2f0aac01a5f1462c269db4fb83ee500b3588bb635e2b1bc21b4ad74745d21d1",
+      "bytes": 14213
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/short_form_engine.py",
+      "sha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+      "bytes": 20580
+    },
+    {
+      "path": "intelligence/ml-service/app/workflow/short_form_evidence.py",
+      "sha256": "9f8919ee011a3daf3653f5fd1d132fa4957e5540b38c1f4a43aef9cda8a85eb2",
+      "bytes": 17861
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_mock_expectations_v1.json",
+      "sha256": "f1a82e194077ad86b314d545e29a8072ff1204f6bdf6eca261b282f2553810f0",
+      "bytes": 591
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_1_mocks.json",
+      "sha256": "98a75ce9d539e2e44941211bd67d4b3816c8fd71ffedf949c61d05f17b6831ac",
+      "bytes": 30018
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_1_policy.json",
+      "sha256": "947b4b2f7f29c2d3892b52b9652a402cbbc6f5a53cc4a41f2b9d4c7b9df42c69",
+      "bytes": 18417
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_2_mocks.json",
+      "sha256": "2a5d55fedcfe8bded70d070b0992b1d11949324c3f6c77dca835e46b4bc68848",
+      "bytes": 39126
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_2_policy.json",
+      "sha256": "fe69a796fe85b1be7a585eeb7ea3b0e11975fd753f36d77568628f2e6cfd1ed3",
+      "bytes": 17269
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_mocks_v1.json",
+      "sha256": "7cd2403858fd9490889942be38e08ea5e240db613813d238b3a48a971bd19886",
+      "bytes": 35396
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_policy_v1.json",
+      "sha256": "23dd2d519bf9bacb970a1103eef335692377ad1ffcf59f3224ae3ed505c01795",
+      "bytes": 18868
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_mock_pairs.json",
+      "sha256": "9997cf274b12335dbf15d36cae57da9ed8acd8156faa120aeba443873dd8efa5",
+      "bytes": 56303
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_schema_integrity_full_candidate_v1.json",
+      "sha256": "679e4563f91a5f630be83acc81480d080411b7ac5919b1c7f8b509044dd00171",
+      "bytes": 2595
+    },
+    {
+      "path": "intelligence/ml-service/tests/fixtures/semantic_two_stage_v1_mocks.json",
+      "sha256": "00a0f22ff94f40118893ef594c47a8c8063999937e53a663748fb06002714160",
+      "bytes": 16632
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_checks.py",
+      "sha256": "1178d0f7f14522febc146b6fa0b1b3e8de0d6e72673e2dc92865102ba7f35c15",
+      "bytes": 17603
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py",
+      "sha256": "1ad849d464fbedf42869bc9debb3c73ce81354bad7d5167ccedc2c9732e6617a",
+      "bytes": 11330
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_compact_micro_batch_v1.py",
+      "sha256": "0ea5dbc797970fe25a52bdf677c5e5284f0065807b5f362c9b322c36d4cbc45a",
+      "bytes": 4765
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_concept_generation.py",
+      "sha256": "92fce36472fb3b305ea363d53387b546fb5b85ce1dafb39405c339f3e0eaf248",
+      "bytes": 10591
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_concept_provider.py",
+      "sha256": "152bfeaf636e9539a6d07f86170ac66a8f95165a1481e63bcef2c526b2ba9138",
+      "bytes": 6628
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_contract_decomposition_v1.py",
+      "sha256": "4b9b6c29e2ae9afa197a5ec22251bdf090b367d872dc31792b1b1099a2747b0d",
+      "bytes": 7025
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_evidence_adapter.py",
+      "sha256": "c3a30d5207c1de2a35c6fe840f0acfdea0399ab156db0d9d0aab4ae4417d8656",
+      "bytes": 13265
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_frame_selection.py",
+      "sha256": "9da3f510b3c94ff2b0a01ca3b30b0449b029e491087f6af0c17d8007de831e69",
+      "bytes": 1254
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_fusion.py",
+      "sha256": "5f7500800ed2b3b6f3deb9bdede0d33055ef5c439eb1e3013b64601e6ef432ac",
+      "bytes": 2067
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_live_experiment.py",
+      "sha256": "3f142347c7bfd7be4d60192d4cc441382dd14c3a6fac2d40d3cc31aff1977580",
+      "bytes": 12653
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py",
+      "sha256": "818644fbba2a2503939d19f435579daf07f0fa5cce2895570e28b1d415b9daa6",
+      "bytes": 9386
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_native_schema_integrity_v1.py",
+      "sha256": "2f635c03e513d5fb6e99e11f356b5e4099daceec80e064896b33361ea51b8ec3",
+      "bytes": 12648
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_orchestration.py",
+      "sha256": "1f5e8d2eb7945ace07a0be9607c9947782c3ad65e411cfac1b480d4f8dd670d5",
+      "bytes": 2067
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_prompt_v2.py",
+      "sha256": "1de2ebbaa6c5f2510ade5af23d3201fa984b061049ecbbffcf277f9bfa604c36",
+      "bytes": 11162
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py",
+      "sha256": "4af0dc0dae8ded897d7e052c39fcfcaa5210de1394dc3da5af3e850a817822bf",
+      "bytes": 9091
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py",
+      "sha256": "0f831fac461b7275b49a6995dc7be89bf97764ce79fda6a6b509c4b6c62f3721",
+      "bytes": 10776
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py",
+      "sha256": "d6673833c95a7561ee3a8088916f4067f289d6266ceac0e0c6ba75e803f9108e",
+      "bytes": 12185
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_provider_boundary.py",
+      "sha256": "7860dde38bb56b709b8caca9db334eb2f3965032b7cfa58a85619ced5103060f",
+      "bytes": 1446
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_provider_execution_benchmark_v1.py",
+      "sha256": "f6f902b3ed29fb59e220a955430e645c7ce125f21834e099e340cb267b5cefea",
+      "bytes": 8388
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_provider_openai_probe_v1.py",
+      "sha256": "a9f893fb8d2d978e8baa55527341bc20ffb1adb75a0ec08709b29bca3f6baefa",
+      "bytes": 7004
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_reproducibility.py",
+      "sha256": "000eae78ea6a8f5859de338454bfe4f3204c30cf7ed255f84468ba2bb67d1b9a",
+      "bytes": 4102
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_routing.py",
+      "sha256": "884c534a3631cc686502a8379688348fcd39472fb2e6c95dd3da10c97b9c5dd7",
+      "bytes": 2948
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_transport_isolation_v1.py",
+      "sha256": "66acc0f5e7707513932622bf33e16aeeb43c90399cb1619e7d08cd99f1b14176",
+      "bytes": 7346
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_two_stage_v1.py",
+      "sha256": "88e98e7138b38b6ab06b0fc20f94566e5908bdcf079c097062a92200d7ff6c79",
+      "bytes": 15059
+    },
+    {
+      "path": "intelligence/ml-service/tests/test_semantic_v2_sharded_recovery.py",
+      "sha256": "c274b5b9af526269c4163d72520e01ca5e73b59c9fc9f6c7eff086b0c6de5fd2",
+      "bytes": 10074
+    }
+  ],
+  "comparison": {
+    "beforeCount": 814,
+    "afterCount": 814,
+    "changed": [],
+    "unchanged": true,
+    "providerCalls": 0
+  }
+}

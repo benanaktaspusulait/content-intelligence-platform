@@ -1,0 +1,8 @@
+{
+  "providerCalls": 0,
+  "renders": 0,
+  "networkAndSubprocessBlocked": true,
+  "seedMocks": 9,
+  "expansionMocks": 7,
+  "gateFloor": 60
+}
