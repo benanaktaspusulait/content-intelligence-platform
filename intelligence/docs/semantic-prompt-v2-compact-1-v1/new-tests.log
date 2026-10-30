@@ -1,0 +1,31 @@
+F....................................................................... [ 93%]
+.....                                                                    [100%]
+=================================== FAILURES ===================================
+________________ test_explicit_additive_opt_in_and_prompt_size _________________
+
+spec = {'FINAL_PROVIDER_SCHEMA_VALIDATION': {'cyclicReferences': 0, 'references': [{'attemptedTargetPath': '/$defs/SemanticBe...00-0000-0000-0000-000000000005', 'name': 'Luca'}, {'id': '00000000-0000-0000-0000-000000000006', 'name': 'Noah'}], ...}
+
+    def test_explicit_additive_opt_in_and_prompt_size(spec):
+        cfg=Compact1PromptRequest.model_validate(spec['configuration'])
+        assert cfg.semanticConceptPromptVersion=='v2-compact.1'
+        assert GenerationRequest().semanticConceptPromptVersion=='v1'
+        assert CompactPromptRequest().semanticConceptPromptVersion=='v2-compact'
+        with pytest.raises(ValueError):GenerationRequest(semanticConceptPromptVersion='v2-compact.1')
+        old=low.plan(PROFILE,HIGH)['spec']['prompt'];new=spec['prompt']
+        assert old['sha256']==low.previous.PROMPT_HASH
+        assert new['version']=='semantic-concept-prompt-v2-compact.1' and old['sha256']!=new['sha256']
+        for part in ('system','prompt'):
+            assert size_metrics(new[part])['characters']<=1.15*size_metrics(old[part])['characters']
+        assert len(new['system']+'\n'+new['prompt'])<=1.15*len(old['system']+'\n'+old['prompt'])
+        assert new['system'].count('FINAL SELF-CHECK (PRIVATE)')==1
+>       assert new['system'].count('\nOPENING\n')==new['system'].count('CORE RULE INVARIANT:')==1
+E       AssertionError: assert 1 == 2
+E        +  where 1 = <built-in method count of str object at 0xa4cc3c000>('\nOPENING\n')
+E        +    where <built-in method count of str object at 0xa4cc3c000> = 'Invent raw Pompom Hills silent physical-comedy possibilities; the deterministic system judges them. Do not rank, scor... not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service.'.count
+E        +  and   2 = <built-in method count of str object at 0xa4cc3c000>('CORE RULE INVARIANT:')
+E        +    where <built-in method count of str object at 0xa4cc3c000> = 'Invent raw Pompom Hills silent physical-comedy possibilities; the deterministic system judges them. Do not rank, scor... not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service.'.count
+
+intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py:53: AssertionError
+=========================== short test summary info ============================
+FAILED intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py::test_explicit_additive_opt_in_and_prompt_size
+1 failed, 76 passed in 4.11s

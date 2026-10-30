@@ -1,0 +1,9 @@
+{
+  "firstByteMs": null,
+  "firstNonWhitespaceByteMs": null,
+  "responseHeadersMs": 559.0186250010447,
+  "httpBodyBytesObserved": 0,
+  "httpRequestsObserved": 1,
+  "httpStatus": 200,
+  "firstByteDefinition": "First nonempty HTTP body chunk, possibly JSON/whitespace; NOT first model token."
+}

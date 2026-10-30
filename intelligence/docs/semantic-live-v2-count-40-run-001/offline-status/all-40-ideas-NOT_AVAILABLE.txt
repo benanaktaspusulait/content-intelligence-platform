@@ -1,0 +1,3 @@
+NO LIVE IDEAS AVAILABLE
+
+Requested:40 raw ideas. The one authorized DeepSeek/deepseek-v4-pro V2 request failed with APITimeoutError. Stored response length:0 bytes. Raw count, schema validity, normalization, creative metrics, all stories and HUMAN_REVIEW cards cannot be reported. No mock ideas are substituted; no second request was made.

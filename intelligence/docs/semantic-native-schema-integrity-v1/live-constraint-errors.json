@@ -1,0 +1,40 @@
+[
+  {
+    "instancePath": [
+      "ideas",
+      0,
+      "beats"
+    ],
+    "schemaPath": [
+      "properties",
+      "ideas",
+      "items",
+      "properties",
+      "beats",
+      "minItems"
+    ],
+    "validator": "minItems",
+    "expectedConstraint": 4,
+    "actualArrayLength": 3,
+    "actualNumericValue": null
+  },
+  {
+    "instancePath": [
+      "ideas",
+      0,
+      "durationSeconds"
+    ],
+    "schemaPath": [
+      "properties",
+      "ideas",
+      "items",
+      "properties",
+      "durationSeconds",
+      "maximum"
+    ],
+    "validator": "maximum",
+    "expectedConstraint": 20,
+    "actualArrayLength": null,
+    "actualNumericValue": 24
+  }
+]

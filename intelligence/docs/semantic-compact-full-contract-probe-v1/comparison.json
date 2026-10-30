@@ -1,0 +1,47 @@
+[
+  {
+    "label": "Full V2 + full legacy native schema",
+    "source": "semantic-provider-transport-isolation-v1-run-001/probe-c",
+    "systemCharacters": 9879,
+    "userCharacters": 4670,
+    "schemaCharacters": 2750,
+    "seconds": 90.69867549999981,
+    "responseBytes": 0,
+    "status": "FAILED",
+    "maxOutputTokens": 8192
+  },
+  {
+    "label": "Full V2 + small native schema",
+    "source": "semantic-provider-contract-decomposition-v1-run-001/probe-d",
+    "systemCharacters": 9879,
+    "userCharacters": 4670,
+    "schemaCharacters": 368,
+    "seconds": 90.72335608399953,
+    "responseBytes": 0,
+    "status": "FAILED",
+    "maxOutputTokens": 4096
+  },
+  {
+    "label": "Minimal + corrected full native schema",
+    "source": "semantic-native-schema-integrity-probe-1-run-001",
+    "systemCharacters": 17,
+    "userCharacters": 107,
+    "schemaCharacters": 2750,
+    "seconds": 78.444184042,
+    "responseBytes": 2078,
+    "status": "COMPLETED",
+    "maxOutputTokens": 8192
+  },
+  {
+    "label": "Compact V2 + corrected full native schema",
+    "source": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001",
+    "systemCharacters": 5683,
+    "userCharacters": 1409,
+    "schemaCharacters": 2750,
+    "seconds": 90.782689292,
+    "responseBytes": 0,
+    "status": "FAILED",
+    "classification": "COMPACT_FULL_CONTRACT_TIMEOUT",
+    "maxOutputTokens": 8192
+  }
+]

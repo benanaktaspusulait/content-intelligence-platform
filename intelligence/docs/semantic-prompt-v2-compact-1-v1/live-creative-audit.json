@@ -1,0 +1,112 @@
+{
+  "candidateId": "sem1-51a869897b602847",
+  "globalId": "semantic-compact-1-low-probe-1-run-001/sem1-51a869897b602847",
+  "title": "Cut Out, Fold In",
+  "openingScore": 35,
+  "openingFloor": 60,
+  "openingAudit": {
+    "frameZeroDescription": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+    "sourceFrameVisual": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "craft",
+        "scissors",
+        "blunt"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "openingSourceReview": "A closed pair of scissors beside attached upright paper describes an abnormal result and the intended cutting goal, but a still may also depict ordinary folded paper. The source does not establish the impossible activation solely through a visible state contrast. The accepted opening audit remains UNRESOLVED; null motion/context fields are not affirmative no values.",
+  "acceptedRuleConsistency": "RULE_CONSISTENT",
+  "acceptedRuleStatusForComparison": "CONSISTENT",
+  "exactRule": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+  "perBeat": [
+    {
+      "beat": 1,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi opens the scissors, turns the paper a quarter-turn, and closes the blades along the next side of the square.",
+        "visibleConsequence": "The paper to the blades' right folds upright, leaving two adjoining walls around the still-attached square and a buckled paper corner.",
+        "newInformation": "Turning the sheet changes which outer flap rises, not whether the scissors cut."
+      },
+      "sourceReview": "The next-side blade closure is explicit. The right-hand paper flap folds upright; accumulation changes wall count, not the causal function. No contradiction detected.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 2,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi tilts the sheet toward herself to reach the third outlined side and closes the scissors through it.",
+        "visibleConsequence": "A third outer flap folds upright to the blades' right, making a three-sided paper enclosure with the scissors entering through its open side.",
+        "newInformation": "The remaining open side is now the only unobstructed approach to the outline."
+      },
+      "sourceReview": "Tilting the sheet changes approach. Closure through side three again raises the right-hand flap. Same trigger and target; unchanged accepted rule test passes.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 3,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi slides the open scissors through that gap and positions the blades on the final outlined side, keeping the handles inside the enclosure.",
+        "visibleConsequence": "As the blades close through the paper, the fourth outer flap folds upright to their right, forming a paper box around the scissors.",
+        "newInformation": "Completing the outline encloses the tool instead of freeing the square."
+      },
+      "sourceReview": "Positioning is described in strategy; closure is explicit in visibleConsequence. The fourth right-hand flap forms another wall. The fields together make the activation auditable.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 4,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi points the scissors upward inside the box and closes them through the top edge of its front wall to make an exit.",
+        "visibleConsequence": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+        "newInformation": "Trying to cut an escape folds part of the enclosure over the trapped tool."
+      },
+      "sourceReview": "The blade closure and right-hand wall section remain explicit. However, the rule says ALWAYS folds upright whereas the payoff folds inward across the box into a lid. A local-paper reference frame could explain reorientation, but none is specified. This is a physical orientation ambiguity for source review, despite the accepted deterministic RULE_CONSISTENT output.",
+      "acceptedFindings": []
+    }
+  ],
+  "acceptedPayoffRuleLinked": true,
+  "manualPayoffOrientationStatus": "AMBIGUOUS",
+  "manualPayoffConcern": "The blade closure and right-hand wall section remain explicit. However, the rule says ALWAYS folds upright whereas the payoff folds inward across the box into a lid. A local-paper reference frame could explain reorientation, but none is specified. This is a physical orientation ambiguity for source review, despite the accepted deterministic RULE_CONSISTENT output.",
+  "providerSelfAssessmentUsed": false,
+  "sourceOnly": true,
+  "openingOutcome": "OPENING_REPAIR_NOT_CONFIRMED",
+  "ruleOutcome": "ACCEPTED_RULE_VERIFIABILITY_PATTERN_BROKEN_SINGLE_SAMPLE",
+  "promisingCombinedSignal": false,
+  "inference": "One successful candidate changes the accepted rule-audit pattern, but not the repeated opening=35 result. It does not establish statistical improvement or mechanically flawless geometry. No further prompt revision or provider request is made."
+}

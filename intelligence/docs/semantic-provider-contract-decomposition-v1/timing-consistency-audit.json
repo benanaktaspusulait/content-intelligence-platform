@@ -1,0 +1,16 @@
+{
+  "D": {
+    "recordedMonotonicElapsedSeconds": 90.72335608399953,
+    "recordedUTCSpanSeconds": 90.720414,
+    "UTCMinusMonotonicSeconds": -0.002942083999528222,
+    "consistentWithin1Second": true,
+    "conclusion": "Timing origins are preserved; elapsed uses monotonic clock. UTC discontinuity cause is unknown; no clock correction performed."
+  },
+  "E": {
+    "recordedMonotonicElapsedSeconds": 30.62924770799873,
+    "recordedUTCSpanSeconds": 817.025069,
+    "UTCMinusMonotonicSeconds": 786.3958212920013,
+    "consistentWithin1Second": false,
+    "conclusion": "Timing origins are preserved; elapsed uses monotonic clock. UTC discontinuity cause is unknown; no clock correction performed."
+  }
+}

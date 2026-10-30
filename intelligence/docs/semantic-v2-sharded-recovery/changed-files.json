@@ -1,0 +1,8 @@
+{
+  "existingFilesChanged": [],
+  "addedSourceTestCLIFiles": {
+    "intelligence/ml-service/app/workflow/semantic_v2_sharded_recovery.py": "c2f0aac01a5f1462c269db4fb83ee500b3588bb635e2b1bc21b4ad74745d21d1",
+    "intelligence/ml-service/tests/test_semantic_v2_sharded_recovery.py": "c274b5b9af526269c4163d72520e01ca5e73b59c9fc9f6c7eff086b0c6de5fd2",
+    "intelligence/scripts/recover-semantic-v2-shards.py": "0e9fd6bac56b5a0b5e229731ee270dded0637f636431ab13db1c243913b66831"
+  }
+}

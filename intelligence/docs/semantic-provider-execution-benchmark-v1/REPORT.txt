@@ -1,0 +1,263 @@
+SEMANTIC PROVIDER EXECUTION BENCHMARK V1
+
+PURPOSE / RESULT
+One capability probe,not a creative experiment. Exactly one DeepSeek/deepseek-v4-pro request for5 complete Prompt V2 concepts was attempted. It FAILED after1.175746s with RuntimeError; no usable model content was returned. No configured timeout is evidenced as firing. No retry,no second DeepSeek call,no alternative provider request,no10/20/40 batch and no render occurred.
+Classification:UNSUITABLE_FOR_CURRENT_SEMANTIC_V2_EXECUTION_ENVELOPE. This names the current provider/model/client/execution combination only. It does not prove creative incapability or isolate the provider as the cause. The RuntimeError cause remains unresolved; only its class was captured safely. Do not treat this as a Prompt V2 creative failure.
+
+EXACT BENCHMARK RECORD
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerCostUsd": null,
+  "providerRequestId": null,
+  "sdkMaxRetries": 0,
+  "errorClass": "RuntimeError",
+  "errorCauseClass": null,
+  "httpStatus": null,
+  "safeError": "Bounded capability probe failed; no retry or fallback.",
+  "providerResponseMetadata": null,
+  "attemptId": "semantic-provider-execution-benchmark-v1-deepseek-5-run-001",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "promptVersion": "v2",
+  "candidateCount": 5,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 16384,
+  "streamingMode": "NON_STREAMING",
+  "start": "2026-10-26T11:13:48.963029+00:00",
+  "end": "2026-10-26T11:13:50.138943+00:00",
+  "durationSeconds": 1.1757455420010956,
+  "firstByteMs": null,
+  "responseHeadersMs": 559.0186250010447,
+  "httpBodyBytesObserved": 0,
+  "responseBytes": 0,
+  "requestCount": 1,
+  "automaticRetries": 0,
+  "fallbackCalls": 0,
+  "renders": 0,
+  "capabilityClassification": "UNSUITABLE_FOR_CURRENT_SEMANTIC_V2_EXECUTION_ENVELOPE"
+}
+
+FIRST-BYTE / HTTP AUDIT
+{
+  "firstByteMs": null,
+  "firstNonWhitespaceByteMs": null,
+  "responseHeadersMs": 559.0186250010447,
+  "httpBodyBytesObserved": 0,
+  "httpRequestsObserved": 1,
+  "httpStatus": 200,
+  "firstByteDefinition": "First nonempty HTTP body chunk, possibly JSON/whitespace; NOT first model token."
+}
+HTTP200 headers arrived after559.019ms relative to worker-observer initialization. Parent wall duration includes child startup; the two timing origins differ. firstByteMs is null: no nonempty HTTP body chunk was observed before the exception. firstByteMs is not zero and is not model time-to-first-token. The observer starts before SDK construction,not at exact network write. Raw HTTP body bytes observed0; exposed model-content response bytes0; total wire/header/TLS bytes are not measured.
+The original40 and20-shard records measured only exposed/stored model-content bytes. Their0-byte files do not prove that the provider truly sent no transport bytes; previous first-byte/body telemetry is absent. Current probe evidence cannot retroactively resolve that uncertainty.
+
+STREAMING AUDIT
+{
+  "providerApiSupportsStreaming": true,
+  "providerApiSource": "https://api-docs.deepseek.com/api/create-chat-completion/",
+  "providerApiEvidence": "stream=true returns partial message deltas as SSE; official API reference accessed2026-10-26.",
+  "currentAbstractionStatus": "STREAMING_NOT_SUPPORTED",
+  "source": "LLMProvider.complete returns str; CreativeCapabilityProvider.complete calls chat.completions.create without stream=true, then reads choice.message.content.",
+  "SDKCanRepresentStreaming": true,
+  "currentAdapterExposesPartialContent": false,
+  "probeStreamingMode": "NON_STREAMING",
+  "probeObservation": "HTTPX response/body-byte instrumentation only; no API streaming enabled.",
+  "previousZeroByteConclusion": "Only zero exposed/stored model-content bytes is established. Whether previous servers sent transport bytes/partial data is UNKNOWN; no first-byte/body telemetry was recorded.",
+  "previousProviderTrulySentNothing": "UNKNOWN",
+  "firstByteDefinition": "First nonempty raw HTTP body chunk, possibly whitespace or JSON framing; not first model token.",
+  "headersSeparate": true
+}
+DeepSeek API reference supports stream=true SSE partial deltas: [official Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/), accessed2026-10-26. The installed OpenAI SDK create() signature contains a stream parameter. However the current LLMProvider abstraction exposes complete()->str and CreativeCapabilityProvider waits for the complete non-streaming response; it does not expose token deltas. Thus current abstraction status is STREAMING_NOT_SUPPORTED. This does not claim the upstream API lacks streaming.
+Production streaming was not enabled. The benchmark only wraps HTTP body-byte iteration and records counts/timings,not model deltas. A separate offline installed-SDK/HTTPX MockTransport response exercised this observer successfully,without networking. It did not reproduce the live RuntimeError and cannot identify its root cause.
+
+EXACT TIMEOUT / TOKEN AUDIT
+{
+  "original40": {
+    "sdkTimeoutSeconds": 90,
+    "effectiveHttpxTimeout": {
+      "connect": 90,
+      "read": 90,
+      "write": 90,
+      "pool": 90
+    },
+    "experimentWallTimeout": null,
+    "applicationCancellationTimer": null,
+    "timerFired": "SDK_HTTP_TIMEOUT_PHASE_NOT_RECORDED",
+    "errorClass": "APITimeoutError",
+    "maxOutputTokens": 64000
+  },
+  "recovery20": [
+    {
+      "shard": "A",
+      "timeout": {
+        "readSeconds": 120,
+        "connectSeconds": 15,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 300
+      },
+      "maxOutputTokens": 32768,
+      "timerFired": "ExperimentWallTimeout",
+      "durationSeconds": 300.030152542
+    },
+    {
+      "shard": "B",
+      "timeout": {
+        "readSeconds": 120,
+        "connectSeconds": 15,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 300
+      },
+      "maxOutputTokens": 32768,
+      "timerFired": "ExperimentWallTimeout",
+      "durationSeconds": 300.0123390410008
+    }
+  ],
+  "probe5": {
+    "timeout": {
+      "connectSeconds": 15,
+      "readSeconds": 90,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 180
+    },
+    "maxOutputTokens": 16384,
+    "applicationCancellation": "Parent-enforced worker wall deadline, plus5s terminate/5s kill cleanup, no restart"
+  },
+  "repositoryGateway": {
+    "nginxProxyReadSeconds": 190,
+    "nginxProxySendSeconds": 190,
+    "backendQualityRequestSeconds": 180,
+    "backendMlConfigTimeoutSeconds": 30,
+    "backendMlConfigConnectSeconds": 5,
+    "scope": "UI/backend/ML quality validation paths, not in the direct CLI outbound provider request route"
+  },
+  "upstreamProviderGatewayTimeout": null,
+  "SDKRetryCount": 0,
+  "configuredModelOutputCeiling": 393216,
+  "proxyEnvironmentPresent": {
+    "HTTP_PROXY": false,
+    "HTTPS_PROXY": false,
+    "ALL_PROXY": false
+  },
+  "proxyEnvironmentTimeout": null,
+  "sourceFiles": [
+    "intelligence/ml-service/app/workflow/creative_provider_profiles.py",
+    "intelligence/frontend/nginx.conf",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java",
+    "intelligence/backend/src/main/resources/application.yml"
+  ],
+  "SDKSemantics": "Local httpx0.28.1 Timeout(90) sets each of connect/read/write/pool to90; no total wall deadline. Original phase/cause was not saved, so it is unknown."
+}
+Original40:max_tokens64000,OpenAI(timeout=90,max_retries=0),all four HTTPX phases90s,no total deadline. Its historical APITimeoutError does not identify which underlying HTTPX phase fired because the cause was not saved.
+Recovery20A/B:max_tokens32768 each,connect15/read120/write60/pool15s,parent wall300s plus bounded5s terminate/5s kill cleanup. ExperimentWallTimeout is explicitly the fired timer for both.
+New5:max_tokens16384,connect15/read90/write60/pool15s,parent wall180s plus bounded cleanup. The recorded RuntimeError happened after1.176s:all configured timer values exceed this duration. No timeout phase is inferred. Safe underlying cause/stack was not captured,so exact origin is unknown.
+Repository DeepSeek profile configured output ceiling393216. This is local profile metadata,not an inferred undocumented external limit. No global timeout,token policy or provider configuration was changed.
+Nginx /api read/send190s and Java quality request180s,ML configuration30s/connect5s are represented in repository config. They belong to browser/backend/ML request paths and are outside this direct CLI→provider route. No upstream provider gateway timeout or transport proxy timeout is represented here; both remain unknown. No separate application cancellation timer applies beyond the benchmark parent wall deadline.
+
+SCHEMA / NORMALIZATION / CREATIVE PIPELINE
+No usable response means no schema/normalization/canonical/quality evaluation ran on live concepts. Counts and results are unavailable,not fabricated zero scores. The complete accepted downstream pipeline was exercised in mocked success tests with5 schema-valid and5 normalized candidates. No five-versus40 statistical comparison is made.
+
+ALTERNATIVE DISCOVERY — NO CALLS
+{
+  "configuredSemanticProfiles": [
+    {
+      "identity": "deepseek-primary",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "structuredOutput": "json_object",
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "timeout": "Caller-supplied SDK transport timeout; existing semantic experiment90s; no adapter total deadline.",
+      "credentialsPresent": true,
+      "SDKInstalled": true,
+      "semanticIntegration": "Existing CreativeCapabilityProvider supports the same schema envelope; external availability untested.",
+      "configuredOutputCeiling": 393216,
+      "alternative": false
+    },
+    {
+      "identity": "openai-escalation",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "structuredOutput": "json_schema",
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "timeout": "Caller-supplied SDK transport timeout; existing semantic experiment90s; no adapter total deadline.",
+      "credentialsPresent": true,
+      "SDKInstalled": true,
+      "semanticIntegration": "Existing CreativeCapabilityProvider supports the same schema envelope; external availability untested.",
+      "configuredOutputCeiling": 128000,
+      "alternative": true
+    }
+  ],
+  "genericFactoryAdapters": [
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "credentialsPresent": true,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "OPENAI_REQUEST_TIMEOUT_SECONDS=20"
+    },
+    {
+      "provider": "claude",
+      "model": "claude-3-5-sonnet-20241022",
+      "credentialsPresent": false,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "No explicit timeout in adapter; SDK default not overridden"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-2.0-flash-exp",
+      "credentialsPresent": false,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "No explicit timeout in adapter; SDK default not overridden"
+    },
+    {
+      "provider": "ollama",
+      "model": "llama3.2-vision:latest",
+      "credentialsPresent": null,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "requests.post without explicit timeout; server availability unknown"
+    }
+  ],
+  "alternativeCalls": 0,
+  "modelAvailabilityVerified": false,
+  "SDKsAdded": false,
+  "limitation": "Presence of configuration/credentials/SDK is readiness evidence only, not a successful capability probe or model availability guarantee."
+}
+Already configured semantic-capable alternative:openai-escalation / OpenAI / gpt-6.1-sol. Existing json_schema integration,installed SDK and credential presence make it technically configured for a future explicitly chosen probe. External model availability,latency and actual capability remain unverified. No live request was sent.
+Generic factory defaults also exist for OpenAI/gpt-4o,Claude/claude-3-5-sonnet-20241022,Gemini/gemini-2.0-flash-exp and Ollama/llama3.2-vision:latest. These are repository-configured defaults,not assertions that the models are currently served. They are not semantic schema profiles. The generic OpenAI adapter can accept optional response_format/json_output attributes but has no default semantic contract. Claude/Gemini lack credentials here; Ollama endpoint/model availability was not probed. No SDK was added.
+
+TESTS AND IMMUTABILITY
+11 new mock tests passed in0.65s. Full regression:2975 passed,36 failed,2 skipped,3030 warnings in206.82s. The exact36 failure IDs match the accepted baseline; no new failures. Tests and offline analysis made0 provider calls. All final benchmark source hashes match the pre-regression snapshot.
+All2078 protected existing files remained byte-identical,including Prompt V1/V2,the schema,validators,admission,BG,SFE,ranking,shape,preselection,V1 evidence,original40 timeout and20-shard recovery. Audit-specific source/config hashes were also verified unchanged.
+
+FILES ADDED
+{
+  "intelligence/ml-service/app/workflow/semantic_provider_execution_benchmark_v1.py": "969771059ddfb705160beec7f718e5750d096a879740c0cfe492922cfb0898f9",
+  "intelligence/ml-service/tests/test_semantic_provider_execution_benchmark_v1.py": "f6f902b3ed29fb59e220a955430e645c7ce125f21834e099e340cb267b5cefea",
+  "intelligence/scripts/probe-semantic-provider-v1.py": "1595df4b24ab87924b256237a948401916b2c71f914b661845f7f7a8adf323bd"
+}
+
+REQUIRED18 DELIVERABLES
+1 Timeout audit:timeout-and-token-audit.json,phase uncertainty explicit. 2 Token audit:64000/32768/16384; configured ceiling393216. 3 Current abstraction streaming:STREAMING_NOT_SUPPORTED; upstream SSE documented separately. 4 Probe:FAILED/RuntimeError. 5 Duration1.175746s. 6 First body byte unknown,headers559.019ms. 7 Stored content0 bytes,body observed0,wire totalunknown. 8 Usage unavailable. 9 Schema/normalization unavailable live;mocked success pipeline tested. 10 Alternative configurations:provider-discovery.json. 11 Technically configured alternative:OpenAI/gpt-6.1-sol,unprobed. 12 Exactlyone SDK marker,one logical marker andone observed HTTP request. 13 Automatic fallback0/alternative calls0. 14 Exact tests above. 15 Prompt unchanged:prompt-unchanged-proof.json. 16 Validators unchanged:hashes. 17 Previous attempts unchanged:historical-evidence-proof.json. 18 Exact36 accepted failure IDs and2 skips:pre-live-verification.json.
+
+STOP
+The single5-concept capability probe has finished. No additional DeepSeek request,provider switch,large batch,prompt edit,validator/threshold/taxonomy change,production prompt or media render was performed. The next provider/model remains a human decision.

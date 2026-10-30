@@ -1,0 +1,6 @@
+{
+  "level": "C",
+  "SDKMaxRetries": 0,
+  "provider": "openai",
+  "model": "gpt-6.1-sol"
+}

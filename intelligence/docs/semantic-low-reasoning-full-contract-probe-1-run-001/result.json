@@ -1,0 +1,73 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1746,
+    "prompt_tokens": 1952,
+    "total_tokens": 3698,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 1023,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 1949,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 60792.284833,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 60799.210125,
+  "providerRequestId": "chatcmpl-EedUphVYSMwA7n70a1gFiD8XsnPWc",
+  "httpRequestId": "req_0ebfb55fa1ca439084c3755a5aae4bac",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EedUphVYSMwA7n70a1gFiD8XsnPWc",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "LOW_REASONING_FULL_CONTRACT_EXECUTION_PASS",
+  "interpretation": "REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR",
+  "creativeContractClassification": "CREATIVE_CONTRACT_FAILURE",
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T09:47:30.005115+00:00",
+    "wallClockEndUTC": "2026-10-30T09:48:31.441565+00:00",
+    "monotonicElapsedSeconds": 61.43609175,
+    "wallClockSpanSeconds": 61.43645,
+    "wallMinusMonotonicSeconds": 0.000358249999997895,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 3345,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "renders": 0,
+  "pipelineRan": true,
+  "previousReasoningEffort": "high",
+  "selectedReasoningEffort": "low",
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}

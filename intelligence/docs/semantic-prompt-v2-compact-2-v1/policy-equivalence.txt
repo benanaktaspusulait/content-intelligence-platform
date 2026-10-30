@@ -1,0 +1,234 @@
+v2-compact.1 → v2-compact.2 policy mapping
+Instruction retention; not a guarantee of provider adherence.
+
+boundary: Raw ideas; deterministic authority; no rank/score/winners/virality/novelty/readiness/eligibility/production recommendation/bypass
+  old: Do not rank, score, assign confidence
+  new: Do not rank, score, assign confidence
+  retained: YES
+rationale: Rationale explains causal dependency only, never score authority
+  old: no scoring authority
+  new: no scoring authority
+  retained: YES
+private: No exposed reasoning, checklists or self-certification
+  old: Output no private reasoning
+  new: Output no private reasoning
+  retained: YES
+protagonist: Exactly one supplied canonical protagonist
+  old: one supplied canonical protagonist
+  new: one supplied canonical protagonist
+  retained: YES
+object: One primary everyday object
+  old: one primary everyday object
+  new: one primary everyday object
+  retained: YES
+goal: Simple concrete credible visible everyday goal
+  old: one simple credible visible goal
+  new: one simple credible visible goal
+  retained: YES
+location: One location
+  old: one location
+  new: one location
+  retained: YES
+trouble: Immediate visible trouble
+  old: Start inside visible trouble
+  new: Start inside visible trouble
+  retained: YES
+duration: About15 seconds, complete readable action
+  old: about 15 seconds
+  new: about 15 seconds
+  retained: YES
+intuitive: Strange but intuitive logic rather than randomness
+  old: STRANGE BUT INTUITIVE
+  new: STRANGE BUT INTUITIVE
+  retained: YES
+one-rule: One dominant impossible physical/comedic rule
+  old: Write impossibleRule as one observable invariant
+  new: Write impossibleRule as one observable invariant
+  retained: YES
+rule-sentence: Precise observable repeatable trigger/response sentence
+  old: WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]
+  new: WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]
+  retained: YES
+immutable: Established rule governs every beat/payoff without mutation
+  old: Once established it never changes
+  new: Once established it never changes
+  retained: YES
+trigger: Stable trigger; no new condition or actor loophole
+  old: changes to the declared trigger/direction/target/material/timing/agency mapping
+  new: changes to the declared trigger/direction/target/material/timing/agency mapping
+  retained: YES
+no-powers: No independent powers bundled to excuse twists
+  old: do not bundle independent powers
+  new: do not bundle independent powers
+  retained: YES
+mapping: No altered direction/material/target/timing/agency unless implied
+  old: declared trigger/direction/target/material/timing/agency mapping
+  new: declared trigger/direction/target/material/timing/agency mapping
+  retained: YES
+spread: No unrelated spread; new information reveals same relationship
+  old: Spread, transfer and magnitude must already follow
+  new: Spread, transfer and magnitude must already follow
+  retained: YES
+object-function: Explain ordinary function and exact object dependency
+  old: State its ordinary function
+  new: State its ordinary function
+  retained: YES
+object-affordance: Exploit function/affordance/motion/material/result/task relationship
+  old: affordance, expected motion, material/property, normal result
+  new: affordance, expected motion, material/property, normal result
+  retained: YES
+interference: Object operation directly obstructs goal
+  old: DIRECTLY obstruct the task
+  new: DIRECTLY obstruct the task
+  retained: YES
+arbitrary: Noun sharing is insufficient; no random magic or contrived goal
+  old: Sharing an affected noun is insufficient
+  new: Sharing an affected noun is insufficient
+  retained: YES
+still: Single simultaneous paused stageable frame
+  old: frameZeroDescription must freeze an actual activation of that exact rule
+  new: frameZeroDescription states CURRENT STATE, never temporal narration
+  retained: YES
+opening-content: Character, visible goal, object, impossible problem and relationship
+  old: protagonist using the primary object for the everyday goal, abnormal target state already physically blocking that goal
+  new: Show protagonist mid-task, primary object mid-use, impossible consequence already active at their exact goal contact
+  retained: YES
+physical-evidence: Pose/state/space carry evidence; intention/title/laterbeat insufficient
+  old: same contact/spatial relationship
+  new: exact goal contact
+  retained: YES
+no-explanation: No sound/dialogue/text/context/inset/beforeafter/motion dependence
+  old: No dialogue, sound, title, text/captions, prior context, inset, before/after sequence
+  new: No dialogue, sound, title, captions, prior context, inset, before/after sequence
+  retained: YES
+no-delay: No initial normal action, press/door/delay/traverse or2–3sec setup
+  old: No waiting for a trigger or first 2–3 seconds of ordinary setup
+  new: waiting for a trigger; no first 2–3 seconds of ordinary setup
+  retained: YES
+no-label-proof: Words moving/obvious/impossible do not supply still evidence
+  old: motion words or labels such as obvious/impossible as evidence
+  new: motion words or labels such as obvious/impossible as evidence
+  retained: YES
+count: Exactly4–5 major causal beats including final payoff
+  old: Exactly 4 or 5 major causal beats including payoff
+  new: Exactly 4 or 5 major causal beats including payoff
+  retained: YES
+beat-fields: Action→same-rule physical consequence→changed state/information
+  old: strategy/action→visible consequence→new information or state change
+  new: strategy/action→visible consequence→new information or state change
+  retained: YES
+stageable: Concrete concise stageable sentences
+  old: sentences concrete, concise and stageable
+  new: sentences concrete, concise and stageable
+  retained: YES
+progression: Materially different strategy/consequence/state/position/control/goal distance/stakes
+  old: Each beat materially changes the problem
+  new: Each beat materially changes the problem
+  retained: YES
+axes: Vary leverage/timing/position/environment/magnitude/accumulation/control/stakes
+  old: position, leverage, timing, magnitude, environmental use, accumulation
+  new: position, leverage, timing, magnitude, environmental use, accumulation
+  retained: YES
+passive: Environment is passive staging, no new powers
+  old: Environment is passive staging
+  new: Environment is passive staging
+  retained: YES
+no-repeat: Reworded same attempts or identical consequences are not progression
+  old: reworded retries or unchanged consequences do not count
+  new: reworded retries or unchanged consequences do not count
+  retained: YES
+no-force-ladder: Avoid force/twohands/brace/fakesuccess default
+  old: try harder→two hands→brace→fake success
+  new: try harder→two hands→brace→fake success
+  retained: YES
+no-unrelated: No unrelated events or hidden sub-scenes; magnitude follows rule
+  old: No hidden sub-scenes
+  new: No hidden sub-scenes
+  retained: YES
+last-equality: Payoff equals last consequence character for character, no extra event
+  old: finalPayoff equals the last visibleConsequence exactly
+  new: finalPayoff equals the last visibleConsequence exactly
+  retained: YES
+payoff-causal: Surprising but inevitable strongest rule-derived visual state change
+  old: strongest visual, state-changing consequence
+  new: strongest visual, state-changing consequence
+  retained: YES
+payoff-essential: Ending cannot survive removal of original rule
+  old: Without the original rule this ending should not work
+  new: Without the original rule this ending should not work
+  retained: YES
+payoff-families: Preserve transfer/reversal/wrongsuccess/problem/takeover/extreme/chain/reveal/join/objectwins inspiration families
+  old: role/control/property transfer
+  new: role/control/property transfer
+  retained: YES
+no-taxonomy-recipes: Payoff inspirations are not mandatory taxonomy recipes
+  old: not taxonomy recipes
+  new: not taxonomy recipes
+  retained: YES
+no-ending-rescue: No newactor/poweredobject/magic/trigger/externalforce ending
+  old: new character, powered object or unexplained external force
+  new: new character, powered object or unexplained external force
+  retained: YES
+loop: Optional loop; no reset effect/new rule; avoid routine fakesuccess reset
+  old: Looping is optional
+  new: Looping is optional
+  retained: YES
+silent: Full story legible soundoff; dialogue not explanatory
+  old: full story must read with sound off
+  new: full story must read with sound off
+  retained: YES
+dialogue: NONE default; OPTIONAL only if needed; do not invent enum
+  old: Dialogue normally NONE
+  new: Dialogue normally NONE
+  retained: YES
+production: Broad body actions, poses, stable identities/silhouette, few elements
+  old: broad body actions, clear poses, stable identities/silhouettes
+  new: broad body actions, clear poses, stable identities/silhouettes
+  retained: YES
+production-risks: No tinytext/smallpieces/finehands/mechanics/crowds/cuts/unstageable invisibleforces
+  old: fine hand work, fine mechanical transformations, crowds
+  new: fine hand work, fine mechanical transformations, crowds
+  retained: YES
+safety: Childsafe: no injury/weapons/dangerousrestraint/sexualcontent
+  old: no injury, weapons, dangerous restraint or sexual content
+  new: no injury, weapons, dangerous restraint or sexual content
+  retained: YES
+batch-diversity: Vary object/goal/mechanic/trigger/progression/payoff/finalsilhouette
+  old: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+  new: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+  retained: YES
+no-opposite: Avoid many oppositebehavior variants/wordingnovelty
+  old: many opposite-behavior variants
+  new: many opposite-behavior variants
+  retained: YES
+unfamiliar: Coherent unfamiliar taxonomyfree mechanics allowed
+  old: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+  new: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+  retained: YES
+cautions: Historical caution not templates; rare distinct chair/adhesion/reset/growth/shrink/reversal/escape allowed, not dominant
+  old: must not dominate; rare distinct uses may occur
+  new: must not dominate; rare distinct uses may occur
+  retained: YES
+free-task: Task examples illustrate, do not copy mechanically
+  old: Choose tasks freely
+  new: Choose tasks freely
+  retained: YES
+self-check: One private review: rule allbeats, pausedopening,causalarrows,visualstatepayoff,objectdependency; internally discard/redesign
+  old: discard/redesign internally
+  new: If any answer is no, discard/redesign; no explanation can repair it.
+  retained: YES
+no-retry: Private editing is not an external retry loop or winnerselection
+  old: no permission for an external retry loop
+  new: no permission for an external retry loop
+  retained: YES
+schema: Same fields/JSON ideas envelope/raw count, deterministic rejection remains
+  old: all fields and exactly the requested raw count
+  new: all fields and exactly the requested raw count
+  retained: YES
+
+Deliberate strengthening only:
+  FRAME_ZERO_FIRST_IDEATION: FRAME-ZERO-FIRST: internally invent one frozen physical contradiction BEFORE rule→goal→beats→payoff
+  ACTIVE_OPENING_CONFLICT: impossible consequence already active at their exact goal contact
+  STILL_FRAME_CAUSAL_LEGIBILITY: silhouette carries the hook without tiny props, subtle colors, text, finger precision, timing or hidden state
+  OPENING_BEAT_CONTINUITY: Beat 1 continues the exact opening state; no hidden reset, normal setup or first activation
+  PAYOFF_DIRECTIONALITY: State WHAT changes FROM which visible state TO which, because of which activation

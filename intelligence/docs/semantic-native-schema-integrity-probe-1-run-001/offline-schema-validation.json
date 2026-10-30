@@ -1,0 +1,123 @@
+{
+  "integrity": {
+    "step": "FINAL_PROVIDER_SCHEMA_VALIDATION",
+    "version": "semantic-native-schema-integrity-v1",
+    "syntax": "VALID_DRAFT202012",
+    "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+    "references": [
+      {
+        "reference": "#/$defs/SemanticBeat",
+        "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+        "resolvedTargetPath": "/$defs/SemanticBeat",
+        "attemptedTargetPath": "/$defs/SemanticBeat",
+        "status": "RESOLVED",
+        "scope": "Final provider document root; no external URI retrieval"
+      }
+    ],
+    "unresolvedReferences": 0,
+    "unsupportedReferences": 0,
+    "cyclicReferences": 0,
+    "serializationRoundTripIdentical": true
+  },
+  "equivalence": {
+    "candidateLogicalSchemaIdentical": true,
+    "canonicalLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+    "providerCandidateLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+    "compared": [
+      "all candidate/beat fields",
+      "field types",
+      "required lists",
+      "min/max bounds",
+      "enums",
+      "nullability",
+      "defaults",
+      "additionalProperties",
+      "annotations"
+    ],
+    "onlyRepresentationChange": "$defs ownership moved from embedded candidate root to actual provider root; $ref strings unchanged."
+  },
+  "nativeCompatibility": {
+    "mode": "json_schema",
+    "strict": false,
+    "rootObject": true,
+    "objects": [
+      {
+        "path": "/",
+        "properties": [
+          "ideas"
+        ],
+        "required": [
+          "ideas"
+        ],
+        "requiredAreDeclared": true,
+        "allPropertiesRequired": true,
+        "additionalProperties": false
+      },
+      {
+        "path": "/properties/ideas/items",
+        "properties": [
+          "ideaId",
+          "title",
+          "protagonistSuggestion",
+          "everydayGoal",
+          "primaryObject",
+          "normalExpectation",
+          "impossibleRule",
+          "visibleTrigger",
+          "whyThisObject",
+          "goalRuleRelationship",
+          "frameZeroDescription",
+          "beats",
+          "finalPayoff",
+          "suggestedPayoffFamily",
+          "loopPotential",
+          "environment",
+          "dialogueNeed",
+          "providerRationale",
+          "durationSeconds"
+        ],
+        "required": [
+          "ideaId",
+          "title",
+          "protagonistSuggestion",
+          "everydayGoal",
+          "primaryObject",
+          "normalExpectation",
+          "impossibleRule",
+          "visibleTrigger",
+          "whyThisObject",
+          "goalRuleRelationship",
+          "frameZeroDescription",
+          "beats",
+          "finalPayoff",
+          "suggestedPayoffFamily",
+          "loopPotential",
+          "environment",
+          "providerRationale"
+        ],
+        "requiredAreDeclared": true,
+        "allPropertiesRequired": false,
+        "additionalProperties": false
+      },
+      {
+        "path": "/$defs/SemanticBeat",
+        "properties": [
+          "strategy",
+          "visibleConsequence",
+          "newInformation"
+        ],
+        "required": [
+          "strategy",
+          "visibleConsequence",
+          "newInformation"
+        ],
+        "requiredAreDeclared": true,
+        "allPropertiesRequired": true,
+        "additionalProperties": false
+      }
+    ],
+    "strictModeAssessment": "NOT_ENABLED; defaults/optional fields intentionally preserved; no claim of strict=true compatibility.",
+    "knownUnsupportedKeywordsFromRepository": null,
+    "limitation": "Repository adapter passes this JSON Schema directly. No undocumented remote keyword restriction or stricter contract is invented. Live acceptance remains unverified before probe."
+  }
+}

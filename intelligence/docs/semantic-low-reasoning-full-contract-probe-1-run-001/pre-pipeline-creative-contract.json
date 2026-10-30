@@ -1,0 +1,84 @@
+{
+  "stage": "BEFORE_FULL_PIPELINE",
+  "sourceCandidatePresent": true,
+  "declaredProtagonistFields": 1,
+  "declaredPrimaryObjectFields": 1,
+  "depictedProtagonistCount": null,
+  "depictedPrimaryObjectCount": null,
+  "countLimitation": "Scalar fields do not prove depicted actor/object counts; normalization checks canonical named actors, not every implied entity.",
+  "everydayGoalPresent": true,
+  "frameZeroDescriptionPresent": true,
+  "impossibleRulePresent": true,
+  "visibleTriggerPresent": true,
+  "payoffPresent": true,
+  "beatCount": 4,
+  "beatCountPassed": true,
+  "eachBeat": [
+    {
+      "number": 1,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi pushes the door with her shoulder while finishing the squeeze.",
+        "visibleConsequence": "The door stops against the water cube, leaving only a narrow gap.",
+        "newInformation": "The extracted water is solid enough to block the door."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 2,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "She slides the cube away from the door and uses the sponge to absorb the remaining broad puddle.",
+        "visibleConsequence": "The door's opening arc becomes dry, but the sponge bulges between her hands.",
+        "newInformation": "The liquid can be cleared, provided she finds somewhere else to squeeze."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 3,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi reaches through the narrow door gap and squeezes the sponge on the other side.",
+        "visibleConsequence": "A larger water cube drops outside the room, directly behind the door.",
+        "newInformation": "Moving the squeeze outside has placed the new block on the opposite side of the same door."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 4,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "She stands on the dry floor and confidently pulls the door open.",
+        "visibleConsequence": "The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.",
+        "newInformation": "She has removed the entire puddle but converted it into a solid doorstop on both sides."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    }
+  ],
+  "ruleConsistency": "AMBIGUOUS",
+  "ruleFindings": [],
+  "ruleConsistencyLimitation": "Existing source-constraint comparison can find explicit violations; no finding is not full semantic proof. Final source-supported status is reported with pipeline evidence.",
+  "duration": {
+    "supplied": true,
+    "declared": 15,
+    "effectiveLocalDefault": 15,
+    "rangePassed": true,
+    "target": 15,
+    "maximum": 20,
+    "renderMeasured": false
+  },
+  "finalPayoffEqualsLastConsequence": true,
+  "structuralContractPassed": true
+}

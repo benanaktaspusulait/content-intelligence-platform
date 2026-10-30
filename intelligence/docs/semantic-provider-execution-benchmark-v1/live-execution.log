@@ -1,0 +1,44 @@
+{
+  "benchmark": {
+    "status": "FAILED",
+    "usage": null,
+    "providerCostUsd": null,
+    "providerRequestId": null,
+    "sdkMaxRetries": 0,
+    "errorClass": "RuntimeError",
+    "errorCauseClass": null,
+    "httpStatus": null,
+    "safeError": "Bounded capability probe failed; no retry or fallback.",
+    "providerResponseMetadata": null,
+    "attemptId": "semantic-provider-execution-benchmark-v1-deepseek-5-run-001",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "promptVersion": "v2",
+    "candidateCount": 5,
+    "timeout": {
+      "connectSeconds": 15,
+      "readSeconds": 90,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 180
+    },
+    "maxOutputTokens": 16384,
+    "streamingMode": "NON_STREAMING",
+    "start": "2026-10-26T11:13:48.963029+00:00",
+    "end": "2026-10-26T11:13:50.138943+00:00",
+    "durationSeconds": 1.1757455420010956,
+    "firstByteMs": null,
+    "responseHeadersMs": 559.0186250010447,
+    "httpBodyBytesObserved": 0,
+    "responseBytes": 0,
+    "requestCount": 1,
+    "automaticRetries": 0,
+    "fallbackCalls": 0,
+    "renders": 0,
+    "capabilityClassification": "UNSUITABLE_FOR_CURRENT_SEMANTIC_V2_EXECUTION_ENVELOPE"
+  },
+  "offline": {
+    "status": "NOT_RUN_NO_USABLE_RESPONSE",
+    "creativeQualityConclusion": null
+  }
+}

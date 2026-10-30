@@ -1,0 +1,428 @@
+{
+  "actualCreativeSampleSize": 3,
+  "plannedCreativeSampleSize": 4,
+  "missingCandidate": "micro-a timed out; no response/story/audit/score is available.",
+  "availableSampleOpeningSignal": "OPENING_WEAKNESS_SIGNAL",
+  "signalBasis": "All 3 available real candidates score 35, below the accepted floor 60. This is a repeated observed weakness in a small sample, not statistical proof.",
+  "plannedFourCandidateTest": "INCOMPLETE",
+  "automaticCombinedLabelExplanation": "combined-analysis.json conservatively emits NO_CLEAR_PATTERN whenever fewer than 4 candidates are available; it withholds the planned four-candidate classification. The descriptive available-sample weakness signal here does not override any score or gate.",
+  "admissionDistribution": {
+    "admitted": 0,
+    "notAdmittedGenuineQuality": 0,
+    "notAdmittedTaxonomyCoverageOnly": 0,
+    "notAdmittedEvidenceUncertainty": 3
+  },
+  "admissionInterpretation": "All authoritative statuses are NOT_ADMITTED_INSUFFICIENT_EVIDENCE. Missing support is not established genuine failure, and unclassified taxonomy alone is not the rejection reason.",
+  "payoffDistribution": {
+    "present": 3,
+    "visualAsDescribed": 3,
+    "stateChanging": 3,
+    "acceptedRuleLinked": 3,
+    "explicitNewImpossibleBehavior": 0,
+    "newBehaviorAmbiguity": 1,
+    "merelyRepeatedPenultimateBeat": 0
+  },
+  "ruleDistribution": {
+    "RULE_CONSISTENT": 0,
+    "RULE_INCONSISTENT": 0,
+    "AMBIGUOUS": 3
+  },
+  "ruleComparisonWithV1": "No explicit source-constraint contradiction was detected in the available candidates, unlike the known V1 mutation pattern. All remain AMBIGUOUS under the accepted audit, so there is no established superiority or full consistency pass.",
+  "humanReviewSet": [],
+  "reviewCards": [],
+  "audits": [
+    {
+      "id": "REFERENCE-0",
+      "candidateId": "semantic-compact-micro-batch-v1/REFERENCE-0/sem1-e7b2564efe7fec52",
+      "sourceOnly": true,
+      "oneProtagonist": {
+        "status": "SUPPORTED",
+        "name": "Mimi",
+        "depictedNamedActors": 1
+      },
+      "onePrimaryObject": {
+        "status": "SUPPORTED",
+        "name": "Sponge",
+        "scope": "One primary object; ordinary supporting objects may be present."
+      },
+      "everydayGoal": {
+        "status": "SUPPORTED",
+        "source": "Clear a puddle from the floor so the door can open."
+      },
+      "frameZeroGoal": "SUPPORTED_AS_DESCRIBED",
+      "frameZeroProblem": "SUPPORTED_AS_DESCRIBED",
+      "frameZeroImpossibleRelationship": "UNRESOLVED",
+      "frameZeroCauseProblem": "UNRESOLVED",
+      "openingScore": 35,
+      "openingAudit": "A transparent cube beside a squeezed sponge does not establish, in one still, that this is liquid water just extracted from that sponge. The door obstruction is described, but its functional cause remains unresolved.",
+      "oneImmutableRule": {
+        "declared": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+        "acceptedConsistency": "AMBIGUOUS"
+      },
+      "stableTrigger": {
+        "declared": "Mimi compresses the visibly swollen sponge between her palms.",
+        "acceptedStatus": "AMBIGUOUS"
+      },
+      "beatCount": 4,
+      "allBeatsHaveStrategyConsequenceNewInformation": true,
+      "perBeat": [
+        {
+          "beat": 1,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+          "source": {
+            "strategy": "Mimi pushes the door with her shoulder while finishing the squeeze.",
+            "visibleConsequence": "The door stops against the water cube, leaving only a narrow gap.",
+            "newInformation": "The extracted water is solid enough to block the door."
+          },
+          "sourceComparison": "Finishing the squeeze and blocking the door fits a solid water output; volume is not quantitatively established.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 2,
+          "ruleStatus": "AMBIGUOUS",
+          "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+          "source": {
+            "strategy": "She slides the cube away from the door and uses the sponge to absorb the remaining broad puddle.",
+            "visibleConsequence": "The door's opening arc becomes dry, but the sponge bulges between her hands.",
+            "newInformation": "The liquid can be cleared, provided she finds somewhere else to squeeze."
+          },
+          "sourceComparison": "Absorption and manually sliding an existing cube do not add a new impossible behavior. The accepted audit nevertheless leaves this beat ambiguous.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 3,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+          "source": {
+            "strategy": "Mimi reaches through the narrow door gap and squeezes the sponge on the other side.",
+            "visibleConsequence": "A larger water cube drops outside the room, directly behind the door.",
+            "newInformation": "Moving the squeeze outside has placed the new block on the opposite side of the same door."
+          },
+          "sourceComparison": "Squeezing outside creates a cube outside; the larger cube is compatible with more absorbed water, but volume equality is not measurable from this prose.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 4,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+          "source": {
+            "strategy": "She stands on the dry floor and confidently pulls the door open.",
+            "visibleConsequence": "The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.",
+            "newInformation": "She has removed the entire puddle but converted it into a solid doorstop on both sides."
+          },
+          "sourceComparison": "A solid cube can obstruct a door without a new rule. Spatial continuity is unclear: beat 2 moved the first cube away, and its final return to the opening arc is not described.",
+          "explicitContradiction": []
+        }
+      ],
+      "payoff": {
+        "present": true,
+        "visual": true,
+        "stateChanging": true,
+        "ruleLinked": true,
+        "introducesNewBehavior": "NO_EXPLICIT_NEW_IMPOSSIBLE_BEHAVIOR",
+        "sourceConcern": "Door/cube spatial continuity is unresolved; no new squeeze rule is stated.",
+        "merelyRepeatsPenultimateBeat": false,
+        "repeatsTerminalConsequence": true
+      },
+      "silentView": {
+        "dialogueNeed": "NONE",
+        "score": 89,
+        "audioDependent": false,
+        "visualVerification": "SOURCE_ONLY"
+      },
+      "duration": {
+        "declaredSeconds": 15,
+        "within20Seconds": true,
+        "renderMeasured": false
+      },
+      "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+      "admissionUncertainty": [
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "objectSpecificity",
+          "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "goalInterference",
+          "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "nonArbitrary",
+          "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "functionalAffordanceRelationship",
+          "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+        }
+      ]
+    },
+    {
+      "id": "micro-b",
+      "candidateId": "semantic-compact-micro-batch-v1/micro-b/sem1-e681e589547f87c4",
+      "sourceOnly": true,
+      "oneProtagonist": {
+        "status": "SUPPORTED",
+        "name": "Kiko",
+        "depictedNamedActors": 1
+      },
+      "onePrimaryObject": {
+        "status": "SUPPORTED",
+        "name": "Broom",
+        "scope": "One primary object; ordinary supporting objects may be present."
+      },
+      "everydayGoal": {
+        "status": "SUPPORTED",
+        "source": "Sweep a small heap of dirt into a dustpan."
+      },
+      "frameZeroGoal": "SUPPORTED_AS_DESCRIBED",
+      "frameZeroProblem": "SUPPORTED_AS_DESCRIBED",
+      "frameZeroImpossibleRelationship": "UNRESOLVED",
+      "frameZeroCauseProblem": "UNRESOLVED",
+      "openingScore": 35,
+      "openingAudit": "The continuous floor visibly folds and obstructs the dirt route. Bristles against the foot of a fold do not establish from a still that forward broom travel creates it, or that stroke length determines height.",
+      "oneImmutableRule": {
+        "declared": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+        "acceptedConsistency": "AMBIGUOUS"
+      },
+      "stableTrigger": {
+        "declared": "The broom head pressed against the floor during a forward push.",
+        "acceptedStatus": "AMBIGUOUS"
+      },
+      "beatCount": 4,
+      "allBeatsHaveStrategyConsequenceNewInformation": true,
+      "perBeat": [
+        {
+          "beat": 1,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+          "source": {
+            "strategy": "Kiko lifts the broom over the little fold and gives the dirt a short forward shove.",
+            "visibleConsequence": "A second, knee-high floor pleat rises beneath the dirt, leaving the dustpan below it.",
+            "newInformation": "Reaching over the first obstacle creates a taller obstacle under the target."
+          },
+          "sourceComparison": "A forward shove produces a floor pleat beneath the dirt. Short is relative, so a knee-high result is not an exact length contradiction; floor contact is implied rather than fully staged.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 2,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+          "source": {
+            "strategy": "Kiko steps onto the first pleat and stretches the broom across the second for a longer sweep.",
+            "visibleConsequence": "The longer swept strip becomes a waist-high pleat with the dirt balanced on top.",
+            "newInformation": "The length of the sweep determines the height of the new obstruction."
+          },
+          "sourceComparison": "A longer sweep produces a higher pleat and preserves existing obstacles, consistent with the same rule; exact lengths remain unspecified.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 3,
+          "ruleStatus": "AMBIGUOUS",
+          "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+          "source": {
+            "strategy": "Kiko climbs onto the knee-high pleat and places both feet immediately behind the dirt on the waist-high strip.",
+            "visibleConsequence": "Kiko and the dirt share a narrow elevated strip, with the dustpan clearly visible far below.",
+            "newInformation": "Kiko has reached the dirt, but now stands on the floor that the broom will fold."
+          },
+          "sourceComparison": "Climbing changes Kiko’s position without triggering a new fold. The accepted audit leaves this non-trigger beat ambiguous. Placement of both feet on the waist-high strip needs visual staging review.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 4,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+          "source": {
+            "strategy": "Kiko reaches the broom behind both heels and makes one long forward sweep beneath the feet toward the dirt.",
+            "visibleConsequence": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+            "newInformation": "The broom carries the sweeper upward by exactly the same mechanism that carries the dirt."
+          },
+          "sourceComparison": "Sweeping the occupied strip raises its occupants under the declared carry-anything rule. Summit balance and broom reach are staging uncertainties, not explicit rule mutation.",
+          "explicitContradiction": []
+        }
+      ],
+      "payoff": {
+        "present": true,
+        "visual": true,
+        "stateChanging": true,
+        "ruleLinked": true,
+        "introducesNewBehavior": "NO_EXPLICIT_NEW_IMPOSSIBLE_BEHAVIOR",
+        "sourceConcern": "Kiko being carried follows the explicit anything-on-strip clause. Reach/balance are source-staging uncertainties.",
+        "merelyRepeatsPenultimateBeat": false,
+        "repeatsTerminalConsequence": true
+      },
+      "silentView": {
+        "dialogueNeed": "NONE",
+        "score": 100,
+        "audioDependent": false,
+        "visualVerification": "SOURCE_ONLY"
+      },
+      "duration": {
+        "declaredSeconds": 15,
+        "within20Seconds": true,
+        "renderMeasured": false
+      },
+      "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+      "admissionUncertainty": [
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "objectSpecificity",
+          "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "trigger",
+          "reason": "A concrete source action is linked to the declared abnormal behavior."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "nonArbitrary",
+          "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "functionalAffordanceRelationship",
+          "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+        }
+      ]
+    },
+    {
+      "id": "micro-c",
+      "candidateId": "semantic-compact-micro-batch-v1/micro-c/sem1-13c354f40be0f053",
+      "sourceOnly": true,
+      "oneProtagonist": {
+        "status": "SUPPORTED",
+        "name": "Mimi",
+        "depictedNamedActors": 1
+      },
+      "onePrimaryObject": {
+        "status": "SUPPORTED",
+        "name": "Clothes iron",
+        "scope": "One primary object; ordinary supporting objects may be present."
+      },
+      "everydayGoal": {
+        "status": "SUPPORTED",
+        "source": "Iron a wrinkled shirt flat."
+      },
+      "frameZeroGoal": "SUPPORTED_AS_DESCRIBED",
+      "frameZeroProblem": "SUPPORTED_AS_DESCRIBED",
+      "frameZeroImpossibleRelationship": "UNRESOLVED",
+      "frameZeroCauseProblem": "UNRESOLVED",
+      "openingScore": 35,
+      "openingAudit": "Smooth cloth and a buckled supporting board are simultaneously described, but the exact crease-transfer relationship and cause are not established in one still. The iron is planted rather than shown removing a matched crease.",
+      "oneImmutableRule": {
+        "declared": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+        "acceptedConsistency": "AMBIGUOUS"
+      },
+      "stableTrigger": {
+        "declared": "The iron presses a raised shirt crease flat.",
+        "acceptedStatus": "AMBIGUOUS"
+      },
+      "beatCount": 4,
+      "allBeatsHaveStrategyConsequenceNewInformation": true,
+      "perBeat": [
+        {
+          "beat": 1,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+          "source": {
+            "strategy": "Mimi slides the iron across the shirt's wrinkled middle.",
+            "visibleConsequence": "The shirt's middle becomes smooth while the board beneath it buckles into a broad ridge, tipping the remaining wrinkles toward Mimi.",
+            "newInformation": "A larger shirt crease produces the same larger fold in the supporting board."
+          },
+          "sourceComparison": "Smoothing the middle while the support ridges fits transfer beneath the crease. Exact identical crease shape is asserted, not geometrically demonstrated.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 2,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+          "source": {
+            "strategy": "Mimi pulls the wrinkled hem onto the board's remaining flat end and presses it.",
+            "visibleConsequence": "The hem flattens, but the board's end folds upward, leaving the shirt draped between two raised sections.",
+            "newInformation": "Moving to unused support only relocates the accumulating board creases."
+          },
+          "sourceComparison": "Moving the hem to flat support and folding that end follows the same transfer condition.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 3,
+          "ruleStatus": "AMBIGUOUS",
+          "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+          "source": {
+            "strategy": "Mimi stretches the last wrinkled sleeve across the board's central ridge and presses along it.",
+            "visibleConsequence": "The sleeve smooths as a new crease folds the ridge into a compact accordion, leaving almost no level working surface.",
+            "newInformation": "The existing board folds remain while each newly removed shirt crease adds another."
+          },
+          "sourceComparison": "Adding another crease while older folds remain fits accumulation, but an identical crease folding an existing ridge into a compact accordion needs geometry review; accepted status is ambiguous.",
+          "explicitContradiction": []
+        },
+        {
+          "beat": 4,
+          "ruleStatus": "RULE_CONSISTENT",
+          "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+          "source": {
+            "strategy": "Mimi presses the final cuff crease against the accordion's small flat top, then lifts the shirt by its shoulders.",
+            "visibleConsequence": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+            "newInformation": "The shirt is flat because its entire collection of creases now occupies the board."
+          },
+          "sourceComparison": "The final cuff press and lifting the shirt use the same trigger. The entire board becoming shirt-shaped is not entailed by arbitrary repositioned crease transfers. It may describe a silhouette rather than a new mechanism; this remains ambiguous.",
+          "explicitContradiction": []
+        }
+      ],
+      "payoff": {
+        "present": true,
+        "visual": true,
+        "stateChanging": true,
+        "ruleLinked": true,
+        "introducesNewBehavior": "AMBIGUOUS",
+        "sourceConcern": "The shirt-shaped final arrangement is not fully supported by the described spatial mapping of each transferred crease; no explicit second mechanism is introduced.",
+        "merelyRepeatsPenultimateBeat": false,
+        "repeatsTerminalConsequence": true
+      },
+      "silentView": {
+        "dialogueNeed": "NONE",
+        "score": 89,
+        "audioDependent": false,
+        "visualVerification": "SOURCE_ONLY"
+      },
+      "duration": {
+        "declaredSeconds": 15,
+        "within20Seconds": true,
+        "renderMeasured": false
+      },
+      "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+      "admissionUncertainty": [
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "objectSpecificity",
+          "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "trigger",
+          "reason": "A concrete source action is linked to the declared abnormal behavior."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "goalInterference",
+          "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "nonArbitrary",
+          "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+        },
+        {
+          "code": "FACTOR_NOT_ESTABLISHED",
+          "factor": "functionalAffordanceRelationship",
+          "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+        }
+      ]
+    }
+  ],
+  "preScoringScope": "Original per-request structural/coherence receipts were persisted before the pipeline. These complete offline source audits precede an additional unchanged accepted-pipeline replay for micro-b and micro-c. No repair, score override or new validator is used."
+}

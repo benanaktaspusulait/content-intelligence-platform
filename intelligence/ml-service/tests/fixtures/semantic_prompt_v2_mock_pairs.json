@@ -1,0 +1,926 @@
+{
+  "scope": "Hand-authored deterministic test pairs only, never production outputs or evidence of model superiority.",
+  "cases": [
+    {
+      "case": "A",
+      "purpose": "strong same-rule escalation",
+      "mockV1": {
+        "ideaId": "mock-A",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-A",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2RuleContradiction": false
+      }
+    },
+    {
+      "case": "B",
+      "purpose": "rule mutation",
+      "mockV1": {
+        "ideaId": "mock-B",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The hammer straightens the nail and drives it into the wall.",
+            "newInformation": "The nail straightens under the same hammer strike."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-B",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v1RuleContradiction": true,
+        "v2RuleContradiction": false
+      }
+    },
+    {
+      "case": "C",
+      "purpose": "strong paused frame-zero problem",
+      "mockV1": {
+        "ideaId": "mock-C",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko stands beside the wall holding an ordinary hammer and a picture frame.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-C",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2OpeningAboveV1": true
+      }
+    },
+    {
+      "case": "D",
+      "purpose": "motion-dependent weak opening retained as negative control",
+      "mockV1": {
+        "ideaId": "mock-D",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko stands beside the wall holding an ordinary hammer and a picture frame.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-D",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko stands beside the wall holding an ordinary hammer and a picture frame.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2WeakOpening": true
+      }
+    },
+    {
+      "case": "E",
+      "purpose": "rule-derived payoff",
+      "mockV1": {
+        "ideaId": "mock-E",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-E",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+            "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2RuleContradiction": false
+      }
+    },
+    {
+      "case": "F",
+      "purpose": "unrelated final twist",
+      "mockV1": {
+        "ideaId": "mock-F",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The hammer becomes a mirror and shows the picture frame.",
+            "newInformation": "The hammer now reflects the room."
+          }
+        ],
+        "finalPayoff": "The hammer becomes a mirror and shows the picture frame.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-F",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+          },
+          {
+            "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+            "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+            "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+          },
+          {
+            "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+            "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+            "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+          },
+          {
+            "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+            "visibleConsequence": "The hammer becomes a mirror and shows the picture frame.",
+            "newInformation": "The hammer now reflects the room."
+          }
+        ],
+        "finalPayoff": "The hammer becomes a mirror and shows the picture frame.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2RuleContradiction": true
+      }
+    },
+    {
+      "case": "G",
+      "purpose": "outside-taxonomy source evidence",
+      "mockV1": {
+        "ideaId": "mock-G",
+        "title": "Tangling Hairbrush",
+        "protagonistSuggestion": "Opa",
+        "everydayGoal": "Brush hair smooth",
+        "primaryObject": "Hairbrush",
+        "normalExpectation": "Brushing untangles hair and smooths it.",
+        "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+        "visibleTrigger": "Opa brushes once, hair stands up in a giant knot.",
+        "whyThisObject": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+        "goalRuleRelationship": "The action of brushing makes hair worse, so smooth hair is impossible.",
+        "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+        "beats": [
+          {
+            "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+            "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+            "newInformation": "Pulling the brush out causes the hair to cinch, not loosen."
+          },
+          {
+            "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+            "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+            "newInformation": "Any grooming tool multiplies knots instead of removing them."
+          },
+          {
+            "strategy": "Opa applies hair conditioner to make strands slippery.",
+            "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded."
+          },
+          {
+            "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+            "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+            "newInformation": "The hair's tangling now acts like a living trap, consuming objects."
+          },
+          {
+            "strategy": "Opa uses scissors to cut the hair away.",
+            "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "newInformation": "Cutting triggers accelerated regrowth with more tangles."
+          }
+        ],
+        "finalPayoff": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+        "suggestedPayoffFamily": "logical extreme / effort worsens",
+        "loopPotential": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+        "environment": "Bathroom with mirror",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "Brush's detangling function reversed into knot-creation is visually clear; regrowth adds escalation."
+      },
+      "mockV2": {
+        "ideaId": "mock-G",
+        "title": "Tangling Hairbrush",
+        "protagonistSuggestion": "Opa",
+        "everydayGoal": "Brush hair smooth",
+        "primaryObject": "Hairbrush",
+        "normalExpectation": "Brushing untangles hair and smooths it.",
+        "impossibleRule": "Each brush stroke creates a new knot, and the knots tighten the more you brush; hair eventually coils around the brush like a topiary.",
+        "visibleTrigger": "Opa brushes once, hair stands up in a giant knot.",
+        "whyThisObject": "Brush bristles are meant to separate strands; if they weave strands together, brushing becomes tangling.",
+        "goalRuleRelationship": "The action of brushing makes hair worse, so smooth hair is impossible.",
+        "frameZeroDescription": "Opa stands in front of mirror holding a brush, but his hair is a twisted bird's nest with the brush embedded in it.",
+        "beats": [
+          {
+            "strategy": "Opa pulls the brush out slowly, hoping to unwind the knot.",
+            "visibleConsequence": "The knot tightens into a bun that pulls his head back.",
+            "newInformation": "Pulling the brush out causes the hair to cinch, not loosen."
+          },
+          {
+            "strategy": "Opa uses a wide-tooth comb to gently work through the tangle.",
+            "visibleConsequence": "The comb adds more knots, and his hair expands into a giant sphere around his head.",
+            "newInformation": "Any grooming tool multiplies knots instead of removing them."
+          },
+          {
+            "strategy": "Opa applies hair conditioner to make strands slippery.",
+            "visibleConsequence": "The hair becomes like rubber, and the brush bounces off, but the knots stretch and snap back with more loops.",
+            "newInformation": "Conditioner turns hair elastic, making tangles spring-loaded."
+          },
+          {
+            "strategy": "Opa puts on a hat to hide the hair and stop brushing.",
+            "visibleConsequence": "The hat is sucked into the hair-knot and swallowed, disappearing into the tangled mass.",
+            "newInformation": "The hair's tangling now acts like a living trap, consuming objects."
+          },
+          {
+            "strategy": "Opa uses scissors to cut the hair away.",
+            "visibleConsequence": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+            "newInformation": "Cutting triggers accelerated regrowth with more tangles."
+          }
+        ],
+        "finalPayoff": "The hair regrows instantly into a larger, tighter knot, trapping the scissors.",
+        "suggestedPayoffFamily": "logical extreme / effort worsens",
+        "loopPotential": "Opa can try different tools, but the hair always re-tangles and often captures the tool.",
+        "environment": "Bathroom with mirror",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "Brush's detangling function reversed into knot-creation is visually clear; regrowth adds escalation."
+      },
+      "expect": {
+        "v2Unclassified": true
+      }
+    },
+    {
+      "case": "H",
+      "purpose": "random magic despite explicit novelty",
+      "mockV1": {
+        "ideaId": "mock-H",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Carry food under the ceiling",
+        "primaryObject": "Fork",
+        "normalExpectation": "A fork carries food on its tines.",
+        "impossibleRule": "Every touch of the fork teleports the ceiling away, unrelated to carrying food.",
+        "visibleTrigger": "Kiko touches the fork.",
+        "whyThisObject": "Any object could do the same unrelated magic.",
+        "goalRuleRelationship": "The ceiling teleport prevents Kiko carrying food under it.",
+        "frameZeroDescription": "Kiko holds a fork under a floating ceiling with food below.",
+        "beats": [
+          {
+            "strategy": "Kiko touches the fork from position 0.",
+            "visibleConsequence": "The ceiling teleports beyond position 0, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          },
+          {
+            "strategy": "Kiko touches the fork from position 1.",
+            "visibleConsequence": "The ceiling teleports beyond position 1, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          },
+          {
+            "strategy": "Kiko touches the fork from position 2.",
+            "visibleConsequence": "The ceiling teleports beyond position 2, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          },
+          {
+            "strategy": "Kiko touches the fork from position 3.",
+            "visibleConsequence": "The ceiling teleports beyond position 3, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          }
+        ],
+        "finalPayoff": "The ceiling teleports beyond position 3, leaving the food behind.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-H",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Carry food under the ceiling",
+        "primaryObject": "Fork",
+        "normalExpectation": "A fork carries food on its tines.",
+        "impossibleRule": "Every touch of the fork teleports the ceiling away, unrelated to carrying food.",
+        "visibleTrigger": "Kiko touches the fork.",
+        "whyThisObject": "Any object could do the same unrelated magic.",
+        "goalRuleRelationship": "The ceiling teleport prevents Kiko carrying food under it.",
+        "frameZeroDescription": "Kiko holds a fork under a floating ceiling with food below.",
+        "beats": [
+          {
+            "strategy": "Kiko touches the fork from position 0.",
+            "visibleConsequence": "The ceiling teleports beyond position 0, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          },
+          {
+            "strategy": "Kiko touches the fork from position 1.",
+            "visibleConsequence": "The ceiling teleports beyond position 1, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          },
+          {
+            "strategy": "Kiko touches the fork from position 2.",
+            "visibleConsequence": "The ceiling teleports beyond position 2, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          },
+          {
+            "strategy": "Kiko touches the fork from position 3.",
+            "visibleConsequence": "The ceiling teleports beyond position 3, leaving the food behind.",
+            "newInformation": "The unrelated ceiling magic prevents carrying food."
+          }
+        ],
+        "finalPayoff": "The ceiling teleports beyond position 3, leaving the food behind.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2NotAdmitted": true
+      }
+    },
+    {
+      "case": "I",
+      "purpose": "wording change without progression",
+      "mockV1": {
+        "ideaId": "mock-I",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko repeats hammer attempt number 0.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          },
+          {
+            "strategy": "Kiko repeats hammer attempt number 1.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          },
+          {
+            "strategy": "Kiko repeats hammer attempt number 2.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          },
+          {
+            "strategy": "Kiko repeats hammer attempt number 3.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall; the picture frame drops to the floor.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "mockV2": {
+        "ideaId": "mock-I",
+        "title": "Same-rule hammer control",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Hang a picture frame",
+        "primaryObject": "Hammer",
+        "normalExpectation": "Hammering a nail drives it straight into wall.",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+        "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+        "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+        "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+        "beats": [
+          {
+            "strategy": "Kiko repeats hammer attempt number 0.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          },
+          {
+            "strategy": "Kiko repeats hammer attempt number 1.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          },
+          {
+            "strategy": "Kiko repeats hammer attempt number 2.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          },
+          {
+            "strategy": "Kiko repeats hammer attempt number 3.",
+            "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+            "newInformation": "No new information; same as before."
+          }
+        ],
+        "finalPayoff": "The nail bends away from the wall; the picture frame drops to the floor.",
+        "suggestedPayoffFamily": "logical extreme",
+        "loopPotential": "No reset is assumed.",
+        "environment": "Living room wall",
+        "dialogueNeed": "NONE",
+        "durationSeconds": 15,
+        "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement."
+      },
+      "expect": {
+        "v2NotStrongGrammar": true
+      }
+    },
+    {
+      "case": "J",
+      "purpose": "consistent property transfer",
+      "mockV1": {
+        "ideaId": "mock-J",
+        "title": "A Dry Table Wearing Its Spill",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "dry the table without soaking clothes",
+        "primaryObject": "towel",
+        "normalExpectation": "A towel absorbs water and leaves the wiped surface drier.",
+        "impossibleRule": "Every wipe removes water from the table but transfers the exact wet patch onto the character clothes.",
+        "visibleTrigger": "Normal use activates the stated rule.",
+        "whyThisObject": "Only a water-removing cloth connects wiping to transferred wet patches.",
+        "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+        "frameZeroDescription": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill.",
+        "beats": [
+          {
+            "strategy": "wipes the small spill with the towel",
+            "visibleConsequence": "A wet patch disappears from the table and appears on Kiko sleeve.",
+            "newInformation": "The water has moved to clothing instead of remaining in the towel."
+          },
+          {
+            "strategy": "folds the towel to use a dry corner",
+            "visibleConsequence": "The next wet stripe disappears from the table and appears across the shirt.",
+            "newInformation": "A dry corner still transfers the same water pattern."
+          },
+          {
+            "strategy": "guides the towel along the far table edge",
+            "visibleConsequence": "The final wet rectangle disappears and leaves matching patches across the sleeves and shirt.",
+            "newInformation": "Every removed shape is preserved on clothing."
+          },
+          {
+            "strategy": "turns the towel to wipe the last circle",
+            "visibleConsequence": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+            "newInformation": "The everyday goal is achieved at the cost of wearing the water."
+          }
+        ],
+        "finalPayoff": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+        "suggestedPayoffFamily": "PROPERTY_TRANSFER",
+        "loopPotential": "No automatic reset required.",
+        "environment": "Simple indoor working space with fixed table and wall.",
+        "dialogueNeed": "NONE",
+        "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+        "durationSeconds": 15
+      },
+      "mockV2": {
+        "ideaId": "mock-J",
+        "title": "A Dry Table Wearing Its Spill",
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "dry the table without soaking clothes",
+        "primaryObject": "towel",
+        "normalExpectation": "A towel absorbs water and leaves the wiped surface drier.",
+        "impossibleRule": "Every wipe removes water from the table but transfers the exact wet patch onto the character clothes.",
+        "visibleTrigger": "Normal use activates the stated rule.",
+        "whyThisObject": "Only a water-removing cloth connects wiping to transferred wet patches.",
+        "goalRuleRelationship": "The object function produces a visible obstacle to the everyday goal.",
+        "frameZeroDescription": "Kiko tries to dry the table with a towel. A wipe removes a wet mark from the table; that wet mark appears on her sleeve while the towel is held against the spill.",
+        "beats": [
+          {
+            "strategy": "wipes the small spill with the towel",
+            "visibleConsequence": "A wet patch disappears from the table and appears on Kiko sleeve.",
+            "newInformation": "The water has moved to clothing instead of remaining in the towel."
+          },
+          {
+            "strategy": "folds the towel to use a dry corner",
+            "visibleConsequence": "The next wet stripe disappears from the table and appears across the shirt.",
+            "newInformation": "A dry corner still transfers the same water pattern."
+          },
+          {
+            "strategy": "guides the towel along the far table edge",
+            "visibleConsequence": "The final wet rectangle disappears and leaves matching patches across the sleeves and shirt.",
+            "newInformation": "Every removed shape is preserved on clothing."
+          },
+          {
+            "strategy": "turns the towel to wipe the last circle",
+            "visibleConsequence": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+            "newInformation": "The everyday goal is achieved at the cost of wearing the water."
+          }
+        ],
+        "finalPayoff": "The table is finally dry; Kiko clothes display the exact complete pattern of the former spill.",
+        "suggestedPayoffFamily": "PROPERTY_TRANSFER",
+        "loopPotential": "No automatic reset required.",
+        "environment": "Simple indoor working space with fixed table and wall.",
+        "dialogueNeed": "NONE",
+        "providerRationale": "A fixture proposal for deterministic review, not a winner or score.",
+        "durationSeconds": 15
+      },
+      "expect": {
+        "v2RuleContradiction": false
+      }
+    }
+  ]
+}

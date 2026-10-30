@@ -1,0 +1,774 @@
+Continue from the current repository state.
+
+The low-reasoning single-candidate probe is ACCEPTED.
+
+Confirmed execution result:
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Prompt:
+Semantic Prompt V2 Compact
+
+Schema:
+corrected full native Semantic V2 schema
+
+Candidate count:
+1
+
+Reasoning:
+LOW
+
+Result:
+LOW_REASONING_FULL_CONTRACT_EXECUTION_PASS
+
+Execution:
+
+- same prompt as previous compact timeout
+- same schema
+- same max output tokens: 8192
+- same timeout envelope
+- only meaningful request difference:
+  reasoning_effort HIGH → LOW
+- completed in ~61.44 seconds
+- HTTP 200
+- ~3,345 response bytes
+- schema validation PASS
+- normalization PASS
+
+Interpretation:
+
+REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR
+
+The returned concept was NOT production ready:
+
+- CREATIVE_CONTRACT_FAILURE
+- opening score = 35
+- premise admission failed
+- Structured SFE = 84
+- status = REVISION_REQUIRED
+
+This single candidate is insufficient to determine whether Prompt V2 Compact has a systematic creative weakness.
+
+======================================================================
+PRIMARY GOAL
+======================================================================
+
+Run a SMALL REAL CREATIVE MICRO-BATCH using the now-proven execution profile.
+
+We need enough independent samples to determine whether:
+
+- weak frame-zero opening is systematic
+- premise admission failures are systematic
+- rule consistency improved under Prompt V2 Compact
+- strong production-quality candidates can actually emerge
+
+Do NOT request 20 or 40 concepts yet.
+
+======================================================================
+1. MICRO-BATCH DESIGN
+======================================================================
+
+Perform:
+
+3 independent live requests
+
+Each request generates:
+
+exactly 1 candidate.
+
+Total target:
+
+3 new candidates.
+
+Do NOT request all 3 in one provider response.
+
+Reason:
+
+single-candidate low-reasoning execution is already proven.
+
+We do not want to reintroduce batch-size latency as a confounding variable.
+
+======================================================================
+2. EXACT EXECUTION PROFILE
+======================================================================
+
+For all three requests use exactly:
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Reasoning:
+LOW
+
+Prompt:
+Semantic Prompt V2 Compact
+
+Schema:
+corrected full native Semantic V2 schema
+
+Candidate count:
+1
+
+Max output tokens:
+8192
+
+Timeouts:
+same accepted values as successful low-reasoning probe
+
+Structured-output mode:
+same accepted mode
+
+Streaming:
+same accepted mode
+
+Do not alter these between requests.
+
+======================================================================
+3. MAXIMUM LIVE REQUESTS
+======================================================================
+
+Maximum live requests in this task:
+
+3
+
+No retry.
+
+No replacement call.
+
+No fourth request.
+
+If one request fails:
+
+continue only with the remaining already-planned requests.
+
+Do not replace the failed request.
+
+======================================================================
+4. REQUEST IDENTITIES
+======================================================================
+
+Create explicit independent request identities:
+
+micro-a
+micro-b
+micro-c
+
+or repository-equivalent stable IDs.
+
+Candidate IDs must remain globally unique.
+
+======================================================================
+5. NO CROSS-REQUEST CREATIVE FEEDBACK
+======================================================================
+
+Do NOT tell request B what request A generated.
+
+Do NOT tell C what A/B generated.
+
+Do NOT modify prompt wording between calls.
+
+We want three independent samples from the same generation policy.
+
+======================================================================
+6. STORE EACH RESPONSE SEPARATELY
+======================================================================
+
+For A/B/C preserve:
+
+exact request metadata
+
+exact response
+
+usage metadata
+
+latency
+
+response bytes
+
+provider request ID if available
+
+schema result
+
+normalization result
+
+No response should overwrite another.
+
+======================================================================
+7. EXECUTION METRICS
+======================================================================
+
+For each request report:
+
+duration
+
+headers timing if available
+
+first usable content timing if available
+
+response bytes
+
+input tokens
+
+output tokens
+
+reasoning tokens if exposed
+
+total tokens
+
+finish reason
+
+cost if provider reports it
+
+Do not estimate unavailable cost.
+
+======================================================================
+8. CREATIVE CONTRACT VALIDATION
+======================================================================
+
+For every successful candidate validate BEFORE downstream scoring:
+
+ONE PROTAGONIST
+
+ONE PRIMARY OBJECT
+
+EVERYDAY GOAL
+
+FRAME-ZERO GOAL
+
+FRAME-ZERO PROBLEM
+
+FRAME-ZERO IMPOSSIBLE RELATIONSHIP
+
+ONE IMMUTABLE RULE
+
+STABLE TRIGGER
+
+4–5 BEATS
+
+EVERY BEAT:
+- strategy/action
+- visible consequence
+- new information/state change
+
+RULE CONSISTENCY
+
+PAYOFF PRESENT
+
+PAYOFF RULE-LINKED
+
+NO NEW RULE IN PAYOFF
+
+SILENT-VIEW LEGIBILITY
+
+DURATION <= 20 seconds
+
+Do not repair failures.
+
+======================================================================
+9. OPENING IS THE MOST IMPORTANT CREATIVE METRIC
+======================================================================
+
+The previous real compact candidate scored:
+
+opening = 35
+
+Therefore for all three new candidates provide a dedicated opening audit.
+
+Show:
+
+FRAME ZERO DESCRIPTION
+
+CHARACTER VISIBLE?
+GOAL VISIBLE?
+OBJECT VISIBLE?
+PROBLEM VISIBLE?
+IMPOSSIBLE RELATIONSHIP VISIBLE?
+CAUSE/PROBLEM RELATIONSHIP UNDERSTANDABLE?
+REQUIRES MOTION?
+REQUIRES PRIOR CONTEXT?
+OPENING SCORE
+
+This is critical.
+
+======================================================================
+10. RULE CONSISTENCY AUDIT
+======================================================================
+
+For every beat compare against the exact impossible rule.
+
+Return:
+
+RULE_CONSISTENT
+
+RULE_INCONSISTENT
+
+AMBIGUOUS
+
+For inconsistent candidates show:
+
+offending beat
+exact contradictory behavior
+
+Prompt V2 was specifically designed to reduce rule mutation.
+
+======================================================================
+11. PAYOFF AUDIT
+======================================================================
+
+For every candidate report:
+
+payoff present?
+
+payoff visual?
+
+payoff state-changing?
+
+payoff follows same rule?
+
+payoff introduces new behavior?
+
+payoff is merely repeated previous beat?
+
+No provider self-assessment should be trusted.
+
+======================================================================
+12. FULL PIPELINE
+======================================================================
+
+Every successful normalized candidate must go through the current accepted pipeline unchanged:
+
+canonical evidence
+
+Premise Naturalness
+
+Evidence-Supported Premise Admission V2
+
+Beat Grammar
+
+Structured SFE
+
+Creative Shape
+
+historical creative territory
+
+ranking
+
+production preselection
+
+No new scoring logic.
+
+======================================================================
+13. RETURN COMPLETE STORIES
+======================================================================
+
+Return each candidate in full:
+
+ID
+TITLE
+PROTAGONIST
+EVERYDAY GOAL
+PRIMARY OBJECT
+NORMAL EXPECTATION
+IMPOSSIBLE RULE
+VISIBLE TRIGGER
+WHY THIS OBJECT
+GOAL-RULE RELATIONSHIP
+FRAME ZERO
+
+BEAT 1
+- strategy
+- visible consequence
+- new information
+
+BEAT 2
+
+BEAT 3
+
+BEAT 4
+
+BEAT 5 if present
+
+FINAL PAYOFF
+LOOP POTENTIAL
+ENVIRONMENT
+DIALOGUE NEED
+
+======================================================================
+14. PIPELINE RESULT PER CANDIDATE
+======================================================================
+
+Report:
+
+schema validity
+
+normalization
+
+creative-contract validity
+
+opening score
+
+Premise Naturalness
+
+admission status
+
+admission provenance/reason
+
+Beat Grammar
+
+Structured SFE score/status
+
+Creative Shape
+
+historical territory
+
+ranking eligibility
+
+ranking score
+
+production admissibility
+
+exact production blockers
+
+======================================================================
+15. COMPARE WITH FIRST LOW-REASONING CANDIDATE
+======================================================================
+
+Include the already-stored successful low-reasoning candidate as:
+
+REFERENCE-0
+
+Do NOT regenerate it.
+
+Compare REFERENCE-0 plus the three new candidates:
+
+total sample size:
+4
+
+For each compare:
+
+opening score
+
+rule consistency
+
+premise admission
+
+Beat Grammar
+
+SFE
+
+ranking eligibility
+
+production admission
+
+This provides our first small real V2-Compact quality sample.
+
+======================================================================
+16. SYSTEMATIC OPENING FAILURE TEST
+======================================================================
+
+After four total real compact candidates, report:
+
+number with opening >= accepted production floor
+
+number with opening below floor
+
+mean opening score
+
+median opening score
+
+Do NOT claim statistical proof.
+
+But classify observationally:
+
+NO_CLEAR_PATTERN
+
+OPENING_WEAKNESS_SIGNAL
+
+or
+
+OPENING_PERFORMANCE_ENCOURAGING
+
+based on actual results and existing thresholds.
+
+Do not invent a new threshold.
+
+======================================================================
+17. RULE CONSISTENCY SIGNAL
+======================================================================
+
+Across the four real compact candidates report:
+
+consistent
+
+inconsistent
+
+ambiguous
+
+Compare qualitatively with the known V1 semantic failure pattern where rule mutation was common.
+
+Do not claim statistical superiority.
+
+======================================================================
+18. PREMISE ADMISSION SIGNAL
+======================================================================
+
+Report across the four:
+
+admitted
+
+not admitted — genuine quality
+
+not admitted — taxonomy/coverage
+
+not admitted — evidence uncertainty
+
+The accepted admission system must be used unchanged.
+
+======================================================================
+19. SFE DISTRIBUTION
+======================================================================
+
+Across the four real compact candidates report:
+
+scores
+
+mean
+
+median
+
+PASS
+
+REVISION_REQUIRED
+
+REJECT
+
+Again:
+
+small sample only.
+
+======================================================================
+20. PRODUCTION SIGNAL
+======================================================================
+
+Report:
+
+ranking eligible count
+
+production-admissible count
+
+production slate members if any
+
+Do NOT force a slate.
+
+If zero:
+
+return zero.
+
+======================================================================
+21. HUMAN REVIEW SET
+======================================================================
+
+Create:
+
+MICRO_BATCH_HUMAN_REVIEW_SET
+
+Include any candidate that is:
+
+- production admissible
+- ranking eligible
+- SFE PASS
+- SFE >= 75 with one meaningful blocker
+- admitted premise with one remaining production blocker
+
+Do not generate KEEP/KILL labels.
+
+======================================================================
+22. REVIEW CARDS
+======================================================================
+
+For every MICRO_BATCH_HUMAN_REVIEW_SET candidate provide:
+
+ID / TITLE
+
+ONE-SENTENCE PREMISE
+
+FRAME-ZERO HOOK
+
+CORE RULE
+
+PROGRESSION
+
+PAYOFF
+
+OPENING SCORE
+
+SFE
+
+MAIN SYSTEM CONCERN
+
+CURRENT STATUS
+
+======================================================================
+23. DO NOT MODIFY PROMPT FROM RESULTS
+======================================================================
+
+Even if all three openings are weak:
+
+do NOT rewrite Prompt V2 Compact in this task.
+
+Even if all three are excellent:
+
+do NOT scale generation in this task.
+
+Collect evidence first.
+
+======================================================================
+24. NO VALIDATOR CHANGES
+======================================================================
+
+Do NOT modify:
+
+Premise Naturalness
+
+Admission
+
+Beat Grammar
+
+SFE
+
+Creative Shape
+
+ranking
+
+production selection
+
+thresholds
+
+taxonomies
+
+======================================================================
+25. TESTS
+======================================================================
+
+Before live execution add mocked tests for:
+
+three planned requests
+
+request cap = 3
+
+same execution profile for A/B/C
+
+unique provenance
+
+partial request failure
+
+no replacement request
+
+combined analysis
+
+reference-0 reuse without regeneration
+
+human-review-set construction
+
+no retry
+
+no fallback
+
+Tests make zero external calls.
+
+======================================================================
+26. REGRESSION TARGET
+======================================================================
+
+Full regression:
+
+same accepted 36 baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+27. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. exact execution configuration
+2. proof reasoning LOW
+3. exact live request count
+4. A execution result
+5. B execution result
+6. C execution result
+7. token/latency/cost metadata
+8. complete three new candidate stories
+9. REFERENCE-0 summary
+10. four-candidate creative-contract comparison
+11. four opening audits
+12. rule-consistency distribution
+13. payoff-rule linkage distribution
+14. premise-admission distribution
+15. Beat Grammar results
+16. SFE distribution
+17. ranking eligibility
+18. production-admissible candidates
+19. MICRO_BATCH_HUMAN_REVIEW_SET
+20. review cards
+21. opening weakness signal
+22. exact tests
+23. proof no retry
+24. proof no fourth request
+25. proof no DeepSeek
+26. proof no render
+27. proof prompt unchanged
+28. proof schema unchanged
+29. proof validators unchanged
+30. proof historical experiments unchanged
+31. proof only accepted baseline failures remain
+
+======================================================================
+28. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+a production candidate appears.
+
+Success is:
+
+we obtain a small independent real sample that tells us whether Prompt V2 Compact's remaining creative weakness is systematic or merely sample variation.
+
+======================================================================
+29. STOP
+======================================================================
+
+After the three planned one-candidate requests and offline comparison:
+
+STOP.
+
+Do NOT:
+
+make a fourth request
+
+generate 20/40 candidates
+
+change Prompt V2 Compact
+
+change schema
+
+change model
+
+change reasoning effort
+
+change validators
+
+generate production prompts
+
+render media.

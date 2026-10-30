@@ -1,0 +1,35 @@
+{
+  "executionClassification": "LOW_REASONING_FULL_CONTRACT_EXECUTION_PASS",
+  "interpretation": "REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR",
+  "creativeContractClassification": "CREATIVE_CONTRACT_FAILURE",
+  "requestCount": 1,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "SDKRetries": 0,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "exactActualSDKBodyOneVariableOnly": true,
+  "requestDiff": [
+    {
+      "path": "/arguments/reasoning_effort",
+      "previous": "high",
+      "new": "low"
+    }
+  ],
+  "protectedExistingFilesUnchanged": 2384,
+  "changedProtectedFiles": [],
+  "sourceHashes": {
+    "intelligence/ml-service/app/workflow/semantic_low_reasoning_probe_v1.py": "cbf22e5550899f4db7a47019df840d8d4a7c5a5ac58301ec5ffd2e5a6aa054cc",
+    "intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py": "818644fbba2a2503939d19f435579daf07f0fa5cce2895570e28b1d415b9daa6",
+    "intelligence/scripts/probe-semantic-low-reasoning-v1.py": "5b4a6623e64c52d1cda4b562e4c31203f652f3c51e92c13070af5d82de56ddbb"
+  },
+  "newFailures": [],
+  "fullPassed": 3193,
+  "acceptedBaselineFailures": 36,
+  "skipped": 2,
+  "testsPassedBeforeLive": true,
+  "authorizationSha256": "dedb3e7827c2707f6a8e98b63350bbc537fa541b2b301513440cdd4f6481ee9c",
+  "preLiveVerificationSha256": "f57e6caa22a25c31cdab405926c491eaf5a85fedbb48933824d0f84b1085ac97"
+}

@@ -1,0 +1,15 @@
+{
+  "providerApiSupportsStreaming": true,
+  "providerApiSource": "https://api-docs.deepseek.com/api/create-chat-completion/",
+  "providerApiEvidence": "stream=true returns partial message deltas as SSE; official API reference accessed2026-10-26.",
+  "currentAbstractionStatus": "STREAMING_NOT_SUPPORTED",
+  "source": "LLMProvider.complete returns str; CreativeCapabilityProvider.complete calls chat.completions.create without stream=true, then reads choice.message.content.",
+  "SDKCanRepresentStreaming": true,
+  "currentAdapterExposesPartialContent": false,
+  "probeStreamingMode": "NON_STREAMING",
+  "probeObservation": "HTTPX response/body-byte instrumentation only; no API streaming enabled.",
+  "previousZeroByteConclusion": "Only zero exposed/stored model-content bytes is established. Whether previous servers sent transport bytes/partial data is UNKNOWN; no first-byte/body telemetry was recorded.",
+  "previousProviderTrulySentNothing": "UNKNOWN",
+  "firstByteDefinition": "First nonempty raw HTTP body chunk, possibly whitespace or JSON framing; not first model token.",
+  "headersSeparate": true
+}

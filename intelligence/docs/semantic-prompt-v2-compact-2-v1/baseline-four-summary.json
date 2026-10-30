@@ -1,0 +1,62 @@
+{
+  "source": "Four existing successful compact-family candidate records; read-only reuse, no regeneration or rescoring.",
+  "candidates": [
+    {
+      "id": "REFERENCE-0",
+      "candidateId": "semantic-compact-micro-batch-v1/REFERENCE-0/sem1-e7b2564efe7fec52",
+      "title": "A Very Square Spill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 84,
+      "SFEStatus": "REVISION_REQUIRED",
+      "rankingEligibility": "INELIGIBLE",
+      "productionAdmissible": false
+    },
+    {
+      "id": "micro-b",
+      "candidateId": "semantic-compact-micro-batch-v1/micro-b/sem1-e681e589547f87c4",
+      "title": "Sweeping Uphill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 85,
+      "SFEStatus": "REVISION_REQUIRED",
+      "rankingEligibility": "INELIGIBLE",
+      "productionAdmissible": false
+    },
+    {
+      "id": "micro-c",
+      "candidateId": "semantic-compact-micro-batch-v1/micro-c/sem1-13c354f40be0f053",
+      "title": "The Wrinkle Has to Go Somewhere",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 84,
+      "SFEStatus": "REVISION_REQUIRED",
+      "rankingEligibility": "INELIGIBLE",
+      "productionAdmissible": false
+    },
+    {
+      "id": "compact.1",
+      "candidateId": "sem1-51a869897b602847",
+      "title": "Cut Out, Fold In",
+      "openingScore": 35,
+      "ruleConsistency": "RULE_CONSISTENT",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 99,
+      "SFEStatus": "PASS",
+      "rankingEligibility": "ELIGIBLE",
+      "productionAdmissible": false,
+      "manualPayoffOrientation": "AMBIGUOUS"
+    }
+  ]
+}

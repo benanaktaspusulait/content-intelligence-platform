@@ -1,0 +1,306 @@
+..F..FF.F.F.                                                             [100%]
+=================================== FAILURES ===================================
+_ test_both_planned_requests_and_result_matrix[failures0-PROMPT_COMPLEXITY_FAILURE] _
+.venv/lib/python3.14/site-packages/referencing/_core.py:276: in pointer
+    contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+               ^^^^^^^^^^^^^^^^^
+E   KeyError: '$defs'
+
+The above exception was the direct cause of the following exception:
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:462: in _validate_reference
+    resolved = self._resolver.lookup(ref)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:690: in lookup
+    return retrieved.value.pointer(pointer=fragment, resolver=resolver)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:279: in pointer
+    raise error from lookup_error
+E   referencing.exceptions.PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+
+The above exception was the direct cause of the following exception:
+tests/test_semantic_contract_decomposition_v1.py:54: in test_both_planned_requests_and_result_matrix
+    _,r,calls,_=run(tmp_path,monkeypatch,failures)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_semantic_contract_decomposition_v1.py:27: in run
+    path=tmp_path/'experiment';result=d.execute(path,PROFILE,C,authorization={'file':'test'},tests={'noNewFailures':True},runner=runner)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:165: in execute
+    raw=(directory/'response.txt').read_text();validation=check(raw,spec['format']['json_schema']['schema']) if r['status']=='COMPLETED' else dict(passed=False,reason=r.get('errorClass','SDK_FAILURE'))
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:128: in check
+    errors=list(Draft202012Validator(schema).iter_errors(value))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:383: in iter_errors
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:275: in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:464: in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+E   jsonschema.exceptions._WrappedReferencingError: PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+----------------------------- Captured stdout call -----------------------------
+{"level": "D", "passed": false, "durationSeconds": 0.0007530420007242355}
+_ test_both_planned_requests_and_result_matrix[failures3-PROMPT_SCHEMA_INTERACTION_FAILURE] _
+.venv/lib/python3.14/site-packages/referencing/_core.py:276: in pointer
+    contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+               ^^^^^^^^^^^^^^^^^
+E   KeyError: '$defs'
+
+The above exception was the direct cause of the following exception:
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:462: in _validate_reference
+    resolved = self._resolver.lookup(ref)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:690: in lookup
+    return retrieved.value.pointer(pointer=fragment, resolver=resolver)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:279: in pointer
+    raise error from lookup_error
+E   referencing.exceptions.PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+
+The above exception was the direct cause of the following exception:
+tests/test_semantic_contract_decomposition_v1.py:54: in test_both_planned_requests_and_result_matrix
+    _,r,calls,_=run(tmp_path,monkeypatch,failures)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_semantic_contract_decomposition_v1.py:27: in run
+    path=tmp_path/'experiment';result=d.execute(path,PROFILE,C,authorization={'file':'test'},tests={'noNewFailures':True},runner=runner)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:165: in execute
+    raw=(directory/'response.txt').read_text();validation=check(raw,spec['format']['json_schema']['schema']) if r['status']=='COMPLETED' else dict(passed=False,reason=r.get('errorClass','SDK_FAILURE'))
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:128: in check
+    errors=list(Draft202012Validator(schema).iter_errors(value))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:383: in iter_errors
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:275: in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:464: in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+E   jsonschema.exceptions._WrappedReferencingError: PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+----------------------------- Captured stdout call -----------------------------
+{"level": "D", "passed": true, "durationSeconds": 0.0006762920020264573}
+_____________ test_hard_cap_no_reexecution_and_sanitized_requests ______________
+.venv/lib/python3.14/site-packages/referencing/_core.py:276: in pointer
+    contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+               ^^^^^^^^^^^^^^^^^
+E   KeyError: '$defs'
+
+The above exception was the direct cause of the following exception:
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:462: in _validate_reference
+    resolved = self._resolver.lookup(ref)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:690: in lookup
+    return retrieved.value.pointer(pointer=fragment, resolver=resolver)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:279: in pointer
+    raise error from lookup_error
+E   referencing.exceptions.PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+
+The above exception was the direct cause of the following exception:
+tests/test_semantic_contract_decomposition_v1.py:61: in test_hard_cap_no_reexecution_and_sanitized_requests
+    path,r,calls,runner=run(tmp_path,monkeypatch)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_semantic_contract_decomposition_v1.py:27: in run
+    path=tmp_path/'experiment';result=d.execute(path,PROFILE,C,authorization={'file':'test'},tests={'noNewFailures':True},runner=runner)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:165: in execute
+    raw=(directory/'response.txt').read_text();validation=check(raw,spec['format']['json_schema']['schema']) if r['status']=='COMPLETED' else dict(passed=False,reason=r.get('errorClass','SDK_FAILURE'))
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:128: in check
+    errors=list(Draft202012Validator(schema).iter_errors(value))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:383: in iter_errors
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:275: in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:464: in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+E   jsonschema.exceptions._WrappedReferencingError: PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+----------------------------- Captured stdout call -----------------------------
+{"level": "D", "passed": true, "durationSeconds": 0.0007112919993232936}
+____________ test_no_creative_pipeline_or_pydantic_content_judgment ____________
+.venv/lib/python3.14/site-packages/referencing/_core.py:276: in pointer
+    contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+               ^^^^^^^^^^^^^^^^^
+E   KeyError: '$defs'
+
+The above exception was the direct cause of the following exception:
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:462: in _validate_reference
+    resolved = self._resolver.lookup(ref)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:690: in lookup
+    return retrieved.value.pointer(pointer=fragment, resolver=resolver)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:279: in pointer
+    raise error from lookup_error
+E   referencing.exceptions.PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+
+The above exception was the direct cause of the following exception:
+tests/test_semantic_contract_decomposition_v1.py:84: in test_no_creative_pipeline_or_pydantic_content_judgment
+    assert d.check(json.dumps({'ideas':[idea]}),schema)['passed']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:128: in check
+    errors=list(Draft202012Validator(schema).iter_errors(value))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:383: in iter_errors
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:275: in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:464: in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+E   jsonschema.exceptions._WrappedReferencingError: PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+___________________ test_historical_prompt_schema_preserved ____________________
+.venv/lib/python3.14/site-packages/referencing/_core.py:276: in pointer
+    contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+               ^^^^^^^^^^^^^^^^^
+E   KeyError: '$defs'
+
+The above exception was the direct cause of the following exception:
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:462: in _validate_reference
+    resolved = self._resolver.lookup(ref)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:690: in lookup
+    return retrieved.value.pointer(pointer=fragment, resolver=resolver)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/referencing/_core.py:279: in pointer
+    raise error from lookup_error
+E   referencing.exceptions.PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+
+The above exception was the direct cause of the following exception:
+tests/test_semantic_contract_decomposition_v1.py:107: in test_historical_prompt_schema_preserved
+    before=hashlib.sha256(C_PATH.read_bytes()).hexdigest();run(tmp_path,monkeypatch,('D',))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_semantic_contract_decomposition_v1.py:27: in run
+    path=tmp_path/'experiment';result=d.execute(path,PROFILE,C,authorization={'file':'test'},tests={'noNewFailures':True},runner=runner)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:165: in execute
+    raw=(directory/'response.txt').read_text();validation=check(raw,spec['format']['json_schema']['schema']) if r['status']=='COMPLETED' else dict(passed=False,reason=r.get('errorClass','SDK_FAILURE'))
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/workflow/semantic_contract_decomposition_v1.py:128: in check
+    errors=list(Draft202012Validator(schema).iter_errors(value))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:383: in iter_errors
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:296: in properties
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:78: in items
+    yield from validator.descend(
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:431: in descend
+    for error in errors:
+                 ^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/_keywords.py:275: in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/jsonschema/validators.py:464: in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+E   jsonschema.exceptions._WrappedReferencingError: PointerToNowhere: '/$defs/SemanticBeat' does not exist within {'type': 'object', 'additionalProperties': False, 'properties': {'ideas': {'type': 'array', 'minItems': 1, 'maxItems': 1, 'items': {'$defs': {'SemanticBeat': {'additionalProperties': False, 'properties': {'strategy': {'maxLength': 300, 'minLength': 3, 'title': 'Strategy', 'type': 'string'}, 'visibleConsequence': {'maxLength': 1200, 'minLength': 8, 'title': 'Visibleconsequence', 'type': 'string'}, 'newInformation': {'maxLength': 600, 'minLength': 5, 'title': 'Newinformation', 'type': 'string'}}, 'required': ['strategy', 'visibleConsequence', 'newInformation'], 'title': 'SemanticBeat', 'type': 'object'}}, 'additionalProperties': False, 'properties': {'ideaId': {'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$', 'title': 'Ideaid', 'type': 'string'}, 'title': {'maxLength': 160, 'minLength': 3, 'title': 'Title', 'type': 'string'}, 'protagonistSuggestion': {'maxLength': 100, 'minLength': 1, 'title': 'Protagonistsuggestion', 'type': 'string'}, 'everydayGoal': {'maxLength': 300, 'minLength': 3, 'title': 'Everydaygoal', 'type': 'string'}, 'primaryObject': {'maxLength': 100, 'minLength': 2, 'title': 'Primaryobject', 'type': 'string'}, 'normalExpectation': {'maxLength': 600, 'minLength': 8, 'title': 'Normalexpectation', 'type': 'string'}, 'impossibleRule': {'maxLength': 1200, 'minLength': 12, 'title': 'Impossiblerule', 'type': 'string'}, 'visibleTrigger': {'maxLength': 300, 'minLength': 3, 'title': 'Visibletrigger', 'type': 'string'}, 'whyThisObject': {'maxLength': 600, 'minLength': 8, 'title': 'Whythisobject', 'type': 'string'}, 'goalRuleRelationship': {'maxLength': 600, 'minLength': 8, 'title': 'Goalrulerelationship', 'type': 'string'}, 'frameZeroDescription': {'maxLength': 1800, 'minLength': 15, 'title': 'Framezerodescription', 'type': 'string'}, 'beats': {'items': {'$ref': '#/$defs/SemanticBeat'}, 'maxItems': 5, 'minItems': 4, 'title': 'Beats', 'type': 'array'}, 'finalPayoff': {'maxLength': 1200, 'minLength': 8, 'title': 'Finalpayoff', 'type': 'string'}, 'suggestedPayoffFamily': {'maxLength': 100, 'minLength': 2, 'title': 'Suggestedpayofffamily', 'type': 'string'}, 'loopPotential': {'maxLength': 400, 'minLength': 2, 'title': 'Looppotential', 'type': 'string'}, 'environment': {'maxLength': 300, 'minLength': 3, 'title': 'Environment', 'type': 'string'}, 'dialogueNeed': {'default': 'NONE', 'enum': ['NONE', 'OPTIONAL', 'REQUIRED'], 'title': 'Dialogueneed', 'type': 'string'}, 'providerRationale': {'maxLength': 1000, 'minLength': 1, 'title': 'Providerrationale', 'type': 'string'}, 'durationSeconds': {'default': 15, 'maximum': 20, 'minimum': 10, 'title': 'Durationseconds', 'type': 'number'}}, 'required': ['ideaId', 'title', 'protagonistSuggestion', 'everydayGoal', 'primaryObject', 'normalExpectation', 'impossibleRule', 'visibleTrigger', 'whyThisObject', 'goalRuleRelationship', 'frameZeroDescription', 'beats', 'finalPayoff', 'suggestedPayoffFamily', 'loopPotential', 'environment', 'providerRationale'], 'title': 'SemanticIdea', 'type': 'object'}}}, 'required': ['ideas']}
+----------------------------- Captured stdout call -----------------------------
+{"level": "D", "passed": false, "durationSeconds": 0.0005471660006151069}
+=========================== short test summary info ============================
+FAILED tests/test_semantic_contract_decomposition_v1.py::test_both_planned_requests_and_result_matrix[failures0-PROMPT_COMPLEXITY_FAILURE]
+FAILED tests/test_semantic_contract_decomposition_v1.py::test_both_planned_requests_and_result_matrix[failures3-PROMPT_SCHEMA_INTERACTION_FAILURE]
+FAILED tests/test_semantic_contract_decomposition_v1.py::test_hard_cap_no_reexecution_and_sanitized_requests
+FAILED tests/test_semantic_contract_decomposition_v1.py::test_no_creative_pipeline_or_pydantic_content_judgment
+FAILED tests/test_semantic_contract_decomposition_v1.py::test_historical_prompt_schema_preserved
+5 failed, 7 passed in 1.05s

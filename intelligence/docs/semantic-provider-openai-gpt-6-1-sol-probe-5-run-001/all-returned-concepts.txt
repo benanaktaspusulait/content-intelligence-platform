@@ -1,0 +1,3 @@
+NO CONCEPTS AVAILABLE FOR INSPECTION
+
+One OpenAI/gpt-6.1-sol request for5 Prompt V2 concepts failed with APITimeoutError caused by ReadTimeout. Stored usable model content:0 bytes. No ID/title/goal/object/rule/trigger/frame-zero/beats/payoff or live pipeline scores exist to report. Schema and normalization results are unavailable; mock concepts are not substituted. No second request occurred.

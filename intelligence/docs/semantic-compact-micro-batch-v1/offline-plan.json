@@ -1,0 +1,245 @@
+{
+  "experimentId": "semantic-compact-micro-batch-v1",
+  "requestIds": [
+    "micro-a",
+    "micro-b",
+    "micro-c"
+  ],
+  "maximumLiveRequests": 3,
+  "candidateCountPerRequest": 1,
+  "request": {
+    "provider": "openai",
+    "baseUrl": "https://api.openai.com/v1",
+    "arguments": {
+      "model": "gpt-6.1-sol",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Invent raw Pompom Hills silent physical-comedy possibilities; the deterministic system judges them. Do not rank, score, assign confidence, choose winners, predict virality, certify novelty, claim eligibility/production readiness, recommend production or bypass validators. Rationale may briefly explain object dependency and causal escalation only; it and suggested payoff labels have no scoring authority. Output no private reasoning, self-checklist or self-certification.\n\nCORE INVARIANTS\nUse one supplied canonical protagonist, one primary everyday object, one simple credible visible goal and one location. Start inside visible trouble; stage the whole action in about 15 seconds. Target STRANGE BUT INTUITIVE: immediately understandable problem, unexpected logic, not randomness.\nCORE RULE INVARIANT: state one dominant impossible physical/comedic rule as a precise, observable, repeatable trigger\u2192response sentence. Once established it never changes: every beat and payoff obey it. No unrelated second rule, new power, changes to the declared trigger/direction/target/material/timing/agency mapping, special exception or actor loophole; do not bundle independent powers into a compound sentence. New information reveals implications, not a rewritten relationship. Spread, transfer and magnitude must already follow that relationship.\nWHY THIS EXACT OBJECT? State its ordinary function and exploit its affordance, expected motion, material/property, normal result or physical task relationship against the goal. The normal useful action must DIRECTLY obstruct the task. Sharing an affected noun is insufficient: show the actual operation/dependency. Reject random object+magic or contrived goals connecting unrelated effects.\n\nOPENING\nOne paused, simultaneous frame must show character+visible task+object+already-present impossible problem and their relationship through pose, physical state and space. Intention alone, an ordinary object in hand, a title or a later beat cannot supply missing evidence. No dialogue, sound, text/captions, prior context, explanatory inset, before/after sequence or waiting for motion. Motion words or labels such as obvious/impossible are not still-frame evidence. A press, opening, delay, traversal or normal first action must not postpone the anomaly; spend no first 2\u20133 seconds on ordinary setup.\n\nBEATS\nExactly 4 or 5 major causal beats including payoff: strategy/action\u2192visible consequence\u2192new information or state change. Keep sentences concrete, concise and stageable. Vary strategy, position, leverage, timing, magnitude, environmental use, accumulation, discovery, control, goal distance or stakes within the CORE RULE INVARIANT. Environment is passive staging, not another power source. Each beat materially changes the problem; reworded retries or unchanged consequences do not count. Avoid the default try harder\u2192two hands\u2192brace\u2192fake success and unrelated events used to enlarge the story. No hidden sub-scenes that exceed readable pacing.\n\nPAYOFF\nMake the final beat the strongest visual, state-changing consequence of the CORE RULE INVARIANT: surprising but inevitable in retrospect, not repetition, explanation or internal realization. Without the original rule this ending should not work. No rescue by a new character, powered object or unexplained external force. finalPayoff equals the last visibleConsequence exactly, with no extra event. Vary role/control/property transfer, absurd or wrong success, solution-created problem, environmental takeover, logical extreme, chain reaction, reveal, character joining object state or object succeeding while character fails. These are inspirations, not taxonomy recipes. Avoid routine temporary success\u2192problem returns. Looping is optional; do not invent reset magic to force it.\n\nDIVERSITY\nAcross the batch vary object family, goal, mechanic, trigger, progression, payoff and final silhouette. Do not make many opposite-behavior variants or mistake wording for novelty. Coherent unfamiliar mechanics outside existing taxonomy are welcome. Supplied historical caution zones are not templates: Upside-Down Chair, Sticky Ball/generic adhesion, reset-to-start footwear/repeated resets, progressive growth/shrink, generic flip/reversal and escaping objects must not dominate; rare distinct uses may occur. Choose tasks freely rather than mechanically copying illustrations.\n\nPRODUCTION\nThe full story must read with sound off. Dialogue normally NONE; only incidental OPTIONAL if necessary, never to explain goal, rule, trigger or payoff. Use broad body actions, clear poses, stable identities/silhouettes and few moving elements. Avoid tiny text, many small objects, fine hand work, fine mechanical transformations, crowds, rapid location changes and invisible forces that cannot be staged. Child-safe comedy only: no injury, weapons, dangerous restraint or sexual content.\n\nOUTPUT CONTRACT\nUse the supplied native response schema unchanged for all fields and exactly the requested raw count; return only its JSON envelope. The schema carries mechanical field/shape bounds; do not replace evidence with claims of compliance. No provider scores or editorial verdicts. The deterministic system may reject any idea.\n\nFINAL SELF-CHECK (PRIVATE)\nBefore returning each candidate check the CORE RULE INVARIANT across every beat/payoff; the paused opening's goal+problem; 4\u20135 causally linked beats with changed state/information; essential rule-derived visual payoff; exact object dependency; no arbitrary new magic. If any fails, discard/redesign internally before output. Do not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service."
+        },
+        {
+          "role": "user",
+          "content": "{\"canonicalCast\": [{\"id\": \"00000000-0000-0000-0000-000000000001\", \"name\": \"Opa\"}, {\"id\": \"00000000-0000-0000-0000-000000000002\", \"name\": \"Kiko\"}, {\"id\": \"00000000-0000-0000-0000-000000000003\", \"name\": \"Mimi\"}, {\"id\": \"00000000-0000-0000-0000-000000000004\", \"name\": \"Arda\"}, {\"id\": \"00000000-0000-0000-0000-000000000005\", \"name\": \"Luca\"}, {\"id\": \"00000000-0000-0000-0000-000000000006\", \"name\": \"Noah\"}], \"historicalCautionZones\": [{\"referenceId\": \"upside-chair-01\", \"signature\": {\"dominantTransformation\": \"INVERT_ORIENTATION\", \"finalRelation\": \"OPENING_STATE_RECREATED\", \"goal\": \"SIT\", \"objectCategory\": \"SEATING\", \"openingRelation\": \"USE_BLOCKED\", \"silhouetteTopology\": \"INVERTED_SEAT_BODY\"}}, {\"referenceId\": \"sticky-ball-01\", \"signature\": {\"dominantTransformation\": \"CONTACT_RETAINS\", \"finalRelation\": \"CHARACTER_ATTACHED_TO_OBJECT\", \"goal\": \"PLAY\", \"objectCategory\": \"BALL\", \"openingRelation\": \"USE_BLOCKED\", \"silhouetteTopology\": \"BODY_ATTACHED_OBJECT\"}}, {\"referenceId\": \"reset-to-start-shoe-territory\", \"signature\": \"Footwear returns protagonist to the starting position; repeated attempts and reset ending.\"}], \"promptVersion\": \"semantic-concept-prompt-v2-compact\", \"requestedRawCount\": 1, \"seed\": 42, \"semanticConceptPromptVersion\": \"v2-compact\", \"suppliedNativeSchema\": {\"sha256\": \"91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3\", \"version\": \"semantic-native-schema-integrity-v1\"}}"
+        }
+      ],
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "semantic_raw_ideas_v1",
+          "strict": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "ideas": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ideaId": {
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+                      "title": "Ideaid",
+                      "type": "string"
+                    },
+                    "title": {
+                      "maxLength": 160,
+                      "minLength": 3,
+                      "title": "Title",
+                      "type": "string"
+                    },
+                    "protagonistSuggestion": {
+                      "maxLength": 100,
+                      "minLength": 1,
+                      "title": "Protagonistsuggestion",
+                      "type": "string"
+                    },
+                    "everydayGoal": {
+                      "maxLength": 300,
+                      "minLength": 3,
+                      "title": "Everydaygoal",
+                      "type": "string"
+                    },
+                    "primaryObject": {
+                      "maxLength": 100,
+                      "minLength": 2,
+                      "title": "Primaryobject",
+                      "type": "string"
+                    },
+                    "normalExpectation": {
+                      "maxLength": 600,
+                      "minLength": 8,
+                      "title": "Normalexpectation",
+                      "type": "string"
+                    },
+                    "impossibleRule": {
+                      "maxLength": 1200,
+                      "minLength": 12,
+                      "title": "Impossiblerule",
+                      "type": "string"
+                    },
+                    "visibleTrigger": {
+                      "maxLength": 300,
+                      "minLength": 3,
+                      "title": "Visibletrigger",
+                      "type": "string"
+                    },
+                    "whyThisObject": {
+                      "maxLength": 600,
+                      "minLength": 8,
+                      "title": "Whythisobject",
+                      "type": "string"
+                    },
+                    "goalRuleRelationship": {
+                      "maxLength": 600,
+                      "minLength": 8,
+                      "title": "Goalrulerelationship",
+                      "type": "string"
+                    },
+                    "frameZeroDescription": {
+                      "maxLength": 1800,
+                      "minLength": 15,
+                      "title": "Framezerodescription",
+                      "type": "string"
+                    },
+                    "beats": {
+                      "items": {
+                        "$ref": "#/$defs/SemanticBeat"
+                      },
+                      "maxItems": 5,
+                      "minItems": 4,
+                      "title": "Beats",
+                      "type": "array"
+                    },
+                    "finalPayoff": {
+                      "maxLength": 1200,
+                      "minLength": 8,
+                      "title": "Finalpayoff",
+                      "type": "string"
+                    },
+                    "suggestedPayoffFamily": {
+                      "maxLength": 100,
+                      "minLength": 2,
+                      "title": "Suggestedpayofffamily",
+                      "type": "string"
+                    },
+                    "loopPotential": {
+                      "maxLength": 400,
+                      "minLength": 2,
+                      "title": "Looppotential",
+                      "type": "string"
+                    },
+                    "environment": {
+                      "maxLength": 300,
+                      "minLength": 3,
+                      "title": "Environment",
+                      "type": "string"
+                    },
+                    "dialogueNeed": {
+                      "default": "NONE",
+                      "enum": [
+                        "NONE",
+                        "OPTIONAL",
+                        "REQUIRED"
+                      ],
+                      "title": "Dialogueneed",
+                      "type": "string"
+                    },
+                    "providerRationale": {
+                      "maxLength": 1000,
+                      "minLength": 1,
+                      "title": "Providerrationale",
+                      "type": "string"
+                    },
+                    "durationSeconds": {
+                      "default": 15,
+                      "maximum": 20,
+                      "minimum": 10,
+                      "title": "Durationseconds",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "ideaId",
+                    "title",
+                    "protagonistSuggestion",
+                    "everydayGoal",
+                    "primaryObject",
+                    "normalExpectation",
+                    "impossibleRule",
+                    "visibleTrigger",
+                    "whyThisObject",
+                    "goalRuleRelationship",
+                    "frameZeroDescription",
+                    "beats",
+                    "finalPayoff",
+                    "suggestedPayoffFamily",
+                    "loopPotential",
+                    "environment",
+                    "providerRationale"
+                  ],
+                  "title": "SemanticIdea",
+                  "type": "object"
+                }
+              }
+            },
+            "required": [
+              "ideas"
+            ],
+            "$defs": {
+              "SemanticBeat": {
+                "additionalProperties": false,
+                "properties": {
+                  "strategy": {
+                    "maxLength": 300,
+                    "minLength": 3,
+                    "title": "Strategy",
+                    "type": "string"
+                  },
+                  "visibleConsequence": {
+                    "maxLength": 1200,
+                    "minLength": 8,
+                    "title": "Visibleconsequence",
+                    "type": "string"
+                  },
+                  "newInformation": {
+                    "maxLength": 600,
+                    "minLength": 5,
+                    "title": "Newinformation",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "strategy",
+                  "visibleConsequence",
+                  "newInformation"
+                ],
+                "title": "SemanticBeat",
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "max_completion_tokens": 8192,
+      "reasoning_effort": "low"
+    },
+    "timeout": {
+      "connectSeconds": 15,
+      "readSeconds": 90,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 180
+    },
+    "maxRetries": 0
+  },
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "crossRequestFeedback": false,
+  "referenceRegenerated": false,
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3"
+}

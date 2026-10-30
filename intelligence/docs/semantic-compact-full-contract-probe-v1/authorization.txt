@@ -1,0 +1,687 @@
+Continue from the current repository state.
+
+Semantic Prompt V2 Compact V1 is ACCEPTED.
+
+Current accepted state:
+
+- Semantic Prompt V1 unchanged
+- Semantic Prompt V2 unchanged
+- new semantic prompt version: v2-compact
+- system prompt text reduced by 42.47%
+- total message text reduced by 51.25%
+- 56 policy mappings verified
+- 12 adversarial mocks verified
+- corrected native structured-output schema is accepted
+- unresolved schema references = 0
+- corrected native schema execution is classified PASS
+- previous 3-beat / 24-second diagnostic response is correctly rejected by local creative-contract validation
+- full regression: 3136 passed
+- same 36 accepted baseline failures
+- same 2 skips
+- no new failures
+- provider calls during compact-prompt implementation = 0
+- renders = 0
+
+The next task is a SINGLE-CANDIDATE LIVE CAPABILITY PROBE.
+
+Do NOT request 5, 20 or 40 concepts yet.
+
+======================================================================
+PRIMARY GOAL
+======================================================================
+
+Execute exactly ONE live semantic request using:
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Prompt:
+Semantic Prompt V2 Compact
+
+Schema:
+corrected full native Semantic V2 schema
+
+Candidate count:
+1
+
+Purpose:
+
+Determine whether the combination:
+
+COMPACT CREATIVE PROMPT
++
+CORRECTED FULL STRUCTURED SCHEMA
+
+can complete successfully within the current execution envelope.
+
+This is primarily an execution capability probe.
+
+It is NOT yet the production V2 generation experiment.
+
+======================================================================
+1. EXACT PROMPT
+======================================================================
+
+Use the accepted exact:
+
+semanticConceptPromptVersion = v2-compact
+
+Do not modify it.
+
+Do not shorten it further.
+
+Do not add extra experimental instructions.
+
+Persist exact prompt hash.
+
+======================================================================
+2. EXACT CORRECTED SCHEMA
+======================================================================
+
+Use the accepted corrected native schema.
+
+Before live execution verify:
+
+unresolved references = 0
+
+beat count contract is enforced as currently accepted
+
+required fields match accepted semantic contract
+
+last-mile SDK request object contains the exact validated schema
+
+Persist schema hash.
+
+======================================================================
+3. SINGLE LIVE REQUEST
+======================================================================
+
+Maximum live requests in this task:
+
+1
+
+No retry.
+
+No fallback.
+
+No DeepSeek.
+
+No second OpenAI call.
+
+No automatic repair request.
+
+======================================================================
+4. ONE CANDIDATE ONLY
+======================================================================
+
+Request exactly:
+
+1 semantic concept
+
+The candidate must use the full accepted response structure.
+
+Do not use a reduced diagnostic schema.
+
+Do not use a reduced creative contract.
+
+This is the first real test of:
+
+v2-compact + corrected-full-schema.
+
+======================================================================
+5. EXECUTION CONFIGURATION
+======================================================================
+
+Record before execution:
+
+provider
+
+model
+
+prompt version
+
+prompt hash
+
+schema hash
+
+candidate count
+
+structured-output mode
+
+streaming mode
+
+reasoning settings if applicable
+
+temperature if applicable
+
+max output tokens
+
+connect timeout
+
+read timeout
+
+SDK timeout
+
+experiment wall timeout
+
+retry configuration
+
+======================================================================
+6. NO GLOBAL TIMEOUT CHANGE
+======================================================================
+
+Use the currently accepted bounded execution configuration.
+
+Do not globally increase provider timeouts.
+
+If a narrowly scoped probe timeout is already part of the accepted experiment framework, use it unchanged.
+
+Record exact values.
+
+======================================================================
+7. LIVE RESPONSE METRICS
+======================================================================
+
+If observable record:
+
+HTTP status
+
+time to headers
+
+time to first usable content
+
+total monotonic elapsed time
+
+response bytes
+
+provider request ID
+
+finish reason
+
+input tokens
+
+output tokens
+
+total tokens
+
+provider-reported cost
+
+Do not estimate unavailable cost.
+
+======================================================================
+8. EXECUTION PASS CRITERIA
+======================================================================
+
+Execution PASS requires:
+
+- non-zero usable response
+- structured response parsed successfully
+- candidate passes native schema validation
+- candidate can be normalized
+
+Creative-quality PASS is NOT required.
+
+A candidate may still fail validators.
+
+======================================================================
+9. CREATIVE CONTRACT VALIDATION
+======================================================================
+
+If a candidate is returned, validate the actual V2 creative contract before running the full pipeline.
+
+Report at minimum:
+
+protagonist count
+
+primary-object count
+
+everyday goal present
+
+frame-zero problem present
+
+immutable rule present
+
+stable trigger
+
+beat count
+
+each beat has strategy
+
+each beat has visible consequence
+
+each beat has new information/state change
+
+payoff present
+
+payoff-rule linkage
+
+duration estimate / declared duration handling
+
+silent-view legibility
+
+rule consistency across all beats
+
+Do not repair the candidate.
+
+======================================================================
+10. BEAT CONTRACT
+======================================================================
+
+Explicitly verify:
+
+beat count = 4 or 5
+
+If provider somehow returns:
+
+3
+or
+6+
+
+record:
+
+CREATIVE_CONTRACT_FAILURE
+
+even if JSON schema parser accepted it.
+
+If schema should mechanically prevent this and does not:
+
+record that separately as a schema-contract defect.
+
+Do not silently normalize beat count.
+
+======================================================================
+11. DURATION CONTRACT
+======================================================================
+
+Apply the accepted duration rule:
+
+target approximately 15 seconds
+
+maximum 20 seconds
+
+If exact duration is not mechanically schema-enforced, use the accepted local contract validator.
+
+Do not modify duration rules.
+
+If candidate exceeds 20 seconds:
+
+record failure.
+
+Do not repair.
+
+======================================================================
+12. RULE IMMUTABILITY
+======================================================================
+
+Check every beat against the stated impossible rule.
+
+Return:
+
+RULE_CONSISTENT
+
+RULE_INCONSISTENT
+
+or
+
+AMBIGUOUS
+
+If inconsistent show:
+
+stated rule
+
+offending beat
+
+offending behavior
+
+======================================================================
+13. PAYOFF RULE LINKAGE
+======================================================================
+
+Determine whether final payoff:
+
+- follows the same original rule
+- introduces no new magical behavior
+- changes final story state
+- is visually understandable
+
+Do not trust provider rationale.
+
+Use structured candidate evidence.
+
+======================================================================
+14. IF EXECUTION SUCCEEDS
+======================================================================
+
+Run the ONE candidate through the full accepted deterministic pipeline:
+
+schema validation
+
+normalization
+
+canonical evidence
+
+Premise Naturalness
+
+Evidence-Supported Premise Admission V2
+
+Beat Grammar
+
+Structured SFE
+
+Creative Shape
+
+historical territory
+
+ranking
+
+production preselection
+
+Do not alter any gate.
+
+======================================================================
+15. RETURN COMPLETE CANDIDATE
+======================================================================
+
+If successful return the exact concept:
+
+ID
+
+TITLE
+
+PROTAGONIST
+
+EVERYDAY GOAL
+
+PRIMARY OBJECT
+
+NORMAL EXPECTATION
+
+IMPOSSIBLE RULE
+
+VISIBLE TRIGGER
+
+WHY THIS OBJECT
+
+FRAME ZERO
+
+BEAT 1
+strategy
+visible consequence
+new information
+
+BEAT 2
+
+BEAT 3
+
+BEAT 4
+
+BEAT 5 if present
+
+FINAL PAYOFF
+
+LOOP POTENTIAL
+
+ENVIRONMENT
+
+DIALOGUE NEED
+
+======================================================================
+16. PIPELINE RESULTS
+======================================================================
+
+Report:
+
+schema validity
+
+normalization
+
+creative-contract validity
+
+opening score
+
+Premise Naturalness
+
+premise admission
+
+Beat Grammar quality
+
+Structured SFE score/status
+
+Creative Shape
+
+historical territory
+
+ranking eligibility
+
+ranking score
+
+production admissibility
+
+exact blockers
+
+======================================================================
+17. DO NOT INTERPRET ONE IDEA AS MODEL QUALITY
+======================================================================
+
+Even if the concept is excellent:
+
+do not conclude Prompt V2 Compact is proven superior.
+
+Even if poor:
+
+do not conclude it is creatively weak.
+
+One concept is capability evidence plus one qualitative sample only.
+
+======================================================================
+18. IF REQUEST FAILS
+======================================================================
+
+If the single live request fails:
+
+record exact:
+
+exception class
+
+exception chain
+
+timeout layer
+
+duration
+
+response bytes
+
+headers timing if available
+
+Do not retry.
+
+Do not change prompt.
+
+Do not change schema.
+
+Do not change model.
+
+Stop.
+
+======================================================================
+19. RESULT CLASSIFICATION
+======================================================================
+
+Return exactly one execution classification:
+
+COMPACT_FULL_CONTRACT_EXECUTION_PASS
+
+COMPACT_FULL_CONTRACT_TIMEOUT
+
+COMPACT_FULL_CONTRACT_PROVIDER_FAILURE
+
+COMPACT_FULL_CONTRACT_PARSE_FAILURE
+
+COMPACT_FULL_CONTRACT_SCHEMA_FAILURE
+
+or
+
+UNRESOLVED
+
+Separately return creative-contract classification if response exists:
+
+CREATIVE_CONTRACT_PASS
+
+CREATIVE_CONTRACT_FAILURE
+
+======================================================================
+20. COMPARE WITH PREVIOUS PROBES
+======================================================================
+
+Provide concise execution comparison:
+
+Full V2 + full schema:
+timeout
+
+Full V2 + small schema:
+timeout
+
+Minimal prompt + corrected full schema:
+response returned
+
+Compact V2 + corrected full schema:
+current result
+
+Compare:
+
+prompt size
+
+schema size
+
+duration
+
+response bytes
+
+completion status
+
+Do not overstate causality.
+
+======================================================================
+21. NO ADDITIONAL LIVE ACTION
+======================================================================
+
+Even if this succeeds:
+
+do NOT immediately request 5 concepts.
+
+do NOT request 20.
+
+do NOT request 40.
+
+do NOT render.
+
+We will review the single returned candidate first.
+
+======================================================================
+22. TESTS BEFORE LIVE CALL
+======================================================================
+
+Add mocked tests for:
+
+compact prompt identity
+
+corrected schema identity
+
+single candidate request
+
+hard request cap = 1
+
+successful response
+
+timeout
+
+parse failure
+
+schema failure
+
+creative-contract failure
+
+rule inconsistency
+
+duration violation
+
+no retry
+
+no fallback
+
+Tests make zero external calls.
+
+======================================================================
+23. REGRESSION TARGET
+======================================================================
+
+Full regression must remain:
+
+same accepted 36 baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+24. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. exact provider/model
+2. prompt version/hash
+3. prompt size
+4. schema version/hash
+5. candidate count
+6. execution parameters
+7. exact live request count
+8. duration
+9. response bytes
+10. token usage if available
+11. execution classification
+12. complete returned candidate if available
+13. creative-contract validation
+14. rule consistency
+15. duration validation
+16. pipeline results
+17. exact blockers
+18. comparison with prior probes
+19. test results
+20. proof request count = 1
+21. proof no retry
+22. proof no DeepSeek
+23. proof no render
+24. proof Prompt V1/V2 unchanged
+25. proof validators unchanged
+26. proof historical experiments unchanged
+27. proof only accepted baseline failures remain
+
+======================================================================
+25. STOP
+======================================================================
+
+After the ONE OpenAI / gpt-6.1-sol single-candidate v2-compact probe:
+
+STOP.
+
+Do NOT:
+
+make another live provider call
+
+request multiple concepts
+
+change prompt
+
+change schema
+
+change model
+
+change validator
+
+generate production prompts
+
+render media.

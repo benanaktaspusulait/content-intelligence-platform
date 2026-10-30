@@ -1,0 +1,27 @@
+{
+  "systemCharacters": 52,
+  "userCharacters": 71,
+  "totalRequestTextCharacters": 123,
+  "schemaCharacters": 176,
+  "serializedRequestCharacters": 567,
+  "serializedRequestUTF8Bytes": 567,
+  "maxOutputTokens": 1024,
+  "mode": "json_schema",
+  "strict": false,
+  "localTokenEstimate": null,
+  "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+  "declaredProperties": 3,
+  "arraySchemas": 0,
+  "schemaJSONNestingDepth": 3,
+  "requiredByPath": [
+    {
+      "path": "/",
+      "fields": [
+        "title",
+        "goal",
+        "object"
+      ]
+    }
+  ],
+  "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference."
+}

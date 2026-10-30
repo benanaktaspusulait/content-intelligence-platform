@@ -1,0 +1,84 @@
+{
+  "stage": "BEFORE_FULL_PIPELINE",
+  "sourceCandidatePresent": true,
+  "declaredProtagonistFields": 1,
+  "declaredPrimaryObjectFields": 1,
+  "depictedProtagonistCount": null,
+  "depictedPrimaryObjectCount": null,
+  "countLimitation": "Scalar fields do not prove depicted actor/object counts; normalization checks canonical named actors, not every implied entity.",
+  "everydayGoalPresent": true,
+  "frameZeroDescriptionPresent": true,
+  "impossibleRulePresent": true,
+  "visibleTriggerPresent": true,
+  "payoffPresent": true,
+  "beatCount": 4,
+  "beatCountPassed": true,
+  "eachBeat": [
+    {
+      "number": 1,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi slides the iron across the shirt's wrinkled middle.",
+        "visibleConsequence": "The shirt's middle becomes smooth while the board beneath it buckles into a broad ridge, tipping the remaining wrinkles toward Mimi.",
+        "newInformation": "A larger shirt crease produces the same larger fold in the supporting board."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 2,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi pulls the wrinkled hem onto the board's remaining flat end and presses it.",
+        "visibleConsequence": "The hem flattens, but the board's end folds upward, leaving the shirt draped between two raised sections.",
+        "newInformation": "Moving to unused support only relocates the accumulating board creases."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 3,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi stretches the last wrinkled sleeve across the board's central ridge and presses along it.",
+        "visibleConsequence": "The sleeve smooths as a new crease folds the ridge into a compact accordion, leaving almost no level working surface.",
+        "newInformation": "The existing board folds remain while each newly removed shirt crease adds another."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 4,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi presses the final cuff crease against the accordion's small flat top, then lifts the shirt by its shoulders.",
+        "visibleConsequence": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+        "newInformation": "The shirt is flat because its entire collection of creases now occupies the board."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    }
+  ],
+  "ruleConsistency": "AMBIGUOUS",
+  "ruleFindings": [],
+  "ruleConsistencyLimitation": "Existing source-constraint comparison can find explicit violations; no finding is not full semantic proof. Final source-supported status is reported with pipeline evidence.",
+  "duration": {
+    "supplied": true,
+    "declared": 15,
+    "effectiveLocalDefault": 15,
+    "rangePassed": true,
+    "target": 15,
+    "maximum": 20,
+    "renderMeasured": false
+  },
+  "finalPayoffEqualsLastConsequence": true,
+  "structuralContractPassed": true
+}

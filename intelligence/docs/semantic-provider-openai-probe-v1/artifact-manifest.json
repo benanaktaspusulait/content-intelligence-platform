@@ -1,0 +1,21 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "REPORT.txt": "837b32e718c8c903042e38f095a4f65d58d6f3f2b639a756133b8c153ab729a1",
+    "adapter-audit.json": "d9793afaa9e2a671d5b058ee52fb75ab784f7dadce9c5be0c4b4bf0e8ab2dd9f",
+    "authorization.txt": "9d511ef1423671ab5e7753672c2bf7c7a7efa5d4777424a81bf08fe9b090ab80",
+    "changed-files.json": "76e533c5c4c25d33aa8b02174520055cdc4f32dfb9e5f0fa56aaf3e0ba81e0b9",
+    "execution-comparison.json": "495817926b1e206463ecf1dd0d09e274050af1211e5b0eaab74b52f48d79d674",
+    "full-regression.log": "40edaba9788ed637e3776e0a20b2e296a5e66ee36edcca1ca64993cea736ebe6",
+    "historical-evidence-proof.json": "6c260597d4f1e0593ac631a47b104f7f95864880ad9b6676ca9f9c68a956e6ea",
+    "live-execution.log": "ab08c9f0f9a7c8031208a9d8fb0d021413522969acfd8942add5741961ab91fe",
+    "new-tests.log": "7a16feb8c93664cc7a068b3d42a9876c777899dcf75de1e562d130143b9213ae",
+    "pre-live-verification.json": "cfcfca401c86d2352680840620caec684e25b410de5e803d0634e448a00f2897",
+    "prompt-immutability-proof.json": "af7eca087d6e29825a867bd2008c8c1f6e07d2d10a6c27a1bdde718438663884",
+    "protected-after-tests.json": "34580e8e73bc398cb2a5c4e85ec2d6b1b6077e82daf27f27b5e95de7068e0908",
+    "protected-after.json": "34580e8e73bc398cb2a5c4e85ec2d6b1b6077e82daf27f27b5e95de7068e0908",
+    "protected-before.json": "34580e8e73bc398cb2a5c4e85ec2d6b1b6077e82daf27f27b5e95de7068e0908",
+    "source-hashes-before-regression.json": "0edc8f6db88b2d04599e0e9c5112e2e464ebeacb39449b9e1458b4089de412e0",
+    "verification.json": "a27683a34395affb4cbd795c65e042105d8e674723757ba8907ad1e1e1a681cd"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "status": "CONTROLLABLE",
+  "sdkValues": [
+    "none",
+    "minimal",
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max"
+  ],
+  "exactModelIntegrationValues": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max"
+  ],
+  "supportedSettings": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max"
+  ],
+  "SDKChatCompletionsParameterPresent": true,
+  "adapterForwardsParameter": true,
+  "selectedLowest": "low",
+  "evidence": [
+    "creative_provider_profiles.MODEL_REASONING_EFFORTS",
+    "CreativeCapabilityProvider.complete",
+    "openai.types.shared.reasoning_effort.ReasoningEffort",
+    "openai.resources.chat.completions.completions.Completions.create"
+  ],
+  "selection": "Lowest supported exact-model/SDK intersection; generic SDK none/minimal are not accepted for this model."
+}

@@ -1,0 +1,28 @@
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "executionClassification": "COMPACT_FULL_CONTRACT_TIMEOUT",
+  "creativeContractClassification": null,
+  "logicalRequestCount": 1,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "maxRequestCount": 1,
+  "SDKMaxRetries": 0,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "exactLastMileRequestMatches": true,
+  "protectedExistingFilesUnchanged": 2354,
+  "changedProtectedFiles": [],
+  "sourceHashes": {
+    "intelligence/ml-service/app/workflow/semantic_compact_capability_probe_v1.py": "6cd0dc23b9ab0a7fbaed67081389c725f0da20100554304ebb4f99f8f5ae8ba7",
+    "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py": "1ad849d464fbedf42869bc9debb3c73ce81354bad7d5167ccedc2c9732e6617a",
+    "intelligence/scripts/probe-semantic-compact-v1.py": "53f4a876a55310cd8f59da6ea7a06132e77d3f1dafcaa33cf6491ee5313eb752"
+  },
+  "newFailures": [],
+  "testsPassedBeforeLive": true,
+  "beforeLiveVerificationSha256": "1408401256a69cd2ad0437dc81968abd08376897319ccdb54c5ef7190e4d8595",
+  "authorizationSha256": "9ec3403ddfbeb1af4480d3754741931ad25eb28f7efde5bbd7d92a38261e677c",
+  "requestClaim": "Fixed run path claimed exclusively before execution; SDK and HTTP boundary caps1,SDK max_retries0. Dispatch receipts count attempts; a timeout alone cannot prove remote completion."
+}

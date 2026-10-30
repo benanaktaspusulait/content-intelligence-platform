@@ -1,0 +1,215 @@
+{
+  "cases": [
+    {
+      "case": "A",
+      "purpose": "normal object before first anomaly",
+      "editorialPromptIntent": "REJECT",
+      "scope": "OPENING",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "B",
+      "purpose": "reaction without physical problem",
+      "editorialPromptIntent": "REJECT",
+      "scope": "OPENING",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "C",
+      "purpose": "anomaly without inferable goal",
+      "editorialPromptIntent": "REJECT",
+      "scope": "OPENING",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "D",
+      "purpose": "goal visible; consequence off-screen",
+      "editorialPromptIntent": "REJECT",
+      "scope": "OPENING",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "E",
+      "purpose": "random floating object; no goal interference",
+      "editorialPromptIntent": "REJECT",
+      "scope": "OPENING",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "F",
+      "purpose": "temporal future narration",
+      "editorialPromptIntent": "REJECT",
+      "scope": "OPENING",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "G",
+      "purpose": "goal object and active interference",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "scope": "OPENING",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "H",
+      "purpose": "physical contradiction in one still",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "scope": "OPENING",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "I",
+      "purpose": "opening instantiates exact rule",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "scope": "OPENING",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "J",
+      "purpose": "Beat 1 continues opening without reset",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "scope": "OPENING",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "K",
+      "purpose": "property switches without endpoints",
+      "editorialPromptIntent": "REJECT",
+      "scope": "PAYOFF",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "L",
+      "purpose": "payoff permits opposite outcomes",
+      "editorialPromptIntent": "REJECT",
+      "scope": "PAYOFF",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "M",
+      "purpose": "directional rule-derived before/after",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "scope": "PAYOFF",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    }
+  ],
+  "providerCalls": 0,
+  "renders": 0,
+  "networkBlocked": true
+}

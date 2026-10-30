@@ -1,0 +1,144 @@
+{
+  "level": "B",
+  "system": "Return one JSON object matching the supplied schema.",
+  "prompt": "Give one short fictional everyday example using title, goal and object.",
+  "format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "transport_isolation_small",
+      "strict": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "goal",
+          "object"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "arguments": {
+    "model": "gpt-6.1-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return one JSON object matching the supplied schema."
+      },
+      {
+        "role": "user",
+        "content": "Give one short fictional everyday example using title, goal and object."
+      }
+    ],
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "transport_isolation_small",
+        "strict": false,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "goal": {
+              "type": "string"
+            },
+            "object": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "goal",
+            "object"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "max_completion_tokens": 1024,
+    "reasoning_effort": "high"
+  },
+  "configuration": {
+    "generatorVersion": "v2",
+    "count": 20,
+    "seed": 42,
+    "duration": 15,
+    "characterIds": [],
+    "excludeEngineFamilies": [],
+    "excludeObjects": [],
+    "excludeObjectCategories": [],
+    "canonicalCast": null,
+    "rank": true,
+    "internalPoolSize": 240,
+    "beatGrammarVersion": "v2",
+    "premiseNaturalnessGateVersion": "v1",
+    "premisePoolSize": 480,
+    "creativeShapeVersion": "v1",
+    "minimumStoryShapeDistance": 0.22,
+    "minimumShapeShortFormScore": 85,
+    "minimumShapeRankingScore": 75,
+    "allowHighHistoricalTerritoryRisk": false,
+    "generatorMode": "semantic",
+    "semanticProvider": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "temperature": 0.7,
+      "maxCandidates": 60,
+      "maxOutputTokens": 8192,
+      "timeoutSeconds": 90.0,
+      "mockCorpus": "review-v1"
+    },
+    "semanticRawCount": 1,
+    "semanticConceptPromptVersion": "v2",
+    "allowExternalGeneration": true
+  },
+  "fullV2Prompt": null,
+  "metrics": {
+    "systemCharacters": 52,
+    "userCharacters": 71,
+    "totalRequestTextCharacters": 123,
+    "schemaCharacters": 176,
+    "serializedRequestCharacters": 567,
+    "serializedRequestUTF8Bytes": 567,
+    "maxOutputTokens": 1024,
+    "mode": "json_schema",
+    "strict": false,
+    "localTokenEstimate": null,
+    "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+    "declaredProperties": 3,
+    "arraySchemas": 0,
+    "schemaJSONNestingDepth": 3,
+    "requiredByPath": [
+      {
+        "path": "/",
+        "fields": [
+          "title",
+          "goal",
+          "object"
+        ]
+      }
+    ],
+    "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference."
+  },
+  "executionMode": "NATIVE_STRUCTURED_OUTPUT",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  }
+}

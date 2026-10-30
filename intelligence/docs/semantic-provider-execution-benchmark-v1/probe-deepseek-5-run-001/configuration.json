@@ -1,0 +1,59 @@
+{
+  "profile": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "documentedVersion": "DeepSeek-V4-Pro-0813",
+    "baseUrl": "https://api.deepseek.com",
+    "protocol": "chat_completions",
+    "responseMode": "json_object",
+    "contextTokens": 1000000,
+    "maxOutputTokens": 393216,
+    "inputUsdPerMillion": 1.32,
+    "cachedInputUsdPerMillion": 0.044,
+    "outputUsdPerMillion": 3.96,
+    "priceBasis": "PEAK_CACHE_MISS_UPPER_BOUND; off-peak and cache discounts not assumed",
+    "tokenParameter": "max_tokens",
+    "reasoningEffort": "high",
+    "temperatureSupported": false,
+    "reasoningBilledWithinOutput": true,
+    "deprecated": false,
+    "documentation": [
+      "https://api-docs.deepseek.com/quick_start/pricing/",
+      "https://api-docs.deepseek.com/api/create-chat-completion/"
+    ]
+  },
+  "generation": {
+    "generatorVersion": "v2",
+    "count": 20,
+    "seed": 42,
+    "duration": 15,
+    "characterIds": [],
+    "excludeEngineFamilies": [],
+    "excludeObjects": [],
+    "excludeObjectCategories": [],
+    "canonicalCast": null,
+    "rank": true,
+    "internalPoolSize": 240,
+    "beatGrammarVersion": "v2",
+    "premiseNaturalnessGateVersion": "v1",
+    "premisePoolSize": 480,
+    "creativeShapeVersion": "v1",
+    "minimumStoryShapeDistance": 0.22,
+    "minimumShapeShortFormScore": 85,
+    "minimumShapeRankingScore": 75,
+    "allowHighHistoricalTerritoryRisk": false,
+    "generatorMode": "semantic",
+    "semanticProvider": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "temperature": 0.7,
+      "maxCandidates": 60,
+      "maxOutputTokens": 16384,
+      "timeoutSeconds": 90.0,
+      "mockCorpus": "review-v1"
+    },
+    "semanticRawCount": 5,
+    "semanticConceptPromptVersion": "v2",
+    "allowExternalGeneration": true
+  }
+}

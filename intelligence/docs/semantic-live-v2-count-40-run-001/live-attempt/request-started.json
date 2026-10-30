@@ -1,0 +1,12 @@
+{
+  "startedAt": "2026-10-26T10:14:05.727422+00:00",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "promptVersion": "semantic-concept-prompt-v2",
+  "requestCount": 1,
+  "status": "REQUEST_STARTED",
+  "usage": null,
+  "actualCostUsd": null,
+  "automaticRetries": 0,
+  "renders": 0
+}

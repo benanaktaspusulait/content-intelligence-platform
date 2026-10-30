@@ -1,0 +1,54 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 8,
+    "prompt_tokens": 28,
+    "total_tokens": 36,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "providerRequestId": "chatcmpl-EdDSILOe44HW4zsaR1A4M0Ut3Z8zu",
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 2638.298166999448,
+  "providerMetadata": {
+    "requestId": "chatcmpl-EdDSILOe44HW4zsaR1A4M0Ut3Z8zu",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+  "finishReason": "stop",
+  "providerReportedCostUsd": null,
+  "level": "A",
+  "start": "2026-10-26T11:47:00.448443+00:00",
+  "end": "2026-10-26T11:47:03.705229+00:00",
+  "durationSeconds": 3.2569406670008902,
+  "responseBytes": 15,
+  "parsedResult": {
+    "passed": true,
+    "reason": "EXPECTED_TINY_OBJECT"
+  },
+  "passed": true,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 512
+}

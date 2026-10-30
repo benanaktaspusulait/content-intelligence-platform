@@ -1,0 +1,509 @@
+{
+  "scope": "Editorial requirement crosswalk, not proof of model behavior or mathematical prompt equivalence.",
+  "requirements": [
+    {
+      "id": "boundary",
+      "requirement": "Raw ideas; deterministic authority; no rank/score/winners/virality/novelty/readiness/eligibility/production recommendation/bypass",
+      "v2Evidence": "Do not rank, score, choose winners",
+      "compactEvidence": "Do not rank, score, assign confidence",
+      "preserved": "YES",
+      "v2Line": 4,
+      "compactLine": 1
+    },
+    {
+      "id": "rationale",
+      "requirement": "Rationale explains causal dependency only, never score authority",
+      "v2Evidence": "it has no scoring authority",
+      "compactEvidence": "no scoring authority",
+      "preserved": "YES",
+      "v2Line": 4,
+      "compactLine": 1
+    },
+    {
+      "id": "private",
+      "requirement": "No exposed reasoning, checklists or self-certification",
+      "v2Evidence": "Do not expose chain-of-thought",
+      "compactEvidence": "Output no private reasoning",
+      "preserved": "YES",
+      "v2Line": 48,
+      "compactLine": 1
+    },
+    {
+      "id": "protagonist",
+      "requirement": "Exactly one supplied canonical protagonist",
+      "v2Evidence": "exactly one supplied canonical protagonist",
+      "compactEvidence": "one supplied canonical protagonist",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 4
+    },
+    {
+      "id": "object",
+      "requirement": "One primary everyday object",
+      "v2Evidence": "one primary everyday object",
+      "compactEvidence": "one primary everyday object",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 4
+    },
+    {
+      "id": "goal",
+      "requirement": "Simple concrete credible visible everyday goal",
+      "v2Evidence": "simple, credible, physically visible task",
+      "compactEvidence": "one simple credible visible goal",
+      "preserved": "YES",
+      "v2Line": 22,
+      "compactLine": 4
+    },
+    {
+      "id": "location",
+      "requirement": "One location",
+      "v2Evidence": "one location",
+      "compactEvidence": "one location",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 4
+    },
+    {
+      "id": "trouble",
+      "requirement": "Immediate visible trouble",
+      "v2Evidence": "immediate visible trouble",
+      "compactEvidence": "Start inside visible trouble",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 4
+    },
+    {
+      "id": "duration",
+      "requirement": "About15 seconds, complete readable action",
+      "v2Evidence": "about 15 seconds",
+      "compactEvidence": "about 15 seconds",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 4
+    },
+    {
+      "id": "intuitive",
+      "requirement": "Strange but intuitive logic rather than randomness",
+      "v2Evidence": "STRANGE BUT INTUITIVE",
+      "compactEvidence": "STRANGE BUT INTUITIVE",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 4
+    },
+    {
+      "id": "one-rule",
+      "requirement": "One dominant impossible physical/comedic rule",
+      "v2Evidence": "one dominant impossible physical/comedic rule",
+      "compactEvidence": "one dominant impossible physical/comedic rule",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 5
+    },
+    {
+      "id": "rule-sentence",
+      "requirement": "Precise observable repeatable trigger/response sentence",
+      "v2Evidence": "ONE precise, observable, repeatable sentence",
+      "compactEvidence": "precise, observable, repeatable trigger→response sentence",
+      "preserved": "YES",
+      "v2Line": 10,
+      "compactLine": 5
+    },
+    {
+      "id": "immutable",
+      "requirement": "Established rule governs every beat/payoff without mutation",
+      "v2Evidence": "every beat must obey exactly that same physical rule",
+      "compactEvidence": "Once established it never changes",
+      "preserved": "YES",
+      "v2Line": 11,
+      "compactLine": 5
+    },
+    {
+      "id": "trigger",
+      "requirement": "Stable trigger; no new condition or actor loophole",
+      "v2Evidence": "Keep the trigger stable",
+      "compactEvidence": "changes to the declared trigger/direction/target/material/timing/agency mapping",
+      "preserved": "YES",
+      "v2Line": 13,
+      "compactLine": 5
+    },
+    {
+      "id": "no-powers",
+      "requirement": "No independent powers bundled to excuse twists",
+      "v2Evidence": "Do not bundle several unrelated powers",
+      "compactEvidence": "do not bundle independent powers",
+      "preserved": "YES",
+      "v2Line": 10,
+      "compactLine": 5
+    },
+    {
+      "id": "mapping",
+      "requirement": "No altered direction/material/target/timing/agency unless implied",
+      "v2Evidence": "Do not change direction, material, target, timing constant, or agency",
+      "compactEvidence": "declared trigger/direction/target/material/timing/agency mapping",
+      "preserved": "YES",
+      "v2Line": 12,
+      "compactLine": 5
+    },
+    {
+      "id": "spread",
+      "requirement": "No unrelated spread; new information reveals same relationship",
+      "v2Evidence": "Consequence spread must follow the declared causal relationship",
+      "compactEvidence": "Spread, transfer and magnitude must already follow",
+      "preserved": "YES",
+      "v2Line": 12,
+      "compactLine": 5
+    },
+    {
+      "id": "object-function",
+      "requirement": "Explain ordinary function and exact object dependency",
+      "v2Evidence": "normalExpectation states this object's ordinary function",
+      "compactEvidence": "State its ordinary function",
+      "preserved": "YES",
+      "v2Line": 23,
+      "compactLine": 6
+    },
+    {
+      "id": "object-affordance",
+      "requirement": "Exploit function/affordance/motion/material/result/task relationship",
+      "v2Evidence": "function, affordance, expected motion, material/property, normal result",
+      "compactEvidence": "affordance, expected motion, material/property, normal result",
+      "preserved": "YES",
+      "v2Line": 23,
+      "compactLine": 6
+    },
+    {
+      "id": "interference",
+      "requirement": "Object operation directly obstructs goal",
+      "v2Evidence": "DIRECTLY obstructs the task",
+      "compactEvidence": "DIRECTLY obstruct the task",
+      "preserved": "YES",
+      "v2Line": 23,
+      "compactLine": 6
+    },
+    {
+      "id": "arbitrary",
+      "requirement": "Noun sharing is insufficient; no random magic or contrived goal",
+      "v2Evidence": "Sharing a noun is not enough",
+      "compactEvidence": "Sharing an affected noun is insufficient",
+      "preserved": "YES",
+      "v2Line": 24,
+      "compactLine": 6
+    },
+    {
+      "id": "still",
+      "requirement": "Single simultaneous paused stageable frame",
+      "v2Evidence": "one simultaneous, stageable STILL",
+      "compactEvidence": "One paused, simultaneous frame",
+      "preserved": "YES",
+      "v2Line": 17,
+      "compactLine": 9
+    },
+    {
+      "id": "opening-content",
+      "requirement": "Character, visible goal, object, impossible problem and relationship",
+      "v2Evidence": "character + visible everyday goal + primary object + already-visible impossible problem",
+      "compactEvidence": "character+visible task+object+already-present impossible problem",
+      "preserved": "YES",
+      "v2Line": 17,
+      "compactLine": 9
+    },
+    {
+      "id": "physical-evidence",
+      "requirement": "Pose/state/space carry evidence; intention/title/laterbeat insufficient",
+      "v2Evidence": "pose, object state and spatial relationship",
+      "compactEvidence": "pose, physical state and space",
+      "preserved": "YES",
+      "v2Line": 17,
+      "compactLine": 9
+    },
+    {
+      "id": "no-explanation",
+      "requirement": "No sound/dialogue/text/context/inset/beforeafter/motion dependence",
+      "v2Evidence": "an explanatory inset, sequential before/after states or waiting for movement",
+      "compactEvidence": "explanatory inset, before/after sequence or waiting for motion",
+      "preserved": "YES",
+      "v2Line": 18,
+      "compactLine": 9
+    },
+    {
+      "id": "no-delay",
+      "requirement": "No initial normal action, press/door/delay/traverse or2–3sec setup",
+      "v2Evidence": "spend no first 2–3 seconds",
+      "compactEvidence": "spend no first 2–3 seconds",
+      "preserved": "YES",
+      "v2Line": 19,
+      "compactLine": 9
+    },
+    {
+      "id": "no-label-proof",
+      "requirement": "Words moving/obvious/impossible do not supply still evidence",
+      "v2Evidence": "merely calling it \"obvious\" or \"impossible\"",
+      "compactEvidence": "Motion words or labels such as obvious/impossible",
+      "preserved": "YES",
+      "v2Line": 19,
+      "compactLine": 9
+    },
+    {
+      "id": "count",
+      "requirement": "Exactly4–5 major causal beats including final payoff",
+      "v2Evidence": "exactly 4 or 5 major causal beats including the final payoff",
+      "compactEvidence": "Exactly 4 or 5 major causal beats including payoff",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 12
+    },
+    {
+      "id": "beat-fields",
+      "requirement": "Action→same-rule physical consequence→changed state/information",
+      "v2Evidence": "CHARACTER ACTION → SAME RULE ACTIVATES → VISIBLE CONSEQUENCE → CHANGED PROBLEM",
+      "compactEvidence": "strategy/action→visible consequence→new information or state change",
+      "preserved": "YES",
+      "v2Line": 27,
+      "compactLine": 12
+    },
+    {
+      "id": "stageable",
+      "requirement": "Concrete concise stageable sentences",
+      "v2Evidence": "sentences concise, concrete and stageable",
+      "compactEvidence": "sentences concrete, concise and stageable",
+      "preserved": "YES",
+      "v2Line": 27,
+      "compactLine": 12
+    },
+    {
+      "id": "progression",
+      "requirement": "Materially different strategy/consequence/state/position/control/goal distance/stakes",
+      "v2Evidence": "Each beat must materially change strategy",
+      "compactEvidence": "Each beat materially changes the problem",
+      "preserved": "YES",
+      "v2Line": 28,
+      "compactLine": 12
+    },
+    {
+      "id": "axes",
+      "requirement": "Vary leverage/timing/position/environment/magnitude/accumulation/control/stakes",
+      "v2Evidence": "position, leverage, timing, environmental use, magnitude, accumulation, control",
+      "compactEvidence": "position, leverage, timing, magnitude, environmental use, accumulation",
+      "preserved": "YES",
+      "v2Line": 28,
+      "compactLine": 12
+    },
+    {
+      "id": "passive",
+      "requirement": "Environment is passive staging, no new powers",
+      "v2Evidence": "environmental objects as passive staging only",
+      "compactEvidence": "Environment is passive staging",
+      "preserved": "YES",
+      "v2Line": 28,
+      "compactLine": 12
+    },
+    {
+      "id": "no-repeat",
+      "requirement": "Reworded same attempts or identical consequences are not progression",
+      "v2Evidence": "Different wording for the same attempt is not progression",
+      "compactEvidence": "reworded retries or unchanged consequences do not count",
+      "preserved": "YES",
+      "v2Line": 28,
+      "compactLine": 12
+    },
+    {
+      "id": "no-force-ladder",
+      "requirement": "Avoid force/twohands/brace/fakesuccess default",
+      "v2Evidence": "attempt → try harder → use two hands → brace → fake success",
+      "compactEvidence": "try harder→two hands→brace→fake success",
+      "preserved": "YES",
+      "v2Line": 29,
+      "compactLine": 12
+    },
+    {
+      "id": "no-unrelated",
+      "requirement": "No unrelated events or hidden sub-scenes; magnitude follows rule",
+      "v2Evidence": "without multiple hidden sub-scenes per beat",
+      "compactEvidence": "No hidden sub-scenes",
+      "preserved": "YES",
+      "v2Line": 29,
+      "compactLine": 12
+    },
+    {
+      "id": "last-equality",
+      "requirement": "Payoff equals last consequence character for character, no extra event",
+      "v2Evidence": "finalPayoff MUST match its visibleConsequence exactly",
+      "compactEvidence": "finalPayoff equals the last visibleConsequence exactly",
+      "preserved": "YES",
+      "v2Line": 32,
+      "compactLine": 15
+    },
+    {
+      "id": "payoff-causal",
+      "requirement": "Surprising but inevitable strongest rule-derived visual state change",
+      "v2Evidence": "surprising in outcome but inevitable in retrospect",
+      "compactEvidence": "strongest visual, state-changing consequence",
+      "preserved": "YES",
+      "v2Line": 32,
+      "compactLine": 15
+    },
+    {
+      "id": "payoff-essential",
+      "requirement": "Ending cannot survive removal of original rule",
+      "v2Evidence": "Could this payoff happen if the original rule were removed?",
+      "compactEvidence": "Without the original rule this ending should not work",
+      "preserved": "YES",
+      "v2Line": 34,
+      "compactLine": 15
+    },
+    {
+      "id": "payoff-families",
+      "requirement": "Preserve transfer/reversal/wrongsuccess/problem/takeover/extreme/chain/reveal/join/objectwins inspiration families",
+      "v2Evidence": "role reversal, control transfer, property transfer",
+      "compactEvidence": "role/control/property transfer",
+      "preserved": "YES",
+      "v2Line": 33,
+      "compactLine": 15
+    },
+    {
+      "id": "no-taxonomy-recipes",
+      "requirement": "Payoff inspirations are not mandatory taxonomy recipes",
+      "v2Evidence": "not required taxonomy labels or recipes",
+      "compactEvidence": "not taxonomy recipes",
+      "preserved": "YES",
+      "v2Line": 33,
+      "compactLine": 15
+    },
+    {
+      "id": "no-ending-rescue",
+      "requirement": "No newactor/poweredobject/magic/trigger/externalforce ending",
+      "v2Evidence": "new character, new powered object, new magic",
+      "compactEvidence": "new character, powered object or unexplained external force",
+      "preserved": "YES",
+      "v2Line": 34,
+      "compactLine": 15
+    },
+    {
+      "id": "loop",
+      "requirement": "Optional loop; no reset effect/new rule; avoid routine fakesuccess reset",
+      "v2Evidence": "A loop is optional",
+      "compactEvidence": "Looping is optional",
+      "preserved": "YES",
+      "v2Line": 33,
+      "compactLine": 15
+    },
+    {
+      "id": "silent",
+      "requirement": "Full story legible soundoff; dialogue not explanatory",
+      "v2Evidence": "Assume sound is off",
+      "compactEvidence": "full story must read with sound off",
+      "preserved": "YES",
+      "v2Line": 37,
+      "compactLine": 21
+    },
+    {
+      "id": "dialogue",
+      "requirement": "NONE default; OPTIONAL only if needed; do not invent enum",
+      "v2Evidence": "Normally dialogueNeed is NONE",
+      "compactEvidence": "Dialogue normally NONE",
+      "preserved": "YES",
+      "v2Line": 37,
+      "compactLine": 21
+    },
+    {
+      "id": "production",
+      "requirement": "Broad body actions, poses, stable identities/silhouette, few elements",
+      "v2Evidence": "broad body actions, clear poses, stable object identity",
+      "compactEvidence": "broad body actions, clear poses, stable identities/silhouettes",
+      "preserved": "YES",
+      "v2Line": 7,
+      "compactLine": 21
+    },
+    {
+      "id": "production-risks",
+      "requirement": "No tinytext/smallpieces/finehands/mechanics/crowds/cuts/unstageable invisibleforces",
+      "v2Evidence": "complex hand manipulation, crowds, fine mechanical transformations",
+      "compactEvidence": "fine hand work, fine mechanical transformations, crowds",
+      "preserved": "YES",
+      "v2Line": 37,
+      "compactLine": 21
+    },
+    {
+      "id": "safety",
+      "requirement": "Childsafe: no injury/weapons/dangerousrestraint/sexualcontent",
+      "v2Evidence": "no injury, weapons, dangerous restraint or sexual content",
+      "compactEvidence": "no injury, weapons, dangerous restraint or sexual content",
+      "preserved": "YES",
+      "v2Line": 37,
+      "compactLine": 21
+    },
+    {
+      "id": "batch-diversity",
+      "requirement": "Vary object/goal/mechanic/trigger/progression/payoff/finalsilhouette",
+      "v2Evidence": "vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette",
+      "compactEvidence": "vary object family, goal, mechanic, trigger, progression, payoff and final silhouette",
+      "preserved": "YES",
+      "v2Line": 40,
+      "compactLine": 18
+    },
+    {
+      "id": "no-opposite",
+      "requirement": "Avoid many oppositebehavior variants/wordingnovelty",
+      "v2Evidence": "many versions of \"object does the opposite thing.",
+      "compactEvidence": "many opposite-behavior variants",
+      "preserved": "YES",
+      "v2Line": 40,
+      "compactLine": 18
+    },
+    {
+      "id": "unfamiliar",
+      "requirement": "Coherent unfamiliar taxonomyfree mechanics allowed",
+      "v2Evidence": "outside the known engine taxonomy is allowed",
+      "compactEvidence": "Coherent unfamiliar mechanics outside existing taxonomy are welcome",
+      "preserved": "YES",
+      "v2Line": 40,
+      "compactLine": 18
+    },
+    {
+      "id": "cautions",
+      "requirement": "Historical caution not templates; rare distinct chair/adhesion/reset/growth/shrink/reversal/escape allowed, not dominant",
+      "v2Evidence": "A rare distinct use may occur; these must not dominate",
+      "compactEvidence": "must not dominate; rare distinct uses may occur",
+      "preserved": "YES",
+      "v2Line": 41,
+      "compactLine": 18
+    },
+    {
+      "id": "free-task",
+      "requirement": "Task examples illustrate, do not copy mechanically",
+      "v2Evidence": "do not copy these mechanically",
+      "compactEvidence": "Choose tasks freely",
+      "preserved": "YES",
+      "v2Line": 22,
+      "compactLine": 18
+    },
+    {
+      "id": "self-check",
+      "requirement": "One private review: rule allbeats, pausedopening,causalarrows,visualstatepayoff,objectdependency; internally discard/redesign",
+      "v2Evidence": "discard or redesign internally",
+      "compactEvidence": "discard/redesign internally",
+      "preserved": "YES",
+      "v2Line": 47,
+      "compactLine": 27
+    },
+    {
+      "id": "no-retry",
+      "requirement": "Private editing is not an external retry loop or winnerselection",
+      "v2Evidence": "not permission for a downstream retry loop",
+      "compactEvidence": "no permission for an external retry loop",
+      "preserved": "YES",
+      "v2Line": 47,
+      "compactLine": 27
+    },
+    {
+      "id": "schema",
+      "requirement": "Same fields/JSON ideas envelope/raw count, deterministic rejection remains",
+      "v2Evidence": "all fields and only the ideas envelope",
+      "compactEvidence": "all fields and exactly the requested raw count",
+      "preserved": "YES",
+      "v2Line": 48,
+      "compactLine": 24
+    }
+  ]
+}

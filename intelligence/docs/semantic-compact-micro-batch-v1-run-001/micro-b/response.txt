@@ -1,0 +1,46 @@
+{
+  "ideas": [
+    {
+      "ideaId": "42-01",
+      "title": "Sweeping Uphill",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Sweep a small heap of dirt into a dustpan.",
+      "primaryObject": "Broom",
+      "normalExpectation": "Pushing the broom along the floor moves dirt toward the dustpan.",
+      "impossibleRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+      "visibleTrigger": "The broom head pressed against the floor during a forward push.",
+      "whyThisObject": "A broom must travel against the floor to push dirt; that same working contact folds the dirt's route into an obstacle.",
+      "goalRuleRelationship": "Every useful forward sweep raises the dirt instead of delivering it to the dustpan.",
+      "frameZeroDescription": "Kiko leans over a broom whose bristles press against the foot of an ankle-high, doubled fold in the hallway floor. The dirt heap sits on the fold's narrow crest, directly between the broom and an empty dustpan on the flat floor beyond. The floorboards visibly continue up and over the fold.",
+      "beats": [
+        {
+          "strategy": "Kiko lifts the broom over the little fold and gives the dirt a short forward shove.",
+          "visibleConsequence": "A second, knee-high floor pleat rises beneath the dirt, leaving the dustpan below it.",
+          "newInformation": "Reaching over the first obstacle creates a taller obstacle under the target."
+        },
+        {
+          "strategy": "Kiko steps onto the first pleat and stretches the broom across the second for a longer sweep.",
+          "visibleConsequence": "The longer swept strip becomes a waist-high pleat with the dirt balanced on top.",
+          "newInformation": "The length of the sweep determines the height of the new obstruction."
+        },
+        {
+          "strategy": "Kiko climbs onto the knee-high pleat and places both feet immediately behind the dirt on the waist-high strip.",
+          "visibleConsequence": "Kiko and the dirt share a narrow elevated strip, with the dustpan clearly visible far below.",
+          "newInformation": "Kiko has reached the dirt, but now stands on the floor that the broom will fold."
+        },
+        {
+          "strategy": "Kiko reaches the broom behind both heels and makes one long forward sweep beneath the feet toward the dirt.",
+          "visibleConsequence": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+          "newInformation": "The broom carries the sweeper upward by exactly the same mechanism that carries the dirt."
+        }
+      ],
+      "finalPayoff": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+      "suggestedPayoffFamily": "Character joins the problem",
+      "loopPotential": "No reset; the folded hallway remains.",
+      "environment": "A short hallway with continuous flexible-looking floorboards and an empty dustpan.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "The broom's necessary floor contact creates the obstacles. Longer strokes raise the target farther, and standing on the swept strip finally makes Kiko part of the same consequence.",
+      "durationSeconds": 15
+    }
+  ]
+}

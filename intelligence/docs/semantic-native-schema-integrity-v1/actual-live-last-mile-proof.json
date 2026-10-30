@@ -1,0 +1,78 @@
+{
+  "step": "FINAL_PROVIDER_SCHEMA_VALIDATION",
+  "actualSDKRequestEqualsOfflinePlan": true,
+  "actualSDKFormatEqualsCorrectedSnapshot": true,
+  "actualSchemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "actualFormatSha256": "d79bda9fc27a7f7a3a7550457476bfa8d77f9ed28965de9f5d84b93dd9e3abda",
+  "unresolvedReferences": 0,
+  "references": [
+    {
+      "reference": "#/$defs/SemanticBeat",
+      "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+      "resolvedTargetPath": "/$defs/SemanticBeat",
+      "attemptedTargetPath": "/$defs/SemanticBeat",
+      "status": "RESOLVED",
+      "scope": "Final provider document root; no external URI retrieval"
+    }
+  ],
+  "sameSchemaObjectForwarded": true,
+  "forwardedRequests": 1,
+  "SDKRetries": 0,
+  "minimalMessagesUnchangedFromPreviousE": true,
+  "FullPromptV2Sent": false,
+  "actualRequestMetrics": {
+    "systemCharacters": 17,
+    "userCharacters": 107,
+    "totalRequestTextCharacters": 124,
+    "schemaCharacters": 2750,
+    "serializedRequestCharacters": 3138,
+    "serializedRequestUTF8Bytes": 3138,
+    "maxOutputTokens": 8192,
+    "mode": "json_schema",
+    "strict": false,
+    "localTokenEstimate": null,
+    "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+    "declaredProperties": 23,
+    "arraySchemas": 2,
+    "schemaJSONNestingDepth": 7,
+    "requiredByPath": [
+      {
+        "path": "/",
+        "fields": [
+          "ideas"
+        ]
+      },
+      {
+        "path": "/properties/ideas/items",
+        "fields": [
+          "ideaId",
+          "title",
+          "protagonistSuggestion",
+          "everydayGoal",
+          "primaryObject",
+          "normalExpectation",
+          "impossibleRule",
+          "visibleTrigger",
+          "whyThisObject",
+          "goalRuleRelationship",
+          "frameZeroDescription",
+          "beats",
+          "finalPayoff",
+          "suggestedPayoffFamily",
+          "loopPotential",
+          "environment",
+          "providerRationale"
+        ]
+      },
+      {
+        "path": "/$defs/SemanticBeat",
+        "fields": [
+          "strategy",
+          "visibleConsequence",
+          "newInformation"
+        ]
+      }
+    ],
+    "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference."
+  }
+}

@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict
 from .short_form_evidence import tokens
 
 VERSION='premise-admission-opening-evidence-v1'
+OPENING_EVIDENCE_COVERAGE_VERSION='OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1'
 
 
 class ResponseEvidence(BaseModel):
@@ -61,8 +62,106 @@ def response_evidence(fields,canonical,baseline,model):
         diagnosisCategory=category,compatibility=compat,evidenceRefs=canonical.facts['rule']['source'])
 
 
-def opening_evidence(candidate,canonical,baseline):
+def _unclassified_still_fallback(candidate,canonical,fields,facts,response,frame_visual,*,motion,prior,requires_text):
+    """Credit only a directly witnessed, coherent frame-zero relation for an unclassified rule."""
+    frame=fields['frameZeroDescription']
+    protagonist=str(candidate.get('protagonist','')).strip()
+    goal=fields['everydayGoal'];obj=fields['primaryObject'];rule=fields['impossibleRule']
+    normal=fields['normalExpectation']
+    trigger=fields['visibleTrigger'];relation=fields['goalRuleRelationship']
+    goal_terms=meaningful(goal);object_terms=meaningful(obj);rule_terms=meaningful(rule)
+    trigger_terms=meaningful(trigger);frame_terms=meaningful(frame_visual);relation_terms=meaningful(relation)
+    effect_terms=rule_terms-object_terms-trigger_terms-meaningful(normal)
+    rule_frame=sorted(effect_terms&frame_terms)
+    trigger_frame=sorted(trigger_terms&frame_terms)
+    goal_frame=sorted(goal_terms&frame_terms)
+    trigger_rule=sorted(trigger_terms&rule_terms)
+    actor_terms=meaningful(protagonist)
+    trigger_action=sorted((trigger_terms-object_terms-actor_terms)&frame_terms)
+    relation_goal=sorted(relation_terms&goal_terms)
+    relation_rule=sorted(relation_terms&rule_terms)
+    character_visible=bool(protagonist and re.search(r'\b'+re.escape(protagonist)+r'\b',frame_visual,re.I))
+    object_visible=object_support(obj,frame)['present'] is True
+    goal_visible=bool(facts['goal']['visibleInOpening'] and len(goal_frame)>=2)
+    anomaly_visible=bool(facts['opening']['anomalyPresent'])
+    trigger_visible=bool(facts['trigger']['visible'] and len(trigger_frame)>=2)
+    contact_visible=bool(re.search(r'\b(?:press\w*|plant\w*|embed\w*|rest\w*|contact\w*|touch\w*|grip\w*|hold\w*|clos\w*|cut\w*|push\w*|wipe\w*|iron\w*|sweep\w*|turn\w*|fold\w*)\b',frame_visual,re.I)
+        and len(trigger_frame)>=2)
+    interaction_visible=bool(character_visible and object_visible and trigger_visible
+        and trigger_rule and contact_visible)
+    goal_interference=bool(goal_visible and anomaly_visible and relation_goal
+        and relation_rule and len(goal_frame)>=2)
+    causal_link=bool(interaction_visible and anomaly_visible
+        and facts['opening']['causalRelationshipVisible'] and trigger_rule and trigger_frame)
+
+    # Compare explicit polarity on shared rule-effect terms. Unrelated negatives
+    # elsewhere in either source field are not a veto.
+    negation=re.compile(r'\b(?:not|never|no|cannot|can\s+not|can.t|doesn.t|do\s+not|fails?\s+to|without)\b',re.I)
+    def term_polarity(text,target_terms):
+        states={term:set() for term in target_terms}
+        for sentence in re.split(r'(?<=[.!?])\s+|\n+',text):
+            words=re.findall(r"[a-z']+",sentence.casefold())
+            for i,word in enumerate(words):
+                matched=meaningful(word)&target_terms
+                if matched:
+                    negative=bool(negation.search(' '.join(words[max(0,i-4):i])))
+                    for term in matched:states[term].add('NEGATIVE' if negative else 'POSITIVE')
+        return states
+    shared_effect=effect_terms&frame_terms
+    rule_polarity=term_polarity(rule,shared_effect)
+    frame_polarity=term_polarity(frame_visual,shared_effect)
+    explicit_conflicts=[dict(ruleTerm=term,rulePolarity=sorted(rule_polarity[term]),
+        openingPolarity=sorted(frame_polarity[term]),sourceField='frameZeroDescription')
+        for term in sorted(shared_effect) if rule_polarity[term] and frame_polarity[term]
+        and (('POSITIVE' in rule_polarity[term] and 'NEGATIVE' in frame_polarity[term])
+             or ('NEGATIVE' in rule_polarity[term] and 'POSITIVE' in frame_polarity[term]))]
+    rule_opening_agreement=bool(not explicit_conflicts and anomaly_visible and rule_frame and trigger_rule)
+    temporal=bool(motion or prior or requires_text or re.search(
+        r'\b(?:about to|begins? to|starts? to|will\s+\w+|then|next|afterwards|later|after\s+(?:he|she|they|it)\s+\w+|as soon as|once she|once he|before she|before he)\b',
+        frame_visual,re.I))
+    conditions=dict(
+        protagonistPresent=character_visible,
+        primaryObjectPresent=object_visible,
+        abnormalStateVisible=anomaly_visible,
+        interactionVisible=interaction_visible,
+        goalInterferenceVisible=goal_interference,
+        sourceCausalLinkSupported=causal_link,
+        ruleOpeningAgreement=rule_opening_agreement,
+        frameZeroOnly=True,
+        temporallyIndependent=not temporal,
+    )
+    eligible=bool(response.state=='RESPONSE_PRESENT_UNCLASSIFIED' and all(conditions.values()))
+    refs=lambda field,value: [dict(sourceField=field,sourceText=value,confidence='EXPLICIT_SOURCE')] if value else []
+    evidence=dict(
+        goal=dict(sourceFields=['everydayGoal','frameZeroDescription'],matches=goal_frame,
+            references=refs('everydayGoal',goal)+refs('frameZeroDescription',frame)),
+        interaction=dict(sourceFields=['protagonist','primaryObject','visibleTrigger','frameZeroDescription'],
+            matches=dict(triggerInFrame=trigger_frame,triggerInRule=trigger_rule,triggerActionInFrame=trigger_action,contactStateInFrame=contact_visible),
+            references=refs('protagonist',protagonist)+refs('primaryObject',obj)+refs('visibleTrigger',trigger)+refs('frameZeroDescription',frame)),
+        abnormalState=dict(sourceFields=['impossibleRule','frameZeroDescription'],matches=rule_frame,
+            references=refs('impossibleRule',rule)+refs('frameZeroDescription',frame)),
+        interference=dict(sourceFields=['everydayGoal','impossibleRule','goalRuleRelationship','frameZeroDescription'],
+            matches=dict(relationToGoal=relation_goal,relationToRule=relation_rule,goalInFrame=goal_frame),
+            references=refs('everydayGoal',goal)+refs('impossibleRule',rule)+refs('goalRuleRelationship',relation)+refs('frameZeroDescription',frame)),
+        causalRelationship=dict(sourceFields=['visibleTrigger','impossibleRule','frameZeroDescription'],
+            matches=dict(triggerInRule=trigger_rule,ruleEffectInFrame=rule_frame,triggerInFrame=trigger_frame),
+            references=refs('visibleTrigger',trigger)+refs('impossibleRule',rule)+refs('frameZeroDescription',frame)),
+        ruleOpeningAgreement=dict(status='CONTRADICTED' if explicit_conflicts else 'SUPPORTED' if rule_opening_agreement else 'UNRESOLVED',
+            conflicts=explicit_conflicts,references=refs('impossibleRule',rule)+refs('visibleTrigger',trigger)+refs('frameZeroDescription',frame)),
+        laterStoryEvidence=dict(used=False,sourceFields=['frameZeroDescription'],excludedFields=['beats','finalPayoff','loopPotential','rationale','provider suggestions']),
+        motionDependency=dict(independent=not temporal,requiresTextOrDialogue=requires_text,needsMotion=motion,needsPriorContext=prior,
+            temporalLanguagePresent=temporal),
+    )
+    missing=[key for key,value in conditions.items() if not value]
+    return dict(version=OPENING_EVIDENCE_COVERAGE_VERSION,eligible=eligible,used=eligible,
+        responseState=response.state,conditions=conditions,missingConditions=missing,evidence=evidence,
+        sourceScope='FRAME_ZERO_ONLY_SOURCE_TEXT; NO_OBSERVED_PIXELS_OR_LATER_STORY_EVIDENCE',
+        scorePolicy='Existing strong opening score branch (90/85) only when every source-support condition passes; no taxonomy label or score claim is accepted as evidence.')
+
+
+def opening_evidence(candidate,canonical,baseline,response=None):
     from .short_form_engine import _visual
+    from . import premise_naturalness as natural
     fields=canonical.fields;facts=canonical.facts;raw_frame=fields['frameZeroDescription'];frame=_visual(raw_frame);obj=object_support(fields['primaryObject'],raw_frame)
     requires_text=bool(re.search(r'caption|dialogue|narration|shouting bubble|speech bubble|reading text|text explains',raw_frame,re.I))
     source_short_name=fields['normalExpectation'].split()[0].casefold() if fields['normalExpectation'].split() else ''
@@ -90,8 +189,14 @@ def opening_evidence(candidate,canonical,baseline):
                          and facts['opening']['anomalyPresent'] and facts['opening']['causalRelationshipVisible'])
     legacy_static=bool(baseline['staticFrameLegibility'] is not None and baseline['staticFrameLegibility']>=65)
     still_supported=bool(not motion and not prior and not requires_text and character and obj['present'] and facts['goal']['visibleInOpening'] and facts['opening']['problemPresent'] and (source_contrast or legacy_static))
+    response=response or response_evidence(fields,canonical,baseline,natural.load_model())
+    fallback=_unclassified_still_fallback(candidate,canonical,fields,facts,response,frame,
+        motion=motion,prior=prior,requires_text=requires_text)
+    if fallback['used']:
+        still_supported=True
     classification=('SOURCE_MISSING' if not raw_frame else 'EVIDENCE_SOURCE_MISMATCH' if not frame else 'MOTION_DEPENDENT_OPENING' if motion else
         'CAUSAL_RELATION_NOT_VISIBLE' if not facts['opening']['causalRelationshipVisible'] or not still_supported else
+        'UNCLASSIFIED_RELATION_SOURCE_SUPPORTED' if fallback['used'] else
         'PRESENT_BUT_WEAK' if baseline['instantCausalLegibility']<60 else 'OTHER')
     return dict(frameZeroDescription=raw_frame,sourceFrameVisual=frame,requiresTextOrDialogue=requires_text,characterVisible=character,goalDeclared=facts['goal']['declared'],
         goalVisible=facts['goal']['visibleInOpening'],objectVisible=obj['present'],objectEvidence=obj,
@@ -106,8 +211,9 @@ def opening_evidence(candidate,canonical,baseline):
         openingQualityState='OPENING_LEGIBILITY_STRONG' if still_supported else 'OPENING_LEGIBILITY_NOT_ESTABLISHED',
         stillPropertyContrast=contrasts,explicitUsePose=use_pose,sourceFunctionalContrastSupported=source_contrast,
         blockerClassification=classification,
-        blockerReason=('Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged.' if raw_frame and not frame else 'Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.'),
+        blockerReason=('Source-supported unclassified still-frame relation: all frame-zero evidence conditions passed.' if fallback['used'] else 'Raw frame-zero source is present, but the existing visual-text sanitizer returned empty. This is extraction coverage, not absent source or proved poor opening. SFE remains unchanged.' if raw_frame and not frame else 'Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.'),
         evidenceRefs=facts['opening']['source'],
+        evidenceSupportedUnclassifiedFallback=fallback,
         scope='SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no.')
 
 
@@ -165,7 +271,7 @@ def assess(candidate,model,canonical):
     canonical.assert_candidate(candidate)
     baseline=natural.assess(candidate,model,canonical_creative_evidence=canonical)
     fields=canonical.fields;response=response_evidence(fields,canonical,baseline,model)
-    opening=opening_evidence(candidate,canonical,baseline)
+    opening=opening_evidence(candidate,canonical,baseline,response)
     quality=quality_evidence(fields,canonical,baseline,response,model)
     if opening['sourceFunctionalContrastSupported']:
         for dimension in ('expectedBehaviorContradiction','functionalIrony','physicalRelationship','triggerNaturalness'):
@@ -204,6 +310,12 @@ def assess(candidate,model,canonical):
         opening['openingQualityState']='OPENING_LEGIBILITY_STRONG'
         opening['blockerClassification']='OTHER'
         opening['blockerReason']='No opening blocker: source goal/use pose/contrasting state witness satisfies the existing strong branch.'
+    elif opening['evidenceSupportedUnclassifiedFallback']['used']:
+        # Reuse the existing strong-source branch points; eligibility is limited
+        # to unclassified mechanics with a complete frame-zero evidence receipt.
+        result['instantCausalLegibility']=90
+        result['staticFrameLegibility']=85
+        opening['openingQualityState']='OPENING_LEGIBILITY_STRONG'
     if result['instantCausalLegibility']>=60 and opening['stillCausalLegibility']!='SUPPORTED':
         result['instantCausalLegibility']=35 if canonical.facts['opening']['causalRelationshipVisible'] else 15
         result['staticFrameLegibility']=25 if canonical.facts['opening']['causalRelationshipVisible'] else 15

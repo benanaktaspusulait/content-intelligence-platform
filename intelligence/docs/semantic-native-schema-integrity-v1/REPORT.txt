@@ -1,0 +1,449 @@
+NATIVE SEMANTIC V2 SCHEMA INTEGRITY REPAIR V1
+
+RESULT
+Offline schema-integrity repair PASSED. Final provider root owns the needed definitions; all local references resolve. Candidate/beat meaning and creative validators are unchanged. The actual last-mile SDK request was validated and matches the corrected snapshot.
+Primary live classification:FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED. The one minimal-prompt corrected-schema request completed after78.444184s,returned2078bytes and finished with stop. However the returned JSON is NOT valid against the unchanged full contract:3 beats where4–5 are required,and durationSeconds24 where maximum20. No constraint was weakened,no returned content was repaired and no second request occurred.
+Transport completion and full-contract conformance are different results. A valid schema representation was sent; this single non-strict response did not satisfy it. The schema defect was real,but the probe does not prove it explains all prior execution failures or demonstrate creative model quality.
+
+1. EXACT SOURCE PATH / ROOT CAUSE — DOCUMENTED BEFORE PATCH
+SCHEMA PATH — DOCUMENTED BEFORE IMPLEMENTATION PATCH
+
+1. app/workflow/semantic_concept_provider.py declares SemanticBeat and SemanticIdea.beats:list[SemanticBeat]. Pydantic SemanticIdea.model_json_schema() generates $defs.SemanticBeat at its own document root and beats.items.$ref="#/$defs/SemanticBeat". The standalone canonical schema resolves this reference.
+2. app/workflow/semantic_live_experiment.py response_format() embeds the entire standalone candidate schema under root.properties.ideas.items. The candidate $defs moves with it to /properties/ideas/items/$defs. No string rewrite or root-definition preservation occurs. Nothing is deleted; root ownership is lost by embedding.
+3. Its native root contains type,additionalProperties,properties,required,but no $defs. The unchanged reference now appears at /properties/ideas/items/properties/beats/items/$ref and still points to document-root /$defs/SemanticBeat,which does not exist.
+4. request_arguments() attaches response_format. OpenAI mode=json_schema keeps it native. Experiment wrappers alter only array cardinality. CreativeCapabilityProvider.complete() deep-copies response_format and passes it to client.chat.completions.create. There is no repair before SDK invocation.
+5. Frozen historical manifests contain the legacy builder hash. Existing active-code approval scopes cover assessors/integrity adapters,not an unrestricted migration for this builder. The smallest history-safe repair is a new versioned native builder selected explicitly for corrected requests; frozen legacy builders and manifests remain exact for replay. No protection bypass or historical manifest edit will be made.
+6. Planned representation repair:pop candidate-root $defs into final envelope-root $defs; keep every creative property,required list,enum,default,array bound and every $ref string unchanged. Validate the final object and pin its hash again at the instance-local SDK-call boundary.
+
+Canonical source:SemanticBeat/SemanticIdea in app/workflow/semantic_concept_provider.py. Pydantic generates canonical.$defs.SemanticBeat and canonical.properties.beats.items.$ref="#/$defs/SemanticBeat". The standalone canonical document resolves it. Legacy response_format() in semantic_live_experiment.py inserts that entire document at native.properties.ideas.items without moving definitions to the final document root or rewriting root-local references. $defs is not deleted; its ownership changes from document root to an embedded item. The final native root lacks /$defs/SemanticBeat.
+OpenAI request_arguments() and CreativeCapabilityProvider.complete() then attach/deep-copy the native response_format without repairing scope. Cardinality wrappers only change minItems/maxItems. The broken final object,not the valid standalone source,was what prior native requests carried.
+
+2. COMPLETE OLD REFERENCE AUDIT
+[
+  {
+    "reference": "#/$defs/SemanticBeat",
+    "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+    "resolvedTargetPath": null,
+    "attemptedTargetPath": "/$defs/SemanticBeat",
+    "status": "UNRESOLVED",
+    "scope": "Final provider document root; no external URI retrieval"
+  }
+]
+The audit walks every dictionary/list,including unused definitions; there was exactly1 reference in the actual old schema. External/non-pointer forms are explicitly UNSUPPORTED_REFERENCE_FORM and never fetched; cycles are reported CYCLIC_REFERENCE by the generic auditor. The actual old/new semantic schema has no cycles.
+
+3. CHOSEN MINIMAL REPAIR / VERSION BOUNDARY
+A new semantic-native-schema-integrity-v1 builder deep-copies the unchanged canonical candidate schema,pops its $defs,and places those definitions at the actual native envelope root. Every creative property/type/required list/string bound/enum/default/array bound and every $ref string remains unchanged. This repairs ownership,not the logical contract.
+Frozen legacy experiment builders/manifests remain byte-identical for historical replay. New corrected native requests explicitly select native_response_format() from semantic_native_schema_integrity_v1 and the SDK-boundary guard. Legacy response_format() is not the corrected entry point and must not be reused for a new corrected live request. No active protected source or approval policy was modified; no hash migration/bypass was necessary. This is the existing additive/opt-in workflow convention,not a silent historical format rewrite.
+
+4. COMPLETE CORRECTED REFERENCE AUDIT
+[
+  {
+    "reference": "#/$defs/SemanticBeat",
+    "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+    "resolvedTargetPath": "/$defs/SemanticBeat",
+    "attemptedTargetPath": "/$defs/SemanticBeat",
+    "status": "RESOLVED",
+    "scope": "Final provider document root; no external URI retrieval"
+  }
+]
+Corrected target:/ $defs / SemanticBeat (JSON pointer /$defs/SemanticBeat). Unresolved0;unsupported0;cyclic0. Definition contents match the canonical SemanticBeat exactly.
+
+5. FINAL PROVIDER SCHEMA VALIDATION / EQUIVALENCE
+{
+  "step": "FINAL_PROVIDER_SCHEMA_VALIDATION",
+  "version": "semantic-native-schema-integrity-v1",
+  "syntax": "VALID_DRAFT202012",
+  "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "references": [
+    {
+      "reference": "#/$defs/SemanticBeat",
+      "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+      "resolvedTargetPath": "/$defs/SemanticBeat",
+      "attemptedTargetPath": "/$defs/SemanticBeat",
+      "status": "RESOLVED",
+      "scope": "Final provider document root; no external URI retrieval"
+    }
+  ],
+  "unresolvedReferences": 0,
+  "unsupportedReferences": 0,
+  "cyclicReferences": 0,
+  "serializationRoundTripIdentical": true
+}
+{
+  "candidateLogicalSchemaIdentical": true,
+  "canonicalLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+  "providerCandidateLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+  "compared": [
+    "all candidate/beat fields",
+    "field types",
+    "required lists",
+    "min/max bounds",
+    "enums",
+    "nullability",
+    "defaults",
+    "additionalProperties",
+    "annotations"
+  ],
+  "onlyRepresentationChange": "$defs ownership moved from embedded candidate root to actual provider root; $ref strings unchanged."
+}
+Equivalence expands only the actual acyclic local references and ignores definition storage location. The resulting complete candidate logical schemas are identical,including annotations/defaults. This covers all candidate/beat fields,types,required lists,min/max bounds,enum/nullability/additionalProperties behavior. JSON Schema does not encode every Python domain validator; those existing validators remain unchanged and the domain round-trip test exercises them on the representative fixture.
+
+6. OPENAI NATIVE COMPATIBILITY AUDIT
+{
+  "mode": "json_schema",
+  "strict": false,
+  "rootObject": true,
+  "objects": [
+    {
+      "path": "/",
+      "properties": [
+        "ideas"
+      ],
+      "required": [
+        "ideas"
+      ],
+      "requiredAreDeclared": true,
+      "allPropertiesRequired": true,
+      "additionalProperties": false
+    },
+    {
+      "path": "/properties/ideas/items",
+      "properties": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "dialogueNeed",
+        "providerRationale",
+        "durationSeconds"
+      ],
+      "required": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "providerRationale"
+      ],
+      "requiredAreDeclared": true,
+      "allPropertiesRequired": false,
+      "additionalProperties": false
+    },
+    {
+      "path": "/$defs/SemanticBeat",
+      "properties": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ],
+      "required": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ],
+      "requiredAreDeclared": true,
+      "allPropertiesRequired": true,
+      "additionalProperties": false
+    }
+  ],
+  "strictModeAssessment": "NOT_ENABLED; defaults/optional fields intentionally preserved; no claim of strict=true compatibility.",
+  "knownUnsupportedKeywordsFromRepository": null,
+  "limitation": "Repository adapter passes this JSON Schema directly. No undocumented remote keyword restriction or stricter contract is invented. Live acceptance remains unverified before probe."
+}
+Root object,declared required names,additionalProperties=false on all object schemas,arrays/items,enums and local references were checked. The existing adapter uses native json_schema with strict=false. Optional dialogueNeed/durationSeconds defaults are preserved. Strict=true compatibility is not asserted or enabled; no required/default/nullability transformation is made. Repository integration does not encode an exhaustive unsupported-keyword list,so undocumented remote restrictions are not invented. No browsing,new API or SDK was used.
+
+7. CORRECTED SCHEMA SNAPSHOT / METRICS
+{
+  "systemCharacters": 0,
+  "userCharacters": 0,
+  "totalRequestTextCharacters": 0,
+  "schemaCharacters": 2750,
+  "serializedRequestCharacters": 2929,
+  "serializedRequestUTF8Bytes": 2929,
+  "maxOutputTokens": 8192,
+  "mode": "json_schema",
+  "strict": false,
+  "localTokenEstimate": null,
+  "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+  "declaredProperties": 23,
+  "arraySchemas": 2,
+  "schemaJSONNestingDepth": 7,
+  "requiredByPath": [
+    {
+      "path": "/",
+      "fields": [
+        "ideas"
+      ]
+    },
+    {
+      "path": "/properties/ideas/items",
+      "fields": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "providerRationale"
+      ]
+    },
+    {
+      "path": "/$defs/SemanticBeat",
+      "fields": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ]
+    }
+  ],
+  "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference.",
+  "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "formatSha256": "d79bda9fc27a7f7a3a7550457476bfa8d77f9ed28965de9f5d84b93dd9e3abda",
+  "defsCount": 1,
+  "defsContainerCount": 1,
+  "refCount": 1,
+  "unresolvedRefCount": 0,
+  "structuredOutputMode": "json_schema",
+  "requiredCount": 21
+}
+Schema metrics are schema-only; dummy request message counts0 there do not describe the live prompt. Actual minimal request metrics are in actual-live-last-mile-proof.json. Native schema2750 compact characters,23 declared properties,21 required field occurrences,JSON-schema document nesting7,2 arrays,1 root $defs entry and1 local $ref. All resolve. Moving definitions changes schema-document depth from8 to7; semantic response nesting and all fields remain equivalent.
+Exact canonical JSON schema SHA-256:91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3
+Exact canonical JSON native-format SHA-256:d79bda9fc27a7f7a3a7550457476bfa8d77f9ed28965de9f5d84b93dd9e3abda
+The response-format name remains the inherited semantic_raw_ideas_v1 label; strict=false is unchanged. New integrity-version metadata is separate from candidate fields and Prompt V2.
+
+8. LAST-MILE OBJECT IS THE AUTHORITY
+LastMileSchemaGuard is installed on this one provider instance immediately before its original client.chat.completions.create. It compares the actual response_format hash with the expected corrected format,re-runs FINAL_PROVIDER_SCHEMA_VALIDATION on the actual kwargs schema,checks stable JSON serialization,records the exact SDK request,and rejects mutations after recording. It forwards once. No global provider refactor,response stream wrapper or alternate API is introduced.
+Actual installed SDK serialization was also tested offline through HTTPX MockTransport. The parsed wire request format equals the final validated object/hash. Negative tests reject a differently transformed broken format and a callback mutation after validation,before any SDK forward. This prevents source-schema-only validation from hiding a later broken envelope.
+Live last-mile request equals request-before-sdk.arguments exactly. Its schema hash matches the corrected snapshot and receipt;0 unresolved references were recorded immediately before the one SDK forward. See actual-live-last-mile-proof.json and the live final-provider-schema-validation.json.
+
+9. ROUND-TRIP FIXTURE / HISTORICAL COMPATIBILITY
+Existing mocked full candidate:19 fields,4 beats,final payoff,loop,environment,dialogue need,provider rationale and duration. Domain object→JSON→corrected full provider schema→existing parser→existing normalizer preserves the domain object and normalized candidate exactly. This is an offline mock fixture,not a new production concept. The live diagnostic response was not sent to that normalizer or creative assessors.
+{
+  "sources": [
+    {
+      "source": "mock-v1",
+      "rawCount": 15,
+      "domainValid": 8,
+      "existingDomainRejected": 7,
+      "correctedSchemaValid": 8
+    },
+    {
+      "source": "stored-live-v1",
+      "rawCount": 40,
+      "domainValid": 38,
+      "existingDomainRejected": 2,
+      "correctedSchemaValid": 38
+    },
+    {
+      "source": "mockV1",
+      "rawCount": 10,
+      "domainValid": 10,
+      "existingDomainRejected": 0,
+      "correctedSchemaValid": 10
+    },
+    {
+      "source": "mockV2",
+      "rawCount": 10,
+      "domainValid": 10,
+      "existingDomainRejected": 0,
+      "correctedSchemaValid": 10
+    }
+  ],
+  "totalPreviouslyDomainValid": 66,
+  "unexpectedNewStructuralRejections": 0,
+  "zeroByteLiveArtifacts": "Not structurally applicable; empty archived responses remain untouched."
+}
+All66 previously domain-valid items across the original mock corpus,stored V1 live corpus and paired V1/V2 mock controls remain structurally valid. Existing invalid entries retain existing parser/domain rejection behavior. Empty historical V2 responses are not structurally applicable and are not filled with mock data. No historical artifact was rewritten.
+
+10. EXACT TEST RESULTS
+32 new mock/offline tests passed in0.91s. Full regression:3050 passed,36 failed,2 skipped,3030 warnings in208.57s. Exact36 failure IDs match the accepted baseline; no new failures. Tests cover broken/correct references,hidden unused refs,unsupported refs,cycles,JSON pointer escaping,valid/missing/malformed/extra data,item/enum/nullability limits,equivalence drift,round-trip,history,actual SDK mock wire,last-mile mutation detection,one-call cap,authorization and UTC/monotonic normal/jump recording. Test live provider calls0.
+Initial development failures were two fixture-path mistakes corrected before the final run; no domain/scoring/schema constraint was changed to make tests pass. All final new source hashes remain equal to the pre-regression snapshot.
+
+11. EXACT LIVE PROBE CONFIGURATION
+Provider OpenAI;model gpt-6.1-sol;minimal system/user messages copied exactly from prior Probe E. Full Prompt V2 is absent. Candidate count1. Native response_format=json_schema;strict=false. Max_completion_tokens8192;reasoning_effort high;temperature omitted;tools and parallel/tool mode omitted;non-streaming. HTTPX connect15/read90/write60/pool15seconds;parent wall180seconds with bounded cleanup. SDK max_retries0. No global timeout increase or model-setting change.
+
+12. LIVE RESULT / CONTENT CONFORMANCE
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1767,
+    "prompt_tokens": 430,
+    "total_tokens": 2197,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 1288,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "providerRequestId": "chatcmpl-EdF2rcyPijWWgy33Ug2BcDpp4Jfln",
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 77699.13562500005,
+  "providerMetadata": {
+    "requestId": "chatcmpl-EdF2rcyPijWWgy33Ug2BcDpp4Jfln",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "requestIdMeaning": "Existing adapter exposes completion response.id,not the HTTP x-request-id.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "primaryClassification": "FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED",
+  "timing": {
+    "wallClockStartUTC": "2026-10-26T13:28:50.311113+00:00",
+    "wallClockEndUTC": "2026-10-26T13:30:08.755188+00:00",
+    "monotonicElapsedSeconds": 78.444184042,
+    "wallClockSpanSeconds": 78.444075,
+    "wallMinusMonotonicSeconds": -0.00010904200000538822,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2078,
+  "schemaCheck": {
+    "status": "INVALID_CORRECTED_FULL_SCHEMA",
+    "errors": [
+      {
+        "path": [
+          "ideas",
+          0,
+          "beats"
+        ],
+        "validator": "minItems"
+      },
+      {
+        "path": [
+          "ideas",
+          0,
+          "durationSeconds"
+        ],
+        "validator": "maximum"
+      }
+    ]
+  },
+  "requestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "creativePipelineCalls": 0,
+  "renders": 0,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192,
+  "causalityLimit": "This result tests the corrected schema in isolation. It cannot prove the broken reference caused all prior failures."
+}
+Provider SDK statusCOMPLETED,finish_reason stop. Usable model content2078bytes. One returned object has3 beats and durationSeconds24. Full corrected schema requires beats min4/max5 and duration min10/max20. These are representation/contract checks only; no creativity scoring or production assessment was performed.
+[
+  {
+    "instancePath": [
+      "ideas",
+      0,
+      "beats"
+    ],
+    "schemaPath": [
+      "properties",
+      "ideas",
+      "items",
+      "properties",
+      "beats",
+      "minItems"
+    ],
+    "validator": "minItems",
+    "expectedConstraint": 4,
+    "actualArrayLength": 3,
+    "actualNumericValue": null
+  },
+  {
+    "instancePath": [
+      "ideas",
+      0,
+      "durationSeconds"
+    ],
+    "schemaPath": [
+      "properties",
+      "ideas",
+      "items",
+      "properties",
+      "durationSeconds",
+      "maximum"
+    ],
+    "validator": "maximum",
+    "expectedConstraint": 20,
+    "actualArrayLength": null,
+    "actualNumericValue": 24
+  }
+]
+Native strict=false was retained from the existing integration. The output violated two preserved bounds. This observation does not justify declaring all remote schema constraints enforced or asserting that a strict-mode change would solve all execution issues. No schema weakening,output repair or repeat request was attempted.
+
+13. TIMING / USAGE / IDENTIFIERS
+Monotonic parent elapsed78.444184s;SDK complete() first usable content77.699136s. UTC span78.444075s;difference-0.000109s is inside1s tolerance. UTC start/end and monotonic values are separately stored and never rewritten. The deadline is controlled by monotonic time; neither read90 nor wall180 timer fired on this completed request.
+Input tokens430;output tokens1767;total2197. Provider output usage includes1288 reasoning tokens as reported. Actual provider-reported USD cost unavailable/null;no estimate. Completion response.id:chatcmpl-EdF2rcyPijWWgy33Ug2BcDpp4Jfln. This is the legacy adapter requestId field,not an exposed HTTP x-request-id. Exact HTTP status,headers timing and first streamed-token time are unavailable in the unchanged non-streaming adapter.
+
+14. IMMUTABILITY / REQUEST CAP
+All2244 protected pre-existing files remain byte-identical. Prompt V2,canonical domain model,creative validators,thresholds,taxonomies,scoring,history,legacy builders,integrity policies and frozen manifests are unchanged. New files provide only corrected representation,integrity guard,probe control,tests and a copied mock fixture.
+One logical request-start marker,one SDK-call marker andone SDK-forward marker exist. Guard.forwarded=1;SDK retries0;DeepSeek calls0;fallbacks0;creative pipeline calls0;production prompts0;renders0. There is no second probe or Full Prompt V2 execution.
+
+FILES ADDED
+{
+  "intelligence/ml-service/app/workflow/semantic_native_schema_integrity_v1.py": "55a6018bf30c04d3008045726aaa266a9a9698df80085bc6d2bc37edf459bba2",
+  "intelligence/ml-service/app/workflow/semantic_schema_integrity_probe_v1.py": "ab45a726e9e7122af86b85465b9bd0ba342e258258982a964e12ba6b32213629",
+  "intelligence/ml-service/tests/test_semantic_native_schema_integrity_v1.py": "2f635c03e513d5fb6e99e11f356b5e4099daceec80e064896b33361ea51b8ec3",
+  "intelligence/ml-service/tests/fixtures/semantic_schema_integrity_full_candidate_v1.json": "679e4563f91a5f630be83acc81480d080411b7ac5919b1c7f8b509044dd00171",
+  "intelligence/scripts/probe-repaired-semantic-schema-v1.py": "83c54fd202ad09183d7c4bc1d7d6e0336a4c19f79d0707bdc691950bc554c9e1"
+}
+
+REQUIRED26 DELIVERABLES
+1 Root cause:canonical root defs embedded under ideas.items while root-local ref staysunchanged. 2 Affected paths:trace and audits. 3 Complete old audit:1unresolved. 4 Repair:hoist defs to actual envelope root in versioned corrected builder. 5 Complete corrected audit:1resolved/0unresolved. 6 Semantic logical hashes identical. 7 Native compatibility audit above. 8 Metrics2750chars/23properties/21required/defs1/refs1/unresolved0. 9 Exact schema hash above. 10 Actual last-mile receipt/wire mock proof. 11 Round-trip fixture identical. 12 Tests32new. 13 Regression3050pass/exact36baselinefailures/2skips. 14 Prompt hash unchanged. 15 Creative validators unchanged. 16 History2244protectedfilesunchanged. 17 Live minimal E/model/timeouts/outputsame as previous except corrected schema. 18 Provider completion returned content,but bounds failed. 19 Elapsed78.444184s,timingconsistent. 20 Response2078bytes. 21 Tokens430/1767/2197,costunknown. 22 FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED. 23 One SDK forward. 24 Retry0. 25 DeepSeek0. 26 Render0.
+
+STOP
+Internally valid final-provider schema is established. The isolated request returned content but not a fully conforming payload. The broken reference is not claimed to explain every previous timeout/reset. No full V2 prompt,batch5/20/40,timeout increase,provider/model switch,creative validator change,response repair or media render followed.

@@ -1,0 +1,17 @@
+{
+  "status": "NOT_AVAILABLE_NO_USABLE_RESPONSE",
+  "requestedRawCount": 5,
+  "receivedUsableResponseBytes": 0,
+  "accessibleRawCandidates": 0,
+  "providerGeneratedCount": null,
+  "schemaValidCount": null,
+  "normalizedCount": null,
+  "conceptStories": null,
+  "Naturalness": null,
+  "admission": null,
+  "BeatGrammar": null,
+  "StructuredSFE": null,
+  "ranking": null,
+  "productionDisposition": null,
+  "blockers": null
+}

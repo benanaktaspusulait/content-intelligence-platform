@@ -1,0 +1,46 @@
+{
+  "primaryClassification": "UNRESOLVED_CONTRACT_FAILURE",
+  "matrix": [
+    {
+      "probe": "A",
+      "source": "STORED_NOT_RERUN",
+      "passed": true,
+      "durationSeconds": 3.2569406670008902,
+      "responseBytes": 15,
+      "errorClass": null
+    },
+    {
+      "probe": "B",
+      "source": "STORED_NOT_RERUN",
+      "passed": true,
+      "durationSeconds": 6.299788667001849,
+      "responseBytes": 124,
+      "errorClass": null
+    },
+    {
+      "probe": "C",
+      "source": "STORED_NOT_RERUN",
+      "passed": false,
+      "durationSeconds": 90.69867549999981,
+      "responseBytes": 0,
+      "errorClass": "APITimeoutError"
+    },
+    {
+      "probe": "D",
+      "source": "THIS_TASK_LIVE",
+      "passed": false,
+      "durationSeconds": 90.72335608399953,
+      "responseBytes": 0,
+      "errorClass": "APITimeoutError"
+    },
+    {
+      "probe": "E",
+      "source": "THIS_TASK_LIVE",
+      "passed": false,
+      "durationSeconds": 30.62924770799873,
+      "responseBytes": 0,
+      "errorClass": "APIConnectionError"
+    }
+  ],
+  "creativeQualityAssessment": null
+}

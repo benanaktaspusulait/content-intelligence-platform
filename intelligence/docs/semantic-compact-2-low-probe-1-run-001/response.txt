@@ -1,0 +1,46 @@
+{
+  "ideas": [
+    {
+      "ideaId": "seed42-01",
+      "title": "Sweeping Up the Rug",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Sweep a broad pile of crumbs off a small rug onto the bare floor.",
+      "primaryObject": "Broom",
+      "normalExpectation": "Pushing the broom across the rug moves the crumbs ahead of its bristles.",
+      "impossibleRule": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+      "visibleTrigger": "The broom's bristles pushing forward across the rug.",
+      "whyThisObject": "A broom must pass its bristles across the dirty surface to sweep it. Here, that necessary sweeping stroke wraps the surface around the head and buries the working bristles.",
+      "goalRuleRelationship": "Every stroke intended to remove crumbs instead packages part of the dirty rug around the broom.",
+      "frameZeroDescription": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug.",
+      "beats": [
+        {
+          "strategy": "Kiko continues the forward sweeping stroke toward the crumb pile.",
+          "visibleConsequence": "The bristles push across another length of rug, winding it around the broom head and trapping the front edge of the crumb pile inside the thickening roll.",
+          "newInformation": "The crumbs are being wrapped with the rug rather than swept onto the floor."
+        },
+        {
+          "strategy": "Kiko lifts the broom to shake the captured crumbs onto the bare floor.",
+          "visibleConsequence": "The previously wound rug remains wrapped around the broom head; its unwound half hangs beneath it as a broad curtain, with the remaining crumbs collected in its bottom fold.",
+          "newInformation": "Lifting the broom lifts the dirty surface instead of separating the crumbs from it."
+        },
+        {
+          "strategy": "Kiko lowers the hanging rug flat and plants one foot on its far edge before pushing the broom toward it.",
+          "visibleConsequence": "The bristles push across the flattened rug, winding another length around the head; the shrinking flat section draws Kiko's planted foot toward the roll.",
+          "newInformation": "Pinning the rug does not preserve a sweepable surface; Kiko must step off the last exposed strip."
+        },
+        {
+          "strategy": "Kiko steps onto the bare floor and gives the exposed final strip one short forward sweep.",
+          "visibleConsequence": "The bristles push across the last flat strip, winding it and the remaining crumbs around the broom head; the dirty flat rug becomes one bulky rug cylinder on the end of Kiko's broom, leaving only bare floor beneath it.",
+          "newInformation": "The whole dirty rug has been swept up, but none of its crumbs have been swept off."
+        }
+      ],
+      "finalPayoff": "The bristles push across the last flat strip, winding it and the remaining crumbs around the broom head; the dirty flat rug becomes one bulky rug cylinder on the end of Kiko's broom, leaving only bare floor beneath it.",
+      "suggestedPayoffFamily": "Wrong success",
+      "loopPotential": "No reset; end on Kiko holding the rug-wrapped broom above the bare floor.",
+      "environment": "A simple room with a small rectangular rug surrounded by bare floor.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "The broom's normal sweeping contact directly consumes the surface it needs to clean. Continued winding changes the problem from buried bristles to a hanging rug, then to the entire rug packaged around the broom.",
+      "durationSeconds": 15
+    }
+  ]
+}

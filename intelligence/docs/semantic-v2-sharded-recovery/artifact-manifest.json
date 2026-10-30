@@ -1,0 +1,22 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "REPORT.txt": "6ce465cf58c00ff9310d166e1bf0c096517ed344b46ad88725e73dbdaab54ce5",
+    "authorization.txt": "8fa0da40e5474979587ab800ced1394396f4f7aba10b55359956e108c6574953",
+    "changed-files.json": "da58f8ca8bd835d12159f347c77639769ab7ece944f1b7b3c0f9d6fc9da4f6d6",
+    "failure-reason-distribution.json": "25f0b21219c91e5fd40789480f3601d10142829cead1d70588b897edb3925f20",
+    "full-regression.log": "9ef797db53fdb106999101083eb712cc839cc6aeeec9467fd8d427532020a9ff",
+    "historical-evidence-proof.json": "348bda96d4a145b03be07cc36de510ac12d263c30f291d4779d985c8d71c0ca6",
+    "live-execution.log": "4a9518a0c4d215343895f2b3fa0a47ecd63b97142c8349c02cbdce374c91cc50",
+    "new-tests-final.log": "accb25e30ebc719b818a7293939392a590b1a8f728fbf1db9265d49fb6865c93",
+    "new-tests.log": "1d6c35dac33fc336b71c9d90682107c342bc2c89068fb9a1c848e14cd6328087",
+    "pre-live-verification.json": "a8a913d8a4b0647f8b15cc1a30ff987b93b7ab1155aa8cd84917a5d76fc97a4e",
+    "prompt-immutability-proof.json": "ff266eb803045c8efb8403e480673943a09f47cae4113ec01990270b5ddd51bd",
+    "protected-after-tests.json": "440ed29220a2fd22fd197c1dfdfc1a796a944b7f8485a723138c661b87aee214",
+    "protected-after.json": "440ed29220a2fd22fd197c1dfdfc1a796a944b7f8485a723138c661b87aee214",
+    "protected-before.json": "440ed29220a2fd22fd197c1dfdfc1a796a944b7f8485a723138c661b87aee214",
+    "source-hashes-before-regression.json": "9f0d7699ad2f45e2550bab38eb67a0f19bca34f8b16e9c266ac16145f07071d4",
+    "v1-v2-comparison.json": "af508743dc037b4da59f3d9679102fd834758325301a857753c9574a3e2a8224",
+    "verification.json": "6781fa9fdcc748a7bfb663d144b15922654381d278f2f6bea997492271c7c4e0"
+  }
+}

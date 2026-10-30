@@ -1,0 +1,11 @@
+{
+  "acceptedCreativeSystemIdentical": true,
+  "promptEnvelopeIdenticalToDeepSeek5Probe": true,
+  "promptVersion": "semantic-concept-prompt-v2",
+  "systemSha256": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+  "itemSchemaIdentical": true,
+  "structuredOutput": "json_schema",
+  "strict": false,
+  "onlyExecutionChanges": "Provider/model and existing native response-format mechanism; creative system and user payload unchanged.",
+  "requestCountCap": 1
+}

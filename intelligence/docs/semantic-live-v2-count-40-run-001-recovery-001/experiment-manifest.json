@@ -1,0 +1,29 @@
+{
+  "experimentId": "semantic-live-v2-count-40-run-001-recovery-001",
+  "status": "BOTH_SHARDS_FAILED",
+  "logicalRecoveryRequests": 2,
+  "files": {
+    "combined-analysis/all-returned-stories.txt": "a3c13196e66abbc2a6f41ff0038444bead47103cd6d52bff494dc69c0fe3e28e",
+    "combined-analysis/analysis-status.json": "16589f79095c7f962391ceb9fb3e381ef29114e1b4a9483ed2e5641b1be3e979",
+    "combined-analysis/combined-corpus.json": "811376eaa996218c965acbf378b85c0ec1611031de4d206ab5b247dceb6bc896",
+    "combined-analysis/cross-shard-duplicate-status.json": "8b5bda63539a47003c91d6bac7cc95fb60b718d7abbb02a04ce5c460550b3d01",
+    "combined-analysis/human-review-set.json": "08e17649c52bb075c638a84d96309bc3d71082dffb44d930b80ab558db482e2a",
+    "combined-analysis/shard-envelopes.json": "15747acec0d84235ad631deba6dd732a075d6e998b5d22bc182f016502a09074",
+    "combined-analysis/source-provenance.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "configuration.json": "199ace45eeb8aa35feeb2990a4d390e6fa0a5d2c2ca2e4c180c500316ba6d03b",
+    "plan.json": "3dcf22dd4fbc0d11d824b210bf8df2bef38897b645e5d80957eca27441d1ede0",
+    "shard-a/prompt.json": "142531bf7fcf0230dfee68c12400c65578ce04b353bae4ca9fb61c1c470cbca5",
+    "shard-a/provider-metadata.json": "6f9df31e9220a895c3889c327cca729f11f6e5279a6f83f47e1db6e7274603e1",
+    "shard-a/request-started.json": "bf26fe9381802128e9ac7faf6b3d0bfdb571434b0ffc19b2bb65aefc05568908",
+    "shard-a/request.json": "9ee2611604d6ea11cb0748b1e99b5e543d05166a15e935c19e02f48ea33e8719",
+    "shard-a/response.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "shard-a/sdk-call-started.json": "8a56234e52637db0d7da07b9d981843693766c1a827070dc2fcce178d8371586",
+    "shard-b/prompt.json": "c0141d07dceec58a56c27ec3862a1f229c6022b9cbee50aa1462a1627c978dd4",
+    "shard-b/provider-metadata.json": "180a9970c7f61756a07bd3cf7561cc4ef906b1c2ec81e8e089e4824375000caa",
+    "shard-b/request-started.json": "c5ca58138c7668fd46cfbec5cb37cb5468812e1ef1601ba013f4cd04f1d80993",
+    "shard-b/request.json": "1f92a131206669eaa206afae3d337fb4eb2745a0b3b9e7557cb472d543ccd0e3",
+    "shard-b/response.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "shard-b/sdk-call-started.json": "8a56234e52637db0d7da07b9d981843693766c1a827070dc2fcce178d8371586",
+    "transport-summary.json": "5f431ca620b9676a2f78637b1ecd1862c8b1ad3bfce8e10a2aa4a8f85d9540f4"
+  }
+}

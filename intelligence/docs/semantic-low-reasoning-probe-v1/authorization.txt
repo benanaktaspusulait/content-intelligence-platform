@@ -1,0 +1,483 @@
+Continue from the current repository state.
+
+Current accepted evidence:
+
+1. OpenAI transport works.
+2. Small native structured output works.
+3. Corrected full native Semantic V2 schema executes successfully.
+4. Prompt V2 Compact is semantically equivalent to V2 and approximately 51% smaller at total-message level.
+5. Yet:
+
+OpenAI / gpt-6.1-sol
++
+Prompt V2 Compact
++
+corrected full schema
++
+1 candidate
+
+resulted in:
+
+COMPACT_FULL_CONTRACT_TIMEOUT
+
+ReadTimeout
+~90.78 seconds
+0 usable response bytes.
+
+No retry/fallback occurred.
+
+Important comparison:
+
+MINIMAL PROMPT
++
+CORRECTED FULL SCHEMA
++
+1 candidate
+
+previously returned usable structured output in:
+
+~78.44 seconds.
+
+Therefore the remaining likely execution bottleneck is no longer schema integrity.
+
+A major remaining variable is MODEL REASONING / GENERATION LATENCY.
+
+This task isolates that variable.
+
+Do NOT modify Prompt V2 Compact.
+
+Do NOT modify schema.
+
+Do NOT modify validators.
+
+Do NOT generate multiple concepts.
+
+Do NOT render.
+
+======================================================================
+PRIMARY GOAL
+======================================================================
+
+Determine whether the single-candidate full creative contract can execute when using the lowest supported reasoning effort for the SAME model.
+
+Keep everything else constant.
+
+======================================================================
+1. MODEL MUST REMAIN THE SAME
+======================================================================
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Do NOT switch models in this task.
+
+======================================================================
+2. PROMPT MUST REMAIN IDENTICAL
+======================================================================
+
+Use exact accepted:
+
+semanticConceptPromptVersion = v2-compact
+
+Prompt hash must match the previous failed compact probe.
+
+No wording changes.
+
+======================================================================
+3. SCHEMA MUST REMAIN IDENTICAL
+======================================================================
+
+Use exact accepted corrected native full Semantic V2 schema.
+
+Schema hash must match previous accepted corrected schema.
+
+No schema simplification.
+
+======================================================================
+4. CANDIDATE COUNT
+======================================================================
+
+Request exactly:
+
+1 candidate
+
+No batch generation.
+
+======================================================================
+5. PRIMARY VARIABLE: REASONING EFFORT
+======================================================================
+
+Inspect the existing OpenAI adapter and previous failed request.
+
+Determine the exact reasoning configuration used previously.
+
+Report:
+
+previousReasoningEffort
+
+or:
+
+NOT_EXPLICITLY_CONFIGURED
+
+Then determine the LOWEST reasoning setting supported by the existing integration/model.
+
+Use that setting for this probe.
+
+Examples conceptually may include:
+
+minimal
+low
+none
+
+but DO NOT invent unsupported values.
+
+Use only a value already supported by the current SDK/model integration.
+
+======================================================================
+6. IF REASONING CANNOT BE CONFIGURED
+======================================================================
+
+If the current model/integration does not expose a controllable reasoning-effort parameter:
+
+DO NOT make a live request.
+
+Return:
+
+REASONING_EFFORT_NOT_CONTROLLABLE
+
+and report the supported model parameters.
+
+Stop.
+
+======================================================================
+7. ONE LIVE REQUEST MAXIMUM
+======================================================================
+
+Maximum live requests:
+
+1
+
+No retry.
+
+No second effort level.
+
+No fallback.
+
+No DeepSeek.
+
+No model switch.
+
+======================================================================
+8. KEEP ALL OTHER PARAMETERS CONSTANT
+======================================================================
+
+Compared with the previous failed compact-full-contract probe, preserve:
+
+provider
+
+model
+
+prompt
+
+schema
+
+candidate count
+
+structured-output mode
+
+streaming mode
+
+temperature if applicable
+
+timeouts
+
+request construction
+
+API/SDK path
+
+Only change:
+
+reasoning effort
+
+and only if supported.
+
+======================================================================
+9. OUTPUT TOKEN LIMIT
+======================================================================
+
+Use the same accepted single-candidate max-output-token limit as the previous compact probe.
+
+Do not lower it in the same experiment.
+
+We need a one-variable comparison.
+
+======================================================================
+10. TIMEOUTS
+======================================================================
+
+Keep the same bounded timeout configuration as the previous compact probe.
+
+Do not increase the read timeout.
+
+This is important.
+
+We want to know whether reduced reasoning completes within the already accepted envelope.
+
+======================================================================
+11. PRE-REQUEST DIFF
+======================================================================
+
+Before executing, generate a sanitized request comparison:
+
+PREVIOUS FAILED REQUEST
+
+vs
+
+NEW LOW-REASONING REQUEST
+
+Prove every relevant field is identical except the reasoning-effort parameter.
+
+Report any unavoidable SDK-generated differences separately.
+
+======================================================================
+12. LIVE METRICS
+======================================================================
+
+Record:
+
+request start
+
+headers timing if available
+
+first usable content timing if available
+
+total monotonic elapsed
+
+response bytes
+
+finish reason
+
+provider request ID
+
+input tokens
+
+output tokens
+
+reasoning tokens if provider exposes them
+
+total tokens
+
+provider-reported cost
+
+Do not estimate missing values.
+
+======================================================================
+13. SUCCESS CRITERIA
+======================================================================
+
+Execution success requires:
+
+- non-zero usable response
+- structured parsing success
+- native schema validation
+- normalization success
+
+Creative quality does NOT need to pass.
+
+======================================================================
+14. IF RESPONSE SUCCEEDS
+======================================================================
+
+Validate the returned candidate against the accepted creative contract:
+
+- one protagonist
+- one primary object
+- visible everyday goal
+- frame-zero problem
+- immutable rule
+- stable trigger
+- 4–5 beats
+- strategy/consequence/new information per beat
+- payoff present
+- payoff linked to same rule
+- maximum 20-second duration
+- silent-view legibility
+
+Do not repair failures.
+
+Then run the candidate through the accepted deterministic pipeline.
+
+======================================================================
+15. IF RESPONSE TIMES OUT
+======================================================================
+
+If it again reaches ReadTimeout:
+
+classify:
+
+LOW_REASONING_FULL_CONTRACT_TIMEOUT
+
+This would strongly indicate that reducing reasoning effort alone is insufficient.
+
+Do not make another call.
+
+======================================================================
+16. IF RESPONSE FAILS DIFFERENTLY
+======================================================================
+
+Record exact:
+
+exception
+exception chain
+response bytes
+duration
+
+Classify:
+
+LOW_REASONING_FULL_CONTRACT_PROVIDER_FAILURE
+
+or appropriate existing diagnostic class.
+
+Do not retry.
+
+======================================================================
+17. INTERPRETATION
+======================================================================
+
+If previous compact request:
+
+TIMEOUT
+
+and low-reasoning request:
+
+PASS
+
+then classify:
+
+REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR
+
+Use careful wording:
+
+lower reasoning effort allowed the same prompt/schema contract to complete within the same timeout envelope.
+
+Do NOT claim it was the only cause.
+
+If both timeout:
+
+classify:
+
+REASONING_REDUCTION_INSUFFICIENT
+
+Then the next decision should be model suitability / generation architecture, not further prompt trimming.
+
+======================================================================
+18. DO NOT TEST ANOTHER MODEL
+======================================================================
+
+Even if this fails:
+
+do NOT switch to another OpenAI model in this task.
+
+That is a separate controlled experiment.
+
+======================================================================
+19. TESTS
+======================================================================
+
+Before the live request add mocked tests for:
+
+reasoning-setting discovery
+
+unsupported reasoning case
+
+lowest-supported setting selection
+
+one-variable request diff
+
+request cap = 1
+
+success response
+
+timeout
+
+provider failure
+
+no retry
+
+no fallback
+
+Tests make zero external calls.
+
+======================================================================
+20. REGRESSION
+======================================================================
+
+Full regression target:
+
+same accepted 36 baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+21. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. previous reasoning configuration
+2. supported reasoning settings discovered
+3. selected lowest setting
+4. exact request diff versus previous failed compact probe
+5. proof prompt hash identical
+6. proof schema hash identical
+7. proof timeout identical
+8. proof output-token ceiling identical
+9. live request count
+10. duration
+11. response bytes
+12. usage including reasoning tokens if available
+13. execution classification
+14. returned candidate if available
+15. creative-contract validation if available
+16. pipeline result if available
+17. comparison with previous compact timeout
+18. test results
+19. proof no retry
+20. proof no fallback
+21. proof no DeepSeek
+22. proof no render
+23. proof Prompt V1/V2/v2-compact unchanged
+24. proof validators unchanged
+25. proof historical experiments unchanged
+26. proof only accepted baseline failures remain
+
+======================================================================
+22. STOP
+======================================================================
+
+After the ONE controlled low-reasoning probe:
+
+STOP.
+
+Do NOT:
+
+make another provider request
+
+change prompt
+
+change schema
+
+increase timeout
+
+switch model
+
+request multiple candidates
+
+generate production prompts
+
+render media.

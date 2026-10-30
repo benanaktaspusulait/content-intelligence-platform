@@ -1,0 +1,84 @@
+{
+  "stage": "BEFORE_FULL_PIPELINE",
+  "sourceCandidatePresent": true,
+  "declaredProtagonistFields": 1,
+  "declaredPrimaryObjectFields": 1,
+  "depictedProtagonistCount": null,
+  "depictedPrimaryObjectCount": null,
+  "countLimitation": "Scalar fields do not prove depicted actor/object counts; normalization checks canonical named actors, not every implied entity.",
+  "everydayGoalPresent": true,
+  "frameZeroDescriptionPresent": true,
+  "impossibleRulePresent": true,
+  "visibleTriggerPresent": true,
+  "payoffPresent": true,
+  "beatCount": 4,
+  "beatCountPassed": true,
+  "eachBeat": [
+    {
+      "number": 1,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko continues the forward sweeping stroke toward the crumb pile.",
+        "visibleConsequence": "The bristles push across another length of rug, winding it around the broom head and trapping the front edge of the crumb pile inside the thickening roll.",
+        "newInformation": "The crumbs are being wrapped with the rug rather than swept onto the floor."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 2,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko lifts the broom to shake the captured crumbs onto the bare floor.",
+        "visibleConsequence": "The previously wound rug remains wrapped around the broom head; its unwound half hangs beneath it as a broad curtain, with the remaining crumbs collected in its bottom fold.",
+        "newInformation": "Lifting the broom lifts the dirty surface instead of separating the crumbs from it."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 3,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko lowers the hanging rug flat and plants one foot on its far edge before pushing the broom toward it.",
+        "visibleConsequence": "The bristles push across the flattened rug, winding another length around the head; the shrinking flat section draws Kiko's planted foot toward the roll.",
+        "newInformation": "Pinning the rug does not preserve a sweepable surface; Kiko must step off the last exposed strip."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 4,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko steps onto the bare floor and gives the exposed final strip one short forward sweep.",
+        "visibleConsequence": "The bristles push across the last flat strip, winding it and the remaining crumbs around the broom head; the dirty flat rug becomes one bulky rug cylinder on the end of Kiko's broom, leaving only bare floor beneath it.",
+        "newInformation": "The whole dirty rug has been swept up, but none of its crumbs have been swept off."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    }
+  ],
+  "ruleConsistency": "AMBIGUOUS",
+  "ruleFindings": [],
+  "ruleConsistencyLimitation": "Existing source-constraint comparison can find explicit violations; no finding is not full semantic proof. Final source-supported status is reported with pipeline evidence.",
+  "duration": {
+    "supplied": true,
+    "declared": 15,
+    "effectiveLocalDefault": 15,
+    "rangePassed": true,
+    "target": 15,
+    "maximum": 20,
+    "renderMeasured": false
+  },
+  "finalPayoffEqualsLastConsequence": true,
+  "structuralContractPassed": true
+}

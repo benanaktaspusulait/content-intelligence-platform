@@ -1,0 +1,791 @@
+{
+  "domainFields": 19,
+  "beatCount": 4,
+  "allFieldsPresent": true,
+  "domainRoundTripIdentical": true,
+  "normalizedCandidateIdentical": true,
+  "normalizedCandidate": {
+    "candidateId": "sem1-56f8842b05ed6591",
+    "title": "Same-rule hammer control",
+    "protagonist": "Kiko",
+    "protagonistCharacterId": "00000000-0000-0000-0000-000000000002",
+    "everydayGoal": "Hang a picture frame",
+    "primaryObject": "Hammer",
+    "engineFamily": "UNCLASSIFIED_SEMANTIC_ENGINE",
+    "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+    "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+    "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko strikes the nail gently to hang the picture frame.. The nail bends away from the wall; the picture frame drops to the floor. A gentle hammer strike still bends the nail and blocks hanging.",
+    "finalPayoff": "Kiko Kiko places the picture frame on the shelf and gives the nail a final gentle strike.. The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging. The picture frame is displayed on the shelf while the bent nail points over it.",
+    "intendedDurationSeconds": 15.0,
+    "environment": "Living room wall",
+    "dialogueRequirement": "NONE",
+    "loopPotential": {
+      "type": "PROVIDER_SUGGESTION_UNVERIFIED",
+      "description": "No reset is assumed."
+    },
+    "generationSource": "SEMANTIC_V1",
+    "generationRunId": "concept-run-eea861d179e235a90cdb",
+    "providerName": "mock",
+    "providerModel": "schema-roundtrip-fixture",
+    "providerPromptVersion": "semantic-concept-prompt-v2",
+    "providerData": {
+      "ideaId": "mock-A",
+      "normalExpectation": "Hammering a nail drives it straight into wall.",
+      "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+      "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement.",
+      "suggestedPayoffFamily": "logical extreme",
+      "rawFrameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+      "rawFinalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging."
+    },
+    "provenance": {
+      "generationSource": "SEMANTIC_V1",
+      "adapterVersion": "semantic-plan-adapter-v1",
+      "providerPromptSha256": "offline-fixture-no-provider",
+      "rawIdeaSha256": "4c919014a24024ab78ad5c77206a076d161a30d51f7e37a34392e5caf1429727",
+      "rationaleScored": false
+    },
+    "productionNotes": [
+      "Semantic provider data is untrusted; deterministic analysis and human review required."
+    ],
+    "composition": {
+      "trigger": "UNSPECIFIED",
+      "stateTransition": "UNSUPPORTED_RESPONSE",
+      "objectCategory": "UNCLASSIFIED",
+      "goalFamily": "SEMANTIC_GOAL",
+      "engineFamily": "UNSUPPORTED_RESPONSE",
+      "escalationTopology": "SEMANTIC_SEQUENCE",
+      "payoffTopology": "UNCLASSIFIED"
+    },
+    "structuralPlan": {
+      "interactionType": "UNSPECIFIED",
+      "trigger": "UNSPECIFIED",
+      "transformationDirection": "UNSUPPORTED_RESPONSE",
+      "escalationTopology": "SEMANTIC_SEQUENCE",
+      "resolutionTopology": "UNKNOWN",
+      "finalSilhouetteTopology": "OFF_BALANCE",
+      "loopTopology": "UNVERIFIED"
+    },
+    "beats": [
+      {
+        "startSeconds": 0.0,
+        "endSeconds": 3.75,
+        "description": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him. Kiko Kiko strikes the nail gently to hang the picture frame.. The nail bends away from the wall; the picture frame drops to the floor. A gentle hammer strike still bends the nail and blocks hanging."
+      },
+      {
+        "startSeconds": 3.75,
+        "endSeconds": 7.5,
+        "description": "Kiko Kiko turns sideways and strikes the same nail from the other side.. The nail bends away from the wall again; the picture frame slides farther down. Changing the strike angle changes the hanging position but cannot seat the nail."
+      },
+      {
+        "startSeconds": 7.5,
+        "endSeconds": 11.25,
+        "description": "Kiko Kiko moves the picture frame below the curved nail and strikes down.. The nail bends farther away from the wall, pushing the picture frame onto the low shelf. The low placement leaves the picture frame resting beneath the bent nail."
+      },
+      {
+        "startSeconds": 11.25,
+        "endSeconds": 15.0,
+        "description": "Kiko Kiko places the picture frame on the shelf and gives the nail a final gentle strike.. The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging. The picture frame is displayed on the shelf while the bent nail points over it."
+      }
+    ],
+    "structuralFingerprint": {
+      "version": "short-concept-fingerprint-v1",
+      "dimensions": {
+        "goalType": "HANG",
+        "interactionType": "UNSPECIFIED",
+        "engineFamily": "UNCLASSIFIED_SEMANTIC_ENGINE",
+        "transformationDirection": "UNSUPPORTED_RESPONSE",
+        "trigger": "UNSPECIFIED",
+        "escalationTopology": "SEMANTIC_SEQUENCE",
+        "resolutionTopology": "UNKNOWN",
+        "finalSilhouetteTopology": "OFF_BALANCE",
+        "loopTopology": "UNVERIFIED"
+      },
+      "fullHash": "43e174691a55aec9d6a0d36ea3f29f22077ff54f9eb42063a8fdb5e866a3e564",
+      "coreHash": "e93f5586d2b838f69377b3259d7db7afd1e3f43ad944e41bcfd82342b1489393",
+      "supportedCoreDimensions": 5,
+      "evidenceKind": "LOCAL_AUTHORED_STRUCTURAL_PLAN",
+      "limitation": "Structural descriptors are not semantic verification. Goal nouns and optional loop wording cannot create a new causal engine."
+    },
+    "premiseNaturalness": {
+      "gateVersion": "premise-naturalness-v1",
+      "modelVersion": "affordance-expectations-v1",
+      "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+      "primaryExpectedBehaviors": [
+        "moves when handled"
+      ],
+      "expectedResponse": [
+        "moves when handled"
+      ],
+      "actualImpossibleResponse": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+      "responseType": "UNSUPPORTED_RESPONSE",
+      "contradictionType": null,
+      "expectationDistance": "ARBITRARY_DISCONNECT",
+      "premiseNaturalness": "BROKEN",
+      "premiseReviewStatus": "BROKEN",
+      "goalInterferenceType": "CONTRIVED",
+      "triggerNaturalness": 0,
+      "objectSpecificityScore": 0,
+      "objectSpecificity": "LOW",
+      "functionalIrony": "NONE",
+      "physicalPayoffPotential": 10,
+      "instantCausalLegibility": 15,
+      "staticFrameLegibility": 15,
+      "materialPropertyConnection": {
+        "property": null,
+        "supportedInObjectData": false
+      },
+      "whyThisObject": "No supported object-function dependency; a natural trigger alone is insufficient.",
+      "objectSwapTest": {
+        "classification": "GENERIC_ENGINE_APPLICATION",
+        "portableArchetypeFraction": 0.0,
+        "comparisons": [
+          {
+            "replacementArchetype": "ABSORBENT_TEXTILE",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "CLOSURE",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "DRAWING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "EATING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "ERASING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "FOOTWEAR",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "GROOMING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "PLACED_ITEM",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "POURING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "RETRIEVABLE_BALL",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "SEATING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "SLIDING_STORAGE",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          },
+          {
+            "replacementArchetype": "WASHING",
+            "functionalLogicPreserved": false,
+            "reason": "The original violated function is not preserved."
+          }
+        ],
+        "scope": "Configured archetype substitutions with the violated function held fixed; not semantic counterfactual proof."
+      },
+      "premiseEnergy": "LOW_ENERGY",
+      "admitted": false,
+      "flags": [
+        {
+          "code": "GENERIC_ENGINE_APPLICATION",
+          "reason": "The effect has insufficient supported dependence on this object function."
+        },
+        {
+          "code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO",
+          "reason": "The supplied opening does not support a clear use-to-functional-contradiction link."
+        }
+      ],
+      "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+      "limitations": [
+        "Curated expectation/response coverage; absence of a policy is a review/filter decision, not proof that an idea is bad.",
+        "Static-frame and causal legibility are text-plan estimates, not observed pixels. Object specificity is function-family dependence, not unique-object originality."
+      ]
+    },
+    "structuredBeatPlan": [
+      {
+        "beatNumber": 1,
+        "beatRole": "HOOK_PROBLEM",
+        "characterStrategy": "REDUCE_FORCE",
+        "trigger": "UNSPECIFIED",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail bends away from the wall; the picture frame drops to the floor.",
+        "characterConsequence": "A gentle hammer strike still bends the nail and blocks hanging.",
+        "bodyStateBefore": "NORMAL_CONTROL",
+        "bodyStateAfter": "LEANING",
+        "objectStateBefore": {
+          "kind": "USABLE_START",
+          "applicationCount": 0
+        },
+        "objectStateAfter": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 1
+        },
+        "spatialChange": {
+          "distanceToGoal": "FARTHER",
+          "environmentUse": "UNCHANGED",
+          "availableFreeSpace": "UNCHANGED"
+        },
+        "goalProgress": "FARTHER",
+        "newInformation": [
+          "INITIAL_CONTRADICTION",
+          "TACTIC:REDUCE_FORCE"
+        ],
+        "contactPattern": "WORKING_CONTACT",
+        "consequenceType": "CHARACTER_MOVES",
+        "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "NONE"
+      },
+      {
+        "beatNumber": 2,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "SWITCH_CONTACT_POINT",
+        "trigger": "UNSPECIFIED",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail bends away from the wall again; the picture frame slides farther down.",
+        "characterConsequence": "Changing the strike angle changes the hanging position but cannot seat the nail.",
+        "bodyStateBefore": "LEANING",
+        "bodyStateAfter": "OFF_BALANCE",
+        "objectStateBefore": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 1
+        },
+        "objectStateAfter": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 2
+        },
+        "spatialChange": {
+          "distanceToGoal": "FARTHER",
+          "environmentUse": "UNCHANGED",
+          "availableFreeSpace": "UNCHANGED"
+        },
+        "goalProgress": "FARTHER",
+        "newInformation": [
+          "TACTIC:SWITCH_CONTACT_POINT"
+        ],
+        "contactPattern": "ALTERNATE_CONTACT",
+        "consequenceType": "CHARACTER_MOVES",
+        "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "NONE"
+      },
+      {
+        "beatNumber": 3,
+        "beatRole": "TACTIC_CHANGE",
+        "characterStrategy": "DIRECT_USE",
+        "trigger": "UNSPECIFIED",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+        "characterConsequence": "The low placement leaves the picture frame resting beneath the bent nail.",
+        "bodyStateBefore": "OFF_BALANCE",
+        "bodyStateAfter": "OFF_BALANCE",
+        "objectStateBefore": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 2
+        },
+        "objectStateAfter": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 3
+        },
+        "spatialChange": {
+          "distanceToGoal": "FARTHER",
+          "environmentUse": "UNCHANGED",
+          "availableFreeSpace": "UNCHANGED"
+        },
+        "goalProgress": "FARTHER",
+        "newInformation": [
+          "TACTIC:DIRECT_USE"
+        ],
+        "contactPattern": "WORKING_CONTACT",
+        "consequenceType": "CHARACTER_MOVES",
+        "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+        "payoffContribution": "CAUSAL_CONSEQUENCE",
+        "payoffStateChange": "NONE"
+      },
+      {
+        "beatNumber": 4,
+        "beatRole": "PAYOFF",
+        "characterStrategy": "DIRECT_USE",
+        "trigger": "UNSPECIFIED",
+        "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "objectResponse": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+        "characterConsequence": "The picture frame is displayed on the shelf while the bent nail points over it.",
+        "bodyStateBefore": "OFF_BALANCE",
+        "bodyStateAfter": "OFF_BALANCE",
+        "objectStateBefore": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 3
+        },
+        "objectStateAfter": {
+          "kind": "UNSUPPORTED_RESPONSE",
+          "applicationCount": 4
+        },
+        "spatialChange": {
+          "distanceToGoal": "FARTHER",
+          "environmentUse": "UNCHANGED",
+          "availableFreeSpace": "UNCHANGED"
+        },
+        "goalProgress": "FARTHER",
+        "newInformation": [],
+        "contactPattern": "WORKING_CONTACT",
+        "consequenceType": "CHARACTER_MOVES",
+        "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+        "payoffContribution": "FINAL_RELATIONSHIP_CHANGE",
+        "payoffStateChange": "CHARACTER_ATTEMPTS_CONTROL"
+      }
+    ],
+    "beatGrammar": {
+      "version": "beat-grammar-v2",
+      "strategySequence": [
+        "REDUCE_FORCE",
+        "SWITCH_CONTACT_POINT",
+        "DIRECT_USE",
+        "DIRECT_USE"
+      ],
+      "strategyFamilySequence": [
+        "INPUT_MODULATION",
+        "CONTACT_TRANSFER",
+        "DIRECT_FORCE",
+        "DIRECT_FORCE"
+      ],
+      "uniqueStrategyCount": 3,
+      "strategyDiversityScore": 75.0,
+      "consequenceSequence": [
+        "CHARACTER_MOVES",
+        "CHARACTER_MOVES",
+        "CHARACTER_MOVES",
+        "CHARACTER_MOVES"
+      ],
+      "uniqueConsequenceCount": 1,
+      "consequenceDiversityScore": 25.0,
+      "bodyStateSequence": [
+        "LEANING",
+        "OFF_BALANCE",
+        "OFF_BALANCE",
+        "OFF_BALANCE"
+      ],
+      "bodyStateProgressionScore": 50.0,
+      "spatialProgressionScore": 14.29,
+      "informationGainScore": 75.0,
+      "attemptSignatures": [
+        {
+          "strategyType": "INPUT_MODULATION",
+          "triggerType": "UNSPECIFIED",
+          "contactPattern": "WORKING_CONTACT",
+          "bodyStateBefore": "NORMAL_CONTROL",
+          "bodyStateAfter": "LEANING",
+          "objectStateBefore": "USABLE_START",
+          "objectStateAfter": "UNSUPPORTED_RESPONSE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "consequenceType": "CHARACTER_MOVES",
+          "newInformation": [
+            "INITIAL_CONTRADICTION",
+            "TACTIC:REDUCE_FORCE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+          "goalDistanceChange": "FARTHER"
+        },
+        {
+          "strategyType": "CONTACT_TRANSFER",
+          "triggerType": "UNSPECIFIED",
+          "contactPattern": "ALTERNATE_CONTACT",
+          "bodyStateBefore": "LEANING",
+          "bodyStateAfter": "OFF_BALANCE",
+          "objectStateBefore": "UNSUPPORTED_RESPONSE",
+          "objectStateAfter": "UNSUPPORTED_RESPONSE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "consequenceType": "CHARACTER_MOVES",
+          "newInformation": [
+            "TACTIC:SWITCH_CONTACT_POINT"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+          "goalDistanceChange": "FARTHER"
+        },
+        {
+          "strategyType": "DIRECT_FORCE",
+          "triggerType": "UNSPECIFIED",
+          "contactPattern": "WORKING_CONTACT",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "objectStateBefore": "UNSUPPORTED_RESPONSE",
+          "objectStateAfter": "UNSUPPORTED_RESPONSE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "consequenceType": "CHARACTER_MOVES",
+          "newInformation": [
+            "TACTIC:DIRECT_USE"
+          ],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+          "goalDistanceChange": "FARTHER"
+        },
+        {
+          "strategyType": "DIRECT_FORCE",
+          "triggerType": "UNSPECIFIED",
+          "contactPattern": "WORKING_CONTACT",
+          "bodyStateBefore": "OFF_BALANCE",
+          "bodyStateAfter": "OFF_BALANCE",
+          "objectStateBefore": "UNSUPPORTED_RESPONSE",
+          "objectStateAfter": "UNSUPPORTED_RESPONSE",
+          "spatialChange": {
+            "distanceToGoal": "FARTHER",
+            "environmentUse": "UNCHANGED",
+            "availableFreeSpace": "UNCHANGED"
+          },
+          "consequenceType": "CHARACTER_MOVES",
+          "newInformation": [],
+          "relationshipAfter": "CHARACTER_ATTEMPTS_CONTROL",
+          "goalDistanceChange": "FARTHER"
+        }
+      ],
+      "attemptComparisons": [
+        {
+          "beats": [
+            1,
+            2
+          ],
+          "classification": "DISTINCT_ATTEMPT",
+          "similarity": 0.625,
+          "matchingDimensions": [
+            "triggerType",
+            "objectStateAfter",
+            "consequenceType",
+            "goalDistanceChange",
+            "relationshipAfter"
+          ],
+          "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+        },
+        {
+          "beats": [
+            1,
+            3
+          ],
+          "classification": "NEAR_DUPLICATE_ATTEMPT",
+          "similarity": 0.75,
+          "matchingDimensions": [
+            "triggerType",
+            "contactPattern",
+            "objectStateAfter",
+            "consequenceType",
+            "goalDistanceChange",
+            "relationshipAfter"
+          ],
+          "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+        },
+        {
+          "beats": [
+            1,
+            4
+          ],
+          "classification": "NEAR_DUPLICATE_ATTEMPT",
+          "similarity": 0.75,
+          "matchingDimensions": [
+            "triggerType",
+            "contactPattern",
+            "objectStateAfter",
+            "consequenceType",
+            "goalDistanceChange",
+            "relationshipAfter"
+          ],
+          "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+        },
+        {
+          "beats": [
+            2,
+            3
+          ],
+          "classification": "NEAR_DUPLICATE_ATTEMPT",
+          "similarity": 0.75,
+          "matchingDimensions": [
+            "triggerType",
+            "bodyStateAfter",
+            "objectStateAfter",
+            "consequenceType",
+            "goalDistanceChange",
+            "relationshipAfter"
+          ],
+          "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+        },
+        {
+          "beats": [
+            2,
+            4
+          ],
+          "classification": "NEAR_DUPLICATE_ATTEMPT",
+          "similarity": 0.75,
+          "matchingDimensions": [
+            "triggerType",
+            "bodyStateAfter",
+            "objectStateAfter",
+            "consequenceType",
+            "goalDistanceChange",
+            "relationshipAfter"
+          ],
+          "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+        },
+        {
+          "beats": [
+            3,
+            4
+          ],
+          "classification": "IDENTICAL_ATTEMPT",
+          "similarity": 1.0,
+          "matchingDimensions": [
+            "strategyType",
+            "triggerType",
+            "contactPattern",
+            "bodyStateAfter",
+            "objectStateAfter",
+            "consequenceType",
+            "goalDistanceChange",
+            "relationshipAfter"
+          ],
+          "limitation": "Structured attempt comparison; physical state evidence, not text similarity."
+        }
+      ],
+      "nearDuplicateAttemptRate": 0.833333,
+      "payoffDistance": 0.0,
+      "payoffStateChange": "CHARACTER_ATTEMPTS_CONTROL",
+      "payoffEvidence": {
+        "distance": 0.0,
+        "comparisons": [
+          {
+            "comparedWithBeat": 2,
+            "distance": 0.0,
+            "changedDimensions": []
+          },
+          {
+            "comparedWithBeat": 3,
+            "distance": 0.0,
+            "changedDimensions": []
+          }
+        ],
+        "stateChange": "CHARACTER_ATTEMPTS_CONTROL",
+        "magnitudeOnlyDoesNotCount": true
+      },
+      "beatGrammarQuality": "MECHANICAL",
+      "flags": [
+        {
+          "code": "LOW_CONSEQUENCE_DIVERSITY"
+        },
+        {
+          "code": "NEAR_DUPLICATE_ATTEMPTS",
+          "pairs": [
+            [
+              1,
+              3
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "code": "NON_PROGRESSIVE_BEAT",
+          "beatNumber": 4
+        },
+        {
+          "code": "LOW_INFORMATION_GAIN"
+        },
+        {
+          "code": "LOW_PAYOFF_DISTANCE"
+        }
+      ],
+      "productionFeasibility": {
+        "score": 100,
+        "flags": [],
+        "evidenceStatus": "PLANNED_CONTACT_COMPLEXITY_SCREEN_NOT_RENDER_VERIFICATION"
+      },
+      "scoreUse": "NON_CANONICAL_GENERATION_REVIEW_NOT_RETENTION",
+      "adapterVersion": "semantic-plan-adapter-v1"
+    },
+    "storyShapeFingerprint": {
+      "version": "creative-shape-v1",
+      "dimensions": {
+        "openingState": "BLOCKED",
+        "goalStateSequence": [
+          "BLOCKED",
+          "FARTHER",
+          "FARTHER",
+          "FARTHER"
+        ],
+        "controlStateSequence": [
+          "OBJECT_RESISTS",
+          "OBJECT_RESISTS",
+          "OBJECT_RESISTS",
+          "OBJECT_RESISTS"
+        ],
+        "strategyRoleSequence": [
+          "MODULATE_INPUT",
+          "ADAPT_CONTACT",
+          "ESTABLISH",
+          "ESTABLISH"
+        ],
+        "successDistanceSequence": [
+          "BLOCKED",
+          "FARTHER",
+          "FARTHER",
+          "FARTHER"
+        ],
+        "bodyStateSequence": [
+          "LEANING",
+          "OFF_BALANCE",
+          "OFF_BALANCE",
+          "OFF_BALANCE"
+        ],
+        "environmentUsageSequence": [
+          "LOCAL",
+          "LOCAL",
+          "LOCAL",
+          "LOCAL"
+        ],
+        "falseSuccessPosition": [],
+        "payoffMechanism": "UNKNOWN",
+        "finalCharacterObjectRelation": "UNKNOWN",
+        "loopMechanism": "UNKNOWN",
+        "temporalShape": [
+          "EARLY:PROBLEM",
+          "MIDDLE:TACTIC_CHANGE",
+          "LATE:TACTIC_CHANGE",
+          "LATE:PAYOFF"
+        ]
+      },
+      "shapeHash": "b986d854c05e9bb11ccb775712cc42d9e2142a178992921620c64ef715475810",
+      "macroShapeHash": "d4690155a61346f3fbac90b8092adaf75b044a76d1d9992ae6cc8ba353178fc7",
+      "strategySequenceFingerprint": "66468b039cd4db8838cbb11af4de6684007c9101d94ce5793f0b9bf6a6a2bc2f",
+      "payoffFamily": "UNKNOWN",
+      "finalRelationship": "UNKNOWN",
+      "falseSuccessBeat4": false,
+      "temporaryStopTrigger": false,
+      "annotationProvenance": "STRUCTURED_PLAN",
+      "scope": "NON_CANONICAL_PLANNED_SEQUENCE_NOT_SEMANTIC_EQUIVALENCE"
+    },
+    "visualFingerprint": {
+      "characterPoseFamily": "OFF_BALANCE",
+      "objectRelativePosition": "WORKING_CONTACT",
+      "dominantDirection": "UNSUPPORTED_RESPONSE",
+      "objectScaleRelation": "STABLE",
+      "characterObjectContact": "WORKING_CONTACT",
+      "finalFrameComposition": "UNKNOWN",
+      "movementAxis": "PLANNED_SEQUENCE",
+      "environmentInteraction": "LOCAL_WORK_AREA"
+    },
+    "escalationCurve": [
+      {
+        "beatIndex": 1,
+        "sourceRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "stateTransition": "UNSUPPORTED_RESPONSE",
+        "transitionApplication": 1
+      },
+      {
+        "beatIndex": 2,
+        "sourceRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "stateTransition": "UNSUPPORTED_RESPONSE",
+        "transitionApplication": 2
+      },
+      {
+        "beatIndex": 3,
+        "sourceRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "stateTransition": "UNSUPPORTED_RESPONSE",
+        "transitionApplication": 3
+      },
+      {
+        "beatIndex": 4,
+        "sourceRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+        "stateTransition": "UNSUPPORTED_RESPONSE",
+        "transitionApplication": 4
+      }
+    ],
+    "historicalCreativeTerritory": {
+      "historicalCreativeTerritoryRisk": "LOW",
+      "closestHistoricalCreativeTerritory": {
+        "referenceId": "sticky-ball-01",
+        "similarity": 0.1,
+        "matchingAxes": [
+          "openingRelation"
+        ],
+        "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+        "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"
+      },
+      "plannedSceneSignature": {
+        "objectCategory": "UNKNOWN",
+        "goal": "UNKNOWN",
+        "openingRelation": "USE_BLOCKED",
+        "dominantTransformation": "UNSUPPORTED_RESPONSE",
+        "finalRelation": "UNKNOWN",
+        "silhouetteTopology": "OFF_BALANCE"
+      },
+      "comparisons": [
+        {
+          "referenceId": "upside-chair-01",
+          "similarity": 0.1,
+          "matchingAxes": [
+            "openingRelation"
+          ],
+          "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/upside-chair-01.md",
+          "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a"
+        },
+        {
+          "referenceId": "sticky-ball-01",
+          "similarity": 0.1,
+          "matchingAxes": [
+            "openingRelation"
+          ],
+          "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+          "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"
+        }
+      ],
+      "evidenceKind": "NEW_STRUCTURAL_ANNOTATION_OF_TWO_FROZEN_PROMPTS_NOT_PIXELS_OR_WINNER_PERFORMANCE",
+      "canonicalHistoricalMetricsChanged": false
+    }
+  },
+  "fixtureScope": "Existing mocked story only; no live concept is sent to the normalizer or creative assessors.",
+  "providerCalls": 0
+}

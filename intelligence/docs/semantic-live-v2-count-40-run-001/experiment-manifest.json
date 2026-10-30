@@ -1,0 +1,19 @@
+{
+  "experimentId": "semantic-live-v2-count-40-run-001",
+  "status": "FAILED",
+  "requestAttempts": 1,
+  "usableResponseBytes": 0,
+  "files": {
+    "live-attempt/configuration.json": "eb5d1b6d82722c49f7785f6d575e08fc7344e2e2fb1865d0406a7213931bb57e",
+    "live-attempt/preflight.json": "f0704dbf42407d12e7478eb3e399d68a5c46a6551b5b51de7e193630c562c382",
+    "live-attempt/prompt.json": "1bd4d7d6e4d080e4da0230a0e31b8441fd4a62b17580eff802acff694c050ee1",
+    "live-attempt/provider-metadata.json": "99c0fb97848e80cd7fb529f5483ab72d954c842b0b2d33984c5c7f760994d25a",
+    "live-attempt/request-started.json": "ff85f63857ad8ba6a97e6d24218b23083de6898a7e07ef3a028cbde116ecc0b6",
+    "live-attempt/request.json": "3e24fd38c0f732d402760186a9385e132d121b8dbfd0b9ba6314482eea1fe804",
+    "live-attempt/response.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "live-attempt/transport-manifest.json": "414796801749f35d275694d40a04121552043672142b316d54839c7b1113b82a",
+    "offline-status/all-40-ideas-NOT_AVAILABLE.txt": "ee2bdcd8093125d7acfd1ac5420387d44a3d4eab4857f7304004fd0ec81ceb43",
+    "offline-status/analysis-status.json": "f1519dda45da239e32e7e63fecb0e4de52e7ae5589fea29b2970d75201076874",
+    "offline-status/human-review-set.json": "9bc4ae247641e29919253f698aece24d77ee29904a380c553d8a3efb5abf80a4"
+  }
+}

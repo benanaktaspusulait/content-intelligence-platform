@@ -1,0 +1,817 @@
+Continue from the current repository state.
+
+Semantic Concept Prompt V2 is IMPLEMENTED and ACCEPTED.
+
+Implementation verification:
+
+- 22 new tests passed
+- full regression: 2949 passed
+- exactly the same accepted 36 baseline failures remain
+- 2 skips remain
+- 1984 existing protected files remained unchanged
+
+The first attempted live V2 execution used:
+
+Provider:
+DeepSeek
+
+Model:
+deepseek-v4-pro
+
+Target:
+40 concepts
+
+Result:
+APITimeoutError
+
+No provider response was received.
+
+Therefore:
+
+- no V2 concepts were generated
+- no V2 creative evaluation exists
+- no live HUMAN_REVIEW_SET exists
+- no token usage is available
+- no provider-reported cost is available
+- no render occurred
+- no retry occurred
+
+IMPORTANT:
+
+Do NOT interpret this timeout as a Prompt V2 creative failure.
+
+Do NOT change Prompt V2.
+
+Do NOT change validators.
+
+Do NOT change scoring.
+
+Do NOT change taxonomies.
+
+This task is ONLY to recover the controlled live experiment using a bounded execution strategy.
+
+======================================================================
+1. ROOT CAUSE ASSUMPTION
+======================================================================
+
+Treat the previous failure as an execution-envelope failure unless evidence proves otherwise.
+
+The previous V1 live request produced a very large response.
+
+A single request for approximately 40 fully structured concepts may exceed practical response-time/output limits.
+
+Do NOT shorten the creative requirements merely to make the request easier.
+
+Instead split the live experiment into two bounded shards.
+
+======================================================================
+2. NEW LIVE EXECUTION PLAN
+======================================================================
+
+Perform ONE logical V2 experiment consisting of:
+
+SHARD A:
+20 requested raw concepts
+
+SHARD B:
+20 requested raw concepts
+
+Maximum live provider requests:
+
+2
+
+Exactly two planned requests are allowed.
+
+No third request.
+
+No retry loop.
+
+No "keep generating until 40 valid."
+
+If one shard fails:
+
+preserve the successful shard and report the failed shard.
+
+Do not issue a replacement third call.
+
+======================================================================
+3. SAME EXPERIMENT, TWO SHARDS
+======================================================================
+
+Treat both requests as part of the same experiment:
+
+semantic-live-v2-count-40-run-001
+
+or use the existing repository-safe experiment identity if the failed attempt already owns that identifier.
+
+Preserve the original timed-out attempt as immutable evidence.
+
+Do NOT overwrite it.
+
+Suggested structure:
+
+semantic-live-v2-count-40-run-001/
+    failed-attempt-001/
+    shard-a/
+    shard-b/
+    combined-analysis/
+
+Follow repository conventions.
+
+======================================================================
+4. PROMPT MUST REMAIN V2
+======================================================================
+
+Use the exact accepted:
+
+semanticConceptPromptVersion = "v2"
+
+Do NOT create V2.1 solely because execution is split.
+
+The creative prompt text must remain unchanged.
+
+Only request-level batch metadata may differ:
+
+Shard A:
+requestedCandidateCount = 20
+
+Shard B:
+requestedCandidateCount = 20
+
+======================================================================
+5. PROVIDER / MODEL MUST REMAIN THE SAME
+======================================================================
+
+Use:
+
+DeepSeek
+deepseek-v4-pro
+
+Do NOT change model during this experiment.
+
+Otherwise V1/V2 comparison becomes confounded by a provider/model change.
+
+======================================================================
+6. SHARD INDEPENDENCE
+======================================================================
+
+Each shard should independently receive the complete V2 creative instructions.
+
+Do NOT tell Shard B what Shard A generated.
+
+Do NOT ask the provider to compare or deduplicate against the other shard.
+
+Cross-shard deduplication and diversity analysis belong to the deterministic downstream pipeline.
+
+======================================================================
+7. IDS
+======================================================================
+
+Ensure globally unique idea IDs.
+
+For example:
+
+v2-a-001 ... v2-a-020
+
+v2-b-001 ... v2-b-020
+
+or equivalent repository-safe IDs.
+
+Do not rely on provider-generated duplicate IDs without normalization.
+
+======================================================================
+8. TIMEOUT CONFIGURATION
+======================================================================
+
+Inspect the existing provider timeout configuration.
+
+If the previous timeout was caused by an obviously inappropriate client timeout for long structured generation, allow a narrowly scoped live-experiment timeout configuration.
+
+Do NOT globally increase application timeouts.
+
+Do NOT create unlimited waits.
+
+Record the exact timeout used for each shard.
+
+Do not modify creative behavior.
+
+======================================================================
+9. OUTPUT TOKEN BOUNDS
+======================================================================
+
+Use an explicit output-token ceiling appropriate for approximately 20 structured concepts.
+
+Do not request an effectively unlimited response.
+
+Record:
+
+max output tokens
+actual output tokens if provider reports them
+
+The ceiling must be high enough to preserve the full existing schema.
+
+Do NOT truncate candidates intentionally to save cost.
+
+======================================================================
+10. NO HIDDEN RETRY
+======================================================================
+
+Critical:
+
+Provider SDK automatic retry behavior must be understood and bounded.
+
+For this experiment:
+
+logical provider calls = 2 maximum.
+
+If SDK performs transport retries internally, record them if observable.
+
+Prefer disabling automatic retry for the explicit controlled experiment if repository/provider abstraction permits safely.
+
+Do not allow one logical shard to silently become many paid requests.
+
+======================================================================
+11. FAILURE HANDLING
+======================================================================
+
+For each shard independently record:
+
+REQUEST_STARTED
+REQUEST_COMPLETED
+
+or:
+
+REQUEST_FAILED
+
+If failed record:
+
+exception type
+safe error message
+timeout configuration
+request metadata
+
+Never fabricate response content.
+
+======================================================================
+12. NO CROSS-SHARD REPAIR
+======================================================================
+
+Suppose:
+
+Shard A returns 18 usable concepts
+Shard B returns 17 usable concepts
+
+Combined raw count = 35.
+
+Analyze 35.
+
+Do NOT issue another call to reach 40.
+
+The target is approximately 40, not exactly 40 at any cost.
+
+======================================================================
+13. PRESERVE RAW RESPONSES
+======================================================================
+
+Persist separately:
+
+Shard A exact request
+Shard A exact raw response
+
+Shard B exact request
+Shard B exact raw response
+
+Then create a deterministic combined corpus.
+
+Do not merge raw provider strings in a way that destroys provenance.
+
+======================================================================
+14. PROVENANCE
+======================================================================
+
+Every candidate must preserve:
+
+generationSource = SEMANTIC_V2
+
+provider
+model
+promptVersion = v2
+
+experimentId
+
+shardId = A or B
+
+providerRequestId if available
+
+candidateOrdinalWithinShard
+
+======================================================================
+15. COMBINED NORMALIZATION
+======================================================================
+
+After both planned calls finish:
+
+combine all returned raw candidates
+
+then run normal:
+
+schema validation
+normalization
+canonical evidence creation
+
+Do not normalize one shard differently from the other.
+
+======================================================================
+16. CROSS-SHARD DUPLICATE DETECTION
+======================================================================
+
+Run existing duplicate / fingerprint / Creative Shape logic across the COMBINED corpus.
+
+This is important.
+
+Two independently generated shards may produce concept duplicates.
+
+Do not treat shard boundaries as diversity boundaries.
+
+======================================================================
+17. COMPLETE CURRENT PIPELINE
+======================================================================
+
+Run the combined V2 corpus through the current accepted pipeline unchanged:
+
+schema validation
+
+normalization
+
+canonical evidence
+
+Premise Naturalness
+
+Evidence-Supported Premise Admission V2
+
+Beat Grammar with unclassified consequence support
+
+Structured SHORT_FORM_ENGINE
+
+Creative Shape
+
+historical territory
+
+ranking
+
+production preselection
+
+No V2-specific scoring bonus.
+
+======================================================================
+18. RULE CONSISTENCY ANALYSIS
+======================================================================
+
+Because Prompt V2 was specifically designed to address rule mutation, report for every candidate:
+
+RULE_CONSISTENT
+
+RULE_INCONSISTENT
+
+AMBIGUOUS
+
+If inconsistent, show:
+
+stated rule
+offending beat
+offending behavior
+
+This must be deterministic downstream analysis where possible.
+
+Do not trust provider self-report.
+
+======================================================================
+19. OPENING ANALYSIS
+======================================================================
+
+Prompt V2 also targeted frame-zero quality.
+
+Report:
+
+opening score
+
+character visible
+goal visible
+object visible
+problem visible
+impossible relationship visible
+motion required
+prior context required
+
+for all normalized candidates.
+
+======================================================================
+20. PAYOFF-RULE LINKAGE
+======================================================================
+
+For every candidate report:
+
+payoff present?
+
+payoff rule-linked?
+
+payoff state-changing?
+
+payoff introduces new rule?
+
+This is one of the main V2 evaluation metrics.
+
+======================================================================
+21. V1 VS V2 COMPARISON
+======================================================================
+
+Compare against the stored V1 live corpus.
+
+V1 known baseline:
+
+40 raw requested
+
+38 schema-valid
+
+33 normalized
+
+Structured SFE mean:
+59.61
+
+SFE PASS:
+4
+
+production candidates:
+0
+
+Compare V2 combined corpus on:
+
+raw yield
+
+schema validity
+
+normalization yield
+
+opening score distribution
+
+opening-supported count
+
+rule-consistency rate
+
+supported causal beat ratio
+
+payoff-rule linkage
+
+Beat Grammar distribution
+
+Structured SFE:
+mean
+median
+range
+PASS / REVISION / REJECT
+
+premise admission
+
+ranking eligibility
+
+production-admissible count
+
+production slate size
+
+Do NOT claim statistical proof from one run.
+
+======================================================================
+22. MOST IMPORTANT FAILURE COUNTS
+======================================================================
+
+Report:
+
+RULE_INCONSISTENCY
+
+OPENING_EVIDENCE_INSUFFICIENT
+
+PREMISE_NOT_ADMITTED
+
+ARBITRARY_MAGIC
+
+WEAK_OBJECT_SPECIFICITY
+
+WEAK_CAUSAL_PROGRESSION
+
+MECHANICAL_BEATS
+
+PAYOFF_NOT_RULE_LINKED
+
+NEW_RULE_IN_PAYOFF
+
+HISTORICAL_COLLISION
+
+CREATIVE_SHAPE_RISK
+
+PRODUCTION_FEASIBILITY
+
+======================================================================
+23. HUMAN_REVIEW_SET
+======================================================================
+
+Build the V2 HUMAN_REVIEW_SET using the already accepted review policy.
+
+Include:
+
+- production candidates
+- ranking eligible candidates
+- SFE PASS candidates
+- admitted concepts blocked by one remaining quality gate
+- genuinely novel unclassified mechanics with otherwise strong evidence
+
+Do NOT invent KEEP / KILL decisions.
+
+======================================================================
+24. COMPLETE HUMAN-READABLE STORIES
+======================================================================
+
+For every concept returned by Shard A and Shard B provide:
+
+ID
+SHARD
+TITLE
+PROTAGONIST
+GOAL
+OBJECT
+NORMAL EXPECTATION
+RULE
+TRIGGER
+WHY THIS OBJECT
+FRAME ZERO
+
+BEAT 1
+BEAT 2
+BEAT 3
+BEAT 4
+BEAT 5 if present
+
+PAYOFF
+
+Then:
+
+rule-consistency result
+opening result
+Naturalness
+admission
+Beat Grammar
+SFE
+ranking
+production disposition
+exact blockers
+
+Do not output only finalists.
+
+======================================================================
+25. REVIEW CARDS
+======================================================================
+
+For every HUMAN_REVIEW_SET member produce:
+
+ID / TITLE
+
+ONE-SENTENCE PREMISE
+
+FRAME-ZERO HOOK
+
+CORE RULE
+
+PROGRESSION
+
+PAYOFF
+
+SYSTEM CONCERNS
+
+CURRENT STATUS
+
+No model-generated editorial verdict.
+
+======================================================================
+26. COST / USAGE RECORDING
+======================================================================
+
+For each shard record if available:
+
+input tokens
+output tokens
+total tokens
+provider cost
+latency
+
+Then combined totals.
+
+Do not estimate missing cost.
+
+======================================================================
+27. PREVIOUS FAILED ATTEMPT
+======================================================================
+
+Preserve the original:
+
+APITimeoutError
+
+attempt as historical evidence.
+
+Do not delete or rewrite its metadata.
+
+The final experiment report should explicitly distinguish:
+
+Attempt 001:
+single-request 40 concept design
+FAILED: APITimeoutError
+
+Recovery execution:
+Shard A + Shard B
+bounded two-request design
+
+======================================================================
+28. TESTS FIRST
+======================================================================
+
+Before either live request:
+
+test:
+
+two-shard orchestration
+
+request cap = 2
+
+no hidden third request
+
+partial success handling
+
+both-failed handling
+
+ID uniqueness
+
+provenance
+
+combined normalization
+
+cross-shard duplicate detection
+
+usage aggregation
+
+stored-response replay
+
+Tests must use mocks.
+
+Provider calls during tests:
+0
+
+======================================================================
+29. REGRESSION SAFETY
+======================================================================
+
+Do not change:
+
+Prompt V1
+
+Prompt V2 creative content
+
+validators
+
+thresholds
+
+taxonomies
+
+historical experiments
+
+Full regression target:
+
+same accepted 36 baseline failures
+same 2 skips
+
+No new failures.
+
+======================================================================
+30. LIVE EXECUTION
+======================================================================
+
+Only after tests pass:
+
+execute the two planned requests.
+
+Shard A:
+20 concepts
+
+Shard B:
+20 concepts
+
+No third provider request under any condition.
+
+======================================================================
+31. IF SHARD A FAILS
+======================================================================
+
+Still execute Shard B because it is independently part of the planned two-shard experiment.
+
+This is NOT a retry of A.
+
+It is the second pre-authorized shard.
+
+======================================================================
+32. IF SHARD B FAILS
+======================================================================
+
+Analyze any successful Shard A response.
+
+No replacement call.
+
+======================================================================
+33. IF BOTH FAIL
+======================================================================
+
+Stop.
+
+Report execution failure.
+
+Do NOT alter Prompt V2 automatically.
+
+Do NOT switch models automatically.
+
+Do NOT make further live calls.
+
+======================================================================
+34. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. orchestration design
+2. reason for two-shard recovery
+3. proof exact Prompt V2 unchanged
+4. exact provider/model
+5. timeout configuration
+6. max-output-token configuration
+7. live request count
+8. Shard A result
+9. Shard B result
+10. token usage
+11. provider cost if reported
+12. combined raw candidate count
+13. schema-valid count
+14. normalized count
+15. all candidate stories
+16. rule-consistency distribution
+17. opening distribution
+18. payoff-rule linkage
+19. Beat Grammar distribution
+20. SFE distribution
+21. premise-admission results
+22. ranking eligibility
+23. production-admissible candidates
+24. production slate
+25. V2 HUMAN_REVIEW_SET
+26. V1 vs V2 comparison
+27. complete failure-reason distribution
+28. cross-shard duplicates
+29. test results
+30. proof maximum two live requests
+31. proof no render
+32. proof validators unchanged
+33. proof V1 and failed V2 attempt unchanged
+34. proof historical evidence unchanged
+35. proof only accepted baseline failures remain
+
+======================================================================
+35. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+both shards return exactly 20 concepts.
+
+Success is:
+
+we obtain the largest valid V2 corpus possible within exactly two bounded planned requests, without hidden retries or changing the creative experiment.
+
+======================================================================
+36. STOP
+======================================================================
+
+After the two planned live requests and combined offline analysis:
+
+STOP.
+
+Do NOT:
+
+make a third request
+
+modify Prompt V2
+
+change provider/model
+
+change validators
+
+change taxonomies
+
+change thresholds
+
+generate production prompts
+
+render anything.

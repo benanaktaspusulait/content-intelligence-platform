@@ -1,0 +1,86 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1767,
+    "prompt_tokens": 430,
+    "total_tokens": 2197,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 1288,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "providerRequestId": "chatcmpl-EdF2rcyPijWWgy33Ug2BcDpp4Jfln",
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 77699.13562500005,
+  "providerMetadata": {
+    "requestId": "chatcmpl-EdF2rcyPijWWgy33Ug2BcDpp4Jfln",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "requestIdMeaning": "Existing adapter exposes completion response.id,not the HTTP x-request-id.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "primaryClassification": "FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED",
+  "timing": {
+    "wallClockStartUTC": "2026-10-26T13:28:50.311113+00:00",
+    "wallClockEndUTC": "2026-10-26T13:30:08.755188+00:00",
+    "monotonicElapsedSeconds": 78.444184042,
+    "wallClockSpanSeconds": 78.444075,
+    "wallMinusMonotonicSeconds": -0.00010904200000538822,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2078,
+  "schemaCheck": {
+    "status": "INVALID_CORRECTED_FULL_SCHEMA",
+    "errors": [
+      {
+        "path": [
+          "ideas",
+          0,
+          "beats"
+        ],
+        "validator": "minItems"
+      },
+      {
+        "path": [
+          "ideas",
+          0,
+          "durationSeconds"
+        ],
+        "validator": "maximum"
+      }
+    ]
+  },
+  "requestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "creativePipelineCalls": 0,
+  "renders": 0,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192,
+  "causalityLimit": "This result tests the corrected schema in isolation. It cannot prove the broken reference caused all prior failures."
+}

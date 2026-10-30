@@ -1,0 +1,134 @@
+{
+  "candidateId": "sem1-6995088af8be9f8c",
+  "globalId": "semantic-compact-2-low-probe-1-run-001/sem1-6995088af8be9f8c",
+  "title": "Sweeping Up the Rug",
+  "openingScore": 35,
+  "acceptedOpeningFloor": 60,
+  "frameZeroAudit": {
+    "frameZeroDescription": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug.",
+    "sourceFrameVisual": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "broom"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "Kiko leans over a broom planted across a small rug. The rug's near edge forms a tight, thick curl around the broom head, with the bristles buried inside. A broad crumb pile occupies the remaining flat rug directly in front of the curl; bare floor borders the rug.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "frameZeroSourceReview": "The source shows a task context, broom, crumb pile, bare floor and rug wrapped around the head. It does not establish solely in one still that forward bristle travel necessarily winds the rug: the frame can be read as an ordinary snagged/curling rug. The source says planted rather than depicting an explicit sweeping-use pose. The accepted audit leaves the impossible causal relationship UNRESOLVED. No rendered image was inspected.",
+  "openingBeatContinuity": {
+    "status": "SUPPORTED_IN_SOURCE",
+    "openingState": "Rug edge wrapped around broom head; remaining crumbs on flat rug.",
+    "beat1": "Kiko continues the same forward sweep and wraps more rug.",
+    "hiddenResetDescribed": false
+  },
+  "acceptedRuleConsistency": "RULE_CONSISTENT",
+  "ruleForComparison": "CONSISTENT",
+  "exactRule": "WHEN the broom's bristles push forward across the rug, THE traversed length of rug ALWAYS winds tightly around the broom head.",
+  "perBeat": [
+    {
+      "beat": 1,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Kiko continues the forward sweeping stroke toward the crumb pile.",
+        "visibleConsequence": "The bristles push across another length of rug, winding it around the broom head and trapping the front edge of the crumb pile inside the thickening roll.",
+        "newInformation": "The crumbs are being wrapped with the rug rather than swept onto the floor."
+      },
+      "sourceReview": "The forward sweeping stroke continues the opening conflict. Another rug length winds around the same head; no reset or new power is stated. Contact detail remains a staging question because the opening says the bristles are already buried.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 2,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Kiko lifts the broom to shake the captured crumbs onto the bare floor.",
+        "visibleConsequence": "The previously wound rug remains wrapped around the broom head; its unwound half hangs beneath it as a broad curtain, with the remaining crumbs collected in its bottom fold.",
+        "newInformation": "Lifting the broom lifts the dirty surface instead of separating the crumbs from it."
+      },
+      "sourceReview": "Lifting the already wrapped rug produces hanging fabric and retained crumbs. This is a passive consequence of existing winding, not a new activation or release rule.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 3,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Kiko lowers the hanging rug flat and plants one foot on its far edge before pushing the broom toward it.",
+        "visibleConsequence": "The bristles push across the flattened rug, winding another length around the head; the shrinking flat section draws Kiko's planted foot toward the roll.",
+        "newInformation": "Pinning the rug does not preserve a sweepable surface; Kiko must step off the last exposed strip."
+      },
+      "sourceReview": "Lowering and pinning the remaining rug changes strategy. Forward pushing winds more rug; the shrinking flat length pulls the planted foot. The effect derives from the same accumulating wrap. Continued bristle contact beneath accumulated rug needs source staging review.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 4,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Kiko steps onto the bare floor and gives the exposed final strip one short forward sweep.",
+        "visibleConsequence": "The bristles push across the last flat strip, winding it and the remaining crumbs around the broom head; the dirty flat rug becomes one bulky rug cylinder on the end of Kiko's broom, leaving only bare floor beneath it.",
+        "newInformation": "The whole dirty rug has been swept up, but none of its crumbs have been swept off."
+      },
+      "sourceReview": "The final short forward push winds the last exposed strip and remaining crumbs onto the head. The transition from a dirty flat surface to a dirty cylinder at the broom end is directional and rule-derived; nothing unwraps or swaps endpoints.",
+      "acceptedFindings": []
+    }
+  ],
+  "payoffOrientation": {
+    "status": "CLEAR",
+    "scope": "Manual source-only source/destination and before/after direction audit, not a new score or production gate.",
+    "before": "Last flat dirty rug strip and remaining crumbs lie exposed on the floor beside the already wrapped head.",
+    "activation": "Kiko steps onto the bare floor and gives the exposed final strip one short forward sweep.",
+    "after": "The last strip and crumbs wind around the broom head; the entire rug is a cylinder at the broom end, leaving bare floor beneath.",
+    "source": "The bristles push across the last flat strip, winding it and the remaining crumbs around the broom head; the dirty flat rug becomes one bulky rug cylinder on the end of Kiko's broom, leaving only bare floor beneath it.",
+    "sameRuleLinked": true,
+    "sourceDestinationClear": true,
+    "oppositeOutcomeImplied": false,
+    "caveat": "This does not certify physical staging of bristles buried inside the earlier wraps."
+  },
+  "admissionUncertainty": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    }
+  ],
+  "providerRationaleUsedAsAuthority": false,
+  "sourceOnly": true,
+  "conclusion": "FRAME_ZERO_FIRST_REPAIR_NOT_CONFIRMED",
+  "opening35PatternBroken": false,
+  "openingFloorReached": false,
+  "consistentRuleBehaviorPreserved": true,
+  "strongPositiveSignal": false,
+  "qualification": "Only one compact.2 sample. No statistical proof or revised judge/threshold. A future architecture review is outside this completed task; no further wording iteration or request is performed."
+}

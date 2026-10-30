@@ -1,0 +1,739 @@
+Continue from the current repository state.
+
+Semantic Provider Contract Decomposition V1 completed with:
+
+PRIMARY CLASSIFICATION:
+
+UNRESOLVED_CONTRACT_FAILURE
+
+Known live results:
+
+Probe A
+minimal JSON
+PASS
+3.26s
+
+Probe B
+small native schema
+PASS
+6.30s
+
+Probe C
+FULL Prompt V2 + FULL V2 schema
+ReadTimeout
+~90.70s
+0 bytes
+
+Probe D
+FULL Prompt V2 + SMALL schema
+ReadTimeout
+~90.72s
+0 bytes
+
+Probe E
+MINIMAL prompt + FULL V2 schema
+ConnectionResetError
+~30.63s measured elapsed
+0 bytes
+
+Therefore clean causal separation was not achieved.
+
+However, offline inspection found a concrete schema defect:
+
+The current native structured-output envelope contains a reference:
+
+#/$defs/SemanticBeat
+
+but that reference cannot be resolved from the root schema object supplied to the native structured-output path.
+
+This defect has NOT been proven to cause the live failures.
+
+Nevertheless:
+
+NO MORE LIVE SEMANTIC TESTING should occur while a known invalid/unresolvable schema contract exists.
+
+======================================================================
+PRIMARY GOAL
+======================================================================
+
+Repair and formally validate the native Semantic V2 structured-output schema contract OFFLINE.
+
+Then, only after the schema is proven internally valid, execute ONE narrowly targeted live probe:
+
+MINIMAL PROMPT
++
+CORRECTED FULL V2 SCHEMA
++
+ONE CANDIDATE
+
+Do NOT test Full Prompt V2 during this task.
+
+This task isolates schema integrity first.
+
+======================================================================
+1. DO NOT CHANGE CREATIVE SEMANTICS
+======================================================================
+
+Do NOT change:
+
+- Semantic Prompt V2
+- semantic candidate meaning
+- required creative fields
+- validators
+- thresholds
+- taxonomies
+- scoring
+- historical experiments
+
+The schema repair must preserve the same semantic data contract.
+
+This is a representation/integrity repair only.
+
+======================================================================
+2. IDENTIFY EXACT SCHEMA DEFECT
+======================================================================
+
+Trace exactly how the canonical response schema becomes the native provider schema.
+
+Document:
+
+canonical schema source
+
+transformation steps
+
+provider envelope construction
+
+where `$defs` is created
+
+where `$defs` is lost or relocated
+
+where:
+
+#/$defs/SemanticBeat
+
+is introduced
+
+and why it cannot resolve from the final root.
+
+Do not patch before documenting the path.
+
+======================================================================
+3. FULL REFERENCE AUDIT
+======================================================================
+
+Do not inspect only SemanticBeat.
+
+Walk the complete final native schema recursively.
+
+Collect every:
+
+$ref
+
+For each reference report:
+
+reference string
+origin path
+resolved target path
+resolution status
+
+Expected statuses:
+
+RESOLVED
+
+UNRESOLVED
+
+UNSUPPORTED_REFERENCE_FORM
+
+CYCLIC_REFERENCE
+
+if applicable.
+
+Success requires:
+
+0 unresolved local references.
+
+======================================================================
+4. FINAL PROVIDER SCHEMA IS THE AUTHORITY
+======================================================================
+
+Validation must run against the EXACT schema object actually supplied to the OpenAI structured-output request.
+
+It is insufficient that:
+
+the source JSON schema is valid
+
+if transformation into the provider envelope breaks it.
+
+Add an explicit:
+
+FINAL_PROVIDER_SCHEMA_VALIDATION
+
+step.
+
+======================================================================
+5. REPAIR STRATEGY
+======================================================================
+
+Use the smallest correct repair following repository conventions.
+
+Possible valid approaches include:
+
+A. preserve required `$defs` at the actual root
+
+B. rewrite refs to their correct transformed location
+
+C. inline definitions where the provider schema builder already expects inlining
+
+Choose based on existing architecture.
+
+Do NOT arbitrarily redesign the schema system.
+
+======================================================================
+6. DO NOT SIMPLIFY THE CONTRACT
+======================================================================
+
+Do not solve the bug by deleting:
+
+beats
+
+nested objects
+
+required semantic fields
+
+or other meaningful V2 fields.
+
+The corrected full schema must represent the same candidate contract as before.
+
+======================================================================
+7. SEMANTIC EQUIVALENCE TEST
+======================================================================
+
+Prove the repaired schema preserves the logical data model.
+
+Compare old canonical schema vs repaired provider schema for:
+
+candidate fields
+
+field types
+
+required fields
+
+beat fields
+
+min/max item constraints
+
+enum semantics
+
+nullability
+
+additionalProperties behavior
+
+No creative field may disappear merely to satisfy the provider.
+
+======================================================================
+8. OPENAI NATIVE STRUCTURED OUTPUT COMPATIBILITY AUDIT
+======================================================================
+
+Using the existing SDK/integration knowledge already present in the repository, audit the final provider schema for requirements enforced by the current OpenAI native structured-output path.
+
+Check at minimum:
+
+root object shape
+
+required fields
+
+additionalProperties configuration
+
+unsupported JSON Schema keywords if known by current integration
+
+local reference validity
+
+nested object validity
+
+array item schema
+
+enum usage
+
+strict-mode compatibility if strict mode is enabled
+
+Do not browse or change APIs unless repository tests already encode provider requirements.
+
+Do not invent undocumented restrictions.
+
+======================================================================
+9. OFFLINE SCHEMA COMPILATION / VALIDATION
+======================================================================
+
+If the repository already has a JSON Schema validator or schema tooling, use it.
+
+Validate:
+
+- schema syntax
+- local reference resolution
+- representative valid payload
+- malformed payload
+- missing required fields
+- invalid beat object
+- extra property behavior
+
+Do not require a provider call for these tests.
+
+======================================================================
+10. ROUND-TRIP FIXTURE
+======================================================================
+
+Create a representative FULL V2 candidate fixture containing:
+
+all top-level fields
+
+4 or 5 beats
+
+all required nested beat fields
+
+final payoff
+
+loop field
+
+environment
+
+dialogue need
+
+provider rationale
+
+Validate:
+
+domain object
+→ provider-schema-compatible JSON
+→ schema validation
+→ parser
+→ normalized semantic candidate
+
+The meaning must survive round-trip.
+
+======================================================================
+11. EXISTING V1/V2 RESPONSE COMPATIBILITY
+======================================================================
+
+Replay existing stored semantic mock/live payloads offline where structurally applicable.
+
+Ensure schema repair does not unexpectedly invalidate historically valid Semantic V1/V2 payloads unless version boundaries intentionally differ.
+
+Do NOT rewrite historical artifacts.
+
+======================================================================
+12. NATIVE ENVELOPE SNAPSHOT
+======================================================================
+
+Persist the exact corrected native schema envelope.
+
+Include:
+
+schema hash
+
+character count
+
+property count
+
+required count
+
+nesting depth
+
+$defs count
+
+$ref count
+
+unresolved ref count
+
+structured-output mode
+
+This becomes the accepted schema baseline for the next probe.
+
+======================================================================
+13. PROVIDER REQUEST BUILDER TEST
+======================================================================
+
+Construct an OpenAI request OFFLINE using:
+
+model = gpt-6.1-sol
+
+minimal diagnostic prompt
+
+corrected full V2 schema
+
+candidate count = 1
+
+Do not send it yet.
+
+Inspect the final request object immediately before SDK invocation.
+
+Verify:
+
+correct schema object is attached
+
+correct root contains/owns definitions
+
+no transformation after validation breaks refs
+
+======================================================================
+14. TEST THE ACTUAL LAST-MILE OBJECT
+======================================================================
+
+Important:
+
+Add a regression test around the exact last-mile request object.
+
+The test must fail if:
+
+the schema validator sees one object
+
+but the SDK receives a differently transformed broken object.
+
+We need to prevent the same bug from reappearing between validation and transmission.
+
+======================================================================
+15. NO PROMPT V2 EXPERIMENT YET
+======================================================================
+
+Do NOT execute:
+
+FULL Prompt V2 + corrected schema
+
+in this task.
+
+Probe D already showed the full prompt may independently contribute to latency.
+
+First isolate schema cleanly.
+
+======================================================================
+16. LIVE PROBE AUTHORIZATION
+======================================================================
+
+Only if ALL offline schema integrity checks pass:
+
+execute exactly ONE live request.
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Prompt:
+minimal diagnostic prompt
+
+Response contract:
+CORRECTED FULL V2 SCHEMA
+
+Candidates:
+1
+
+This is the repaired equivalent of Probe E.
+
+======================================================================
+17. LIVE REQUEST CAP
+======================================================================
+
+Maximum live requests:
+
+1
+
+No retry.
+
+No second probe.
+
+No DeepSeek.
+
+No fallback.
+
+If the call fails:
+
+stop.
+
+======================================================================
+18. LIVE PROBE PROMPT
+======================================================================
+
+Use a deliberately minimal instruction such as the repository-equivalent of:
+
+"Generate one fictional short-video concept. Fill every field in the supplied schema concisely."
+
+Do NOT include Prompt V2 creative rules.
+
+We are testing:
+
+corrected full schema execution
+
+not creative quality.
+
+======================================================================
+19. TIMEOUT
+======================================================================
+
+Use the same bounded execution envelope used by the comparable OpenAI diagnostic probes unless a previously identified instrumentation inconsistency requires normalization.
+
+Do NOT globally increase timeout.
+
+Record exact:
+
+connect
+read
+SDK
+wall
+
+timeouts.
+
+======================================================================
+20. RESPONSE METRICS
+======================================================================
+
+Record:
+
+status if observable
+
+headers timing
+
+first usable content timing if observable
+
+total duration
+
+response bytes
+
+finish reason
+
+request ID
+
+input tokens
+
+output tokens
+
+total tokens
+
+provider-reported cost if available
+
+If failure:
+
+exception chain
+timeout/reset layer
+response bytes observed
+
+======================================================================
+21. LIVE PROBE INTERPRETATION
+======================================================================
+
+If corrected Probe E PASSES:
+
+classify:
+
+FULL_SCHEMA_EXECUTION_CONFIRMED_AFTER_SCHEMA_REPAIR
+
+This does NOT prove the old broken ref caused every prior failure.
+
+It only proves the corrected full schema can execute.
+
+The next future experiment should isolate Prompt V2 complexity.
+
+If corrected Probe E FAILS:
+
+classify:
+
+FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED
+
+The schema-reference defect was real but insufficient to explain execution failure.
+
+Do NOT make another request.
+
+======================================================================
+22. DO NOT ATTRIBUTE CAUSALITY WITHOUT EVIDENCE
+======================================================================
+
+Even if repaired probe succeeds, do NOT state:
+
+"the broken $ref caused all previous timeouts."
+
+Correct wording:
+
+"a schema defect existed; after repair the isolated full-schema probe succeeded."
+
+Probe C/D contain separate prompt-related evidence.
+
+======================================================================
+23. UTC / ELAPSED TIMING INTEGRITY
+======================================================================
+
+Probe E previously showed inconsistent UTC duration vs measured elapsed.
+
+Fix DIAGNOSTIC RECORDING only if necessary.
+
+Store:
+
+monotonic elapsed duration
+
+wall-clock start UTC
+
+wall-clock end UTC
+
+Validate that:
+
+abs((end-start) - monotonicElapsed)
+
+is within a small expected recording tolerance.
+
+Do not use wall clock as the primary timeout duration.
+
+Add tests.
+
+======================================================================
+24. NO CREATIVE PIPELINE
+======================================================================
+
+Do not send the diagnostic concept through:
+
+Naturalness
+
+Beat Grammar
+
+SFE
+
+ranking
+
+production selection
+
+Its creative quality is irrelevant.
+
+======================================================================
+25. TESTS
+======================================================================
+
+Add tests proving:
+
+A. broken old provider schema reproduces unresolved SemanticBeat ref
+
+B. corrected provider schema resolves SemanticBeat ref
+
+C. all local refs resolve
+
+D. no hidden unresolved refs remain
+
+E. full V2 candidate fixture validates
+
+F. missing required field fails
+
+G. malformed beat fails
+
+H. additional-properties policy behaves as intended
+
+I. provider transformation preserves definitions
+
+J. last-mile SDK request contains the validated schema
+
+K. canonical semantic contract remains equivalent
+
+L. Prompt V2 hash unchanged
+
+M. no validator behavior changes
+
+N. historical artifacts unchanged
+
+O. live request cap = 1
+
+P. no retry/fallback
+
+Q. monotonic elapsed recording is consistent
+
+Tests make zero live calls.
+
+======================================================================
+26. REGRESSION TARGET
+======================================================================
+
+Full regression target:
+
+same accepted 36 baseline failures
+
+same 2 skips
+
+No new failures.
+
+If schema-builder implementation is an actively protected file:
+
+use the approved active-code protection mechanism.
+
+Do not mutate frozen historical manifests.
+
+======================================================================
+27. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. exact root cause of unresolved `$ref`
+2. affected schema paths
+3. complete old `$ref` audit
+4. chosen repair
+5. complete corrected `$ref` audit
+6. schema-equivalence proof
+7. OpenAI native-schema compatibility audit
+8. corrected schema metrics
+9. exact schema hash
+10. last-mile request validation proof
+11. round-trip fixture result
+12. tests
+13. regression result
+14. Prompt V2 unchanged proof
+15. validator unchanged proof
+16. historical evidence unchanged proof
+
+Then, only if offline validation passed:
+
+17. corrected full-schema live probe configuration
+18. live result
+19. duration
+20. response bytes
+21. usage if available
+22. primary classification
+23. proof live request count = 1
+24. proof no retry
+25. proof no DeepSeek
+26. proof no render
+
+======================================================================
+28. SUCCESS DEFINITION
+======================================================================
+
+Success is NOT:
+
+the live call passes.
+
+Success is first:
+
+the schema contract sent to the provider is demonstrably internally valid.
+
+Only then can provider execution results be interpreted cleanly.
+
+======================================================================
+29. STOP
+======================================================================
+
+After schema integrity repair and the optional single corrected full-schema probe:
+
+STOP.
+
+Do NOT:
+
+run Full Prompt V2
+
+generate 5 concepts
+
+generate 20 concepts
+
+generate 40 concepts
+
+increase timeouts
+
+switch models
+
+call DeepSeek
+
+change validators
+
+render anything.

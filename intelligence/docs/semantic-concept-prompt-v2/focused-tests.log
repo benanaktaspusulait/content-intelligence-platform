@@ -1,0 +1,11 @@
+...........F............................................................ [ 52%]
+................................................................         [100%]
+=================================== FAILURES ===================================
+_______________________ test_all_mock_intent_controls[J] _______________________
+tests/test_semantic_prompt_v2.py:75: in test_all_mock_intent_controls
+    if pair['case'] in ('A','E','J'):assert b['payoffRuleLinked'] and b['sameRuleEscalation'] == (pair['case']!='J')
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: assert (True and True == ('J' != 'J'))
+=========================== short test summary info ============================
+FAILED tests/test_semantic_prompt_v2.py::test_all_mock_intent_controls[J] - A...
+1 failed, 135 passed in 58.08s

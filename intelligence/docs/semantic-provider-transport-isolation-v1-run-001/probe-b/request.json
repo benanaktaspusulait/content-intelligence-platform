@@ -1,0 +1,54 @@
+{
+  "provider": "openai",
+  "baseUrl": "https://api.openai.com/v1",
+  "arguments": {
+    "model": "gpt-6.1-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return one JSON object matching the supplied schema."
+      },
+      {
+        "role": "user",
+        "content": "Give one short fictional everyday example using title, goal and object."
+      }
+    ],
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "transport_isolation_small",
+        "strict": false,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "goal": {
+              "type": "string"
+            },
+            "object": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "goal",
+            "object"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "max_completion_tokens": 1024,
+    "reasoning_effort": "high"
+  },
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxRetries": 0
+}

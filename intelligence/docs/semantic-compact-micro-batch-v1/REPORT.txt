@@ -1,0 +1,1755 @@
+SEMANTIC V2 COMPACT MICRO-BATCH — FINAL RESULT
+
+Exactly 3 live requests sent, with the accepted identical OpenAI gpt-6.1-sol LOW execution profile.
+A timed out; B and C passed schema and normalization. No replacement and no fourth call.
+Only 2 new stories exist. Reusing REFERENCE-0 gives an actual creative sample of 3, not the planned 4.
+The requested four-candidate comparison is therefore incomplete. No missing story or score is fabricated.
+
+Configuration: max_completion_tokens=8192; reasoning_effort=low; json_schema strict=false;
+non-streaming; connect/read/write/pool=15/90/60/15 seconds; wall cap=180 seconds; SDK retries=0.
+Prompt and corrected full native schema match the accepted request byte-for-byte at the SDK body level.
+
+Execution metrics (monotonic duration, not UTC span):
+Request   Result       Duration  Headers   Usable    Bytes Input Output Reasoning Total Finish Cost
+micro-a   TIMEOUT      90.75s    unavailable         0     unavailable                  unavailable
+micro-b   PASS         54.53s    53.822s   53.833s   3477  1952  1633   865       3585  stop   unavailable
+micro-c   PASS         56.56s    55.935s   55.942s   3416  1952  1765   1024      3717  stop   unavailable
+First-token timing is unavailable for all calls because the accepted mode is non-streaming.
+Cost was not reported and has not been estimated. A's usage/finish reason/provider IDs are unavailable.
+UTC spans for A and C disagree with monotonic timing; original timestamps and flags are preserved.
+
+Creative comparison (all available candidates; failed request A has no candidate):
+ID           Title                             Opening Rule       Admission       Beat Grammar SFE                 Rank Production
+REFERENCE-0  A Very Square Spill               35      AMBIGUOUS  insufficient    ACCEPTABLE   84 REVISION_REQUIRED no   no
+micro-b      Sweeping Uphill                   35      AMBIGUOUS  insufficient    ACCEPTABLE   85 REVISION_REQUIRED no   no
+micro-c      The Wrinkle Has to Go Somewhere   35      AMBIGUOUS  insufficient    ACCEPTABLE   84 REVISION_REQUIRED no   no
+All three creative contracts FAIL. Ranking scores are null, not zero; none is ranking eligible.
+
+Opening: 0/3 at or above the existing floor 60; 3/3 below. Mean=35; median=35.
+Available-sample observation: OPENING_WEAKNESS_SIGNAL. Three weak openings repeat the original concern;
+this is a small source-text sample, not statistical proof. The planned four-candidate test is INCOMPLETE.
+The automated combined report withholds its four-candidate classification as NO_CLEAR_PATTERN when n<4;
+that incomplete-sample label does not negate the descriptive 3/3 weakness observation here.
+
+Rule audit: consistent=0, inconsistent=0, ambiguous=3 under the accepted evidence audit.
+No explicit rule-constraint contradiction was detected; absence of a detected contradiction is not proof.
+Compared qualitatively with known V1 rule mutation, this is less overt contradiction in the observed text,
+but no established improvement or statistical superiority. Per-beat and payoff caveats appear below.
+
+Premise admission: admitted=0; not admitted genuine quality=0; taxonomy/coverage-only=0;
+evidence uncertainty=3. Every authoritative result is NOT_ADMITTED_INSUFFICIENT_EVIDENCE with
+EVIDENCE_SUPPORTED_UNCLASSIFIED provenance. Missing source support must not be relabelled a proven defect.
+
+Payoffs: present=3; visual as described=3; state-changing=3; accepted rule-linked=3;
+explicit added impossible mechanism=0; possible unsupported payoff geometry=1 (C's shirt-shaped board).
+None merely repeats the penultimate beat. Each finalPayoff repeats the terminal consequence, as expected.
+
+SFE: [84,85,84], mean=84.3333, median=84; PASS=0, REVISION_REQUIRED=3, REJECT=0.
+Ranking eligible=0; production admissible=0; production slate=[]; MICRO_BATCH_HUMAN_REVIEW_SET=[].
+No review cards qualify: all have multiple meaningful production blockers; SFE>=75 alone is insufficient.
+
+Verification: 12 new mocked tests; 101 focused tests passed with zero external calls.
+Full regression: 3,247 passed, exactly the accepted 36 failure IDs, 2 skipped; no new failures.
+All 2,452 protected files and all tested source files are unchanged after execution.
+Exactly 3 SDK forwards and 3 observed HTTP requests. Retries=0, replacements=0, fallbacks=0,
+DeepSeek=0, renders=0, production prompts=0. Reference reused without generation.
+Prompt/schema/validators/thresholds/taxonomies/historical experiments unchanged.
+
+The complete available stories, exact request/results, opening audits, per-beat comparisons, accepted
+pipeline outputs, blocker lists, tests and integrity proof follow. A has no story or opening audit because
+it returned no response. This task stops here; no generation scale-up or prompt revision was performed.
+
+
+EXECUTION PROOF
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEfforts": {
+    "micro-a": "low",
+    "micro-b": "low",
+    "micro-c": "low"
+  },
+  "exactAcceptedSDKBodyForAllRequests": true,
+  "identicalFullRequestBodiesAcrossABC": true,
+  "SDKRequestsForwarded": 3,
+  "HTTPRequestsObserved": 3,
+  "plannedSlots": 3,
+  "completedSlots": 3,
+  "successfulResponses": 2,
+  "failedResponses": 1,
+  "totalAvailableCandidatesIncludingReference": 3,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "noFourthRequest": true,
+  "noReplacementRequest": true,
+  "noCrossRequestCreativeFeedback": true,
+  "maxOutputTokens": 8192,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "streaming": "NON_STREAMING",
+  "structuredOutputMode": "json_schema",
+  "strict": false,
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "protectedExistingFileCount": 2452,
+  "changedProtectedFiles": [],
+  "changedTestedSources": [],
+  "promptUnchanged": true,
+  "schemaUnchanged": true,
+  "validatorsUnchanged": true,
+  "historicalExperimentsUnchanged": true,
+  "referenceReusedWithoutGeneration": true,
+  "referenceOriginalFilesUnchanged": true,
+  "noNewFailures": true,
+  "acceptedBaselineFailureIds": [
+    "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+    "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+    "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+    "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+    "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+    "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+    "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+    "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+    "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+    "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+    "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+    "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+    "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+    "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+    "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+    "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+  ],
+  "fullPassed": 3247,
+  "failed": 36,
+  "skipped": 2,
+  "focusedPassed": 101,
+  "newMockTestsPassed": 12,
+  "fullTestCommand": "POMPOM_DATA_ROOT=/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data .venv/bin/python -m pytest -q (cwd intelligence/ml-service)",
+  "focusedTestFiles": [
+    "test_semantic_compact_micro_batch_v1.py",
+    "test_semantic_low_reasoning_probe_v1.py",
+    "test_semantic_compact_capability_probe_v1.py",
+    "test_semantic_native_schema_integrity_v1.py"
+  ],
+  "timingDiscrepancies": [
+    "micro-a",
+    "micro-c"
+  ],
+  "timingPolicy": "Use monotonic elapsed seconds; preserve inconsistent UTC spans without rewriting.",
+  "providerReportedCostUsd": null,
+  "costEstimated": false,
+  "offlineReplay": "B identical after JSON normalization. C decisions/scores/blockers/source identical; only evidence token-list order varies. Validators preserved.",
+  "stoppedAfterThreePlannedRequests": true
+}
+
+micro-a EXACT EXECUTION RESULT
+{
+  "status": "FAILED",
+  "usage": null,
+  "httpStatus": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "providerRequestId": null,
+  "httpRequestId": null,
+  "errorClass": "APITimeoutError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APITimeoutError",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "TimeoutError",
+      "httpStatus": null,
+      "providerCode": null
+    }
+  ],
+  "safeMessage": "Single compact probe failed; no retry, fallback or replacement.",
+  "providerMetadata": null,
+  "finishReason": null,
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "LOW_REASONING_FULL_CONTRACT_TIMEOUT",
+  "interpretation": "REASONING_REDUCTION_INSUFFICIENT",
+  "creativeContractClassification": null,
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T10:53:27.394869+00:00",
+    "wallClockEndUTC": "2026-10-30T11:12:09.011233+00:00",
+    "monotonicElapsedSeconds": 90.745901667,
+    "wallClockSpanSeconds": 1121.616364,
+    "wallMinusMonotonicSeconds": 1030.870462333,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": false,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 0,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "renders": 0,
+  "pipelineRan": false,
+  "previousReasoningEffort": "high",
+  "selectedReasoningEffort": "low",
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}
+
+micro-b EXACT EXECUTION RESULT
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1633,
+    "prompt_tokens": 1952,
+    "total_tokens": 3585,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 865,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 1949,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 53822.463875,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 53832.926333,
+  "providerRequestId": "chatcmpl-Eeeok0BMRcSkXd7cRptiYHAVRIcAu",
+  "httpRequestId": "req_a139e7db449c4261a607ca24146cbc06",
+  "providerMetadata": {
+    "requestId": "chatcmpl-Eeeok0BMRcSkXd7cRptiYHAVRIcAu",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "LOW_REASONING_FULL_CONTRACT_EXECUTION_PASS",
+  "interpretation": "REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR",
+  "creativeContractClassification": "CREATIVE_CONTRACT_FAILURE",
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T11:12:09.040008+00:00",
+    "wallClockEndUTC": "2026-10-30T11:13:03.572867+00:00",
+    "monotonicElapsedSeconds": 54.532474792,
+    "wallClockSpanSeconds": 54.532859,
+    "wallMinusMonotonicSeconds": 0.00038420799999983046,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 3477,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "renders": 0,
+  "pipelineRan": true,
+  "previousReasoningEffort": "high",
+  "selectedReasoningEffort": "low",
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}
+
+micro-c EXACT EXECUTION RESULT
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1765,
+    "prompt_tokens": 1952,
+    "total_tokens": 3717,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 1024,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 1949,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 55935.173292,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 55941.951333,
+  "providerRequestId": "chatcmpl-Eeepc1O9lYbFfLXPQnkVID6bD3qCi",
+  "httpRequestId": "req_1ade3c1eaf2e45749a7ded511bf1e7e6",
+  "providerMetadata": {
+    "requestId": "chatcmpl-Eeepc1O9lYbFfLXPQnkVID6bD3qCi",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "LOW_REASONING_FULL_CONTRACT_EXECUTION_PASS",
+  "interpretation": "REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR",
+  "creativeContractClassification": "CREATIVE_CONTRACT_FAILURE",
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T11:13:03.646732+00:00",
+    "wallClockEndUTC": "2026-10-30T11:15:00.855789+00:00",
+    "monotonicElapsedSeconds": 56.5574315,
+    "wallClockSpanSeconds": 117.209057,
+    "wallMinusMonotonicSeconds": 60.6516255,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": false,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 3416,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "renders": 0,
+  "pipelineRan": true,
+  "previousReasoningEffort": "high",
+  "selectedReasoningEffort": "low",
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}
+
+========================================================================
+REFERENCE-0 / A Very Square Spill
+GLOBAL ID: semantic-compact-micro-batch-v1/REFERENCE-0/sem1-e7b2564efe7fec52
+COMPLETE STORY — exact stored source, no repairs
+{
+  "ideaId": "seed42-01",
+  "title": "A Very Square Spill",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Clear a puddle from the floor so the door can open.",
+  "primaryObject": "Sponge",
+  "normalExpectation": "A sponge absorbs spilled water and releases liquid when squeezed.",
+  "impossibleRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+  "visibleTrigger": "Mimi compresses the visibly swollen sponge between her palms.",
+  "whyThisObject": "The sponge must be squeezed to regain its capacity, but that normally useful operation deposits solid water blocks in the doorway she is trying to clear.",
+  "goalRuleRelationship": "Absorbing the puddle removes the liquid obstruction while squeezing creates a solid obstruction in the same working area.",
+  "frameZeroDescription": "Mimi kneels beside a partly open door whose bottom edge meets a broad puddle. Her hands compress a swollen sponge above a transparent water cube resting in the puddle; the cube has flat faces and sharp square corners, with a wet imprint beneath it. Her shoulder is against the door, and the cube occupies its opening arc.",
+  "beats": [
+    {
+      "strategy": "Mimi pushes the door with her shoulder while finishing the squeeze.",
+      "visibleConsequence": "The door stops against the water cube, leaving only a narrow gap.",
+      "newInformation": "The extracted water is solid enough to block the door."
+    },
+    {
+      "strategy": "She slides the cube away from the door and uses the sponge to absorb the remaining broad puddle.",
+      "visibleConsequence": "The door's opening arc becomes dry, but the sponge bulges between her hands.",
+      "newInformation": "The liquid can be cleared, provided she finds somewhere else to squeeze."
+    },
+    {
+      "strategy": "Mimi reaches through the narrow door gap and squeezes the sponge on the other side.",
+      "visibleConsequence": "A larger water cube drops outside the room, directly behind the door.",
+      "newInformation": "Moving the squeeze outside has placed the new block on the opposite side of the same door."
+    },
+    {
+      "strategy": "She stands on the dry floor and confidently pulls the door open.",
+      "visibleConsequence": "The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.",
+      "newInformation": "She has removed the entire puddle but converted it into a solid doorstop on both sides."
+    }
+  ],
+  "finalPayoff": "The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.",
+  "suggestedPayoffFamily": "Solution-created problem",
+  "loopPotential": "No reset; the dry floor and solid water blocks remain.",
+  "environment": "A small tiled entryway with an inward-opening door.",
+  "dialogueNeed": "NONE",
+  "providerRationale": "The sponge's required absorb-and-squeeze cycle converts a spreading liquid obstacle into compact solid obstacles. Moving the squeeze across the threshold changes where the same consequence lands.",
+  "durationSeconds": 15
+}
+DEDICATED OPENING AUDIT
+{
+  "frameZeroDescription": "Mimi kneels beside a partly open door whose bottom edge meets a broad puddle. Her hands compress a swollen sponge above a transparent water cube resting in the puddle; the cube has flat faces and sharp square corners, with a wet imprint beneath it. Her shoulder is against the door, and the cube occupies its opening arc.",
+  "characterVisible": true,
+  "goalVisible": true,
+  "objectVisible": true,
+  "problemVisible": true,
+  "impossibleRelationVisible": null,
+  "stillCausalLegibility": "UNRESOLVED",
+  "goalProblemRelationship": true,
+  "needsMotionToUnderstand": null,
+  "needsPriorContext": null,
+  "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+  "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."
+}
+Opening score: 35; null = UNRESOLVED.
+COMPLETE CREATIVE CONTRACT / EACH BEAT / PAYOFF SOURCE AUDIT
+{
+  "id": "REFERENCE-0",
+  "candidateId": "semantic-compact-micro-batch-v1/REFERENCE-0/sem1-e7b2564efe7fec52",
+  "sourceOnly": true,
+  "oneProtagonist": {
+    "status": "SUPPORTED",
+    "name": "Mimi",
+    "depictedNamedActors": 1
+  },
+  "onePrimaryObject": {
+    "status": "SUPPORTED",
+    "name": "Sponge",
+    "scope": "One primary object; ordinary supporting objects may be present."
+  },
+  "everydayGoal": {
+    "status": "SUPPORTED",
+    "source": "Clear a puddle from the floor so the door can open."
+  },
+  "frameZeroGoal": "SUPPORTED_AS_DESCRIBED",
+  "frameZeroProblem": "SUPPORTED_AS_DESCRIBED",
+  "frameZeroImpossibleRelationship": "UNRESOLVED",
+  "frameZeroCauseProblem": "UNRESOLVED",
+  "openingScore": 35,
+  "openingAudit": "A transparent cube beside a squeezed sponge does not establish, in one still, that this is liquid water just extracted from that sponge. The door obstruction is described, but its functional cause remains unresolved.",
+  "oneImmutableRule": {
+    "declared": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+    "acceptedConsistency": "AMBIGUOUS"
+  },
+  "stableTrigger": {
+    "declared": "Mimi compresses the visibly swollen sponge between her palms.",
+    "acceptedStatus": "AMBIGUOUS"
+  },
+  "beatCount": 4,
+  "allBeatsHaveStrategyConsequenceNewInformation": true,
+  "perBeat": [
+    {
+      "beat": 1,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+      "source": {
+        "strategy": "Mimi pushes the door with her shoulder while finishing the squeeze.",
+        "visibleConsequence": "The door stops against the water cube, leaving only a narrow gap.",
+        "newInformation": "The extracted water is solid enough to block the door."
+      },
+      "sourceComparison": "Finishing the squeeze and blocking the door fits a solid water output; volume is not quantitatively established.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 2,
+      "ruleStatus": "AMBIGUOUS",
+      "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+      "source": {
+        "strategy": "She slides the cube away from the door and uses the sponge to absorb the remaining broad puddle.",
+        "visibleConsequence": "The door's opening arc becomes dry, but the sponge bulges between her hands.",
+        "newInformation": "The liquid can be cleared, provided she finds somewhere else to squeeze."
+      },
+      "sourceComparison": "Absorption and manually sliding an existing cube do not add a new impossible behavior. The accepted audit nevertheless leaves this beat ambiguous.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 3,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+      "source": {
+        "strategy": "Mimi reaches through the narrow door gap and squeezes the sponge on the other side.",
+        "visibleConsequence": "A larger water cube drops outside the room, directly behind the door.",
+        "newInformation": "Moving the squeeze outside has placed the new block on the opposite side of the same door."
+      },
+      "sourceComparison": "Squeezing outside creates a cube outside; the larger cube is compatible with more absorbed water, but volume equality is not measurable from this prose.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 4,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+      "source": {
+        "strategy": "She stands on the dry floor and confidently pulls the door open.",
+        "visibleConsequence": "The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.",
+        "newInformation": "She has removed the entire puddle but converted it into a solid doorstop on both sides."
+      },
+      "sourceComparison": "A solid cube can obstruct a door without a new rule. Spatial continuity is unclear: beat 2 moved the first cube away, and its final return to the opening arc is not described.",
+      "explicitContradiction": []
+    }
+  ],
+  "payoff": {
+    "present": true,
+    "visual": true,
+    "stateChanging": true,
+    "ruleLinked": true,
+    "introducesNewBehavior": "NO_EXPLICIT_NEW_IMPOSSIBLE_BEHAVIOR",
+    "sourceConcern": "Door/cube spatial continuity is unresolved; no new squeeze rule is stated.",
+    "merelyRepeatsPenultimateBeat": false,
+    "repeatsTerminalConsequence": true
+  },
+  "silentView": {
+    "dialogueNeed": "NONE",
+    "score": 89,
+    "audioDependent": false,
+    "visualVerification": "SOURCE_ONLY"
+  },
+  "duration": {
+    "declaredSeconds": 15,
+    "within20Seconds": true,
+    "renderMeasured": false
+  },
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "admissionUncertainty": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    }
+  ]
+}
+PIPELINE RESULTS
+{
+  "schemaValidity": "PASS",
+  "normalization": "PASS",
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "PremiseNaturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+    "legacyAdmitted": false,
+    "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED"
+  },
+  "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+  "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+  "admissionReasons": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    }
+  ],
+  "BeatGrammar": {
+    "beatGrammarQuality": "ACCEPTABLE",
+    "strategySequence": [
+      "UNKNOWN",
+      "DIRECT_USE",
+      "SWITCH_CONTACT_POINT",
+      "UNKNOWN"
+    ],
+    "consequenceSequence": [
+      "source-state:51cf01ddcd8ff6d5",
+      null,
+      "OBJECT_GROWS",
+      "source-state:01251c26dd1df974"
+    ],
+    "strategyDiversityScore": 100.0,
+    "consequenceDiversityScore": 75.0,
+    "bodyStateProgressionScore": 0.0,
+    "spatialProgressionScore": 0.0,
+    "informationGainScore": 100.0,
+    "nearDuplicateAttemptRate": 0.0,
+    "payoffDistance": 0,
+    "flags": [
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "LOW_PAYOFF_DISTANCE"
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "consequenceType",
+        "sourcePresent": true
+      }
+    ]
+  },
+  "SFE": {
+    "engine": "SHORT_FORM_ENGINE",
+    "version": "short-form-engine-v1",
+    "status": "REVISION_REQUIRED",
+    "shortFormScore": 84,
+    "hookScore": 100,
+    "goalScore": 100,
+    "ruleClarityScore": 100,
+    "beatDensityScore": 45,
+    "progressDensityScore": 75,
+    "escalationScore": 37,
+    "payoffScore": 100,
+    "rewatchScore": 60,
+    "silentLegibilityScore": 89,
+    "productionFeasibilityScore": 100,
+    "alreadyInTrouble": true,
+    "majorCausalBeatCount": 3,
+    "describedBlockCount": 4,
+    "continuationReason": "Not established beyond repeated activity.",
+    "earlyRuleUnderstandingPenalized": false,
+    "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+    "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+    "requestedDurationSeconds": 15.0,
+    "timingVerifiedFromPlan": true,
+    "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+    "humanReadableReport": "REVISION_REQUIRED: short-form 84/100; 3 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+    "sourceSha256": "fb716082858f56fa5cc38b0a4ac5b7d3adc25da635b79f3f7943169d855213d7",
+    "canonicalRulesetUnchanged": true,
+    "renderAuthorized": false,
+    "providerCalls": 0,
+    "evidenceSourceVersion": "structured-canonical-v1"
+  },
+  "CreativeShape": {
+    "code": null,
+    "risk": "LOW",
+    "evidence": {
+      "repeatedStrategySequence": 0,
+      "repeatedPayoffFamily": 0,
+      "repeatedFinalRelationship": 0,
+      "repeatedFalseSuccessPosition": 0,
+      "repeatedTemporalShape": 0
+    },
+    "peerDenominator": 0
+  },
+  "historicalTerritory": {
+    "historicalCreativeTerritoryRisk": "LOW",
+    "closestHistoricalCreativeTerritory": {
+      "referenceId": "sticky-ball-01",
+      "similarity": 0.1,
+      "matchingAxes": [
+        "openingRelation"
+      ],
+      "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+      "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"
+    },
+    "plannedSceneSignature": {
+      "objectCategory": "UNKNOWN",
+      "goal": "OPEN",
+      "openingRelation": "USE_BLOCKED",
+      "dominantTransformation": "UNSUPPORTED_RESPONSE",
+      "finalRelation": "UNKNOWN",
+      "silhouetteTopology": "OFF_BALANCE"
+    },
+    "evidenceKind": "NEW_STRUCTURAL_ANNOTATION_OF_TWO_FROZEN_PROMPTS_NOT_PIXELS_OR_WINNER_PERFORMANCE",
+    "canonicalHistoricalMetricsChanged": false
+  },
+  "rankingEligibility": "INELIGIBLE",
+  "rankingScore": null,
+  "rankingEligibilityReasons": [
+    {
+      "code": "TOO_FEW_CAUSAL_BEATS",
+      "source": "SHORT_FORM_ENGINE",
+      "reason": "3 supported causal beats; target 4–5, normally 4–6.",
+      "beatIds": []
+    },
+    {
+      "code": "IDENTICAL_ATTEMPTS",
+      "source": "SHORT_FORM_ENGINE",
+      "reason": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+      "beatIds": [
+        "B2"
+      ]
+    }
+  ],
+  "productionAdmissible": false,
+  "productionSlateRank": null,
+  "exactProductionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "ACCEPTED_VALIDATOR_INELIGIBLE",
+    "SHORT_FORM_QUALITY_FLOOR",
+    "RANKING_QUALITY_FLOOR",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "humanReviewReasons": []
+}
+
+========================================================================
+micro-b / Sweeping Uphill
+GLOBAL ID: semantic-compact-micro-batch-v1/micro-b/sem1-e681e589547f87c4
+COMPLETE STORY — exact stored source, no repairs
+{
+  "ideaId": "42-01",
+  "title": "Sweeping Uphill",
+  "protagonistSuggestion": "Kiko",
+  "everydayGoal": "Sweep a small heap of dirt into a dustpan.",
+  "primaryObject": "Broom",
+  "normalExpectation": "Pushing the broom along the floor moves dirt toward the dustpan.",
+  "impossibleRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+  "visibleTrigger": "The broom head pressed against the floor during a forward push.",
+  "whyThisObject": "A broom must travel against the floor to push dirt; that same working contact folds the dirt's route into an obstacle.",
+  "goalRuleRelationship": "Every useful forward sweep raises the dirt instead of delivering it to the dustpan.",
+  "frameZeroDescription": "Kiko leans over a broom whose bristles press against the foot of an ankle-high, doubled fold in the hallway floor. The dirt heap sits on the fold's narrow crest, directly between the broom and an empty dustpan on the flat floor beyond. The floorboards visibly continue up and over the fold.",
+  "beats": [
+    {
+      "strategy": "Kiko lifts the broom over the little fold and gives the dirt a short forward shove.",
+      "visibleConsequence": "A second, knee-high floor pleat rises beneath the dirt, leaving the dustpan below it.",
+      "newInformation": "Reaching over the first obstacle creates a taller obstacle under the target."
+    },
+    {
+      "strategy": "Kiko steps onto the first pleat and stretches the broom across the second for a longer sweep.",
+      "visibleConsequence": "The longer swept strip becomes a waist-high pleat with the dirt balanced on top.",
+      "newInformation": "The length of the sweep determines the height of the new obstruction."
+    },
+    {
+      "strategy": "Kiko climbs onto the knee-high pleat and places both feet immediately behind the dirt on the waist-high strip.",
+      "visibleConsequence": "Kiko and the dirt share a narrow elevated strip, with the dustpan clearly visible far below.",
+      "newInformation": "Kiko has reached the dirt, but now stands on the floor that the broom will fold."
+    },
+    {
+      "strategy": "Kiko reaches the broom behind both heels and makes one long forward sweep beneath the feet toward the dirt.",
+      "visibleConsequence": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+      "newInformation": "The broom carries the sweeper upward by exactly the same mechanism that carries the dirt."
+    }
+  ],
+  "finalPayoff": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+  "suggestedPayoffFamily": "Character joins the problem",
+  "loopPotential": "No reset; the folded hallway remains.",
+  "environment": "A short hallway with continuous flexible-looking floorboards and an empty dustpan.",
+  "dialogueNeed": "NONE",
+  "providerRationale": "The broom's necessary floor contact creates the obstacles. Longer strokes raise the target farther, and standing on the swept strip finally makes Kiko part of the same consequence.",
+  "durationSeconds": 15
+}
+DEDICATED OPENING AUDIT
+{
+  "frameZeroDescription": "Kiko leans over a broom whose bristles press against the foot of an ankle-high, doubled fold in the hallway floor. The dirt heap sits on the fold's narrow crest, directly between the broom and an empty dustpan on the flat floor beyond. The floorboards visibly continue up and over the fold.",
+  "characterVisible": true,
+  "goalVisible": true,
+  "objectVisible": true,
+  "problemVisible": true,
+  "impossibleRelationVisible": null,
+  "stillCausalLegibility": "UNRESOLVED",
+  "goalProblemRelationship": true,
+  "needsMotionToUnderstand": null,
+  "needsPriorContext": null,
+  "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+  "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."
+}
+Opening score: 35; null = UNRESOLVED.
+COMPLETE CREATIVE CONTRACT / EACH BEAT / PAYOFF SOURCE AUDIT
+{
+  "id": "micro-b",
+  "candidateId": "semantic-compact-micro-batch-v1/micro-b/sem1-e681e589547f87c4",
+  "sourceOnly": true,
+  "oneProtagonist": {
+    "status": "SUPPORTED",
+    "name": "Kiko",
+    "depictedNamedActors": 1
+  },
+  "onePrimaryObject": {
+    "status": "SUPPORTED",
+    "name": "Broom",
+    "scope": "One primary object; ordinary supporting objects may be present."
+  },
+  "everydayGoal": {
+    "status": "SUPPORTED",
+    "source": "Sweep a small heap of dirt into a dustpan."
+  },
+  "frameZeroGoal": "SUPPORTED_AS_DESCRIBED",
+  "frameZeroProblem": "SUPPORTED_AS_DESCRIBED",
+  "frameZeroImpossibleRelationship": "UNRESOLVED",
+  "frameZeroCauseProblem": "UNRESOLVED",
+  "openingScore": 35,
+  "openingAudit": "The continuous floor visibly folds and obstructs the dirt route. Bristles against the foot of a fold do not establish from a still that forward broom travel creates it, or that stroke length determines height.",
+  "oneImmutableRule": {
+    "declared": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+    "acceptedConsistency": "AMBIGUOUS"
+  },
+  "stableTrigger": {
+    "declared": "The broom head pressed against the floor during a forward push.",
+    "acceptedStatus": "AMBIGUOUS"
+  },
+  "beatCount": 4,
+  "allBeatsHaveStrategyConsequenceNewInformation": true,
+  "perBeat": [
+    {
+      "beat": 1,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+      "source": {
+        "strategy": "Kiko lifts the broom over the little fold and gives the dirt a short forward shove.",
+        "visibleConsequence": "A second, knee-high floor pleat rises beneath the dirt, leaving the dustpan below it.",
+        "newInformation": "Reaching over the first obstacle creates a taller obstacle under the target."
+      },
+      "sourceComparison": "A forward shove produces a floor pleat beneath the dirt. Short is relative, so a knee-high result is not an exact length contradiction; floor contact is implied rather than fully staged.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 2,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+      "source": {
+        "strategy": "Kiko steps onto the first pleat and stretches the broom across the second for a longer sweep.",
+        "visibleConsequence": "The longer swept strip becomes a waist-high pleat with the dirt balanced on top.",
+        "newInformation": "The length of the sweep determines the height of the new obstruction."
+      },
+      "sourceComparison": "A longer sweep produces a higher pleat and preserves existing obstacles, consistent with the same rule; exact lengths remain unspecified.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 3,
+      "ruleStatus": "AMBIGUOUS",
+      "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+      "source": {
+        "strategy": "Kiko climbs onto the knee-high pleat and places both feet immediately behind the dirt on the waist-high strip.",
+        "visibleConsequence": "Kiko and the dirt share a narrow elevated strip, with the dustpan clearly visible far below.",
+        "newInformation": "Kiko has reached the dirt, but now stands on the floor that the broom will fold."
+      },
+      "sourceComparison": "Climbing changes Kiko’s position without triggering a new fold. The accepted audit leaves this non-trigger beat ambiguous. Placement of both feet on the waist-high strip needs visual staging review.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 4,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+      "source": {
+        "strategy": "Kiko reaches the broom behind both heels and makes one long forward sweep beneath the feet toward the dirt.",
+        "visibleConsequence": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+        "newInformation": "The broom carries the sweeper upward by exactly the same mechanism that carries the dirt."
+      },
+      "sourceComparison": "Sweeping the occupied strip raises its occupants under the declared carry-anything rule. Summit balance and broom reach are staging uncertainties, not explicit rule mutation.",
+      "explicitContradiction": []
+    }
+  ],
+  "payoff": {
+    "present": true,
+    "visual": true,
+    "stateChanging": true,
+    "ruleLinked": true,
+    "introducesNewBehavior": "NO_EXPLICIT_NEW_IMPOSSIBLE_BEHAVIOR",
+    "sourceConcern": "Kiko being carried follows the explicit anything-on-strip clause. Reach/balance are source-staging uncertainties.",
+    "merelyRepeatsPenultimateBeat": false,
+    "repeatsTerminalConsequence": true
+  },
+  "silentView": {
+    "dialogueNeed": "NONE",
+    "score": 100,
+    "audioDependent": false,
+    "visualVerification": "SOURCE_ONLY"
+  },
+  "duration": {
+    "declaredSeconds": 15,
+    "within20Seconds": true,
+    "renderMeasured": false
+  },
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "admissionUncertainty": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    }
+  ]
+}
+PIPELINE RESULTS
+{
+  "schemaValidity": "PASS",
+  "normalization": "PASS",
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "PremiseNaturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "Whenever Kiko pushes the broom forward against the floor, the traversed strip of floor folds into a permanent upright pleat as tall as that stroke is long, carrying anything resting on that strip upward with it.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": "DIRECT",
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+    "legacyAdmitted": false,
+    "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED"
+  },
+  "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+  "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+  "admissionReasons": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    }
+  ],
+  "BeatGrammar": {
+    "beatGrammarQuality": "ACCEPTABLE",
+    "strategySequence": [
+      "SWITCH_CONTACT_POINT",
+      "UNKNOWN",
+      "UNKNOWN",
+      "UNKNOWN"
+    ],
+    "consequenceSequence": [
+      "source-state:58760f3b77cc8b44",
+      "source-state:bf39bf9a5a5dbece",
+      null,
+      "source-state:2e4a8ebfe1d5edd4"
+    ],
+    "strategyDiversityScore": 100.0,
+    "consequenceDiversityScore": 75.0,
+    "bodyStateProgressionScore": 0.0,
+    "spatialProgressionScore": 0.0,
+    "informationGainScore": 100.0,
+    "nearDuplicateAttemptRate": 0.0,
+    "payoffDistance": 0,
+    "flags": [
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "LOW_PAYOFF_DISTANCE"
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "consequenceType",
+        "sourcePresent": true
+      }
+    ]
+  },
+  "SFE": {
+    "engine": "SHORT_FORM_ENGINE",
+    "version": "short-form-engine-v1",
+    "status": "REVISION_REQUIRED",
+    "shortFormScore": 85,
+    "hookScore": 100,
+    "goalScore": 100,
+    "ruleClarityScore": 100,
+    "beatDensityScore": 45,
+    "progressDensityScore": 75,
+    "escalationScore": 37,
+    "payoffScore": 100,
+    "rewatchScore": 60,
+    "silentLegibilityScore": 100,
+    "productionFeasibilityScore": 100,
+    "alreadyInTrouble": true,
+    "majorCausalBeatCount": 3,
+    "describedBlockCount": 4,
+    "continuationReason": "Not established beyond repeated activity.",
+    "earlyRuleUnderstandingPenalized": false,
+    "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+    "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+    "requestedDurationSeconds": 15.0,
+    "timingVerifiedFromPlan": true,
+    "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+    "humanReadableReport": "REVISION_REQUIRED: short-form 85/100; 3 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+    "sourceSha256": "f4559dcce7db03e4e35f477e830600ca3992e8dda9480f4d7f1f8aa21b481416",
+    "canonicalRulesetUnchanged": true,
+    "renderAuthorized": false,
+    "providerCalls": 0,
+    "evidenceSourceVersion": "structured-canonical-v1"
+  },
+  "CreativeShape": {
+    "code": null,
+    "risk": "LOW",
+    "evidence": {
+      "repeatedStrategySequence": 0,
+      "repeatedPayoffFamily": 0,
+      "repeatedFinalRelationship": 0,
+      "repeatedFalseSuccessPosition": 0,
+      "repeatedTemporalShape": 0
+    },
+    "peerDenominator": 0
+  },
+  "historicalTerritory": {
+    "historicalCreativeTerritoryRisk": "LOW",
+    "closestHistoricalCreativeTerritory": {
+      "referenceId": "sticky-ball-01",
+      "similarity": 0.1,
+      "matchingAxes": [
+        "openingRelation"
+      ],
+      "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+      "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"
+    },
+    "plannedSceneSignature": {
+      "objectCategory": "UNKNOWN",
+      "goal": "UNKNOWN",
+      "openingRelation": "USE_BLOCKED",
+      "dominantTransformation": "UNSUPPORTED_RESPONSE",
+      "finalRelation": "UNKNOWN",
+      "silhouetteTopology": "OFF_BALANCE"
+    },
+    "evidenceKind": "NEW_STRUCTURAL_ANNOTATION_OF_TWO_FROZEN_PROMPTS_NOT_PIXELS_OR_WINNER_PERFORMANCE",
+    "canonicalHistoricalMetricsChanged": false
+  },
+  "rankingEligibility": "INELIGIBLE",
+  "rankingScore": null,
+  "rankingEligibilityReasons": [
+    {
+      "code": "TOO_FEW_CAUSAL_BEATS",
+      "source": "SHORT_FORM_ENGINE",
+      "reason": "3 supported causal beats; target 4–5, normally 4–6.",
+      "beatIds": []
+    },
+    {
+      "code": "IDENTICAL_ATTEMPTS",
+      "source": "SHORT_FORM_ENGINE",
+      "reason": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+      "beatIds": [
+        "B3"
+      ]
+    }
+  ],
+  "productionAdmissible": false,
+  "productionSlateRank": null,
+  "exactProductionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "ACCEPTED_VALIDATOR_INELIGIBLE",
+    "RANKING_QUALITY_FLOOR",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "humanReviewReasons": []
+}
+
+========================================================================
+micro-c / The Wrinkle Has to Go Somewhere
+GLOBAL ID: semantic-compact-micro-batch-v1/micro-c/sem1-13c354f40be0f053
+COMPLETE STORY — exact stored source, no repairs
+{
+  "ideaId": "seed42-001",
+  "title": "The Wrinkle Has to Go Somewhere",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Iron a wrinkled shirt flat.",
+  "primaryObject": "Clothes iron",
+  "normalExpectation": "Pressing an iron over a shirt removes its creases while the ironing board provides flat support.",
+  "impossibleRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+  "visibleTrigger": "The iron presses a raised shirt crease flat.",
+  "whyThisObject": "The iron needs firm, flat support beneath the fabric; its ordinary smoothing action progressively folds that supporting surface.",
+  "goalRuleRelationship": "Every crease Mimi removes from the shirt makes the board less able to support the next ironing stroke.",
+  "frameZeroDescription": "Mimi stands at an ironing board with an iron planted on a shirt. One sleeve is smooth above a sharply zigzagged section of board; the remaining shirt is heavily wrinkled on the still-flat section. The board's padded edge visibly follows the deep zigzag beneath the smooth sleeve.",
+  "beats": [
+    {
+      "strategy": "Mimi slides the iron across the shirt's wrinkled middle.",
+      "visibleConsequence": "The shirt's middle becomes smooth while the board beneath it buckles into a broad ridge, tipping the remaining wrinkles toward Mimi.",
+      "newInformation": "A larger shirt crease produces the same larger fold in the supporting board."
+    },
+    {
+      "strategy": "Mimi pulls the wrinkled hem onto the board's remaining flat end and presses it.",
+      "visibleConsequence": "The hem flattens, but the board's end folds upward, leaving the shirt draped between two raised sections.",
+      "newInformation": "Moving to unused support only relocates the accumulating board creases."
+    },
+    {
+      "strategy": "Mimi stretches the last wrinkled sleeve across the board's central ridge and presses along it.",
+      "visibleConsequence": "The sleeve smooths as a new crease folds the ridge into a compact accordion, leaving almost no level working surface.",
+      "newInformation": "The existing board folds remain while each newly removed shirt crease adds another."
+    },
+    {
+      "strategy": "Mimi presses the final cuff crease against the accordion's small flat top, then lifts the shirt by its shoulders.",
+      "visibleConsequence": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+      "newInformation": "The shirt is flat because its entire collection of creases now occupies the board."
+    }
+  ],
+  "finalPayoff": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+  "suggestedPayoffFamily": "Solution-created problem",
+  "loopPotential": "No reset; the smooth shirt and crumpled board remain.",
+  "environment": "A quiet laundry corner with one ironing board and clear floor space.",
+  "dialogueNeed": "NONE",
+  "providerRationale": "Ironing depends on flat support. Transferring each removed crease into that support lets successful smoothing progressively destroy the working surface.",
+  "durationSeconds": 15
+}
+DEDICATED OPENING AUDIT
+{
+  "frameZeroDescription": "Mimi stands at an ironing board with an iron planted on a shirt. One sleeve is smooth above a sharply zigzagged section of board; the remaining shirt is heavily wrinkled on the still-flat section. The board's padded edge visibly follows the deep zigzag beneath the smooth sleeve.",
+  "characterVisible": true,
+  "goalVisible": true,
+  "objectVisible": true,
+  "problemVisible": true,
+  "impossibleRelationVisible": null,
+  "stillCausalLegibility": "UNRESOLVED",
+  "goalProblemRelationship": true,
+  "needsMotionToUnderstand": null,
+  "needsPriorContext": null,
+  "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+  "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."
+}
+Opening score: 35; null = UNRESOLVED.
+COMPLETE CREATIVE CONTRACT / EACH BEAT / PAYOFF SOURCE AUDIT
+{
+  "id": "micro-c",
+  "candidateId": "semantic-compact-micro-batch-v1/micro-c/sem1-13c354f40be0f053",
+  "sourceOnly": true,
+  "oneProtagonist": {
+    "status": "SUPPORTED",
+    "name": "Mimi",
+    "depictedNamedActors": 1
+  },
+  "onePrimaryObject": {
+    "status": "SUPPORTED",
+    "name": "Clothes iron",
+    "scope": "One primary object; ordinary supporting objects may be present."
+  },
+  "everydayGoal": {
+    "status": "SUPPORTED",
+    "source": "Iron a wrinkled shirt flat."
+  },
+  "frameZeroGoal": "SUPPORTED_AS_DESCRIBED",
+  "frameZeroProblem": "SUPPORTED_AS_DESCRIBED",
+  "frameZeroImpossibleRelationship": "UNRESOLVED",
+  "frameZeroCauseProblem": "UNRESOLVED",
+  "openingScore": 35,
+  "openingAudit": "Smooth cloth and a buckled supporting board are simultaneously described, but the exact crease-transfer relationship and cause are not established in one still. The iron is planted rather than shown removing a matched crease.",
+  "oneImmutableRule": {
+    "declared": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+    "acceptedConsistency": "AMBIGUOUS"
+  },
+  "stableTrigger": {
+    "declared": "The iron presses a raised shirt crease flat.",
+    "acceptedStatus": "AMBIGUOUS"
+  },
+  "beatCount": 4,
+  "allBeatsHaveStrategyConsequenceNewInformation": true,
+  "perBeat": [
+    {
+      "beat": 1,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+      "source": {
+        "strategy": "Mimi slides the iron across the shirt's wrinkled middle.",
+        "visibleConsequence": "The shirt's middle becomes smooth while the board beneath it buckles into a broad ridge, tipping the remaining wrinkles toward Mimi.",
+        "newInformation": "A larger shirt crease produces the same larger fold in the supporting board."
+      },
+      "sourceComparison": "Smoothing the middle while the support ridges fits transfer beneath the crease. Exact identical crease shape is asserted, not geometrically demonstrated.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 2,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+      "source": {
+        "strategy": "Mimi pulls the wrinkled hem onto the board's remaining flat end and presses it.",
+        "visibleConsequence": "The hem flattens, but the board's end folds upward, leaving the shirt draped between two raised sections.",
+        "newInformation": "Moving to unused support only relocates the accumulating board creases."
+      },
+      "sourceComparison": "Moving the hem to flat support and folding that end follows the same transfer condition.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 3,
+      "ruleStatus": "AMBIGUOUS",
+      "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+      "source": {
+        "strategy": "Mimi stretches the last wrinkled sleeve across the board's central ridge and presses along it.",
+        "visibleConsequence": "The sleeve smooths as a new crease folds the ridge into a compact accordion, leaving almost no level working surface.",
+        "newInformation": "The existing board folds remain while each newly removed shirt crease adds another."
+      },
+      "sourceComparison": "Adding another crease while older folds remain fits accumulation, but an identical crease folding an existing ridge into a compact accordion needs geometry review; accepted status is ambiguous.",
+      "explicitContradiction": []
+    },
+    {
+      "beat": 4,
+      "ruleStatus": "RULE_CONSISTENT",
+      "exactRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+      "source": {
+        "strategy": "Mimi presses the final cuff crease against the accordion's small flat top, then lifts the shirt by its shoulders.",
+        "visibleConsequence": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+        "newInformation": "The shirt is flat because its entire collection of creases now occupies the board."
+      },
+      "sourceComparison": "The final cuff press and lifting the shirt use the same trigger. The entire board becoming shirt-shaped is not entailed by arbitrary repositioned crease transfers. It may describe a silhouette rather than a new mechanism; this remains ambiguous.",
+      "explicitContradiction": []
+    }
+  ],
+  "payoff": {
+    "present": true,
+    "visual": true,
+    "stateChanging": true,
+    "ruleLinked": true,
+    "introducesNewBehavior": "AMBIGUOUS",
+    "sourceConcern": "The shirt-shaped final arrangement is not fully supported by the described spatial mapping of each transferred crease; no explicit second mechanism is introduced.",
+    "merelyRepeatsPenultimateBeat": false,
+    "repeatsTerminalConsequence": true
+  },
+  "silentView": {
+    "dialogueNeed": "NONE",
+    "score": 89,
+    "audioDependent": false,
+    "visualVerification": "SOURCE_ONLY"
+  },
+  "duration": {
+    "declaredSeconds": 15,
+    "within20Seconds": true,
+    "renderMeasured": false
+  },
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "admissionUncertainty": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    }
+  ]
+}
+PIPELINE RESULTS
+{
+  "schemaValidity": "PASS",
+  "normalization": "PASS",
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "PremiseNaturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 40,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+    "legacyAdmitted": false,
+    "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED"
+  },
+  "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+  "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+  "admissionReasons": [
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "objectSpecificity",
+      "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "trigger",
+      "reason": "A concrete source action is linked to the declared abnormal behavior."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "goalInterference",
+      "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "nonArbitrary",
+      "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+    },
+    {
+      "code": "FACTOR_NOT_ESTABLISHED",
+      "factor": "functionalAffordanceRelationship",
+      "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+    }
+  ],
+  "BeatGrammar": {
+    "beatGrammarQuality": "ACCEPTABLE",
+    "strategySequence": [
+      "UNKNOWN",
+      "UNKNOWN",
+      "USE_ENVIRONMENT_SURFACE",
+      "UNKNOWN"
+    ],
+    "consequenceSequence": [
+      "source-state:54deddf787f46e83",
+      "source-state:daaf68b016472198",
+      null,
+      "OBJECT_GROWS"
+    ],
+    "strategyDiversityScore": 100.0,
+    "consequenceDiversityScore": 75.0,
+    "bodyStateProgressionScore": 0.0,
+    "spatialProgressionScore": 0.0,
+    "informationGainScore": 100.0,
+    "nearDuplicateAttemptRate": 0.0,
+    "payoffDistance": 0,
+    "flags": [
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "LOW_PAYOFF_DISTANCE"
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      }
+    ]
+  },
+  "SFE": {
+    "engine": "SHORT_FORM_ENGINE",
+    "version": "short-form-engine-v1",
+    "status": "REVISION_REQUIRED",
+    "shortFormScore": 84,
+    "hookScore": 100,
+    "goalScore": 100,
+    "ruleClarityScore": 100,
+    "beatDensityScore": 45,
+    "progressDensityScore": 75,
+    "escalationScore": 37,
+    "payoffScore": 100,
+    "rewatchScore": 60,
+    "silentLegibilityScore": 89,
+    "productionFeasibilityScore": 100,
+    "alreadyInTrouble": true,
+    "majorCausalBeatCount": 3,
+    "describedBlockCount": 4,
+    "continuationReason": "Not established beyond repeated activity.",
+    "earlyRuleUnderstandingPenalized": false,
+    "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+    "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+    "requestedDurationSeconds": 15.0,
+    "timingVerifiedFromPlan": true,
+    "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+    "humanReadableReport": "REVISION_REQUIRED: short-form 84/100; 3 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+    "sourceSha256": "a391a02b31c1ee304484da97548acf6152baeb0155311aa5d2332c6014317208",
+    "canonicalRulesetUnchanged": true,
+    "renderAuthorized": false,
+    "providerCalls": 0,
+    "evidenceSourceVersion": "structured-canonical-v1"
+  },
+  "CreativeShape": {
+    "code": null,
+    "risk": "LOW",
+    "evidence": {
+      "repeatedStrategySequence": 0,
+      "repeatedPayoffFamily": 0,
+      "repeatedFinalRelationship": 0,
+      "repeatedFalseSuccessPosition": 0,
+      "repeatedTemporalShape": 0
+    },
+    "peerDenominator": 0
+  },
+  "historicalTerritory": {
+    "historicalCreativeTerritoryRisk": "LOW",
+    "closestHistoricalCreativeTerritory": {
+      "referenceId": "sticky-ball-01",
+      "similarity": 0.1,
+      "matchingAxes": [
+        "openingRelation"
+      ],
+      "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+      "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"
+    },
+    "plannedSceneSignature": {
+      "objectCategory": "UNKNOWN",
+      "goal": "UNKNOWN",
+      "openingRelation": "USE_BLOCKED",
+      "dominantTransformation": "UNSUPPORTED_RESPONSE",
+      "finalRelation": "UNKNOWN",
+      "silhouetteTopology": "OFF_BALANCE"
+    },
+    "evidenceKind": "NEW_STRUCTURAL_ANNOTATION_OF_TWO_FROZEN_PROMPTS_NOT_PIXELS_OR_WINNER_PERFORMANCE",
+    "canonicalHistoricalMetricsChanged": false
+  },
+  "rankingEligibility": "INELIGIBLE",
+  "rankingScore": null,
+  "rankingEligibilityReasons": [
+    {
+      "code": "TOO_FEW_CAUSAL_BEATS",
+      "source": "SHORT_FORM_ENGINE",
+      "reason": "3 supported causal beats; target 4–5, normally 4–6.",
+      "beatIds": []
+    },
+    {
+      "code": "IDENTICAL_ATTEMPTS",
+      "source": "SHORT_FORM_ENGINE",
+      "reason": "Repeated actions lack a new strategy, magnitude, consequence, information, position or stakes.",
+      "beatIds": [
+        "B3"
+      ]
+    }
+  ],
+  "productionAdmissible": false,
+  "productionSlateRank": null,
+  "exactProductionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "ACCEPTED_VALIDATOR_INELIGIBLE",
+    "SHORT_FORM_QUALITY_FLOOR",
+    "RANKING_QUALITY_FLOOR",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "humanReviewReasons": []
+}
+
+DISTRIBUTIONS / LIMITATIONS
+{
+  "actualCreativeSampleSize": 3,
+  "plannedCreativeSampleSize": 4,
+  "missingCandidate": "micro-a timed out; no response/story/audit/score is available.",
+  "availableSampleOpeningSignal": "OPENING_WEAKNESS_SIGNAL",
+  "signalBasis": "All 3 available real candidates score 35, below the accepted floor 60. This is a repeated observed weakness in a small sample, not statistical proof.",
+  "plannedFourCandidateTest": "INCOMPLETE",
+  "automaticCombinedLabelExplanation": "combined-analysis.json conservatively emits NO_CLEAR_PATTERN whenever fewer than 4 candidates are available; it withholds the planned four-candidate classification. The descriptive available-sample weakness signal here does not override any score or gate.",
+  "admissionDistribution": {
+    "admitted": 0,
+    "notAdmittedGenuineQuality": 0,
+    "notAdmittedTaxonomyCoverageOnly": 0,
+    "notAdmittedEvidenceUncertainty": 3
+  },
+  "admissionInterpretation": "All authoritative statuses are NOT_ADMITTED_INSUFFICIENT_EVIDENCE. Missing support is not established genuine failure, and unclassified taxonomy alone is not the rejection reason.",
+  "payoffDistribution": {
+    "present": 3,
+    "visualAsDescribed": 3,
+    "stateChanging": 3,
+    "acceptedRuleLinked": 3,
+    "explicitNewImpossibleBehavior": 0,
+    "newBehaviorAmbiguity": 1,
+    "merelyRepeatedPenultimateBeat": 0
+  },
+  "ruleDistribution": {
+    "RULE_CONSISTENT": 0,
+    "RULE_INCONSISTENT": 0,
+    "AMBIGUOUS": 3
+  },
+  "ruleComparisonWithV1": "No explicit source-constraint contradiction was detected in the available candidates, unlike the known V1 mutation pattern. All remain AMBIGUOUS under the accepted audit, so there is no established superiority or full consistency pass.",
+  "humanReviewSet": [],
+  "reviewCards": [],
+  "preScoringScope": "Original per-request structural/coherence receipts were persisted before the pipeline. These complete offline source audits precede an additional unchanged accepted-pipeline replay for micro-b and micro-c. No repair, score override or new validator is used."
+}
+
+MICRO_BATCH_HUMAN_REVIEW_SET: []
+REVIEW CARDS: []
+
+TESTS
+New module: intelligence/ml-service/tests/test_semantic_compact_micro_batch_v1.py — 12 mocked tests.
+Cases: exact three-slot plan; exact accepted profile; all-success plus A/B/C individual failures; unique provenance and IDs even with identical mock content; no replacement/retry/fallback; reference reuse without regeneration; combined metrics; six human-review inclusion/exclusion cases.
+Focused: 101 passed; full regression: 3247 passed, accepted 36 failures, 2 skips. See mock-tests.log, full-regression.log, pre-live-verification.json and verification.json.
+
+IMMUTABILITY / REPLAY
+All protected hashes and tested-source hashes match. Exact accepted SDK request arguments match for A/B/C, including reasoning_effort=low. Old historical docs and REFERENCE-0 remain unchanged.
+Complete offline source audits preceded a further accepted-pipeline replay. B matched exactly after JSON serialization; C had only order changes of the same iron/the evidence tokens. Scores, blockers, decisions and source were identical. No validator fix was made.
+Raw per-request artifacts: intelligence/docs/semantic-compact-micro-batch-v1-run-001/micro-a, micro-b, micro-c.
+Full nested accepted pipeline evidence: expanded-evidence-report.txt and each per-request inspection.json/pipeline.json.
+Hash evidence: protected-before.json, protected-after.json, pre-live-verification.json, verification.json, artifact-manifest.json.
+STOPPED. No fourth request, production prompts, media render, prompt rewrite or scale-up.

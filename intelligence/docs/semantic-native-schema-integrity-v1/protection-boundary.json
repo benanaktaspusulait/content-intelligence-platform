@@ -1,0 +1,13 @@
+{
+  "existingBuilderAndPoliciesChanged": false,
+  "newCorrectedBuilderVersion": "semantic-native-schema-integrity-v1",
+  "legacyBuilderScope": "Frozen historical replay; not selected by corrected probe",
+  "correctedLivePath": "semantic_schema_integrity_probe_v1 → native_response_format → LastMileSchemaGuard → existing SDK",
+  "activeHashMigrationRequired": false,
+  "reason": "No actively protected or manifest-bound existing source is edited; additive versioned builder follows prior opt-in workflow convention.",
+  "unchangedHashes": {
+    "intelligence/ml-service/tests/fixtures/approved_active_integrity_v1.json": "6d8389e5cc567d8408e404c3e11294337200fb64970ed30403d92e751661ff57",
+    "intelligence/ml-service/tests/protected_integrity.py": "70a6dd963d8685c2625332f3164e154167e4d1ff7f09e5f898f955b9133dcba6",
+    "intelligence/ml-service/app/workflow/semantic_live_experiment.py": "d5387e4e63d74e7532db0021a122e2bc2b3322310f74f21e1e5f19b5d9c9f6a1"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "previous": {
+    "reasoningEffort": "high",
+    "classification": "COMPACT_FULL_CONTRACT_TIMEOUT",
+    "seconds": 90.782689292,
+    "responseBytes": 0,
+    "usage": null
+  },
+  "current": {
+    "reasoningEffort": "low",
+    "classification": "LOW_REASONING_FULL_CONTRACT_EXECUTION_PASS",
+    "seconds": 61.43609175,
+    "responseBytes": 3345,
+    "usage": {
+      "completion_tokens": 1746,
+      "prompt_tokens": 1952,
+      "total_tokens": 3698,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1023,
+        "rejected_prediction_tokens": 0,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 1949,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": null
+      }
+    }
+  },
+  "promptIdentical": true,
+  "schemaIdentical": true,
+  "timeoutIdentical": true,
+  "outputCeilingIdentical": true,
+  "interpretation": "REASONING_LATENCY_CONFIRMED_AS_MAJOR_FACTOR",
+  "requestDiff": [
+    {
+      "path": "/arguments/reasoning_effort",
+      "previous": "high",
+      "new": "low"
+    }
+  ]
+}

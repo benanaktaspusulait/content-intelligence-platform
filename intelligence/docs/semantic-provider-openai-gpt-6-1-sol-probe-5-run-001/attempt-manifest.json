@@ -1,0 +1,17 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "all-returned-concepts.txt": "9e0c287e662c728485cb32e3163f1e5462082a114e13de07ad1ae98d9acc13ea",
+    "analysis-status.json": "215ac7bcf92d5f81c8f28e5f9df8c9d14e8e0b4c036f8e0e4c818c2961112a65",
+    "benchmark-record.json": "fcd81d10f4ebe7f5e4cad887e029356473b351152a573f71439d228a7376c213",
+    "configuration.json": "dc5f0f0af090f2eb4989f51d4bf709aa43672ebd6421d3f5dcc822363b9640ad",
+    "plan.json": "06f24e9515b15fb78a5535962249dfc6ff743944e9c6f23f5b13c7972d92ae9d",
+    "prompt.json": "12283c6416cc389a3cec54f8a1b936fa0d3c6d7353b967eb51bb0eaf5a05b0df",
+    "request-started.json": "90a85c50282ff03e58c5aaa6befc2534c519c392631490e9c3bba41859d2d55e",
+    "request.json": "e4f645204a24dff3c6dd06c6d69c8ee6df035a3a592fff29340f84218046cf1e",
+    "response.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sdk-call-started.json": "8a6a3096d46bb2b3ec9d1431d0b8e81c5e987ae41db4505e0e8760f0ce8912db",
+    "unavailable-concept-results.json": "e9d627927513fb28f9c1a651ad46b581a8c4df4d684b939405c63338f0b4c254",
+    "worker-result.json": "2d3c7056fc5a1cdeefecccaec8ac45de89048b238a6c92bb7993539cdd31f26c"
+  }
+}

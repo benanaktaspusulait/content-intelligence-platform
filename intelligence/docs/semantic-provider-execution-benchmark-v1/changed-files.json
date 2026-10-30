@@ -1,0 +1,8 @@
+{
+  "existingSourceChanges": [],
+  "newBenchmarkTestCLIFiles": {
+    "intelligence/ml-service/app/workflow/semantic_provider_execution_benchmark_v1.py": "969771059ddfb705160beec7f718e5750d096a879740c0cfe492922cfb0898f9",
+    "intelligence/ml-service/tests/test_semantic_provider_execution_benchmark_v1.py": "f6f902b3ed29fb59e220a955430e645c7ce125f21834e099e340cb267b5cefea",
+    "intelligence/scripts/probe-semantic-provider-v1.py": "1595df4b24ab87924b256237a948401916b2c71f914b661845f7f7a8adf323bd"
+  }
+}

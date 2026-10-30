@@ -1,0 +1,50 @@
+{
+  "a": {
+    "creativeSystemIdentical": true,
+    "systemSha256": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+    "candidateItemSchemaIdentical": true,
+    "onlyPayloadDifferences": [
+      "requestedRawCount",
+      "limits.maxOutputTokens",
+      "limits.timeoutSeconds",
+      "batchInstructions.count",
+      "shardMetadata"
+    ],
+    "requestModel": "deepseek-v4-pro",
+    "outputCeiling": 32768,
+    "shardMetadata": {
+      "experimentId": "semantic-live-v2-count-40-run-001-recovery-001",
+      "ideaIdPrefix": "v2-a-",
+      "ordinalRange": [
+        1,
+        20
+      ],
+      "requestedCandidateCount": 20,
+      "shardId": "A"
+    }
+  },
+  "b": {
+    "creativeSystemIdentical": true,
+    "systemSha256": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+    "candidateItemSchemaIdentical": true,
+    "onlyPayloadDifferences": [
+      "requestedRawCount",
+      "limits.maxOutputTokens",
+      "limits.timeoutSeconds",
+      "batchInstructions.count",
+      "shardMetadata"
+    ],
+    "requestModel": "deepseek-v4-pro",
+    "outputCeiling": 32768,
+    "shardMetadata": {
+      "experimentId": "semantic-live-v2-count-40-run-001-recovery-001",
+      "ideaIdPrefix": "v2-b-",
+      "ordinalRange": [
+        1,
+        20
+      ],
+      "requestedCandidateCount": 20,
+      "shardId": "B"
+    }
+  }
+}

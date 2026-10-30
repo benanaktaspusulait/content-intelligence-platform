@@ -1,0 +1,842 @@
+Continue from the current repository state.
+
+Semantic Native Schema Integrity V1 is complete.
+
+Important correction to the interpretation:
+
+The corrected full native schema DID execute successfully at the transport / structured-output level.
+
+Evidence:
+
+- $defs repaired at final root
+- unresolved local references = 0
+- semantic equivalence verified against 66 historical payloads
+- actual SDK last-mile request object validated
+- one live OpenAI request returned 2,078 bytes of usable structured content
+- response completed in ~78.44 seconds
+
+However, the returned diagnostic candidate contained:
+
+- 3 beats
+- approximately 24 seconds
+
+while the creative V2 contract expects:
+
+- 4–5 major beats
+- approximately 15 seconds
+- no more than 20 seconds
+
+This should NOT automatically be classified as a schema-execution failure.
+
+The previous live probe deliberately used:
+
+MINIMAL PROMPT
++
+CORRECTED FULL V2 SCHEMA
+
+Therefore we must now determine where each creative constraint actually lives:
+
+SCHEMA
+
+PROMPT
+
+VALIDATOR
+
+or multiple layers.
+
+At the same time, previous Probe D showed:
+
+FULL PROMPT V2
++
+SMALL SCHEMA
+→ ReadTimeout at ~90.72s
+
+Therefore the remaining execution concern is likely associated with Prompt V2 complexity / reasoning burden, not basic transport or schema validity.
+
+======================================================================
+PRIMARY GOALS
+======================================================================
+
+This task has TWO phases.
+
+PHASE A — OFFLINE CONTRACT PLACEMENT AUDIT
+
+Determine exactly which Semantic V2 requirements are enforced by:
+
+- native JSON schema
+- Prompt V2
+- deterministic validators
+- multiple layers
+- nowhere
+
+PHASE B — CREATE A SEMANTICALLY EQUIVALENT COMPACT PROMPT V2
+
+Create:
+
+semanticConceptPromptVersion = "v2-compact"
+
+or repository-equivalent version naming.
+
+The compact prompt must preserve the creative meaning and failure protections of Prompt V2 while substantially reducing instruction length and duplication.
+
+DO NOT run a live provider call in this task.
+
+Provider calls:
+0
+
+======================================================================
+1. DO NOT CHANGE VALIDATORS
+======================================================================
+
+Do NOT modify:
+
+SHORT_FORM_ENGINE
+
+Canonical Evidence
+
+Premise Naturalness
+
+Evidence-Supported Admission V2
+
+Beat Grammar
+
+Creative Shape
+
+ranking
+
+production preselection
+
+thresholds
+
+taxonomies
+
+Historical behavior must remain stable.
+
+======================================================================
+2. CORRECT EXECUTION CLASSIFICATION
+======================================================================
+
+Record the corrected interpretation:
+
+TRANSPORT:
+PASS
+
+SMALL NATIVE STRUCTURED OUTPUT:
+PASS
+
+CORRECTED FULL NATIVE SCHEMA:
+PASS at execution level
+
+FULL CREATIVE CONTRACT:
+NOT YET TESTED SUCCESSFULLY AFTER SCHEMA REPAIR
+
+FULL PROMPT V2:
+previously associated with timeout in Probe D
+
+Do not claim:
+
+the full schema is still non-executable
+
+unless new evidence proves that.
+
+======================================================================
+3. CONTRACT PLACEMENT MATRIX
+======================================================================
+
+Build a complete matrix for every important V2 requirement.
+
+At minimum include:
+
+- exactly one protagonist
+- one primary everyday object
+- concrete everyday goal
+- immediate visible trouble
+- frame-zero goal visibility
+- frame-zero problem visibility
+- frame-zero impossible relationship
+- one immutable impossible rule
+- stable trigger
+- exactly 4–5 major beats
+- each beat has strategy
+- each beat has visible consequence
+- each beat has new information/state change
+- no repeated identical attempt
+- same-rule escalation
+- payoff present
+- payoff linked to original rule
+- payoff does not introduce new rule
+- silent-view legibility
+- minimal dialogue
+- object specificity
+- direct goal interference
+- non-arbitrary magic
+- production feasibility
+- target duration ~15 seconds
+- maximum duration 20 seconds
+- no provider self-ranking
+- no provider self-scoring
+
+For each mark:
+
+SCHEMA_ENFORCED
+
+PROMPT_ENFORCED
+
+VALIDATOR_ENFORCED
+
+MULTI_LAYER
+
+NOT_ENFORCED
+
+======================================================================
+4. 3-BEAT RESULT AUDIT
+======================================================================
+
+Determine exactly why the corrected-schema live probe accepted 3 beats.
+
+Inspect the exact final provider schema.
+
+Report:
+
+beats minItems?
+
+beats maxItems?
+
+required?
+
+nested beat required fields?
+
+If minItems = 4 was NOT present:
+
+state clearly:
+
+3 beats was schema-valid.
+
+If minItems = 4 WAS present:
+
+then investigate why native structured output returned schema-invalid content.
+
+Do not speculate.
+
+======================================================================
+5. 24-SECOND RESULT AUDIT
+======================================================================
+
+Determine where duration is represented.
+
+Questions:
+
+Is there an explicit duration field in schema?
+
+Is maximum 20 seconds represented mechanically?
+
+Is duration only inferred from beat prose?
+
+Is duration only a Prompt V2 instruction?
+
+Is duration only validated downstream?
+
+Explain exactly why 24 seconds was possible.
+
+======================================================================
+6. SCHEMA-ENFORCEABLE VS SEMANTIC CONSTRAINTS
+======================================================================
+
+Classify constraints into:
+
+STRUCTURAL
+
+Examples:
+
+beat count
+required fields
+array sizes
+enum shape
+string presence
+
+SEMANTIC
+
+Examples:
+
+same rule across beats
+rule-derived payoff
+goal/problem visibility
+object specificity
+non-arbitrary magic
+
+Do NOT attempt to force semantic judgments into JSON schema.
+
+======================================================================
+7. SAFE STRUCTURAL SCHEMA CONSTRAINTS
+======================================================================
+
+If the canonical V2 contract already intends structural requirements such as:
+
+beats = 4–5
+
+and they are currently absent from the schema,
+
+report this as:
+
+SCHEMA_CONTRACT_GAP
+
+Do NOT silently add it yet unless the existing canonical schema specification clearly establishes it as structural contract.
+
+If implementation requires correction to match already-declared canonical schema intent, document it separately.
+
+Primary task is audit + prompt compaction.
+
+======================================================================
+8. PROMPT V2 REDUNDANCY AUDIT
+======================================================================
+
+Analyze exact Prompt V2.
+
+Report:
+
+character count
+estimated tokens
+line count
+section count
+instruction count
+
+Then identify semantically overlapping instruction clusters.
+
+Examples likely include repeated forms of:
+
+- rule must never mutate
+- every beat obeys same rule
+- trigger must stay stable
+- payoff must derive from rule
+- don't introduce new magic
+- causal self-check
+
+Do NOT delete meaning.
+
+Group repetition.
+
+======================================================================
+9. PROMPT COMPACTION PRINCIPLE
+======================================================================
+
+Create a new compact version with the SAME creative policy.
+
+Goal:
+
+reduce repetition and reasoning burden.
+
+Do NOT simply remove constraints.
+
+Instead use hierarchy.
+
+For example:
+
+CORE INVARIANTS
+
+OPENING
+
+BEATS
+
+PAYOFF
+
+DIVERSITY
+
+PRODUCTION
+
+OUTPUT CONTRACT
+
+FINAL SELF-CHECK
+
+Avoid stating the same rule in five sections.
+
+======================================================================
+10. TARGET COMPACTION
+======================================================================
+
+Measure exact V2 size first.
+
+Then target a substantial reduction.
+
+Desired direction:
+
+approximately 40–60% fewer prompt tokens
+
+IF achievable without semantic loss.
+
+Do NOT optimize to an arbitrary token number if meaning would be lost.
+
+Report actual reduction.
+
+======================================================================
+11. CORE INVARIANT BLOCK
+======================================================================
+
+Compact Prompt V2 should establish a small set of non-negotiable invariants early.
+
+At minimum:
+
+1. one protagonist + one everyday goal + one primary object
+
+2. frame zero visibly shows goal + object + impossible problem
+
+3. one observable impossible rule
+
+4. the rule and trigger never mutate
+
+5. exactly 4–5 causal beats
+
+6. every beat:
+   strategy → consequence → state/new information
+
+7. escalation changes strategy/consequence/state, not the rule
+
+8. payoff is the strongest logical consequence of the same rule
+
+9. silent-view understandable
+
+10. strange-but-intuitive, not random magic
+
+======================================================================
+12. RULE CONSISTENCY
+======================================================================
+
+Preserve the critical V2 lesson:
+
+Once the impossible rule is established, it never changes.
+
+But state it ONCE strongly.
+
+Then use one final self-check referencing:
+
+CORE RULE INVARIANT
+
+instead of repeating the whole explanation.
+
+======================================================================
+13. FRAME-ZERO REQUIREMENT
+======================================================================
+
+Preserve:
+
+character
++
+goal
++
+object
++
+problem
+
+visible in paused opening frame.
+
+Also preserve:
+
+do not require dialogue
+text
+prior context
+waiting for motion
+
+Compress wording without weakening standard.
+
+======================================================================
+14. BEAT REQUIREMENT
+======================================================================
+
+Preserve exactly:
+
+4 or 5 major beats.
+
+Each:
+
+strategy/action
+visible consequence
+new information/state change
+
+Preserve:
+
+same attempt with different wording does not count.
+
+======================================================================
+15. PAYOFF REQUIREMENT
+======================================================================
+
+Preserve:
+
+same original rule
+
+visual
+
+state-changing
+
+not mere repetition
+
+no new magic
+
+surprising but inevitable in retrospect
+
+Do not duplicate payoff rules across multiple sections.
+
+======================================================================
+16. OBJECT-SPECIFICITY
+======================================================================
+
+Preserve:
+
+WHY THIS EXACT OBJECT?
+
+The rule should exploit:
+
+function
+affordance
+motion
+property
+normal result
+
+Avoid random object + random magic.
+
+======================================================================
+17. DIVERSITY
+======================================================================
+
+Preserve batch-level diversity instructions:
+
+avoid repeated:
+
+object
+goal
+mechanic
+trigger
+story shape
+payoff
+final silhouette
+
+Also preserve caution around:
+
+Upside-Down Chair territory
+generic adhesion
+reset-to-start
+generic growth/shrink
+generic reversal
+escaping object
+
+But keep this concise.
+
+======================================================================
+18. PRODUCTION FEASIBILITY
+======================================================================
+
+Preserve:
+
+one character
+one main object
+one location
+broad actions
+stable identities
+limited moving elements
+
+Avoid:
+
+fine hand work
+tiny text
+many characters
+many objects
+rapid location changes
+
+======================================================================
+19. OUTPUT SCHEMA
+======================================================================
+
+Do NOT paste an enormous natural-language restatement of the schema into the prompt if the provider already receives a native structured schema.
+
+This is critical.
+
+Audit whether Prompt V2 redundantly describes every schema field while the native response schema already enforces them.
+
+If yes:
+
+Prompt V2 Compact should reference the supplied response schema rather than duplicate field-by-field mechanical requirements, except where semantic guidance is required.
+
+======================================================================
+20. SEPARATE STRUCTURE FROM CREATIVITY
+======================================================================
+
+Let native schema enforce:
+
+shape
+
+required fields
+
+array counts where supported
+
+Let prompt enforce:
+
+creative semantics
+
+Let deterministic validators judge:
+
+quality.
+
+Do not ask the model to mentally enforce things already guaranteed mechanically unless creative meaning depends on them.
+
+======================================================================
+21. FINAL SELF-CHECK
+======================================================================
+
+Use ONE compact pre-output self-check.
+
+Something like:
+
+Before returning each candidate verify:
+
+- frame zero shows goal + problem
+- every beat obeys exact same rule/trigger
+- 4–5 beats all change state/information
+- payoff follows same rule
+- object-rule relationship is specific
+- no random new magic
+
+If any fails:
+discard candidate and generate another internally.
+
+Do not add multiple separate self-check sections.
+
+======================================================================
+22. NO PROVIDER SELF-SCORING
+======================================================================
+
+Keep:
+
+model does not rank
+score
+choose winners
+predict virality
+declare production readiness.
+
+One concise rule is enough.
+
+======================================================================
+23. PRESERVE OUTPUT CONTRACT
+======================================================================
+
+Do not remove required candidate fields.
+
+Prompt compaction concerns instructions, not semantic data loss.
+
+Use existing corrected native schema.
+
+======================================================================
+24. VERSIONING
+======================================================================
+
+Keep:
+
+Semantic Prompt V1
+Semantic Prompt V2
+
+immutable.
+
+Create:
+
+Semantic Prompt V2 Compact
+
+as a new version.
+
+Do not overwrite V2.
+
+Store:
+
+exact text
+hash
+character count
+estimated tokens
+
+======================================================================
+25. SEMANTIC EQUIVALENCE MATRIX
+======================================================================
+
+For every V2 creative requirement show whether V2 Compact preserves it.
+
+Columns:
+
+Requirement
+
+V2 location
+
+V2 Compact location
+
+Preserved?
+YES / NO
+
+Any NO requires explicit justification.
+
+Expected:
+
+all required semantics preserved.
+
+======================================================================
+26. ADVERSARIAL MOCK TESTS
+======================================================================
+
+Use mocks only.
+
+Test Compact Prompt intent against examples including:
+
+A. rule mutation
+
+B. trigger mutation
+
+C. 3-beat candidate
+
+D. 6-beat candidate
+
+E. weak frame-zero setup
+
+F. motion-dependent opening
+
+G. unrelated payoff twist
+
+H. random magic
+
+I. repeated same attempt
+
+J. strong same-rule escalation
+
+K. strong unfamiliar causal mechanic
+
+L. provider tries to self-score
+
+Do not claim mocks prove creative quality.
+
+======================================================================
+27. SCHEMA STRUCTURAL ENFORCEMENT TESTS
+======================================================================
+
+Separately test the corrected native schema for structural rules that are actually intended to be schema-enforced.
+
+Specifically verify beat-count behavior.
+
+If canonical contract says 4–5:
+
+test:
+
+3 beats → invalid
+
+4 beats → valid
+
+5 beats → valid
+
+6 beats → invalid
+
+If schema currently does not encode this:
+
+report the mismatch explicitly.
+
+Do not conceal it.
+
+======================================================================
+28. DURATION CONTRACT
+======================================================================
+
+Clarify how duration should work architecturally.
+
+If exact duration is NOT a schema field:
+
+do not pretend JSON schema can enforce ≤20 seconds.
+
+Document:
+
+PROMPT constraint
+
+and/or
+
+DOWNSTREAM validator constraint.
+
+If an explicit duration field exists:
+
+audit its validation bounds.
+
+Do not add fields in this task unless already part of accepted contract.
+
+======================================================================
+29. NO LIVE CALL
+======================================================================
+
+Provider calls during this task:
+
+0
+
+Do not test Compact Prompt live yet.
+
+First produce a clean contract and verify it offline.
+
+======================================================================
+30. REGRESSION
+======================================================================
+
+Run:
+
+schema tests
+prompt version tests
+semantic mock tests
+provider request-construction tests
+historical immutability tests
+full regression
+
+Expected:
+
+same accepted 36 baseline failures
+same 2 skips
+
+No new failures.
+
+======================================================================
+31. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. corrected execution classification
+2. complete contract placement matrix
+3. exact reason 3 beats was accepted
+4. exact reason 24 seconds was possible
+5. schema structural gaps
+6. Prompt V2 size metrics
+7. redundancy analysis
+8. exact Prompt V2 Compact text
+9. V2 Compact size metrics
+10. percentage size reduction
+11. semantic-equivalence matrix
+12. schema structural enforcement tests
+13. adversarial mock results
+14. files changed
+15. exact tests
+16. provider calls = 0
+17. proof Prompt V1 unchanged
+18. proof Prompt V2 unchanged
+19. proof validators unchanged
+20. proof historical evidence unchanged
+21. proof only accepted baseline failures remain
+
+======================================================================
+32. STOP
+======================================================================
+
+After Prompt V2 Compact is implemented and verified OFFLINE:
+
+STOP.
+
+Do NOT:
+
+call OpenAI
+call DeepSeek
+generate live concepts
+change validator thresholds
+expand taxonomy
+render anything.
+
+The next task will perform ONE single-candidate capability probe using:
+
+Prompt V2 Compact
++
+corrected native schema.
+
+Only after that passes will we authorize a larger V2 generation run.

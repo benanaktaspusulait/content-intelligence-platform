@@ -1,0 +1,20 @@
+{
+  "transport": {
+    "ExperimentWallTimeout": 2
+  },
+  "creative": {
+    "RULE_INCONSISTENCY": null,
+    "OPENING_EVIDENCE_INSUFFICIENT": null,
+    "PREMISE_NOT_ADMITTED": null,
+    "ARBITRARY_MAGIC": null,
+    "WEAK_OBJECT_SPECIFICITY": null,
+    "WEAK_CAUSAL_PROGRESSION": null,
+    "MECHANICAL_BEATS": null,
+    "PAYOFF_NOT_RULE_LINKED": null,
+    "NEW_RULE_IN_PAYOFF": null,
+    "HISTORICAL_COLLISION": null,
+    "CREATIVE_SHAPE_RISK": null,
+    "PRODUCTION_FEASIBILITY": null
+  },
+  "creativeStatus": "NOT_EVALUATED"
+}

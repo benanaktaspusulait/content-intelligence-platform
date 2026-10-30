@@ -56,12 +56,17 @@ def workspace(tmp_path):
         p=tmp_path/name
         p.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(ROOT/name,p)
+    opening_evidence=json.loads(integrity.OPENING_EVIDENCE_PATH.read_text())
+    for ref in opening_evidence['evidence']:
+        p=tmp_path/ref['path'];p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/ref['path'],p)
+    for name in opening_evidence['files']:
+        p=tmp_path/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
     return tmp_path, policy
 
 
 def test_reviewed_policy_scopes_are_exact_and_all_current_sources_pinned():
     approvals = integrity.load_policy(ROOT)
-    assert set(approvals) == integrity.ACTIVE_IMPLEMENTATIONS | integrity.INTEGRITY_TEST_ADAPTERS | integrity.PROPAGATION_IMPLEMENTATIONS | integrity.BEAT_EVIDENCE_IMPLEMENTATIONS
+    assert set(approvals) == integrity.ACTIVE_IMPLEMENTATIONS | integrity.INTEGRITY_TEST_ADAPTERS | integrity.PROPAGATION_IMPLEMENTATIONS | integrity.BEAT_EVIDENCE_IMPLEMENTATIONS | integrity.OPENING_EVIDENCE_IMPLEMENTATIONS
     assert len(integrity.ACTIVE_IMPLEMENTATIONS) == 2
     for path, entry in approvals.items():
         assert digest(ROOT / path) == entry["approvedSha256"]

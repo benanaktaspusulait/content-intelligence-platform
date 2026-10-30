@@ -1,0 +1,23 @@
+{
+  "step": "FINAL_PROVIDER_SCHEMA_VALIDATION",
+  "version": "semantic-native-schema-integrity-v1",
+  "syntax": "VALID_DRAFT202012",
+  "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "references": [
+    {
+      "reference": "#/$defs/SemanticBeat",
+      "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+      "resolvedTargetPath": "/$defs/SemanticBeat",
+      "attemptedTargetPath": "/$defs/SemanticBeat",
+      "status": "RESOLVED",
+      "scope": "Final provider document root; no external URI retrieval"
+    }
+  ],
+  "unresolvedReferences": 0,
+  "unsupportedReferences": 0,
+  "cyclicReferences": 0,
+  "serializationRoundTripIdentical": true,
+  "formatSha256": "d79bda9fc27a7f7a3a7550457476bfa8d77f9ed28965de9f5d84b93dd9e3abda",
+  "sameSchemaObjectForwarded": true,
+  "forwardOrdinal": 1
+}

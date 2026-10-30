@@ -1,0 +1,14 @@
+{
+  "plannedRequests": 3,
+  "consumedSlots": 3,
+  "SDKRequestsForwarded": 3,
+  "HTTPRequestsObserved": 3,
+  "maximumLiveRequests": 3,
+  "retries": 0,
+  "replacementRequests": 0,
+  "fourthRequest": false,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "referenceRegenerated": false
+}

@@ -1,0 +1,124 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "evidence-supported-premise-admission-v2",
+      "default": "evidence-supported-premise-admission-v2",
+      "title": "Version",
+      "type": "string"
+    },
+    "admitted": {
+      "title": "Admitted",
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "ADMITTED_KNOWN_COMPATIBILITY",
+        "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+        "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+        "NOT_ADMITTED_INCOMPATIBLE",
+        "NOT_ADMITTED_ARBITRARY",
+        "NOT_ADMITTED_OPENING_WEAK",
+        "NOT_ADMITTED_RULE_INCOHERENT"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "provenance": {
+      "enum": [
+        "KNOWN_COMPATIBILITY",
+        "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+        "NONE"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "coverage": {
+      "enum": [
+        "KNOWN_TAXONOMY_SUPPORTED",
+        "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+        "UNSUPPORTED",
+        "INCOMPATIBLE"
+      ],
+      "title": "Coverage",
+      "type": "string"
+    },
+    "responseClassificationStatus": {
+      "title": "Responseclassificationstatus",
+      "type": "string"
+    },
+    "responseClassification": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Responseclassification"
+    },
+    "openingMandatory": {
+      "title": "Openingmandatory",
+      "type": "boolean"
+    },
+    "openingPassed": {
+      "title": "Openingpassed",
+      "type": "boolean"
+    },
+    "corePremiseSupported": {
+      "title": "Corepremisesupported",
+      "type": "boolean"
+    },
+    "productionOpeningRequirementSatisfied": {
+      "title": "Productionopeningrequirementsatisfied",
+      "type": "boolean"
+    },
+    "factors": {
+      "additionalProperties": true,
+      "title": "Factors",
+      "type": "object"
+    },
+    "reasons": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "sourceContextSha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Sourcecontextsha256"
+    },
+    "evidenceScope": {
+      "default": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS",
+      "title": "Evidencescope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "admitted",
+    "status",
+    "provenance",
+    "coverage",
+    "responseClassificationStatus",
+    "responseClassification",
+    "openingMandatory",
+    "openingPassed",
+    "corePremiseSupported",
+    "productionOpeningRequirementSatisfied",
+    "factors",
+    "reasons",
+    "sourceContextSha256"
+  ],
+  "title": "AdmissionDecision",
+  "type": "object"
+}

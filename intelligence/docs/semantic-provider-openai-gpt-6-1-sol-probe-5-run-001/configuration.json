@@ -1,0 +1,59 @@
+{
+  "profile": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "documentedVersion": "gpt-6.1-sol",
+    "baseUrl": "https://api.openai.com/v1",
+    "protocol": "chat_completions",
+    "responseMode": "json_schema",
+    "contextTokens": 1050000,
+    "maxOutputTokens": 128000,
+    "inputUsdPerMillion": 2.5,
+    "cachedInputUsdPerMillion": 0.1,
+    "outputUsdPerMillion": 10.0,
+    "priceBasis": "STANDARD_SHORT_CONTEXT_CONSERVATIVE_CACHE_WRITE_INPUT_UPPER_BOUND; no fast/ultrafast or long-context dispatch",
+    "tokenParameter": "max_completion_tokens",
+    "reasoningEffort": "high",
+    "temperatureSupported": false,
+    "reasoningBilledWithinOutput": true,
+    "deprecated": false,
+    "documentation": [
+      "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "https://developers.openai.com/api/docs/guides/latest-model"
+    ]
+  },
+  "generation": {
+    "generatorVersion": "v2",
+    "count": 20,
+    "seed": 42,
+    "duration": 15,
+    "characterIds": [],
+    "excludeEngineFamilies": [],
+    "excludeObjects": [],
+    "excludeObjectCategories": [],
+    "canonicalCast": null,
+    "rank": true,
+    "internalPoolSize": 240,
+    "beatGrammarVersion": "v2",
+    "premiseNaturalnessGateVersion": "v1",
+    "premisePoolSize": 480,
+    "creativeShapeVersion": "v1",
+    "minimumStoryShapeDistance": 0.22,
+    "minimumShapeShortFormScore": 85,
+    "minimumShapeRankingScore": 75,
+    "allowHighHistoricalTerritoryRisk": false,
+    "generatorMode": "semantic",
+    "semanticProvider": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "temperature": 0.7,
+      "maxCandidates": 60,
+      "maxOutputTokens": 16384,
+      "timeoutSeconds": 90.0,
+      "mockCorpus": "review-v1"
+    },
+    "semanticRawCount": 5,
+    "semanticConceptPromptVersion": "v2",
+    "allowExternalGeneration": true
+  }
+}

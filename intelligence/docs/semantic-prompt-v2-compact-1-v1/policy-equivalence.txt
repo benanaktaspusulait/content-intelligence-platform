@@ -1,0 +1,228 @@
+v2-compact → v2-compact.1 policy equivalence
+Instruction retention evidence; not a guarantee of model compliance.
+Only refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE, MECHANICALLY_TESTABLE_RULE, BEAT_RULE_AUDITABILITY
+
+boundary: Raw ideas; deterministic authority; no rank/score/winners/virality/novelty/readiness/eligibility/production recommendation/bypass
+  old: Do not rank, score, assign confidence
+  new: Do not rank, score, assign confidence
+  preserved: YES; refinements: unchanged
+rationale: Rationale explains causal dependency only, never score authority
+  old: no scoring authority
+  new: no scoring authority
+  preserved: YES; refinements: unchanged
+private: No exposed reasoning, checklists or self-certification
+  old: Output no private reasoning
+  new: Output no private reasoning
+  preserved: YES; refinements: unchanged
+protagonist: Exactly one supplied canonical protagonist
+  old: one supplied canonical protagonist
+  new: one supplied canonical protagonist
+  preserved: YES; refinements: unchanged
+object: One primary everyday object
+  old: one primary everyday object
+  new: one primary everyday object
+  preserved: YES; refinements: unchanged
+goal: Simple concrete credible visible everyday goal
+  old: one simple credible visible goal
+  new: one simple credible visible goal
+  preserved: YES; refinements: unchanged
+location: One location
+  old: one location
+  new: one location
+  preserved: YES; refinements: unchanged
+trouble: Immediate visible trouble
+  old: Start inside visible trouble
+  new: Start inside visible trouble
+  preserved: YES; refinements: unchanged
+duration: About15 seconds, complete readable action
+  old: about 15 seconds
+  new: about 15 seconds
+  preserved: YES; refinements: unchanged
+intuitive: Strange but intuitive logic rather than randomness
+  old: STRANGE BUT INTUITIVE
+  new: STRANGE BUT INTUITIVE
+  preserved: YES; refinements: unchanged
+one-rule: One dominant impossible physical/comedic rule
+  old: one dominant impossible physical/comedic rule
+  new: Write impossibleRule as one observable invariant
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+rule-sentence: Precise observable repeatable trigger/response sentence
+  old: precise, observable, repeatable trigger→response sentence
+  new: WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+immutable: Established rule governs every beat/payoff without mutation
+  old: Once established it never changes
+  new: Once established it never changes
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+trigger: Stable trigger; no new condition or actor loophole
+  old: changes to the declared trigger/direction/target/material/timing/agency mapping
+  new: changes to the declared trigger/direction/target/material/timing/agency mapping
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+no-powers: No independent powers bundled to excuse twists
+  old: do not bundle independent powers
+  new: do not bundle independent powers
+  preserved: YES; refinements: unchanged
+mapping: No altered direction/material/target/timing/agency unless implied
+  old: declared trigger/direction/target/material/timing/agency mapping
+  new: declared trigger/direction/target/material/timing/agency mapping
+  preserved: YES; refinements: unchanged
+spread: No unrelated spread; new information reveals same relationship
+  old: Spread, transfer and magnitude must already follow
+  new: Spread, transfer and magnitude must already follow
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+object-function: Explain ordinary function and exact object dependency
+  old: State its ordinary function
+  new: State its ordinary function
+  preserved: YES; refinements: unchanged
+object-affordance: Exploit function/affordance/motion/material/result/task relationship
+  old: affordance, expected motion, material/property, normal result
+  new: affordance, expected motion, material/property, normal result
+  preserved: YES; refinements: unchanged
+interference: Object operation directly obstructs goal
+  old: DIRECTLY obstruct the task
+  new: DIRECTLY obstruct the task
+  preserved: YES; refinements: unchanged
+arbitrary: Noun sharing is insufficient; no random magic or contrived goal
+  old: Sharing an affected noun is insufficient
+  new: Sharing an affected noun is insufficient
+  preserved: YES; refinements: unchanged
+still: Single simultaneous paused stageable frame
+  old: One paused, simultaneous frame
+  new: frameZeroDescription must freeze an actual activation of that exact rule
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+opening-content: Character, visible goal, object, impossible problem and relationship
+  old: character+visible task+object+already-present impossible problem
+  new: protagonist using the primary object for the everyday goal, abnormal target state already physically blocking that goal
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+physical-evidence: Pose/state/space carry evidence; intention/title/laterbeat insufficient
+  old: pose, physical state and space
+  new: same contact/spatial relationship
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+no-explanation: No sound/dialogue/text/context/inset/beforeafter/motion dependence
+  old: explanatory inset, before/after sequence or waiting for motion
+  new: No dialogue, sound, title, text/captions, prior context, inset, before/after sequence
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+no-delay: No initial normal action, press/door/delay/traverse or2–3sec setup
+  old: spend no first 2–3 seconds
+  new: No waiting for a trigger or first 2–3 seconds of ordinary setup
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+no-label-proof: Words moving/obvious/impossible do not supply still evidence
+  old: Motion words or labels such as obvious/impossible
+  new: motion words or labels such as obvious/impossible as evidence
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+count: Exactly4–5 major causal beats including final payoff
+  old: Exactly 4 or 5 major causal beats including payoff
+  new: Exactly 4 or 5 major causal beats including payoff
+  preserved: YES; refinements: unchanged
+beat-fields: Action→same-rule physical consequence→changed state/information
+  old: strategy/action→visible consequence→new information or state change
+  new: strategy/action→visible consequence→new information or state change
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+stageable: Concrete concise stageable sentences
+  old: sentences concrete, concise and stageable
+  new: sentences concrete, concise and stageable
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+progression: Materially different strategy/consequence/state/position/control/goal distance/stakes
+  old: Each beat materially changes the problem
+  new: Each beat materially changes the problem
+  preserved: YES; refinements: unchanged
+axes: Vary leverage/timing/position/environment/magnitude/accumulation/control/stakes
+  old: position, leverage, timing, magnitude, environmental use, accumulation
+  new: position, leverage, timing, magnitude, environmental use, accumulation
+  preserved: YES; refinements: unchanged
+passive: Environment is passive staging, no new powers
+  old: Environment is passive staging
+  new: Environment is passive staging
+  preserved: YES; refinements: unchanged
+no-repeat: Reworded same attempts or identical consequences are not progression
+  old: reworded retries or unchanged consequences do not count
+  new: reworded retries or unchanged consequences do not count
+  preserved: YES; refinements: unchanged
+no-force-ladder: Avoid force/twohands/brace/fakesuccess default
+  old: try harder→two hands→brace→fake success
+  new: try harder→two hands→brace→fake success
+  preserved: YES; refinements: unchanged
+no-unrelated: No unrelated events or hidden sub-scenes; magnitude follows rule
+  old: No hidden sub-scenes
+  new: No hidden sub-scenes
+  preserved: YES; refinements: unchanged
+last-equality: Payoff equals last consequence character for character, no extra event
+  old: finalPayoff equals the last visibleConsequence exactly
+  new: finalPayoff equals the last visibleConsequence exactly
+  preserved: YES; refinements: unchanged
+payoff-causal: Surprising but inevitable strongest rule-derived visual state change
+  old: strongest visual, state-changing consequence
+  new: strongest visual, state-changing consequence
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+payoff-essential: Ending cannot survive removal of original rule
+  old: Without the original rule this ending should not work
+  new: Without the original rule this ending should not work
+  preserved: YES; refinements: unchanged
+payoff-families: Preserve transfer/reversal/wrongsuccess/problem/takeover/extreme/chain/reveal/join/objectwins inspiration families
+  old: role/control/property transfer
+  new: role/control/property transfer
+  preserved: YES; refinements: unchanged
+no-taxonomy-recipes: Payoff inspirations are not mandatory taxonomy recipes
+  old: not taxonomy recipes
+  new: not taxonomy recipes
+  preserved: YES; refinements: unchanged
+no-ending-rescue: No newactor/poweredobject/magic/trigger/externalforce ending
+  old: new character, powered object or unexplained external force
+  new: new character, powered object or unexplained external force
+  preserved: YES; refinements: unchanged
+loop: Optional loop; no reset effect/new rule; avoid routine fakesuccess reset
+  old: Looping is optional
+  new: Looping is optional
+  preserved: YES; refinements: unchanged
+silent: Full story legible soundoff; dialogue not explanatory
+  old: full story must read with sound off
+  new: full story must read with sound off
+  preserved: YES; refinements: unchanged
+dialogue: NONE default; OPTIONAL only if needed; do not invent enum
+  old: Dialogue normally NONE
+  new: Dialogue normally NONE
+  preserved: YES; refinements: unchanged
+production: Broad body actions, poses, stable identities/silhouette, few elements
+  old: broad body actions, clear poses, stable identities/silhouettes
+  new: broad body actions, clear poses, stable identities/silhouettes
+  preserved: YES; refinements: unchanged
+production-risks: No tinytext/smallpieces/finehands/mechanics/crowds/cuts/unstageable invisibleforces
+  old: fine hand work, fine mechanical transformations, crowds
+  new: fine hand work, fine mechanical transformations, crowds
+  preserved: YES; refinements: unchanged
+safety: Childsafe: no injury/weapons/dangerousrestraint/sexualcontent
+  old: no injury, weapons, dangerous restraint or sexual content
+  new: no injury, weapons, dangerous restraint or sexual content
+  preserved: YES; refinements: unchanged
+batch-diversity: Vary object/goal/mechanic/trigger/progression/payoff/finalsilhouette
+  old: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+  new: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+  preserved: YES; refinements: unchanged
+no-opposite: Avoid many oppositebehavior variants/wordingnovelty
+  old: many opposite-behavior variants
+  new: many opposite-behavior variants
+  preserved: YES; refinements: unchanged
+unfamiliar: Coherent unfamiliar taxonomyfree mechanics allowed
+  old: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+  new: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+  preserved: YES; refinements: unchanged
+cautions: Historical caution not templates; rare distinct chair/adhesion/reset/growth/shrink/reversal/escape allowed, not dominant
+  old: must not dominate; rare distinct uses may occur
+  new: must not dominate; rare distinct uses may occur
+  preserved: YES; refinements: unchanged
+free-task: Task examples illustrate, do not copy mechanically
+  old: Choose tasks freely
+  new: Choose tasks freely
+  preserved: YES; refinements: unchanged
+self-check: One private review: rule allbeats, pausedopening,causalarrows,visualstatepayoff,objectdependency; internally discard/redesign
+  old: discard/redesign internally
+  new: discard/redesign internally
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+no-retry: Private editing is not an external retry loop or winnerselection
+  old: no permission for an external retry loop
+  new: no permission for an external retry loop
+  preserved: YES; refinements: unchanged
+schema: Same fields/JSON ideas envelope/raw count, deterministic rejection remains
+  old: all fields and exactly the requested raw count
+  new: all fields and exactly the requested raw count
+  preserved: YES; refinements: unchanged

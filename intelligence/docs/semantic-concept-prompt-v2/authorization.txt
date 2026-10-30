@@ -1,0 +1,1166 @@
+Continue from the current repository state.
+
+The current validation architecture is ACCEPTED.
+
+The following are now stable and must NOT be redesigned:
+
+- STORY_PREMISE_ENGINE
+- SHORT_FORM_ENGINE with Structured Canonical Evidence Input
+- Canonical Evidence Propagation
+- BEAT GRAMMAR with PRESENT_UNCLASSIFIED consequence support
+- PREMISE NATURALNESS / Evidence-Supported Premise Admission V2
+- CONCEPT_CANDIDATE_RANKING
+- CREATIVE SHAPE
+- historical creative territory checks
+- production preselection
+
+Do NOT add new validators.
+
+Do NOT change scoring weights.
+
+Do NOT change thresholds.
+
+Do NOT expand taxonomies.
+
+Do NOT alter historical evidence.
+
+This task is about improving SEMANTIC IDEATION QUALITY.
+
+======================================================================
+GOAL
+======================================================================
+
+Create:
+
+SEMANTIC CONCEPT PROMPT V2
+
+for production-aware ~15-second Pompom Hills concept ideation.
+
+V1 proved that semantic generation can explore outside the deterministic grammar.
+
+However, the first live run exposed recurring creative failures:
+
+1. opening premise not visible enough at frame zero
+2. impossible rule mutates between beats
+3. later beats introduce new behavior not implied by the original rule
+4. payoff exists but does not always derive cleanly from the rule
+5. concept novelty sometimes comes from arbitrary rule changes rather than causal escalation
+6. some concepts require motion/context before the viewer understands the problem
+7. strong SFE ideas can still fail Premise Admission because source beats contradict the stated rule
+
+Prompt V2 must address these generation failures directly.
+
+======================================================================
+1. CORE PRINCIPLE
+======================================================================
+
+The model generates possibilities.
+
+The deterministic system judges them.
+
+The semantic model must NOT:
+
+- rank concepts
+- assign scores
+- choose winners
+- predict virality
+- declare production readiness
+- bypass validators
+
+It should output raw structured concepts only.
+
+======================================================================
+2. PRIMARY CREATIVE TARGET
+======================================================================
+
+Generate concepts for approximately:
+
+15-second Pompom Hills shorts.
+
+Each concept should normally contain:
+
+- exactly one main protagonist
+- one primary everyday object
+- one concrete everyday goal
+- one dominant impossible physical/comedic rule
+- immediate visible trouble
+- 4–5 major causal beats
+- escalating consequences from the SAME RULE
+- a strong visual payoff
+- minimal or zero dialogue
+
+======================================================================
+3. MOST IMPORTANT V2 RULE: RULE IMMUTABILITY
+======================================================================
+
+Once the impossible rule is established:
+
+IT MUST NEVER CHANGE.
+
+Every later beat must be a logical consequence of the exact same rule.
+
+Do NOT introduce:
+
+- a second magic rule
+- a new unexplained behavior
+- a new power
+- a different trigger
+- a special exception
+- a final-beat rule mutation
+
+Critical instruction to model:
+
+"Once the impossible rule is established, every beat must obey exactly that same physical rule. Escalation must come from strategy, magnitude, position, accumulation, consequence, or new information — never from changing the rule."
+
+======================================================================
+4. RULE CONSISTENCY CHECK INSIDE GENERATION
+======================================================================
+
+Before returning each candidate, internally verify:
+
+For Beat 1:
+does it follow the rule?
+
+For Beat 2:
+does it follow the exact same rule?
+
+For Beat 3:
+same?
+
+For Beat 4:
+same?
+
+For Beat 5 if present:
+same?
+
+If any beat requires a new behavior not implied by the rule:
+
+discard that candidate before output.
+
+Do not expose self-score.
+
+Just return better candidates.
+
+======================================================================
+5. FRAME-ZERO STANDARD
+======================================================================
+
+The opening still frame is a hard creative requirement.
+
+The first frame should ideally communicate:
+
+CHARACTER
++
+EVERYDAY GOAL
++
+PRIMARY OBJECT
++
+VISIBLE PROBLEM
+
+without requiring:
+
+- dialogue
+- text
+- prior context
+- waiting for movement
+- knowing the title
+- explanation
+
+Critical instruction:
+
+"The concept must be understandable from a paused frame at the beginning. The viewer should already see what the character wants and what impossible problem is interfering."
+
+======================================================================
+6. MOTION-DEPENDENT OPENINGS
+======================================================================
+
+Avoid concepts where the impossible rule only becomes apparent after:
+
+- pressing a button
+- opening a door
+- waiting for a delayed effect
+- moving through a room
+- completing a first normal action
+
+unless frame zero can already visually show the impossible consequence.
+
+Do not spend the first 2–3 seconds setting up a normal world.
+
+======================================================================
+7. EVERYDAY GOAL
+======================================================================
+
+The goal must be:
+
+simple
+credible
+visible
+immediately understandable
+
+Examples of goal types:
+
+- brush hair
+- put on shoe
+- open drawer
+- sweep floor
+- paint wall
+- put object away
+- close container
+- dry table
+- sit down
+- carry item
+- turn something on/off
+
+Do NOT copy these examples mechanically.
+
+The goal must be physically visible in frame zero.
+
+======================================================================
+8. WHY THIS EXACT OBJECT
+======================================================================
+
+Every concept must answer:
+
+WHY THIS OBJECT?
+
+The impossible rule should exploit or contradict:
+
+- normal function
+- expected motion
+- affordance
+- material/property
+- normal result
+- physical relationship to the goal
+
+Avoid:
+
+random object + random magic.
+
+Good conceptual standard:
+
+"This exact object behaves in the worst possible way for what the character is trying to do."
+
+======================================================================
+9. STRANGE BUT INTUITIVE
+======================================================================
+
+Target:
+
+STRANGE BUT INTUITIVE.
+
+The viewer should think:
+
+"I immediately understand the problem."
+
+and then:
+
+"I did not expect that."
+
+Avoid:
+
+"I don't understand what the rule is."
+
+Novelty must come from:
+
+unexpected logic
+
+not:
+
+randomness.
+
+======================================================================
+10. ONE DOMINANT RULE
+======================================================================
+
+Each candidate must express the rule in ONE precise sentence.
+
+Example structure:
+
+"Whenever X happens, Y always happens."
+
+or equivalent.
+
+The rule must be:
+
+- observable
+- repeatable
+- causally stable
+- visually understandable
+
+Avoid vague rules such as:
+
+"the object behaves strangely."
+
+======================================================================
+11. TRIGGER MUST BE STABLE
+======================================================================
+
+The visible trigger must remain consistent.
+
+If rule is triggered by:
+
+touch
+
+then later beats must not suddenly trigger it by:
+
+distance
+sound
+release
+time
+
+unless the original rule explicitly includes that behavior.
+
+Do not mutate trigger logic for convenience.
+
+======================================================================
+12. BEAT DESIGN
+======================================================================
+
+Return exactly:
+
+4 or 5 major beats.
+
+Each beat must contain:
+
+STRATEGY / ACTION
+
+VISIBLE CONSEQUENCE
+
+NEW INFORMATION OR STATE CHANGE
+
+A beat should not exist merely because the character moves again.
+
+======================================================================
+13. STRATEGY ESCALATION
+======================================================================
+
+Progression should come from different responses to the same problem.
+
+Possible progression sources:
+
+- new strategy
+- new position
+- increased magnitude
+- environmental use
+- changed leverage
+- changed timing
+- accumulation
+- discovery
+- consequence spread
+- loss of control
+
+Do not default to:
+
+attempt
+→ try harder
+→ use two hands
+→ brace
+→ fake success
+
+That pattern has already been overused.
+
+======================================================================
+14. SAME ATTEMPT DOES NOT COUNT
+======================================================================
+
+Repeated attempts count as separate beats only when at least one materially changes:
+
+- strategy
+- physical consequence
+- information
+- position
+- control state
+- goal distance
+- stakes
+
+Different wording is not different progression.
+
+======================================================================
+15. ESCALATION MUST COME FROM THE RULE
+======================================================================
+
+Do not add unrelated events merely to make the story bigger.
+
+Bad:
+
+hairbrush tangles hair
+then flies
+then changes color
+then duplicates
+
+unless all of these are unavoidable consequences of one clearly stated rule.
+
+Better:
+
+one rule progressively creates a larger and more difficult consequence.
+
+======================================================================
+16. PAYOFF MUST BE RULE-DERIVED
+======================================================================
+
+The final payoff must be a logical consequence of the SAME impossible rule.
+
+Before returning a candidate ask internally:
+
+"Could this payoff happen if the original rule were removed?"
+
+If YES:
+
+the payoff is probably unrelated.
+
+Discard or redesign.
+
+======================================================================
+17. PAYOFF VARIETY
+======================================================================
+
+Do not default to:
+
+temporary success
+→ original problem comes back.
+
+Encourage:
+
+- role reversal
+- control transfer
+- property transfer
+- absurd success
+- solution creates new problem
+- environmental takeover
+- logical extreme
+- chain reaction
+- reveal
+- goal achieved in the wrong way
+- character becomes part of the object state
+- object succeeds while character fails
+
+But the payoff must obey the original rule.
+
+======================================================================
+18. AVOID RANDOM PAYOFF TWISTS
+======================================================================
+
+Do NOT create a surprise merely by introducing:
+
+a new object
+a new character
+a new magic effect
+a different rule
+an unexplained external force
+
+The payoff should feel surprising in outcome but inevitable in retrospect.
+
+======================================================================
+19. PAYOFF VISUALITY
+======================================================================
+
+The payoff should be understandable visually.
+
+Avoid endings that rely mainly on:
+
+dialogue
+text
+explanation
+internal realization
+
+Prefer physical visual state change.
+
+======================================================================
+20. SILENT-VIEW LEGIBILITY
+======================================================================
+
+Assume viewer watches with no sound.
+
+The full story should remain understandable.
+
+Dialogue need should normally be:
+
+NONE
+or
+MINIMAL
+
+Do not use dialogue to explain:
+
+goal
+rule
+trigger
+payoff
+
+======================================================================
+21. PRODUCTION FEASIBILITY
+======================================================================
+
+Prefer concepts suitable for AI video generation:
+
+- one character
+- one main object
+- one location
+- broad body actions
+- stable object identity
+- visually clear poses
+- limited moving elements
+
+Avoid concepts requiring:
+
+- tiny text
+- many small objects
+- complex hand manipulation
+- many characters
+- crowds
+- fine mechanical transformations
+- rapid location changes
+- invisible forces that cannot be staged clearly
+
+======================================================================
+22. DO NOT OVERFIT TO CURRENT ENGINE TAXONOMY
+======================================================================
+
+The semantic model may propose causal behavior not present in current taxonomy.
+
+That is allowed.
+
+Do not force every concept into:
+
+growth
+shrink
+adhesion
+reset
+reversal
+escape
+
+However, any new mechanic must still be:
+
+coherent
+stable
+object-specific
+visually legible
+rule-consistent
+
+======================================================================
+23. DIVERSITY TARGET
+======================================================================
+
+Across the requested batch avoid excessive reuse of:
+
+- object family
+- goal
+- causal mechanic
+- trigger
+- progression shape
+- payoff shape
+- final silhouette
+
+Do not generate 10 versions of:
+
+"object does opposite thing."
+
+======================================================================
+24. KNOWN OVERUSED / CAUTION TERRITORY
+======================================================================
+
+Avoid excessive overlap with:
+
+- Upside-Down Chair territory
+- generic Sticky Ball / adhesion territory
+- repeated reset-to-start structures
+- repeated progressive growth
+- repeated progressive shrink
+- generic flip/reversal
+- generic escaping object
+
+These may appear rarely if genuinely distinct, but should not dominate.
+
+======================================================================
+25. IMPORTANT FAILURE PATTERN FROM LIVE V1
+======================================================================
+
+Semantic V1 produced concepts that appeared strong at high-level summary but contradicted themselves inside the beat sequence.
+
+V2 must explicitly prevent this.
+
+For each candidate internally compare:
+
+RULE
+
+against:
+
+Beat 1
+Beat 2
+Beat 3
+Beat 4
+Beat 5
+Payoff
+
+If ANY beat requires behavior not permitted by the rule:
+
+DO NOT RETURN THE CANDIDATE.
+
+======================================================================
+26. OPENING SELF-CHECK
+======================================================================
+
+Before outputting a candidate, internally test:
+
+If I show ONLY the first frame to someone:
+
+Can they see what the character wants?
+
+Can they see the object?
+
+Can they see the problem?
+
+Can they understand the impossible relationship?
+
+If not:
+
+discard or redesign.
+
+======================================================================
+27. CAUSALITY SELF-CHECK
+======================================================================
+
+For each beat internally test:
+
+CHARACTER ACTION
+→ RULE ACTIVATES
+→ VISIBLE CONSEQUENCE
+
+If the causal arrow is weak or invisible:
+
+discard or redesign.
+
+======================================================================
+28. PAYOFF SELF-CHECK
+======================================================================
+
+For final payoff internally verify:
+
+- same rule
+- larger/new consequence
+- visually clear
+- changes story state
+- not merely repetition
+- not arbitrary
+
+If not:
+
+discard or redesign.
+
+======================================================================
+29. OUTPUT SCHEMA
+======================================================================
+
+Use the existing semantic response schema unless V2 requires a versioned additive extension.
+
+Each candidate should include:
+
+ideaId
+
+title
+
+protagonistSuggestion
+
+everydayGoal
+
+primaryObject
+
+normalExpectation
+
+impossibleRule
+
+visibleTrigger
+
+whyThisObject
+
+goalRuleRelationship
+
+frameZeroDescription
+
+beats:
+[
+  {
+    strategy,
+    visibleConsequence,
+    newInformation
+  }
+]
+
+finalPayoff
+
+suggestedPayoffFamily
+
+loopPotential
+
+environment
+
+dialogueNeed
+
+providerRationale
+
+======================================================================
+30. ADD RULE CONSISTENCY SUPPORT IF SCHEMA ALLOWS
+======================================================================
+
+If an additive V2 schema field is useful, allow:
+
+ruleConsistencyStatement
+
+with a short factual explanation of why all beats obey the same rule.
+
+This is informational only.
+
+It must NOT affect canonical scoring directly.
+
+Do not require validator trust in this claim.
+
+======================================================================
+31. PROVIDER RATIONALE REMAINS NON-AUTHORITATIVE
+======================================================================
+
+providerRationale must never contain:
+
+score
+winner claim
+production recommendation
+
+It may briefly explain:
+
+- object-rule relationship
+- causal escalation logic
+
+Downstream systems ignore it for scoring.
+
+======================================================================
+32. PROMPT VERSIONING
+======================================================================
+
+Do NOT mutate Semantic Prompt V1.
+
+Create:
+
+semanticConceptPromptVersion = "v2"
+
+Store exact V2 prompt text.
+
+Keep V1 available for historical replay.
+
+======================================================================
+33. NO LIVE CALL YET IN IMPLEMENTATION
+======================================================================
+
+First implement and test Prompt V2 with mocks.
+
+Do NOT call DeepSeek during the implementation/test phase.
+
+Provider calls during implementation/tests:
+
+0
+
+======================================================================
+34. MOCK V2 CORPUS
+======================================================================
+
+Create deterministic mock examples covering:
+
+A. strong same-rule escalation
+
+B. rule mutation that must fail schema/prompt-quality diagnostics
+
+C. strong frame-zero problem
+
+D. motion-dependent weak opening
+
+E. payoff derived from rule
+
+F. arbitrary final twist unrelated to rule
+
+G. strong new causal mechanic outside taxonomy
+
+H. random magic despite novelty
+
+I. repeated attempt with no progression
+
+J. property-transfer concept with consistent rule
+
+Do not hard-code these into production generation output.
+
+======================================================================
+35. V1 vs V2 MOCK COMPARISON
+======================================================================
+
+Compare mock V1 and mock V2 behavior on:
+
+rule consistency
+frame-zero completeness
+goal visibility
+beat causal support
+same-rule escalation
+payoff-rule linkage
+arbitrary magic
+production feasibility
+
+Do not claim V2 creative superiority from mocks.
+
+This only validates prompt intent.
+
+======================================================================
+36. CONTROLLED LIVE EXPERIMENT AFTER TESTS
+======================================================================
+
+After V2 implementation and all tests pass:
+
+perform exactly ONE controlled live Semantic V2 run.
+
+Target:
+
+40 raw candidates.
+
+Provider/model:
+
+use existing configured semantic provider.
+
+No provider change unless configuration requires it.
+
+Maximum provider requests:
+
+1 preferred
+2 absolute maximum only if output limits require it.
+
+No retry loop.
+
+No generate-until-valid loop.
+
+======================================================================
+37. V2 LIVE RUN MUST BE SEPARATE
+======================================================================
+
+Do NOT overwrite the V1 live experiment.
+
+Create a new immutable experiment.
+
+Suggested identity:
+
+semantic-live-v2-count-40-run-001
+
+Persist:
+
+exact prompt
+exact request
+exact response
+provider/model
+token usage
+raw candidate count
+normalization result
+all downstream results
+
+======================================================================
+38. COMPLETE EXISTING PIPELINE
+======================================================================
+
+Run V2 concepts through the CURRENT accepted pipeline unchanged:
+
+schema
+normalization
+canonical evidence
+Premise Naturalness
+Evidence-Supported Premise Admission V2
+Beat Grammar
+Structured SFE
+Creative Shape
+historical territory
+ranking
+production preselection
+
+No special V2 bonus.
+
+======================================================================
+39. MOST IMPORTANT V2 METRICS
+======================================================================
+
+Report:
+
+raw candidate count
+
+schema-valid count
+
+normalized count
+
+rule-consistent candidate count
+
+frame-zero-supported count
+
+opening score distribution
+
+Beat Grammar:
+STRONG
+ACCEPTABLE
+MECHANICAL
+BROKEN
+
+SFE:
+PASS
+REVISION
+REJECT
+
+premise admitted count
+
+ranking eligible count
+
+production-admissible count
+
+production slate size
+
+======================================================================
+40. FAILURE REASON DISTRIBUTION
+======================================================================
+
+Especially report counts for:
+
+RULE_INCONSISTENCY
+
+OPENING_EVIDENCE_INSUFFICIENT
+
+PREMISE_NOT_ADMITTED
+
+ARBITRARY_MAGIC
+
+WEAK_OBJECT_SPECIFICITY
+
+WEAK_CAUSAL_PROGRESSION
+
+MECHANICAL_BEATS
+
+PAYOFF_NOT_RULE_LINKED
+
+HISTORICAL_COLLISION
+
+CREATIVE_SHAPE_RISK
+
+PRODUCTION_FEASIBILITY
+
+Do not hide rejected ideas.
+
+======================================================================
+41. V1 VS V2 REAL COMPARISON
+======================================================================
+
+Compare live V2 against the stored live V1 run.
+
+V1 baseline includes:
+
+40 raw
+38 schema-valid
+33 normalized
+structured SFE mean 59.61
+4 SFE PASS
+0 production candidates
+
+Compare at least:
+
+schema validity
+normalization yield
+opening support
+rule consistency
+supported causal beat ratio
+payoff-rule linkage
+SFE score distribution
+Beat Grammar quality
+premise admission
+ranking eligibility
+production candidate count
+
+Do NOT claim statistical superiority from one run.
+
+======================================================================
+42. HUMAN REVIEW SET
+======================================================================
+
+Return a V2 HUMAN_REVIEW_SET containing:
+
+- all production candidates
+- all ranking-eligible candidates
+- all SFE PASS
+- strong admitted premises blocked by one remaining gate
+- genuinely novel unclassified mechanics with strong evidence
+
+Do not promote canonically.
+
+======================================================================
+43. RETURN ALL 40 IDEAS
+======================================================================
+
+For every raw candidate return:
+
+ID
+TITLE
+GOAL
+OBJECT
+RULE
+TRIGGER
+FRAME ZERO
+ALL BEATS
+PAYOFF
+
+plus:
+
+schema result
+normalization
+rule consistency
+opening result
+Naturalness
+admission
+Beat Grammar
+SFE
+ranking
+production disposition
+exact blockers
+
+Do not return only winners.
+
+======================================================================
+44. HUMAN CREATIVE REVIEW CARDS
+======================================================================
+
+For every V2 HUMAN_REVIEW candidate produce:
+
+ID / TITLE
+
+ONE-SENTENCE PREMISE
+
+FRAME-ZERO HOOK
+
+CORE RULE
+
+PROGRESSION
+
+PAYOFF
+
+SYSTEM CONCERNS
+
+CURRENT STATUS
+
+No AI-generated KEEP/KILL decision.
+
+Human review remains final.
+
+======================================================================
+45. LIVE SAFETY
+======================================================================
+
+Before the single live V2 run verify:
+
+provider
+model
+prompt version
+requested candidate count
+maximum request count
+external authorization
+
+No secrets in evidence.
+
+No background call.
+
+======================================================================
+46. COST CONTROL
+======================================================================
+
+Record actual:
+
+input tokens
+output tokens
+request count
+provider-reported cost if available
+
+Do not estimate cost if provider does not provide it.
+
+======================================================================
+47. REGRESSION SAFETY
+======================================================================
+
+Prompt V2 implementation must not alter:
+
+V1 prompt
+V1 experiment
+Structured SFE
+Premise Admission V2
+Beat Grammar
+ranking
+historical evidence
+
+Full regression target:
+
+only accepted 36 baseline failures
+2 existing skips
+
+No new failures.
+
+======================================================================
+48. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. Prompt V2 design summary
+2. exact Prompt V2 text
+3. files changed
+4. mock V1/V2 comparison
+5. live provider/model
+6. request count
+7. token usage
+8. all 40 raw ideas
+9. schema / normalization results
+10. rule-consistency results
+11. opening-support results
+12. Beat Grammar distribution
+13. SFE distribution
+14. premise-admission results
+15. ranking eligibility
+16. production candidates
+17. production slate
+18. V2 HUMAN_REVIEW_SET
+19. V1 vs V2 comparison
+20. failure-reason distribution
+21. all remaining taxonomy coverage gaps
+22. exact test results
+23. proof only one controlled live run occurred
+24. proof no render occurred
+25. proof V1 evidence unchanged
+26. proof historical evidence unchanged
+27. proof only accepted baseline failures remain
+
+======================================================================
+49. SUCCESS DEFINITION
+======================================================================
+
+Do NOT define success as:
+
+more concepts pass.
+
+Success means Prompt V2 produces concepts with:
+
+- stronger frame-zero legibility
+- one immutable causal rule
+- cleaner causal progression
+- rule-derived payoff
+- fewer internal contradictions
+
+while the existing deterministic pipeline remains free to reject weak concepts.
+
+======================================================================
+50. STOP CONDITION
+======================================================================
+
+After the ONE controlled V2 live experiment and offline analysis:
+
+STOP.
+
+Do NOT:
+
+generate a second V2 batch
+change validators
+change thresholds
+expand taxonomies
+generate production prompts
+render video
+
+We will manually review the V2 HUMAN_REVIEW_SET before deciding which concepts, if any, move to production.

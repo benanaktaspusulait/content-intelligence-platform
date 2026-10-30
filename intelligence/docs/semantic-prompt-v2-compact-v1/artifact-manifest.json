@@ -1,0 +1,18 @@
+{
+  "scope": "All task evidence files except this self-referential manifest",
+  "sha256": {
+    "REPORT.txt": "9351b54255a5213796e1bc2d18bd117979b826e13c5ad6902b16af76972d1a8c",
+    "audit.json": "4f6edc452a11b1c432b50abf5f8611ab13489efcd46fe06dbe6669409eee8125",
+    "authorization.txt": "39e4e1ccf13ba869eb4d52685ba49d0487d2815d2bea4ed2f1e5f19581766af0",
+    "changed-files.json": "e07a86a894adb5046a5e4e34092d56af3fbfda0b02377fde7bfe31f4916dadf7",
+    "compact-prompt-exact.txt": "9f386c84c0281918117a4ec1fb49e19d20fe48512d21f7bcb1b65c5070c91340",
+    "compact-prompt.json": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+    "focused-tests.log": "4414f0e756d344a1b233010a812141eb55b38a52f58687515267e52d99130d49",
+    "full-regression.log": "22b423cbed8df1ae3d7e157cc9a427df0b98fb70c975bba03825b2e25c76a1c0",
+    "offline-native-request.json": "3122d30e7266e62653b42047616e33a03f800fead558026d485900d0d1948525",
+    "protected-after.json": "8e29419a1c1cb881598b16c27409ec49b568754009214c775f3e34f38e0faf3a",
+    "protected-before.json": "8e29419a1c1cb881598b16c27409ec49b568754009214c775f3e34f38e0faf3a",
+    "source-freeze-before-full-regression.json": "02cfd16a3a941015d5c5aedaf408ab620ac0088335243feb1805d44f7301fe7d",
+    "verification.json": "7ee9fbd68eff1db035e59df9c2a592466f098adcee1dc75de6a329943f7950d2"
+  }
+}

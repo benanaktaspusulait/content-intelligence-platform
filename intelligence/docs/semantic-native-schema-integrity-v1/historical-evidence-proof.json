@@ -1,0 +1,10 @@
+{
+  "protectedExistingFiles": 2244,
+  "historicalDocFiles": 1881,
+  "allByteIdentical": true,
+  "changedFiles": [],
+  "frozenLegacySchemaBuilderUnchanged": true,
+  "creativeValidatorsAndPoliciesUnchanged": true,
+  "activeHashMigrationRequired": false,
+  "proof": "protected-before.json and protected-after.json are identical path-to-hash maps; historical manifests were not edited."
+}

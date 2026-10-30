@@ -1,0 +1,5 @@
+{
+  "intelligence/ml-service/app/workflow/semantic_transport_isolation_v1.py": "005aa4755717cf363607614c0e1ccce34e50ffeabf919e1c171bb2b09b30cd15",
+  "intelligence/ml-service/tests/test_semantic_transport_isolation_v1.py": "66acc0f5e7707513932622bf33e16aeeb43c90399cb1619e7d08cd99f1b14176",
+  "intelligence/scripts/isolate-semantic-transport-v1.py": "0b65ae0f72c2e3e927aa3e1fdc1e1baf7bff5530b95739a039aa2ef7acfc5816"
+}

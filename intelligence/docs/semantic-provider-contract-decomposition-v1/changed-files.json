@@ -1,0 +1,8 @@
+{
+  "existingSourceChanges": [],
+  "addedDiagnosticsTestsCLI": {
+    "intelligence/ml-service/app/workflow/semantic_contract_decomposition_v1.py": "37ac720a220fef16c8242a619008c531fc16e46a8ed35f4d02d76263f44ef9ab",
+    "intelligence/ml-service/tests/test_semantic_contract_decomposition_v1.py": "4b9b6c29e2ae9afa197a5ec22251bdf090b367d872dc31792b1b1099a2747b0d",
+    "intelligence/scripts/decompose-semantic-contract-v1.py": "5181c1c334d8ac5171549cc2c9bb1d490c20708f5702a28e0045aca0ac0c09d7"
+  }
+}

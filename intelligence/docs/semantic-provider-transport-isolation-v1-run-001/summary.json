@@ -1,0 +1,213 @@
+{
+  "primaryClassification": "FULL_V2_CONTRACT_FAILURE",
+  "requestCount": 3,
+  "maximumRequests": 3,
+  "results": {
+    "A": {
+      "status": "COMPLETED",
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 28,
+        "total_tokens": 36,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0,
+          "text_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null
+        }
+      },
+      "providerRequestId": "chatcmpl-EdDSILOe44HW4zsaR1A4M0Ut3Z8zu",
+      "timeToHeadersMs": null,
+      "firstTokenMs": null,
+      "firstUsableContentMs": 2638.298166999448,
+      "providerMetadata": {
+        "requestId": "chatcmpl-EdDSILOe44HW4zsaR1A4M0Ut3Z8zu",
+        "finishReason": "stop",
+        "apiStatus": "COMPLETED",
+        "provider": "openai",
+        "model": "gpt-6.1-sol"
+      },
+      "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+      "finishReason": "stop",
+      "providerReportedCostUsd": null,
+      "level": "A",
+      "start": "2026-10-26T11:47:00.448443+00:00",
+      "end": "2026-10-26T11:47:03.705229+00:00",
+      "durationSeconds": 3.2569406670008902,
+      "responseBytes": 15,
+      "parsedResult": {
+        "passed": true,
+        "reason": "EXPECTED_TINY_OBJECT"
+      },
+      "passed": true,
+      "timeout": {
+        "connectSeconds": 15,
+        "readSeconds": 90,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 180
+      },
+      "maxOutputTokens": 512
+    },
+    "B": {
+      "status": "COMPLETED",
+      "usage": {
+        "completion_tokens": 146,
+        "prompt_tokens": 73,
+        "total_tokens": 219,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 100,
+          "rejected_prediction_tokens": 0,
+          "text_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null
+        }
+      },
+      "providerRequestId": "chatcmpl-EdDSLisrZ9i9EAmZHP0kjzV1Clv10",
+      "timeToHeadersMs": null,
+      "firstTokenMs": null,
+      "firstUsableContentMs": 5686.020624998491,
+      "providerMetadata": {
+        "requestId": "chatcmpl-EdDSLisrZ9i9EAmZHP0kjzV1Clv10",
+        "finishReason": "stop",
+        "apiStatus": "COMPLETED",
+        "provider": "openai",
+        "model": "gpt-6.1-sol"
+      },
+      "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+      "finishReason": "stop",
+      "providerReportedCostUsd": null,
+      "level": "B",
+      "start": "2026-10-26T11:47:03.705817+00:00",
+      "end": "2026-10-26T11:47:10.005373+00:00",
+      "durationSeconds": 6.299788667001849,
+      "responseBytes": 124,
+      "parsedResult": {
+        "passed": true,
+        "reason": "EXPECTED_TINY_OBJECT"
+      },
+      "passed": true,
+      "timeout": {
+        "connectSeconds": 15,
+        "readSeconds": 90,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 180
+      },
+      "maxOutputTokens": 1024
+    },
+    "C": {
+      "status": "FAILED",
+      "usage": null,
+      "providerRequestId": null,
+      "timeToHeadersMs": null,
+      "firstTokenMs": null,
+      "firstUsableContentMs": null,
+      "errorClass": "APITimeoutError",
+      "exceptionChain": [
+        {
+          "exceptionClass": "APITimeoutError",
+          "httpStatus": null,
+          "providerCode": null,
+          "providerParam": null
+        },
+        {
+          "exceptionClass": "ReadTimeout",
+          "httpStatus": null,
+          "providerCode": null,
+          "providerParam": null
+        },
+        {
+          "exceptionClass": "ReadTimeout",
+          "httpStatus": null,
+          "providerCode": null,
+          "providerParam": null
+        },
+        {
+          "exceptionClass": "TimeoutError",
+          "httpStatus": null,
+          "providerCode": null,
+          "providerParam": null
+        }
+      ],
+      "safeMessage": "Diagnostic request failed in existing SDK path; no retry or fallback.",
+      "httpStatus": null,
+      "safeHeaders": {},
+      "safeTrace": [
+        {
+          "file": "semantic_transport_isolation_v1.py",
+          "line": 84,
+          "function": "worker"
+        },
+        {
+          "file": "creative_provider_profiles.py",
+          "line": 72,
+          "function": "complete"
+        },
+        {
+          "file": "_utils.py",
+          "line": 298,
+          "function": "wrapper"
+        },
+        {
+          "file": "completions.py",
+          "line": 1318,
+          "function": "create"
+        },
+        {
+          "file": "_base_client.py",
+          "line": 1440,
+          "function": "post"
+        },
+        {
+          "file": "_base_client.py",
+          "line": 1166,
+          "function": "request"
+        }
+      ],
+      "providerMetadata": null,
+      "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+      "finishReason": null,
+      "providerReportedCostUsd": null,
+      "level": "C",
+      "start": "2026-10-26T11:47:10.005842+00:00",
+      "end": "2026-10-26T11:48:40.701559+00:00",
+      "durationSeconds": 90.69867549999981,
+      "responseBytes": 0,
+      "parsedResult": {
+        "passed": false,
+        "reason": "APITimeoutError"
+      },
+      "passed": false,
+      "timeout": {
+        "connectSeconds": 15,
+        "readSeconds": 90,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 180
+      },
+      "maxOutputTokens": 8192
+    }
+  },
+  "DeepSeekCalls": 0,
+  "retries": 0,
+  "fallbacks": 0,
+  "renders": 0,
+  "productionPrompts": 0,
+  "limitation": "First failing level is isolated,not its unique root cause. All-pass scale label is a hypothesis from stored5 failure,not proof of causality."
+}

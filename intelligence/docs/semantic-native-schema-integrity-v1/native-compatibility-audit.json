@@ -1,0 +1,84 @@
+{
+  "mode": "json_schema",
+  "strict": false,
+  "rootObject": true,
+  "objects": [
+    {
+      "path": "/",
+      "properties": [
+        "ideas"
+      ],
+      "required": [
+        "ideas"
+      ],
+      "requiredAreDeclared": true,
+      "allPropertiesRequired": true,
+      "additionalProperties": false
+    },
+    {
+      "path": "/properties/ideas/items",
+      "properties": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "dialogueNeed",
+        "providerRationale",
+        "durationSeconds"
+      ],
+      "required": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "providerRationale"
+      ],
+      "requiredAreDeclared": true,
+      "allPropertiesRequired": false,
+      "additionalProperties": false
+    },
+    {
+      "path": "/$defs/SemanticBeat",
+      "properties": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ],
+      "required": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ],
+      "requiredAreDeclared": true,
+      "allPropertiesRequired": true,
+      "additionalProperties": false
+    }
+  ],
+  "strictModeAssessment": "NOT_ENABLED; defaults/optional fields intentionally preserved; no claim of strict=true compatibility.",
+  "knownUnsupportedKeywordsFromRepository": null,
+  "limitation": "Repository adapter passes this JSON Schema directly. No undocumented remote keyword restriction or stricter contract is invented. Live acceptance remains unverified before probe."
+}

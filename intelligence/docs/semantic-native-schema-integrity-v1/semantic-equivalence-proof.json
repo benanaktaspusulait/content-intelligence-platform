@@ -1,0 +1,17 @@
+{
+  "candidateLogicalSchemaIdentical": true,
+  "canonicalLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+  "providerCandidateLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+  "compared": [
+    "all candidate/beat fields",
+    "field types",
+    "required lists",
+    "min/max bounds",
+    "enums",
+    "nullability",
+    "defaults",
+    "additionalProperties",
+    "annotations"
+  ],
+  "onlyRepresentationChange": "$defs ownership moved from embedded candidate root to actual provider root; $ref strings unchanged."
+}

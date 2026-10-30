@@ -1,0 +1,114 @@
+{
+  "attempts": [
+    {
+      "attempt": "DeepSeek original40",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "requestedRawCount": 40,
+      "status": "FAILED",
+      "failureClass": "APITimeoutError",
+      "underlyingCause": null,
+      "durationSeconds": 764.882114,
+      "timeToHeadersMs": null,
+      "firstUsableContentMs": null,
+      "usableResponseBytes": 0,
+      "usage": null,
+      "requestCount": 1,
+      "timeout": {
+        "SDKSeconds": 90,
+        "wallSeconds": null
+      }
+    },
+    {
+      "attempt": "DeepSeek recoveryA",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "requestedRawCount": 20,
+      "status": "REQUEST_FAILED",
+      "failureClass": "ExperimentWallTimeout",
+      "underlyingCause": null,
+      "durationSeconds": 300.030152542,
+      "timeToHeadersMs": null,
+      "firstUsableContentMs": null,
+      "usableResponseBytes": 0,
+      "usage": null,
+      "requestCount": 1,
+      "timeout": {
+        "readSeconds": 120,
+        "connectSeconds": 15,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 300
+      }
+    },
+    {
+      "attempt": "DeepSeek recoveryB",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "requestedRawCount": 20,
+      "status": "REQUEST_FAILED",
+      "failureClass": "ExperimentWallTimeout",
+      "underlyingCause": null,
+      "durationSeconds": 300.0123390410008,
+      "timeToHeadersMs": null,
+      "firstUsableContentMs": null,
+      "usableResponseBytes": 0,
+      "usage": null,
+      "requestCount": 1,
+      "timeout": {
+        "readSeconds": 120,
+        "connectSeconds": 15,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 300
+      }
+    },
+    {
+      "attempt": "DeepSeek probe5",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "requestedRawCount": 5,
+      "status": "FAILED",
+      "failureClass": "RuntimeError",
+      "underlyingCause": null,
+      "durationSeconds": 1.1757455420010956,
+      "timeToHeadersMs": 559.0186250010447,
+      "firstUsableContentMs": null,
+      "usableResponseBytes": 0,
+      "usage": null,
+      "requestCount": 1,
+      "timeout": {
+        "connectSeconds": 15,
+        "readSeconds": 90,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 180
+      }
+    },
+    {
+      "attempt": "OpenAI probe5",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "requestedRawCount": 5,
+      "status": "FAILED",
+      "failureClass": "APITimeoutError",
+      "underlyingCause": "ReadTimeout",
+      "durationSeconds": 90.72668766599963,
+      "timeToHeadersMs": null,
+      "firstUsableContentMs": null,
+      "usableResponseBytes": 0,
+      "usage": null,
+      "requestCount": 1,
+      "timeout": {
+        "connectSeconds": 15,
+        "readSeconds": 90,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 180
+      }
+    }
+  ],
+  "comparisonScope": "EXECUTION_ONLY",
+  "creativeComparison": null,
+  "limitation": "Different request sizes/envelopes and diagnostic instrumentation. DeepSeek5 had body observation; OpenAI5 used the unchanged stable path. Missing timing is unknown,not zero. These observations do not isolate provider-versus-client causes or establish creative superiority."
+}

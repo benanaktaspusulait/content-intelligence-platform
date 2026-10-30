@@ -1,0 +1,41 @@
+{
+  "ideas": [
+    {
+      "ideaId": "idea_001",
+      "title": "Delete in Real Life",
+      "protagonistSuggestion": "A distracted apartment dweller.",
+      "everydayGoal": "Free up phone storage.",
+      "primaryObject": "A smartphone photo gallery.",
+      "normalExpectation": "Deleting photos removes only digital files.",
+      "impossibleRule": "Deleting a photo erases its main subject from reality.",
+      "visibleTrigger": "Tapping the gallery’s trash icon.",
+      "whyThisObject": "The familiar delete gesture becomes a physical power.",
+      "goalRuleRelationship": "Emptying phone storage literally empties the room.",
+      "frameZeroDescription": "A real mug sits beside a phone displaying its photo; a finger hovers over the trash icon.",
+      "beats": [
+        {
+          "strategy": "Delete the mug photo to reclaim storage.",
+          "visibleConsequence": "The real mug instantly vanishes.",
+          "newInformation": "Photo deletion affects the physical subject."
+        },
+        {
+          "strategy": "Test the discovery by photographing and deleting a laundry pile.",
+          "visibleConsequence": "The laundry disappears, leaving the chair beneath it.",
+          "newInformation": "Only the main subject disappears; backgrounds remain."
+        },
+        {
+          "strategy": "Confidently select a batch of old photos, overlooking a selfie.",
+          "visibleConsequence": "One trash tap erases the protagonist; the phone drops onto the cleared chair.",
+          "newInformation": "The rule also applies to the person using it."
+        }
+      ],
+      "finalPayoff": "The room is spotless, the storage is cleared, and its owner is gone.",
+      "suggestedPayoffFamily": "Ironic backfire.",
+      "loopPotential": "Low; hold on the abandoned phone for a clean ending.",
+      "environment": "A small, cluttered living room.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "A familiar interface delivers an instantly visible rule, deliberate test, and self-inflicted payoff.",
+      "durationSeconds": 24
+    }
+  ]
+}

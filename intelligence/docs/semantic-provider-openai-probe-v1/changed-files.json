@@ -1,0 +1,8 @@
+{
+  "existingFilesChanged": [],
+  "addedBenchmarkTestCLI": {
+    "intelligence/ml-service/app/workflow/semantic_provider_openai_probe_v1.py": "e19dc6356199cc84e25ab57cd34dcc93abb0e1eb429fee5d2e3b1c0172f5d526",
+    "intelligence/ml-service/tests/test_semantic_provider_openai_probe_v1.py": "a9f893fb8d2d978e8baa55527341bc20ffb1adb75a0ec08709b29bca3f6baefa",
+    "intelligence/scripts/probe-semantic-openai-v1.py": "e4e3a8c903da9f26fbbaf9b92f2de76a4b03442f50393b56f4c97e0ca1dbedd0"
+  }
+}

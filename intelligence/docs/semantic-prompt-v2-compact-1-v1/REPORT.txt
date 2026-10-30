@@ -1,0 +1,1491 @@
+SEMANTIC V2 COMPACT.1 — FINAL REPORT
+
+Outcome: OPENING_REPAIR_NOT_CONFIRMED. STOPPED after exactly one live request.
+
+The original motivation was opening=35 in 3/3 successful real v2-compact samples,
+with rule consistency AMBIGUOUS in all three and no premise admissions. Their SFE
+scores were 84,85,84. This narrow prompt revision targets paused-frame physical
+interference, precise mechanical invariants, and auditable same-rule beats only.
+
+The new live candidate, "Cut Out, Fold In", passed schema and normalization.
+Opening is still 35 (accepted production floor 60). Character, goal, primary object
+and problem are supported in the source, but the frozen-frame impossible causal
+relationship remains UNRESOLVED. Motion-required and context-required are null,
+which means not established, not a certified NO.
+
+Accepted rule audit: CONSISTENT; all four beats are RULE_CONSISTENT. This breaks
+the previous repeated AMBIGUOUS result in this one sample. It is not statistical
+proof or full geometric verification. Independent source review flags a remaining
+payoff reference-frame question: "upright" paper becomes an inward horizontal lid.
+That orientation is not explicitly defined by the rule. The deterministic verdict
+is preserved; the manual caveat is not substituted into scoring or admission.
+
+SFE=99/PASS. Beat Grammar=ACCEPTABLE. Ranking=ELIGIBLE, ranking score=97.6.
+Premise admission=NOT_ADMITTED_INSUFFICIENT_EVIDENCE. Production admission=false.
+Exact production blockers: OPENING_EVIDENCE_INSUFFICIENT, PREMISE_NOT_ADMITTED.
+The combined promising signal (opening>=60 AND accepted rule CONSISTENT) is false.
+The opening pattern did not break. The accepted rule-audit pattern did break.
+
+Execution: OpenAI / gpt-6.1-sol / LOW / one raw candidate / 8192 output-token cap.
+Same json_schema strict=false and non-streaming mode. Same connect/read/write/pool
+15/90/60/15 seconds and wall cap 180 seconds. Exactly one SDK forward and one
+observed HTTP request. No retry, replacement, fallback, second request, DeepSeek,
+production prompts or render. Cost not reported; no cost estimate was made.
+
+Duration 50.4123s monotonic; headers 49.7052s; first usable content 49.7123s;
+3744 response bytes. Input=2112 tokens; output=1627, including 829 reasoning tokens;
+total=3739. HTTP 200, finish_reason=stop. First-token timing unavailable because
+this accepted execution profile is non-streaming. UTC/monotonic timing is consistent.
+
+Prompt size: system 5683 -> 6472 characters (+789; +13.8835%). Total system+user
+text increases 11.1800%, within the <=15% target. Size artifacts also provide exact
+UTF-8 bytes and lines; token-size proxies are explicitly estimates, not billing.
+
+All 56 original editorial policy groups retain exact evidence. Only three policy
+refinements are highlighted: FRAME_ZERO_ACTIVE_RULE_EVIDENCE,
+MECHANICALLY_TESTABLE_RULE, BEAT_RULE_AUDITABILITY. The original v2-compact files
+and default routing are unchanged. No hard-coded story example was added.
+
+Offline implementation/tests: zero provider calls. 77 new tests; 252 focused
+passes. Full regression: 3324 passed, exactly the accepted 36 failure IDs, 2 skipped;
+no new failures. Ruff F checks passed. All 2541 protected preexisting files and
+all tested new source hashes remain unchanged after the live request.
+
+
+EXACT PROMPT CHANGES
+--- immutable v2-compact
++++ v2-compact.1
+@@ -2,17 +2,17 @@
+ 
+ CORE INVARIANTS
+ Use one supplied canonical protagonist, one primary everyday object, one simple credible visible goal and one location. Start inside visible trouble; stage the whole action in about 15 seconds. Target STRANGE BUT INTUITIVE: immediately understandable problem, unexpected logic, not randomness.
+-CORE RULE INVARIANT: state one dominant impossible physical/comedic rule as a precise, observable, repeatable trigger→response sentence. Once established it never changes: every beat and payoff obey it. No unrelated second rule, new power, changes to the declared trigger/direction/target/material/timing/agency mapping, special exception or actor loophole; do not bundle independent powers into a compound sentence. New information reveals implications, not a rewritten relationship. Spread, transfer and magnitude must already follow that relationship.
++CORE RULE INVARIANT: Write impossibleRule as one observable invariant: WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]. visibleTrigger names that interaction, not "used/touched". No "behaves backwards" or eventual outcome. Once established it never changes: every beat and payoff obey it. No unrelated second rule, new power, changes to the declared trigger/direction/target/material/timing/agency mapping, special exception or actor loophole; do not bundle independent powers into a compound sentence. New information reveals implications, not a rewritten relationship. Spread, transfer and magnitude must already follow that relationship.
+ WHY THIS EXACT OBJECT? State its ordinary function and exploit its affordance, expected motion, material/property, normal result or physical task relationship against the goal. The normal useful action must DIRECTLY obstruct the task. Sharing an affected noun is insufficient: show the actual operation/dependency. Reject random object+magic or contrived goals connecting unrelated effects.
+ 
+ OPENING
+-One paused, simultaneous frame must show character+visible task+object+already-present impossible problem and their relationship through pose, physical state and space. Intention alone, an ordinary object in hand, a title or a later beat cannot supply missing evidence. No dialogue, sound, text/captions, prior context, explanatory inset, before/after sequence or waiting for motion. Motion words or labels such as obvious/impossible are not still-frame evidence. A press, opening, delay, traversal or normal first action must not postpone the anomaly; spend no first 2–3 seconds on ordinary setup.
++frameZeroDescription must freeze an actual activation of that exact rule: protagonist using the primary object for the everyday goal, abnormal target state already physically blocking that goal through the same contact/spatial relationship. Begin AFTER first activation; never normal world→action→magic. Show concrete state contrast with the object's normal useful result and the use pose causing interference, not a strange state merely beside the tool. Odd poses, surprise, reactions or unrelated floating objects are not proof. No dialogue, sound, title, text/captions, prior context, inset, before/after sequence, motion words or labels such as obvious/impossible as evidence. No waiting for a trigger or first 2–3 seconds of ordinary setup.
+ 
+ BEATS
+-Exactly 4 or 5 major causal beats including payoff: strategy/action→visible consequence→new information or state change. Keep sentences concrete, concise and stageable. Vary strategy, position, leverage, timing, magnitude, environmental use, accumulation, discovery, control, goal distance or stakes within the CORE RULE INVARIANT. Environment is passive staging, not another power source. Each beat materially changes the problem; reworded retries or unchanged consequences do not count. Avoid the default try harder→two hands→brace→fake success and unrelated events used to enlarge the story. No hidden sub-scenes that exceed readable pacing.
++Exactly 4 or 5 major causal beats including payoff: strategy/action→visible consequence→new information or state change. Keep sentences concrete, concise and stageable: name the exact trigger/contact, target, response and changed physical state in each beat. Trace passive consequences to an earlier activation; do not imply a new trigger. No "gets worse" summaries. Vary strategy, position, leverage, timing, magnitude, environmental use, accumulation, discovery, control, goal distance or stakes within the CORE RULE INVARIANT. Environment is passive staging, not another power source. Each beat materially changes the problem; reworded retries or unchanged consequences do not count. Avoid the default try harder→two hands→brace→fake success and unrelated events used to enlarge the story. No hidden sub-scenes that exceed readable pacing.
+ 
+ PAYOFF
+-Make the final beat the strongest visual, state-changing consequence of the CORE RULE INVARIANT: surprising but inevitable in retrospect, not repetition, explanation or internal realization. Without the original rule this ending should not work. No rescue by a new character, powered object or unexplained external force. finalPayoff equals the last visibleConsequence exactly, with no extra event. Vary role/control/property transfer, absurd or wrong success, solution-created problem, environmental takeover, logical extreme, chain reaction, reveal, character joining object state or object succeeding while character fails. These are inspirations, not taxonomy recipes. Avoid routine temporary success→problem returns. Looping is optional; do not invent reset magic to force it.
++Make the final beat the strongest visual, state-changing consequence of the CORE RULE INVARIANT: surprising but inevitable in retrospect, not repetition, explanation or internal realization. Without the original rule this ending should not work. Apply the same trigger→target→response test to the final beat; no special finale property. No rescue by a new character, powered object or unexplained external force. finalPayoff equals the last visibleConsequence exactly, with no extra event. Vary role/control/property transfer, absurd or wrong success, solution-created problem, environmental takeover, logical extreme, chain reaction, reveal, character joining object state or object succeeding while character fails. These are inspirations, not taxonomy recipes. Avoid routine temporary success→problem returns. Looping is optional; do not invent reset magic to force it.
+ 
+ DIVERSITY
+ Across the batch vary object family, goal, mechanic, trigger, progression, payoff and final silhouette. Do not make many opposite-behavior variants or mistake wording for novelty. Coherent unfamiliar mechanics outside existing taxonomy are welcome. Supplied historical caution zones are not templates: Upside-Down Chair, Sticky Ball/generic adhesion, reset-to-start footwear/repeated resets, progressive growth/shrink, generic flip/reversal and escaping objects must not dominate; rare distinct uses may occur. Choose tasks freely rather than mechanically copying illustrations.
+@@ -24,4 +24,4 @@
+ Use the supplied native response schema unchanged for all fields and exactly the requested raw count; return only its JSON envelope. The schema carries mechanical field/shape bounds; do not replace evidence with claims of compliance. No provider scores or editorial verdicts. The deterministic system may reject any idea.
+ 
+ FINAL SELF-CHECK (PRIVATE)
+-Before returning each candidate check the CORE RULE INVARIANT across every beat/payoff; the paused opening's goal+problem; 4–5 causally linked beats with changed state/information; essential rule-derived visual payoff; exact object dependency; no arbitrary new magic. If any fails, discard/redesign internally before output. Do not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service.
++Before returning each candidate check the CORE RULE INVARIANT across every beat/payoff; the PAUSE FRAME TEST: at 0.0s without motion/context/title/audio, are goal, tool, active impossible problem and interference visible?; 4–5 causally linked beats with changed state/information; essential rule-derived visual payoff; exact object dependency; no arbitrary new magic. Test each beat/payoff trigger→response; reject "this time it also", "except now" or object decisions. If any check fails, discard/redesign internally before output. Do not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service.
+
+EXACT V2-COMPACT.1 SYSTEM PROMPT
+Invent raw Pompom Hills silent physical-comedy possibilities; the deterministic system judges them. Do not rank, score, assign confidence, choose winners, predict virality, certify novelty, claim eligibility/production readiness, recommend production or bypass validators. Rationale may briefly explain object dependency and causal escalation only; it and suggested payoff labels have no scoring authority. Output no private reasoning, self-checklist or self-certification.
+
+CORE INVARIANTS
+Use one supplied canonical protagonist, one primary everyday object, one simple credible visible goal and one location. Start inside visible trouble; stage the whole action in about 15 seconds. Target STRANGE BUT INTUITIVE: immediately understandable problem, unexpected logic, not randomness.
+CORE RULE INVARIANT: Write impossibleRule as one observable invariant: WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]. visibleTrigger names that interaction, not "used/touched". No "behaves backwards" or eventual outcome. Once established it never changes: every beat and payoff obey it. No unrelated second rule, new power, changes to the declared trigger/direction/target/material/timing/agency mapping, special exception or actor loophole; do not bundle independent powers into a compound sentence. New information reveals implications, not a rewritten relationship. Spread, transfer and magnitude must already follow that relationship.
+WHY THIS EXACT OBJECT? State its ordinary function and exploit its affordance, expected motion, material/property, normal result or physical task relationship against the goal. The normal useful action must DIRECTLY obstruct the task. Sharing an affected noun is insufficient: show the actual operation/dependency. Reject random object+magic or contrived goals connecting unrelated effects.
+
+OPENING
+frameZeroDescription must freeze an actual activation of that exact rule: protagonist using the primary object for the everyday goal, abnormal target state already physically blocking that goal through the same contact/spatial relationship. Begin AFTER first activation; never normal world→action→magic. Show concrete state contrast with the object's normal useful result and the use pose causing interference, not a strange state merely beside the tool. Odd poses, surprise, reactions or unrelated floating objects are not proof. No dialogue, sound, title, text/captions, prior context, inset, before/after sequence, motion words or labels such as obvious/impossible as evidence. No waiting for a trigger or first 2–3 seconds of ordinary setup.
+
+BEATS
+Exactly 4 or 5 major causal beats including payoff: strategy/action→visible consequence→new information or state change. Keep sentences concrete, concise and stageable: name the exact trigger/contact, target, response and changed physical state in each beat. Trace passive consequences to an earlier activation; do not imply a new trigger. No "gets worse" summaries. Vary strategy, position, leverage, timing, magnitude, environmental use, accumulation, discovery, control, goal distance or stakes within the CORE RULE INVARIANT. Environment is passive staging, not another power source. Each beat materially changes the problem; reworded retries or unchanged consequences do not count. Avoid the default try harder→two hands→brace→fake success and unrelated events used to enlarge the story. No hidden sub-scenes that exceed readable pacing.
+
+PAYOFF
+Make the final beat the strongest visual, state-changing consequence of the CORE RULE INVARIANT: surprising but inevitable in retrospect, not repetition, explanation or internal realization. Without the original rule this ending should not work. Apply the same trigger→target→response test to the final beat; no special finale property. No rescue by a new character, powered object or unexplained external force. finalPayoff equals the last visibleConsequence exactly, with no extra event. Vary role/control/property transfer, absurd or wrong success, solution-created problem, environmental takeover, logical extreme, chain reaction, reveal, character joining object state or object succeeding while character fails. These are inspirations, not taxonomy recipes. Avoid routine temporary success→problem returns. Looping is optional; do not invent reset magic to force it.
+
+DIVERSITY
+Across the batch vary object family, goal, mechanic, trigger, progression, payoff and final silhouette. Do not make many opposite-behavior variants or mistake wording for novelty. Coherent unfamiliar mechanics outside existing taxonomy are welcome. Supplied historical caution zones are not templates: Upside-Down Chair, Sticky Ball/generic adhesion, reset-to-start footwear/repeated resets, progressive growth/shrink, generic flip/reversal and escaping objects must not dominate; rare distinct uses may occur. Choose tasks freely rather than mechanically copying illustrations.
+
+PRODUCTION
+The full story must read with sound off. Dialogue normally NONE; only incidental OPTIONAL if necessary, never to explain goal, rule, trigger or payoff. Use broad body actions, clear poses, stable identities/silhouettes and few moving elements. Avoid tiny text, many small objects, fine hand work, fine mechanical transformations, crowds, rapid location changes and invisible forces that cannot be staged. Child-safe comedy only: no injury, weapons, dangerous restraint or sexual content.
+
+OUTPUT CONTRACT
+Use the supplied native response schema unchanged for all fields and exactly the requested raw count; return only its JSON envelope. The schema carries mechanical field/shape bounds; do not replace evidence with claims of compliance. No provider scores or editorial verdicts. The deterministic system may reject any idea.
+
+FINAL SELF-CHECK (PRIVATE)
+Before returning each candidate check the CORE RULE INVARIANT across every beat/payoff; the PAUSE FRAME TEST: at 0.0s without motion/context/title/audio, are goal, tool, active impossible problem and interference visible?; 4–5 causally linked beats with changed state/information; essential rule-derived visual payoff; exact object dependency; no arbitrary new magic. Test each beat/payoff trigger→response; reject "this time it also", "except now" or object decisions. If any check fails, discard/redesign internally before output. Do not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service.
+
+EXACT USER PROMPT PAYLOAD
+{"canonicalCast": [{"id": "00000000-0000-0000-0000-000000000001", "name": "Opa"}, {"id": "00000000-0000-0000-0000-000000000002", "name": "Kiko"}, {"id": "00000000-0000-0000-0000-000000000003", "name": "Mimi"}, {"id": "00000000-0000-0000-0000-000000000004", "name": "Arda"}, {"id": "00000000-0000-0000-0000-000000000005", "name": "Luca"}, {"id": "00000000-0000-0000-0000-000000000006", "name": "Noah"}], "historicalCautionZones": [{"referenceId": "upside-chair-01", "signature": {"dominantTransformation": "INVERT_ORIENTATION", "finalRelation": "OPENING_STATE_RECREATED", "goal": "SIT", "objectCategory": "SEATING", "openingRelation": "USE_BLOCKED", "silhouetteTopology": "INVERTED_SEAT_BODY"}}, {"referenceId": "sticky-ball-01", "signature": {"dominantTransformation": "CONTACT_RETAINS", "finalRelation": "CHARACTER_ATTACHED_TO_OBJECT", "goal": "PLAY", "objectCategory": "BALL", "openingRelation": "USE_BLOCKED", "silhouetteTopology": "BODY_ATTACHED_OBJECT"}}, {"referenceId": "reset-to-start-shoe-territory", "signature": "Footwear returns protagonist to the starting position; repeated attempts and reset ending."}], "promptVersion": "semantic-concept-prompt-v2-compact.1", "requestedRawCount": 1, "seed": 42, "semanticConceptPromptVersion": "v2-compact.1", "suppliedNativeSchema": {"sha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3", "version": "semantic-native-schema-integrity-v1"}}
+
+OLD/NEW SIZE METRICS
+{
+  "v2-compact": {
+    "system": {
+      "characters": 5683,
+      "UTF8Bytes": 5701,
+      "lines": 27,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 6,
+        "doNot": 7,
+        "never": 2,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 3
+      },
+      "estimatedTokens": 1421,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "user": {
+      "characters": 1409,
+      "UTF8Bytes": 1409,
+      "lines": 1,
+      "sections": [],
+      "instructionMarkerOccurrences": {
+        "must": 0,
+        "doNot": 0,
+        "never": 0,
+        "avoid": 0,
+        "exactly": 0,
+        "check": 0
+      },
+      "estimatedTokens": 353,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "totalText": {
+      "characters": 7093,
+      "UTF8Bytes": 7111,
+      "lines": 28,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 6,
+        "doNot": 7,
+        "never": 2,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 3
+      },
+      "estimatedTokens": 1774,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    }
+  },
+  "v2-compact.1": {
+    "system": {
+      "characters": 6472,
+      "UTF8Bytes": 6498,
+      "lines": 27,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 5,
+        "doNot": 8,
+        "never": 3,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 4
+      },
+      "estimatedTokens": 1618,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "user": {
+      "characters": 1413,
+      "UTF8Bytes": 1413,
+      "lines": 1,
+      "sections": [],
+      "instructionMarkerOccurrences": {
+        "must": 0,
+        "doNot": 0,
+        "never": 0,
+        "avoid": 0,
+        "exactly": 0,
+        "check": 0
+      },
+      "estimatedTokens": 354,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "totalText": {
+      "characters": 7886,
+      "UTF8Bytes": 7912,
+      "lines": 28,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 5,
+        "doNot": 8,
+        "never": 3,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 4
+      },
+      "estimatedTokens": 1972,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    }
+  },
+  "deltaPercent": {
+    "system": 13.883512229456274,
+    "user": 0.2838892831795503,
+    "totalText": 11.180036655857894
+  }
+}
+
+POLICY EQUIVALENCE MATRIX
+v2-compact → v2-compact.1 policy equivalence
+Instruction retention evidence; not a guarantee of model compliance.
+Only refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE, MECHANICALLY_TESTABLE_RULE, BEAT_RULE_AUDITABILITY
+
+boundary: Raw ideas; deterministic authority; no rank/score/winners/virality/novelty/readiness/eligibility/production recommendation/bypass
+  old: Do not rank, score, assign confidence
+  new: Do not rank, score, assign confidence
+  preserved: YES; refinements: unchanged
+rationale: Rationale explains causal dependency only, never score authority
+  old: no scoring authority
+  new: no scoring authority
+  preserved: YES; refinements: unchanged
+private: No exposed reasoning, checklists or self-certification
+  old: Output no private reasoning
+  new: Output no private reasoning
+  preserved: YES; refinements: unchanged
+protagonist: Exactly one supplied canonical protagonist
+  old: one supplied canonical protagonist
+  new: one supplied canonical protagonist
+  preserved: YES; refinements: unchanged
+object: One primary everyday object
+  old: one primary everyday object
+  new: one primary everyday object
+  preserved: YES; refinements: unchanged
+goal: Simple concrete credible visible everyday goal
+  old: one simple credible visible goal
+  new: one simple credible visible goal
+  preserved: YES; refinements: unchanged
+location: One location
+  old: one location
+  new: one location
+  preserved: YES; refinements: unchanged
+trouble: Immediate visible trouble
+  old: Start inside visible trouble
+  new: Start inside visible trouble
+  preserved: YES; refinements: unchanged
+duration: About15 seconds, complete readable action
+  old: about 15 seconds
+  new: about 15 seconds
+  preserved: YES; refinements: unchanged
+intuitive: Strange but intuitive logic rather than randomness
+  old: STRANGE BUT INTUITIVE
+  new: STRANGE BUT INTUITIVE
+  preserved: YES; refinements: unchanged
+one-rule: One dominant impossible physical/comedic rule
+  old: one dominant impossible physical/comedic rule
+  new: Write impossibleRule as one observable invariant
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+rule-sentence: Precise observable repeatable trigger/response sentence
+  old: precise, observable, repeatable trigger→response sentence
+  new: WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+immutable: Established rule governs every beat/payoff without mutation
+  old: Once established it never changes
+  new: Once established it never changes
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+trigger: Stable trigger; no new condition or actor loophole
+  old: changes to the declared trigger/direction/target/material/timing/agency mapping
+  new: changes to the declared trigger/direction/target/material/timing/agency mapping
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+no-powers: No independent powers bundled to excuse twists
+  old: do not bundle independent powers
+  new: do not bundle independent powers
+  preserved: YES; refinements: unchanged
+mapping: No altered direction/material/target/timing/agency unless implied
+  old: declared trigger/direction/target/material/timing/agency mapping
+  new: declared trigger/direction/target/material/timing/agency mapping
+  preserved: YES; refinements: unchanged
+spread: No unrelated spread; new information reveals same relationship
+  old: Spread, transfer and magnitude must already follow
+  new: Spread, transfer and magnitude must already follow
+  preserved: YES; refinements: MECHANICALLY_TESTABLE_RULE
+object-function: Explain ordinary function and exact object dependency
+  old: State its ordinary function
+  new: State its ordinary function
+  preserved: YES; refinements: unchanged
+object-affordance: Exploit function/affordance/motion/material/result/task relationship
+  old: affordance, expected motion, material/property, normal result
+  new: affordance, expected motion, material/property, normal result
+  preserved: YES; refinements: unchanged
+interference: Object operation directly obstructs goal
+  old: DIRECTLY obstruct the task
+  new: DIRECTLY obstruct the task
+  preserved: YES; refinements: unchanged
+arbitrary: Noun sharing is insufficient; no random magic or contrived goal
+  old: Sharing an affected noun is insufficient
+  new: Sharing an affected noun is insufficient
+  preserved: YES; refinements: unchanged
+still: Single simultaneous paused stageable frame
+  old: One paused, simultaneous frame
+  new: frameZeroDescription must freeze an actual activation of that exact rule
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+opening-content: Character, visible goal, object, impossible problem and relationship
+  old: character+visible task+object+already-present impossible problem
+  new: protagonist using the primary object for the everyday goal, abnormal target state already physically blocking that goal
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+physical-evidence: Pose/state/space carry evidence; intention/title/laterbeat insufficient
+  old: pose, physical state and space
+  new: same contact/spatial relationship
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+no-explanation: No sound/dialogue/text/context/inset/beforeafter/motion dependence
+  old: explanatory inset, before/after sequence or waiting for motion
+  new: No dialogue, sound, title, text/captions, prior context, inset, before/after sequence
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+no-delay: No initial normal action, press/door/delay/traverse or2–3sec setup
+  old: spend no first 2–3 seconds
+  new: No waiting for a trigger or first 2–3 seconds of ordinary setup
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+no-label-proof: Words moving/obvious/impossible do not supply still evidence
+  old: Motion words or labels such as obvious/impossible
+  new: motion words or labels such as obvious/impossible as evidence
+  preserved: YES; refinements: FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+count: Exactly4–5 major causal beats including final payoff
+  old: Exactly 4 or 5 major causal beats including payoff
+  new: Exactly 4 or 5 major causal beats including payoff
+  preserved: YES; refinements: unchanged
+beat-fields: Action→same-rule physical consequence→changed state/information
+  old: strategy/action→visible consequence→new information or state change
+  new: strategy/action→visible consequence→new information or state change
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+stageable: Concrete concise stageable sentences
+  old: sentences concrete, concise and stageable
+  new: sentences concrete, concise and stageable
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+progression: Materially different strategy/consequence/state/position/control/goal distance/stakes
+  old: Each beat materially changes the problem
+  new: Each beat materially changes the problem
+  preserved: YES; refinements: unchanged
+axes: Vary leverage/timing/position/environment/magnitude/accumulation/control/stakes
+  old: position, leverage, timing, magnitude, environmental use, accumulation
+  new: position, leverage, timing, magnitude, environmental use, accumulation
+  preserved: YES; refinements: unchanged
+passive: Environment is passive staging, no new powers
+  old: Environment is passive staging
+  new: Environment is passive staging
+  preserved: YES; refinements: unchanged
+no-repeat: Reworded same attempts or identical consequences are not progression
+  old: reworded retries or unchanged consequences do not count
+  new: reworded retries or unchanged consequences do not count
+  preserved: YES; refinements: unchanged
+no-force-ladder: Avoid force/twohands/brace/fakesuccess default
+  old: try harder→two hands→brace→fake success
+  new: try harder→two hands→brace→fake success
+  preserved: YES; refinements: unchanged
+no-unrelated: No unrelated events or hidden sub-scenes; magnitude follows rule
+  old: No hidden sub-scenes
+  new: No hidden sub-scenes
+  preserved: YES; refinements: unchanged
+last-equality: Payoff equals last consequence character for character, no extra event
+  old: finalPayoff equals the last visibleConsequence exactly
+  new: finalPayoff equals the last visibleConsequence exactly
+  preserved: YES; refinements: unchanged
+payoff-causal: Surprising but inevitable strongest rule-derived visual state change
+  old: strongest visual, state-changing consequence
+  new: strongest visual, state-changing consequence
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+payoff-essential: Ending cannot survive removal of original rule
+  old: Without the original rule this ending should not work
+  new: Without the original rule this ending should not work
+  preserved: YES; refinements: unchanged
+payoff-families: Preserve transfer/reversal/wrongsuccess/problem/takeover/extreme/chain/reveal/join/objectwins inspiration families
+  old: role/control/property transfer
+  new: role/control/property transfer
+  preserved: YES; refinements: unchanged
+no-taxonomy-recipes: Payoff inspirations are not mandatory taxonomy recipes
+  old: not taxonomy recipes
+  new: not taxonomy recipes
+  preserved: YES; refinements: unchanged
+no-ending-rescue: No newactor/poweredobject/magic/trigger/externalforce ending
+  old: new character, powered object or unexplained external force
+  new: new character, powered object or unexplained external force
+  preserved: YES; refinements: unchanged
+loop: Optional loop; no reset effect/new rule; avoid routine fakesuccess reset
+  old: Looping is optional
+  new: Looping is optional
+  preserved: YES; refinements: unchanged
+silent: Full story legible soundoff; dialogue not explanatory
+  old: full story must read with sound off
+  new: full story must read with sound off
+  preserved: YES; refinements: unchanged
+dialogue: NONE default; OPTIONAL only if needed; do not invent enum
+  old: Dialogue normally NONE
+  new: Dialogue normally NONE
+  preserved: YES; refinements: unchanged
+production: Broad body actions, poses, stable identities/silhouette, few elements
+  old: broad body actions, clear poses, stable identities/silhouettes
+  new: broad body actions, clear poses, stable identities/silhouettes
+  preserved: YES; refinements: unchanged
+production-risks: No tinytext/smallpieces/finehands/mechanics/crowds/cuts/unstageable invisibleforces
+  old: fine hand work, fine mechanical transformations, crowds
+  new: fine hand work, fine mechanical transformations, crowds
+  preserved: YES; refinements: unchanged
+safety: Childsafe: no injury/weapons/dangerousrestraint/sexualcontent
+  old: no injury, weapons, dangerous restraint or sexual content
+  new: no injury, weapons, dangerous restraint or sexual content
+  preserved: YES; refinements: unchanged
+batch-diversity: Vary object/goal/mechanic/trigger/progression/payoff/finalsilhouette
+  old: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+  new: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+  preserved: YES; refinements: unchanged
+no-opposite: Avoid many oppositebehavior variants/wordingnovelty
+  old: many opposite-behavior variants
+  new: many opposite-behavior variants
+  preserved: YES; refinements: unchanged
+unfamiliar: Coherent unfamiliar taxonomyfree mechanics allowed
+  old: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+  new: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+  preserved: YES; refinements: unchanged
+cautions: Historical caution not templates; rare distinct chair/adhesion/reset/growth/shrink/reversal/escape allowed, not dominant
+  old: must not dominate; rare distinct uses may occur
+  new: must not dominate; rare distinct uses may occur
+  preserved: YES; refinements: unchanged
+free-task: Task examples illustrate, do not copy mechanically
+  old: Choose tasks freely
+  new: Choose tasks freely
+  preserved: YES; refinements: unchanged
+self-check: One private review: rule allbeats, pausedopening,causalarrows,visualstatepayoff,objectdependency; internally discard/redesign
+  old: discard/redesign internally
+  new: discard/redesign internally
+  preserved: YES; refinements: BEAT_RULE_AUDITABILITY
+no-retry: Private editing is not an external retry loop or winnerselection
+  old: no permission for an external retry loop
+  new: no permission for an external retry loop
+  preserved: YES; refinements: unchanged
+schema: Same fields/JSON ideas envelope/raw count, deterministic rejection remains
+  old: all fields and exactly the requested raw count
+  new: all fields and exactly the requested raw count
+  preserved: YES; refinements: unchanged
+
+
+ADVERSARIAL MOCK RESULTS
+{
+  "cases": [
+    {
+      "case": "A",
+      "purpose": "normal object before anomaly",
+      "editorialPromptIntent": "REJECT",
+      "policy": "FRAME_ZERO_ACTIVE_RULE_EVIDENCE",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "B",
+      "purpose": "surprised face; unclear problem",
+      "editorialPromptIntent": "REJECT",
+      "policy": "FRAME_ZERO_ACTIVE_RULE_EVIDENCE",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "C",
+      "purpose": "anomaly with unclear visible goal",
+      "editorialPromptIntent": "REJECT",
+      "policy": "FRAME_ZERO_ACTIVE_RULE_EVIDENCE",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "D",
+      "purpose": "goal object and active interference",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "policy": "FRAME_ZERO_ACTIVE_RULE_EVIDENCE",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "E",
+      "purpose": "vague rule",
+      "editorialPromptIntent": "REJECT",
+      "policy": "MECHANICALLY_TESTABLE_RULE",
+      "openingScore": 15,
+      "ruleConsistency": {
+        "status": "UNRESOLVED",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "F",
+      "purpose": "specific repeatable trigger and response",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "policy": "MECHANICALLY_TESTABLE_RULE",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "G",
+      "purpose": "beat 3 adds another behavior",
+      "editorialPromptIntent": "REJECT",
+      "policy": "BEAT_RULE_AUDITABILITY",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "CONTRADICTION_DETECTED",
+        "sourceFindings": [
+          {
+            "code": "DECLARED_RULE_OUTCOME_REVERSED",
+            "beatNumber": 3,
+            "sourceField": null,
+            "sourceFields": [
+              "beats[2].visibleConsequence",
+              "beats[2].newInformation"
+            ],
+            "sourceText": "The hammer straightens the nail and drives it into the wall. The nail straightens under the same hammer strike.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[2].visibleConsequence",
+                "sourceText": "The hammer straightens the nail and drives it into the wall.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "beats[2].newInformation",
+                "sourceText": "The nail straightens under the same hammer strike.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "DERIVED_COMPARISON_WITH_EXACT_REFS",
+            "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "reason": "A source outcome asserts the opposite of the declared response without a declared exception.",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          }
+        ],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_RULE_INCOHERENT",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "H",
+      "purpose": "payoff mutates rule",
+      "editorialPromptIntent": "REJECT",
+      "policy": "BEAT_RULE_AUDITABILITY",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "CONTRADICTION_DETECTED",
+        "sourceFindings": [
+          {
+            "code": "UNDECLARED_MATERIAL_OR_FUNCTION",
+            "beatNumber": 4,
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceFields": [
+              "beats[3].visibleConsequence"
+            ],
+            "sourceText": "The hammer becomes a mirror and shows the picture frame.",
+            "evidenceRefs": [
+              {
+                "sourceField": "beats[3].visibleConsequence",
+                "sourceText": "The hammer becomes a mirror and shows the picture frame.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ],
+            "sourceTextScope": "EXACT_FIELD",
+            "declaredRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+            "reason": "The source introduces another material/function (beyond the declared input/output relation).",
+            "confidence": "SOURCE_CONSTRAINT_COMPARISON"
+          }
+        ],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "NOT_ADMITTED_RULE_INCOHERENT",
+      "payoffRuleLinked": false,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "I",
+      "purpose": "magnitude follows same response",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "policy": "BEAT_RULE_AUDITABILITY",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    },
+    {
+      "case": "J",
+      "purpose": "environmental consequence follows same rule",
+      "editorialPromptIntent": "ACCEPTABLE",
+      "policy": "BEAT_RULE_AUDITABILITY",
+      "openingScore": 90,
+      "ruleConsistency": {
+        "status": "SUPPORTED_BY_EXISTING_EVIDENCE",
+        "sourceFindings": [],
+        "absenceOfFindingIsNotProof": true
+      },
+      "admission": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED",
+      "payoffRuleLinked": true,
+      "providerCallsDuringAnalysis": 0,
+      "qualification": "Editorial intent is not a new runtime judge. Existing judge replay tests source constraints; it does not test a model following this prompt."
+    }
+  ],
+  "providerCalls": 0,
+  "renders": 0,
+  "networkBlocked": true
+}
+
+EXACT LIVE EXECUTION METRICS
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1627,
+    "prompt_tokens": 2112,
+    "total_tokens": 3739,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 829,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2109,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 49705.162792,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 49712.3095,
+  "providerRequestId": "chatcmpl-EefGU5uRbLsNuwhOkOJacnHzuOnGM",
+  "httpRequestId": "req_245ac6cd9dd64091ab84f27a9d73cee6",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EefGU5uRbLsNuwhOkOJacnHzuOnGM",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "COMPACT_1_FULL_CONTRACT_EXECUTION_PASS",
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T11:40:47.673961+00:00",
+    "wallClockEndUTC": "2026-10-30T11:41:38.086144+00:00",
+    "monotonicElapsedSeconds": 50.412277375,
+    "wallClockSpanSeconds": 50.412183,
+    "wallMinusMonotonicSeconds": -9.437500000331056e-05,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 3744,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "selectedReasoningEffort": "low",
+  "promptHash": "122a65a43c084c77a0bff466a89461da4f7d7cc701aa3ae8fd5709829ec3d417",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "pipelineRan": true
+}
+
+COMPLETE RETURNED STORY — exact stored source; provider rationale is untrusted
+{
+  "ideaId": "paper-walls-01",
+  "title": "Cut Out, Fold In",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Cut a square out of a large sheet of paper along its thick square outline.",
+  "primaryObject": "Blunt craft scissors",
+  "normalExpectation": "Closing the blades through paper separates it along the cutting line.",
+  "impossibleRule": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+  "visibleTrigger": "The scissors' blades closing through the paper.",
+  "whyThisObject": "Scissors must close through the paper to cut out the square; that exact operation erects the surrounding paper into walls instead of removing it.",
+  "goalRuleRelationship": "Each attempted side of the square remains attached and gains an upright outer flap, progressively obstructing access to the remaining outline.",
+  "frameZeroDescription": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+  "beats": [
+    {
+      "strategy": "Mimi opens the scissors, turns the paper a quarter-turn, and closes the blades along the next side of the square.",
+      "visibleConsequence": "The paper to the blades' right folds upright, leaving two adjoining walls around the still-attached square and a buckled paper corner.",
+      "newInformation": "Turning the sheet changes which outer flap rises, not whether the scissors cut."
+    },
+    {
+      "strategy": "Mimi tilts the sheet toward herself to reach the third outlined side and closes the scissors through it.",
+      "visibleConsequence": "A third outer flap folds upright to the blades' right, making a three-sided paper enclosure with the scissors entering through its open side.",
+      "newInformation": "The remaining open side is now the only unobstructed approach to the outline."
+    },
+    {
+      "strategy": "Mimi slides the open scissors through that gap and positions the blades on the final outlined side, keeping the handles inside the enclosure.",
+      "visibleConsequence": "As the blades close through the paper, the fourth outer flap folds upright to their right, forming a paper box around the scissors.",
+      "newInformation": "Completing the outline encloses the tool instead of freeing the square."
+    },
+    {
+      "strategy": "Mimi points the scissors upward inside the box and closes them through the top edge of its front wall to make an exit.",
+      "visibleConsequence": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+      "newInformation": "Trying to cut an escape folds part of the enclosure over the trapped tool."
+    }
+  ],
+  "finalPayoff": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+  "suggestedPayoffFamily": "Solution-created enclosure",
+  "loopPotential": "No reset; hold on the scissors handles protruding from the folded paper box.",
+  "environment": "One low craft table in a quiet craft corner, with a single large paper sheet.",
+  "dialogueNeed": "NONE",
+  "providerRationale": "The scissors' necessary cutting contact creates attached folds. Reorienting the sheet accumulates walls, and the final attempted escape converts a wall into a lid.",
+  "durationSeconds": 15
+}
+
+DEDICATED OPENING AND PER-BEAT RULE AUDIT
+{
+  "candidateId": "sem1-51a869897b602847",
+  "globalId": "semantic-compact-1-low-probe-1-run-001/sem1-51a869897b602847",
+  "title": "Cut Out, Fold In",
+  "openingScore": 35,
+  "openingFloor": 60,
+  "openingAudit": {
+    "frameZeroDescription": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+    "sourceFrameVisual": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+    "requiresTextOrDialogue": false,
+    "characterVisible": true,
+    "goalDeclared": true,
+    "goalVisible": true,
+    "objectVisible": true,
+    "objectEvidence": {
+      "present": true,
+      "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+      "matches": [
+        "craft",
+        "scissors",
+        "blunt"
+      ]
+    },
+    "problemVisible": true,
+    "anomalyVisible": true,
+    "triggerVisible": true,
+    "goalProblemRelationship": true,
+    "impossibleRelationVisible": null,
+    "ruleInferableFromStill": null,
+    "needsMotionToUnderstand": null,
+    "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+    "needsPriorContext": null,
+    "canonicalCausalLegibility": true,
+    "stillCausalLegibility": "UNRESOLVED",
+    "openingFactsState": "OPENING_FACTS_PRESENT",
+    "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+    "stillPropertyContrast": [],
+    "explicitUsePose": false,
+    "sourceFunctionalContrastSupported": false,
+    "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+    "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+    "evidenceRefs": [
+      {
+        "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+        "sourceField": "frameZeroDescription",
+        "sourceText": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+        "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+        "confidence": "EXPLICIT"
+      }
+    ],
+    "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+  },
+  "openingSourceReview": "A closed pair of scissors beside attached upright paper describes an abnormal result and the intended cutting goal, but a still may also depict ordinary folded paper. The source does not establish the impossible activation solely through a visible state contrast. The accepted opening audit remains UNRESOLVED; null motion/context fields are not affirmative no values.",
+  "acceptedRuleConsistency": "RULE_CONSISTENT",
+  "acceptedRuleStatusForComparison": "CONSISTENT",
+  "exactRule": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+  "perBeat": [
+    {
+      "beat": 1,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi opens the scissors, turns the paper a quarter-turn, and closes the blades along the next side of the square.",
+        "visibleConsequence": "The paper to the blades' right folds upright, leaving two adjoining walls around the still-attached square and a buckled paper corner.",
+        "newInformation": "Turning the sheet changes which outer flap rises, not whether the scissors cut."
+      },
+      "sourceReview": "The next-side blade closure is explicit. The right-hand paper flap folds upright; accumulation changes wall count, not the causal function. No contradiction detected.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 2,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi tilts the sheet toward herself to reach the third outlined side and closes the scissors through it.",
+        "visibleConsequence": "A third outer flap folds upright to the blades' right, making a three-sided paper enclosure with the scissors entering through its open side.",
+        "newInformation": "The remaining open side is now the only unobstructed approach to the outline."
+      },
+      "sourceReview": "Tilting the sheet changes approach. Closure through side three again raises the right-hand flap. Same trigger and target; unchanged accepted rule test passes.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 3,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi slides the open scissors through that gap and positions the blades on the final outlined side, keeping the handles inside the enclosure.",
+        "visibleConsequence": "As the blades close through the paper, the fourth outer flap folds upright to their right, forming a paper box around the scissors.",
+        "newInformation": "Completing the outline encloses the tool instead of freeing the square."
+      },
+      "sourceReview": "Positioning is described in strategy; closure is explicit in visibleConsequence. The fourth right-hand flap forms another wall. The fields together make the activation auditable.",
+      "acceptedFindings": []
+    },
+    {
+      "beat": 4,
+      "acceptedStatus": "RULE_CONSISTENT",
+      "source": {
+        "strategy": "Mimi points the scissors upward inside the box and closes them through the top edge of its front wall to make an exit.",
+        "visibleConsequence": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+        "newInformation": "Trying to cut an escape folds part of the enclosure over the trapped tool."
+      },
+      "sourceReview": "The blade closure and right-hand wall section remain explicit. However, the rule says ALWAYS folds upright whereas the payoff folds inward across the box into a lid. A local-paper reference frame could explain reorientation, but none is specified. This is a physical orientation ambiguity for source review, despite the accepted deterministic RULE_CONSISTENT output.",
+      "acceptedFindings": []
+    }
+  ],
+  "acceptedPayoffRuleLinked": true,
+  "manualPayoffOrientationStatus": "AMBIGUOUS",
+  "manualPayoffConcern": "The blade closure and right-hand wall section remain explicit. However, the rule says ALWAYS folds upright whereas the payoff folds inward across the box into a lid. A local-paper reference frame could explain reorientation, but none is specified. This is a physical orientation ambiguity for source review, despite the accepted deterministic RULE_CONSISTENT output.",
+  "providerSelfAssessmentUsed": false,
+  "sourceOnly": true,
+  "openingOutcome": "OPENING_REPAIR_NOT_CONFIRMED",
+  "ruleOutcome": "ACCEPTED_RULE_VERIFIABILITY_PATTERN_BROKEN_SINGLE_SAMPLE",
+  "promisingCombinedSignal": false,
+  "inference": "One successful candidate changes the accepted rule-audit pattern, but not the repeated opening=35 result. It does not establish statistical improvement or mechanically flawless geometry. No further prompt revision or provider request is made."
+}
+
+PIPELINE RESULTS
+{
+  "schemaValidity": true,
+  "normalization": true,
+  "creativeContract": "CREATIVE_CONTRACT_FAILURE",
+  "semanticConceptPromptVersion": "v2-compact.1",
+  "actualPromptVersion": "semantic-concept-prompt-v2-compact.1",
+  "PremiseNaturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "actualImpossibleResponse": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 0,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+    "legacyAdmitted": false,
+    "admissionProvenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED"
+  },
+  "Admission": {
+    "status": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+    "admitted": false,
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "UNSUPPORTED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function."
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class."
+      },
+      "objectSpecificity": {
+        "supported": false,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+      },
+      "trigger": {
+        "supported": false,
+        "reason": "A concrete source action is linked to the declared abnormal behavior."
+      },
+      "goalInterference": {
+        "supported": false,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+      },
+      "causalCoherence": {
+        "supported": true,
+        "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats."
+      },
+      "nonArbitrary": {
+        "supported": false,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+      },
+      "functionalAffordanceRelationship": {
+        "supported": false,
+        "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+      },
+      "openingLegibility": {
+        "supported": false,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission."
+      }
+    },
+    "reasons": [
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "objectSpecificity",
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "trigger",
+        "reason": "A concrete source action is linked to the declared abnormal behavior."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "goalInterference",
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "nonArbitrary",
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "functionalAffordanceRelationship",
+        "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+      }
+    ]
+  },
+  "BeatGrammar": {
+    "beatGrammarQuality": "ACCEPTABLE",
+    "strategySequence": [
+      "CHANGE_ANGLE",
+      "UNKNOWN",
+      "ANCHOR_TO_ENVIRONMENT",
+      "UNKNOWN"
+    ],
+    "consequenceSequence": [
+      "source-state:95c6191c038448c8",
+      "source-state:3eb50bc205519263",
+      "source-state:d87843ca4625d035",
+      "source-state:b41cbe5691941e34"
+    ],
+    "strategyDiversityScore": 100.0,
+    "consequenceDiversityScore": 100.0,
+    "bodyStateProgressionScore": 0.0,
+    "spatialProgressionScore": 0.0,
+    "informationGainScore": 100.0,
+    "nearDuplicateAttemptRate": 0.0,
+    "payoffDistance": 1.0,
+    "flags": [
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 1
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 2
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 3
+      },
+      {
+        "code": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "beatNumber": 4
+      },
+      {
+        "code": "STATIC_SPATIAL_PROGRESSION"
+      }
+    ],
+    "coverageFailures": [
+      {
+        "beatNumber": 1,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 2,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 3,
+        "field": "consequenceType",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "characterStrategy",
+        "sourcePresent": true
+      },
+      {
+        "beatNumber": 4,
+        "field": "consequenceType",
+        "sourcePresent": true
+      }
+    ]
+  },
+  "SFE": {
+    "engine": "SHORT_FORM_ENGINE",
+    "version": "short-form-engine-v1",
+    "status": "PASS",
+    "shortFormScore": 99,
+    "hookScore": 100,
+    "goalScore": 100,
+    "ruleClarityScore": 100,
+    "beatDensityScore": 100,
+    "progressDensityScore": 100,
+    "escalationScore": 100,
+    "payoffScore": 100,
+    "rewatchScore": 60,
+    "silentLegibilityScore": 89,
+    "productionFeasibilityScore": 100,
+    "alreadyInTrouble": true,
+    "majorCausalBeatCount": 4,
+    "describedBlockCount": 4,
+    "continuationReason": "Next materially different attempt, consequence or final physical state.",
+    "earlyRuleUnderstandingPenalized": false,
+    "rewatchType": "OPTIONAL_NOT_ESTABLISHED",
+    "feasibilityEvidenceStatus": "TEXT_RISK_SCREEN_ONLY",
+    "requestedDurationSeconds": 15.0,
+    "timingVerifiedFromPlan": true,
+    "scoreType": "INDEPENDENT_SHORT_FORM_EDITORIAL_HEURISTIC",
+    "humanReadableReport": "PASS: short-form 99/100; 4 causal beats in 4 blocks. Opening contains a visible everyday goal and anomaly.",
+    "sourceSha256": "fd49f3b2a3629573f4df8c78f7e74569e6f01529e561b097e5278ad26a02320b",
+    "canonicalRulesetUnchanged": true,
+    "renderAuthorized": false,
+    "providerCalls": 0,
+    "evidenceSourceVersion": "structured-canonical-v1"
+  },
+  "SFEFindings": [],
+  "CreativeShape": {
+    "code": null,
+    "risk": "LOW",
+    "evidence": {
+      "repeatedStrategySequence": 0,
+      "repeatedPayoffFamily": 0,
+      "repeatedFinalRelationship": 0,
+      "repeatedFalseSuccessPosition": 0,
+      "repeatedTemporalShape": 0
+    },
+    "peerDenominator": 0
+  },
+  "historicalTerritory": {
+    "historicalCreativeTerritoryRisk": "LOW",
+    "closestHistoricalCreativeTerritory": {
+      "referenceId": "sticky-ball-01",
+      "similarity": 0.1,
+      "matchingAxes": [
+        "openingRelation"
+      ],
+      "sourcePath": "intelligence/data/golden/pompom-golden-v1/prompts/sticky-ball-01.txt",
+      "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01"
+    },
+    "plannedSceneSignature": {
+      "objectCategory": "UNKNOWN",
+      "goal": "UNKNOWN",
+      "openingRelation": "USE_BLOCKED",
+      "dominantTransformation": "UNSUPPORTED_RESPONSE",
+      "finalRelation": "UNKNOWN",
+      "silhouetteTopology": "OFF_BALANCE"
+    },
+    "evidenceKind": "NEW_STRUCTURAL_ANNOTATION_OF_TWO_FROZEN_PROMPTS_NOT_PIXELS_OR_WINNER_PERFORMANCE",
+    "canonicalHistoricalMetricsChanged": false
+  },
+  "rankingEligibility": "ELIGIBLE",
+  "rankingScore": 97.6,
+  "rankingEligibilityReasons": [],
+  "productionAdmissible": false,
+  "productionDisposition": "BLOCKED",
+  "productionSlateRank": null,
+  "exactProductionBlockers": [
+    "OPENING_EVIDENCE_INSUFFICIENT",
+    "PREMISE_NOT_ADMITTED"
+  ],
+  "productionSelection": {
+    "productionSlate": [],
+    "firstRenderCandidate": null
+  },
+  "sourceAdapterNote": "Inherited SEMANTIC_V1 adapter source label is unchanged; actual prompt version is semantic-concept-prompt-v2-compact.1."
+}
+
+PRIMARY COMPARISON WITH THREE EXISTING REAL CANDIDATES
+{
+  "source": "Existing micro-batch combined analysis; no regeneration or rescoring",
+  "candidates": [
+    {
+      "id": "REFERENCE-0",
+      "candidateId": "semantic-compact-micro-batch-v1/REFERENCE-0/sem1-e7b2564efe7fec52",
+      "title": "A Very Square Spill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 84,
+      "SFEStatus": "REVISION_REQUIRED",
+      "rankingEligibility": "INELIGIBLE",
+      "productionAdmissible": false
+    },
+    {
+      "id": "micro-b",
+      "candidateId": "semantic-compact-micro-batch-v1/micro-b/sem1-e681e589547f87c4",
+      "title": "Sweeping Uphill",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 85,
+      "SFEStatus": "REVISION_REQUIRED",
+      "rankingEligibility": "INELIGIBLE",
+      "productionAdmissible": false
+    },
+    {
+      "id": "micro-c",
+      "candidateId": "semantic-compact-micro-batch-v1/micro-c/sem1-13c354f40be0f053",
+      "title": "The Wrinkle Has to Go Somewhere",
+      "openingScore": 35,
+      "ruleConsistency": "AMBIGUOUS",
+      "premiseAdmitted": false,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+      "BeatGrammar": "ACCEPTABLE",
+      "SFE": 84,
+      "SFEStatus": "REVISION_REQUIRED",
+      "rankingEligibility": "INELIGIBLE",
+      "productionAdmissible": false
+    }
+  ]
+}
+{
+  "newCandidate": {
+    "id": "sem1-51a869897b602847",
+    "title": "Cut Out, Fold In",
+    "opening": 35,
+    "ruleConsistency": "CONSISTENT",
+    "premiseAdmitted": false,
+    "BeatGrammar": "ACCEPTABLE",
+    "SFE": 99,
+    "SFEStatus": "PASS",
+    "rankingEligible": true,
+    "rankingScore": 97.6,
+    "productionAdmissible": false
+  },
+  "openingPatternBroken": false,
+  "acceptedRuleAmbiguityPatternBroken": true,
+  "premiseAdmissionPatternBroken": false,
+  "statisticalProof": false,
+  "promisingCombinedSignal": false,
+  "openingOutcome": "OPENING_REPAIR_NOT_CONFIRMED"
+}
+
+EXACT TESTS / VERIFICATION
+New tests: intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py (77 collected cases).
+Coverage: explicit version opt-in/default immutability; 56 policy groups; system/user/total <=15%; exact native schema; only messages differ; A–J adversarial intent plus unchanged old/new judge outputs; actual-version pipeline provenance; mocked HTTP success/timeout/double-call cap; mocked execute success/timeout/malformed no retry; second-run refusal; missing auth/credential refusal; frozen preexisting bytes.
+Focused command: POMPOM_DATA_ROOT=$PWD/intelligence/data intelligence/ml-service/.venv/bin/python -m pytest -q intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py intelligence/ml-service/tests/test_semantic_native_schema_integrity_v1.py
+Full command (cwd intelligence/ml-service): POMPOM_DATA_ROOT=/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data .venv/bin/python -m pytest -q
+Full regression duration: 213.44 seconds. Logs: focused-tests.log and full-regression.log. Old/new scores/admission/blockers match for all ten hand-authored cases; this measures judge version neutrality, not provider adherence.
+Adversarial intent labels are editorial fixture annotations, not a new runtime validator. Vague E is explicitly prohibited by prompt text; the unchanged judge also returns unresolved/insufficient evidence. No mock result establishes live generation quality.
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "providerCallsDuringImplementationAndTests": 0,
+  "logicalLiveRequests": 1,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "productionPrompts": 0,
+  "noSecondLiveCall": true,
+  "noReplacement": true,
+  "exactWireEqualsTestedSpec": true,
+  "nonPromptArgumentsEqualAcceptedLOW": true,
+  "schemaEqualAccepted": true,
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "promptHash": "122a65a43c084c77a0bff466a89461da4f7d7cc701aa3ae8fd5709829ec3d417",
+  "originalCompactPromptUnchanged": true,
+  "validatorsUnchanged": true,
+  "thresholdsUnchanged": true,
+  "taxonomiesUnchanged": true,
+  "historicalExperimentsUnchanged": true,
+  "protectedFileCount": 2541,
+  "changedProtectedFiles": [],
+  "changedTestedSources": [],
+  "fullPassed": 3324,
+  "acceptedBaselineFailures": 36,
+  "skipped": 2,
+  "newFailures": [],
+  "focusedPassed": 252,
+  "newMockTestsPassed": 77,
+  "acceptedBaselineFailureIds": [
+    "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+    "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+    "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+    "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+    "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+    "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+    "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+    "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+    "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+    "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+    "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+    "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+    "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+    "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+    "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+    "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+    "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+    "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+    "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+    "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+  ],
+  "offlineNetworkAndSubprocessBlocked": true,
+  "sourceHashes": {
+    "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_1.py": "de107dc849c256e004bcdf7f5f688a94f4cd48015ae3ef429923fc5a2f2f586e",
+    "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_1.txt": "2610fd5d5b748a601255b4a0f3157f8f37ddf9aaa932cd6d2e21a8da03c6b8ad",
+    "intelligence/ml-service/app/workflow/semantic_compact_1_probe_v1.py": "74368f1d1d5fb65509a74c0173bbbe0b4837b85cfe77571d3ee4e9227dfa7281",
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py": "0f831fac461b7275b49a6995dc7be89bf97764ce79fda6a6b509c4b6c62f3721",
+    "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_1_policy.json": "947b4b2f7f29c2d3892b52b9652a402cbbc6f5a53cc4a41f2b9d4c7b9df42c69",
+    "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_1_mocks.json": "98a75ce9d539e2e44941211bd67d4b3816c8fd71ffedf949c61d05f17b6831ac",
+    "intelligence/scripts/probe-semantic-compact-1-v1.py": "b604de9436b0ef38aec0c42e25932d25d52212496ee02074187a61986412daf5"
+  },
+  "stoppedAfterSingleProbe": true
+}
+
+IMPLEMENTATION AND ARTIFACT MAP
+New opt-in prompt: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact_1.py and .txt
+Additive one-call runner: intelligence/ml-service/app/workflow/semantic_compact_1_probe_v1.py
+Offline-first audit and live CLI: intelligence/scripts/probe-semantic-compact-1-v1.py
+The runner retains the accepted SDK adapter, schema guard, exact-body check, one-HTTP cap and bounded worker timeout. Identity receipts use the new prompt hash. No normal generation defaults change.
+The accepted inspection helper has a frozen v2-compact-only preliminary config model. The additive bridge uses that legacy shape check only, then invokes the same analyze judges with the actual Compact1PromptRequest and new prompt. Tests verify scoring/admission neutrality and the real version in output provenance.
+Immutable native schema identity is confirmed at construction, last-mile SDK guard and stored wire body. Non-prompt arguments match the accepted LOW request exactly.
+Per-request raw evidence: intelligence/docs/semantic-compact-1-low-probe-1-run-001/{request-before-sdk,last-mile-sdk-request,response,worker-result,result,inspection,pipeline} files.
+No original candidate was regenerated or edited. No prompt/schema/judge change was made after seeing the live result.
+
+STOP. One live probe exhausted. No further candidate, prompt revision, validator change or render is authorized by this task.

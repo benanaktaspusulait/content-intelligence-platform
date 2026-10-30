@@ -1,0 +1,14 @@
+[
+  {
+    "shardId": "A",
+    "status": "NO_USABLE_JSON_ENVELOPE",
+    "returnedRawCount": 0,
+    "transportStatus": "REQUEST_FAILED"
+  },
+  {
+    "shardId": "B",
+    "status": "NO_USABLE_JSON_ENVELOPE",
+    "returnedRawCount": 0,
+    "transportStatus": "REQUEST_FAILED"
+  }
+]

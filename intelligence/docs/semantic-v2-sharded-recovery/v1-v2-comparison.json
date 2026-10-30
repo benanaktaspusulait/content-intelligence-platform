@@ -1,0 +1,524 @@
+{
+  "V1": {
+    "rawCount": 40,
+    "schemaValidCount": 38,
+    "normalizedCount": 33,
+    "ruleConsistentSupportedCount": 10,
+    "ruleConsistencyUnresolvedCount": 9,
+    "frameZeroSupportedCount": 2,
+    "goalVisibleCount": 9,
+    "supportedCausalBeats": 90,
+    "describedBeats": 165,
+    "supportedCausalBeatRatio": 0.5454545454545454,
+    "payoffRuleLinkedCount": 13,
+    "sameRuleEscalationCount": 10,
+    "SFE_mean": 59.60606060606061,
+    "SFE_median": 63,
+    "openingMean": 23.181818181818183,
+    "premiseAdmittedCount": 3,
+    "rankingEligibleCount": 4,
+    "productionAdmissibleCount": 0,
+    "productionSlateSize": 0,
+    "humanReviewCount": 6,
+    "distributions": {
+      "openingScores": {
+        "15": 25,
+        "35": 6,
+        "90": 2
+      },
+      "BeatGrammar": {
+        "MECHANICAL": 11,
+        "ACCEPTABLE": 22
+      },
+      "SFE": {
+        "REVISION_REQUIRED": 29,
+        "PASS": 4
+      },
+      "SFE_scores": {
+        "25": 5,
+        "26": 2,
+        "41": 2,
+        "42": 2,
+        "43": 1,
+        "46": 1,
+        "54": 1,
+        "55": 1,
+        "56": 1,
+        "63": 3,
+        "64": 1,
+        "69": 2,
+        "72": 1,
+        "77": 1,
+        "78": 1,
+        "83": 1,
+        "85": 1,
+        "93": 2,
+        "99": 2,
+        "100": 2
+      },
+      "admissionStatuses": {
+        "NOT_ADMITTED_RULE_INCOHERENT": 14,
+        "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED": 3,
+        "NOT_ADMITTED_INSUFFICIENT_EVIDENCE": 15,
+        "NOT_ADMITTED_INCOMPATIBLE": 1
+      }
+    },
+    "failureReasonDistribution": {
+      "RULE_INCONSISTENCY": {
+        "count": 14,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-5cf30c7094c804b1",
+          "sem1-11beb05a18d36fdb",
+          "sem1-913bc9ae39a3c15e",
+          "sem1-d1e9d5ce1154b96b",
+          "sem1-bbdb302fefb48bd5",
+          "sem1-8a6fb30b4a11976b",
+          "sem1-90670eeaf4ee0468",
+          "sem1-6c8721485468a0f0",
+          "sem1-c2b6225333ed3cda",
+          "sem1-23a3c991b8104bee",
+          "sem1-2ae718e8672f18cc",
+          "sem1-cfeed66616185cb0",
+          "sem1-55fe32d619adcfb4"
+        ]
+      },
+      "OPENING_EVIDENCE_INSUFFICIENT": {
+        "count": 31,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-ca296146499be3ab",
+          "sem1-5cf30c7094c804b1",
+          "sem1-11beb05a18d36fdb",
+          "sem1-913bc9ae39a3c15e",
+          "sem1-d1e9d5ce1154b96b",
+          "sem1-bbdb302fefb48bd5",
+          "sem1-8a6fb30b4a11976b",
+          "sem1-dd72ae9a5bebad5a",
+          "sem1-101af67295c2d0f2",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-a2f775dcd3a914d7",
+          "sem1-8d1da895a1fb41af",
+          "sem1-90670eeaf4ee0468",
+          "sem1-6c8721485468a0f0",
+          "sem1-91ea45894fa28d7b",
+          "sem1-63760a23881b08d8",
+          "sem1-c2b6225333ed3cda",
+          "sem1-94f6d134918f72c9",
+          "sem1-ffcb077f3482bc82",
+          "sem1-48ddf9ea62000d61",
+          "sem1-7a6188be5ce157bd",
+          "sem1-9ba62d8bf2207bb6",
+          "sem1-c85a677474d9ed27",
+          "sem1-cfeed66616185cb0",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-2a58df94ed1346db",
+          "sem1-55fe32d619adcfb4",
+          "sem1-3bc8be33c1b4c778",
+          "sem1-9d566f7a928ca626"
+        ]
+      },
+      "PREMISE_NOT_ADMITTED": {
+        "count": 30,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-5cf30c7094c804b1",
+          "sem1-11beb05a18d36fdb",
+          "sem1-913bc9ae39a3c15e",
+          "sem1-d1e9d5ce1154b96b",
+          "sem1-bbdb302fefb48bd5",
+          "sem1-8a6fb30b4a11976b",
+          "sem1-dd72ae9a5bebad5a",
+          "sem1-101af67295c2d0f2",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-90670eeaf4ee0468",
+          "sem1-6c8721485468a0f0",
+          "sem1-91ea45894fa28d7b",
+          "sem1-63760a23881b08d8",
+          "sem1-c2b6225333ed3cda",
+          "sem1-94f6d134918f72c9",
+          "sem1-ffcb077f3482bc82",
+          "sem1-48ddf9ea62000d61",
+          "sem1-23a3c991b8104bee",
+          "sem1-2ae718e8672f18cc",
+          "sem1-7a6188be5ce157bd",
+          "sem1-9ba62d8bf2207bb6",
+          "sem1-c85a677474d9ed27",
+          "sem1-cfeed66616185cb0",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-2a58df94ed1346db",
+          "sem1-55fe32d619adcfb4",
+          "sem1-3bc8be33c1b4c778",
+          "sem1-9d566f7a928ca626"
+        ]
+      },
+      "ARBITRARY_MAGIC": {
+        "count": 0,
+        "candidateIds": []
+      },
+      "WEAK_OBJECT_SPECIFICITY": {
+        "count": 25,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-5cf30c7094c804b1",
+          "sem1-11beb05a18d36fdb",
+          "sem1-913bc9ae39a3c15e",
+          "sem1-d1e9d5ce1154b96b",
+          "sem1-8a6fb30b4a11976b",
+          "sem1-dd72ae9a5bebad5a",
+          "sem1-101af67295c2d0f2",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-90670eeaf4ee0468",
+          "sem1-6c8721485468a0f0",
+          "sem1-91ea45894fa28d7b",
+          "sem1-63760a23881b08d8",
+          "sem1-c2b6225333ed3cda",
+          "sem1-94f6d134918f72c9",
+          "sem1-48ddf9ea62000d61",
+          "sem1-7a6188be5ce157bd",
+          "sem1-9ba62d8bf2207bb6",
+          "sem1-c85a677474d9ed27",
+          "sem1-cfeed66616185cb0",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-2a58df94ed1346db",
+          "sem1-55fe32d619adcfb4",
+          "sem1-3bc8be33c1b4c778"
+        ]
+      },
+      "WEAK_CAUSAL_PROGRESSION": {
+        "count": 11,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-11beb05a18d36fdb",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-94f6d134918f72c9",
+          "sem1-48ddf9ea62000d61",
+          "sem1-7a6188be5ce157bd",
+          "sem1-9ba62d8bf2207bb6",
+          "sem1-c85a677474d9ed27",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-3bc8be33c1b4c778"
+        ]
+      },
+      "MECHANICAL_BEATS": {
+        "count": 11,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-11beb05a18d36fdb",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-94f6d134918f72c9",
+          "sem1-48ddf9ea62000d61",
+          "sem1-7a6188be5ce157bd",
+          "sem1-9ba62d8bf2207bb6",
+          "sem1-c85a677474d9ed27",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-3bc8be33c1b4c778"
+        ]
+      },
+      "PAYOFF_NOT_RULE_LINKED": {
+        "count": 20,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-ca296146499be3ab",
+          "sem1-5cf30c7094c804b1",
+          "sem1-11beb05a18d36fdb",
+          "sem1-913bc9ae39a3c15e",
+          "sem1-d1e9d5ce1154b96b",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-90670eeaf4ee0468",
+          "sem1-6c8721485468a0f0",
+          "sem1-c2b6225333ed3cda",
+          "sem1-94f6d134918f72c9",
+          "sem1-48ddf9ea62000d61",
+          "sem1-2ae718e8672f18cc",
+          "sem1-7a6188be5ce157bd",
+          "sem1-c85a677474d9ed27",
+          "sem1-cfeed66616185cb0",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-55fe32d619adcfb4",
+          "sem1-3bc8be33c1b4c778"
+        ]
+      },
+      "HISTORICAL_COLLISION": {
+        "count": 0,
+        "candidateIds": []
+      },
+      "CREATIVE_SHAPE_RISK": {
+        "count": 33,
+        "candidateIds": [
+          "sem1-70ee2b7099c48d36",
+          "sem1-ca296146499be3ab",
+          "sem1-5cf30c7094c804b1",
+          "sem1-11beb05a18d36fdb",
+          "sem1-913bc9ae39a3c15e",
+          "sem1-d1e9d5ce1154b96b",
+          "sem1-bbdb302fefb48bd5",
+          "sem1-8a6fb30b4a11976b",
+          "sem1-dd72ae9a5bebad5a",
+          "sem1-101af67295c2d0f2",
+          "sem1-c8c8a33f8c699da0",
+          "sem1-a2f775dcd3a914d7",
+          "sem1-8d1da895a1fb41af",
+          "sem1-90670eeaf4ee0468",
+          "sem1-6c8721485468a0f0",
+          "sem1-91ea45894fa28d7b",
+          "sem1-63760a23881b08d8",
+          "sem1-c2b6225333ed3cda",
+          "sem1-94f6d134918f72c9",
+          "sem1-ffcb077f3482bc82",
+          "sem1-48ddf9ea62000d61",
+          "sem1-23a3c991b8104bee",
+          "sem1-2ae718e8672f18cc",
+          "sem1-7a6188be5ce157bd",
+          "sem1-9ba62d8bf2207bb6",
+          "sem1-c85a677474d9ed27",
+          "sem1-cfeed66616185cb0",
+          "sem1-0ea8b18049cec99f",
+          "sem1-8bb634d95756b01b",
+          "sem1-2a58df94ed1346db",
+          "sem1-55fe32d619adcfb4",
+          "sem1-3bc8be33c1b4c778",
+          "sem1-9d566f7a928ca626"
+        ]
+      },
+      "PRODUCTION_FEASIBILITY": {
+        "count": 4,
+        "candidateIds": [
+          "sem1-dd72ae9a5bebad5a",
+          "sem1-90670eeaf4ee0468",
+          "sem1-c2b6225333ed3cda",
+          "sem1-9d566f7a928ca626"
+        ]
+      }
+    },
+    "taxonomyCoverageGaps": [
+      {
+        "candidateId": "sem1-70ee2b7099c48d36",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-ca296146499be3ab",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED"
+      },
+      {
+        "candidateId": "sem1-5cf30c7094c804b1",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-11beb05a18d36fdb",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-913bc9ae39a3c15e",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-d1e9d5ce1154b96b",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-bbdb302fefb48bd5",
+        "responseClassificationStatus": "PRESENT_CLASSIFIED",
+        "responseClassification": "RETURN_ORIGIN",
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-8a6fb30b4a11976b",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-dd72ae9a5bebad5a",
+        "responseClassificationStatus": "PRESENT_CLASSIFIED",
+        "responseClassification": "CONTACT_RETAINS",
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-101af67295c2d0f2",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-c8c8a33f8c699da0",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-a2f775dcd3a914d7",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED"
+      },
+      {
+        "candidateId": "sem1-8d1da895a1fb41af",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED"
+      },
+      {
+        "candidateId": "sem1-90670eeaf4ee0468",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-6c8721485468a0f0",
+        "responseClassificationStatus": "PRESENT_CLASSIFIED",
+        "responseClassification": "INVERT_ORIENTATION",
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-91ea45894fa28d7b",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-63760a23881b08d8",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-c2b6225333ed3cda",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-94f6d134918f72c9",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-ffcb077f3482bc82",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-48ddf9ea62000d61",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-23a3c991b8104bee",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-2ae718e8672f18cc",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-7a6188be5ce157bd",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-9ba62d8bf2207bb6",
+        "responseClassificationStatus": "PRESENT_CLASSIFIED",
+        "responseClassification": "SCALE_UP",
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-c85a677474d9ed27",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-cfeed66616185cb0",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-0ea8b18049cec99f",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-8bb634d95756b01b",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-2a58df94ed1346db",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "candidateId": "sem1-55fe32d619adcfb4",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+      },
+      {
+        "candidateId": "sem1-3bc8be33c1b4c778",
+        "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+        "responseClassification": null,
+        "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+      }
+    ],
+    "metricScope": "ALL_NORMALIZED; category counts may overlap; unsupported/unresolved is not proof of invalidity. Existing text-risk screens are not render verification. No new gate or score."
+  },
+  "V2": {
+    "status": "NOT_EVALUATED_NO_USABLE_RESPONSE",
+    "requestedRawCount": 40,
+    "combinedAccessibleRawCount": 0,
+    "providerGeneratedRawCount": null,
+    "schemaValidCount": null,
+    "normalizedCount": null,
+    "ruleConsistencyDistribution": null,
+    "openingDistribution": null,
+    "payoffRuleLinkage": null,
+    "BeatGrammarDistribution": null,
+    "SFE": {
+      "mean": null,
+      "median": null,
+      "range": null,
+      "statuses": null
+    },
+    "premiseAdmission": null,
+    "rankingEligibility": null,
+    "productionAdmissibleCandidates": null,
+    "productionSlate": null,
+    "HUMAN_REVIEW_SET": null,
+    "crossShardDuplicates": null,
+    "creativeFailureReasonDistribution": null,
+    "taxonomyCoverageGaps": null,
+    "reason": "Both bounded planned requests reached wall deadlines without usable raw response bytes. These are missing creative data, not zero quality scores."
+  },
+  "conclusion": "No live creative comparison or statistical claim is supported. Timeout is an execution failure, not a Prompt V2 creative failure."
+}

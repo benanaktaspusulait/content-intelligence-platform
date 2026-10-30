@@ -1,0 +1,10 @@
+[
+  {
+    "reference": "#/$defs/SemanticBeat",
+    "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+    "resolvedTargetPath": null,
+    "attemptedTargetPath": "/$defs/SemanticBeat",
+    "status": "UNRESOLVED",
+    "scope": "Final provider document root; no external URI retrieval"
+  }
+]

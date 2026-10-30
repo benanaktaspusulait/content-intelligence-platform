@@ -1,0 +1,10 @@
+{"shardId": "A", "status": "REQUEST_FAILED", "latencySeconds": 300.030152542}
+{"shardId": "B", "status": "REQUEST_FAILED", "latencySeconds": 300.0123390410008}
+{
+  "status": "NO_USABLE_SHARD_RESPONSE",
+  "rawCount": 0,
+  "creativeMetrics": null,
+  "HUMAN_REVIEW_SET": null,
+  "renders": 0,
+  "providerCallsDuringAnalysis": 0
+}

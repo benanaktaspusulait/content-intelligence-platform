@@ -1,0 +1,1170 @@
+SEMANTIC PROMPT V2 COMPACT V1 — OFFLINE CONTRACT AUDIT AND VERIFICATION
+Completed offline. New version: semanticConceptPromptVersion="v2-compact". Provider calls0. Renders0. STOP.
+Scope: contract placement, prompt compaction, construction-only native request, deterministic mock replay and regression. No creative model performance/latency claim.
+
+1. CORRECTED EXECUTION CLASSIFICATION
+
+{
+  "TRANSPORT": "PASS",
+  "SMALL_NATIVE_STRUCTURED_OUTPUT": "PASS",
+  "CORRECTED_FULL_NATIVE_SCHEMA": "PASS_AT_EXECUTION_LEVEL",
+  "LOCAL_STRUCTURAL_CONFORMANCE": "FAIL",
+  "FULL_CREATIVE_CONTRACT": "NOT_YET_TESTED_SUCCESSFULLY_AFTER_SCHEMA_REPAIR",
+  "FULL_PROMPT_V2": "Previously associated with timeout in Probe D; not sent in corrected-schema minimal probe"
+}
+Corrected schema execution returned2078 usable bytes in78.444184042 seconds with finishReason=stop. Full creative contract conformance FAILED locally; this does not make the schema non-executable. Historical result/report retain their original FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED label unchanged; this new report records the corrected interpretation.
+Evidence: ../semantic-native-schema-integrity-probe-1-run-001/{last-mile-sdk-request.json,result.json,response.txt,final-provider-schema-validation.json}. Small native structured output: ../semantic-provider-transport-isolation-v1-run-001/probe-b/result.json passed=true,124bytes,6.299788667s. Full Prompt V2 + small native schema: ../semantic-provider-contract-decomposition-v1-run-001/probe-d/result.json ReadTimeout/APITimeoutError,90.723356084s. Timeout association does not establish reasoning burden as the cause.
+The existing schema equivalence audit preserved66 historical domain-valid payloads. Reuse is verified in the focused schema tests; no schema repair or field addition occurred in this task.
+
+2. COMPLETE CONTRACT PLACEMENT MATRIX
+
+MULTI_LAYER means instructions plus some encoded structural bound and/or deterministic source screen; it does NOT mean complete semantic proof. SCHEMA_ENFORCED describes bounds locally validated against JSON Schema, not a guarantee of remote strict=false output. PROMPT_ENFORCED means instructed only. Validator observations concern source text, not pixels. A schema string field cannot prove its prose is true. Mixed rows explicitly distinguish presence/quantity from creative meaning.
+01. Exactly one protagonist | SEMANTIC | MULTI_LAYER
+  Schema: Scalar required string only; cannot count depicted actors
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Normalizer canonical-name matching; detects other named canonical cast, not all possible actors
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_adapter.py:32 (def normalize_idea)
+02. One primary everyday object | SEMANTIC | PROMPT_ENFORCED
+  Schema: Required scalar string, not object count/everydayness
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: No complete object-count judge; object dependency evidence is only supporting
+  Evidence: intelligence/ml-service/app/workflow/premise_admission_evidence.py:29 (def object_support)
+03. Concrete everyday goal | SEMANTIC | MULTI_LAYER
+  Schema: Required nonempty bounded everydayGoal string
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Naturalness/admission goalInterference and SFE goal support; text heuristics
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:227 (goalInterference)
+04. Immediate visible trouble | SEMANTIC | MULTI_LAYER
+  Schema: frameZeroDescription presence/length only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Opening evidence / admission opening floor / SFE opening dimensions
+  Evidence: intelligence/ml-service/app/workflow/premise_admission_evidence.py:64 (def opening_evidence)
+05. Frame-zero goal visibility | SEMANTIC | MULTI_LAYER
+  Schema: String presence only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Opening goal support is source-bound, not observed pixels
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:189 (EVERYDAY_GOAL_UNCLEAR)
+06. Frame-zero problem visibility | SEMANTIC | MULTI_LAYER
+  Schema: String presence only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Opening evidence and opening mandatory admission, threshold60 unchanged
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:16 (OPENING_FLOOR)
+07. Frame-zero impossible relationship | SEMANTIC | MULTI_LAYER
+  Schema: String presence only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Paused-frame evidence heuristics can reject motion-only evidence
+  Evidence: intelligence/ml-service/app/workflow/premise_admission_evidence.py:64 (def opening_evidence)
+08. One immutable impossible rule | SEMANTIC | MULTI_LAYER
+  Schema: Required impossibleRule string, not uniqueness/immutability
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Admission coherence_findings lexical contradictions and BG literal rule comparison; not exhaustive
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:51 (def coherence_findings)
+09. Stable trigger | SEMANTIC | MULTI_LAYER
+  Schema: visibleTrigger required string only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Coherence UNDECLARED_TRIGGER_RESTRICTION detects explicit restrictions; not all changes
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:87 (UNDECLARED_TRIGGER_RESTRICTION)
+10. Exactly4–5 major beats | MIXED | MULTI_LAYER
+  Schema: beats required; minItems4 maxItems5. Quantity is structural, major causality is semantic
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Pydantic Field bounds hard local gate; SFE/BG assess actual causal evidence
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:60 (beats: list[SemanticBeat])
+11. Each beat has strategy | MIXED | MULTI_LAYER
+  Schema: strategy required string min3 max300
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Shape enforced locally; true material strategy change judged heuristically by BG/SFE
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:43 (strategy: str)
+12. Each beat has visible consequence | MIXED | MULTI_LAYER
+  Schema: visibleConsequence required min8 max1200
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Shape enforced locally; source evidence/BG/SFE assess physical progression
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:44 (visibleConsequence: str)
+13. Each beat has new information/state change | MIXED | MULTI_LAYER
+  Schema: newInformation required min5 max600
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Shape enforced locally; BG LOW_INFORMATION_GAIN etc are heuristic semantic screens
+  Evidence: intelligence/ml-service/app/workflow/beat_grammar.py:245 (LOW_INFORMATION_GAIN)
+14. No repeated identical attempt | SEMANTIC | MULTI_LAYER
+  Schema: No uniqueItems and no semantic attempt comparison
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Pydantic rejects identical whole beat JSON; BG near-duplicate/strategy/consequence checks catch some rewording
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:74 (Repeated identical beat)
+15. Same-rule escalation | SEMANTIC | MULTI_LAYER
+  Schema: No crossbeat semantic entailment
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Coherence/BG/SFE canonical evidence; copied declared rule strings alone are not proof
+  Evidence: intelligence/ml-service/app/workflow/beat_grammar.py:203 (DOMINANT_RULE_CHANGED)
+16. Payoff present | STRUCTURAL | MULTI_LAYER
+  Schema: finalPayoff required bounded string
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Pydantic presence/length and exact final consequence equality
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:72 (Final payoff must match)
+17. Payoff linked to original rule | SEMANTIC | MULTI_LAYER
+  Schema: String only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Canonical/SFE payoff ruleLinked plus admission source contradiction evidence; heuristic
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:59 (payoff)
+18. Payoff introduces no new rule | SEMANTIC | MULTI_LAYER
+  Schema: No semantic relation enforcement
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Admission catches explicit final transformations/agency etc; incomplete
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:107 (UNDECLARED_MATERIAL_OR_FUNCTION)
+19. Silent-view legibility | SEMANTIC | MULTI_LAYER
+  Schema: dialogueNeed enum permits REQUIRED; cannot prove soundoff comprehension
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: SFE dialogue/audio/legibility text screens; no video observation
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:263 (dialogue)
+20. Minimal dialogue | SEMANTIC | MULTI_LAYER
+  Schema: NONE/OPTIONAL/REQUIRED enum; NONE default does not prohibit REQUIRED
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: SFE dialogue load; optional free text is not a guarantee
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:263 (dialogue)
+21. Object specificity | SEMANTIC | MULTI_LAYER
+  Schema: normalExpectation and whyThisObject bounded strings only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Naturalness/admission objectSpecificity/functionalRelation source support; rationale alone insufficient
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:239 (objectSpecificity)
+22. Direct goal interference | SEMANTIC | MULTI_LAYER
+  Schema: goalRuleRelationship bounded string only
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Admission goalInterference and canonical goal evidence
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:227 (goalInterference)
+23. Non-arbitrary magic | SEMANTIC | MULTI_LAYER
+  Schema: No semantic magic criterion
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Admission nonArbitrary/object operation support; taxonomy unknown may still admit
+  Evidence: intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py:243 (nonArbitrary)
+24. Production feasibility | SEMANTIC | MULTI_LAYER
+  Schema: No render feasibility guarantee
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: BG/SFE/ranking production risk/staging text screens; no media verification
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:275 (productionRisks)
+25. Target duration approximately15 seconds | MIXED | MULTI_LAYER
+  Schema: durationSeconds default15, optional; default annotation is not const15
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Domain defaults15; SFE accepts planned10–20, not exact15 or measured media
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:67 (durationSeconds: float)
+26. Maximum duration20 seconds | STRUCTURAL_DECLARED | MULTI_LAYER
+  Schema: durationSeconds number minimum10 maximum20 if supplied; optional
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Pydantic bound/default; SFE planned range10–20. Only declared timing, not rendered runtime
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:176 (not 10 <= duration <= 20)
+27. No provider self-ranking | MIXED | MULTI_LAYER
+  Schema: additionalProperties=false rejects rank keys; rationale free text can still claim rank
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Adapter marks rationaleScored=false; rankings computed independently, text claims not semantically banned by schema
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_adapter.py:93 (rationaleScored)
+28. No provider self-scoring | MIXED | MULTI_LAYER
+  Schema: additionalProperties=false rejects score keys; free text claims structurally possible
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Unscored rationale receives no bonus; does not prove provider complies with instruction
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_adapter.py:93 (rationaleScored)
+29. One location | SEMANTIC | MULTI_LAYER
+  Schema: environment scalar string, not depicted location count
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Production text risks only partially cover scene changes
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:272 (stagingRisks)
+30. Stable identities and few moving elements | SEMANTIC | MULTI_LAYER
+  Schema: No physical identity/entity count checks
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Production feasibility risk heuristics only
+  Evidence: intelligence/ml-service/app/workflow/short_form_engine.py:272 (stagingRisks)
+31. Child-safe comedy | SEMANTIC | MULTI_LAYER
+  Schema: No semantic safety rule in JSON shape
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: BoundedData.safe_text lexical blacklist is partial, not comprehensive safety proof
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:24 (def safe_text)
+32. Batch diversity and historical cautions | SEMANTIC | MULTI_LAYER
+  Schema: No crosscandidate creative novelty judgment
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Creative shape/history/ranking/preselection compare fingerprints, not certified novelty
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_generation.py:64 (def review_pool)
+33. Exact finalPayoff/last consequence equality | STRUCTURAL_CROSS_FIELD | MULTI_LAYER
+  Schema: Not encoded in JSON schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Pydantic consistent_final enforces exact equality after whitespace normalization
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:70 (def consistent_final)
+34. Actual rendered duration ≤20 | SEMANTIC_MEDIA | NOT_ENFORCED
+  Schema: Not measurable from source JSON
+  Prompt: No measured-media guarantee
+  Deterministic: No render or video measurement in this workflow/task
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_provider.py:67 (durationSeconds: float)
+35. Rule stated in one precise observable repeatable sentence | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:10 (ONE precise, observable, repeatable sentence)
+36. No bundled independent powers or actor loopholes | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:10 (Do not bundle several unrelated powers)
+37. Spread, transfer and magnitude must follow declared relationship | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:12 (Consequence spread must follow)
+38. No motion/context/text/inset used as paused-frame proof | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:18 (an explanatory inset)
+39. No delayed first action or ordinary setup | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:19 (spend no first 2–3 seconds)
+40. Concise stageable causal sentences | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:27 (sentences concise, concrete and stageable)
+41. Environmental objects only passive staging | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:28 (environmental objects as passive staging only)
+42. No default harder/twohands/brace/fakesuccess ladder | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:29 (attempt → try harder)
+43. No hidden sub-scenes enlarging duration | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:29 (without multiple hidden sub-scenes)
+44. Payoff surprising but inevitable and essential to rule | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:34 (Could this payoff happen)
+45. Varied payoff families are inspiration not recipes | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:33 (not required taxonomy labels or recipes)
+46. Loop optional; no new magic to reset | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:33 (A loop is optional)
+47. Unfamiliar coherent mechanics allowed without taxonomy overfit | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:40 (outside the known engine taxonomy)
+48. Task examples are not mandatory templates | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:22 (do not copy these mechanically)
+49. Private editing check; no reasoning/checklist/self-certification output | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:48 (Do not expose chain-of-thought)
+50. Private editing is no external retry loop or winner selection | SEMANTIC | PROMPT_ENFORCED
+  Schema: No complete semantic check encoded in native schema
+  Prompt: Explicit instruction; see requirement crosswalk for exact locations
+  Deterministic: Prompt policy; existing broad causal/progression/production screens may find some violations but no exhaustive dedicated enforcement
+  Evidence: intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt:47 (not permission for a downstream retry loop)
+Exact prompt policy locations and preserved wording appear in section11. No semantic judgments were added to schema. No production/render measurement was performed.
+
+3. WHY THE DIAGNOSTIC RESPONSE HAD3 BEATS
+
+{
+  "required": true,
+  "minItems": 4,
+  "maxItems": 5,
+  "nestedRequired": [
+    "strategy",
+    "visibleConsequence",
+    "newInformation"
+  ],
+  "returnedCount": 3,
+  "schemaValid": false
+}
+[
+  {
+    "path": [
+      "ideas",
+      0,
+      "beats"
+    ],
+    "validator": "minItems"
+  },
+  {
+    "path": [
+      "ideas",
+      0,
+      "durationSeconds"
+    ],
+    "validator": "maximum"
+  }
+]
+The transport adapter completed and returned content after finishReason=stop; it does not enforce local SemanticIdea conformance. Native request used strict=false. The exact returned content violates existing minItems4 and maximum20. Both local JSON schema validation and domain parsing reject it. It was not accepted as a valid creative candidate. The remote cause of nonconformance cannot be determined from stored evidence; no absent-bound or remote keyword-support explanation is asserted.
+Exact final native schema contains minItems4,maxItems5; beats is required. Its referenced SemanticBeat requires strategy,visibleConsequence,newInformation. Three beats is SCHEMA-INVALID. The term accepted applies only to transport completion, not local creative admission. Remote implementation behavior is not exposed in these records, so its exact internal reason cannot be established without speculation.
+
+4. WHY24 SECONDS WAS POSSIBLE / DURATION ARCHITECTURE
+
+{
+  "field": "durationSeconds",
+  "schema": {
+    "default": 15,
+    "maximum": 20,
+    "minimum": 10,
+    "title": "Durationseconds",
+    "type": "number"
+  },
+  "required": false,
+  "returnedValue": 24,
+  "inferredFromProse": false,
+  "renderMeasured": false
+}
+durationSeconds is explicit, optional, number, default15, minimum10, maximum20. Twenty-four is not schema-valid. The native strict=false response contained24; the repository transport returned that content after stop, and both subsequent local JSON Schema and domain checks rejected it. Full Prompt V2 was absent from this diagnostic request, but maximum20 was already encoded in the exact supplied schema. No duration-bound gap was found.
+Approximately15 is creative prompt guidance, not const15. JSON Schema default15 is an annotation; Pydantic fills15 when omitted. The adapter divides this declared planned duration among beats. SFE validates a timed plan within10–20 seconds. None of these measures an actual video runtime or proves the prose can be performed within the declared time.
+
+5. STRUCTURAL VS SEMANTIC CONSTRAINTS / SCHEMA GAPS
+
+STRUCTURAL: ideas envelope/count, required fields, bounded strings,4–5 beat quantity, enum shape, extra-key policy and explicit duration range. Local Pydantic additionally checks exact last-payoff equality, identical whole beats, safe-text patterns and normalization. Some cross-field model validators are not represented in generated JSON Schema; that is documented placement, not a new unapproved schema gap.
+SEMANTIC: one coherent immutable rule, actual actors/object/location counts, paused goal/problem visibility, meaningful strategy changes, same-rule escalation, exact object dependency, non-arbitrary response, rule-essential payoff, silent comprehension and production feasibility. Shape-valid contradictions can be rejected by existing judges; lexical screens also have documented blind spots. No forced semantic-schema conversion.
+No SCHEMA_CONTRACT_GAP for intended beat quantity, required beat fields, or declared duration bounds. Semantic truth and actual rendered runtime are outside JSON schema.
+
+6. EXACT V2 SIZE AND INSTRUCTION METRICS
+
+{
+  "system": {
+    "characters": 9879,
+    "UTF8Bytes": 9909,
+    "lines": 48,
+    "sections": [
+      {
+        "line": 3,
+        "title": "ROLE BOUNDARY"
+      },
+      {
+        "line": 6,
+        "title": "CREATIVE TARGET"
+      },
+      {
+        "line": 9,
+        "title": "RULE IMMUTABILITY — NON-NEGOTIABLE"
+      },
+      {
+        "line": 15,
+        "title": "FRAME ZERO — A PAUSED STILL, NOT A FIRST ACTION"
+      },
+      {
+        "line": 21,
+        "title": "EVERYDAY GOAL AND EXACT OBJECT"
+      },
+      {
+        "line": 26,
+        "title": "BEATS AND PROGRESSION"
+      },
+      {
+        "line": 31,
+        "title": "RULE-DERIVED VISUAL PAYOFF"
+      },
+      {
+        "line": 36,
+        "title": "SILENT VIEWING AND PRODUCTION"
+      },
+      {
+        "line": 39,
+        "title": "DIVERSITY WITHOUT TAXONOMY OVERFIT"
+      },
+      {
+        "line": 43,
+        "title": "PRIVATE PRE-RETURN CHECK — DO NOT OUTPUT THE CHECK OR A SCORE"
+      }
+    ],
+    "instructionMarkerOccurrences": {
+      "must": 17,
+      "doNot": 19,
+      "never": 3,
+      "avoid": 6,
+      "exactly": 5,
+      "check": 5
+    },
+    "estimatedTokens": 2470,
+    "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+    "exactTokenizerTokens": null,
+    "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+  },
+  "user": {
+    "characters": 4671,
+    "UTF8Bytes": 4671,
+    "lines": 1,
+    "sections": [],
+    "instructionMarkerOccurrences": {
+      "must": 0,
+      "doNot": 0,
+      "never": 1,
+      "avoid": 0,
+      "exactly": 3,
+      "check": 0
+    },
+    "estimatedTokens": 1168,
+    "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+    "exactTokenizerTokens": null,
+    "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+  },
+  "totalText": {
+    "characters": 14551,
+    "UTF8Bytes": 14581,
+    "lines": 49,
+    "sections": [
+      {
+        "line": 3,
+        "title": "ROLE BOUNDARY"
+      },
+      {
+        "line": 6,
+        "title": "CREATIVE TARGET"
+      },
+      {
+        "line": 9,
+        "title": "RULE IMMUTABILITY — NON-NEGOTIABLE"
+      },
+      {
+        "line": 15,
+        "title": "FRAME ZERO — A PAUSED STILL, NOT A FIRST ACTION"
+      },
+      {
+        "line": 21,
+        "title": "EVERYDAY GOAL AND EXACT OBJECT"
+      },
+      {
+        "line": 26,
+        "title": "BEATS AND PROGRESSION"
+      },
+      {
+        "line": 31,
+        "title": "RULE-DERIVED VISUAL PAYOFF"
+      },
+      {
+        "line": 36,
+        "title": "SILENT VIEWING AND PRODUCTION"
+      },
+      {
+        "line": 39,
+        "title": "DIVERSITY WITHOUT TAXONOMY OVERFIT"
+      },
+      {
+        "line": 43,
+        "title": "PRIVATE PRE-RETURN CHECK — DO NOT OUTPUT THE CHECK OR A SCORE"
+      }
+    ],
+    "instructionMarkerOccurrences": {
+      "must": 17,
+      "doNot": 19,
+      "never": 4,
+      "avoid": 6,
+      "exactly": 8,
+      "check": 5
+    },
+    "estimatedTokens": 3638,
+    "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+    "exactTokenizerTokens": null,
+    "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+  },
+  "promptSha256": "aee276ed34b9195fefd57900f57572d47c7d40e87d319eb21fab797990c99d21",
+  "systemTextSha256": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547"
+}
+Comparison uses identical canonical cast, seed42 and requested raw count1. System text is exact strip() text actually used by the builder. Native response schema is supplied separately and is unchanged; the totalText metric is system+newline+user, not all SDK serialization or billed tokens.
+No objective natural-language instruction count claimed. Exact regex occurrence counts per marker and exact section/line counts are provided; overlapping clauses are not falsely counted as independent policies. Policy crosswalk has56 editorial groups.
+For a reproducible instruction-count proxy:55 system marker occurrences across must/do not/never/avoid/exactly/check in V2, versus24 in compact. These may overlap and are not55 distinct semantic requirements. The separate56-row policy crosswalk inventories creative policy groups. No installed exact tokenizer was used; estimatedTokens=ceil(characters/4), with no model-token or billing guarantee.
+
+7. REDUNDANCY ANALYSIS
+
+[
+  {
+    "cluster": "Immutable rule / trigger / no new power / same-rule payoff",
+    "v2Lines": [
+      10,
+      11,
+      12,
+      13,
+      28,
+      33,
+      35,
+      44,
+      47
+    ],
+    "compact": "One CORE RULE INVARIANT; references in BEATS/PAYOFF/one final check. Distinct trigger/mapping/spread protections retained."
+  },
+  {
+    "cluster": "Paused opening visibility / no explanation / no delay",
+    "v2Lines": [
+      16,
+      17,
+      18,
+      19,
+      45
+    ],
+    "compact": "One OPENING paragraph plus short final reference."
+  },
+  {
+    "cluster": "Beat quantity / causal fields / progression / timing",
+    "v2Lines": [
+      7,
+      27,
+      28,
+      29,
+      46
+    ],
+    "compact": "One BEATS block; quantities retained where creative pacing depends on them."
+  },
+  {
+    "cluster": "Payoff dependency / no new ending power / final check",
+    "v2Lines": [
+      32,
+      33,
+      34,
+      35,
+      47
+    ],
+    "compact": "One PAYOFF block refers to core; final check references it without restating all failures."
+  },
+  {
+    "cluster": "No provider authority / no exposed reasoning",
+    "v2Lines": [
+      4,
+      35,
+      43,
+      48
+    ],
+    "compact": "One initial role boundary; output/final blocks only reference operational boundary."
+  },
+  {
+    "cluster": "Duplicated native schema in V2 user text",
+    "v2PayloadKeys": [
+      "batchInstructions",
+      "candidateSchema",
+      "canonicalCast",
+      "historicalCautionZones",
+      "limits",
+      "outputEnvelope",
+      "promptVersion",
+      "requestedFinalCount",
+      "requestedRawCount",
+      "seed",
+      "semanticConceptPromptVersion"
+    ],
+    "compactPayloadKeys": [
+      "canonicalCast",
+      "historicalCautionZones",
+      "promptVersion",
+      "requestedRawCount",
+      "seed",
+      "semanticConceptPromptVersion",
+      "suppliedNativeSchema"
+    ],
+    "compact": "Remove candidateSchema/outputEnvelope/batchInstructions duplicated in native format. Native candidate/beat fields, enums, lengths, defaults and required lists unchanged; semantic field guidance retained in policy."
+  }
+]
+V2 system text does not fully enumerate every schema field; the large duplication is its user payload candidateSchema/outputEnvelope plus separate native schema. Compact removes that field-by-field copy and repeated batch instructions. It retains semantic guidance for frameZeroDescription, object dependency, causal beat fields and last-payoff equality because these affect meaning or are not native cross-field guarantees.
+
+8. EXACT COMPACT SYSTEM PROMPT
+
+BEGIN EXACT SYSTEM TEXT
+Invent raw Pompom Hills silent physical-comedy possibilities; the deterministic system judges them. Do not rank, score, assign confidence, choose winners, predict virality, certify novelty, claim eligibility/production readiness, recommend production or bypass validators. Rationale may briefly explain object dependency and causal escalation only; it and suggested payoff labels have no scoring authority. Output no private reasoning, self-checklist or self-certification.
+
+CORE INVARIANTS
+Use one supplied canonical protagonist, one primary everyday object, one simple credible visible goal and one location. Start inside visible trouble; stage the whole action in about 15 seconds. Target STRANGE BUT INTUITIVE: immediately understandable problem, unexpected logic, not randomness.
+CORE RULE INVARIANT: state one dominant impossible physical/comedic rule as a precise, observable, repeatable trigger→response sentence. Once established it never changes: every beat and payoff obey it. No unrelated second rule, new power, changes to the declared trigger/direction/target/material/timing/agency mapping, special exception or actor loophole; do not bundle independent powers into a compound sentence. New information reveals implications, not a rewritten relationship. Spread, transfer and magnitude must already follow that relationship.
+WHY THIS EXACT OBJECT? State its ordinary function and exploit its affordance, expected motion, material/property, normal result or physical task relationship against the goal. The normal useful action must DIRECTLY obstruct the task. Sharing an affected noun is insufficient: show the actual operation/dependency. Reject random object+magic or contrived goals connecting unrelated effects.
+
+OPENING
+One paused, simultaneous frame must show character+visible task+object+already-present impossible problem and their relationship through pose, physical state and space. Intention alone, an ordinary object in hand, a title or a later beat cannot supply missing evidence. No dialogue, sound, text/captions, prior context, explanatory inset, before/after sequence or waiting for motion. Motion words or labels such as obvious/impossible are not still-frame evidence. A press, opening, delay, traversal or normal first action must not postpone the anomaly; spend no first 2–3 seconds on ordinary setup.
+
+BEATS
+Exactly 4 or 5 major causal beats including payoff: strategy/action→visible consequence→new information or state change. Keep sentences concrete, concise and stageable. Vary strategy, position, leverage, timing, magnitude, environmental use, accumulation, discovery, control, goal distance or stakes within the CORE RULE INVARIANT. Environment is passive staging, not another power source. Each beat materially changes the problem; reworded retries or unchanged consequences do not count. Avoid the default try harder→two hands→brace→fake success and unrelated events used to enlarge the story. No hidden sub-scenes that exceed readable pacing.
+
+PAYOFF
+Make the final beat the strongest visual, state-changing consequence of the CORE RULE INVARIANT: surprising but inevitable in retrospect, not repetition, explanation or internal realization. Without the original rule this ending should not work. No rescue by a new character, powered object or unexplained external force. finalPayoff equals the last visibleConsequence exactly, with no extra event. Vary role/control/property transfer, absurd or wrong success, solution-created problem, environmental takeover, logical extreme, chain reaction, reveal, character joining object state or object succeeding while character fails. These are inspirations, not taxonomy recipes. Avoid routine temporary success→problem returns. Looping is optional; do not invent reset magic to force it.
+
+DIVERSITY
+Across the batch vary object family, goal, mechanic, trigger, progression, payoff and final silhouette. Do not make many opposite-behavior variants or mistake wording for novelty. Coherent unfamiliar mechanics outside existing taxonomy are welcome. Supplied historical caution zones are not templates: Upside-Down Chair, Sticky Ball/generic adhesion, reset-to-start footwear/repeated resets, progressive growth/shrink, generic flip/reversal and escaping objects must not dominate; rare distinct uses may occur. Choose tasks freely rather than mechanically copying illustrations.
+
+PRODUCTION
+The full story must read with sound off. Dialogue normally NONE; only incidental OPTIONAL if necessary, never to explain goal, rule, trigger or payoff. Use broad body actions, clear poses, stable identities/silhouettes and few moving elements. Avoid tiny text, many small objects, fine hand work, fine mechanical transformations, crowds, rapid location changes and invisible forces that cannot be staged. Child-safe comedy only: no injury, weapons, dangerous restraint or sexual content.
+
+OUTPUT CONTRACT
+Use the supplied native response schema unchanged for all fields and exactly the requested raw count; return only its JSON envelope. The schema carries mechanical field/shape bounds; do not replace evidence with claims of compliance. No provider scores or editorial verdicts. The deterministic system may reject any idea.
+
+FINAL SELF-CHECK (PRIVATE)
+Before returning each candidate check the CORE RULE INVARIANT across every beat/payoff; the paused opening's goal+problem; 4–5 causally linked beats with changed state/information; essential rule-derived visual payoff; exact object dependency; no arbitrary new magic. If any fails, discard/redesign internally before output. Do not expose this check or reasoning. This is no permission for an external retry loop or generate-until-valid service.
+END EXACT SYSTEM TEXT
+The exact accompanying user metadata and prompt hash are in compact-prompt.json. The exact construction-only native request is in offline-native-request.json. Neither was sent.
+
+9. COMPACT SIZE / VERSION / HASH
+
+{
+  "system": {
+    "characters": 5683,
+    "UTF8Bytes": 5701,
+    "lines": 27,
+    "sections": [
+      {
+        "line": 3,
+        "title": "CORE INVARIANTS"
+      },
+      {
+        "line": 8,
+        "title": "OPENING"
+      },
+      {
+        "line": 11,
+        "title": "BEATS"
+      },
+      {
+        "line": 14,
+        "title": "PAYOFF"
+      },
+      {
+        "line": 17,
+        "title": "DIVERSITY"
+      },
+      {
+        "line": 20,
+        "title": "PRODUCTION"
+      },
+      {
+        "line": 23,
+        "title": "OUTPUT CONTRACT"
+      },
+      {
+        "line": 26,
+        "title": "FINAL SELF-CHECK (PRIVATE)"
+      }
+    ],
+    "instructionMarkerOccurrences": {
+      "must": 6,
+      "doNot": 7,
+      "never": 2,
+      "avoid": 3,
+      "exactly": 3,
+      "check": 3
+    },
+    "estimatedTokens": 1421,
+    "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+    "exactTokenizerTokens": null,
+    "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+  },
+  "user": {
+    "characters": 1409,
+    "UTF8Bytes": 1409,
+    "lines": 1,
+    "sections": [],
+    "instructionMarkerOccurrences": {
+      "must": 0,
+      "doNot": 0,
+      "never": 0,
+      "avoid": 0,
+      "exactly": 0,
+      "check": 0
+    },
+    "estimatedTokens": 353,
+    "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+    "exactTokenizerTokens": null,
+    "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+  },
+  "totalText": {
+    "characters": 7093,
+    "UTF8Bytes": 7111,
+    "lines": 28,
+    "sections": [
+      {
+        "line": 3,
+        "title": "CORE INVARIANTS"
+      },
+      {
+        "line": 8,
+        "title": "OPENING"
+      },
+      {
+        "line": 11,
+        "title": "BEATS"
+      },
+      {
+        "line": 14,
+        "title": "PAYOFF"
+      },
+      {
+        "line": 17,
+        "title": "DIVERSITY"
+      },
+      {
+        "line": 20,
+        "title": "PRODUCTION"
+      },
+      {
+        "line": 23,
+        "title": "OUTPUT CONTRACT"
+      },
+      {
+        "line": 26,
+        "title": "FINAL SELF-CHECK (PRIVATE)"
+      }
+    ],
+    "instructionMarkerOccurrences": {
+      "must": 6,
+      "doNot": 7,
+      "never": 2,
+      "avoid": 3,
+      "exactly": 3,
+      "check": 3
+    },
+    "estimatedTokens": 1774,
+    "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+    "exactTokenizerTokens": null,
+    "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+  },
+  "promptSha256": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "systemTextSha256": "9f386c84c0281918117a4ec1fb49e19d20fe48512d21f7bcb1b65c5070c91340"
+}
+New explicit CompactPromptRequest + compact_prompt/construct_native_request only. No provider execution API, credential access, transport, default routing or validator change. Legacy adapter label SEMANTIC_V1 is inherited provenance, actual prompt version stored separately.
+Existing routing stays on its previous versions; compact is explicitly selected through CompactPromptRequest and the construction-only API. No live-capable endpoint or fallback was added. responseMode=json_object is refused because this compact policy assumes native schema is supplied. Native strict=false is retained without silently strengthening/changing the accepted schema.
+
+10. MEASURED REDUCTION
+
+{
+  "system": 42.4739,
+  "user": 69.8352,
+  "totalText": 51.2542
+}
+system: 9879→5683 characters; estimated tokens 2470→1421 (rounded proxy reduction 42.4696%).
+user: 4671→1409 characters; estimated tokens 1168→353 (rounded proxy reduction 69.7774%).
+totalText: 14551→7093 characters; estimated tokens 3638→1774 (rounded proxy reduction 51.2369%).
+The target40–60% reduction was achieved for system policy and total message text. This is a size result, not measured lower reasoning burden, response time, compliance rate or creative improvement. Native schema transmission overhead is excluded from these prompt-text percentages and unchanged.
+
+11. V2 → COMPACT SEMANTIC POLICY EQUIVALENCE MATRIX
+
+Editorial requirement crosswalk, not proof of model behavior or mathematical prompt equivalence.
+Every row is preserved=YES. Exact source excerpts and line locations are stored in tests/fixtures/semantic_prompt_v2_compact_policy_v1.json and checked by tests. This editorial crosswalk preserves requirements, not a theorem that two model prompts produce identical behavior. Examples were compressed into general operational clauses; no policy was removed to meet the target.
+boundary | Raw ideas; deterministic authority; no rank/score/winners/virality/novelty/readiness/eligibility/production recommendation/bypass | YES
+  V2 line4: Do not rank, score, choose winners
+  Compact line1: Do not rank, score, assign confidence
+rationale | Rationale explains causal dependency only, never score authority | YES
+  V2 line4: it has no scoring authority
+  Compact line1: no scoring authority
+private | No exposed reasoning, checklists or self-certification | YES
+  V2 line48: Do not expose chain-of-thought
+  Compact line1: Output no private reasoning
+protagonist | Exactly one supplied canonical protagonist | YES
+  V2 line7: exactly one supplied canonical protagonist
+  Compact line4: one supplied canonical protagonist
+object | One primary everyday object | YES
+  V2 line7: one primary everyday object
+  Compact line4: one primary everyday object
+goal | Simple concrete credible visible everyday goal | YES
+  V2 line22: simple, credible, physically visible task
+  Compact line4: one simple credible visible goal
+location | One location | YES
+  V2 line7: one location
+  Compact line4: one location
+trouble | Immediate visible trouble | YES
+  V2 line7: immediate visible trouble
+  Compact line4: Start inside visible trouble
+duration | About15 seconds, complete readable action | YES
+  V2 line7: about 15 seconds
+  Compact line4: about 15 seconds
+intuitive | Strange but intuitive logic rather than randomness | YES
+  V2 line7: STRANGE BUT INTUITIVE
+  Compact line4: STRANGE BUT INTUITIVE
+one-rule | One dominant impossible physical/comedic rule | YES
+  V2 line7: one dominant impossible physical/comedic rule
+  Compact line5: one dominant impossible physical/comedic rule
+rule-sentence | Precise observable repeatable trigger/response sentence | YES
+  V2 line10: ONE precise, observable, repeatable sentence
+  Compact line5: precise, observable, repeatable trigger→response sentence
+immutable | Established rule governs every beat/payoff without mutation | YES
+  V2 line11: every beat must obey exactly that same physical rule
+  Compact line5: Once established it never changes
+trigger | Stable trigger; no new condition or actor loophole | YES
+  V2 line13: Keep the trigger stable
+  Compact line5: changes to the declared trigger/direction/target/material/timing/agency mapping
+no-powers | No independent powers bundled to excuse twists | YES
+  V2 line10: Do not bundle several unrelated powers
+  Compact line5: do not bundle independent powers
+mapping | No altered direction/material/target/timing/agency unless implied | YES
+  V2 line12: Do not change direction, material, target, timing constant, or agency
+  Compact line5: declared trigger/direction/target/material/timing/agency mapping
+spread | No unrelated spread; new information reveals same relationship | YES
+  V2 line12: Consequence spread must follow the declared causal relationship
+  Compact line5: Spread, transfer and magnitude must already follow
+object-function | Explain ordinary function and exact object dependency | YES
+  V2 line23: normalExpectation states this object's ordinary function
+  Compact line6: State its ordinary function
+object-affordance | Exploit function/affordance/motion/material/result/task relationship | YES
+  V2 line23: function, affordance, expected motion, material/property, normal result
+  Compact line6: affordance, expected motion, material/property, normal result
+interference | Object operation directly obstructs goal | YES
+  V2 line23: DIRECTLY obstructs the task
+  Compact line6: DIRECTLY obstruct the task
+arbitrary | Noun sharing is insufficient; no random magic or contrived goal | YES
+  V2 line24: Sharing a noun is not enough
+  Compact line6: Sharing an affected noun is insufficient
+still | Single simultaneous paused stageable frame | YES
+  V2 line17: one simultaneous, stageable STILL
+  Compact line9: One paused, simultaneous frame
+opening-content | Character, visible goal, object, impossible problem and relationship | YES
+  V2 line17: character + visible everyday goal + primary object + already-visible impossible problem
+  Compact line9: character+visible task+object+already-present impossible problem
+physical-evidence | Pose/state/space carry evidence; intention/title/laterbeat insufficient | YES
+  V2 line17: pose, object state and spatial relationship
+  Compact line9: pose, physical state and space
+no-explanation | No sound/dialogue/text/context/inset/beforeafter/motion dependence | YES
+  V2 line18: an explanatory inset, sequential before/after states or waiting for movement
+  Compact line9: explanatory inset, before/after sequence or waiting for motion
+no-delay | No initial normal action, press/door/delay/traverse or2–3sec setup | YES
+  V2 line19: spend no first 2–3 seconds
+  Compact line9: spend no first 2–3 seconds
+no-label-proof | Words moving/obvious/impossible do not supply still evidence | YES
+  V2 line19: merely calling it "obvious" or "impossible"
+  Compact line9: Motion words or labels such as obvious/impossible
+count | Exactly4–5 major causal beats including final payoff | YES
+  V2 line7: exactly 4 or 5 major causal beats including the final payoff
+  Compact line12: Exactly 4 or 5 major causal beats including payoff
+beat-fields | Action→same-rule physical consequence→changed state/information | YES
+  V2 line27: CHARACTER ACTION → SAME RULE ACTIVATES → VISIBLE CONSEQUENCE → CHANGED PROBLEM
+  Compact line12: strategy/action→visible consequence→new information or state change
+stageable | Concrete concise stageable sentences | YES
+  V2 line27: sentences concise, concrete and stageable
+  Compact line12: sentences concrete, concise and stageable
+progression | Materially different strategy/consequence/state/position/control/goal distance/stakes | YES
+  V2 line28: Each beat must materially change strategy
+  Compact line12: Each beat materially changes the problem
+axes | Vary leverage/timing/position/environment/magnitude/accumulation/control/stakes | YES
+  V2 line28: position, leverage, timing, environmental use, magnitude, accumulation, control
+  Compact line12: position, leverage, timing, magnitude, environmental use, accumulation
+passive | Environment is passive staging, no new powers | YES
+  V2 line28: environmental objects as passive staging only
+  Compact line12: Environment is passive staging
+no-repeat | Reworded same attempts or identical consequences are not progression | YES
+  V2 line28: Different wording for the same attempt is not progression
+  Compact line12: reworded retries or unchanged consequences do not count
+no-force-ladder | Avoid force/twohands/brace/fakesuccess default | YES
+  V2 line29: attempt → try harder → use two hands → brace → fake success
+  Compact line12: try harder→two hands→brace→fake success
+no-unrelated | No unrelated events or hidden sub-scenes; magnitude follows rule | YES
+  V2 line29: without multiple hidden sub-scenes per beat
+  Compact line12: No hidden sub-scenes
+last-equality | Payoff equals last consequence character for character, no extra event | YES
+  V2 line32: finalPayoff MUST match its visibleConsequence exactly
+  Compact line15: finalPayoff equals the last visibleConsequence exactly
+payoff-causal | Surprising but inevitable strongest rule-derived visual state change | YES
+  V2 line32: surprising in outcome but inevitable in retrospect
+  Compact line15: strongest visual, state-changing consequence
+payoff-essential | Ending cannot survive removal of original rule | YES
+  V2 line34: Could this payoff happen if the original rule were removed?
+  Compact line15: Without the original rule this ending should not work
+payoff-families | Preserve transfer/reversal/wrongsuccess/problem/takeover/extreme/chain/reveal/join/objectwins inspiration families | YES
+  V2 line33: role reversal, control transfer, property transfer
+  Compact line15: role/control/property transfer
+no-taxonomy-recipes | Payoff inspirations are not mandatory taxonomy recipes | YES
+  V2 line33: not required taxonomy labels or recipes
+  Compact line15: not taxonomy recipes
+no-ending-rescue | No newactor/poweredobject/magic/trigger/externalforce ending | YES
+  V2 line34: new character, new powered object, new magic
+  Compact line15: new character, powered object or unexplained external force
+loop | Optional loop; no reset effect/new rule; avoid routine fakesuccess reset | YES
+  V2 line33: A loop is optional
+  Compact line15: Looping is optional
+silent | Full story legible soundoff; dialogue not explanatory | YES
+  V2 line37: Assume sound is off
+  Compact line21: full story must read with sound off
+dialogue | NONE default; OPTIONAL only if needed; do not invent enum | YES
+  V2 line37: Normally dialogueNeed is NONE
+  Compact line21: Dialogue normally NONE
+production | Broad body actions, poses, stable identities/silhouette, few elements | YES
+  V2 line7: broad body actions, clear poses, stable object identity
+  Compact line21: broad body actions, clear poses, stable identities/silhouettes
+production-risks | No tinytext/smallpieces/finehands/mechanics/crowds/cuts/unstageable invisibleforces | YES
+  V2 line37: complex hand manipulation, crowds, fine mechanical transformations
+  Compact line21: fine hand work, fine mechanical transformations, crowds
+safety | Childsafe: no injury/weapons/dangerousrestraint/sexualcontent | YES
+  V2 line37: no injury, weapons, dangerous restraint or sexual content
+  Compact line21: no injury, weapons, dangerous restraint or sexual content
+batch-diversity | Vary object/goal/mechanic/trigger/progression/payoff/finalsilhouette | YES
+  V2 line40: vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette
+  Compact line18: vary object family, goal, mechanic, trigger, progression, payoff and final silhouette
+no-opposite | Avoid many oppositebehavior variants/wordingnovelty | YES
+  V2 line40: many versions of "object does the opposite thing.
+  Compact line18: many opposite-behavior variants
+unfamiliar | Coherent unfamiliar taxonomyfree mechanics allowed | YES
+  V2 line40: outside the known engine taxonomy is allowed
+  Compact line18: Coherent unfamiliar mechanics outside existing taxonomy are welcome
+cautions | Historical caution not templates; rare distinct chair/adhesion/reset/growth/shrink/reversal/escape allowed, not dominant | YES
+  V2 line41: A rare distinct use may occur; these must not dominate
+  Compact line18: must not dominate; rare distinct uses may occur
+free-task | Task examples illustrate, do not copy mechanically | YES
+  V2 line22: do not copy these mechanically
+  Compact line18: Choose tasks freely
+self-check | One private review: rule allbeats, pausedopening,causalarrows,visualstatepayoff,objectdependency; internally discard/redesign | YES
+  V2 line47: discard or redesign internally
+  Compact line27: discard/redesign internally
+no-retry | Private editing is not an external retry loop or winnerselection | YES
+  V2 line47: not permission for a downstream retry loop
+  Compact line27: no permission for an external retry loop
+schema | Same fields/JSON ideas envelope/raw count, deterministic rejection remains | YES
+  V2 line48: all fields and only the ideas envelope
+  Compact line24: all fields and exactly the requested raw count
+
+12. CORRECTED NATIVE SCHEMA STRUCTURAL ENFORCEMENT TESTS
+
+{
+  "beats": [
+    {
+      "beatCount": 3,
+      "nativeSchemaValid": false,
+      "domainValid": false,
+      "expectedValid": false,
+      "schemaErrors": [
+        {
+          "path": [
+            "ideas",
+            0,
+            "beats"
+          ],
+          "validator": "minItems"
+        }
+      ]
+    },
+    {
+      "beatCount": 4,
+      "nativeSchemaValid": true,
+      "domainValid": true,
+      "expectedValid": true,
+      "schemaErrors": []
+    },
+    {
+      "beatCount": 5,
+      "nativeSchemaValid": true,
+      "domainValid": true,
+      "expectedValid": true,
+      "schemaErrors": []
+    },
+    {
+      "beatCount": 6,
+      "nativeSchemaValid": false,
+      "domainValid": false,
+      "expectedValid": false,
+      "schemaErrors": [
+        {
+          "path": [
+            "ideas",
+            0,
+            "beats"
+          ],
+          "validator": "maxItems"
+        }
+      ]
+    }
+  ],
+  "durations": [
+    {
+      "suppliedDuration": 9,
+      "fieldOmitted": false,
+      "nativeSchemaValid": false,
+      "domainValid": false,
+      "effectiveDomainDuration": null,
+      "expectedValid": false
+    },
+    {
+      "suppliedDuration": 10,
+      "fieldOmitted": false,
+      "nativeSchemaValid": true,
+      "domainValid": true,
+      "effectiveDomainDuration": 10.0,
+      "expectedValid": true
+    },
+    {
+      "suppliedDuration": 15,
+      "fieldOmitted": false,
+      "nativeSchemaValid": true,
+      "domainValid": true,
+      "effectiveDomainDuration": 15.0,
+      "expectedValid": true
+    },
+    {
+      "suppliedDuration": 20,
+      "fieldOmitted": false,
+      "nativeSchemaValid": true,
+      "domainValid": true,
+      "effectiveDomainDuration": 20.0,
+      "expectedValid": true
+    },
+    {
+      "suppliedDuration": 24,
+      "fieldOmitted": false,
+      "nativeSchemaValid": false,
+      "domainValid": false,
+      "effectiveDomainDuration": null,
+      "expectedValid": false
+    },
+    {
+      "suppliedDuration": null,
+      "fieldOmitted": true,
+      "nativeSchemaValid": true,
+      "domainValid": true,
+      "effectiveDomainDuration": 15,
+      "expectedValid": true
+    }
+  ],
+  "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "structuralGaps": [],
+  "gapConclusion": "No SCHEMA_CONTRACT_GAP for intended beat quantity, required beat fields, or declared duration bounds. Semantic truth and actual rendered runtime are outside JSON schema."
+}
+The5-beat and6-beat fixtures use distinct added beats and align finalPayoff with the final consequence, so structural beat-count tests do not accidentally fail on duplicate beat/equality validators. Valid means structural/domain conformance only, not creative quality.
+
+13. ADVERSARIAL MOCK RESULTS A–L
+
+A. rule mutation — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: CONTRADICTION_DETECTED; opening=90; frame-zero supported=True; payoff rule-linked=True; same-rule escalation=False; admitted=False; Beat Grammar=ACCEPTABLE.
+  Contradiction codes: DECLARED_RULE_OUTCOME_REVERSED
+  Production blockers: PREMISE_NOT_ADMITTED
+B. trigger mutation — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: CONTRADICTION_DETECTED; opening=90; frame-zero supported=True; payoff rule-linked=True; same-rule escalation=False; admitted=False; Beat Grammar=ACCEPTABLE.
+  Contradiction codes: UNDECLARED_TRIGGER_RESTRICTION
+  Production blockers: PREMISE_NOT_ADMITTED
+C. 3 beats — schema=INVALID, normalized=False, V2/compact scores identical=True
+  Rejected before normalization by existing structural parser, no judge score.
+D. 6 beats — schema=INVALID, normalized=False, V2/compact scores identical=True
+  Rejected before normalization by existing structural parser, no judge score.
+E. weak frame-zero setup — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: UNRESOLVED; opening=15; frame-zero supported=False; payoff rule-linked=False; same-rule escalation=False; admitted=False; Beat Grammar=MECHANICAL.
+  Contradiction codes: 
+  Production blockers: OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+F. motion-dependent opening — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: SUPPORTED_BY_EXISTING_EVIDENCE; opening=35; frame-zero supported=False; payoff rule-linked=True; same-rule escalation=True; admitted=True; Beat Grammar=ACCEPTABLE.
+  Contradiction codes: 
+  Production blockers: OPENING_EVIDENCE_INSUFFICIENT
+G. unrelated payoff twist — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: CONTRADICTION_DETECTED; opening=90; frame-zero supported=True; payoff rule-linked=False; same-rule escalation=False; admitted=False; Beat Grammar=ACCEPTABLE.
+  Contradiction codes: UNDECLARED_MATERIAL_OR_FUNCTION
+  Production blockers: ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+H. random magic — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: SUPPORTED_BY_EXISTING_EVIDENCE; opening=15; frame-zero supported=False; payoff rule-linked=True; same-rule escalation=True; admitted=False; Beat Grammar=MECHANICAL.
+  Contradiction codes: 
+  Production blockers: OPENING_EVIDENCE_INSUFFICIENT, ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR, PREMISE_NOT_ADMITTED
+I. repeated same attempt — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: SUPPORTED_BY_EXISTING_EVIDENCE; opening=90; frame-zero supported=True; payoff rule-linked=True; same-rule escalation=True; admitted=True; Beat Grammar=MECHANICAL.
+  Contradiction codes: 
+  Production blockers: ACCEPTED_VALIDATOR_INELIGIBLE, SHORT_FORM_QUALITY_FLOOR, RANKING_QUALITY_FLOOR, BEAT_GRAMMAR_QUALITY_FLOOR
+J. strong same-rule escalation control — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: SUPPORTED_BY_EXISTING_EVIDENCE; opening=90; frame-zero supported=True; payoff rule-linked=True; same-rule escalation=True; admitted=True; Beat Grammar=ACCEPTABLE.
+  Contradiction codes: 
+  Production blockers: 
+K. unfamiliar source-supported causal mechanic; opening may still fail — schema=VALID, normalized=True, V2/compact scores identical=True
+  Rule: SUPPORTED_BY_EXISTING_EVIDENCE; opening=35; frame-zero supported=False; payoff rule-linked=True; same-rule escalation=True; admitted=True; Beat Grammar=ACCEPTABLE.
+  Contradiction codes: 
+  Production blockers: OPENING_EVIDENCE_INSUFFICIENT
+L. provider inserts unauthorized self-score field — schema=INVALID, normalized=False, V2/compact scores identical=True
+  Rejected before normalization by existing structural parser, no judge score.
+K exercises an unfamiliar source-supported response and is admitted as PRESENT_UNCLASSIFIED; its opening score35 still fails the mandatory opening gate. It is not claimed production-ready or universally strong. H illustrates limits of a single consistency observation: no explicit contradiction finding does not establish non-arbitrary object dependency. I can be premise-admitted while failing progression. These distinctions are retained, not patched.
+{
+  "structurallyAllowed": true,
+  "promptViolation": true,
+  "ignoredByScoring": true,
+  "scoresEqual": true,
+  "scope": "Unauthorized score key is rejected; unsupported scoring claims inside a permitted free-text field remain structurally valid and unscored. Text compliance is not guaranteed."
+}
+Hand-authored offline adversarial fixtures adapted from existing paired mocks; never provider generations. Same corpus replayed for V2 and compact; not evidence of creative superiority. Mock replay checks existing judge behavior and version neutrality; it does not test a provider following compact instructions or prove creative quality.
+Exact hand-authored stories are in tests/fixtures/semantic_prompt_v2_compact_mocks_v1.json; full existing judge receipts and unchanged score fields are in audit.json. No provider produced new concepts. Same corpus under both provenance versions controls for source differences; this cannot establish causal prompt superiority.
+
+14. FILES ADDED / EXISTING FILES CHANGED
+
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.py  SHA256=e5a6c7de9b657dd4c4c3253919dd00654951c8aaf272ca3d0feae64470c7d414
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.txt  SHA256=b99a6f10a7987613a4ff968c19b4532162295803fe4726e94e62a939689bf85d
+intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_policy_v1.json  SHA256=23dd2d519bf9bacb970a1103eef335692377ad1ffcf59f3224ae3ed505c01795
+intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_mocks_v1.json  SHA256=7cd2403858fd9490889942be38e08ea5e240db613813d238b3a48a971bd19886
+intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py  SHA256=4af0dc0dae8ded897d7e052c39fcfcaa5210de1394dc3da5af3e850a817822bf
+intelligence/scripts/audit-semantic-prompt-v2-compact.py  SHA256=08c3b56c337a7ee780c783cd9e6eb53c7ebb1442d6b17f485038c25cd55480ad
+Documentation/evidence added only under intelligence/docs/semantic-prompt-v2-compact-v1/. Existing files modified during this task:0. The checkout already contained dirty/untracked earlier work; protected-before.json binds its actual starting bytes, including prior dirty reports. Nothing was reset or committed.
+
+15. EXACT TESTS / OFFLINE GUARDS
+
+Focused: intelligence/ml-service/.venv/bin/python intelligence/scripts/test-story-premise-offline.py tests/test_semantic_prompt_v2_compact.py tests/test_semantic_native_schema_integrity_v1.py tests/test_semantic_prompt_v2.py -q --tb=short
+Result:140 passed (includes86 new compact tests and54 existing V2/schema tests).
+Full: intelligence/ml-service/.venv/bin/python intelligence/scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short
+Result:36 failed,3136 passed,2 skipped,3030 warnings in212.16s. All36 failures exactly equal the accepted baseline.
+Audit reproduction: intelligence/ml-service/.venv/bin/python intelligence/scripts/audit-semantic-prompt-v2-compact.py --output intelligence/docs/semantic-prompt-v2-compact-v1
+The audit CLI denies all socket connection/address resolution and subprocess execution before work. The existing test harness removes API keys/tokens, denies network/media execution, and copies configuration to disposable storage while making existing data/docs read-only. It permits read-only git rev-parse provenance only. Construction tests also replace provider construction/network with throwing functions. No mocks are billed calls or renders.
+
+16. PROVIDER CALLS / RENDERS / STOP
+
+Provider calls during this task=0. Renders=0. No OpenAI/DeepSeek call, no credential access by the compact builder, no generated images/video, no live concepts, no automatic retry service. Offline verification complete; STOP. The next capability probe requires a separately authorized task.
+
+17. PROOF PROMPT V1 UNCHANGED
+
+intelligence/ml-service/app/workflow/semantic_concept_provider.py SHA256(before=after)=6b02ad77b6e2434ca14467404dc473c2f5bf1c41027ba8ef74d807ff2c932c82
+V1 source string, schema/domain model and builder remain byte-identical. GenerationRequest default remainsv1; opt-in validation/version tests passed. Compact reuses existing cast/history metadata but does not modify returned V1 data.
+
+18. PROOF PROMPT V2 UNCHANGED
+
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.py SHA256(before=after)=f2a22e66eb47db9a3dfae21bd136671121942025d3c70bb7a35d5b9e63f95052
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt SHA256(before=after)=706b4ffc5434874f49a3c8832490e6e9649b25b02eeb4d93ff7c8617c96bc858
+Version-specific tests verify V2 builder output is stable across compact construction. Exact V2 system hash under strip() and compact hash appear in sections6/9.
+
+19. PROOF VALIDATORS / SCORES / TAXONOMY / THRESHOLDS UNCHANGED
+
+intelligence/ml-service/app/workflow/short_form_engine.py SHA256(before=after)=a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46
+intelligence/ml-service/app/workflow/canonical_evidence_propagation.py SHA256(before=after)=b0988995f10eae22fb17cbbeb413bc38e03cf62740106bd91388ce3b87222ec0
+intelligence/ml-service/app/workflow/premise_naturalness.py SHA256(before=after)=8b8305ac53dd7eafce56d243c3814121fae9a7c3b84e5745df5bacc11e9072c7
+intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py SHA256(before=after)=64f899da96cf9d4661d0c2e6d91f5e3f8f3c9db25665def58f0bab431c2a618f
+intelligence/ml-service/app/workflow/beat_grammar.py SHA256(before=after)=33a8c85e8358294ea6a7df4a56a5312193a39a99a713f5e444e45b5ecd8b6be6
+intelligence/ml-service/app/workflow/creative_shape.py SHA256(before=after)=01b71cee68635bee187a8b1c09afce6e17887cca71022a56679c59571178a714
+intelligence/ml-service/app/workflow/concept_ranking.py SHA256(before=after)=65c136ee1e6727e290c3f14f052cba329807c4e1057e4412ae4c9613070085e3
+intelligence/ml-service/app/workflow/structured_sfe_replay.py SHA256(before=after)=d2c74961091ce232a12fff3330c413ca0adf424a3cb714aa32eb5f4e5523f397
+intelligence/ml-service/app/workflow/shape_generation.py SHA256(before=after)=c07003bc83c2d9eef62d07a5a2ee985ad656c17a6ea4a0edc86be02c6d84e954
+intelligence/ml-service/app/workflow/semantic_native_schema_integrity_v1.py SHA256(before=after)=55a6018bf30c04d3008045726aaa266a9a9698df80085bc6d2bc37edf459bba2
+Every starting workflow/config/model/test/evidence file in the protected map is identical. Canonical schema is unchanged; native schema hash for count1 remains91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3. Mock score/penalty/eligibility/production-risk comparisons match exactly between V2 and compact; free-text scoring claims receive no bonus.
+
+20. PROOF HISTORICAL EVIDENCE UNCHANGED
+
+2295 existing files hashed before/after; changes0. See protected-before.json and protected-after.json for exact hashes, including historical payloads, run requests/results, data and prior reports. Source freeze before full regression contains6 new implementation/test/fixture/script files; all6 match after the full run. Artifact manifest records this task's evidence. No old classification, candidate, score, validator threshold or historical manifest was rewritten.
+
+21. PROOF ONLY ACCEPTED BASELINE FAILURES REMAIN
+
+Accepted baseline: intelligence/docs/semantic-native-schema-integrity-v1/pre-live-verification.json. Exact sorted equality, not just matching counts. New failures0; missing baseline failures0; skipped2; passed3136=3050 prior+86 new tests.
+tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration
+tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta
+tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline
+tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts
+tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates
+tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]
+tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable
+tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence
+tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\nPRODUCTION NOTE: Keep later contact readable.]
+tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens
+tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result
+tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates
+tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]
+tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]
+tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]
+tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates
+tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]
+tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]
+tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]
+tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation
+tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison
+tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt
+Full raw output:full-regression.log; machine-readable comparison and commands:verification.json. Task complete offline. STOP.

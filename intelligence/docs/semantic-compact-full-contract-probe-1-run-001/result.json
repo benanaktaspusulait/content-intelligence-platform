@@ -1,0 +1,112 @@
+{
+  "status": "FAILED",
+  "usage": null,
+  "httpStatus": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "providerRequestId": null,
+  "httpRequestId": null,
+  "errorClass": "APITimeoutError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APITimeoutError",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "TimeoutError",
+      "httpStatus": null,
+      "providerCode": null
+    }
+  ],
+  "safeMessage": "Single compact probe failed; no retry, fallback or replacement.",
+  "safeTrace": [
+    {
+      "file": "semantic_compact_capability_probe_v1.py",
+      "line": 82,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "semantic_compact_capability_probe_v1.py",
+      "line": 78,
+      "function": "exact_guard"
+    },
+    {
+      "file": "semantic_native_schema_integrity_v1.py",
+      "line": 153,
+      "function": "__call__"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ],
+  "providerMetadata": null,
+  "finishReason": null,
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "COMPACT_FULL_CONTRACT_TIMEOUT",
+  "creativeContractClassification": null,
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T09:38:06.687379+00:00",
+    "wallClockEndUTC": "2026-10-30T09:39:37.470605+00:00",
+    "monotonicElapsedSeconds": 90.782689292,
+    "wallClockSpanSeconds": 90.783226,
+    "wallMinusMonotonicSeconds": 0.000536707999998498,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 0,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "DeepSeekCalls": 0,
+  "fallbacks": 0,
+  "renders": 0,
+  "pipelineRan": false,
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}

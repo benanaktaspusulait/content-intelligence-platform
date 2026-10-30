@@ -1,0 +1,48 @@
+{
+  "sampleSize": 3,
+  "opening": {
+    "scores": [
+      35,
+      35,
+      35
+    ],
+    "acceptedFloor": 60,
+    "atOrAboveFloor": 0,
+    "belowFloor": 3,
+    "mean": 35,
+    "median": 35,
+    "signal": "NO_CLEAR_PATTERN",
+    "interpretation": "Descriptive four-sample observation only; no statistical proof or new admission threshold."
+  },
+  "ruleConsistency": {
+    "AMBIGUOUS": 3
+  },
+  "payoffRuleLinked": {
+    "True": 3
+  },
+  "admissionStatuses": {
+    "NOT_ADMITTED_INSUFFICIENT_EVIDENCE": 3
+  },
+  "BeatGrammar": {
+    "ACCEPTABLE": 3
+  },
+  "SFE": {
+    "scores": [
+      84,
+      85,
+      84
+    ],
+    "mean": 84.33333333333333,
+    "median": 84,
+    "statuses": {
+      "REVISION_REQUIRED": 3
+    }
+  },
+  "rankingEligibleCount": 0,
+  "productionAdmissibleCount": 0,
+  "productionSlateMembers": [],
+  "MICRO_BATCH_HUMAN_REVIEW_SET": [],
+  "referenceRegenerated": false,
+  "providerCallsDuringAnalysis": 0,
+  "renders": 0
+}

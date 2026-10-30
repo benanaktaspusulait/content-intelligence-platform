@@ -1,0 +1,10 @@
+{
+  "existingFilesChanged": [],
+  "newRepresentationBuilderProbeTestsFixtureCLI": {
+    "intelligence/ml-service/app/workflow/semantic_native_schema_integrity_v1.py": "55a6018bf30c04d3008045726aaa266a9a9698df80085bc6d2bc37edf459bba2",
+    "intelligence/ml-service/app/workflow/semantic_schema_integrity_probe_v1.py": "ab45a726e9e7122af86b85465b9bd0ba342e258258982a964e12ba6b32213629",
+    "intelligence/ml-service/tests/test_semantic_native_schema_integrity_v1.py": "2f635c03e513d5fb6e99e11f356b5e4099daceec80e064896b33361ea51b8ec3",
+    "intelligence/ml-service/tests/fixtures/semantic_schema_integrity_full_candidate_v1.json": "679e4563f91a5f630be83acc81480d080411b7ac5919b1c7f8b509044dd00171",
+    "intelligence/scripts/probe-repaired-semantic-schema-v1.py": "83c54fd202ad09183d7c4bc1d7d6e0336a4c19f79d0707bdc691950bc554c9e1"
+  }
+}

@@ -1,0 +1,485 @@
+{
+  "CMetrics": {
+    "systemCharacters": 9879,
+    "userCharacters": 4670,
+    "totalRequestTextCharacters": 14549,
+    "schemaCharacters": 2750,
+    "serializedRequestCharacters": 18194,
+    "serializedRequestUTF8Bytes": 18224,
+    "maxOutputTokens": 8192,
+    "mode": "json_schema",
+    "strict": false,
+    "localTokenEstimate": null,
+    "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+    "declaredProperties": 23,
+    "arraySchemas": 2,
+    "schemaJSONNestingDepth": 8,
+    "requiredByPath": [
+      {
+        "path": "/",
+        "fields": [
+          "ideas"
+        ]
+      },
+      {
+        "path": "/properties/ideas/items",
+        "fields": [
+          "ideaId",
+          "title",
+          "protagonistSuggestion",
+          "everydayGoal",
+          "primaryObject",
+          "normalExpectation",
+          "impossibleRule",
+          "visibleTrigger",
+          "whyThisObject",
+          "goalRuleRelationship",
+          "frameZeroDescription",
+          "beats",
+          "finalPayoff",
+          "suggestedPayoffFamily",
+          "loopPotential",
+          "environment",
+          "providerRationale"
+        ]
+      },
+      {
+        "path": "/properties/ideas/items/$defs/SemanticBeat",
+        "fields": [
+          "strategy",
+          "visibleConsequence",
+          "newInformation"
+        ]
+      }
+    ],
+    "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference."
+  },
+  "DMetrics": {
+    "systemCharacters": 9879,
+    "userCharacters": 4670,
+    "totalRequestTextCharacters": 14549,
+    "schemaCharacters": 368,
+    "serializedRequestCharacters": 15819,
+    "serializedRequestUTF8Bytes": 15849,
+    "maxOutputTokens": 4096,
+    "mode": "json_schema",
+    "strict": false,
+    "localTokenEstimate": null,
+    "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+    "declaredProperties": 6,
+    "arraySchemas": 0,
+    "schemaJSONNestingDepth": 3,
+    "requiredByPath": [
+      {
+        "path": "/",
+        "fields": [
+          "title",
+          "everydayGoal",
+          "primaryObject",
+          "impossibleRule",
+          "frameZeroDescription",
+          "finalPayoff"
+        ]
+      }
+    ],
+    "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference.",
+    "requiredFieldOccurrences": 6
+  },
+  "EMetrics": {
+    "systemCharacters": 17,
+    "userCharacters": 107,
+    "totalRequestTextCharacters": 124,
+    "schemaCharacters": 2750,
+    "serializedRequestCharacters": 3138,
+    "serializedRequestUTF8Bytes": 3138,
+    "maxOutputTokens": 8192,
+    "mode": "json_schema",
+    "strict": false,
+    "localTokenEstimate": null,
+    "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+    "declaredProperties": 23,
+    "arraySchemas": 2,
+    "schemaJSONNestingDepth": 8,
+    "requiredByPath": [
+      {
+        "path": "/",
+        "fields": [
+          "ideas"
+        ]
+      },
+      {
+        "path": "/properties/ideas/items",
+        "fields": [
+          "ideaId",
+          "title",
+          "protagonistSuggestion",
+          "everydayGoal",
+          "primaryObject",
+          "normalExpectation",
+          "impossibleRule",
+          "visibleTrigger",
+          "whyThisObject",
+          "goalRuleRelationship",
+          "frameZeroDescription",
+          "beats",
+          "finalPayoff",
+          "suggestedPayoffFamily",
+          "loopPotential",
+          "environment",
+          "providerRationale"
+        ]
+      },
+      {
+        "path": "/properties/ideas/items/$defs/SemanticBeat",
+        "fields": [
+          "strategy",
+          "visibleConsequence",
+          "newInformation"
+        ]
+      }
+    ],
+    "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference.",
+    "requiredFieldOccurrences": 21
+  },
+  "structure": {
+    "prompt": {
+      "characters": 9879,
+      "lines": 48,
+      "sectionCount": 10,
+      "sections": [
+        {
+          "line": 3,
+          "text": "ROLE BOUNDARY"
+        },
+        {
+          "line": 6,
+          "text": "CREATIVE TARGET"
+        },
+        {
+          "line": 9,
+          "text": "RULE IMMUTABILITY \u2014 NON-NEGOTIABLE"
+        },
+        {
+          "line": 15,
+          "text": "FRAME ZERO \u2014 A PAUSED STILL, NOT A FIRST ACTION"
+        },
+        {
+          "line": 21,
+          "text": "EVERYDAY GOAL AND EXACT OBJECT"
+        },
+        {
+          "line": 26,
+          "text": "BEATS AND PROGRESSION"
+        },
+        {
+          "line": 31,
+          "text": "RULE-DERIVED VISUAL PAYOFF"
+        },
+        {
+          "line": 36,
+          "text": "SILENT VIEWING AND PRODUCTION"
+        },
+        {
+          "line": 39,
+          "text": "DIVERSITY WITHOUT TAXONOMY OVERFIT"
+        },
+        {
+          "line": 43,
+          "text": "PRIVATE PRE-RETURN CHECK \u2014 DO NOT OUTPUT THE CHECK OR A SCORE"
+        }
+      ],
+      "keywordCounts": {
+        "must": 17,
+        "doNot": 19,
+        "never": 3,
+        "avoid": 6,
+        "exactly": 5,
+        "discard": 5
+      },
+      "explicitMustDoNotOccurrences": 36,
+      "localTokenEstimate": null,
+      "exactDuplicateSentences": [],
+      "repeatedInstructionThemes": {
+        "ruleConsistency": [
+          {
+            "line": 4,
+            "text": "Do not rank, score, choose winners, predict virality, claim novelty, declare production readiness or eligibility, recommend production, or bypass validators. Return raw structured concepts only. providerRationale may explain the object-rule relationship and causal escalation briefly; it has no scoring authority. Do not include self-scores, checklists, hidden reasoning, or winner claims."
+          },
+          {
+            "line": 7,
+            "text": "Use exactly one supplied canonical protagonist, one primary everyday object, one concrete everyday goal, one location, one dominant impossible physical/comedic rule, immediate visible trouble, and exactly 4 or 5 major causal beats including the final payoff. Keep the complete action readable in about 15 seconds. Aim for STRANGE BUT INTUITIVE: the viewer immediately understands the problem and then is surprised by its consequences. Novelty comes from unexpected logic, not random magic. Use broad body actions, clear poses, stable object identity and few independently moving elements."
+          },
+          {
+            "line": 9,
+            "text": "RULE IMMUTABILITY \u2014 NON-NEGOTIABLE"
+          },
+          {
+            "line": 10,
+            "text": "State the complete rule in ONE precise, observable, repeatable sentence, such as \"Whenever X happens, Y always happens.\" Make the trigger and response exact. Do not bundle several unrelated powers into a compound rule to excuse later twists."
+          },
+          {
+            "line": 11,
+            "text": "Once the impossible rule is established, every beat must obey exactly that same physical rule. Escalation must come from strategy, magnitude, position, accumulation, consequence, or new information \u2014 never from changing the rule."
+          },
+          {
+            "line": 12,
+            "text": "Do not add a second magic rule, unexplained behavior, new power, different trigger, special exception, actor-dependent loophole, or final-beat mutation. Do not change direction, material, target, timing constant, or agency unless it is already an inevitable consequence of the original rule. A new strategy changes the character's input or circumstances; it does not change what the rule does. New information reveals the SAME relationship; it must not rewrite it. Consequence spread must follow the declared causal relationship rather than infecting unrelated objects by convenience."
+          },
+          {
+            "line": 13,
+            "text": "Keep the trigger stable. If touch triggers the effect, distance, sound, release or waiting must not suddenly trigger it. Timing or position may be a strategy only while the declared trigger-response mapping remains fixed. Payoff-family inspiration never authorizes a new transfer power or new exception."
+          },
+          {
+            "line": 24,
+            "text": "Sharing a noun is not enough: the rule must meaningfully relate to the object's actual operation. Reject random object + random magic. An explicitly visible effect can still be arbitrary. Do not write contrived goals merely to connect an unrelated effect to an object."
+          },
+          {
+            "line": 27,
+            "text": "Return exactly 4 or 5 beats. Each has strategy (character action), visibleConsequence (physical result) and newInformation (new information or state change). Keep sentences concise, concrete and stageable. Each causal arrow must read: CHARACTER ACTION \u2192 SAME RULE ACTIVATES \u2192 VISIBLE CONSEQUENCE \u2192 CHANGED PROBLEM."
+          },
+          {
+            "line": 29,
+            "text": "Avoid the overused default: attempt \u2192 try harder \u2192 use two hands \u2192 brace \u2192 fake success. Avoid enlarging a story through unrelated events. A brush that tangles hair must not suddenly fly, change color or duplicate. Magnitude can increase only in a way the original rule permits. Maintain readable 15-second pacing without multiple hidden sub-scenes per beat."
+          },
+          {
+            "line": 31,
+            "text": "RULE-DERIVED VISUAL PAYOFF"
+          },
+          {
+            "line": 32,
+            "text": "The final beat is the payoff and finalPayoff MUST match its visibleConsequence exactly, character for character. No extra event after it. The payoff must be surprising in outcome but inevitable in retrospect from the same rule. Prefer a clear physical final state that changes the story, rather than dialogue, text, explanation or internal realization."
+          },
+          {
+            "line": 33,
+            "text": "Explore role reversal, control transfer, property transfer, absurd success, solution creates new problem, environmental takeover, logical extreme, chain reaction, reveal, goal achieved wrongly, character becomes part of the object state, or object succeeds while character fails. These are inspirations, not required taxonomy labels or recipes. Any transfer or reversal must be implied by the original rule. Avoid default temporary success \u2192 original problem returns. A loop is optional; do not invent a second effect merely to reset the opening."
+          },
+          {
+            "line": 34,
+            "text": "Do not surprise by adding a new character, new powered object, new magic, different trigger or unexplained external force in the ending. Internally ask: \"Could this payoff happen if the original rule were removed?\" If yes, discard or redesign it."
+          },
+          {
+            "line": 37,
+            "text": "Assume sound is off. Dialogue must not explain goal, rule, trigger or payoff. Normally dialogueNeed is NONE; if absolutely needed use existing OPTIONAL, never invent a schema enum such as MINIMAL. Prefer one character, one main object, one location, broad body action, a stable silhouette and limited moving elements. Avoid tiny text, many small pieces, complex hand manipulation, crowds, fine mechanical transformations, rapid location changes or invisible forces that cannot be staged. Child-safe comedy only; no injury, weapons, dangerous restraint or sexual content."
+          },
+          {
+            "line": 40,
+            "text": "Across the batch vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette. Do not output many versions of \"object does the opposite thing.\" Novel coherent behavior outside the known engine taxonomy is allowed; do not force it into growth, shrink, adhesion, reset, reversal or escape. All novel behavior must still be object-specific, stable, visually legible and causally consistent."
+          },
+          {
+            "line": 44,
+            "text": "For each candidate compare its exact one-sentence rule to Beat 1, Beat 2, Beat 3, Beat 4, Beat 5 if present, and payoff. If ANY requires behavior or a trigger not permitted by that rule, discard or redesign the candidate before output. Do not patch it with an exception or a second rule."
+          },
+          {
+            "line": 46,
+            "text": "Check each action\u2192rule\u2192visible consequence causal arrow. If weak or invisible, discard or redesign."
+          },
+          {
+            "line": 47,
+            "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+          },
+          {
+            "line": 48,
+            "text": "Return the requested raw candidate count in the supplied schema, with all fields and only the ideas envelope. Do not expose chain-of-thought, rule-consistency self-certification, scores or production recommendations. The deterministic system may reject any returned idea."
+          }
+        ],
+        "frameZero": [
+          {
+            "line": 15,
+            "text": "FRAME ZERO \u2014 A PAUSED STILL, NOT A FIRST ACTION"
+          },
+          {
+            "line": 16,
+            "text": "The concept must be understandable from a paused frame at the beginning. The viewer should already see what the character wants and what impossible problem is interfering."
+          },
+          {
+            "line": 17,
+            "text": "frameZeroDescription must describe one simultaneous, stageable STILL: character + visible everyday goal + primary object + already-visible impossible problem. Show physical evidence that the ordinary function has gone wrong, using pose, object state and spatial relationship. The goal should be inferable from the pictured task, not a stated intention alone. Neither the title nor a later beat may supply missing information."
+          },
+          {
+            "line": 19,
+            "text": "Avoid openings whose problem appears only after a button press, a door opening, a delayed effect, room traversal or the first normal action, unless the very first STILL already shows the impossible consequence. Start inside the trouble; spend no first 2\u20133 seconds establishing an ordinary world. Do not solve poor opening evidence by merely calling it \"obvious\" or \"impossible\"."
+          },
+          {
+            "line": 24,
+            "text": "Sharing a noun is not enough: the rule must meaningfully relate to the object's actual operation. Reject random object + random magic. An explicitly visible effect can still be arbitrary. Do not write contrived goals merely to connect an unrelated effect to an object."
+          },
+          {
+            "line": 40,
+            "text": "Across the batch vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette. Do not output many versions of \"object does the opposite thing.\" Novel coherent behavior outside the known engine taxonomy is allowed; do not force it into growth, shrink, adhesion, reset, reversal or escape. All novel behavior must still be object-specific, stable, visually legible and causally consistent."
+          },
+          {
+            "line": 45,
+            "text": "Imagine showing ONLY the opening still: can someone see the character, task, object, problem and impossible relationship without sound, title, text or motion? If not, discard or redesign."
+          }
+        ],
+        "payoff": [
+          {
+            "line": 7,
+            "text": "Use exactly one supplied canonical protagonist, one primary everyday object, one concrete everyday goal, one location, one dominant impossible physical/comedic rule, immediate visible trouble, and exactly 4 or 5 major causal beats including the final payoff. Keep the complete action readable in about 15 seconds. Aim for STRANGE BUT INTUITIVE: the viewer immediately understands the problem and then is surprised by its consequences. Novelty comes from unexpected logic, not random magic. Use broad body actions, clear poses, stable object identity and few independently moving elements."
+          },
+          {
+            "line": 13,
+            "text": "Keep the trigger stable. If touch triggers the effect, distance, sound, release or waiting must not suddenly trigger it. Timing or position may be a strategy only while the declared trigger-response mapping remains fixed. Payoff-family inspiration never authorizes a new transfer power or new exception."
+          },
+          {
+            "line": 31,
+            "text": "RULE-DERIVED VISUAL PAYOFF"
+          },
+          {
+            "line": 32,
+            "text": "The final beat is the payoff and finalPayoff MUST match its visibleConsequence exactly, character for character. No extra event after it. The payoff must be surprising in outcome but inevitable in retrospect from the same rule. Prefer a clear physical final state that changes the story, rather than dialogue, text, explanation or internal realization."
+          },
+          {
+            "line": 34,
+            "text": "Do not surprise by adding a new character, new powered object, new magic, different trigger or unexplained external force in the ending. Internally ask: \"Could this payoff happen if the original rule were removed?\" If yes, discard or redesign it."
+          },
+          {
+            "line": 37,
+            "text": "Assume sound is off. Dialogue must not explain goal, rule, trigger or payoff. Normally dialogueNeed is NONE; if absolutely needed use existing OPTIONAL, never invent a schema enum such as MINIMAL. Prefer one character, one main object, one location, broad body action, a stable silhouette and limited moving elements. Avoid tiny text, many small pieces, complex hand manipulation, crowds, fine mechanical transformations, rapid location changes or invisible forces that cannot be staged. Child-safe comedy only; no injury, weapons, dangerous restraint or sexual content."
+          },
+          {
+            "line": 40,
+            "text": "Across the batch vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette. Do not output many versions of \"object does the opposite thing.\" Novel coherent behavior outside the known engine taxonomy is allowed; do not force it into growth, shrink, adhesion, reset, reversal or escape. All novel behavior must still be object-specific, stable, visually legible and causally consistent."
+          },
+          {
+            "line": 44,
+            "text": "For each candidate compare its exact one-sentence rule to Beat 1, Beat 2, Beat 3, Beat 4, Beat 5 if present, and payoff. If ANY requires behavior or a trigger not permitted by that rule, discard or redesign the candidate before output. Do not patch it with an exception or a second rule."
+          },
+          {
+            "line": 47,
+            "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+          }
+        ],
+        "nonScoring": [
+          {
+            "line": 4,
+            "text": "Do not rank, score, choose winners, predict virality, claim novelty, declare production readiness or eligibility, recommend production, or bypass validators. Return raw structured concepts only. providerRationale may explain the object-rule relationship and causal escalation briefly; it has no scoring authority. Do not include self-scores, checklists, hidden reasoning, or winner claims."
+          },
+          {
+            "line": 43,
+            "text": "PRIVATE PRE-RETURN CHECK \u2014 DO NOT OUTPUT THE CHECK OR A SCORE"
+          },
+          {
+            "line": 47,
+            "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+          },
+          {
+            "line": 48,
+            "text": "Return the requested raw candidate count in the supplied schema, with all fields and only the ideas envelope. Do not expose chain-of-thought, rule-consistency self-certification, scores or production recommendations. The deterministic system may reject any returned idea."
+          }
+        ],
+        "privateChecks": [
+          {
+            "line": 4,
+            "text": "Do not rank, score, choose winners, predict virality, claim novelty, declare production readiness or eligibility, recommend production, or bypass validators. Return raw structured concepts only. providerRationale may explain the object-rule relationship and causal escalation briefly; it has no scoring authority. Do not include self-scores, checklists, hidden reasoning, or winner claims."
+          },
+          {
+            "line": 34,
+            "text": "Do not surprise by adding a new character, new powered object, new magic, different trigger or unexplained external force in the ending. Internally ask: \"Could this payoff happen if the original rule were removed?\" If yes, discard or redesign it."
+          },
+          {
+            "line": 43,
+            "text": "PRIVATE PRE-RETURN CHECK \u2014 DO NOT OUTPUT THE CHECK OR A SCORE"
+          },
+          {
+            "line": 44,
+            "text": "For each candidate compare its exact one-sentence rule to Beat 1, Beat 2, Beat 3, Beat 4, Beat 5 if present, and payoff. If ANY requires behavior or a trigger not permitted by that rule, discard or redesign the candidate before output. Do not patch it with an exception or a second rule."
+          },
+          {
+            "line": 45,
+            "text": "Imagine showing ONLY the opening still: can someone see the character, task, object, problem and impossible relationship without sound, title, text or motion? If not, discard or redesign."
+          },
+          {
+            "line": 46,
+            "text": "Check each action\u2192rule\u2192visible consequence causal arrow. If weak or invisible, discard or redesign."
+          },
+          {
+            "line": 47,
+            "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+          }
+        ]
+      },
+      "limitation": "Keyword/theme overlap is a deterministic heuristic,not proof of redundant or unnecessary instructions. No prompt edits."
+    },
+    "schema": {
+      "characters": 2750,
+      "topLevelProperties": 1,
+      "nestedDeclaredProperties": 22,
+      "requiredByPath": [
+        {
+          "path": "/",
+          "fields": [
+            "ideas"
+          ]
+        },
+        {
+          "path": "/properties/ideas/items",
+          "fields": [
+            "ideaId",
+            "title",
+            "protagonistSuggestion",
+            "everydayGoal",
+            "primaryObject",
+            "normalExpectation",
+            "impossibleRule",
+            "visibleTrigger",
+            "whyThisObject",
+            "goalRuleRelationship",
+            "frameZeroDescription",
+            "beats",
+            "finalPayoff",
+            "suggestedPayoffFamily",
+            "loopPotential",
+            "environment",
+            "providerRationale"
+          ]
+        },
+        {
+          "path": "/properties/ideas/items/$defs/SemanticBeat",
+          "fields": [
+            "strategy",
+            "visibleConsequence",
+            "newInformation"
+          ]
+        }
+      ],
+      "requiredFieldOccurrences": 21,
+      "arrays": 2,
+      "maximumSchemaJSONNestingDepth": 8,
+      "enumCount": 1,
+      "enumValues": [
+        {
+          "path": "/properties/ideas/items/properties/dialogueNeed",
+          "values": [
+            "NONE",
+            "OPTIONAL",
+            "REQUIRED"
+          ]
+        }
+      ],
+      "descriptionTextCharacters": 0,
+      "referenceSites": [
+        {
+          "path": "/properties/ideas/items/properties/beats/items",
+          "reference": "#/$defs/SemanticBeat"
+        }
+      ],
+      "unresolvedLocalReferences": [
+        {
+          "path": "/properties/ideas/items/properties/beats/items",
+          "reference": "#/$defs/SemanticBeat",
+          "missingRootPointerSegment": "$defs"
+        }
+      ],
+      "constraintCounts": {
+        "additionalProperties": 3,
+        "minItems": 2,
+        "maxItems": 2,
+        "maxLength": 18,
+        "minLength": 18,
+        "pattern": 1
+      },
+      "potentialProcessingStructures": "ideas array\u2192candidate object\u2192beats array(4\u20135 objects),$defs/$ref,required scalar fields and bounded strings. These are structural observations,not proven latency causes."
+    }
+  }
+}

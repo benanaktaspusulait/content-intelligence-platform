@@ -1,0 +1,507 @@
+SINGLE-CANDIDATE COMPACT FULL-CONTRACT CAPABILITY PROBE V1
+COMPACT_FULL_CONTRACT_TIMEOUT
+Creative contract: NOT_ASSESSED_NO_USABLE_COMPLETED_RESPONSE
+Exactly one authorized OpenAI attempt. No second request, retry, fallback, DeepSeek, production prompts or media render. STOP.
+
+1. EXACT PROVIDER / MODEL
+
+OpenAI / gpt-6.1-sol. Existing openai-escalation capability profile; no model substitution or discovery call. Official model documentation consulted: https://developers.openai.com/api/docs/models/gpt-6.1-sol . Existing accepted transport configuration was reused, not migrated.
+
+2. PROMPT VERSION / HASH / IDENTITY
+
+semanticConceptPromptVersion=v2-compact; promptVersion=semantic-concept-prompt-v2-compact
+SHA256=94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb
+Exact prompt.json equals the previously accepted compact-prompt.json, including cast/history/seed/raw count. System text unchanged; no experimental extra instructions.
+
+3. PROMPT SIZE
+
+{
+  "systemCharacters": 5683,
+  "userCharacters": 1409,
+  "totalMessageTextCharacters": 7092,
+  "systemUTF8Bytes": 5701,
+  "systemTextSHA256": "9f386c84c0281918117a4ec1fb49e19d20fe48512d21f7bcb1b65c5070c91340",
+  "tokenEstimate": null
+}
+Message sum excludes separators; previous compact audit totalText included one newline. Native schema size is separate. Exact tokenization/billing not estimated.
+
+4. SCHEMA VERSION / HASH / LAST-MILE PROOF
+
+{
+  "step": "FINAL_PROVIDER_SCHEMA_VALIDATION",
+  "version": "semantic-native-schema-integrity-v1",
+  "syntax": "VALID_DRAFT202012",
+  "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "references": [
+    {
+      "reference": "#/$defs/SemanticBeat",
+      "originPath": "/properties/ideas/items/properties/beats/items/$ref",
+      "resolvedTargetPath": "/$defs/SemanticBeat",
+      "attemptedTargetPath": "/$defs/SemanticBeat",
+      "status": "RESOLVED",
+      "scope": "Final provider document root; no external URI retrieval"
+    }
+  ],
+  "unresolvedReferences": 0,
+  "unsupportedReferences": 0,
+  "cyclicReferences": 0,
+  "serializationRoundTripIdentical": true
+}
+{
+  "candidateLogicalSchemaIdentical": true,
+  "canonicalLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+  "providerCandidateLogicalSha256": "521cd44db4536ffea370dc671de4efd8e1e3e439c3ad4d13626dee59a6fd57fa",
+  "compared": [
+    "all candidate/beat fields",
+    "field types",
+    "required lists",
+    "min/max bounds",
+    "enums",
+    "nullability",
+    "defaults",
+    "additionalProperties",
+    "annotations"
+  ],
+  "onlyRepresentationChange": "$defs ownership moved from embedded candidate root to actual provider root; $ref strings unchanged."
+}
+Accepted corrected semantic-native-schema-integrity-v1. Native mode=json_schema;strict=false unchanged. ideas minItems=maxItems1; beats required minItems4/maxItems5; nested strategy/visibleConsequence/newInformation required. durationSeconds optional number,default15,minimum10,maximum20. Full canonical fields/enums/required lists preserved.
+Exact validated schema persisted in request-before-sdk.json and last-mile-sdk-request.json. LastMileSchemaGuard validates the actual SDK kwargs before forwarding; whole SDK kwargs and actual HTTP body must match the planned request hash. No schema mutation/fallback.
+
+5. CANDIDATE COUNT
+
+Requested exactly1. Full accepted response structure. Returned candidate objects: unavailable. No multi-candidate request.
+
+6. EXECUTION PARAMETERS BEFORE CALL
+
+{
+  "experimentId": "semantic-compact-full-contract-probe-1-run-001",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "promptVersion": "v2-compact",
+  "promptHash": "94f61976840e76e44ec6e2f15c51c360592e4adf9cc0c10d31507f1a4694eecb",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "candidateCount": 1,
+  "structuredOutputMode": "json_schema",
+  "strict": false,
+  "streamingMode": "NON_STREAMING",
+  "reasoningEffort": "high",
+  "temperature": null,
+  "maxOutputTokens": 8192,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "SDKTimeout": {
+    "connect": 15,
+    "read": 90,
+    "write": 60,
+    "pool": 15
+  },
+  "maximumLiveRequests": 1,
+  "SDKRetries": 0,
+  "retries": 0,
+  "fallbacks": 0,
+  "authorization": {
+    "file": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-compact-full-contract-probe-v1/authorization.txt",
+    "sha256": "9ec3403ddfbeb1af4480d3754741931ad25eb28f7efde5bbd7d92a38261e677c"
+  },
+  "tests": {
+    "noNewFailures": true,
+    "schemaIntegrityPassed": true,
+    "fullPassed": 3169,
+    "failed": 36,
+    "skipped": 2,
+    "warnings": 3030,
+    "durationSeconds": 206.28,
+    "newMockTestsPassed": 33,
+    "focusedPassed": 173,
+    "acceptedBaselineFailureIds": [
+      "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+      "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+      "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+      "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+      "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+      "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+      "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+      "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+      "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+      "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+      "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+      "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+      "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+      "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+      "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+      "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+      "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+      "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+      "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+      "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+      "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+      "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+    ],
+    "actualFailureIds": [
+      "tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration",
+      "tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta",
+      "tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline",
+      "tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts",
+      "tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates",
+      "tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]",
+      "tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]",
+      "tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable",
+      "tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence",
+      "tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]",
+      "tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\\nPRODUCTION NOTE: Keep later contact readable.]",
+      "tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens",
+      "tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result",
+      "tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates",
+      "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]",
+      "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]",
+      "tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]",
+      "tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates",
+      "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]",
+      "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]",
+      "tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]",
+      "tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation",
+      "tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison",
+      "tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt"
+    ],
+    "newFailures": [],
+    "missingBaselineFailures": [],
+    "sourceHashes": {
+      "intelligence/ml-service/app/workflow/semantic_compact_capability_probe_v1.py": "6cd0dc23b9ab0a7fbaed67081389c725f0da20100554304ebb4f99f8f5ae8ba7",
+      "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py": "1ad849d464fbedf42869bc9debb3c73ce81354bad7d5167ccedc2c9732e6617a",
+      "intelligence/scripts/probe-semantic-compact-v1.py": "53f4a876a55310cd8f59da6ea7a06132e77d3f1dafcaa33cf6491ee5313eb752"
+    },
+    "protectedExistingFilesUnchanged": 2354,
+    "testExternalCalls": 0,
+    "renders": 0
+  }
+}
+max_completion_tokens8192; reasoning_effort=high; temperature omitted because unsupported in accepted profile; non-streaming (SDK default, no stream parameter). SDK max_retries0. httpx.Timeout(connect15/read90/write60/pool15); experiment wall limit180 seconds. Same bounded one-candidate envelope as preceding corrected-schema probe. No global timeout setting changed.
+
+7. EXACT LIVE REQUEST COUNT
+
+{
+  "logicalRequestCount": 1,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "maxRequestCount": 1,
+  "SDKMaxRetries": 0,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0
+}
+Fixed run path claimed exclusively before execution; SDK and HTTP boundary caps1,SDK max_retries0. Dispatch receipts count attempts; a timeout alone cannot prove remote completion.
+
+8. DURATION / OBSERVABLE TRANSPORT METRICS
+
+{
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T09:38:06.687379+00:00",
+    "wallClockEndUTC": "2026-10-30T09:39:37.470605+00:00",
+    "monotonicElapsedSeconds": 90.782689292,
+    "wallClockSpanSeconds": 90.783226,
+    "wallMinusMonotonicSeconds": 0.000536707999998498,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "httpStatus": null,
+  "httpRequestId": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "providerRequestId": null,
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "finishReason": null,
+  "errorClass": "APITimeoutError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APITimeoutError",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null
+    },
+    {
+      "exceptionClass": "TimeoutError",
+      "httpStatus": null,
+      "providerCode": null
+    }
+  ],
+  "safeTrace": [
+    {
+      "file": "semantic_compact_capability_probe_v1.py",
+      "line": 82,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "semantic_compact_capability_probe_v1.py",
+      "line": 78,
+      "function": "exact_guard"
+    },
+    {
+      "file": "semantic_native_schema_integrity_v1.py",
+      "line": 153,
+      "function": "__call__"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ]
+}
+Outer monotonic duration includes bounded worker startup and response delivery, excludes later deterministic analysis. Header/content timing uses worker request-start clock. Non-streaming first usable content is recorded after full content is returned, not first token. Unobservable values remain null.
+Observable timeout layers: [
+  "ReadTimeout",
+  "ReadTimeout"
+]
+
+9. RESPONSE BYTES
+
+0 UTF-8 bytes of stored assistant content. Raw response.txt is exact and unmodified; no beat/rule/duration repair.
+
+10. TOKEN USAGE / COST
+
+null
+Provider-reported cost USD: None. Unavailable cost is not estimated.
+
+11. EXECUTION CLASSIFICATION
+
+COMPACT_FULL_CONTRACT_TIMEOUT
+PASS requires nonzero completed content, strict JSON parsing, native schema conformance and normalization. Creative quality is separate. Native/domain conformance and normalization checks run only on stored response; no repair or replacement generation. An unnormalized source cannot earn execution PASS.
+
+12. COMPLETE EXACT RETURNED CANDIDATE
+
+No complete returned candidate available. No scenes or concepts inferred from missing content.
+
+13. CREATIVE CONTRACT VALIDATION BEFORE FULL PIPELINE
+
+Not run: no completed usable response.
+Pre-pipeline-creative-contract.json is persisted before invoking full accepted analysis. Scalar actor/object field counts are declarations, not visual counts. Presence is distinguished from semantic support. Adapter normalization internally reuses its accepted Naturalness/Beat Grammar behavior; this is not a new or modified validator. No response repair.
+Creative-contract classification: NOT_ASSESSED_NO_RESPONSE
+
+14. RULE CONSISTENCY / TRIGGER / PAYOFF LINKAGE
+
+Not assessed: no completed usable response.
+Existing source-constraint findings retain offending beat/source behavior and declared rule. Absence of lexical contradiction is not proof; AMBIGUOUS remains visible. Rule/payoff conclusions use structured source and canonical evidence, never provider rationale authority. These are intended visuals described in text; no video frames observed.
+
+15. BEAT AND DURATION VALIDATION
+
+No returned candidate; beat/duration conformance untested for this response.
+Three or6+ beats fail the creative quantity contract; declared duration>20 fails. Existing minItems4/maxItems5 and duration maximum20 were validated unchanged. No parser acceptance is used to override these rules. Target~15 is guidance; local omitted duration defaults15. Rendered duration remains unmeasured. No new schema-contract defect is asserted without observed mismatch.
+
+16. FULL ACCEPTED DETERMINISTIC PIPELINE RESULTS
+
+Full pipeline not run or no normalized record: No completed response. No scores invented.
+Complete canonical evidence, Naturalness, Admission V2, Beat Grammar, structured SFE, shape/history/ranking/preselection receipts are in pipeline.json when available. Exact unmodified fields and scores are also in complete-candidate-and-pipeline.txt. All gates/thresholds are unchanged.
+
+17. EXACT PRODUCTION BLOCKERS
+
+Not available: candidate did not reach accepted pipeline.
+Source/contract failures are recorded separately from production blockers; no creative override, promotion or post-generation retry. One sample is capability evidence, not evidence that this prompt/model is better or worse creatively.
+
+18. COMPARISON WITH PREVIOUS PROBES
+
+[
+  {
+    "label": "Full V2 + full legacy native schema",
+    "source": "semantic-provider-transport-isolation-v1-run-001/probe-c",
+    "systemCharacters": 9879,
+    "userCharacters": 4670,
+    "schemaCharacters": 2750,
+    "seconds": 90.69867549999981,
+    "responseBytes": 0,
+    "status": "FAILED",
+    "maxOutputTokens": 8192
+  },
+  {
+    "label": "Full V2 + small native schema",
+    "source": "semantic-provider-contract-decomposition-v1-run-001/probe-d",
+    "systemCharacters": 9879,
+    "userCharacters": 4670,
+    "schemaCharacters": 368,
+    "seconds": 90.72335608399953,
+    "responseBytes": 0,
+    "status": "FAILED",
+    "maxOutputTokens": 4096
+  },
+  {
+    "label": "Minimal + corrected full native schema",
+    "source": "semantic-native-schema-integrity-probe-1-run-001",
+    "systemCharacters": 17,
+    "userCharacters": 107,
+    "schemaCharacters": 2750,
+    "seconds": 78.444184042,
+    "responseBytes": 2078,
+    "status": "COMPLETED",
+    "maxOutputTokens": 8192
+  },
+  {
+    "label": "Compact V2 + corrected full native schema",
+    "source": "intelligence/docs/semantic-compact-full-contract-probe-1-run-001",
+    "systemCharacters": 5683,
+    "userCharacters": 1409,
+    "schemaCharacters": 2750,
+    "seconds": 90.782689292,
+    "responseBytes": 0,
+    "status": "FAILED",
+    "classification": "COMPACT_FULL_CONTRACT_TIMEOUT",
+    "maxOutputTokens": 8192
+  }
+]
+C used the prior embedded-reference schema, now known to have unresolved root-local refs. D reduced only native schema; full schema text remained in its user payload and intentionally conflicted with the small output contract. D output cap4096 differs from8192. Minimal/corrected probe returned content but failed local3-beat/24-second bounds. These confounds and one sample per condition prevent a unique causal attribution to prompt size or schema complexity. This probe establishes only the current combination's observed result.
+
+19. TESTS COMPLETED BEFORE LIVE
+
+Focused: intelligence/ml-service/.venv/bin/python intelligence/scripts/test-story-premise-offline.py tests/test_semantic_compact_capability_probe_v1.py tests/test_semantic_prompt_v2_compact.py tests/test_semantic_native_schema_integrity_v1.py tests/test_semantic_prompt_v2.py -q --tb=short
+173 passed, including33 new zero-network mock tests. Covered exact prompt/schema/count, hard request cap1, installed SDK mock wire/body identity, success, timeout, parse/schema/cross-field failure, opening/rule/trigger problems, duration violation, no retry/fallback and historical immutability.
+Full: intelligence/ml-service/.venv/bin/python intelligence/scripts/test-story-premise-offline.py tests --ignore=tests/qa --ignore=tests/test_video_qc.py -q --tb=short
+3169 passed;36 accepted baseline failures;2 skipped;3030 warnings;206.28seconds. Exact failure set verified before live. Test harness denied network/media and stripped API keys. No mock counted as a live call.
+
+20. PROOF REQUEST COUNT1
+
+Run directory atomically claimed before dispatch, preserved on failure. CLI uses one fixed experiment path and refuses an existing claim. request-started.json→sdk-request-forwarded.json→http-request-started.json record the one logical/SDK/HTTP attempt as observable. HTTP events also refuse a second attempt, including redirects. Last-mile request exact equality verified=True
+
+21. PROOF NO RETRY
+
+Existing adapter initializes OpenAI(max_retries=0). Worker verifies max_retries0 before calling. Both last-mile schema guard and HTTP guard cap1; only one runner invocation; no fallback/repair loop. An exclusive run-directory claim prevents re-execution after timeout/parse/schema/contract failure. Unit tests exercise double dispatch and repeat execute refusal.
+
+22. PROOF NO DEEPSEEK
+
+Exact provider/model/mode/settings tuple is checked before credential access or dispatch. DeepSeek/alternate model/JSONmode/changed reasoning settings rejected by tests. DeepSeekCalls=0; no secondary provider constructed.
+
+23. PROOF NO RENDER
+
+Renders=0. Only raw ideation transport plus text-based deterministic validation executed. No production prompts or media processes invoked. No larger concept request followed this result. STOP.
+
+24. PROOF V1 / V2 / COMPACT PROMPTS UNCHANGED
+
+intelligence/ml-service/app/workflow/semantic_concept_provider.py before=after SHA256=6b02ad77b6e2434ca14467404dc473c2f5bf1c41027ba8ef74d807ff2c932c82
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.py before=after SHA256=f2a22e66eb47db9a3dfae21bd136671121942025d3c70bb7a35d5b9e63f95052
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt before=after SHA256=706b4ffc5434874f49a3c8832490e6e9649b25b02eeb4d93ff7c8617c96bc858
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.py before=after SHA256=e5a6c7de9b657dd4c4c3253919dd00654951c8aaf272ca3d0feae64470c7d414
+intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.txt before=after SHA256=b99a6f10a7987613a4ff968c19b4532162295803fe4726e94e62a939689bf85d
+
+25. PROOF VALIDATORS / SCORES / THRESHOLDS UNCHANGED
+
+intelligence/ml-service/app/workflow/short_form_engine.py before=after SHA256=a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46
+intelligence/ml-service/app/workflow/canonical_evidence_propagation.py before=after SHA256=b0988995f10eae22fb17cbbeb413bc38e03cf62740106bd91388ce3b87222ec0
+intelligence/ml-service/app/workflow/premise_naturalness.py before=after SHA256=8b8305ac53dd7eafce56d243c3814121fae9a7c3b84e5745df5bacc11e9072c7
+intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py before=after SHA256=64f899da96cf9d4661d0c2e6d91f5e3f8f3c9db25665def58f0bab431c2a618f
+intelligence/ml-service/app/workflow/beat_grammar.py before=after SHA256=33a8c85e8358294ea6a7df4a56a5312193a39a99a713f5e444e45b5ecd8b6be6
+intelligence/ml-service/app/workflow/creative_shape.py before=after SHA256=01b71cee68635bee187a8b1c09afce6e17887cca71022a56679c59571178a714
+intelligence/ml-service/app/workflow/concept_ranking.py before=after SHA256=65c136ee1e6727e290c3f14f052cba329807c4e1057e4412ae4c9613070085e3
+intelligence/ml-service/app/workflow/structured_sfe_replay.py before=after SHA256=d2c74961091ce232a12fff3330c413ca0adf424a3cb714aa32eb5f4e5523f397
+intelligence/ml-service/app/workflow/shape_generation.py before=after SHA256=c07003bc83c2d9eef62d07a5a2ee985ad656c17a6ea4a0edc86be02c6d84e954
+intelligence/ml-service/app/workflow/semantic_native_schema_integrity_v1.py before=after SHA256=55a6018bf30c04d3008045726aaa266a9a9698df80085bc6d2bc37edf459bba2
+Only three new code/test/CLI files were added; all frozen before full regression and identical during/after live. Their hashes: {
+  "intelligence/ml-service/app/workflow/semantic_compact_capability_probe_v1.py": "6cd0dc23b9ab0a7fbaed67081389c725f0da20100554304ebb4f99f8f5ae8ba7",
+  "intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py": "1ad849d464fbedf42869bc9debb3c73ce81354bad7d5167ccedc2c9732e6617a",
+  "intelligence/scripts/probe-semantic-compact-v1.py": "53f4a876a55310cd8f59da6ea7a06132e77d3f1dafcaa33cf6491ee5313eb752"
+}
+New creative-contract observations summarize existing results only; they do not feed back into validator/ranking/preselection decisions.
+
+26. PROOF HISTORICAL EXPERIMENTS UNCHANGED
+
+2354 starting files verified byte-identical before full tests, before live and after live. Changes0. Exact maps:protected-before.json/protected-after.json. Old run requests/results/manifests/classifications and accepted compact audit are untouched. New experiment/evidence stored only in the two new task directories.
+
+27. PROOF ONLY ACCEPTED BASELINE FAILURES REMAIN
+
+Exact baseline set equality against accepted compact verification, not just count equality.3169 passed=3136 previous+33 new;36 failed;2 skipped; new failures0; missing baseline failures0. Raw full-regression.log and pre-live-verification.json retain evidence.
+tests/test_actor_source_attempts.py::test_inline_character_only_constraint_is_not_an_actor_declaration
+tests/test_authoring_contract_repair_v2.py::test_nullable_unchanged_fields_and_no_settings_padding_still_compile_authored_delta
+tests/test_creative_reconstruction_v2.py::test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline
+tests/test_creative_roles.py::test_canonical_story_evaluation_binds_only_source_quoted_story_plan_attempts
+tests/test_creative_roles.py::test_long_form_story_role_maps_explicit_goal_and_runs_existing_canonical_gates
+tests/test_creative_v2_generation_evidence.py::test_reconstruction_changes_with_objective_without_a_prepared_answer
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[ball-crocodile-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[box-cat-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[island-journal-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[lamp-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[snack-box-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sneaky-door-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[spot-cat-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[sticky-ball-01]
+tests/test_family10_golden_review.py::test_reviewed_requirements_are_source_grounded_and_lossless_across_assessment_api[upside-chair-01]
+tests/test_family2_escalation.py::test_island_journal_escalation_is_not_applicable
+tests/test_hook_002_metamorphic_stability.py::test_actual_p2_stops_prompt_only_generation_but_preserves_score_and_evidence
+tests/test_hook_002_metamorphic_stability.py::test_formatting_only_preserves_all_rule_outcomes_and_score
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [  starting   side   visible  ]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [locked lateral composition]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [starting side visible]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[ [static camera with the result held beside the action]]
+tests/test_hook_002_metamorphic_stability.py::test_later_beat_and_metadata_edits_cannot_change_hook_002[\nPRODUCTION NOTE: Keep later contact readable.]
+tests/test_hook_002_metamorphic_stability.py::test_missing_opening_evidence_never_becomes_pass_from_later_start_tokens
+tests/test_hook_002_metamorphic_stability.py::test_saved_real_candidate_keeps_identical_opening_inputs_and_hook_result
+tests/test_model_authored_execution.py::test_complete_mock_provider_source_canonical_critic_and_comparison_gates
+tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[Original-saved0]
+tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-a-saved1]
+tests/test_motion_token_policy.py::test_saved_workflow_and_frozen_history[candidate-b-saved2]
+tests/test_post_family_workflow.py::test_curiosity_canonical_review_skips_only_physics_gates_and_keeps_shared_quality_gates
+tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[Original-saved0]
+tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-a-saved1]
+tests/test_ruleset_1_11_measurements.py::test_saved_inputs_preserve_1_10_and_correct_only_measurements[candidate-b-saved2]
+tests/test_ruleset_1_3_new_rules.py::TestGoal001GoalObstructionClarity::test_flawed_juice_mechanic_demo_fails_as_missing_motivation
+tests/test_ruleset_1_4_new_rules.py::test_engine_silhouette_duplicate_blocks_missing_comparison
+tests/test_studio_self_service.py::test_one_idea_is_not_a_timecoded_story_and_retains_paid_receipt
+Completed the one authorized capability probe. STOP. No additional live action performed.

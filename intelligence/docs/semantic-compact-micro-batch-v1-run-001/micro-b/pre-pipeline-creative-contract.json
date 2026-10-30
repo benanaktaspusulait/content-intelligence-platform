@@ -1,0 +1,84 @@
+{
+  "stage": "BEFORE_FULL_PIPELINE",
+  "sourceCandidatePresent": true,
+  "declaredProtagonistFields": 1,
+  "declaredPrimaryObjectFields": 1,
+  "depictedProtagonistCount": null,
+  "depictedPrimaryObjectCount": null,
+  "countLimitation": "Scalar fields do not prove depicted actor/object counts; normalization checks canonical named actors, not every implied entity.",
+  "everydayGoalPresent": true,
+  "frameZeroDescriptionPresent": true,
+  "impossibleRulePresent": true,
+  "visibleTriggerPresent": true,
+  "payoffPresent": true,
+  "beatCount": 4,
+  "beatCountPassed": true,
+  "eachBeat": [
+    {
+      "number": 1,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko lifts the broom over the little fold and gives the dirt a short forward shove.",
+        "visibleConsequence": "A second, knee-high floor pleat rises beneath the dirt, leaving the dustpan below it.",
+        "newInformation": "Reaching over the first obstacle creates a taller obstacle under the target."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 2,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko steps onto the first pleat and stretches the broom across the second for a longer sweep.",
+        "visibleConsequence": "The longer swept strip becomes a waist-high pleat with the dirt balanced on top.",
+        "newInformation": "The length of the sweep determines the height of the new obstruction."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 3,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko climbs onto the knee-high pleat and places both feet immediately behind the dirt on the waist-high strip.",
+        "visibleConsequence": "Kiko and the dirt share a narrow elevated strip, with the dustpan clearly visible far below.",
+        "newInformation": "Kiko has reached the dirt, but now stands on the floor that the broom will fold."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 4,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Kiko reaches the broom behind both heels and makes one long forward sweep beneath the feet toward the dirt.",
+        "visibleConsequence": "The occupied strip folds into a towering pleat, leaving Kiko and the dirt together on its narrow summit above the untouched dustpan.",
+        "newInformation": "The broom carries the sweeper upward by exactly the same mechanism that carries the dirt."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    }
+  ],
+  "ruleConsistency": "AMBIGUOUS",
+  "ruleFindings": [],
+  "ruleConsistencyLimitation": "Existing source-constraint comparison can find explicit violations; no finding is not full semantic proof. Final source-supported status is reported with pipeline evidence.",
+  "duration": {
+    "supplied": true,
+    "declared": 15,
+    "effectiveLocalDefault": 15,
+    "rangePassed": true,
+    "target": 15,
+    "maximum": 20,
+    "renderMeasured": false
+  },
+  "finalPayoffEqualsLastConsequence": true,
+  "structuralContractPassed": true
+}

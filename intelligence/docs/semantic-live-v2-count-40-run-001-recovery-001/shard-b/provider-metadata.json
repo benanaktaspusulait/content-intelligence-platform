@@ -1,0 +1,27 @@
+{
+  "status": "REQUEST_FAILED",
+  "errorType": "ExperimentWallTimeout",
+  "safeError": "Bounded shard worker stopped; no retry or replacement.",
+  "usage": null,
+  "providerCostUsd": null,
+  "providerRequestId": null,
+  "sdkMaxRetries": 0,
+  "observableTransportRetries": 0,
+  "workerTerminated": true,
+  "shardId": "B",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "promptVersion": "v2",
+  "startedAt": "2026-10-26T10:54:19.165011+00:00",
+  "finishedAt": "2026-10-26T10:59:19.175931+00:00",
+  "latencySeconds": 300.0123390410008,
+  "timeout": {
+    "readSeconds": 120,
+    "connectSeconds": 15,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 300
+  },
+  "maxOutputTokens": 32768,
+  "logicalRequestCount": 1
+}

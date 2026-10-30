@@ -1,0 +1,15 @@
+{
+  "algorithm": "Canonical JSON SHA-256 for objects; raw UTF8 SHA-256 for system text",
+  "DFullMessagesHash": "7c7fb2aed26bd0f41540f1ad31e565d6ea7f01b7f7c150ec2bcaccb9c9ddce75",
+  "acceptedCFullMessagesHash": "7c7fb2aed26bd0f41540f1ad31e565d6ea7f01b7f7c150ec2bcaccb9c9ddce75",
+  "DSystemHash": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+  "acceptedV2SystemHash": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+  "EFullSchemaHash": "84c19c319a5df95303d70c5c54d62488bc69eaba364d8d5ddac65978cdfd70a1",
+  "acceptedCFullSchemaHash": "84c19c319a5df95303d70c5c54d62488bc69eaba364d8d5ddac65978cdfd70a1",
+  "EFullFormatHash": "773fe7a39d4820e000dd87ffdc60ff8467fab409e456352d0bbd14902010c395",
+  "acceptedCFullFormatHash": "773fe7a39d4820e000dd87ffdc60ff8467fab409e456352d0bbd14902010c395",
+  "DPromptExact": true,
+  "EFullSchemaExact": true,
+  "canonicalSchemaRepaired": false,
+  "caveat": "D exact user text retains embedded full candidateSchema and declared8192 output metadata; SDK ceiling4096 is explicit in request. E exact native wrapper retains unresolved local $ref; no fix applied."
+}

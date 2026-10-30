@@ -1,0 +1,46 @@
+{
+  "ideas": [
+    {
+      "ideaId": "seed42-001",
+      "title": "The Wrinkle Has to Go Somewhere",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Iron a wrinkled shirt flat.",
+      "primaryObject": "Clothes iron",
+      "normalExpectation": "Pressing an iron over a shirt removes its creases while the ironing board provides flat support.",
+      "impossibleRule": "Whenever the iron presses a crease out of the shirt, an identical crease forms in the ironing board directly beneath that crease.",
+      "visibleTrigger": "The iron presses a raised shirt crease flat.",
+      "whyThisObject": "The iron needs firm, flat support beneath the fabric; its ordinary smoothing action progressively folds that supporting surface.",
+      "goalRuleRelationship": "Every crease Mimi removes from the shirt makes the board less able to support the next ironing stroke.",
+      "frameZeroDescription": "Mimi stands at an ironing board with an iron planted on a shirt. One sleeve is smooth above a sharply zigzagged section of board; the remaining shirt is heavily wrinkled on the still-flat section. The board's padded edge visibly follows the deep zigzag beneath the smooth sleeve.",
+      "beats": [
+        {
+          "strategy": "Mimi slides the iron across the shirt's wrinkled middle.",
+          "visibleConsequence": "The shirt's middle becomes smooth while the board beneath it buckles into a broad ridge, tipping the remaining wrinkles toward Mimi.",
+          "newInformation": "A larger shirt crease produces the same larger fold in the supporting board."
+        },
+        {
+          "strategy": "Mimi pulls the wrinkled hem onto the board's remaining flat end and presses it.",
+          "visibleConsequence": "The hem flattens, but the board's end folds upward, leaving the shirt draped between two raised sections.",
+          "newInformation": "Moving to unused support only relocates the accumulating board creases."
+        },
+        {
+          "strategy": "Mimi stretches the last wrinkled sleeve across the board's central ridge and presses along it.",
+          "visibleConsequence": "The sleeve smooths as a new crease folds the ridge into a compact accordion, leaving almost no level working surface.",
+          "newInformation": "The existing board folds remain while each newly removed shirt crease adds another."
+        },
+        {
+          "strategy": "Mimi presses the final cuff crease against the accordion's small flat top, then lifts the shirt by its shoulders.",
+          "visibleConsequence": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+          "newInformation": "The shirt is flat because its entire collection of creases now occupies the board."
+        }
+      ],
+      "finalPayoff": "Mimi holds up a perfectly smooth shirt above an ironing board crumpled into a giant shirt-shaped set of wrinkles.",
+      "suggestedPayoffFamily": "Solution-created problem",
+      "loopPotential": "No reset; the smooth shirt and crumpled board remain.",
+      "environment": "A quiet laundry corner with one ironing board and clear floor space.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "Ironing depends on flat support. Transferring each removed crease into that support lets successful smoothing progressively destroy the working surface.",
+      "durationSeconds": 15
+    }
+  ]
+}

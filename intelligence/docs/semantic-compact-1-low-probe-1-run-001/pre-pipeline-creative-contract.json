@@ -1,0 +1,84 @@
+{
+  "stage": "BEFORE_FULL_PIPELINE",
+  "sourceCandidatePresent": true,
+  "declaredProtagonistFields": 1,
+  "declaredPrimaryObjectFields": 1,
+  "depictedProtagonistCount": null,
+  "depictedPrimaryObjectCount": null,
+  "countLimitation": "Scalar fields do not prove depicted actor/object counts; normalization checks canonical named actors, not every implied entity.",
+  "everydayGoalPresent": true,
+  "frameZeroDescriptionPresent": true,
+  "impossibleRulePresent": true,
+  "visibleTriggerPresent": true,
+  "payoffPresent": true,
+  "beatCount": 4,
+  "beatCountPassed": true,
+  "eachBeat": [
+    {
+      "number": 1,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi opens the scissors, turns the paper a quarter-turn, and closes the blades along the next side of the square.",
+        "visibleConsequence": "The paper to the blades' right folds upright, leaving two adjoining walls around the still-attached square and a buckled paper corner.",
+        "newInformation": "Turning the sheet changes which outer flap rises, not whether the scissors cut."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 2,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi tilts the sheet toward herself to reach the third outlined side and closes the scissors through it.",
+        "visibleConsequence": "A third outer flap folds upright to the blades' right, making a three-sided paper enclosure with the scissors entering through its open side.",
+        "newInformation": "The remaining open side is now the only unobstructed approach to the outline."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 3,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi slides the open scissors through that gap and positions the blades on the final outlined side, keeping the handles inside the enclosure.",
+        "visibleConsequence": "As the blades close through the paper, the fourth outer flap folds upright to their right, forming a paper box around the scissors.",
+        "newInformation": "Completing the outline encloses the tool instead of freeing the square."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    },
+    {
+      "number": 4,
+      "strategyPresent": true,
+      "visibleConsequencePresent": true,
+      "newInformationPresent": true,
+      "source": {
+        "strategy": "Mimi points the scissors upward inside the box and closes them through the top edge of its front wall to make an exit.",
+        "visibleConsequence": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+        "newInformation": "Trying to cut an escape folds part of the enclosure over the trapped tool."
+      },
+      "ruleConsistency": "AMBIGUOUS",
+      "findings": []
+    }
+  ],
+  "ruleConsistency": "AMBIGUOUS",
+  "ruleFindings": [],
+  "ruleConsistencyLimitation": "Existing source-constraint comparison can find explicit violations; no finding is not full semantic proof. Final source-supported status is reported with pipeline evidence.",
+  "duration": {
+    "supplied": true,
+    "declared": 15,
+    "effectiveLocalDefault": 15,
+    "rangePassed": true,
+    "target": 15,
+    "maximum": 20,
+    "renderMeasured": false
+  },
+  "finalPayoffEqualsLastConsequence": true,
+  "structuralContractPassed": true
+}

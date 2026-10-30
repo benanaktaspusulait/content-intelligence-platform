@@ -1,0 +1,30 @@
+{
+  "provider": "openai",
+  "baseUrl": "https://api.openai.com/v1",
+  "arguments": {
+    "model": "gpt-6.1-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return JSON only."
+      },
+      {
+        "role": "user",
+        "content": "Return exactly this JSON object and nothing else: {\"status\":\"ok\"}"
+      }
+    ],
+    "response_format": {
+      "type": "text"
+    },
+    "max_completion_tokens": 512,
+    "reasoning_effort": "high"
+  },
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxRetries": 0
+}

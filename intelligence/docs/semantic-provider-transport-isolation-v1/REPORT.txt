@@ -1,0 +1,174 @@
+SEMANTIC PROVIDER TRANSPORT ISOLATION V1
+
+PRIMARY FAILURE CLASSIFICATION
+FULL_V2_CONTRACT_FAILURE
+
+OBSERVED BOUNDARY
+A PASS → B PASS → C FAIL. Basic transport,model response,SDK content access and tiny native structured-output handling worked. The first observed failure was the full accepted V2 prompt/schema envelope for exactly1 candidate. This associates failure with full-contract execution complexity; it does not isolate a unique root cause or establish a creative Prompt V2 failure.
+C failed with APITimeoutError,underlying chain ReadTimeout→ReadTimeout→TimeoutError. Post-hoc full V2 schema validation was never reached because no usable response was returned. The90s HTTP read timer fired before the180s parent wall deadline. No fourth request,repair,refactor,model/provider change or DeepSeek call occurred.
+
+RESULT TABLE
+Level | Result | Wall seconds | Usable bytes | First usable content ms | Finish | Tokens(in/out/total)
+A | PASS | 3.256941 | 15 | 2638.298166999448 | stop | 28/8/36
+B | PASS | 6.299789 | 124 | 5686.020624998491 | stop | 73/146/219
+C | FAIL | 90.698675 | 0 | None | None | None/None/None
+
+EXACT RETURNED A / B RESPONSES
+A:
+{"status":"ok"}
+B:
+{"title":"Maya’s Rainy Errand","goal":"Maya wants to reach the bakery without getting wet.","object":"A yellow umbrella."}
+C:0 usable bytes; no fictional candidate or creative metrics can be reported. No mock content is substituted.
+
+BEFORE-EXECUTION REQUEST METRICS
+Level | System chars | User chars | Text chars | Schema chars | Output ceiling | Declared properties | Schema JSON nesting | Array schemas
+A | 17 | 65 | 82 | 0 | 512 | 0 | 0 | 0
+B | 52 | 71 | 123 | 176 | 1024 | 3 | 3 | 0
+C | 9879 | 4670 | 14549 | 2750 | 8192 | 23 | 8 | 2
+Prior5 | 9879 | 4669 | 14548 | 2750 | 16384 | 23 | 8 | 2
+Schema document nesting is not resolved data depth. $defs are counted once; refs are not expanded. Full static records include all required fields by JSON path,serialized request characters/UTF8 bytes,mode and strict setting. The local runtime has no installed tiktoken/tokenizer utility,so token estimates are null. No token-counting API call or download occurred.
+Text-character totals count system+user messages; schema characters measure the separate response schema. The full V2 user payload already contains candidateSchema,so these numbers must not be added as if schema text were absent from messages. Prior5 and C have the same2750-character item/envelope schema size despite differing item cardinality; schema nesting is identical.
+
+EXACT SDK / API / RESPONSE PATH
+profile(openai-escalation)→CreativeCapabilityProvider(configuration,max_output_tokens,timeout_seconds)→OpenAI(...,base_url=profile.baseUrl,timeout=...,max_retries=0)→client.chat.completions.create(**args). No API migration,new SDK,response/body hooks or streaming path was added.
+Arguments are model,messages,response_format,max_completion_tokens,reasoning_effort=high. Temperature is not sent because the existing profile marks it unsupported. tools,tool_choice,parallel_tool_calls and seed are not sent as SDK arguments. C retains existing seed42 as prompt metadata only. Streaming remains the existing non-streaming default.
+Completed response access:response.choices[0].message.content. Existing adapter records usage,completion response.id and finish_reason; it raises on non-stop termination. It does not expose partial model events. Request snapshots contain no credentials/Authorization headers. Credential values remain in environment/SDK setup only.
+Parsing:A/B use duplicate-key/nonfinite-safe local JSON parsing,then exact diagnostic object/type checks. A expects {status:ok}; B expects exactly title/goal/object string fields. These are diagnostic checks,not new production validators. C would use the existing parse_response→SemanticIdea Pydantic schema and then the accepted canonical/creative pipeline,only on successful C.
+
+STRUCTURED OUTPUT
+A uses response_format={type:text} because the current adapter requires a response_format attribute; no schema,Semantic Prompt V2 or JSON-schema system suffix is sent. Its messages total82 characters.
+B uses the existing native json_schema mechanism with3 required string properties,title/goal/object,additionalProperties=false,strict=false. It is a small non-production fictional example and never enters Naturalness/BG/SFE/ranking.
+C uses the exact accepted V2 system instructions and real SemanticIdea item schema,with envelope minItems=maxItems1. Production schema definitions,required fields,4–5 beat constraints,additionalProperties=false behavior and strict=false mechanism remain unchanged. The5-candidate stored request uses the same item schema and nesting,cardinality5 and output16384. C output8192 is an explicit bounded allowance for one candidate,not a creative/schema simplification.
+
+TIMEOUT / RETRY AUDIT
+Every diagnostic uses connect15s/read90s/write60s/pool15s. SDK timeout is an HTTPX per-phase timeout object,not a total SDK wall timer. Parent experiment wall timeout180s plus bounded5s terminate/5s kill cleanup. No application-global timeout setting was changed.
+Previous5 failed after90.726688s with APITimeoutError caused by ReadTimeout. C failed after90.698675s with the same HTTP read phase. These are not connect,write,pool or parent-wall timeout results. A/B completed before any timer fired.
+SDK max_retries=0 is checked before each complete() invocation. Exactly3 logical request-start markers and3 SDK-start markers exist. No independent HTTP wire-attempt counter is exposed by this unchanged stable path; configured SDK retries are zero. There is no retry/fallback/repair branch. B/C would have remained unexecuted on an earlier failure; mocks verify this.
+
+STREAMING / PARTIAL RESPONSE AUDIT
+NON_STREAMING_COMPLETE_RESPONSE. Headers,exact successful HTTP status,first token timing and first body-byte timing are not exposed by the current adapter. firstUsableContentMs is complete() call-start to returned string,not streamed time-to-first-token. Parent wall duration includes child startup. Completion IDs in providerRequestId are response.id from the inherited adapter,not HTTP x-request-id. Failure headers are whitelisted only if available; C had none.
+For previous5 and C,zero stored content does not prove the upstream sent nothing. Partial provider content might have existed but was unobservable through this completed-response abstraction; whether it actually existed is UNKNOWN. No streaming redesign was performed.
+
+MODEL / OUTPUT SETTINGS
+Exact provider/model:OpenAI/gpt-6.1-sol. Existing high reasoning effort unchanged at all levels. A output512,B1024,C8192. Previous OpenAI5 output16384; stored DeepSeek5 also16384. No setting was tuned after a response. A/B allowances are intentionally small diagnostic bounds; C retains a full one-candidate contract. C usage/finish reason were unavailable,so token-budget exhaustion is not established.
+
+RAW REQUESTS / RESPONSE METADATA
+Each probe directory contains sanitized exact request.json,specification.json,metrics-before-execution.json,request-started.json,sdk-call-started.json,response.txt,result.json and worker-result.json. All request specifications/metrics were prepared before A. request-metrics-before-live.json was persisted before any diagnostic call and equals the executed static comparison. No secret values are included.
+
+C ERROR CHAIN AND SAFE TRACE
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerRequestId": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "errorClass": "APITimeoutError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APITimeoutError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "TimeoutError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    }
+  ],
+  "safeMessage": "Diagnostic request failed in existing SDK path; no retry or fallback.",
+  "httpStatus": null,
+  "safeHeaders": {},
+  "safeTrace": [
+    {
+      "file": "semantic_transport_isolation_v1.py",
+      "line": 84,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ],
+  "providerMetadata": null,
+  "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+  "finishReason": null,
+  "providerReportedCostUsd": null,
+  "level": "C",
+  "start": "2026-10-26T11:47:10.005842+00:00",
+  "end": "2026-10-26T11:48:40.701559+00:00",
+  "durationSeconds": 90.69867549999981,
+  "responseBytes": 0,
+  "parsedResult": {
+    "passed": false,
+    "reason": "APITimeoutError"
+  },
+  "passed": false,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}
+
+SUCCESSFUL CALL USAGE
+Known A+B usage only:{"prompt_tokens": 101, "completion_tokens": 154, "total_tokens": 255}. C usage is unavailable,so actual ladder totals are unknown rather than255. Provider-reported costs were not supplied for any level; no cost is estimated.
+
+SECONDARY VALIDATION / NO FIX
+A/B were never sent through creative judges. C failed before raw schema validation,so its secondary creative pipeline was not run. No new production concepts,production prompts or renders were created. The B fictional object is a transport fixture response only. No provider refactor,prompt/schema edit,global timeout increase or architectural repair was attempted.
+Outstanding hypotheses are full-prompt latency,full-schema processing complexity,high-effort reasoning latency,output/time interaction or intermittent service/network behavior. The ladder demonstrates a working small path and a failing full-contract path in this sequence; it cannot distinguish those hypotheses without a separately authorized investigation. Batch-size-only failure is not established because1 full candidate also failed.
+
+EXACT TESTS / IMMUTABILITY
+15 new mock tests passed in0.72s. Full regression:3002 passed,36 failed,2 skipped,3030 warnings in202.65s. The exact36 failure IDs match the accepted baseline; no new failures. Mock tests cover success/failure at all levels,early stop after A/B,cap3,no fallback,metrics,sanitization,exception chains,classifier,C-only secondary pipeline and prior artifact preservation. Test provider calls0.
+All2148 protected pre-existing files remain byte-identical. This includes accepted Prompt V2,schema,canonical propagation,Naturalness/Admission V2,BG,SFE,ranking,Creative Shape,preselection,provider adapter/configuration and all historical experiment/benchmark evidence. Final diagnostic source hashes match the pre-regression snapshot.
+
+FILES ADDED
+{
+  "intelligence/ml-service/app/workflow/semantic_transport_isolation_v1.py": "005aa4755717cf363607614c0e1ccce34e50ffeabf919e1c171bb2b09b30cd15",
+  "intelligence/ml-service/tests/test_semantic_transport_isolation_v1.py": "66acc0f5e7707513932622bf33e16aeeb43c90399cb1619e7d08cd99f1b14176",
+  "intelligence/scripts/isolate-semantic-transport-v1.py": "0b65ae0f72c2e3e927aa3e1fdc1e1baf7bff5530b95739a039aa2ef7acfc5816"
+}
+
+REQUIRED24 DELIVERABLES
+1 SDK/API path:above. 2 Timeout layers:15/90/60/15 HTTP phases,180 wall. 3 SDK retries0. 4 NON_STREAMING_COMPLETE_RESPONSE. 5 Atext/Btiny native/Cfull native,strictfalse. 6 Prior5 metrics:static comparison. 7 A metrics:82textchars,0schema,512output. 8 A PASS. 9 B metrics:123textchars,176schema,1024output. 10 B PASS. 11 C metrics:14549textchars,2750schema,8192output. 12 C FAIL/ReadTimeout. 13 First failure:C/full V2 contract. 14 Primary classification:FULL_V2_CONTRACT_FAILURE. 15 Exact sanitized request files. 16 Raw A/B responses and C safe error chain. 17 A/B usage known,C unknown. 18 Live requests3. 19 No SDK retries/fallback/DeepSeek/fourthcall. 20 Tests15new/full3002passes/exact36baselinefailures/2skips. 21 Prompt unchanged:prompt-immutability-proof.json. 22 Validators unchanged:protected hashes. 23 Historical experiments unchanged:historical-evidence-proof.json. 24 Exact baseline-ID match:pre-live-verification.json.
+
+STOP
+The diagnostic ladder stopped at its first failure after3 preplanned probes. No fourth request,DeepSeek call,model switch,global timeout increase,Prompt V2/schema change,concept batch,production prompt or media render occurred. Evidence is returned before any engineering fix.

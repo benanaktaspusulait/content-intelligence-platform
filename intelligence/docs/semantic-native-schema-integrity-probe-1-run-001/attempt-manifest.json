@@ -1,0 +1,18 @@
+{
+  "algorithm": "SHA-256",
+  "primaryClassification": "FULL_SCHEMA_EXECUTION_STILL_UNRESOLVED",
+  "SDKRequestsForwarded": 1,
+  "files": {
+    "final-provider-schema-validation.json": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+    "last-mile-sdk-request.json": "1ae38a97d909fd0655deca9d5ea53816d5e03cf27950c130ee3411c4263aca9f",
+    "offline-schema-validation.json": "ca1d2de1d7cd56f025a051fe4119ce24c46181278c3e37cf80cc998844c34bb4",
+    "plan.json": "3151369a3758c056a0a241a12ced631caf04a4024164f8b8be01972555fc3a27",
+    "request-before-sdk.json": "83cdf6c5ac199b6fdb4bf75fb1cb8a4c596d1ada731234138258f7e8872be6b5",
+    "request-started.json": "9a7fe90e7d5844cf5427d3ce89031d95d3e3c6402b3d0e2c62c6fda2f592bbd6",
+    "response.txt": "9a8db3d9fa3666ef451b802602805b423edead46fd5ec2f49d392a5c87cab48f",
+    "result.json": "aac1a8807dd5b8ddb94dd7d22df454d07625ced6442dc077743013f88fd66c2a",
+    "sdk-call-started.json": "f99601f8eb5f9f7187a11d6475cc7f602cac9a06dfea2a88b4819ea22b4a8892",
+    "sdk-request-forwarded.json": "33f83bf992453944bc147dcf395f3a2f3d2ad64fbafbada1996bbb916d3c6d0a",
+    "worker-result.json": "8263e3348032393e342f5f787de0b49a6c4986ae23725475568e76cf38606164"
+  }
+}

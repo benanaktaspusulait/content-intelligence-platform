@@ -1,0 +1,665 @@
+Continue from the current repository state.
+
+Semantic Provider Transport Isolation V1 is complete.
+
+Confirmed execution boundary:
+
+Probe A — minimal JSON
+PASS
+3.26 seconds
+
+Probe B — small native structured schema
+PASS
+6.30 seconds
+
+Probe C — FULL Semantic Prompt V2 + FULL V2 response schema + ONE candidate
+FAIL
+ReadTimeout
+~90.70 seconds
+
+Classification:
+
+FULL_V2_CONTRACT_FAILURE
+
+Therefore we now know:
+
+- base OpenAI transport works
+- OpenAI SDK path works
+- model invocation works
+- native structured output works
+- small structured schema works
+
+But we do NOT yet know whether the failure is primarily caused by:
+
+A. Semantic Prompt V2 complexity/length
+
+B. full response schema complexity
+
+C. interaction between prompt + schema
+
+D. model reasoning/generation settings
+
+This task must isolate those variables.
+
+Do NOT modify Prompt V2.
+
+Do NOT modify the canonical V2 response schema.
+
+Do NOT change validators.
+
+Do NOT generate production batches.
+
+Do NOT render anything.
+
+======================================================================
+1. PRIMARY GOAL
+======================================================================
+
+Run a bounded contract-decomposition experiment to identify which component of the full V2 request causes the execution failure.
+
+We need to separately test:
+
+FULL PROMPT + SMALL SCHEMA
+
+MINIMAL PROMPT + FULL SCHEMA
+
+This will isolate prompt complexity from schema complexity.
+
+======================================================================
+2. MAXIMUM LIVE REQUESTS
+======================================================================
+
+Maximum live requests in this task:
+
+2
+
+No retry.
+
+No third request.
+
+No DeepSeek.
+
+No fallback model.
+
+These are two planned diagnostic probes.
+
+======================================================================
+3. DO NOT REPEAT THE ALREADY-KNOWN CASES
+======================================================================
+
+Do NOT rerun:
+
+minimal prompt + minimal JSON
+
+small prompt + small schema
+
+full Prompt V2 + full schema
+
+Those cases already have evidence.
+
+Only run the missing cross-cases.
+
+======================================================================
+4. PROBE D — FULL PROMPT V2 + SMALL SCHEMA
+======================================================================
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Use:
+
+EXACT Semantic Prompt V2
+
+Do not edit or shorten it.
+
+Request:
+
+ONE candidate
+
+BUT use a deliberately small diagnostic response schema.
+
+Example structure:
+
+{
+  "title": string,
+  "everydayGoal": string,
+  "primaryObject": string,
+  "impossibleRule": string,
+  "frameZeroDescription": string,
+  "finalPayoff": string
+}
+
+No beat array.
+
+No provider rationale.
+
+No nested semantic candidate metadata.
+
+Purpose:
+
+test whether the FULL PROMPT itself causes the timeout even when output contract is small.
+
+======================================================================
+5. IMPORTANT PROBE D RULE
+======================================================================
+
+The prompt remains exactly V2.
+
+Do NOT rewrite creative instructions to match the smaller schema.
+
+This is deliberately a diagnostic mismatch.
+
+We are measuring execution behavior, not creative quality.
+
+If the model returns fields requested by the small schema, that is sufficient.
+
+======================================================================
+6. PROBE D INTERPRETATION
+======================================================================
+
+If Probe D FAILS:
+
+The full Prompt V2 itself, or the reasoning burden created by it, is likely a major contributor.
+
+Primary candidate classification:
+
+PROMPT_COMPLEXITY_OR_REASONING_FAILURE
+
+Do not execute additional requests beyond planned Probe E.
+
+We still need E to determine whether full schema independently fails.
+
+======================================================================
+7. PROBE E — MINIMAL PROMPT + FULL V2 SCHEMA
+======================================================================
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Use a very short diagnostic prompt.
+
+Example intent:
+
+"Generate one fictional short-video concept matching the supplied response schema. Keep every field concise."
+
+Do NOT include Semantic Prompt V2 creative requirements.
+
+Use:
+
+THE EXACT FULL V2 RESPONSE SCHEMA.
+
+Request:
+
+ONE candidate.
+
+Purpose:
+
+test whether the full V2 schema itself causes excessive generation/structured-output overhead.
+
+======================================================================
+8. PROBE E INTERPRETATION
+======================================================================
+
+If Probe E FAILS:
+
+full schema complexity is independently problematic.
+
+Classification candidate:
+
+FULL_SCHEMA_EXECUTION_FAILURE
+
+If Probe E PASSES:
+
+full schema is operational when prompt complexity is small.
+
+======================================================================
+9. RESULT MATRIX
+======================================================================
+
+We will have this matrix:
+
+A:
+minimal prompt + tiny response
+PASS
+
+B:
+small prompt + small native schema
+PASS
+
+C:
+FULL V2 prompt + FULL V2 schema
+FAIL
+
+D:
+FULL V2 prompt + SMALL schema
+?
+
+E:
+MINIMAL prompt + FULL V2 schema
+?
+
+Interpret as follows.
+
+--------------------------------------------------
+
+D FAIL
+E PASS
+
+=> prompt / reasoning complexity is primary failure source.
+
+Classification:
+
+PROMPT_COMPLEXITY_FAILURE
+
+--------------------------------------------------
+
+D PASS
+E FAIL
+
+=> full schema is primary failure source.
+
+Classification:
+
+SCHEMA_COMPLEXITY_FAILURE
+
+--------------------------------------------------
+
+D FAIL
+E FAIL
+
+=> both independently contribute or model cannot tolerate either large component.
+
+Classification:
+
+PROMPT_AND_SCHEMA_COMPLEXITY_FAILURE
+
+--------------------------------------------------
+
+D PASS
+E PASS
+while C FAILS
+
+=> neither component fails independently.
+
+Failure appears specifically from their combination.
+
+Classification:
+
+PROMPT_SCHEMA_INTERACTION_FAILURE
+
+--------------------------------------------------
+
+If evidence remains inconsistent:
+
+UNRESOLVED_CONTRACT_FAILURE
+
+======================================================================
+10. STATIC REQUEST METRICS
+======================================================================
+
+For C, D and E report:
+
+system prompt chars
+
+user prompt chars
+
+total prompt chars
+
+estimated input tokens using existing local utility if available
+
+schema chars
+
+schema property count
+
+required property count
+
+nesting depth
+
+array count
+
+max output tokens
+
+reasoning/model parameters
+
+structured-output mode
+
+timeout values
+
+Do not use external calls to calculate metrics.
+
+======================================================================
+11. PROMPT V2 STRUCTURAL METRICS
+======================================================================
+
+Analyze Prompt V2 offline.
+
+Report:
+
+character count
+
+line count
+
+section count
+
+number of explicit MUST / DO NOT style constraints
+
+approximate local token count
+
+duplicate/redundant instruction clusters if detectable
+
+Do NOT edit the prompt yet.
+
+This is diagnostic only.
+
+======================================================================
+12. FULL SCHEMA STRUCTURAL METRICS
+======================================================================
+
+Analyze the V2 response schema offline.
+
+Report:
+
+total characters
+
+top-level properties
+
+nested properties
+
+required fields
+
+arrays
+
+maximum nesting depth
+
+enum count
+
+description-text size if schema descriptions exist
+
+potentially expensive nested structures
+
+Do NOT simplify schema yet.
+
+======================================================================
+13. MODEL PARAMETER AUDIT
+======================================================================
+
+For C/D/E ensure comparable model execution configuration where applicable.
+
+Report:
+
+model
+
+reasoning effort if configured
+
+temperature if applicable
+
+max output tokens
+
+structured output strictness
+
+tool settings
+
+streaming mode
+
+Do not silently change them between probes except max-output allowance required by different schemas.
+
+======================================================================
+14. OUTPUT TOKEN LIMITS
+======================================================================
+
+Probe D has a small schema.
+
+Use a bounded small max-output allowance sufficient for one object.
+
+Probe E uses full schema.
+
+Use the same one-candidate output allowance used by failed Probe C unless that value is demonstrably invalid configuration.
+
+Do NOT optimize it yet.
+
+Record exact values.
+
+======================================================================
+15. LATENCY METRICS
+======================================================================
+
+For D and E record:
+
+request start
+
+headers received if observable
+
+first usable content if observable
+
+completion time
+
+total duration
+
+response bytes
+
+finish reason
+
+token usage
+
+provider request ID
+
+If timeout:
+
+exact timeout layer
+
+exception chain
+
+response bytes seen
+
+======================================================================
+16. DO NOT INTERPRET CREATIVE QUALITY
+======================================================================
+
+Probe D and E outputs are diagnostic artifacts.
+
+Do NOT score their creativity.
+
+Do NOT compare idea quality.
+
+Do NOT construct HUMAN_REVIEW_SET.
+
+Do NOT send them through production selection.
+
+The content itself is irrelevant except for proving execution.
+
+======================================================================
+17. NO VALIDATOR PIPELINE
+======================================================================
+
+Do not run:
+
+Premise Naturalness
+Beat Grammar
+SFE
+ranking
+Creative Shape
+
+for D or E.
+
+These are transport/contract probes only.
+
+======================================================================
+18. SANITIZED REQUEST SNAPSHOTS
+======================================================================
+
+Persist sanitized exact request envelopes for:
+
+C stored previous failure
+
+D
+
+E
+
+Include:
+
+prompt identity
+
+prompt text/hash
+
+schema identity/hash
+
+schema text or stored reference
+
+model parameters
+
+timeout
+
+output limits
+
+No secrets.
+
+======================================================================
+19. HASH COMPARISON
+======================================================================
+
+Prove:
+
+Probe D uses EXACT Prompt V2 content.
+
+Prompt V2 hash must match accepted V2.
+
+Prove:
+
+Probe E uses EXACT full V2 response schema.
+
+Schema hash must match accepted V2 schema.
+
+This prevents accidental simplification.
+
+======================================================================
+20. NO FIXES DURING THIS TASK
+======================================================================
+
+Even if the failure source becomes obvious:
+
+DO NOT:
+
+rewrite Prompt V2
+
+split Prompt V2
+
+simplify schema
+
+change model
+
+increase timeout globally
+
+change reasoning effort
+
+enable streaming
+
+switch APIs
+
+We first want clean causal evidence.
+
+======================================================================
+21. TESTS
+======================================================================
+
+Before live requests add mocked tests for:
+
+Probe D request construction
+
+Probe E request construction
+
+Prompt V2 hash identity
+
+full-schema hash identity
+
+hard request cap = 2
+
+no retries
+
+no DeepSeek
+
+result-matrix classification
+
+timeout handling
+
+static metric collection
+
+sanitized request persistence
+
+Tests must make zero external calls.
+
+======================================================================
+22. REGRESSION TARGET
+======================================================================
+
+Full regression must preserve:
+
+same 36 accepted baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+23. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. Probe C stored metrics
+2. Prompt V2 structural metrics
+3. full V2 schema structural metrics
+4. Probe D exact request configuration
+5. Probe D result
+6. Probe E exact request configuration
+7. Probe E result
+8. D/E latency and response metrics
+9. complete A/B/C/D/E matrix
+10. primary contract-failure classification
+11. evidence supporting classification
+12. exact timeout layers if failures occur
+13. sanitized request artifact paths
+14. prompt hash identity proof
+15. schema hash identity proof
+16. exact live request count
+17. proof no retry
+18. proof no DeepSeek call
+19. exact test results
+20. proof Prompt V2 unchanged
+21. proof V2 schema unchanged
+22. proof validators unchanged
+23. proof historical experiments unchanged
+24. proof only accepted baseline failures remain
+
+======================================================================
+24. STOP
+======================================================================
+
+After Probe D and Probe E:
+
+STOP.
+
+Do NOT:
+
+make another live request
+
+modify Prompt V2
+
+simplify the schema
+
+change model
+
+change provider
+
+increase timeout
+
+generate a concept batch
+
+render anything.
+
+We will use the D/E matrix to decide the next fix.

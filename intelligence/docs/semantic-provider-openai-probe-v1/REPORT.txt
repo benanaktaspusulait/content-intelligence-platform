@@ -1,0 +1,241 @@
+OPENAI / GPT-6.1-SOL FIVE-CONCEPT CAPABILITY PROBE
+
+RESULT
+OPENAI_GPT_6_1_SOL_CAPABILITY_PROBE_FAILED. Exactly one authorized OpenAI/gpt-6.1-sol request for5 accepted Prompt V2 raw concepts failed after90.726688s with APITimeoutError,underlying cause ReadTimeout. Usable content0 bytes. No retry,second probe,repair,model/provider switch or DeepSeek fallback occurred. This is execution evidence,not creative incapability.
+
+EXACT BENCHMARK RECORD
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerCostUsd": null,
+  "providerRequestId": null,
+  "responseHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "sdkMaxRetries": 0,
+  "timingScope": "First usable content measured from existing complete() call start; no header/body/SSE instrumentation.",
+  "errorClass": "APITimeoutError",
+  "errorCauseClass": "ReadTimeout",
+  "httpStatus": null,
+  "safeError": "Existing OpenAI provider path failed; no retry, repair or fallback.",
+  "providerErrorCode": null,
+  "providerErrorParam": null,
+  "providerErrorType": null,
+  "safeTrace": [
+    {
+      "file": "semantic_provider_openai_probe_v1.py",
+      "line": 36,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ],
+  "providerResponseMetadata": null,
+  "finishReason": null,
+  "providerRequestIdMeaning": "Existing adapter stores response.id (completion ID); HTTP x-request-id is not exposed.",
+  "HTTPStatusExact": null,
+  "HTTPOutcome": "FAILED",
+  "attemptId": "semantic-provider-openai-gpt-6-1-sol-probe-5-run-001",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "promptVersion": "v2",
+  "candidateCount": 5,
+  "start": "2026-10-26T11:32:03.082722+00:00",
+  "end": "2026-10-26T11:33:33.809564+00:00",
+  "durationSeconds": 90.72668766599963,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 16384,
+  "structuredOutputMode": "json_schema",
+  "strict": false,
+  "streamingMode": "NON_STREAMING",
+  "responseBytes": 0,
+  "requestCount": 1,
+  "automaticRetries": 0,
+  "DeepSeekCalls": 0,
+  "fallbackCalls": 0,
+  "renders": 0,
+  "capability": {
+    "status": "OPENAI_GPT_6_1_SOL_CAPABILITY_PROBE_FAILED",
+    "reason": "APITimeoutError"
+  }
+}
+
+EXISTING ADAPTER / STRUCTURED OUTPUT / STREAMING
+The existing CreativeCapabilityProvider.complete path was used unchanged. The openai-escalation profile selects gpt-6.1-sol,chat.completions.create,response_format=json_schema,max_completion_tokens16384 and reasoning_effort=high. No tools,temperature override,new SDK,body wrapper,response hook or SSE streaming path was added.
+The existing native schema envelope has strict=false; it was not changed to strict=true because that would require modifying the accepted schema contract. Candidate item schema and output structure are identical to accepted V2; the5-item envelope is request cardinality metadata. Deterministic local schema validation remains authoritative. Mode described here is what was requested; timeout means no provider completion proves successful enforcement.
+Official OpenAI documentation confirms Chat Completions and Structured Outputs for the exact model: [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol). The [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat) describes the native schema mechanism. The existing non-strict implementation was reused; no architecture migration or schema redesign was made.
+Current abstraction returns one completed string. Upstream streaming capability does not make the current adapter a safe streaming interface. The probe stayed NON_STREAMING.
+
+TIMEOUT / TOKEN CONFIGURATION
+Connect15s,read90s,write60s,pool15s; SDK max_retries=0; parent worker wall deadline180s with bounded5s terminate/5s kill cleanup. These are experiment-local limits. The recorded ReadTimeout caused APITimeoutError before the180s wall limit; the parent wall timer did not fire. Global application timeouts are unchanged.
+Max output16384 tokens. The same accepted5-probe prompt envelope and output bound were retained. Requested raw count5. Existing model profile128000 configured output capacity was not modified. No cost estimate was made.
+
+OBSERVABLE AND UNAVAILABLE METRICS
+Wall duration90.726688s. Response content0 bytes. Exact HTTP status,time to headers,time to first usable content,first token time,provider request ID,finish reason,input/output/total tokens and provider-reported cost are unavailable/null. Zero stored model content does not prove no transport bytes reached the client. Stable non-streaming adapter exposes no header/partial-content telemetry.
+For a successful response,firstUsableContentMs would measure complete() call-start to returned nonempty string; it is not streamed time-to-first-token. Parent wall duration includes child startup. Existing last_response_metadata.requestId stores response.id,a completion ID,not the HTTP x-request-id. Neither was available in this failure.
+
+CAPABILITY CRITERIA AND OFFLINE RESULTS
+Capability PASS requires usable nonempty content,parseable response and at least one candidate reaching the accepted schema-validation boundary. It does not require all5 valid,high scores or production candidates. The probe received no usable content,so PASS was not established. No source corpus exists to run through schema/normalization/canonical evidence/Naturalness/Admission V2/BG/Structured SFE/Shape/history/ranking/preselection. Those live results are unavailable,not zero quality scores.
+All-returned-concepts.txt and unavailable-concept-results.json explicitly record the absence of story evidence. No mock stories or invented creative blockers substitute for returned concepts. Mock success tests exercised the complete existing downstream pipeline.
+
+EXECUTION COMPARISON — STORED DEEPSEEK EVIDENCE ONLY
+[
+  {
+    "attempt": "DeepSeek original40",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "requestedRawCount": 40,
+    "status": "FAILED",
+    "failureClass": "APITimeoutError",
+    "underlyingCause": null,
+    "durationSeconds": 764.882114,
+    "timeToHeadersMs": null,
+    "firstUsableContentMs": null,
+    "usableResponseBytes": 0,
+    "usage": null,
+    "requestCount": 1,
+    "timeout": {
+      "SDKSeconds": 90,
+      "wallSeconds": null
+    }
+  },
+  {
+    "attempt": "DeepSeek recoveryA",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "requestedRawCount": 20,
+    "status": "REQUEST_FAILED",
+    "failureClass": "ExperimentWallTimeout",
+    "underlyingCause": null,
+    "durationSeconds": 300.030152542,
+    "timeToHeadersMs": null,
+    "firstUsableContentMs": null,
+    "usableResponseBytes": 0,
+    "usage": null,
+    "requestCount": 1,
+    "timeout": {
+      "readSeconds": 120,
+      "connectSeconds": 15,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 300
+    }
+  },
+  {
+    "attempt": "DeepSeek recoveryB",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "requestedRawCount": 20,
+    "status": "REQUEST_FAILED",
+    "failureClass": "ExperimentWallTimeout",
+    "underlyingCause": null,
+    "durationSeconds": 300.0123390410008,
+    "timeToHeadersMs": null,
+    "firstUsableContentMs": null,
+    "usableResponseBytes": 0,
+    "usage": null,
+    "requestCount": 1,
+    "timeout": {
+      "readSeconds": 120,
+      "connectSeconds": 15,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 300
+    }
+  },
+  {
+    "attempt": "DeepSeek probe5",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "requestedRawCount": 5,
+    "status": "FAILED",
+    "failureClass": "RuntimeError",
+    "underlyingCause": null,
+    "durationSeconds": 1.1757455420010956,
+    "timeToHeadersMs": 559.0186250010447,
+    "firstUsableContentMs": null,
+    "usableResponseBytes": 0,
+    "usage": null,
+    "requestCount": 1,
+    "timeout": {
+      "connectSeconds": 15,
+      "readSeconds": 90,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 180
+    }
+  },
+  {
+    "attempt": "OpenAI probe5",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "requestedRawCount": 5,
+    "status": "FAILED",
+    "failureClass": "APITimeoutError",
+    "underlyingCause": "ReadTimeout",
+    "durationSeconds": 90.72668766599963,
+    "timeToHeadersMs": null,
+    "firstUsableContentMs": null,
+    "usableResponseBytes": 0,
+    "usage": null,
+    "requestCount": 1,
+    "timeout": {
+      "connectSeconds": 15,
+      "readSeconds": 90,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 180
+    }
+  }
+]
+DeepSeek40 failed with APITimeoutError; underlying phase was not saved. DeepSeek20A/B reached300s parent wall deadlines. DeepSeek5 returned HTTP200 headers after559.019ms and failed with unresolved RuntimeError after1.175746s; no body chunk was observed. OpenAI5 failed with recorded ReadTimeout after90.726688s. No additional DeepSeek request was made.
+This comparison is execution-only. Sizes,envelopes and instrumentation differ; it does not isolate server/model/client causes and cannot establish provider creative superiority,Prompt V2 validation,or solved production quality. There are no usable OpenAI concepts for even limited creative inspection.
+
+EXACT TEST RESULTS
+12 new mock tests passed in0.82s. Full regression:2987 passed,36 failed,2 skipped,3030 warnings in203.61s. The exact36 failure IDs match the accepted baseline; no new failures. Tests made0 external provider calls. Final source hashes match the pre-regression snapshot.
+
+FILES / IMMUTABILITY
+{
+  "intelligence/ml-service/app/workflow/semantic_provider_openai_probe_v1.py": "e19dc6356199cc84e25ab57cd34dcc93abb0e1eb429fee5d2e3b1c0172f5d526",
+  "intelligence/ml-service/tests/test_semantic_provider_openai_probe_v1.py": "a9f893fb8d2d978e8baa55527341bc20ffb1adb75a0ec08709b29bca3f6baefa",
+  "intelligence/scripts/probe-semantic-openai-v1.py": "e4e3a8c903da9f26fbbaf9b92f2de76a4b03442f50393b56f4c97e0ca1dbedd0"
+}
+All2115 protected existing files remained byte-identical. Prompt V2 system/user envelope matches the accepted5-probe envelope exactly; item schema is unchanged. Structured SFE,canonical propagation,BG,Admission V2,ranking,Creative Shape,preselection,taxonomies,thresholds and all historical live/benchmark evidence remain unchanged.
+
+REQUEST-CAP PROOF
+One exclusive immutable benchmark directory,one request-start marker,one SDK-start marker and SDK max_retries=0. The executable provider gate accepts only openai/gpt-6.1-sol/json_schema. No fallback branch,repair call or DeepSeek invocation exists. After transport the CLI installs a network/subprocess denial guard for offline work. Exactly1 OpenAI live request was attempted in this task.
+
+REQUIRED29 DELIVERABLES
+1 OpenAI/gpt-6.1-sol. 2 Request count1. 3 Promptv2. 4 Requested raw5. 5 json_schema/strictfalse. 6 Non-streaming. 7 connect15/read90/write60/pool15/wall180seconds. 8 Output16384. 9 Header timingunknown. 10 First usable contentunknown. 11 Wall90.726688s. 12 Usable response0bytes. 13 RequestIDunknown. 14 Usageunknown. 15 Costunknown,no estimate. 16 OPENAI_GPT_6_1_SOL_CAPABILITY_PROBE_FAILED/APITimeoutError/ReadTimeout. 17 Schema-validunknown. 18 Normalizedunknown. 19 Storiesnone received. 20 Live pipelineunavailable. 21 Execution-only comparison:execution-comparison.json. 22 Tests12new/full2987pass/exact36baselinefailures/2skips. 23 One request markers. 24 SDKretry0. 25 DeepSeek calls0. 26 Prompt unchanged:prompt-immutability-proof.json. 27 Validators unchanged:protected hashes. 28 Historical evidence unchanged:historical-evidence-proof.json. 29 Exact baseline failure-ID match:pre-live-verification.json.
+
+STOP
+The one capability probe is complete. No10/20/40 concept request,second OpenAI call,provider/model switch,DeepSeek request,prompt/schema/validator change,production prompt or media render occurred. The next execution strategy remains a human decision.

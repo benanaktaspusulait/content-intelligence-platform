@@ -1,0 +1,807 @@
+Continue from the current repository state.
+
+Semantic Prompt v2-compact.1 is ACCEPTED as historical evidence.
+
+Latest real result:
+
+- opening = 35
+- OPENING_REPAIR_NOT_CONFIRMED
+- rule consistency = CONSISTENT
+- Structured SFE = 99 PASS
+- ranking = ELIGIBLE
+- ranking score = 97.6
+- production blocked by:
+  OPENING_EVIDENCE_INSUFFICIENT
+  PREMISE_NOT_ADMITTED
+
+Previous successful v2-compact samples:
+
+opening:
+35
+35
+35
+
+Latest v2-compact.1 sample:
+
+opening:
+35
+
+Therefore:
+
+4 / 4 real successful compact-family candidates have opening score = 35.
+
+This is now a strong repeated generation signal.
+
+At the same time:
+
+v2-compact.1 improved rule audit from prior AMBIGUOUS samples to:
+
+CONSISTENT
+
+Therefore DO NOT broadly rewrite the rule-consistency work.
+
+The remaining major generation weakness is FRAME-ZERO CONSTRUCTION.
+
+There is also a manual warning:
+
+payoff orientation may still be unclear despite accepted rule consistency.
+
+This task must primarily repair opening generation while preserving the improved mechanically testable rule behavior.
+
+Do NOT modify validators.
+
+Do NOT modify thresholds.
+
+Do NOT modify taxonomy.
+
+Do NOT modify schema.
+
+Do NOT change provider/model/reasoning.
+
+Do NOT run a large generation batch.
+
+======================================================================
+PRIMARY DESIGN CHANGE
+======================================================================
+
+Current generation logic effectively behaves like:
+
+CONCEPT
+→ RULE
+→ STORY
+→ FRAME ZERO DESCRIPTION
+
+This has repeatedly produced openings that only become understandable after motion.
+
+Change the ideation order conceptually to:
+
+FRAME-ZERO PHYSICAL CONTRADICTION
+→ IMMUTABLE RULE
+→ EVERYDAY GOAL
+→ CAUSAL BEATS
+→ PAYOFF
+
+The opening should become the foundation of the concept rather than a description added after the story is invented.
+
+======================================================================
+1. NEW VERSION
+======================================================================
+
+Create immutable:
+
+semanticConceptPromptVersion = "v2-compact.2"
+
+Do not overwrite:
+
+v2
+v2-compact
+v2-compact.1
+
+Preserve their hashes and evidence.
+
+======================================================================
+2. FRAME-ZERO-FIRST GENERATION
+======================================================================
+
+For each candidate, the model must internally invent the first frozen image BEFORE developing the rest of the story.
+
+The first creative question is:
+
+"What single paused image already shows the character trying to achieve an ordinary goal while the exact object is visibly violating one impossible physical rule?"
+
+Only after this image is viable should the candidate be expanded into beats.
+
+======================================================================
+3. FRAME ZERO IS NOT A SETUP SHOT
+======================================================================
+
+Frame zero must NOT show:
+
+- character preparing to act
+- character holding a normal object
+- neutral object before activation
+- character reacting to something whose cause is off-screen
+- surprised face without visible physical problem
+- a strange object whose relationship to the goal is unclear
+
+The impossible consequence must ALREADY be physically visible.
+
+======================================================================
+4. OPENING MUST SHOW AN ACTIVE CONFLICT
+======================================================================
+
+Frame zero must visually contain all five:
+
+A. protagonist
+
+B. everyday goal in progress
+
+C. primary object
+
+D. impossible physical consequence already active
+
+E. visible interference with the goal
+
+The viewer should not need Beat 1 to discover the rule.
+
+======================================================================
+5. FRAME-ZERO COUNTERFACTUAL TEST
+======================================================================
+
+Before returning a candidate, internally remove all later beats.
+
+Now inspect only frameZeroDescription.
+
+Ask:
+
+If this were the only image the viewer ever saw:
+
+1. Could they tell what the character is trying to do?
+2. Could they identify the primary object?
+3. Could they see something physically impossible is already happening?
+4. Could they see how that impossible state prevents or complicates the goal?
+
+If ANY answer is no:
+
+discard the candidate.
+
+Do not repair it with dialogue or explanation.
+
+======================================================================
+6. NO MOTION-DEPENDENT PREMISE
+======================================================================
+
+Reject candidate before output if the opening requires statements like:
+
+- "once they pull..."
+- "when they press..."
+- "after they open..."
+- "then the object..."
+- "a moment later..."
+- "as soon as..."
+
+The first activation has already happened before frame zero.
+
+The opening captures the character already inside the consequence.
+
+======================================================================
+7. FRAME ZERO MUST SHOW RULE EVIDENCE
+======================================================================
+
+The visible abnormal state at frame zero must be a direct instance of the stated impossibleRule.
+
+Do not use a visually dramatic opening that merely hints at a different phenomenon.
+
+The still image and rule must describe the same mechanism.
+
+======================================================================
+8. RULE PRECISION — PRESERVE COMPACT.1 IMPROVEMENT
+======================================================================
+
+Retain the mechanically testable rule standard from v2-compact.1.
+
+Rule must define:
+
+TRIGGER
+TARGET
+RESPONSE
+
+as an observable invariant.
+
+Do not relax this.
+
+Previous real sample achieved:
+
+CONSISTENT
+
+We want to preserve that gain.
+
+======================================================================
+9. STORY MUST GROW OUT OF FRAME ZERO
+======================================================================
+
+After the opening is accepted internally:
+
+derive Beat 1–4/5 as attempts to deal with the exact physical problem already visible.
+
+Do not introduce a story setup phase.
+
+Beat 1 should continue the opening conflict rather than establish it.
+
+======================================================================
+10. OPENING → BEAT CONTINUITY
+======================================================================
+
+The physical state visible at frame zero must connect directly to Beat 1.
+
+Avoid:
+
+frame zero depicts state A
+
+Beat 1 suddenly resets to normal state B
+
+then rule activates again.
+
+No hidden reset between opening and first beat.
+
+======================================================================
+11. GOAL MUST BE PHYSICALLY VISIBLE
+======================================================================
+
+Do not rely solely on everydayGoal text.
+
+Frame zero itself must contain physical evidence of the goal.
+
+Examples of visible goal evidence conceptually include:
+
+- object positioned mid-use
+- body posture clearly performing task
+- task outcome partly visible
+- destination/target physically present
+
+Do not hard-code examples into production output.
+
+======================================================================
+12. PROBLEM MUST BE PHYSICALLY LOCAL
+======================================================================
+
+Prefer the impossible problem to occur:
+
+on the main object
+
+between character and object
+
+or directly in the object-goal interaction.
+
+Avoid opening problems that are:
+
+off-screen
+
+elsewhere in room
+
+delayed
+
+abstract
+
+dependent on another object's state.
+
+This improves instant causal legibility.
+
+======================================================================
+13. ONE-FRAME SILHOUETTE TEST
+======================================================================
+
+Ask internally:
+
+Could someone understand the unusual relationship from the silhouette / major shapes of the frame?
+
+Avoid concepts whose hook depends on:
+
+tiny details
+
+subtle color differences
+
+small text
+
+fine finger placement
+
+invisible timing
+
+hidden state.
+
+======================================================================
+14. NO REACTION-LED OPENING
+======================================================================
+
+Do not make facial expression the primary opening evidence.
+
+Expression may support the scene.
+
+But the physical problem itself must carry the hook.
+
+======================================================================
+15. OBJECT SCALE
+======================================================================
+
+Ensure primary object and impossible consequence are large enough in frame to be immediately readable in vertical mobile video.
+
+Avoid tiny-prop concepts whose rule cannot visually dominate frame zero.
+
+Do not alter schema.
+
+This remains prompt-level staging guidance.
+
+======================================================================
+16. FIRST-FRAME DESCRIPTION STYLE
+======================================================================
+
+frameZeroDescription should describe one concrete still image.
+
+It should avoid temporal prose.
+
+Bad format:
+
+"The character starts to pull the drawer and it begins sliding away."
+
+Better semantic form:
+
+"The character is already gripping the drawer handle while the entire drawer is visibly several inches farther from the cabinet than the hand pulling it, stretching the attempt away from the goal."
+
+Do NOT hard-code this exact example into generated output.
+
+The principle is:
+
+VISIBLE CURRENT STATE, not temporal narration.
+
+======================================================================
+17. FRAME ZERO SELF-CHECK OUTPUT
+======================================================================
+
+Do NOT add self-scores to schema.
+
+The model performs the check internally only.
+
+No:
+
+openingScore
+confidence
+pass/fail
+provider quality judgment
+
+should be emitted.
+
+Existing deterministic validators remain authority.
+
+======================================================================
+18. PAYOFF ORIENTATION REPAIR
+======================================================================
+
+Preserve existing same-rule payoff requirement.
+
+Add one narrow clarification:
+
+The final payoff must have a clearly directional state change.
+
+It must be obvious:
+
+WHAT changed
+FROM what
+TO what
+BECAUSE of which activation of the same rule.
+
+Avoid payoff prose where direction is reversible or ambiguous.
+
+Example failure shape conceptually:
+
+"the object swaps the state"
+
+without making clear which state ends where.
+
+Do not add new schema fields.
+
+======================================================================
+19. PAYOFF STATE TRANSITION TEST
+======================================================================
+
+Before returning candidate, internally express payoff as:
+
+BEFORE STATE
+→ SAME RULE ACTIVATES
+→ AFTER STATE
+
+If the before/after relationship is unclear:
+
+rewrite/discard candidate.
+
+This is intended to reduce manual payoff-orientation ambiguity.
+
+======================================================================
+20. KEEP ALL OTHER COMPACT POLICIES
+======================================================================
+
+Preserve:
+
+- one protagonist
+- one everyday goal
+- one primary object
+- one location
+- strange-but-intuitive
+- object specificity
+- stable trigger
+- immutable rule
+- 4–5 causal beats
+- strategy/consequence/new information
+- rule-derived payoff
+- silent-view legibility
+- production feasibility
+- diversity guidance
+- no provider ranking/scoring
+
+Do not re-expand the prompt unnecessarily.
+
+======================================================================
+21. PROMPT SIZE DISCIPLINE
+======================================================================
+
+v2-compact.1 already increased over v2-compact.
+
+For v2-compact.2:
+
+replace/refactor the existing opening section rather than simply appending many paragraphs.
+
+Target:
+
+total prompt size <= v2-compact.1 + 10%
+
+Prefer approximately same size or smaller.
+
+Report exact size delta.
+
+======================================================================
+22. SCHEMA UNCHANGED
+======================================================================
+
+Use exact current corrected schema.
+
+Schema hash must remain identical.
+
+Do not add:
+
+opening proof
+frame-zero score
+rule audit result
+payoff orientation score
+
+to provider schema.
+
+======================================================================
+23. VALIDATORS UNCHANGED
+======================================================================
+
+Do not modify:
+
+Premise Naturalness
+
+Opening evaluator
+
+Admission
+
+Beat Grammar
+
+Structured SFE
+
+Creative Shape
+
+ranking
+
+production preselection
+
+We need the same judges to measure generator change.
+
+======================================================================
+24. OFFLINE ADVERSARIAL OPENING FIXTURES
+======================================================================
+
+Add focused prompt-intent tests.
+
+Reject:
+
+A. normal object, anomaly occurs only after Beat 1
+
+B. character looks shocked but physical problem unclear
+
+C. visible anomaly but everyday goal cannot be inferred
+
+D. goal visible but rule consequence off-screen
+
+E. floating/random object with no clear goal interference
+
+F. temporal frameZeroDescription describing what will happen
+
+Accept intent:
+
+G. goal visibly underway + object visibly in impossible interfering state
+
+H. active physical contradiction readable without motion
+
+I. opening state is exactly an instance of stated rule
+
+J. first beat continues same physical state without reset
+
+======================================================================
+25. PAYOFF ORIENTATION MOCKS
+======================================================================
+
+Reject:
+
+K. payoff says property "switches" without source/destination clarity
+
+L. final consequence could mean two opposite physical outcomes
+
+Accept:
+
+M. before state and after state are visually directional and derive from same rule
+
+======================================================================
+26. POLICY EQUIVALENCE
+======================================================================
+
+Produce:
+
+v2-compact.1
+→
+v2-compact.2
+
+policy mapping.
+
+Everything should remain equivalent except deliberate strengthening of:
+
+FRAME_ZERO_FIRST_IDEATION
+
+ACTIVE_OPENING_CONFLICT
+
+STILL_FRAME_CAUSAL_LEGIBILITY
+
+OPENING_BEAT_CONTINUITY
+
+PAYOFF_DIRECTIONALITY
+
+======================================================================
+27. OFFLINE FIRST
+======================================================================
+
+Run all prompt/mock/schema/regression tests first.
+
+Provider calls during tests:
+
+0
+
+Only if all tests pass:
+
+perform ONE live probe.
+
+======================================================================
+28. SINGLE LIVE PROBE
+======================================================================
+
+Exactly:
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Reasoning:
+LOW
+
+Prompt:
+v2-compact.2
+
+Corrected schema:
+UNCHANGED
+
+Candidate count:
+1
+
+Max output:
+8192
+
+Timeout:
+same accepted envelope
+
+Maximum live calls:
+1
+
+No retry.
+
+======================================================================
+29. LIVE EVALUATION
+======================================================================
+
+If candidate returns:
+
+run full current pipeline unchanged.
+
+Report especially:
+
+opening score
+
+frame-zero audit
+
+rule consistency
+
+payoff orientation
+
+Premise Naturalness
+
+admission
+
+Beat Grammar
+
+SFE
+
+ranking
+
+production blockers.
+
+======================================================================
+30. REAL BASELINE COMPARISON
+======================================================================
+
+Compare against four existing successful compact-family candidates:
+
+v2-compact:
+opening = 35
+opening = 35
+opening = 35
+
+v2-compact.1:
+opening = 35
+
+Current real baseline:
+
+4 / 4 opening = 35.
+
+Also previous rule signal:
+
+first three:
+AMBIGUOUS
+
+compact.1:
+CONSISTENT
+
+Report whether compact.2:
+
+breaks opening-35 pattern
+
+AND
+
+preserves CONSISTENT rule behavior.
+
+======================================================================
+31. PROMISING SIGNAL
+======================================================================
+
+Strong positive signal:
+
+opening >= accepted floor of 60
+
+AND
+
+rule consistency = CONSISTENT
+
+AND
+
+payoff orientation = CLEAR.
+
+This is still only one sample.
+
+Do not declare Prompt V2 Compact.2 proven.
+
+======================================================================
+32. IF OPENING REMAINS 35
+======================================================================
+
+Return:
+
+FRAME_ZERO_FIRST_REPAIR_NOT_CONFIRMED
+
+Do NOT revise prompt again during this task.
+
+At that point we should reconsider generation architecture rather than repeatedly adding prompt wording.
+
+======================================================================
+33. IF OPENING IMPROVES
+======================================================================
+
+If opening reaches/passes existing floor:
+
+report improvement.
+
+Do not automatically generate more candidates.
+
+Stop after one request.
+
+======================================================================
+34. REGRESSION TARGET
+======================================================================
+
+Full regression:
+
+same accepted 36 baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+35. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. repeated opening evidence motivating compact.2
+2. exact prompt modifications
+3. exact compact.2 prompt
+4. prompt size comparison
+5. policy-equivalence matrix
+6. adversarial opening tests
+7. payoff-orientation tests
+8. schema hash identity
+9. validator identity
+10. offline test results
+11. full regression
+
+If live probe executes:
+
+12. provider/model/reasoning
+13. live request count
+14. execution result
+15. duration
+16. response bytes
+17. tokens/cost if available
+18. complete candidate
+19. frame-zero audit
+20. opening score
+21. rule consistency
+22. payoff orientation
+23. Naturalness
+24. admission
+25. Beat Grammar
+26. SFE
+27. ranking
+28. production disposition/blockers
+29. comparison with four real baseline candidates
+30. proof no retry
+31. proof no second call
+32. proof no DeepSeek
+33. proof no render
+34. proof historical evidence unchanged
+35. proof only accepted baseline failures remain
+
+======================================================================
+36. STOP
+======================================================================
+
+After ONE compact.2 live probe:
+
+STOP.
+
+Do NOT:
+
+make another provider call
+
+generate multiple candidates
+
+change schema
+
+change validators
+
+change thresholds
+
+change model
+
+change reasoning
+
+render media.

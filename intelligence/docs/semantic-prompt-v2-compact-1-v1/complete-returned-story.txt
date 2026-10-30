@@ -1,0 +1,42 @@
+{
+  "ideaId": "paper-walls-01",
+  "title": "Cut Out, Fold In",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Cut a square out of a large sheet of paper along its thick square outline.",
+  "primaryObject": "Blunt craft scissors",
+  "normalExpectation": "Closing the blades through paper separates it along the cutting line.",
+  "impossibleRule": "WHEN the scissors close through the paper, THE paper to the right of the blades ALWAYS folds upright along the blade line instead of separating.",
+  "visibleTrigger": "The scissors' blades closing through the paper.",
+  "whyThisObject": "Scissors must close through the paper to cut out the square; that exact operation erects the surrounding paper into walls instead of removing it.",
+  "goalRuleRelationship": "Each attempted side of the square remains attached and gains an upright outer flap, progressively obstructing access to the remaining outline.",
+  "frameZeroDescription": "At a low craft table, Mimi holds blunt scissors closed through one side of a thick square outline on a large paper sheet. The outer paper stands upright against the scissors' right blade; the outlined square remains attached beneath Mimi's other hand.",
+  "beats": [
+    {
+      "strategy": "Mimi opens the scissors, turns the paper a quarter-turn, and closes the blades along the next side of the square.",
+      "visibleConsequence": "The paper to the blades' right folds upright, leaving two adjoining walls around the still-attached square and a buckled paper corner.",
+      "newInformation": "Turning the sheet changes which outer flap rises, not whether the scissors cut."
+    },
+    {
+      "strategy": "Mimi tilts the sheet toward herself to reach the third outlined side and closes the scissors through it.",
+      "visibleConsequence": "A third outer flap folds upright to the blades' right, making a three-sided paper enclosure with the scissors entering through its open side.",
+      "newInformation": "The remaining open side is now the only unobstructed approach to the outline."
+    },
+    {
+      "strategy": "Mimi slides the open scissors through that gap and positions the blades on the final outlined side, keeping the handles inside the enclosure.",
+      "visibleConsequence": "As the blades close through the paper, the fourth outer flap folds upright to their right, forming a paper box around the scissors.",
+      "newInformation": "Completing the outline encloses the tool instead of freeing the square."
+    },
+    {
+      "strategy": "Mimi points the scissors upward inside the box and closes them through the top edge of its front wall to make an exit.",
+      "visibleConsequence": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+      "newInformation": "Trying to cut an escape folds part of the enclosure over the trapped tool."
+    }
+  ],
+  "finalPayoff": "The wall section to the blades' right folds inward across the box, leaving the scissors' two handle loops protruding above a paper lid.",
+  "suggestedPayoffFamily": "Solution-created enclosure",
+  "loopPotential": "No reset; hold on the scissors handles protruding from the folded paper box.",
+  "environment": "One low craft table in a quiet craft corner, with a single large paper sheet.",
+  "dialogueNeed": "NONE",
+  "providerRationale": "The scissors' necessary cutting contact creates attached folds. Reorienting the sheet accumulates walls, and the final attempted escape converts a wall into a lid.",
+  "durationSeconds": 15
+}

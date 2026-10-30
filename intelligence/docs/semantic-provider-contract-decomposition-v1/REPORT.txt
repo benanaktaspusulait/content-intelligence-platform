@@ -1,0 +1,647 @@
+SEMANTIC PROVIDER CONTRACT DECOMPOSITION V1
+
+PRIMARY CONTRACT-FAILURE CLASSIFICATION
+UNRESOLVED_CONTRACT_FAILURE
+
+RESULT / INTERPRETATION
+D failed with APITimeoutError/ReadTimeout after90.723356s of monotonic elapsed time. E failed with APIConnectionError→ReadError→ReadError→ConnectionResetError after30.629248s of recorded monotonic elapsed time. Both response files contain0 usable bytes. Exactly2 new preplanned cross-cases were attempted; A/B/C were read from stored evidence,not rerun.
+The automatic raw summary maps two false pass flags to PROMPT_AND_SCHEMA_COMPLEXITY_FAILURE. That is the provisional mechanical matrix lookup,not a defensible causal conclusion here. It is preserved unchanged. The final assessed primary classification is UNRESOLVED_CONTRACT_FAILURE because E suffered a connection reset,there is an unresolved stored native-schema reference,D is a deliberately conflicting contract and E clock records are inconsistent. These facts do not justify claiming prompt and schema complexity independently caused both failures.
+
+A/B/C/D/E EXECUTION MATRIX
+Probe | Source | Result | Recorded elapsed seconds | Usable bytes | Failure
+A | STORED_NOT_RERUN | PASS | 3.256941 | 15 | None
+B | STORED_NOT_RERUN | PASS | 6.299789 | 124 | None
+C | STORED_NOT_RERUN | FAIL | 90.698675 | 0 | APITimeoutError
+D | THIS_TASK_LIVE | FAIL | 90.723356 | 0 | APITimeoutError
+E | THIS_TASK_LIVE | FAIL | 30.629248 | 0 | APIConnectionError
+
+STATIC REQUEST METRICS
+Probe | System chars | User chars | Prompt chars | Native schema chars | Declared properties | Required field occurrences | JSON nesting | Arrays | Output ceiling
+C | 9879 | 4670 | 14549 | 2750 | 23 | 21 | 8 | 2 | 8192
+D | 9879 | 4670 | 14549 | 368 | 6 | 6 | 3 | 0 | 4096
+E | 17 | 107 | 124 | 2750 | 23 | 21 | 8 | 2 | 8192
+Metrics were calculated and stored before live requests. Token estimates are null:no installed local tokenizer/counting utility was available; no external token counting,download or new tokenizer was used. UTF8/serialized character sizes,required fields by path and schema document depth are retained in the static-analysis artifact. Schema document depth is not expanded data depth.
+
+PROMPT V2 STRUCTURAL METRICS
+{
+  "characters": 9879,
+  "lines": 48,
+  "sectionCount": 10,
+  "sections": [
+    {
+      "line": 3,
+      "text": "ROLE BOUNDARY"
+    },
+    {
+      "line": 6,
+      "text": "CREATIVE TARGET"
+    },
+    {
+      "line": 9,
+      "text": "RULE IMMUTABILITY — NON-NEGOTIABLE"
+    },
+    {
+      "line": 15,
+      "text": "FRAME ZERO — A PAUSED STILL, NOT A FIRST ACTION"
+    },
+    {
+      "line": 21,
+      "text": "EVERYDAY GOAL AND EXACT OBJECT"
+    },
+    {
+      "line": 26,
+      "text": "BEATS AND PROGRESSION"
+    },
+    {
+      "line": 31,
+      "text": "RULE-DERIVED VISUAL PAYOFF"
+    },
+    {
+      "line": 36,
+      "text": "SILENT VIEWING AND PRODUCTION"
+    },
+    {
+      "line": 39,
+      "text": "DIVERSITY WITHOUT TAXONOMY OVERFIT"
+    },
+    {
+      "line": 43,
+      "text": "PRIVATE PRE-RETURN CHECK — DO NOT OUTPUT THE CHECK OR A SCORE"
+    }
+  ],
+  "keywordCounts": {
+    "must": 17,
+    "doNot": 19,
+    "never": 3,
+    "avoid": 6,
+    "exactly": 5,
+    "discard": 5
+  },
+  "explicitMustDoNotOccurrences": 36,
+  "localTokenEstimate": null,
+  "exactDuplicateSentences": [],
+  "repeatedInstructionThemes": {
+    "ruleConsistency": [
+      {
+        "line": 4,
+        "text": "Do not rank, score, choose winners, predict virality, claim novelty, declare production readiness or eligibility, recommend production, or bypass validators. Return raw structured concepts only. providerRationale may explain the object-rule relationship and causal escalation briefly; it has no scoring authority. Do not include self-scores, checklists, hidden reasoning, or winner claims."
+      },
+      {
+        "line": 7,
+        "text": "Use exactly one supplied canonical protagonist, one primary everyday object, one concrete everyday goal, one location, one dominant impossible physical/comedic rule, immediate visible trouble, and exactly 4 or 5 major causal beats including the final payoff. Keep the complete action readable in about 15 seconds. Aim for STRANGE BUT INTUITIVE: the viewer immediately understands the problem and then is surprised by its consequences. Novelty comes from unexpected logic, not random magic. Use broad body actions, clear poses, stable object identity and few independently moving elements."
+      },
+      {
+        "line": 9,
+        "text": "RULE IMMUTABILITY — NON-NEGOTIABLE"
+      },
+      {
+        "line": 10,
+        "text": "State the complete rule in ONE precise, observable, repeatable sentence, such as \"Whenever X happens, Y always happens.\" Make the trigger and response exact. Do not bundle several unrelated powers into a compound rule to excuse later twists."
+      },
+      {
+        "line": 11,
+        "text": "Once the impossible rule is established, every beat must obey exactly that same physical rule. Escalation must come from strategy, magnitude, position, accumulation, consequence, or new information — never from changing the rule."
+      },
+      {
+        "line": 12,
+        "text": "Do not add a second magic rule, unexplained behavior, new power, different trigger, special exception, actor-dependent loophole, or final-beat mutation. Do not change direction, material, target, timing constant, or agency unless it is already an inevitable consequence of the original rule. A new strategy changes the character's input or circumstances; it does not change what the rule does. New information reveals the SAME relationship; it must not rewrite it. Consequence spread must follow the declared causal relationship rather than infecting unrelated objects by convenience."
+      },
+      {
+        "line": 13,
+        "text": "Keep the trigger stable. If touch triggers the effect, distance, sound, release or waiting must not suddenly trigger it. Timing or position may be a strategy only while the declared trigger-response mapping remains fixed. Payoff-family inspiration never authorizes a new transfer power or new exception."
+      },
+      {
+        "line": 24,
+        "text": "Sharing a noun is not enough: the rule must meaningfully relate to the object's actual operation. Reject random object + random magic. An explicitly visible effect can still be arbitrary. Do not write contrived goals merely to connect an unrelated effect to an object."
+      },
+      {
+        "line": 27,
+        "text": "Return exactly 4 or 5 beats. Each has strategy (character action), visibleConsequence (physical result) and newInformation (new information or state change). Keep sentences concise, concrete and stageable. Each causal arrow must read: CHARACTER ACTION → SAME RULE ACTIVATES → VISIBLE CONSEQUENCE → CHANGED PROBLEM."
+      },
+      {
+        "line": 29,
+        "text": "Avoid the overused default: attempt → try harder → use two hands → brace → fake success. Avoid enlarging a story through unrelated events. A brush that tangles hair must not suddenly fly, change color or duplicate. Magnitude can increase only in a way the original rule permits. Maintain readable 15-second pacing without multiple hidden sub-scenes per beat."
+      },
+      {
+        "line": 31,
+        "text": "RULE-DERIVED VISUAL PAYOFF"
+      },
+      {
+        "line": 32,
+        "text": "The final beat is the payoff and finalPayoff MUST match its visibleConsequence exactly, character for character. No extra event after it. The payoff must be surprising in outcome but inevitable in retrospect from the same rule. Prefer a clear physical final state that changes the story, rather than dialogue, text, explanation or internal realization."
+      },
+      {
+        "line": 33,
+        "text": "Explore role reversal, control transfer, property transfer, absurd success, solution creates new problem, environmental takeover, logical extreme, chain reaction, reveal, goal achieved wrongly, character becomes part of the object state, or object succeeds while character fails. These are inspirations, not required taxonomy labels or recipes. Any transfer or reversal must be implied by the original rule. Avoid default temporary success → original problem returns. A loop is optional; do not invent a second effect merely to reset the opening."
+      },
+      {
+        "line": 34,
+        "text": "Do not surprise by adding a new character, new powered object, new magic, different trigger or unexplained external force in the ending. Internally ask: \"Could this payoff happen if the original rule were removed?\" If yes, discard or redesign it."
+      },
+      {
+        "line": 37,
+        "text": "Assume sound is off. Dialogue must not explain goal, rule, trigger or payoff. Normally dialogueNeed is NONE; if absolutely needed use existing OPTIONAL, never invent a schema enum such as MINIMAL. Prefer one character, one main object, one location, broad body action, a stable silhouette and limited moving elements. Avoid tiny text, many small pieces, complex hand manipulation, crowds, fine mechanical transformations, rapid location changes or invisible forces that cannot be staged. Child-safe comedy only; no injury, weapons, dangerous restraint or sexual content."
+      },
+      {
+        "line": 40,
+        "text": "Across the batch vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette. Do not output many versions of \"object does the opposite thing.\" Novel coherent behavior outside the known engine taxonomy is allowed; do not force it into growth, shrink, adhesion, reset, reversal or escape. All novel behavior must still be object-specific, stable, visually legible and causally consistent."
+      },
+      {
+        "line": 44,
+        "text": "For each candidate compare its exact one-sentence rule to Beat 1, Beat 2, Beat 3, Beat 4, Beat 5 if present, and payoff. If ANY requires behavior or a trigger not permitted by that rule, discard or redesign the candidate before output. Do not patch it with an exception or a second rule."
+      },
+      {
+        "line": 46,
+        "text": "Check each action→rule→visible consequence causal arrow. If weak or invisible, discard or redesign."
+      },
+      {
+        "line": 47,
+        "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+      },
+      {
+        "line": 48,
+        "text": "Return the requested raw candidate count in the supplied schema, with all fields and only the ideas envelope. Do not expose chain-of-thought, rule-consistency self-certification, scores or production recommendations. The deterministic system may reject any returned idea."
+      }
+    ],
+    "frameZero": [
+      {
+        "line": 15,
+        "text": "FRAME ZERO — A PAUSED STILL, NOT A FIRST ACTION"
+      },
+      {
+        "line": 16,
+        "text": "The concept must be understandable from a paused frame at the beginning. The viewer should already see what the character wants and what impossible problem is interfering."
+      },
+      {
+        "line": 17,
+        "text": "frameZeroDescription must describe one simultaneous, stageable STILL: character + visible everyday goal + primary object + already-visible impossible problem. Show physical evidence that the ordinary function has gone wrong, using pose, object state and spatial relationship. The goal should be inferable from the pictured task, not a stated intention alone. Neither the title nor a later beat may supply missing information."
+      },
+      {
+        "line": 19,
+        "text": "Avoid openings whose problem appears only after a button press, a door opening, a delayed effect, room traversal or the first normal action, unless the very first STILL already shows the impossible consequence. Start inside the trouble; spend no first 2–3 seconds establishing an ordinary world. Do not solve poor opening evidence by merely calling it \"obvious\" or \"impossible\"."
+      },
+      {
+        "line": 24,
+        "text": "Sharing a noun is not enough: the rule must meaningfully relate to the object's actual operation. Reject random object + random magic. An explicitly visible effect can still be arbitrary. Do not write contrived goals merely to connect an unrelated effect to an object."
+      },
+      {
+        "line": 40,
+        "text": "Across the batch vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette. Do not output many versions of \"object does the opposite thing.\" Novel coherent behavior outside the known engine taxonomy is allowed; do not force it into growth, shrink, adhesion, reset, reversal or escape. All novel behavior must still be object-specific, stable, visually legible and causally consistent."
+      },
+      {
+        "line": 45,
+        "text": "Imagine showing ONLY the opening still: can someone see the character, task, object, problem and impossible relationship without sound, title, text or motion? If not, discard or redesign."
+      }
+    ],
+    "payoff": [
+      {
+        "line": 7,
+        "text": "Use exactly one supplied canonical protagonist, one primary everyday object, one concrete everyday goal, one location, one dominant impossible physical/comedic rule, immediate visible trouble, and exactly 4 or 5 major causal beats including the final payoff. Keep the complete action readable in about 15 seconds. Aim for STRANGE BUT INTUITIVE: the viewer immediately understands the problem and then is surprised by its consequences. Novelty comes from unexpected logic, not random magic. Use broad body actions, clear poses, stable object identity and few independently moving elements."
+      },
+      {
+        "line": 13,
+        "text": "Keep the trigger stable. If touch triggers the effect, distance, sound, release or waiting must not suddenly trigger it. Timing or position may be a strategy only while the declared trigger-response mapping remains fixed. Payoff-family inspiration never authorizes a new transfer power or new exception."
+      },
+      {
+        "line": 31,
+        "text": "RULE-DERIVED VISUAL PAYOFF"
+      },
+      {
+        "line": 32,
+        "text": "The final beat is the payoff and finalPayoff MUST match its visibleConsequence exactly, character for character. No extra event after it. The payoff must be surprising in outcome but inevitable in retrospect from the same rule. Prefer a clear physical final state that changes the story, rather than dialogue, text, explanation or internal realization."
+      },
+      {
+        "line": 34,
+        "text": "Do not surprise by adding a new character, new powered object, new magic, different trigger or unexplained external force in the ending. Internally ask: \"Could this payoff happen if the original rule were removed?\" If yes, discard or redesign it."
+      },
+      {
+        "line": 37,
+        "text": "Assume sound is off. Dialogue must not explain goal, rule, trigger or payoff. Normally dialogueNeed is NONE; if absolutely needed use existing OPTIONAL, never invent a schema enum such as MINIMAL. Prefer one character, one main object, one location, broad body action, a stable silhouette and limited moving elements. Avoid tiny text, many small pieces, complex hand manipulation, crowds, fine mechanical transformations, rapid location changes or invisible forces that cannot be staged. Child-safe comedy only; no injury, weapons, dangerous restraint or sexual content."
+      },
+      {
+        "line": 40,
+        "text": "Across the batch vary object family, goal, causal mechanic, trigger, progression, payoff and final silhouette. Do not output many versions of \"object does the opposite thing.\" Novel coherent behavior outside the known engine taxonomy is allowed; do not force it into growth, shrink, adhesion, reset, reversal or escape. All novel behavior must still be object-specific, stable, visually legible and causally consistent."
+      },
+      {
+        "line": 44,
+        "text": "For each candidate compare its exact one-sentence rule to Beat 1, Beat 2, Beat 3, Beat 4, Beat 5 if present, and payoff. If ANY requires behavior or a trigger not permitted by that rule, discard or redesign the candidate before output. Do not patch it with an exception or a second rule."
+      },
+      {
+        "line": 47,
+        "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+      }
+    ],
+    "nonScoring": [
+      {
+        "line": 4,
+        "text": "Do not rank, score, choose winners, predict virality, claim novelty, declare production readiness or eligibility, recommend production, or bypass validators. Return raw structured concepts only. providerRationale may explain the object-rule relationship and causal escalation briefly; it has no scoring authority. Do not include self-scores, checklists, hidden reasoning, or winner claims."
+      },
+      {
+        "line": 43,
+        "text": "PRIVATE PRE-RETURN CHECK — DO NOT OUTPUT THE CHECK OR A SCORE"
+      },
+      {
+        "line": 47,
+        "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+      },
+      {
+        "line": 48,
+        "text": "Return the requested raw candidate count in the supplied schema, with all fields and only the ideas envelope. Do not expose chain-of-thought, rule-consistency self-certification, scores or production recommendations. The deterministic system may reject any returned idea."
+      }
+    ],
+    "privateChecks": [
+      {
+        "line": 4,
+        "text": "Do not rank, score, choose winners, predict virality, claim novelty, declare production readiness or eligibility, recommend production, or bypass validators. Return raw structured concepts only. providerRationale may explain the object-rule relationship and causal escalation briefly; it has no scoring authority. Do not include self-scores, checklists, hidden reasoning, or winner claims."
+      },
+      {
+        "line": 34,
+        "text": "Do not surprise by adding a new character, new powered object, new magic, different trigger or unexplained external force in the ending. Internally ask: \"Could this payoff happen if the original rule were removed?\" If yes, discard or redesign it."
+      },
+      {
+        "line": 43,
+        "text": "PRIVATE PRE-RETURN CHECK — DO NOT OUTPUT THE CHECK OR A SCORE"
+      },
+      {
+        "line": 44,
+        "text": "For each candidate compare its exact one-sentence rule to Beat 1, Beat 2, Beat 3, Beat 4, Beat 5 if present, and payoff. If ANY requires behavior or a trigger not permitted by that rule, discard or redesign the candidate before output. Do not patch it with an exception or a second rule."
+      },
+      {
+        "line": 45,
+        "text": "Imagine showing ONLY the opening still: can someone see the character, task, object, problem and impossible relationship without sound, title, text or motion? If not, discard or redesign."
+      },
+      {
+        "line": 46,
+        "text": "Check each action→rule→visible consequence causal arrow. If weak or invisible, discard or redesign."
+      },
+      {
+        "line": 47,
+        "text": "Check the ending: same rule; a larger or new consequence; visible; story-state change; not mere repetition; not arbitrary. If any check fails, discard or redesign internally. This private editing is not permission for a downstream retry loop or self-selection of winners."
+      }
+    ]
+  },
+  "limitation": "Keyword/theme overlap is a deterministic heuristic,not proof of redundant or unnecessary instructions. No prompt edits."
+}
+Prompt V2 system text:9879 characters,48 lines,10 detected uppercase section headings. Explicit MUST occurrences17; DO NOT occurrences19,total36. Additional never/avoid/exactly/discard keyword counts are above. Repeated themes identify overlapping instruction topics by regex and exact source line; they are not a creative assessment or proof that wording should be deleted. Exact duplicate sentences are reported separately. No instruction was edited.
+
+FULL NATIVE SCHEMA STRUCTURAL METRICS
+{
+  "characters": 2750,
+  "topLevelProperties": 1,
+  "nestedDeclaredProperties": 22,
+  "requiredByPath": [
+    {
+      "path": "/",
+      "fields": [
+        "ideas"
+      ]
+    },
+    {
+      "path": "/properties/ideas/items",
+      "fields": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "providerRationale"
+      ]
+    },
+    {
+      "path": "/properties/ideas/items/$defs/SemanticBeat",
+      "fields": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ]
+    }
+  ],
+  "requiredFieldOccurrences": 21,
+  "arrays": 2,
+  "maximumSchemaJSONNestingDepth": 8,
+  "enumCount": 1,
+  "enumValues": [
+    {
+      "path": "/properties/ideas/items/properties/dialogueNeed",
+      "values": [
+        "NONE",
+        "OPTIONAL",
+        "REQUIRED"
+      ]
+    }
+  ],
+  "descriptionTextCharacters": 0,
+  "referenceSites": [
+    {
+      "path": "/properties/ideas/items/properties/beats/items",
+      "reference": "#/$defs/SemanticBeat"
+    }
+  ],
+  "unresolvedLocalReferences": [
+    {
+      "path": "/properties/ideas/items/properties/beats/items",
+      "reference": "#/$defs/SemanticBeat",
+      "missingRootPointerSegment": "$defs"
+    }
+  ],
+  "constraintCounts": {
+    "additionalProperties": 3,
+    "minItems": 2,
+    "maxItems": 2,
+    "maxLength": 18,
+    "minLength": 18,
+    "pattern": 1
+  },
+  "potentialProcessingStructures": "ideas array→candidate object→beats array(4–5 objects),$defs/$ref,required scalar fields and bounded strings. These are structural observations,not proven latency causes."
+}
+Full native response schema:2750 canonical compact characters,1 top-level property,22 nested declared properties,21 required field occurrences,2 array definitions,maximum schema-document nesting8,1 enum and0 description-text characters. The enum contains the existing dialogue values. ideas→candidate→beats(4–5 objects),references,required fields and bounded strings are potential processing structures,not proven latency causes.
+
+UNRESOLVED NATIVE ENVELOPE REFERENCE — NO FIX
+{
+  "component": "Unchanged native response-format envelope,not a modification to the standalone SemanticIdea model",
+  "nativeSchemaReferenceLocation": "/properties/ideas/items/properties/beats/items/$ref",
+  "reference": "#/$defs/SemanticBeat",
+  "definitionActualLocation": "/properties/ideas/items/$defs/SemanticBeat",
+  "definitionExpectedByRootReference": "/$defs/SemanticBeat",
+  "rootDefsPresent": false,
+  "localValidator": "Installed jsonschema Draft202012Validator",
+  "localErrorClass": "_WrappedReferencingError",
+  "causeClass": "PointerToNowhere",
+  "productionSchemaEdited": false,
+  "localReferenceRepairApplied": false,
+  "implication": "The stored native wrapper has an unresolved root-local reference under standard local validation. This is a request-construction issue candidate; no live evidence proves it caused the provider reset/timeout."
+}
+This concerns the stored native wrapping of the standalone candidate schema:the definition is nested under ideas.items.$defs,but the internal reference uses a document-root path. Local Draft202012Validator fails with PointerToNowhere when validating an otherwise mock-shaped candidate. This does not prove how the remote provider implements non-strict schema handling or that the reference caused the live reset. No canonical model,schema envelope,reference or parser scope was repaired. A complete response would have been recorded separately from an unestablished formal schema check.
+
+EXACT D CONFIGURATION
+OpenAI/gpt-6.1-sol,existing chat.completions.create adapter,native json_schema,strict=false,reasoning_effort=high,temperature not sent,tools/tool_choice/parallel_tool_calls not sent,non-streaming. D uses the exact full stored C messages byte-for-byte as strings and the accepted V2 system text; native output schema is a6-string flat object:title,everydayGoal,primaryObject,impossibleRule,frameZeroDescription,finalPayoff. No beat array,rationale or nested candidate metadata in that native diagnostic schema.
+D actual SDK output ceiling4096. Its exact preserved user payload still contains the original declared8192 output metadata and full candidateSchema. These deliberate inconsistencies were not silently edited to make the test easier. Thus D reduces the native response schema,not all schema text visible to the model. Instruction/schema mismatch and output allowance are confounds; this is not a pure English-prompt-length isolation.
+
+EXACT E CONFIGURATION
+OpenAI/gpt-6.1-sol,same high reasoning,strict=false,native json_schema,non-streaming,same omitted temperature/tools settings. System:Return JSON only. User:Generate one fictional short-video concept matching the supplied response schema. Keep every field concise. No full V2 creative instructions are included. The full native schema/format is an exact copy of stored C,including its unresolved reference. Output ceiling8192 equals C.
+
+TIMEOUT / LATENCY / READING
+C/D/E use identical connect15/read90/write60/pool15 second HTTPX timeouts and parent wall180 seconds,plus bounded5s terminate/5s kill cleanup. SDK max_retries=0 is checked before request. No global timeout,reasoning effort,API,model or provider change occurred.
+D:90s read timeout generated ReadTimeout and APITimeoutError; wall180 did not fire. E:ConnectionResetError propagated through ReadError to APIConnectionError. It is not recorded as a timeout,so no timeout layer is claimed to have fired for E. Exact provider HTTP status,headers,timing to headers,first streamed token,first usable content,finish reason,request ID and usage/cost are unavailable for both failed requests. No cost is estimated.
+NON_STREAMING_COMPLETE_RESPONSE remains unchanged. Usable response bytes are bytes exposed by the adapter,not all possible upstream transport bytes. Neither0-byte file proves the provider sent no data. No streaming architecture,response hook or body wrapper was added.
+
+TIMING CONSISTENCY
+{
+  "D": {
+    "recordedMonotonicElapsedSeconds": 90.72335608399953,
+    "recordedUTCSpanSeconds": 90.720414,
+    "UTCMinusMonotonicSeconds": -0.002942083999528222,
+    "consistentWithin1Second": true,
+    "conclusion": "Timing origins are preserved; elapsed uses monotonic clock. UTC discontinuity cause is unknown; no clock correction performed."
+  },
+  "E": {
+    "recordedMonotonicElapsedSeconds": 30.62924770799873,
+    "recordedUTCSpanSeconds": 817.025069,
+    "UTCMinusMonotonicSeconds": 786.3958212920013,
+    "consistentWithin1Second": false,
+    "conclusion": "Timing origins are preserved; elapsed uses monotonic clock. UTC discontinuity cause is unknown; no clock correction performed."
+  }
+}
+E recorded UTC timestamps span817.025069s,but its parent monotonic elapsed is30.629248s. The discrepancy is preserved,not corrected or hidden. The cause is unknown. Reported elapsed values above use the recorded monotonic measurement; they are not arithmetic differences of UTC timestamps. No system clock fix or extra request was performed.
+
+HASH IDENTITY PROOF
+{
+  "algorithm": "Canonical JSON SHA-256 for objects; raw UTF8 SHA-256 for system text",
+  "DFullMessagesHash": "7c7fb2aed26bd0f41540f1ad31e565d6ea7f01b7f7c150ec2bcaccb9c9ddce75",
+  "acceptedCFullMessagesHash": "7c7fb2aed26bd0f41540f1ad31e565d6ea7f01b7f7c150ec2bcaccb9c9ddce75",
+  "DSystemHash": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+  "acceptedV2SystemHash": "1ca2042d961cdaf655f20d0626b98d76c72f466a2289b8e6b5f9d8eb9bd02547",
+  "EFullSchemaHash": "84c19c319a5df95303d70c5c54d62488bc69eaba364d8d5ddac65978cdfd70a1",
+  "acceptedCFullSchemaHash": "84c19c319a5df95303d70c5c54d62488bc69eaba364d8d5ddac65978cdfd70a1",
+  "EFullFormatHash": "773fe7a39d4820e000dd87ffdc60ff8467fab409e456352d0bbd14902010c395",
+  "acceptedCFullFormatHash": "773fe7a39d4820e000dd87ffdc60ff8467fab409e456352d0bbd14902010c395",
+  "DPromptExact": true,
+  "EFullSchemaExact": true,
+  "canonicalSchemaRepaired": false,
+  "caveat": "D exact user text retains embedded full candidateSchema and declared8192 output metadata; SDK ceiling4096 is explicit in request. E exact native wrapper retains unresolved local $ref; no fix applied."
+}
+D full-message canonical hash equals the stored C messages hash; D system raw UTF8 hash equals accepted V2. E schema and entire format hashes equal stored C exactly. Hashes do not certify correctness of the stored envelope. Existing production schema was not simplified or repaired.
+
+EXACT RESPONSE / ERROR METADATA
+D:
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerRequestId": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "errorClass": "APITimeoutError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APITimeoutError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "TimeoutError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    }
+  ],
+  "safeMessage": "Diagnostic cross-case failed; no retry or fallback.",
+  "httpStatus": null,
+  "safeHeaders": {},
+  "safeTrace": [
+    {
+      "file": "semantic_contract_decomposition_v1.py",
+      "line": 97,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ],
+  "providerMetadata": null,
+  "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+  "finishReason": null,
+  "providerReportedCostUsd": null,
+  "level": "D",
+  "start": "2026-10-26T12:05:07.924680+00:00",
+  "end": "2026-10-26T12:06:38.645094+00:00",
+  "durationSeconds": 90.72335608399953,
+  "responseBytes": 0,
+  "passed": false,
+  "executionPassed": false,
+  "contractCheck": {
+    "passed": false,
+    "reason": "APITimeoutError"
+  },
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 4096
+}
+E:
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerRequestId": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "errorClass": "APIConnectionError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APIConnectionError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ConnectionResetError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    }
+  ],
+  "safeMessage": "Diagnostic cross-case failed; no retry or fallback.",
+  "httpStatus": null,
+  "safeHeaders": {},
+  "safeTrace": [
+    {
+      "file": "semantic_contract_decomposition_v1.py",
+      "line": 97,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1183,
+      "function": "request"
+    }
+  ],
+  "providerMetadata": null,
+  "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+  "finishReason": null,
+  "providerReportedCostUsd": null,
+  "level": "E",
+  "start": "2026-10-26T12:06:38.645708+00:00",
+  "end": "2026-10-26T12:20:15.670777+00:00",
+  "durationSeconds": 30.62924770799873,
+  "responseBytes": 0,
+  "passed": false,
+  "executionPassed": false,
+  "contractCheck": {
+    "passed": false,
+    "reason": "APIConnectionError"
+  },
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 8192
+}
+
+DIAGNOSTIC OUTPUT / NO CREATIVE EVALUATION
+No usable content was returned. Neither probe entered normalization,Naturalness,Admission,BG,SFE,ranking,Creative Shape,history or production selection. No HUMAN_REVIEW_SET or editorial verdict was created. JSON Schema-only checking in mocks is not a creative validator pipeline. No concept batch,production prompt or render occurred.
+
+EXACT TEST RESULTS / IMMUTABILITY
+16 final mock tests passed in0.58s. Full regression:3018 passed,36 failed,2 skipped,3030 warnings in205.84s. Exact36 failure IDs match the accepted baseline; no new failures. Tests cover exact D/E construction,hash identity,request cap2,both calls even after D failure,no retry/fallback,all Boolean matrix outcomes,unknown contract handling,metrics,sanitization and historical preservation. Initial development checks exposed the pre-existing unresolved reference; final diagnostics record it without repairing the schema. Test provider calls0.
+All2199 protected existing files remain byte-identical,including accepted Prompt V2,canonical model/native schema builders,validators,admission,BG,SFE,ranking,Creative Shape,preselection,provider configuration and historical experiments. Final new diagnostic source hashes match the pre-regression snapshot.
+
+RAW SANITIZED ARTIFACTS
+../semantic-provider-contract-decomposition-v1-run-001/stored-c-request.json; probe-d/request.json; probe-e/request.json; per-probe specification.json,response.txt,result.json,worker-result.json and request/SDK-start markers. Before-live static analysis and structural metrics are stored in this report directory. No credentials/Authorization headers are serialized; failure headers are whitelist-only and absent here.
+
+FILES ADDED
+{
+  "intelligence/ml-service/app/workflow/semantic_contract_decomposition_v1.py": "37ac720a220fef16c8242a619008c531fc16e46a8ed35f4d02d76263f44ef9ab",
+  "intelligence/ml-service/tests/test_semantic_contract_decomposition_v1.py": "4b9b6c29e2ae9afa197a5ec22251bdf090b367d872dc31792b1b1099a2747b0d",
+  "intelligence/scripts/decompose-semantic-contract-v1.py": "5181c1c334d8ac5171549cc2c9bb1d490c20708f5702a28e0045aca0ac0c09d7"
+}
+
+REQUIRED24 DELIVERABLES
+1 Stored C metrics:static-analysis-final-before-live.json. 2 Prompt structural metrics:above. 3 Full native schema structural metrics/reference finding:above. 4 D exact request:probe-d/request.json. 5 D FAIL/ReadTimeout. 6 E exact request:probe-e/request.json. 7 E FAIL/ConnectionResetError. 8 Elapsed D90.723356/E30.629248,UTC discrepancy explicit,response0bytes each. 9 A/B/C/D/E matrix:abcde-execution-matrix.json. 10 Final primary classification:UNRESOLVED_CONTRACT_FAILURE. 11 Supporting evidence:failure-assessment.json. 12 D read90 timeout,E connection reset,neither parent wall180. 13 Sanitized request paths above. 14 D prompt hash identity:hash-identity-proof.json. 15 E schema/format hash identity:same. 16 Live requests2. 17 SDKretry0. 18 DeepSeek calls0. 19 Tests16new/full3018passes/exact36baselinefailures/2skips. 20 Prompt unchanged. 21 Canonical schema unchanged. 22 Validators unchanged. 23 Historical experiments unchanged:2199-file proof. 24 Exact baseline-ID match:pre-live-verification.json.
+
+STOP
+D/E are complete. No third request,repeated A/B/C call,provider/model switch,reasoning change,timeout increase,prompt rewrite,schema repair,streaming/API migration,concept batch,production prompt or media render was performed. Evidence is returned before any engineering fix.

@@ -1,0 +1,9 @@
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "requestCount": 1,
+  "sdkMaxRetries": 0,
+  "streamingMode": "NON_STREAMING",
+  "responseMode": "json_schema",
+  "strict": false
+}

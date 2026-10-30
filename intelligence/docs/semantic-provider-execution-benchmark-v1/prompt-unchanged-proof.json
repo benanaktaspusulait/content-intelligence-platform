@@ -1,0 +1,12 @@
+{
+  "systemIdentical": true,
+  "itemSchemaIdentical": true,
+  "version": "semantic-concept-prompt-v2",
+  "onlyPayloadDifferences": [
+    "requestedRawCount",
+    "batchInstructions.count",
+    "limits.maxOutputTokens"
+  ],
+  "rawRequested": 5,
+  "maxOutputTokens": 16384
+}

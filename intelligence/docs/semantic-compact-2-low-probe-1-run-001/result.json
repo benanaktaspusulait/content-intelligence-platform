@@ -1,0 +1,62 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1871,
+    "prompt_tokens": 2245,
+    "total_tokens": 4116,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 1024,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2242,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 60088.736917,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 60095.905167,
+  "providerRequestId": "chatcmpl-EefbOVsBlb9eiJq71OvA0nvGgjl76",
+  "httpRequestId": "req_5b0d448a76ec48db9299919245de6cef",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EefbOVsBlb9eiJq71OvA0nvGgjl76",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "COMPACT_2_FULL_CONTRACT_EXECUTION_PASS",
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T12:02:25.537585+00:00",
+    "wallClockEndUTC": "2026-10-30T12:03:26.301762+00:00",
+    "monotonicElapsedSeconds": 60.763598167,
+    "wallClockSpanSeconds": 60.764177,
+    "wallMinusMonotonicSeconds": 0.0005788329999987241,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 3851,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "selectedReasoningEffort": "low",
+  "promptHash": "ec30ed6831e17854cc3ad8b2ab33d3c8da614e537d1f0e3f87d6272bcd4265dc",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "pipelineRan": true
+}

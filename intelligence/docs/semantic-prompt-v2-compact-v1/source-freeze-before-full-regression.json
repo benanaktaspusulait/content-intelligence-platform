@@ -1,0 +1,8 @@
+{
+  "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.py": "e5a6c7de9b657dd4c4c3253919dd00654951c8aaf272ca3d0feae64470c7d414",
+  "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.txt": "b99a6f10a7987613a4ff968c19b4532162295803fe4726e94e62a939689bf85d",
+  "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_policy_v1.json": "23dd2d519bf9bacb970a1103eef335692377ad1ffcf59f3224ae3ed505c01795",
+  "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_mocks_v1.json": "7cd2403858fd9490889942be38e08ea5e240db613813d238b3a48a971bd19886",
+  "intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py": "4af0dc0dae8ded897d7e052c39fcfcaa5210de1394dc3da5af3e850a817822bf",
+  "intelligence/scripts/audit-semantic-prompt-v2-compact.py": "08c3b56c337a7ee780c783cd9e6eb53c7ebb1442d6b17f485038c25cd55480ad"
+}

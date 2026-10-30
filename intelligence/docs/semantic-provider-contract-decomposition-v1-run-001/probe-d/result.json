@@ -1,0 +1,93 @@
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerRequestId": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "errorClass": "APITimeoutError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "APITimeoutError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "ReadTimeout",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    },
+    {
+      "exceptionClass": "TimeoutError",
+      "httpStatus": null,
+      "providerCode": null,
+      "providerParam": null
+    }
+  ],
+  "safeMessage": "Diagnostic cross-case failed; no retry or fallback.",
+  "httpStatus": null,
+  "safeHeaders": {},
+  "safeTrace": [
+    {
+      "file": "semantic_contract_decomposition_v1.py",
+      "line": 97,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ],
+  "providerMetadata": null,
+  "requestIdMeaning": "Existing adapter exposes completion response.id; HTTP x-request-id only if captured on error.",
+  "finishReason": null,
+  "providerReportedCostUsd": null,
+  "level": "D",
+  "start": "2026-10-26T12:05:07.924680+00:00",
+  "end": "2026-10-26T12:06:38.645094+00:00",
+  "durationSeconds": 90.72335608399953,
+  "responseBytes": 0,
+  "passed": false,
+  "executionPassed": false,
+  "contractCheck": {
+    "passed": false,
+    "reason": "APITimeoutError"
+  },
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 4096
+}

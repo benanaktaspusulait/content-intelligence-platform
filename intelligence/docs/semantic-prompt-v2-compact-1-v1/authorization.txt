@@ -1,0 +1,914 @@
+Continue from the current repository state.
+
+The Semantic V2 Compact low-reasoning micro-batch is complete.
+
+ACCEPTED execution profile:
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Reasoning:
+LOW
+
+Prompt:
+v2-compact
+
+Schema:
+corrected full native Semantic V2 schema
+
+Single-candidate requests are operational.
+
+Latest real sample:
+
+REFERENCE-0:
+opening = 35
+SFE = 84
+premise not admitted
+
+micro-a:
+timeout
+
+micro-b:
+opening = 35
+SFE = 85
+premise not admitted
+
+micro-c:
+opening = 35
+SFE = 84
+premise not admitted
+
+Available real creative sample:
+3 concepts
+
+Observed across ALL 3 successful candidates:
+
+opening score = 35
+
+rule consistency = AMBIGUOUS
+
+premise admitted = 0
+
+ranking eligible = 0
+
+production admitted = 0
+
+Structured SFE remains comparatively healthy:
+
+84–85
+
+This is a strong repeated signal that the current semantic generator is producing reasonably developed stories whose:
+
+1. OPENING PREMISE IS NOT SUFFICIENTLY LEGIBLE IN A PAUSED FIRST FRAME
+
+and
+
+2. CORE RULE IS NOT EXPRESSED / STAGED WITH ENOUGH PHYSICAL PRECISION FOR DETERMINISTIC RULE-CONSISTENCY VERIFICATION.
+
+This task must repair ONLY those generation weaknesses.
+
+Do NOT modify validators.
+
+Do NOT modify thresholds.
+
+Do NOT modify taxonomy.
+
+Do NOT modify schema.
+
+Do NOT change model.
+
+Do NOT change reasoning profile.
+
+Do NOT perform a large live generation run.
+
+======================================================================
+PRIMARY GOAL
+======================================================================
+
+Create a narrowly revised prompt version:
+
+semanticConceptPromptVersion = "v2-compact.1"
+
+or repository-equivalent version naming.
+
+v2-compact.1 must preserve all accepted V2 Compact creative policy.
+
+Only strengthen:
+
+A. FRAME-ZERO PHYSICAL LEGIBILITY
+
+B. CORE-RULE MECHANICAL PRECISION
+
+C. BEAT-TO-RULE VERIFIABILITY
+
+Do NOT broaden the prompt again.
+
+Keep it compact.
+
+======================================================================
+1. PRESERVE V2-COMPACT
+======================================================================
+
+v2-compact remains immutable.
+
+Do not overwrite it.
+
+Create a new version derived from it.
+
+All existing policies remain unless explicitly refined below.
+
+======================================================================
+2. KEY FAILURE #1 — OPENING = 35 ACROSS 3/3
+======================================================================
+
+The current prompt says the opening should show:
+
+character
+goal
+object
+problem
+
+but the generated openings still require inference/motion/context.
+
+Strengthen the requirement.
+
+NEW HARD CREATIVE PRINCIPLE:
+
+THE FIRST FRAME MUST NOT MERELY SUGGEST THE PROBLEM.
+
+THE FIRST FRAME MUST ALREADY SHOW PHYSICAL EVIDENCE OF THE IMPOSSIBLE RULE.
+
+The viewer should not need to wait for Beat 1 to discover what is wrong.
+
+======================================================================
+3. FRAME-ZERO RULE DEMONSTRATION
+======================================================================
+
+For every candidate:
+
+frameZeroDescription must show:
+
+1. protagonist
+2. immediate everyday goal
+3. primary object
+4. visible abnormal object state / consequence
+5. direct conflict between abnormal state and goal
+
+The impossible rule itself should be inferable from the still image as far as physically possible.
+
+Bad opening conceptually:
+
+"Character holds a normal brush, about to brush hair."
+
+The problem has not happened yet.
+
+Better principle:
+
+"Character is visibly trying to brush, while the brush/hair is already trapped in the impossible consequence."
+
+Do NOT hard-code this example into generation.
+
+======================================================================
+4. NO WAITING FOR TRIGGER
+======================================================================
+
+Do not generate concepts where frame zero is:
+
+NORMAL WORLD
+→ character acts
+→ magic appears
+
+The video must begin AFTER the first activation of the rule.
+
+Conceptually:
+
+the first impossible consequence is already in progress at frame zero.
+
+The character is already dealing with it.
+
+======================================================================
+5. OPENING PAUSE TEST
+======================================================================
+
+Before returning each candidate, internally perform:
+
+PAUSE FRAME TEST
+
+Imagine the video is paused at 0.0 seconds.
+
+Without:
+
+motion
+dialogue
+title
+caption
+previous context
+
+can a viewer answer:
+
+What is the character trying to do?
+
+What object are they using?
+
+What physically impossible problem is already happening?
+
+Why does that problem interfere with the goal?
+
+If any answer is unclear:
+
+discard/redesign the candidate.
+
+======================================================================
+6. STRONGER THAN "ANOMALY"
+======================================================================
+
+A strange-looking frame is not enough.
+
+The opening must communicate:
+
+GOAL + IMPOSSIBLE INTERFERENCE.
+
+Do not rely on:
+
+odd pose
+surprised face
+floating object with unclear relationship
+mysterious state
+reaction shot
+
+The causal problem should be visually readable.
+
+======================================================================
+7. KEY FAILURE #2 — RULE CONSISTENCY = AMBIGUOUS 3/3
+======================================================================
+
+Current semantic concepts contain an impossibleRule field, but its mechanics are not precise enough to deterministically verify all beats.
+
+Strengthen rule formulation.
+
+Every rule must be written as an observable physical invariant.
+
+======================================================================
+8. MECHANICALLY TESTABLE RULE
+======================================================================
+
+The impossibleRule must clearly define:
+
+TRIGGER
+
+TARGET
+
+RESPONSE
+
+REPEATABILITY
+
+Conceptual pattern:
+
+WHEN [specific visible trigger happens],
+THE [specific object/property]
+ALWAYS [specific observable response].
+
+Avoid vague formulations such as:
+
+"the object behaves backwards"
+
+"the brush fights back"
+
+"the object does the opposite"
+
+"strange things happen"
+
+"it refuses to work normally"
+
+Those require interpretation.
+
+======================================================================
+9. ONE RULE = ONE CAUSAL FUNCTION
+======================================================================
+
+Think internally of the rule as:
+
+RESPONSE = f(TRIGGER)
+
+The same trigger conditions must produce the same kind of response throughout the story.
+
+Magnitude may change.
+
+Accumulation may increase.
+
+Position may change.
+
+Character strategy may change.
+
+Consequences may spread.
+
+But the underlying causal function must remain identical.
+
+======================================================================
+10. RULE MUST NOT DESCRIBE STORY OUTCOME
+======================================================================
+
+The rule should describe a repeatable physical behavior.
+
+Not:
+
+"The brush eventually traps the character."
+
+Instead:
+
+a repeatable mechanism from which trapping could emerge as a later consequence.
+
+This allows downstream validators to test each beat against the same rule.
+
+======================================================================
+11. TRIGGER MUST BE PHYSICALLY SPECIFIC
+======================================================================
+
+Avoid broad triggers such as:
+
+"when used"
+
+"when touched"
+
+if the actual behavior depends on:
+
+pulling
+pushing
+opening
+closing
+wiping
+lifting
+releasing
+turning
+pressing
+
+Use the actual visible interaction.
+
+The trigger should be stageable on screen.
+
+======================================================================
+12. RESPONSE MUST BE PHYSICALLY SPECIFIC
+======================================================================
+
+The response must specify what visibly changes.
+
+Prefer concepts like:
+
+position changes
+
+property transfers
+
+distance changes
+
+orientation changes
+
+material accumulates
+
+control transfers
+
+state propagates
+
+Object response may be novel and outside current taxonomy.
+
+But it must be physically describable.
+
+======================================================================
+13. RULE CONSISTENCY TEST
+======================================================================
+
+Before returning a candidate compare EVERY beat to the rule.
+
+For each beat internally ask:
+
+What is the trigger in this beat?
+
+What response follows?
+
+Does that response follow directly from the exact stated rule?
+
+If explanation requires:
+
+"this time it also..."
+
+"except now..."
+
+"then it suddenly..."
+
+"because the object decides..."
+
+discard/redesign.
+
+======================================================================
+14. BEAT OUTPUT MUST MAKE RULE AUDITABLE
+======================================================================
+
+Each beat must describe enough concrete information to validate:
+
+ACTION/TRIGGER
+
+VISIBLE RESPONSE
+
+STATE CHANGE
+
+Avoid prose such as:
+
+"the situation gets worse."
+
+State exactly what physically happens.
+
+======================================================================
+15. STRATEGY CHANGES, RULE DOES NOT
+======================================================================
+
+Keep the accepted V2 principle.
+
+Escalation may change:
+
+character strategy
+
+position
+
+magnitude
+
+accumulation
+
+environmental consequence
+
+goal distance
+
+information
+
+But never:
+
+trigger semantics
+
+response semantics
+
+causal rule.
+
+======================================================================
+16. PAYOFF MUST PASS THE SAME RULE TEST
+======================================================================
+
+The final payoff is effectively the final beat.
+
+It must pass exactly the same:
+
+TRIGGER → RESPONSE
+
+relationship.
+
+No special finale behavior.
+
+No new property.
+
+No one-time exception.
+
+No second rule.
+
+======================================================================
+17. FRAME ZERO AND RULE MUST AGREE
+======================================================================
+
+Important new combined test:
+
+The physical problem visible at frame zero must be an actual instance of the stated impossibleRule.
+
+Do not create:
+
+rule says X
+
+but frame zero visually depicts Y merely because Y creates a stronger hook.
+
+Opening hook and story rule must be identical.
+
+======================================================================
+18. DO NOT CREATE MORE COMPLEX STORIES
+======================================================================
+
+Do NOT compensate for stronger opening/rule requirements by adding complexity.
+
+Still prefer:
+
+one protagonist
+
+one object
+
+one location
+
+one rule
+
+4–5 beats
+
+simple everyday goal.
+
+======================================================================
+19. PRESERVE PRODUCTION FEASIBILITY
+======================================================================
+
+Opening must remain easy for AI video/image generation.
+
+Avoid frame-zero ideas requiring:
+
+many moving elements
+
+precise finger positions
+
+tiny objects
+
+text
+
+complex mechanical assemblies
+
+many simultaneous effects.
+
+======================================================================
+20. PRESERVE SILENT VIEW
+======================================================================
+
+Do not use dialogue to clarify the opening or rule.
+
+If the rule needs narration:
+
+the concept is too unclear.
+
+======================================================================
+21. KEEP PROMPT COMPACT
+======================================================================
+
+Do not re-expand v2-compact into the original long V2 prompt.
+
+Integrate these changes by replacing/refining existing opening and rule sections.
+
+Avoid duplicate instruction blocks.
+
+Target:
+
+v2-compact.1 total prompt size <= v2-compact + 15%
+
+Prefer smaller if possible.
+
+Report actual delta.
+
+======================================================================
+22. SCHEMA MUST NOT CHANGE
+======================================================================
+
+Use the existing corrected native schema unchanged.
+
+Do not add:
+
+triggerMechanism fields
+
+rule equations
+
+opening scores
+
+self-scores
+
+or additional provider claims.
+
+Existing fields are sufficient.
+
+======================================================================
+23. NO VALIDATOR CHANGES
+======================================================================
+
+Do not modify:
+
+opening validator
+
+Premise Naturalness
+
+Admission V2
+
+Beat Grammar
+
+SFE
+
+Creative Shape
+
+ranking
+
+production selection.
+
+We want generator improvement measured by the SAME judges.
+
+======================================================================
+24. OFFLINE ADVERSARIAL TESTS
+======================================================================
+
+Add focused mock cases.
+
+OPENING TESTS:
+
+A. normal object before anomaly
+→ reject prompt-quality intent
+
+B. surprised character but problem unclear
+→ reject
+
+C. anomaly visible but goal unclear
+→ reject
+
+D. goal + object + active impossible interference visible
+→ acceptable
+
+RULE TESTS:
+
+E. vague "object behaves backwards"
+→ reject
+
+F. specific trigger + specific repeated response
+→ acceptable
+
+G. Beat 3 introduces second behavior
+→ reject
+
+H. payoff mutates rule
+→ reject
+
+I. magnitude escalates under same response
+→ acceptable
+
+J. environmental consequence derived from same rule
+→ acceptable
+
+======================================================================
+25. POLICY EQUIVALENCE
+======================================================================
+
+Produce a mapping:
+
+v2-compact policy
+→
+v2-compact.1 policy
+
+Prove all previous required semantics remain.
+
+Highlight only the refined policies:
+
+FRAME_ZERO_ACTIVE_RULE_EVIDENCE
+
+MECHANICALLY_TESTABLE_RULE
+
+BEAT_RULE_AUDITABILITY
+
+======================================================================
+26. NO LIVE CALL DURING IMPLEMENTATION
+======================================================================
+
+First implement and verify entirely offline.
+
+Provider calls during implementation/tests:
+
+0
+
+======================================================================
+27. AFTER OFFLINE TESTS — ONE LIVE PROBE ONLY
+======================================================================
+
+Only if all tests pass:
+
+execute exactly ONE live request.
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Reasoning:
+LOW
+
+Prompt:
+v2-compact.1
+
+Schema:
+unchanged corrected full schema
+
+Candidate count:
+1
+
+Same max output tokens:
+8192
+
+Same accepted timeout envelope.
+
+Maximum live calls:
+1
+
+No retry.
+
+======================================================================
+28. LIVE PROBE PURPOSE
+======================================================================
+
+This probe tests whether the narrow prompt repair improves:
+
+OPENING
+
+and
+
+RULE VERIFIABILITY.
+
+It is NOT a production batch.
+
+======================================================================
+29. LIVE RESULT AUDIT
+======================================================================
+
+If candidate returns, report:
+
+opening score
+
+frame-zero:
+
+character visible?
+goal visible?
+object visible?
+problem visible?
+impossible relationship visible?
+motion required?
+prior context required?
+
+rule consistency:
+
+CONSISTENT
+AMBIGUOUS
+INCONSISTENT
+
+Then:
+
+Premise Naturalness
+
+Admission
+
+Beat Grammar
+
+SFE
+
+ranking
+
+production preselection.
+
+======================================================================
+30. PRIMARY COMPARISON
+======================================================================
+
+Compare the returned v2-compact.1 candidate against the three existing successful v2-compact candidates.
+
+Existing baseline:
+
+successful samples = 3
+
+opening:
+35 / 35 / 35
+
+rule consistency:
+AMBIGUOUS / AMBIGUOUS / AMBIGUOUS
+
+premise admission:
+0 / 3
+
+Do not claim statistical proof from one new candidate.
+
+But report whether it breaks either repeated pattern.
+
+======================================================================
+31. SUCCESS SIGNAL
+======================================================================
+
+A promising signal would be:
+
+opening >= accepted floor
+
+AND
+
+rule consistency = CONSISTENT.
+
+This does NOT require production admission.
+
+A returned candidate may still have other genuine quality problems.
+
+======================================================================
+32. IF OPENING REMAINS 35
+======================================================================
+
+Do not modify prompt again in the same task.
+
+Report:
+
+OPENING_REPAIR_NOT_CONFIRMED
+
+Stop.
+
+======================================================================
+33. IF RULE REMAINS AMBIGUOUS
+======================================================================
+
+Do not modify validators.
+
+Report:
+
+RULE_LEGIBILITY_REPAIR_NOT_CONFIRMED
+
+Stop.
+
+======================================================================
+34. REGRESSION
+======================================================================
+
+Run:
+
+prompt-version tests
+
+policy-equivalence tests
+
+adversarial opening tests
+
+rule-consistency mock tests
+
+schema identity tests
+
+provider request tests
+
+full regression
+
+Expected:
+
+same 36 accepted baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+35. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. root creative signal motivating v2-compact.1
+2. exact prompt changes
+3. exact v2-compact.1 prompt
+4. old/new prompt size
+5. size percentage delta
+6. policy-equivalence matrix
+7. adversarial mock results
+8. proof schema unchanged
+9. proof validators unchanged
+10. regression results
+11. provider calls during tests = 0
+
+If live probe executed:
+
+12. provider/model/reasoning
+13. request count
+14. duration
+15. response bytes
+16. token usage
+17. complete returned story
+18. opening audit
+19. opening score
+20. rule consistency audit
+21. Premise Naturalness
+22. admission result
+23. Beat Grammar
+24. SFE
+25. ranking
+26. production blockers
+27. comparison with previous three real samples
+28. proof no retry
+29. proof no second live call
+30. proof no DeepSeek
+31. proof no render
+
+======================================================================
+36. STOP
+======================================================================
+
+After the single v2-compact.1 live probe:
+
+STOP.
+
+Do NOT:
+
+generate another candidate
+
+request 5/20/40 ideas
+
+change validators
+
+change schema
+
+change model
+
+change reasoning
+
+render anything.
+
+We will review whether the narrow opening/rule repair actually changed real generation behavior before scaling.

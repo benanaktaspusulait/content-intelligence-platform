@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "source": "mock-v1",
+      "rawCount": 15,
+      "domainValid": 8,
+      "existingDomainRejected": 7,
+      "correctedSchemaValid": 8
+    },
+    {
+      "source": "stored-live-v1",
+      "rawCount": 40,
+      "domainValid": 38,
+      "existingDomainRejected": 2,
+      "correctedSchemaValid": 38
+    },
+    {
+      "source": "mockV1",
+      "rawCount": 10,
+      "domainValid": 10,
+      "existingDomainRejected": 0,
+      "correctedSchemaValid": 10
+    },
+    {
+      "source": "mockV2",
+      "rawCount": 10,
+      "domainValid": 10,
+      "existingDomainRejected": 0,
+      "correctedSchemaValid": 10
+    }
+  ],
+  "totalPreviouslyDomainValid": 66,
+  "unexpectedNewStructuralRejections": 0,
+  "zeroByteLiveArtifacts": "Not structurally applicable; empty archived responses remain untouched."
+}

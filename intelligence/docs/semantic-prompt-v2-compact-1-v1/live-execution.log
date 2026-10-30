@@ -1,0 +1,62 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 1627,
+    "prompt_tokens": 2112,
+    "total_tokens": 3739,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 829,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2109,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 49705.162792,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 49712.3095,
+  "providerRequestId": "chatcmpl-EefGU5uRbLsNuwhOkOJacnHzuOnGM",
+  "httpRequestId": "req_245ac6cd9dd64091ab84f27a9d73cee6",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EefGU5uRbLsNuwhOkOJacnHzuOnGM",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "executionClassification": "COMPACT_1_FULL_CONTRACT_EXECUTION_PASS",
+  "timing": {
+    "wallClockStartUTC": "2026-10-30T11:40:47.673961+00:00",
+    "wallClockEndUTC": "2026-10-30T11:41:38.086144+00:00",
+    "monotonicElapsedSeconds": 50.412277375,
+    "wallClockSpanSeconds": 50.412183,
+    "wallMinusMonotonicSeconds": -9.437500000331056e-05,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 3744,
+  "logicalRequestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "selectedReasoningEffort": "low",
+  "promptHash": "122a65a43c084c77a0bff466a89461da4f7d7cc701aa3ae8fd5709829ec3d417",
+  "schemaHash": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "pipelineRan": true
+}

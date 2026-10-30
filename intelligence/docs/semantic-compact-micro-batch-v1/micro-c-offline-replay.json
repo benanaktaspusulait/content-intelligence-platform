@@ -1,0 +1,53 @@
+{
+  "completeSourceAuditBeforeReplay": true,
+  "sourceAuditSha256": "99a5f63ad0a65b48cf30b13dac3b07e9304b0b7c0e97cb91b11c20648fecbe92",
+  "pipelineResultIdentical": false,
+  "delta": [
+    {
+      "path": "/pipeline/allRawIdeas/0/record/admission/factors/openingLegibility/standard/objectEvidence/matches/0",
+      "previous": "iron",
+      "new": "the"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/admission/factors/openingLegibility/standard/objectEvidence/matches/1",
+      "previous": "the",
+      "new": "iron"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/candidate/premiseNaturalness/admissionV2/factors/openingLegibility/standard/objectEvidence/matches/0",
+      "previous": "iron",
+      "new": "the"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/candidate/premiseNaturalness/admissionV2/factors/openingLegibility/standard/objectEvidence/matches/1",
+      "previous": "the",
+      "new": "iron"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/candidate/premiseNaturalness/openingEvidence/objectEvidence/matches/0",
+      "previous": "iron",
+      "new": "the"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/candidate/premiseNaturalness/openingEvidence/objectEvidence/matches/1",
+      "previous": "the",
+      "new": "iron"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/openingMandatoryAdmission/factors/openingLegibility/standard/objectEvidence/matches/0",
+      "previous": "iron",
+      "new": "the"
+    },
+    {
+      "path": "/pipeline/allRawIdeas/0/record/openingMandatoryAdmission/factors/openingLegibility/standard/objectEvidence/matches/1",
+      "previous": "the",
+      "new": "iron"
+    }
+  ],
+  "providerCalls": 0,
+  "renders": 0,
+  "comparison": "JSON-normalized key types",
+  "decisionsScoresBlockersAndSourceIdentical": true,
+  "onlyDifference": "Ordering of the same objectEvidence.matches terms iron/the in 4 duplicated evidence locations; existing set-order behavior. Original artifacts and validators preserved.",
+  "evidenceMembershipEquivalent": true
+}

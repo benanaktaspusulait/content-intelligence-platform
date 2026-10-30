@@ -1,0 +1,251 @@
+{
+  "v2-compact": {
+    "system": {
+      "characters": 5683,
+      "UTF8Bytes": 5701,
+      "lines": 27,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 6,
+        "doNot": 7,
+        "never": 2,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 3
+      },
+      "estimatedTokens": 1421,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "user": {
+      "characters": 1409,
+      "UTF8Bytes": 1409,
+      "lines": 1,
+      "sections": [],
+      "instructionMarkerOccurrences": {
+        "must": 0,
+        "doNot": 0,
+        "never": 0,
+        "avoid": 0,
+        "exactly": 0,
+        "check": 0
+      },
+      "estimatedTokens": 353,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "totalText": {
+      "characters": 7093,
+      "UTF8Bytes": 7111,
+      "lines": 28,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 6,
+        "doNot": 7,
+        "never": 2,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 3
+      },
+      "estimatedTokens": 1774,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    }
+  },
+  "v2-compact.1": {
+    "system": {
+      "characters": 6472,
+      "UTF8Bytes": 6498,
+      "lines": 27,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 5,
+        "doNot": 8,
+        "never": 3,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 4
+      },
+      "estimatedTokens": 1618,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "user": {
+      "characters": 1413,
+      "UTF8Bytes": 1413,
+      "lines": 1,
+      "sections": [],
+      "instructionMarkerOccurrences": {
+        "must": 0,
+        "doNot": 0,
+        "never": 0,
+        "avoid": 0,
+        "exactly": 0,
+        "check": 0
+      },
+      "estimatedTokens": 354,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    },
+    "totalText": {
+      "characters": 7886,
+      "UTF8Bytes": 7912,
+      "lines": 28,
+      "sections": [
+        {
+          "line": 3,
+          "title": "CORE INVARIANTS"
+        },
+        {
+          "line": 8,
+          "title": "OPENING"
+        },
+        {
+          "line": 11,
+          "title": "BEATS"
+        },
+        {
+          "line": 14,
+          "title": "PAYOFF"
+        },
+        {
+          "line": 17,
+          "title": "DIVERSITY"
+        },
+        {
+          "line": 20,
+          "title": "PRODUCTION"
+        },
+        {
+          "line": 23,
+          "title": "OUTPUT CONTRACT"
+        },
+        {
+          "line": 26,
+          "title": "FINAL SELF-CHECK (PRIVATE)"
+        }
+      ],
+      "instructionMarkerOccurrences": {
+        "must": 5,
+        "doNot": 8,
+        "never": 3,
+        "avoid": 3,
+        "exactly": 3,
+        "check": 4
+      },
+      "estimatedTokens": 1972,
+      "estimateMethod": "Local character proxy:4 characters/token assumption; not model tokenization or billing.",
+      "exactTokenizerTokens": null,
+      "exactTokenizerStatus": "No installed tokenizer/local model-token counting utility; no download or provider call."
+    }
+  },
+  "deltaPercent": {
+    "system": 13.883512229456274,
+    "user": 0.2838892831795503,
+    "totalText": 11.180036655857894
+  }
+}

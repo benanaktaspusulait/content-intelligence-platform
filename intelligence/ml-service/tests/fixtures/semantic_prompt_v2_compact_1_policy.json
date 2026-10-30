@@ -1,0 +1,488 @@
+{
+  "scope": "Editorial policy coverage; exact spans prove instruction retention, not model compliance.",
+  "requirements": [
+    {
+      "id": "boundary",
+      "requirement": "Raw ideas; deterministic authority; no rank/score/winners/virality/novelty/readiness/eligibility/production recommendation/bypass",
+      "oldEvidence": "Do not rank, score, assign confidence",
+      "newEvidence": "Do not rank, score, assign confidence",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "rationale",
+      "requirement": "Rationale explains causal dependency only, never score authority",
+      "oldEvidence": "no scoring authority",
+      "newEvidence": "no scoring authority",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "private",
+      "requirement": "No exposed reasoning, checklists or self-certification",
+      "oldEvidence": "Output no private reasoning",
+      "newEvidence": "Output no private reasoning",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "protagonist",
+      "requirement": "Exactly one supplied canonical protagonist",
+      "oldEvidence": "one supplied canonical protagonist",
+      "newEvidence": "one supplied canonical protagonist",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "object",
+      "requirement": "One primary everyday object",
+      "oldEvidence": "one primary everyday object",
+      "newEvidence": "one primary everyday object",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "goal",
+      "requirement": "Simple concrete credible visible everyday goal",
+      "oldEvidence": "one simple credible visible goal",
+      "newEvidence": "one simple credible visible goal",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "location",
+      "requirement": "One location",
+      "oldEvidence": "one location",
+      "newEvidence": "one location",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "trouble",
+      "requirement": "Immediate visible trouble",
+      "oldEvidence": "Start inside visible trouble",
+      "newEvidence": "Start inside visible trouble",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "duration",
+      "requirement": "About15 seconds, complete readable action",
+      "oldEvidence": "about 15 seconds",
+      "newEvidence": "about 15 seconds",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "intuitive",
+      "requirement": "Strange but intuitive logic rather than randomness",
+      "oldEvidence": "STRANGE BUT INTUITIVE",
+      "newEvidence": "STRANGE BUT INTUITIVE",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "one-rule",
+      "requirement": "One dominant impossible physical/comedic rule",
+      "oldEvidence": "one dominant impossible physical/comedic rule",
+      "newEvidence": "Write impossibleRule as one observable invariant",
+      "preserved": true,
+      "refinements": [
+        "MECHANICALLY_TESTABLE_RULE"
+      ]
+    },
+    {
+      "id": "rule-sentence",
+      "requirement": "Precise observable repeatable trigger/response sentence",
+      "oldEvidence": "precise, observable, repeatable trigger\u2192response sentence",
+      "newEvidence": "WHEN [specific visible action/contact], THE [specific target/property] ALWAYS [specific physical response]",
+      "preserved": true,
+      "refinements": [
+        "MECHANICALLY_TESTABLE_RULE"
+      ]
+    },
+    {
+      "id": "immutable",
+      "requirement": "Established rule governs every beat/payoff without mutation",
+      "oldEvidence": "Once established it never changes",
+      "newEvidence": "Once established it never changes",
+      "preserved": true,
+      "refinements": [
+        "MECHANICALLY_TESTABLE_RULE"
+      ]
+    },
+    {
+      "id": "trigger",
+      "requirement": "Stable trigger; no new condition or actor loophole",
+      "oldEvidence": "changes to the declared trigger/direction/target/material/timing/agency mapping",
+      "newEvidence": "changes to the declared trigger/direction/target/material/timing/agency mapping",
+      "preserved": true,
+      "refinements": [
+        "MECHANICALLY_TESTABLE_RULE"
+      ]
+    },
+    {
+      "id": "no-powers",
+      "requirement": "No independent powers bundled to excuse twists",
+      "oldEvidence": "do not bundle independent powers",
+      "newEvidence": "do not bundle independent powers",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "mapping",
+      "requirement": "No altered direction/material/target/timing/agency unless implied",
+      "oldEvidence": "declared trigger/direction/target/material/timing/agency mapping",
+      "newEvidence": "declared trigger/direction/target/material/timing/agency mapping",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "spread",
+      "requirement": "No unrelated spread; new information reveals same relationship",
+      "oldEvidence": "Spread, transfer and magnitude must already follow",
+      "newEvidence": "Spread, transfer and magnitude must already follow",
+      "preserved": true,
+      "refinements": [
+        "MECHANICALLY_TESTABLE_RULE"
+      ]
+    },
+    {
+      "id": "object-function",
+      "requirement": "Explain ordinary function and exact object dependency",
+      "oldEvidence": "State its ordinary function",
+      "newEvidence": "State its ordinary function",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "object-affordance",
+      "requirement": "Exploit function/affordance/motion/material/result/task relationship",
+      "oldEvidence": "affordance, expected motion, material/property, normal result",
+      "newEvidence": "affordance, expected motion, material/property, normal result",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "interference",
+      "requirement": "Object operation directly obstructs goal",
+      "oldEvidence": "DIRECTLY obstruct the task",
+      "newEvidence": "DIRECTLY obstruct the task",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "arbitrary",
+      "requirement": "Noun sharing is insufficient; no random magic or contrived goal",
+      "oldEvidence": "Sharing an affected noun is insufficient",
+      "newEvidence": "Sharing an affected noun is insufficient",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "still",
+      "requirement": "Single simultaneous paused stageable frame",
+      "oldEvidence": "One paused, simultaneous frame",
+      "newEvidence": "frameZeroDescription must freeze an actual activation of that exact rule",
+      "preserved": true,
+      "refinements": [
+        "FRAME_ZERO_ACTIVE_RULE_EVIDENCE"
+      ]
+    },
+    {
+      "id": "opening-content",
+      "requirement": "Character, visible goal, object, impossible problem and relationship",
+      "oldEvidence": "character+visible task+object+already-present impossible problem",
+      "newEvidence": "protagonist using the primary object for the everyday goal, abnormal target state already physically blocking that goal",
+      "preserved": true,
+      "refinements": [
+        "FRAME_ZERO_ACTIVE_RULE_EVIDENCE"
+      ]
+    },
+    {
+      "id": "physical-evidence",
+      "requirement": "Pose/state/space carry evidence; intention/title/laterbeat insufficient",
+      "oldEvidence": "pose, physical state and space",
+      "newEvidence": "same contact/spatial relationship",
+      "preserved": true,
+      "refinements": [
+        "FRAME_ZERO_ACTIVE_RULE_EVIDENCE"
+      ]
+    },
+    {
+      "id": "no-explanation",
+      "requirement": "No sound/dialogue/text/context/inset/beforeafter/motion dependence",
+      "oldEvidence": "explanatory inset, before/after sequence or waiting for motion",
+      "newEvidence": "No dialogue, sound, title, text/captions, prior context, inset, before/after sequence",
+      "preserved": true,
+      "refinements": [
+        "FRAME_ZERO_ACTIVE_RULE_EVIDENCE"
+      ]
+    },
+    {
+      "id": "no-delay",
+      "requirement": "No initial normal action, press/door/delay/traverse or2\u20133sec setup",
+      "oldEvidence": "spend no first 2\u20133 seconds",
+      "newEvidence": "No waiting for a trigger or first 2\u20133 seconds of ordinary setup",
+      "preserved": true,
+      "refinements": [
+        "FRAME_ZERO_ACTIVE_RULE_EVIDENCE"
+      ]
+    },
+    {
+      "id": "no-label-proof",
+      "requirement": "Words moving/obvious/impossible do not supply still evidence",
+      "oldEvidence": "Motion words or labels such as obvious/impossible",
+      "newEvidence": "motion words or labels such as obvious/impossible as evidence",
+      "preserved": true,
+      "refinements": [
+        "FRAME_ZERO_ACTIVE_RULE_EVIDENCE"
+      ]
+    },
+    {
+      "id": "count",
+      "requirement": "Exactly4\u20135 major causal beats including final payoff",
+      "oldEvidence": "Exactly 4 or 5 major causal beats including payoff",
+      "newEvidence": "Exactly 4 or 5 major causal beats including payoff",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "beat-fields",
+      "requirement": "Action\u2192same-rule physical consequence\u2192changed state/information",
+      "oldEvidence": "strategy/action\u2192visible consequence\u2192new information or state change",
+      "newEvidence": "strategy/action\u2192visible consequence\u2192new information or state change",
+      "preserved": true,
+      "refinements": [
+        "BEAT_RULE_AUDITABILITY"
+      ]
+    },
+    {
+      "id": "stageable",
+      "requirement": "Concrete concise stageable sentences",
+      "oldEvidence": "sentences concrete, concise and stageable",
+      "newEvidence": "sentences concrete, concise and stageable",
+      "preserved": true,
+      "refinements": [
+        "BEAT_RULE_AUDITABILITY"
+      ]
+    },
+    {
+      "id": "progression",
+      "requirement": "Materially different strategy/consequence/state/position/control/goal distance/stakes",
+      "oldEvidence": "Each beat materially changes the problem",
+      "newEvidence": "Each beat materially changes the problem",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "axes",
+      "requirement": "Vary leverage/timing/position/environment/magnitude/accumulation/control/stakes",
+      "oldEvidence": "position, leverage, timing, magnitude, environmental use, accumulation",
+      "newEvidence": "position, leverage, timing, magnitude, environmental use, accumulation",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "passive",
+      "requirement": "Environment is passive staging, no new powers",
+      "oldEvidence": "Environment is passive staging",
+      "newEvidence": "Environment is passive staging",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "no-repeat",
+      "requirement": "Reworded same attempts or identical consequences are not progression",
+      "oldEvidence": "reworded retries or unchanged consequences do not count",
+      "newEvidence": "reworded retries or unchanged consequences do not count",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "no-force-ladder",
+      "requirement": "Avoid force/twohands/brace/fakesuccess default",
+      "oldEvidence": "try harder\u2192two hands\u2192brace\u2192fake success",
+      "newEvidence": "try harder\u2192two hands\u2192brace\u2192fake success",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "no-unrelated",
+      "requirement": "No unrelated events or hidden sub-scenes; magnitude follows rule",
+      "oldEvidence": "No hidden sub-scenes",
+      "newEvidence": "No hidden sub-scenes",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "last-equality",
+      "requirement": "Payoff equals last consequence character for character, no extra event",
+      "oldEvidence": "finalPayoff equals the last visibleConsequence exactly",
+      "newEvidence": "finalPayoff equals the last visibleConsequence exactly",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "payoff-causal",
+      "requirement": "Surprising but inevitable strongest rule-derived visual state change",
+      "oldEvidence": "strongest visual, state-changing consequence",
+      "newEvidence": "strongest visual, state-changing consequence",
+      "preserved": true,
+      "refinements": [
+        "BEAT_RULE_AUDITABILITY"
+      ]
+    },
+    {
+      "id": "payoff-essential",
+      "requirement": "Ending cannot survive removal of original rule",
+      "oldEvidence": "Without the original rule this ending should not work",
+      "newEvidence": "Without the original rule this ending should not work",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "payoff-families",
+      "requirement": "Preserve transfer/reversal/wrongsuccess/problem/takeover/extreme/chain/reveal/join/objectwins inspiration families",
+      "oldEvidence": "role/control/property transfer",
+      "newEvidence": "role/control/property transfer",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "no-taxonomy-recipes",
+      "requirement": "Payoff inspirations are not mandatory taxonomy recipes",
+      "oldEvidence": "not taxonomy recipes",
+      "newEvidence": "not taxonomy recipes",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "no-ending-rescue",
+      "requirement": "No newactor/poweredobject/magic/trigger/externalforce ending",
+      "oldEvidence": "new character, powered object or unexplained external force",
+      "newEvidence": "new character, powered object or unexplained external force",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "loop",
+      "requirement": "Optional loop; no reset effect/new rule; avoid routine fakesuccess reset",
+      "oldEvidence": "Looping is optional",
+      "newEvidence": "Looping is optional",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "silent",
+      "requirement": "Full story legible soundoff; dialogue not explanatory",
+      "oldEvidence": "full story must read with sound off",
+      "newEvidence": "full story must read with sound off",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "dialogue",
+      "requirement": "NONE default; OPTIONAL only if needed; do not invent enum",
+      "oldEvidence": "Dialogue normally NONE",
+      "newEvidence": "Dialogue normally NONE",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "production",
+      "requirement": "Broad body actions, poses, stable identities/silhouette, few elements",
+      "oldEvidence": "broad body actions, clear poses, stable identities/silhouettes",
+      "newEvidence": "broad body actions, clear poses, stable identities/silhouettes",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "production-risks",
+      "requirement": "No tinytext/smallpieces/finehands/mechanics/crowds/cuts/unstageable invisibleforces",
+      "oldEvidence": "fine hand work, fine mechanical transformations, crowds",
+      "newEvidence": "fine hand work, fine mechanical transformations, crowds",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "safety",
+      "requirement": "Childsafe: no injury/weapons/dangerousrestraint/sexualcontent",
+      "oldEvidence": "no injury, weapons, dangerous restraint or sexual content",
+      "newEvidence": "no injury, weapons, dangerous restraint or sexual content",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "batch-diversity",
+      "requirement": "Vary object/goal/mechanic/trigger/progression/payoff/finalsilhouette",
+      "oldEvidence": "vary object family, goal, mechanic, trigger, progression, payoff and final silhouette",
+      "newEvidence": "vary object family, goal, mechanic, trigger, progression, payoff and final silhouette",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "no-opposite",
+      "requirement": "Avoid many oppositebehavior variants/wordingnovelty",
+      "oldEvidence": "many opposite-behavior variants",
+      "newEvidence": "many opposite-behavior variants",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "unfamiliar",
+      "requirement": "Coherent unfamiliar taxonomyfree mechanics allowed",
+      "oldEvidence": "Coherent unfamiliar mechanics outside existing taxonomy are welcome",
+      "newEvidence": "Coherent unfamiliar mechanics outside existing taxonomy are welcome",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "cautions",
+      "requirement": "Historical caution not templates; rare distinct chair/adhesion/reset/growth/shrink/reversal/escape allowed, not dominant",
+      "oldEvidence": "must not dominate; rare distinct uses may occur",
+      "newEvidence": "must not dominate; rare distinct uses may occur",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "free-task",
+      "requirement": "Task examples illustrate, do not copy mechanically",
+      "oldEvidence": "Choose tasks freely",
+      "newEvidence": "Choose tasks freely",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "self-check",
+      "requirement": "One private review: rule allbeats, pausedopening,causalarrows,visualstatepayoff,objectdependency; internally discard/redesign",
+      "oldEvidence": "discard/redesign internally",
+      "newEvidence": "discard/redesign internally",
+      "preserved": true,
+      "refinements": [
+        "BEAT_RULE_AUDITABILITY"
+      ]
+    },
+    {
+      "id": "no-retry",
+      "requirement": "Private editing is not an external retry loop or winnerselection",
+      "oldEvidence": "no permission for an external retry loop",
+      "newEvidence": "no permission for an external retry loop",
+      "preserved": true,
+      "refinements": []
+    },
+    {
+      "id": "schema",
+      "requirement": "Same fields/JSON ideas envelope/raw count, deterministic rejection remains",
+      "oldEvidence": "all fields and exactly the requested raw count",
+      "newEvidence": "all fields and exactly the requested raw count",
+      "preserved": true,
+      "refinements": []
+    }
+  ],
+  "refinedPolicies": [
+    "FRAME_ZERO_ACTIVE_RULE_EVIDENCE",
+    "MECHANICALLY_TESTABLE_RULE",
+    "BEAT_RULE_AUDITABILITY"
+  ]
+}

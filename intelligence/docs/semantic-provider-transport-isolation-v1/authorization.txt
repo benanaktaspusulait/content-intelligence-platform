@@ -1,0 +1,740 @@
+Continue from the current repository state.
+
+The semantic creative system itself is ACCEPTED and must remain unchanged.
+
+Current provider execution evidence:
+
+DEEPSEEK / deepseek-v4-pro
+
+- 40-candidate Prompt V2 request:
+  APITimeoutError
+
+- 20-candidate Shard A:
+  ExperimentWallTimeout at 300s
+  0 usable response bytes
+
+- 20-candidate Shard B:
+  ExperimentWallTimeout at 300s
+  0 usable response bytes
+
+- 5-candidate capability probe:
+  HTTP 200 headers in ~559ms
+  RuntimeError at ~1.18s
+  0 usable body bytes
+
+OPENAI / gpt-6.1-sol
+
+- 5-candidate Prompt V2 capability probe:
+  APITimeoutError
+  underlying ReadTimeout
+  duration ~90.73s
+  0 usable response bytes
+
+Therefore:
+
+DO NOT run another creative semantic generation experiment yet.
+
+The same failure family now appears across multiple providers.
+
+We must isolate whether the failure comes from:
+
+- provider connectivity
+- model execution
+- request construction
+- structured-output/schema handling
+- prompt size
+- max-output configuration
+- provider abstraction
+- SDK usage
+- response reading
+- streaming/non-streaming handling
+- timeout layering
+
+This task is INFRASTRUCTURE DIAGNOSIS ONLY.
+
+No new production concepts.
+No Prompt V2 edits.
+No validator edits.
+No render.
+
+======================================================================
+1. PRIMARY GOAL
+======================================================================
+
+Build a bounded:
+
+SEMANTIC PROVIDER TRANSPORT ISOLATION V1
+
+using OpenAI / gpt-6.1-sol as the primary diagnostic provider.
+
+We need to determine the FIRST request complexity level at which execution fails.
+
+Do not test creative quality.
+
+======================================================================
+2. IMPORTANT PRINCIPLE
+======================================================================
+
+Do NOT jump directly back to Semantic Prompt V2.
+
+Use a capability ladder.
+
+Each step should add only one meaningful layer of complexity.
+
+This allows the exact failure boundary to be identified.
+
+======================================================================
+3. MAXIMUM LIVE REQUESTS
+======================================================================
+
+Maximum live requests in this task:
+
+3
+
+No retries.
+
+No hidden fallback.
+
+No DeepSeek calls.
+
+No fourth request under any condition.
+
+These are three DIFFERENT pre-planned diagnostic probes, not retries.
+
+======================================================================
+4. PROBE A — MINIMAL TRANSPORT
+======================================================================
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Send the smallest useful request supported by the existing provider abstraction.
+
+Example intent:
+
+Return exactly this JSON object:
+
+{
+  "status": "ok"
+}
+
+No Semantic Prompt V2.
+
+No concept schema.
+
+No long system prompt.
+
+No creative generation.
+
+Very small max output.
+
+Purpose:
+
+prove basic:
+
+request
+→ model
+→ response body
+→ SDK
+→ parser
+
+path works.
+
+Record:
+
+HTTP/status if exposed
+time to headers
+time to first content if exposed
+total duration
+response bytes
+finish reason
+token usage
+request ID
+error if any
+
+======================================================================
+5. PROBE A INTERPRETATION
+======================================================================
+
+If Probe A FAILS:
+
+STOP immediately.
+
+Do NOT execute B or C.
+
+Conclusion:
+
+the failure is below semantic prompt/schema complexity.
+
+Focus should move to provider integration / SDK / networking.
+
+No additional live requests.
+
+If Probe A succeeds:
+
+continue to Probe B.
+
+======================================================================
+6. PROBE B — SMALL STRUCTURED OUTPUT
+======================================================================
+
+Use same:
+
+OpenAI
+gpt-6.1-sol
+
+Request a tiny structured object.
+
+Example schema intent:
+
+{
+  "title": string,
+  "goal": string,
+  "object": string
+}
+
+Ask for ONE simple fictional concept.
+
+Important:
+
+Do NOT use the full Semantic V2 response schema.
+
+Do NOT use the full Prompt V2.
+
+Purpose:
+
+test structured/schema-constrained response handling separately from large prompt complexity.
+
+Use native structured output only if the current OpenAI adapter already supports it.
+
+Record whether mode is:
+
+NATIVE_STRUCTURED_OUTPUT
+
+or
+
+TEXT_JSON
+
+======================================================================
+7. PROBE B INTERPRETATION
+======================================================================
+
+If A passes but B fails:
+
+STOP.
+
+Do NOT execute Probe C.
+
+Likely failure boundary is:
+
+structured-output/schema handling
+
+or
+
+structured response parser/integration.
+
+Do not blame Prompt V2.
+
+If B succeeds:
+
+continue to C.
+
+======================================================================
+8. PROBE C — ONE CANDIDATE WITH FULL V2 CONTRACT
+======================================================================
+
+Use:
+
+exact accepted Semantic Prompt V2
+
+but request:
+
+1 candidate only.
+
+Use the real V2 response schema.
+
+Do NOT request 5.
+
+Do NOT request 20.
+
+Do NOT request 40.
+
+Purpose:
+
+separate:
+
+full Prompt V2/schema complexity
+
+from
+
+batch-size/output-size complexity.
+
+======================================================================
+9. PROBE C INTERPRETATION
+======================================================================
+
+Possible outcomes:
+
+A PASS
+B PASS
+C PASS
+
+Then:
+
+provider path works.
+
+Previous 5-candidate timeout is likely related to:
+
+generation size
+latency
+output size
+or token budget.
+
+Do NOT make another call.
+
+A PASS
+B PASS
+C FAIL
+
+Then:
+
+failure is associated with full Semantic V2 contract complexity, not basic transport.
+
+Investigate:
+
+prompt size
+schema size
+max output
+model reasoning time
+structured-output complexity
+
+without making another live call.
+
+A PASS
+B FAIL
+
+Then:
+
+structured-output path is suspect.
+
+A FAIL
+
+Then:
+
+provider integration / networking / SDK path is suspect.
+
+======================================================================
+10. REQUEST SIZE METRICS
+======================================================================
+
+For every probe calculate BEFORE execution:
+
+system prompt characters
+user prompt characters
+total request text characters
+schema characters
+approximate local token estimate if existing tokenizer utility is already available
+max output tokens
+number of schema properties
+schema nesting depth if practical
+
+Do not use external provider calls for token counting.
+
+======================================================================
+11. COMPARE WITH FAILED 5-CANDIDATE REQUEST
+======================================================================
+
+Extract the same static metrics for the previous failed OpenAI 5-candidate request:
+
+prompt characters
+schema characters
+max output tokens
+candidate count
+request mode
+timeout
+
+This comparison is critical.
+
+======================================================================
+12. OPENAI SDK PATH AUDIT
+======================================================================
+
+Inspect the exact code path used for:
+
+OpenAI semantic calls.
+
+Document:
+
+SDK/API method used
+
+for example conceptually:
+
+responses API
+chat/completions
+or existing repository equivalent
+
+Do not change APIs yet.
+
+Report:
+
+request construction
+structured-output configuration
+timeout argument
+retry configuration
+response-access path
+parser path
+
+======================================================================
+13. TIMEOUT LAYER AUDIT
+======================================================================
+
+For OpenAI identify exact values for:
+
+connect timeout
+read timeout
+write timeout if configured
+pool timeout if configured
+SDK overall timeout
+experiment wall timeout
+
+Determine which layer generated:
+
+ReadTimeout at ~90.73s.
+
+Do not globally increase timeouts in this task.
+
+======================================================================
+14. RETRY AUDIT
+======================================================================
+
+Confirm whether the OpenAI SDK has internal automatic retries enabled.
+
+Report:
+
+configured retry count
+observed request attempts if detectable
+
+Our requirement:
+
+no logical retry.
+
+If SDK silently retries internally, document it.
+
+Do NOT modify global retry policy yet unless necessary only to make diagnostics truthful.
+
+======================================================================
+15. RESPONSE READING AUDIT
+======================================================================
+
+Determine whether current abstraction:
+
+waits for complete response
+
+or
+
+can observe streaming events/partial output.
+
+Do not redesign streaming.
+
+Report:
+
+NON_STREAMING_COMPLETE_RESPONSE
+
+STREAMING
+
+or
+
+UNKNOWN.
+
+For previous timeout, determine whether partial provider content could have existed but was discarded/unobservable.
+
+Do not guess.
+
+======================================================================
+16. STRUCTURED OUTPUT AUDIT
+======================================================================
+
+Inspect how the real V2 response schema is passed to OpenAI.
+
+Report:
+
+native JSON schema?
+JSON mode?
+plain prompt asking for JSON?
+post-hoc parser?
+
+Also report:
+
+schema size
+nested arrays
+required fields
+additionalProperties behavior
+strict mode if applicable
+
+Do not simplify production schema in this task.
+
+======================================================================
+17. MAX OUTPUT TOKEN AUDIT
+======================================================================
+
+Report exact max-output settings for:
+
+Probe A
+Probe B
+Probe C
+
+previous failed 5-candidate OpenAI probe
+
+previous DeepSeek 5 probe if recorded
+
+Do not use unnecessarily huge output allowance for A/B.
+
+Probe C should use a reasonable ceiling for exactly one full candidate.
+
+======================================================================
+18. REASONING / MODEL SETTINGS AUDIT
+======================================================================
+
+Record all relevant model parameters currently sent to OpenAI:
+
+temperature if applicable
+reasoning effort if applicable
+max output tokens
+response format
+tool settings
+parallel/tool mode if any
+
+Do NOT tune them yet.
+
+We first need the exact request envelope.
+
+======================================================================
+19. RAW REQUEST SNAPSHOT
+======================================================================
+
+For each diagnostic probe persist a sanitized exact request representation.
+
+No secrets.
+
+Include:
+
+provider
+model
+messages/input
+schema configuration
+generation parameters
+timeout configuration
+
+This must allow offline comparison.
+
+======================================================================
+20. RAW RESPONSE / ERROR SNAPSHOT
+======================================================================
+
+For successful probes persist exact response.
+
+For failures persist:
+
+exception class
+exception chain
+safe message
+HTTP status if known
+headers if safely available
+response bytes count
+duration
+
+Do not fabricate missing values.
+
+======================================================================
+21. NO VALIDATOR PIPELINE NEEDED FOR A/B
+======================================================================
+
+Probe A and B are transport diagnostics.
+
+Do NOT send them through:
+
+Naturalness
+Beat Grammar
+SFE
+ranking
+
+That would be meaningless.
+
+======================================================================
+22. PROBE C OFFLINE VALIDATION
+======================================================================
+
+Only if Probe C succeeds:
+
+run its ONE candidate through the normal pipeline.
+
+This is secondary.
+
+Main question remains execution capability.
+
+Do not infer creative quality from one concept.
+
+======================================================================
+23. DO NOT TOUCH DEEPSEEK
+======================================================================
+
+DeepSeek live calls during this task:
+
+0
+
+Use stored evidence only.
+
+======================================================================
+24. FAILURE BOUNDARY RESULT
+======================================================================
+
+At end output exactly one primary classification:
+
+FAILURE_BELOW_MODEL_RESPONSE
+
+if A fails
+
+STRUCTURED_OUTPUT_PATH_FAILURE
+
+if A passes and B fails
+
+FULL_V2_CONTRACT_FAILURE
+
+if A/B pass and C fails
+
+BATCH_SIZE_OR_OUTPUT_SCALE_FAILURE
+
+if A/B/C all pass but previous 5-candidate request failed
+
+If evidence does not justify one:
+
+UNRESOLVED
+
+Do not overstate.
+
+======================================================================
+25. DO NOT FIX DURING SAME TASK
+======================================================================
+
+Important:
+
+This task diagnoses only.
+
+Even if a bug is discovered:
+
+do not perform a broad provider refactor during the same experiment.
+
+A very small instrumentation change required to collect metrics is allowed.
+
+But:
+
+do not change provider semantics
+do not change Prompt V2
+do not change schemas
+do not change timeout strategy globally
+
+Return the evidence first.
+
+======================================================================
+26. TESTS BEFORE LIVE CALLS
+======================================================================
+
+Add mocked tests for:
+
+Probe A success/failure
+
+stop-after-A-failure
+
+Probe B success/failure
+
+stop-after-B-failure
+
+Probe C success/failure
+
+hard live request cap = 3
+
+no DeepSeek fallback
+
+request-metric recording
+
+timeout metadata
+
+raw request sanitization
+
+classification logic
+
+Tests make 0 external calls.
+
+======================================================================
+27. REGRESSION TARGET
+======================================================================
+
+Full regression must preserve:
+
+same 36 accepted baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+28. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. exact OpenAI SDK/API path
+2. timeout-layer configuration
+3. retry configuration
+4. streaming/non-streaming behavior
+5. structured-output implementation
+6. previous failed 5-candidate request metrics
+7. Probe A request metrics
+8. Probe A result
+9. Probe B request metrics if executed
+10. Probe B result if executed
+11. Probe C request metrics if executed
+12. Probe C result if executed
+13. first confirmed failure boundary
+14. primary failure classification
+15. raw sanitized request snapshots
+16. response/error metadata
+17. token usage for successful calls if available
+18. exact live request count
+19. proof no retries/fallback
+20. exact tests
+21. proof Prompt V2 unchanged
+22. proof validators unchanged
+23. proof historical experiments unchanged
+24. proof only accepted baseline failures remain
+
+======================================================================
+29. STOP
+======================================================================
+
+After the diagnostic ladder completes or stops at first failure:
+
+STOP.
+
+Do NOT:
+
+make a fourth request
+
+call DeepSeek
+
+switch OpenAI model
+
+increase timeout globally
+
+modify Prompt V2
+
+simplify V2 schema
+
+generate a batch of concepts
+
+render anything.
+
+We will use the isolated failure boundary to decide the next engineering fix.

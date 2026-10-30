@@ -1,0 +1,6 @@
+NO RETURNED STORIES AVAILABLE
+
+Shard A:REQUEST_FAILED / ExperimentWallTimeout /0 response bytes.
+Shard B:REQUEST_FAILED / ExperimentWallTimeout /0 response bytes.
+
+Combined accessible raw candidates:0. The provider-generated count is unknown. No story fields, creative scores, rankings, blockers or review cards can be fabricated. Mock concepts are not live concepts. No replacement or third request was made.

@@ -1,0 +1,12 @@
+{
+  "newSourceTestFixtureAndScriptFiles": [
+    "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.py",
+    "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2_compact.txt",
+    "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_policy_v1.json",
+    "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_compact_mocks_v1.json",
+    "intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py",
+    "intelligence/scripts/audit-semantic-prompt-v2-compact.py"
+  ],
+  "newDocumentationDirectory": "intelligence/docs/semantic-prompt-v2-compact-v1",
+  "existingFilesModifiedDuringTask": []
+}

@@ -1,0 +1,42 @@
+{
+  "ideaId": "mock-A",
+  "title": "Same-rule hammer control",
+  "protagonistSuggestion": "Kiko",
+  "everydayGoal": "Hang a picture frame",
+  "primaryObject": "Hammer",
+  "normalExpectation": "Hammering a nail drives it straight into wall.",
+  "impossibleRule": "Every hammer strike causes the nail to bend away from the wall at a right angle; bending increases with force.",
+  "visibleTrigger": "Kiko hits nail; it curves 90 degrees without entering wall.",
+  "whyThisObject": "Hammer is meant to apply axial force to nail; if nail deflects under any force, it cannot penetrate.",
+  "goalRuleRelationship": "The action to hang frame fails as nail never goes straight, preventing secure mounting.",
+  "frameZeroDescription": "Kiko holds hammer mid-swing, but the nail protruding from the wall is bent into a U-shape, and the picture frame leans beside him.",
+  "beats": [
+    {
+      "strategy": "Kiko strikes the nail gently to hang the picture frame.",
+      "visibleConsequence": "The nail bends away from the wall; the picture frame drops to the floor.",
+      "newInformation": "A gentle hammer strike still bends the nail and blocks hanging."
+    },
+    {
+      "strategy": "Kiko turns sideways and strikes the same nail from the other side.",
+      "visibleConsequence": "The nail bends away from the wall again; the picture frame slides farther down.",
+      "newInformation": "Changing the strike angle changes the hanging position but cannot seat the nail."
+    },
+    {
+      "strategy": "Kiko moves the picture frame below the curved nail and strikes down.",
+      "visibleConsequence": "The nail bends farther away from the wall, pushing the picture frame onto the low shelf.",
+      "newInformation": "The low placement leaves the picture frame resting beneath the bent nail."
+    },
+    {
+      "strategy": "Kiko places the picture frame on the shelf and gives the nail a final gentle strike.",
+      "visibleConsequence": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+      "newInformation": "The picture frame is displayed on the shelf while the bent nail points over it."
+    }
+  ],
+  "finalPayoff": "The nail bends away from the wall above the picture frame, leaving it standing on the shelf instead of hanging.",
+  "suggestedPayoffFamily": "logical extreme",
+  "loopPotential": "No reset is assumed.",
+  "environment": "Living room wall",
+  "dialogueNeed": "NONE",
+  "providerRationale": "The hammer drives force into a nail; the same bending response defeats each placement.",
+  "durationSeconds": 15.0
+}

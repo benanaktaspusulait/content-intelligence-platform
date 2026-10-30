@@ -1,0 +1,79 @@
+{
+  "original40": {
+    "sdkTimeoutSeconds": 90,
+    "effectiveHttpxTimeout": {
+      "connect": 90,
+      "read": 90,
+      "write": 90,
+      "pool": 90
+    },
+    "experimentWallTimeout": null,
+    "applicationCancellationTimer": null,
+    "timerFired": "SDK_HTTP_TIMEOUT_PHASE_NOT_RECORDED",
+    "errorClass": "APITimeoutError",
+    "maxOutputTokens": 64000
+  },
+  "recovery20": [
+    {
+      "shard": "A",
+      "timeout": {
+        "readSeconds": 120,
+        "connectSeconds": 15,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 300
+      },
+      "maxOutputTokens": 32768,
+      "timerFired": "ExperimentWallTimeout",
+      "durationSeconds": 300.030152542
+    },
+    {
+      "shard": "B",
+      "timeout": {
+        "readSeconds": 120,
+        "connectSeconds": 15,
+        "writeSeconds": 60,
+        "poolSeconds": 15,
+        "wallSeconds": 300
+      },
+      "maxOutputTokens": 32768,
+      "timerFired": "ExperimentWallTimeout",
+      "durationSeconds": 300.0123390410008
+    }
+  ],
+  "probe5": {
+    "timeout": {
+      "connectSeconds": 15,
+      "readSeconds": 90,
+      "writeSeconds": 60,
+      "poolSeconds": 15,
+      "wallSeconds": 180
+    },
+    "maxOutputTokens": 16384,
+    "applicationCancellation": "Parent-enforced worker wall deadline, plus5s terminate/5s kill cleanup, no restart"
+  },
+  "repositoryGateway": {
+    "nginxProxyReadSeconds": 190,
+    "nginxProxySendSeconds": 190,
+    "backendQualityRequestSeconds": 180,
+    "backendMlConfigTimeoutSeconds": 30,
+    "backendMlConfigConnectSeconds": 5,
+    "scope": "UI/backend/ML quality validation paths, not in the direct CLI outbound provider request route"
+  },
+  "upstreamProviderGatewayTimeout": null,
+  "SDKRetryCount": 0,
+  "configuredModelOutputCeiling": 393216,
+  "proxyEnvironmentPresent": {
+    "HTTP_PROXY": false,
+    "HTTPS_PROXY": false,
+    "ALL_PROXY": false
+  },
+  "proxyEnvironmentTimeout": null,
+  "sourceFiles": [
+    "intelligence/ml-service/app/workflow/creative_provider_profiles.py",
+    "intelligence/frontend/nginx.conf",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java",
+    "intelligence/backend/src/main/resources/application.yml"
+  ],
+  "SDKSemantics": "Local httpx0.28.1 Timeout(90) sets each of connect/read/write/pool to90; no total wall deadline. Original phase/cause was not saved, so it is unknown."
+}

@@ -1,0 +1,26 @@
+{
+  "primaryClassification": "UNRESOLVED_CONTRACT_FAILURE",
+  "mechanicalFailFailMatrixLabel": "PROMPT_AND_SCHEMA_COMPLEXITY_FAILURE",
+  "mechanicalLabelStatus": "Provisional pass/fail lookup,not a justified causal conclusion. Immutable raw summary is retained unchanged.",
+  "D": {
+    "status": "FAIL",
+    "reason": "APITimeoutError/ReadTimeout",
+    "elapsedSeconds": 90.72335608399953,
+    "responseBytes": 0
+  },
+  "E": {
+    "status": "FAIL",
+    "reason": "APIConnectionError/ReadError/ConnectionResetError",
+    "elapsedSeconds": 30.62924770799873,
+    "responseBytes": 0
+  },
+  "reasons": [
+    "E failed at connection/response reading with a reset,not a diagnosed schema-complexity rejection or the same90s timeout as D.",
+    "D preserves full schema text inside user payload and deliberately conflicts with its native6-field output format; its failure is not a clean instruction-length-only test.",
+    "The unchanged full native wrapper has a statically unresolved local reference. Its relationship to the live reset/timeout is unproven.",
+    "E UTC timestamps and monotonic elapsed disagree; exact elapsed measurement and original timestamps are both retained."
+  ],
+  "supportedConclusion": "Both cross-cases failed in the observed environment. Component-level causal attribution remains unresolved; no creative-quality conclusion is supported.",
+  "noFixPerformed": true,
+  "additionalLiveRequests": 0
+}

@@ -1,0 +1,22 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "REPORT.txt": "64e214dd1fdd4906b67b9c10899ca6b1ea008f699addfd78a249369fc15bd662",
+    "authorization.txt": "007ff15a061f91cef181a926f81f7b8b1bfd08ce46e8e0a4c78e72bcc1877182",
+    "changed-files.json": "e83396175f34a7f669346c65f5ef04e1ef7e7d2d5dfccf570d82bcc8df54c8c0",
+    "failure-boundary.json": "43139366b8855d674ff0199cf44ab87da91c4b2dbc6750c6ab909c870a2a5e76",
+    "full-regression.log": "c3851fc76c7e9790dcac1159ed2d6a616e8f9c24dd5ad7e064fca1e46e3a1401",
+    "historical-evidence-proof.json": "1bb6dc88cc8dcca74b9e513552316d642333b77bd5a4d63dcd7b1998ad93f28c",
+    "live-execution.log": "0f1f3ef39ef437fdddc7f8dc4c3fdbf37803e305c9439038f742df311f913a49",
+    "new-tests-final.log": "df0b0ca49696a80d3eee26b2f0dad34a7a3d022a455da9bba970f217054e74f2",
+    "new-tests.log": "2b0a6d0cfda5bf6d98803f51d3c27abfab7913e1849ba1331823d446a349eed9",
+    "pre-live-verification.json": "7cbe455d9ec81a8ec6194dd86946e397f29cf5d35bb935d234b490b221935040",
+    "prompt-immutability-proof.json": "2e03f6293dc49ed930fc1078d614d980993e8ea570b649c7523d637516b44ccf",
+    "protected-after-tests.json": "e04ed6285a8457e71eb8725faef9e3e62cccf4a53af34603dc407ad34b65d9fb",
+    "protected-after.json": "e04ed6285a8457e71eb8725faef9e3e62cccf4a53af34603dc407ad34b65d9fb",
+    "protected-before.json": "e04ed6285a8457e71eb8725faef9e3e62cccf4a53af34603dc407ad34b65d9fb",
+    "request-metrics-before-live.json": "ee106d273fe9f9bc1c4ce6b7a3419fbd7611483bd758dff7a7674268b9c2ba9e",
+    "source-hashes-before-regression.json": "bc64edfdbe27fca492bfedd3522f890d13491b39d7fe25b9fb8e96f8b323e1c9",
+    "verification.json": "519ad4c75cfb4962d7871a8aa4e6ba5113259ce9d485e795baba232170a23b17"
+  }
+}

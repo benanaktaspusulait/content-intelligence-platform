@@ -1,0 +1,31 @@
+{
+  "scope": "All new task/run evidence except this self-referential manifest",
+  "sha256": {
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/REPORT.txt": "15c9443f7de06cfca9a2361de76f52ff6a50c9bfe01eb1615127b35db6fc7191",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/authorization.txt": "9ec3403ddfbeb1af4480d3754741931ad25eb28f7efde5bbd7d92a38261e677c",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/comparison.json": "cf344d8c2d23adc8f6f1c60e07d17ec9b0b1151796574732efd291b489782f82",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/focused-tests.log": "fddceedcd0c135a4b7a0f125d6085f312ea7c6918ee0592eee6e0ec0eb9ce5b4",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/full-regression.log": "10445cd843b25e8dab2c06eb98f201ad4ba47b136723061acbdcc2e9d1c05d3e",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/live-command.log": "abec5cbfd938cdd30ffa9c7f86aaf92dc08cc4742a3bf02ff26337b99001cb9d",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/pre-live-verification.json": "1408401256a69cd2ad0437dc81968abd08376897319ccdb54c5ef7190e4d8595",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/protected-after.json": "ef4ff51bda4d593eb2a0eef4e1a5d741214df93bde85a7d05c73b82fa191e0bf",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/protected-before.json": "ef4ff51bda4d593eb2a0eef4e1a5d741214df93bde85a7d05c73b82fa191e0bf",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/source-freeze-before-full-regression.json": "c90c3906324961d27eeb1888b71e995ac61b789b361767906d4423a352644c76",
+    "intelligence/docs/semantic-compact-full-contract-probe-v1/verification.json": "6701af7c8f04f1329118770fa304e5de5b560d60b255c8b87e758901d891c025",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/attempt-manifest.json": "1d6743232e3cc9f172da32ec5614d5f60617cf337558715aebdd1c7ca2b3a96e",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/configuration.json": "a82ef207f9d455e3ec95e952065e7d95cce340150a230e98378809688dfd1170",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/final-provider-schema-validation.json": "f50f8ce3c729c03217497554048f0321aee2fd14ac983d22f2152d589d8a1cc6",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/http-request-started.json": "988a9fdcb8a1996bd39f0e1bf42ffc057f3c6499e3417681ad0b76a3a34dd075",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/last-mile-sdk-request.json": "388a97dac9f7d06f234c8bbb190fb80f35d456635c3390e1d541e2f0ae0fcc77",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/offline-schema-validation.json": "1e3ac4680b4c91c1edc0fe2552f91af997061178e1f936799f85de74130c0bec",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/plan.json": "ecc2af5d3f52d2e8cb250a91b89d122188f26fbbd3d224b48e52d35412ad039b",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/prompt.json": "3fee211d62517e1302e84422123ebcdf4ba23b3a28ed42b54715619bd1e82f57",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/request-before-sdk.json": "9b7419e66270eafc55d6aee095c72c3fefec1ea8d5c555ce56eb5f381d2d19d2",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/request-started.json": "46ed6c1db46bf3e2f2d22b1e5487c1c4fae48c77d3dfb0077c895638b3afbcd0",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/response.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/result.json": "abec5cbfd938cdd30ffa9c7f86aaf92dc08cc4742a3bf02ff26337b99001cb9d",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/sdk-call-started.json": "5d5c420ecbc5628a1050f740bbf60e14404324dfcacd06cb77af7a1950aa124e",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/sdk-request-forwarded.json": "0a69c774faf127ef3ca3e96214cc5796070b686c02e79d69ca479a3d513e2e6e",
+    "intelligence/docs/semantic-compact-full-contract-probe-1-run-001/worker-result.json": "dc3978a6088d95d52dfb16f0b2116d095e29b40e113b4ba39e0b7914a08087ad"
+  }
+}

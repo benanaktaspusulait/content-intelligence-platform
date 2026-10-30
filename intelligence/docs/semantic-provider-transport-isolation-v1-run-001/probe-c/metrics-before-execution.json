@@ -1,0 +1,55 @@
+{
+  "systemCharacters": 9879,
+  "userCharacters": 4670,
+  "totalRequestTextCharacters": 14549,
+  "schemaCharacters": 2750,
+  "serializedRequestCharacters": 18194,
+  "serializedRequestUTF8Bytes": 18224,
+  "maxOutputTokens": 8192,
+  "mode": "json_schema",
+  "strict": false,
+  "localTokenEstimate": null,
+  "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+  "declaredProperties": 23,
+  "arraySchemas": 2,
+  "schemaJSONNestingDepth": 8,
+  "requiredByPath": [
+    {
+      "path": "/",
+      "fields": [
+        "ideas"
+      ]
+    },
+    {
+      "path": "/properties/ideas/items",
+      "fields": [
+        "ideaId",
+        "title",
+        "protagonistSuggestion",
+        "everydayGoal",
+        "primaryObject",
+        "normalExpectation",
+        "impossibleRule",
+        "visibleTrigger",
+        "whyThisObject",
+        "goalRuleRelationship",
+        "frameZeroDescription",
+        "beats",
+        "finalPayoff",
+        "suggestedPayoffFamily",
+        "loopPotential",
+        "environment",
+        "providerRationale"
+      ]
+    },
+    {
+      "path": "/properties/ideas/items/$defs/SemanticBeat",
+      "fields": [
+        "strategy",
+        "visibleConsequence",
+        "newInformation"
+      ]
+    }
+  ],
+  "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference."
+}

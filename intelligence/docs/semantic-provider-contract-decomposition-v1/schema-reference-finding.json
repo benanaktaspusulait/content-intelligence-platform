@@ -1,0 +1,14 @@
+{
+  "component": "Unchanged native response-format envelope,not a modification to the standalone SemanticIdea model",
+  "nativeSchemaReferenceLocation": "/properties/ideas/items/properties/beats/items/$ref",
+  "reference": "#/$defs/SemanticBeat",
+  "definitionActualLocation": "/properties/ideas/items/$defs/SemanticBeat",
+  "definitionExpectedByRootReference": "/$defs/SemanticBeat",
+  "rootDefsPresent": false,
+  "localValidator": "Installed jsonschema Draft202012Validator",
+  "localErrorClass": "_WrappedReferencingError",
+  "causeClass": "PointerToNowhere",
+  "productionSchemaEdited": false,
+  "localReferenceRepairApplied": false,
+  "implication": "The stored native wrapper has an unresolved root-local reference under standard local validation. This is a request-construction issue candidate; no live evidence proves it caused the provider reset/timeout."
+}

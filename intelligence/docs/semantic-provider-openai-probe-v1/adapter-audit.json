@@ -1,0 +1,44 @@
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "profile": "openai-escalation",
+  "adapter": "Unchanged CreativeCapabilityProvider.complete",
+  "responseMode": "json_schema",
+  "strict": false,
+  "itemSchemaChanged": false,
+  "streamingMode": "NON_STREAMING",
+  "currentAdapterExposesStreaming": false,
+  "HTTPHooksAdded": false,
+  "bodyWrappingAdded": false,
+  "newSDKAdded": false,
+  "SDKRetries": 0,
+  "API": "Existing chat.completions.create without tools",
+  "reasoningEffort": "high",
+  "maxOutputTokens": 16384,
+  "timeout": {
+    "connect": 15,
+    "read": 90,
+    "write": 60,
+    "pool": 15,
+    "wall": 180
+  },
+  "unobservableMetrics": [
+    "exact HTTP status",
+    "time to headers",
+    "first streamed token",
+    "HTTP x-request-id"
+  ],
+  "observableMetrics": [
+    "complete() return time as first usable content",
+    "wall duration",
+    "stored content byte length",
+    "response.id exposed by existing adapter under legacy requestId",
+    "usage",
+    "finish reason"
+  ],
+  "officialOpenAIDocs": [
+    "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat"
+  ],
+  "note": "Official model page lists Chat Completions and Structured Outputs support. Existing non-strict native schema mechanism is reused; local schema validation stays authoritative. No account/model availability is inferred before this probe."
+}

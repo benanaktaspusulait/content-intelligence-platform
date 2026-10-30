@@ -1,0 +1,536 @@
+Continue from the current repository state.
+
+The DeepSeek execution benchmark is complete.
+
+DeepSeek / deepseek-v4-pro is classified as:
+
+UNSUITABLE_FOR_CURRENT_SEMANTIC_V2_EXECUTION_ENVELOPE
+
+This is an execution/integration classification only.
+
+It is NOT a judgment of creative model quality.
+
+Evidence:
+
+1. 40-candidate V2 request:
+   APITimeoutError
+
+2. two 20-candidate recovery shards:
+   both ExperimentWallTimeout at 300 seconds
+   zero usable response bytes
+
+3. one 5-candidate capability probe:
+   HTTP 200 headers received in ~559 ms
+   RuntimeError after ~1.18 seconds
+   zero usable body bytes
+   root cause unresolved
+
+No retry/fallback occurred.
+
+Current repository discovery shows an available alternative:
+
+Provider:
+OpenAI
+
+Model:
+gpt-6.1-sol
+
+Current integration reports:
+
+- provider configuration exists
+- SDK exists
+- credentials/configuration are available
+- no OpenAI semantic live call has yet been made for this experiment
+
+======================================================================
+GOAL
+======================================================================
+
+Run ONE tightly bounded capability probe using:
+
+OpenAI / gpt-6.1-sol
+
+with:
+
+Semantic Concept Prompt V2
+
+Candidate count:
+5
+
+This is still an EXECUTION CAPABILITY TEST.
+
+It is NOT yet the 40-candidate creative experiment.
+
+======================================================================
+1. DO NOT CHANGE PROMPT V2
+======================================================================
+
+Use the exact accepted Semantic Concept Prompt V2.
+
+Do NOT modify:
+
+creative instructions
+schema
+validator expectations
+output structure
+
+Only provider/model changes.
+
+======================================================================
+2. ONE LIVE OPENAI REQUEST ONLY
+======================================================================
+
+Maximum OpenAI live requests in this task:
+
+1
+
+No retry.
+
+No fallback.
+
+No second probe.
+
+No automatic repair request.
+
+If it fails:
+
+stop.
+
+======================================================================
+3. REQUEST SIZE
+======================================================================
+
+Request exactly:
+
+5 raw semantic concepts.
+
+Use the existing V2 response schema.
+
+Do not shorten candidate detail just for the probe.
+
+We want to test whether this provider/model can execute the real workload shape.
+
+======================================================================
+4. EXPLICIT EXECUTION METADATA
+======================================================================
+
+Before call, record:
+
+provider = OpenAI
+
+model = gpt-6.1-sol
+
+promptVersion = v2
+
+candidateCount = 5
+
+timeout configuration
+
+max output tokens
+
+streaming mode
+
+structured-output mode if supported
+
+external authorization
+
+======================================================================
+5. USE NATIVE STRUCTURED OUTPUT IF EXISTING INTEGRATION SUPPORTS IT
+======================================================================
+
+Audit the existing OpenAI adapter.
+
+If it already supports native structured/schema-constrained output:
+
+use that existing supported mechanism.
+
+Do NOT redesign provider architecture.
+
+Do NOT add a new SDK.
+
+Do NOT alter semantic schema.
+
+If native structured output is unavailable in the current abstraction:
+
+use the existing text/JSON response mechanism.
+
+Record which mode was used.
+
+======================================================================
+6. STREAMING
+======================================================================
+
+If current OpenAI provider abstraction already supports streaming safely:
+
+report capability.
+
+Do NOT enable a new streaming architecture solely for this probe.
+
+Use the existing stable request path.
+
+We are testing current operational capability, not building another transport layer.
+
+======================================================================
+7. TIMEOUT
+======================================================================
+
+Use a bounded timeout appropriate for a 5-candidate probe.
+
+Do not use infinite/default-unbounded waits.
+
+Record the exact timeout.
+
+Do not globally alter application timeout configuration.
+
+======================================================================
+8. RESPONSE METRICS
+======================================================================
+
+Record if observable:
+
+HTTP/status success
+
+time to headers
+
+time to first usable body/token
+
+total wall time
+
+response bytes
+
+provider request ID
+
+input tokens
+
+output tokens
+
+total tokens
+
+provider-reported cost
+
+finish/termination reason
+
+Do not estimate missing cost.
+
+======================================================================
+9. SUCCESS CRITERIA FOR CAPABILITY
+======================================================================
+
+Execution capability PASS requires:
+
+- usable provider response received
+- non-zero body/content
+- response can be parsed
+- at least one candidate reaches schema validation
+
+It does NOT require:
+
+all 5 concepts valid
+high creative scores
+production candidates
+
+Those are creative-quality questions for later.
+
+======================================================================
+10. IF RESPONSE SUCCEEDS
+======================================================================
+
+Persist exact:
+
+request
+response
+provider metadata
+usage metadata
+
+Then run the returned concepts offline through the CURRENT accepted pipeline:
+
+schema validation
+
+normalization
+
+canonical evidence
+
+Premise Naturalness
+
+Evidence-Supported Premise Admission V2
+
+Beat Grammar
+
+Structured SFE
+
+Creative Shape
+
+historical territory
+
+ranking
+
+production preselection
+
+No special OpenAI bonus.
+
+======================================================================
+11. DO NOT OVER-INTERPRET FIVE IDEAS
+======================================================================
+
+If the probe succeeds:
+
+report concept results
+
+but do NOT claim:
+
+OpenAI is creatively superior
+
+Prompt V2 is validated
+
+production quality is solved
+
+A five-concept sample is only capability evidence plus limited qualitative evidence.
+
+======================================================================
+12. IF OPENAI PROBE FAILS
+======================================================================
+
+If the single OpenAI probe fails:
+
+record exact failure.
+
+Do NOT:
+
+retry
+
+switch model
+
+switch provider
+
+modify Prompt V2
+
+modify schema
+
+call DeepSeek
+
+Then classify:
+
+OPENAI_GPT_6_1_SOL_CAPABILITY_PROBE_FAILED
+
+with exact transport/provider reason.
+
+Do not infer creative incapability.
+
+======================================================================
+13. DEEPSEEK REMAINS DISABLED FOR THIS EXPERIMENT
+======================================================================
+
+Do NOT call DeepSeek again.
+
+Do not perform provider comparison via additional live requests.
+
+Use stored DeepSeek evidence only.
+
+======================================================================
+14. PROVIDER COMPARISON
+======================================================================
+
+After probe, compare execution behavior only.
+
+DeepSeek:
+
+40 request result
+20-shard results
+5-probe result
+time-to-header
+response bytes
+failure class
+
+OpenAI:
+
+5-probe result
+time-to-first-content
+response bytes
+completion/failure
+token usage
+
+Do not compare creative quality unless OpenAI returned usable concepts, and even then label the comparison as non-statistical.
+
+======================================================================
+15. PROMPT AND VALIDATOR IMMUTABILITY
+======================================================================
+
+Prove unchanged:
+
+Semantic Prompt V2
+
+Structured SFE
+
+Canonical Evidence Propagation
+
+Beat Grammar
+
+Premise Admission V2
+
+ranking
+
+Creative Shape
+
+historical evidence
+
+No creative-system change is allowed in this task.
+
+======================================================================
+16. TESTS FIRST
+======================================================================
+
+Before the live request, add mocked tests for:
+
+OpenAI 5-candidate probe
+
+hard request cap = 1
+
+success response handling
+
+empty-content handling
+
+schema-valid response
+
+malformed response
+
+usage metadata
+
+no retry
+
+no DeepSeek fallback
+
+historical benchmark preservation
+
+Tests must make zero external calls.
+
+======================================================================
+17. REGRESSION TARGET
+======================================================================
+
+Full regression must remain:
+
+same accepted 36 baseline failures
+
+same 2 skips
+
+No new failures.
+
+======================================================================
+18. RESULT STORAGE
+======================================================================
+
+Create a new immutable benchmark artifact.
+
+Suggested identity:
+
+semantic-provider-openai-gpt-6-1-sol-probe-5-run-001
+
+Do not overwrite:
+
+DeepSeek benchmark
+
+V2 timeout experiment
+
+two-shard recovery
+
+V1 semantic experiment
+
+======================================================================
+19. IF PROBE SUCCEEDS, RETURN ALL FIVE
+======================================================================
+
+For each returned concept provide:
+
+ID
+TITLE
+GOAL
+OBJECT
+RULE
+TRIGGER
+FRAME ZERO
+BEATS
+PAYOFF
+
+then:
+
+schema result
+normalization
+Naturalness
+admission
+Beat Grammar
+Structured SFE
+ranking
+production disposition
+blockers
+
+Again:
+
+this is for inspection, not statistical judgment.
+
+======================================================================
+20. REQUIRED FINAL REPORT
+======================================================================
+
+Provide:
+
+1. exact OpenAI provider/model
+2. exact request count
+3. prompt version
+4. candidate count
+5. structured-output mode used
+6. streaming mode
+7. timeout configuration
+8. max output-token configuration
+9. time to headers if available
+10. time to first usable content if available
+11. total duration
+12. response bytes
+13. provider request ID if available
+14. token usage
+15. provider-reported cost if available
+16. success/failure status
+17. schema-valid count
+18. normalized count
+19. all returned concepts if successful
+20. pipeline results if successful
+21. execution comparison against stored DeepSeek probe
+22. exact test results
+23. proof OpenAI live request count = 1
+24. proof no retry
+25. proof no DeepSeek fallback
+26. proof Prompt V2 unchanged
+27. proof validators unchanged
+28. proof historical evidence unchanged
+29. proof only accepted baseline failures remain
+
+======================================================================
+21. STOP
+======================================================================
+
+After the ONE OpenAI / gpt-6.1-sol 5-candidate capability probe:
+
+STOP.
+
+Do NOT:
+
+request 10 concepts
+
+request 20 concepts
+
+request 40 concepts
+
+make a second OpenAI call
+
+switch models
+
+switch providers
+
+modify Prompt V2
+
+change validators
+
+generate production prompts
+
+render anything.
+
+We will review the capability probe before authorizing a full V2 live experiment.

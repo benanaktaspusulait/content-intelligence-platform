@@ -1,0 +1,87 @@
+{
+  "level": "A",
+  "system": "Return JSON only.",
+  "prompt": "Return exactly this JSON object and nothing else: {\"status\":\"ok\"}",
+  "format": {
+    "type": "text"
+  },
+  "arguments": {
+    "model": "gpt-6.1-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return JSON only."
+      },
+      {
+        "role": "user",
+        "content": "Return exactly this JSON object and nothing else: {\"status\":\"ok\"}"
+      }
+    ],
+    "response_format": {
+      "type": "text"
+    },
+    "max_completion_tokens": 512,
+    "reasoning_effort": "high"
+  },
+  "configuration": {
+    "generatorVersion": "v2",
+    "count": 20,
+    "seed": 42,
+    "duration": 15,
+    "characterIds": [],
+    "excludeEngineFamilies": [],
+    "excludeObjects": [],
+    "excludeObjectCategories": [],
+    "canonicalCast": null,
+    "rank": true,
+    "internalPoolSize": 240,
+    "beatGrammarVersion": "v2",
+    "premiseNaturalnessGateVersion": "v1",
+    "premisePoolSize": 480,
+    "creativeShapeVersion": "v1",
+    "minimumStoryShapeDistance": 0.22,
+    "minimumShapeShortFormScore": 85,
+    "minimumShapeRankingScore": 75,
+    "allowHighHistoricalTerritoryRisk": false,
+    "generatorMode": "semantic",
+    "semanticProvider": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "temperature": 0.7,
+      "maxCandidates": 60,
+      "maxOutputTokens": 8192,
+      "timeoutSeconds": 90.0,
+      "mockCorpus": "review-v1"
+    },
+    "semanticRawCount": 1,
+    "semanticConceptPromptVersion": "v2",
+    "allowExternalGeneration": true
+  },
+  "fullV2Prompt": null,
+  "metrics": {
+    "systemCharacters": 17,
+    "userCharacters": 65,
+    "totalRequestTextCharacters": 82,
+    "schemaCharacters": 0,
+    "serializedRequestCharacters": 270,
+    "serializedRequestUTF8Bytes": 270,
+    "maxOutputTokens": 512,
+    "mode": "text",
+    "strict": null,
+    "localTokenEstimate": null,
+    "tokenEstimateReason": "No installed tokenizer/local token-count utility; no external counting call or download.",
+    "declaredProperties": 0,
+    "arraySchemas": 0,
+    "schemaJSONNestingDepth": 0,
+    "requiredByPath": [],
+    "depthDefinition": "JSON schema-document nesting,not resolved data depth; $defs counted once,not expanded per reference."
+  },
+  "executionMode": "TEXT_JSON",
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  }
+}

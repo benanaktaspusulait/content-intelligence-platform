@@ -1,0 +1,7 @@
+{
+  "status": "REQUEST_STARTED",
+  "shardId": "B",
+  "startedAt": "2026-10-26T10:54:19.165011+00:00",
+  "logicalRequestOrdinal": 2,
+  "maximumRequests": 2
+}

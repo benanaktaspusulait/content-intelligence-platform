@@ -1,0 +1,27 @@
+{
+  "primaryClassification": "FULL_V2_CONTRACT_FAILURE",
+  "firstConfirmedFailureLevel": "C",
+  "facts": [
+    "A minimal schemas-free transport/model/SDK/JSON path passed.",
+    "B tiny native schema path and diagnostic parser passed.",
+    "C full V2 contract for exactly1 candidate failed before post-hoc schema validation with APITimeoutError/ReadTimeout."
+  ],
+  "inference": "Observed failure is associated with the full V2 execution envelope at1 candidate; basic transport and tiny structured output work in this sequence. Batch size alone is not an established explanation for the previous5 failure.",
+  "unresolved": [
+    "Full prompt processing latency",
+    "Full schema/structured-output processing complexity",
+    "High reasoning effort latency",
+    "Output allowance/time interaction",
+    "Intermittent provider/network behavior"
+  ],
+  "notEstablished": [
+    "A unique root cause",
+    "Prompt V2 creative invalidity",
+    "Production schema bug",
+    "A required timeout increase",
+    "A provider-wide networking outage",
+    "Batch-size-only cause"
+  ],
+  "noFixPerformed": true,
+  "additionalLiveRequests": 0
+}

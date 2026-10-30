@@ -1,0 +1,84 @@
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerCostUsd": null,
+  "providerRequestId": null,
+  "responseHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "sdkMaxRetries": 0,
+  "timingScope": "First usable content measured from existing complete() call start; no header/body/SSE instrumentation.",
+  "errorClass": "APITimeoutError",
+  "errorCauseClass": "ReadTimeout",
+  "httpStatus": null,
+  "safeError": "Existing OpenAI provider path failed; no retry, repair or fallback.",
+  "providerErrorCode": null,
+  "providerErrorParam": null,
+  "providerErrorType": null,
+  "safeTrace": [
+    {
+      "file": "semantic_provider_openai_probe_v1.py",
+      "line": 36,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "_utils.py",
+      "line": 298,
+      "function": "wrapper"
+    },
+    {
+      "file": "completions.py",
+      "line": 1318,
+      "function": "create"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1440,
+      "function": "post"
+    },
+    {
+      "file": "_base_client.py",
+      "line": 1166,
+      "function": "request"
+    }
+  ],
+  "providerResponseMetadata": null,
+  "finishReason": null,
+  "providerRequestIdMeaning": "Existing adapter stores response.id (completion ID); HTTP x-request-id is not exposed.",
+  "HTTPStatusExact": null,
+  "HTTPOutcome": "FAILED",
+  "attemptId": "semantic-provider-openai-gpt-6-1-sol-probe-5-run-001",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "promptVersion": "v2",
+  "candidateCount": 5,
+  "start": "2026-10-26T11:32:03.082722+00:00",
+  "end": "2026-10-26T11:33:33.809564+00:00",
+  "durationSeconds": 90.72668766599963,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  },
+  "maxOutputTokens": 16384,
+  "structuredOutputMode": "json_schema",
+  "strict": false,
+  "streamingMode": "NON_STREAMING",
+  "responseBytes": 0,
+  "requestCount": 1,
+  "automaticRetries": 0,
+  "DeepSeekCalls": 0,
+  "fallbackCalls": 0,
+  "renders": 0,
+  "capability": {
+    "status": "OPENAI_GPT_6_1_SOL_CAPABILITY_PROBE_FAILED",
+    "reason": "APITimeoutError"
+  }
+}

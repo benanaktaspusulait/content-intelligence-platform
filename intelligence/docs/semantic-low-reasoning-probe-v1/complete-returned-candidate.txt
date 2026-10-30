@@ -1,0 +1,34 @@
+ideaId: seed42-01
+title: A Very Square Spill
+protagonistSuggestion: Mimi
+everydayGoal: Clear a puddle from the floor so the door can open.
+primaryObject: Sponge
+normalExpectation: A sponge absorbs spilled water and releases liquid when squeezed.
+impossibleRule: Whenever Mimi squeezes the wet sponge, its absorbed water drops out as one rigid transparent cube of the same volume.
+visibleTrigger: Mimi compresses the visibly swollen sponge between her palms.
+whyThisObject: The sponge must be squeezed to regain its capacity, but that normally useful operation deposits solid water blocks in the doorway she is trying to clear.
+goalRuleRelationship: Absorbing the puddle removes the liquid obstruction while squeezing creates a solid obstruction in the same working area.
+frameZeroDescription: Mimi kneels beside a partly open door whose bottom edge meets a broad puddle. Her hands compress a swollen sponge above a transparent water cube resting in the puddle; the cube has flat faces and sharp square corners, with a wet imprint beneath it. Her shoulder is against the door, and the cube occupies its opening arc.
+BEAT 1
+  strategy: Mimi pushes the door with her shoulder while finishing the squeeze.
+  visibleConsequence: The door stops against the water cube, leaving only a narrow gap.
+  newInformation: The extracted water is solid enough to block the door.
+BEAT 2
+  strategy: She slides the cube away from the door and uses the sponge to absorb the remaining broad puddle.
+  visibleConsequence: The door's opening arc becomes dry, but the sponge bulges between her hands.
+  newInformation: The liquid can be cleared, provided she finds somewhere else to squeeze.
+BEAT 3
+  strategy: Mimi reaches through the narrow door gap and squeezes the sponge on the other side.
+  visibleConsequence: A larger water cube drops outside the room, directly behind the door.
+  newInformation: Moving the squeeze outside has placed the new block on the opposite side of the same door.
+BEAT 4
+  strategy: She stands on the dry floor and confidently pulls the door open.
+  visibleConsequence: The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.
+  newInformation: She has removed the entire puddle but converted it into a solid doorstop on both sides.
+finalPayoff: The door wedges between the two transparent water cubes, framing Mimi in a perfectly dry doorway too narrow to pass through.
+suggestedPayoffFamily: Solution-created problem
+loopPotential: No reset; the dry floor and solid water blocks remain.
+environment: A small tiled entryway with an inward-opening door.
+dialogueNeed: NONE
+providerRationale: The sponge's required absorb-and-squeeze cycle converts a spreading liquid obstacle into compact solid obstacles. Moving the squeeze across the threshold changes where the same consequence lands.
+durationSeconds: 15

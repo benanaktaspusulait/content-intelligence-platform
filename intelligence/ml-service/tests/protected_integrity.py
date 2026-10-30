@@ -110,6 +110,32 @@ def load_premise_evidence(root):
     return policy["files"]
 
 
+OPENING_EVIDENCE_PATH=Path(__file__).parent/'fixtures/opening_evidence_integrity_v1.json'
+OPENING_EVIDENCE_SHA256='cf7686e59ab5e3871ca3428b13ff968de2e05900f2466363935075a4077310da'
+OPENING_EVIDENCE_IMPLEMENTATIONS=frozenset({'intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py', 'intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py', 'intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py', 'intelligence/ml-service/tests/test_protected_integrity_policy.py', 'intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py', 'intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py', 'intelligence/ml-service/tests/test_semantic_two_stage_v1.py', 'intelligence/ml-service/app/workflow/premise_admission_evidence.py'})
+
+
+def load_opening_evidence(root):
+    assert sha256(OPENING_EVIDENCE_PATH)==OPENING_EVIDENCE_SHA256,'Opening evidence policy differs from reviewed pin'
+    policy=json.loads(OPENING_EVIDENCE_PATH.read_text())
+    assert set(policy)=={'version','files','evidence'},'Unexpected opening evidence policy sections'
+    assert policy['version']=='opening-evidence-supported-coverage-v1'
+    assert set(policy['files'])==OPENING_EVIDENCE_IMPLEMENTATIONS,'Unreviewed opening evidence scope'
+    bound={}
+    for ref in policy['evidence']:
+        path=(root/ref['path']).resolve()
+        assert path.is_relative_to(root.resolve()),'Opening evidence approval outside repository'
+        assert sha256(path)==ref['sha256'],'Opening evidence approval changed'
+        if ref['role'] in {'historical','approved'}:bound[ref['role']]=json.loads(path.read_text())
+    for role,key in [('historical','previousSha256'),('approved','approvedSha256')]:
+        assert bound[role]=={p:v[key] for p,v in policy['files'].items()},'Opening evidence hash differs from reviewed record'
+    for entry in policy['files'].values():
+        assert set(entry)=={'previousSha256','approvedSha256'}
+        previous=entry['previousSha256'] if isinstance(entry['previousSha256'],list) else [entry['previousSha256']]
+        assert previous and all(len(v)==64 and set(v)<=set('0123456789abcdef') for v in previous+[entry['approvedSha256']])
+    return policy['files']
+
+
 def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -162,6 +188,11 @@ def load_policy(root):
         previous=approvals.get(name)
         assert previous and previous["approvedSha256"]==entry["previousSha256"], "Premise evidence chain is not contiguous"
         approvals[name]={"historicalSha256":previous["historicalSha256"],"approvedSha256":entry["approvedSha256"]}
+    for name,entry in load_opening_evidence(root).items():
+        previous=approvals.get(name)
+        assert previous is None,'Opening evaluator path already has an unrelated approval chain'
+        previous=entry['previousSha256']
+        approvals[name]=dict(historicalSha256=previous[0] if isinstance(previous,list) else previous,approvedSha256=entry['approvedSha256'])
     return approvals
 
 
@@ -194,6 +225,11 @@ def assert_manifest_integrity(root, manifest):
             premise_evidence=load_premise_evidence(root).get(relative)
             if premise_evidence:
                 revisions.add(premise_evidence["previousSha256"])
+            opening_evidence=load_opening_evidence(root).get(relative)
+            if opening_evidence:
+                revisions.add(opening_evidence['approvedSha256'])
+                previous=opening_evidence['previousSha256']
+                revisions.update(previous if isinstance(previous,list) else [previous])
             assert historical in revisions, (
                 f"Unapproved historical active revision: {relative}"
             )

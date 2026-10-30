@@ -1,0 +1,379 @@
+Continue from the current repository state.
+
+Semantic Concept Prompt V2 is ACCEPTED.
+
+The following live execution attempts have now failed without returning provider content:
+
+Attempt 1:
+- DeepSeek / deepseek-v4-pro
+- requested 40 concepts
+- APITimeoutError
+- no usable response
+
+Recovery:
+- Shard A: requested 20
+- Shard B: requested 20
+- both reached 300-second ExperimentWallTimeout
+- response size = 0 bytes for both
+- no third request
+- no retry
+- no render
+
+Prompt V2 itself has NOT been shown to fail creatively.
+
+The current problem is PROVIDER EXECUTION CAPABILITY.
+
+Do NOT modify Prompt V2.
+
+Do NOT modify validators.
+
+Do NOT change thresholds.
+
+Do NOT expand taxonomies.
+
+Do NOT request another 20- or 40-concept generation yet.
+
+======================================================================
+GOAL
+======================================================================
+
+Build and run a very small bounded:
+
+SEMANTIC PROVIDER EXECUTION BENCHMARK V1
+
+The purpose is to answer:
+
+Can the configured semantic provider/model return valid Prompt V2 structured output at all within the current execution environment?
+
+This is an infrastructure/capability benchmark.
+
+It is NOT a creative-quality experiment.
+
+======================================================================
+1. SMALL CAPABILITY PROBE
+======================================================================
+
+Request only:
+
+5 raw concepts
+
+using the accepted Semantic Prompt V2.
+
+Use the same response schema and creative constraints.
+
+Do not simplify the schema.
+
+Do not remove important creative requirements.
+
+Only reduce requested candidate count.
+
+======================================================================
+2. DEEPSEEK PROBE
+======================================================================
+
+First benchmark:
+
+Provider:
+DeepSeek
+
+Model:
+deepseek-v4-pro
+
+Candidate count:
+5
+
+Maximum live requests:
+1
+
+No retry.
+
+No second DeepSeek call.
+
+Use explicit bounded timeout.
+
+Record:
+
+- wall-clock duration
+- first-byte time if observable
+- total response bytes
+- completion status
+- input tokens if reported
+- output tokens if reported
+- provider request ID if available
+- safe error details
+
+======================================================================
+3. IMPORTANT: STREAMING / FIRST-BYTE AUDIT
+======================================================================
+
+Investigate whether the provider abstraction currently waits for a complete non-streaming response before exposing data.
+
+Determine whether DeepSeek API/provider integration supports streaming in the existing architecture.
+
+Do NOT enable streaming automatically in production yet.
+
+Report:
+
+STREAMING_SUPPORTED_BY_PROVIDER_ABSTRACTION
+STREAMING_NOT_SUPPORTED
+UNKNOWN
+
+Also report whether previous 0-byte results mean:
+
+- provider truly sent nothing
+or
+- client did not expose partial response before wall timeout
+
+Do not guess.
+
+======================================================================
+4. PROVIDER-LAYER TIMEOUT AUDIT
+======================================================================
+
+Audit all relevant timeout layers:
+
+- HTTP connect timeout
+- read timeout
+- SDK timeout
+- experiment wall timeout
+- reverse proxy/gateway timeout if represented in repository config
+- application cancellation timeout
+
+Report exact configured values.
+
+Do NOT globally increase them.
+
+We need to know which timer actually fired.
+
+======================================================================
+5. OUTPUT TOKEN LIMIT AUDIT
+======================================================================
+
+Report the exact requested max output tokens for:
+
+- failed 40-concept request
+- failed 20-concept shards
+- new 5-concept probe
+
+If provider/model has a known configured output ceiling in repository metadata, report it.
+
+Do not infer undocumented external limits.
+
+======================================================================
+6. ONE PROBE ONLY FOR DEEPSEEK
+======================================================================
+
+Execute exactly one 5-concept DeepSeek probe.
+
+If it succeeds:
+
+STOP live execution.
+
+Do not immediately request 10 or 20.
+
+Analyze the result offline.
+
+If it fails:
+
+STOP DeepSeek testing.
+
+Do not retry.
+
+======================================================================
+7. SUCCESSFUL PROBE HANDLING
+======================================================================
+
+If DeepSeek returns 5 concepts:
+
+persist exact request/response.
+
+Then run normal offline:
+
+schema validation
+normalization
+canonical evidence
+Premise Naturalness
+Admission V2
+Beat Grammar
+Structured SFE
+Creative Shape
+ranking
+preselection
+
+But treat results as capability evidence only.
+
+Do not compare five ideas statistically against V1/V2 40-concept runs.
+
+======================================================================
+8. FAILED PROBE HANDLING
+======================================================================
+
+If the 5-concept probe also times out or fails:
+
+classify DeepSeek / deepseek-v4-pro as:
+
+UNSUITABLE_FOR_CURRENT_SEMANTIC_V2_EXECUTION_ENVELOPE
+
+This does NOT mean the model is creatively incapable.
+
+It means the current provider/model/execution combination cannot reliably return the required structured output within the configured bounded environment.
+
+======================================================================
+9. PROVIDER ALTERNATIVE DISCOVERY
+======================================================================
+
+Do NOT automatically call another provider.
+
+Instead inspect the repository's existing configured provider/model abstractions and report which alternative semantic-capable models are already available/configurable.
+
+For each available alternative report:
+
+provider
+model
+structured-output capability if known from existing integration
+streaming support in current adapter
+configured timeout behavior
+whether credentials/config appear available WITHOUT exposing secrets
+
+Do not invent providers.
+
+Do not add SDKs yet.
+
+======================================================================
+10. NO AUTOMATIC MODEL SWITCH
+======================================================================
+
+Do not make a live request to an alternative provider/model in this task unless repository configuration already defines an explicit benchmark mode that was previously authorized.
+
+Default behavior:
+
+DISCOVER AND REPORT ONLY.
+
+We will choose the next provider/model after reviewing the DeepSeek 5-concept probe.
+
+======================================================================
+11. EXECUTION METRICS ARTIFACT
+======================================================================
+
+Create a compact benchmark record containing:
+
+attemptId
+provider
+model
+promptVersion
+candidateCount
+timeout configuration
+maxOutputTokens
+streaming mode
+start/end
+duration
+firstByteMs if known
+responseBytes
+success/failure
+error class
+usage if available
+
+======================================================================
+12. PRESERVE FAILED V2 ATTEMPTS
+======================================================================
+
+Do not overwrite:
+
+- original 40-concept timeout
+- two-shard recovery failure
+
+They remain immutable evidence.
+
+The new 5-concept probe must be a separate attempt.
+
+======================================================================
+13. NO CREATIVE CHANGES
+======================================================================
+
+Do not change:
+
+Prompt V2 text
+semantic schema
+validators
+admission
+Beat Grammar
+SFE
+ranking
+Creative Shape
+preselection
+
+This task is execution diagnosis only.
+
+======================================================================
+14. TESTS
+======================================================================
+
+Before live probe, add mocked tests for:
+
+- 5-candidate probe request
+- hard request cap = 1
+- timeout metadata
+- zero-byte failure
+- successful small response
+- first-byte metadata if available
+- provider discovery
+- no automatic fallback
+- historical attempt preservation
+
+Provider calls during tests:
+0
+
+======================================================================
+15. REGRESSION TARGET
+======================================================================
+
+Full regression must retain:
+
+same accepted 36 baseline failures
+same 2 skips
+
+No new failures.
+
+======================================================================
+16. REQUIRED FINAL REPORT
+======================================================================
+
+Return:
+
+1. exact timeout-layer audit
+2. exact max-output-token audit
+3. DeepSeek streaming capability in current integration
+4. 5-concept DeepSeek probe result
+5. duration
+6. first-byte timing if available
+7. response bytes
+8. token usage if available
+9. schema/normalization results if successful
+10. available alternative provider/model configurations
+11. which alternatives appear technically usable
+12. proof only one DeepSeek probe occurred
+13. proof no automatic provider fallback occurred
+14. exact test results
+15. proof Prompt V2 unchanged
+16. proof validators unchanged
+17. proof previous live attempts unchanged
+18. proof only accepted baseline failures remain
+
+======================================================================
+17. STOP
+======================================================================
+
+After the single 5-concept DeepSeek capability probe:
+
+STOP.
+
+Do NOT:
+
+- make another DeepSeek call
+- switch provider automatically
+- request 10/20/40 concepts
+- change Prompt V2
+- change validators
+- render media
+
+We will review provider capability evidence before choosing the next live execution strategy.

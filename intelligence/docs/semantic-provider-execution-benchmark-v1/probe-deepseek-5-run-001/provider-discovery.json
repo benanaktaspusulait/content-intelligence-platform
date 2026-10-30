@@ -1,0 +1,76 @@
+{
+  "configuredSemanticProfiles": [
+    {
+      "identity": "deepseek-primary",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "structuredOutput": "json_object",
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "timeout": "Caller-supplied SDK transport timeout; existing semantic experiment90s; no adapter total deadline.",
+      "credentialsPresent": true,
+      "SDKInstalled": true,
+      "semanticIntegration": "Existing CreativeCapabilityProvider supports the same schema envelope; external availability untested.",
+      "configuredOutputCeiling": 393216,
+      "alternative": false
+    },
+    {
+      "identity": "openai-escalation",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "structuredOutput": "json_schema",
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "timeout": "Caller-supplied SDK transport timeout; existing semantic experiment90s; no adapter total deadline.",
+      "credentialsPresent": true,
+      "SDKInstalled": true,
+      "semanticIntegration": "Existing CreativeCapabilityProvider supports the same schema envelope; external availability untested.",
+      "configuredOutputCeiling": 128000,
+      "alternative": true
+    }
+  ],
+  "genericFactoryAdapters": [
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "credentialsPresent": true,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "OPENAI_REQUEST_TIMEOUT_SECONDS=20"
+    },
+    {
+      "provider": "claude",
+      "model": "claude-3-5-sonnet-20241022",
+      "credentialsPresent": false,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "No explicit timeout in adapter; SDK default not overridden"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-2.0-flash-exp",
+      "credentialsPresent": false,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "No explicit timeout in adapter; SDK default not overridden"
+    },
+    {
+      "provider": "ollama",
+      "model": "llama3.2-vision:latest",
+      "credentialsPresent": null,
+      "SDKInstalled": true,
+      "streaming": "STREAMING_NOT_SUPPORTED",
+      "semanticIntegration": "Generic text/image completion adapter; not a configured semantic schema profile.",
+      "structuredOutput": "No semantic schema contract in this generic adapter",
+      "timeout": "requests.post without explicit timeout; server availability unknown"
+    }
+  ],
+  "alternativeCalls": 0,
+  "modelAvailabilityVerified": false,
+  "SDKsAdded": false,
+  "limitation": "Presence of configuration/credentials/SDK is readiness evidence only, not a successful capability probe or model availability guarantee."
+}

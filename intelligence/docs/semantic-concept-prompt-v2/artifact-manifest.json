@@ -1,0 +1,30 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "REPORT.txt": "dc66cc5d59dd2ef5f8106789d118521c95ca95b255f900a2b5d4c70f0b0973d0",
+    "authorization.txt": "7fe8177ab4bc6379148cc8cc6fae343b6ff557980dc81aa44f6ebb8af4c3ec7a",
+    "changed-files.json": "4ca626c7ccdda4bfed4f2f6000ba6f549dec6a80c8e64826d07d9bbf1a98a92b",
+    "coverage-gap-report.json": "847c30d19f91c54c74a674dbcffcf03ba9c30374c2c4af32f1d6185c7cbcdb00",
+    "exact-prompt-v2.json": "1bd4d7d6e4d080e4da0230a0e31b8441fd4a62b17580eff802acff694c050ee1",
+    "exact-prompt-v2.txt": "ccd4f0f441656fcac36db7bed8fe119550faba144f06dd61b651d82aaec33cfa",
+    "focused-tests.log": "c04fbd784240beef17f34489d93bd90b494fc9a0e4bddca53bd9f8b7439f7708",
+    "full-regression-comparison.json": "f1f0ac0f757b5c769210dbbf5acba00da6c6e3e689739883a5704095922d835b",
+    "full-regression.log": "86e4aff208269ee7bf8a5b76015ffa0a27ab5bc55b3e74faa7fbc8089b2f65e1",
+    "historical-evidence-proof.json": "9eed3e422f6165eca42a64b1877e95ae2b2d7b072cdd372c38029cd7c8b3f1f4",
+    "live-execution.log": "99c0fb97848e80cd7fb529f5483ab72d954c842b0b2d33984c5c7f760994d25a",
+    "mock-comparison.json": "520d308cef34b8a5f220d3b70373f8a5a84e0e24df805d4a2d66578f99b8560a",
+    "mock-v1-results.json": "744f0a278b393934d32d0eee1baf9ff2ff0e126920b3300c2e8d5bf7000d8aad",
+    "mock-v2-results.json": "301f9b39fe1ce52a4a0774c547d9fc8551fac4e50445c6b78b49c7e4c6459e45",
+    "new-tests-final.log": "b00d59eb278f657f0a1f1ab7670f3c9c8d306d350ed99cd749841dffd359ab93",
+    "new-tests.log": "c921530e966da62cd547ab079a12cf65f91715fdebab8626582dc1c05821de2f",
+    "pre-live-test-verification.json": "f1f0ac0f757b5c769210dbbf5acba00da6c6e3e689739883a5704095922d835b",
+    "protected-after-tests.json": "64441d88b276ddaad5fae6c3cda4455301da1f9a41378733a11d564bbcc7bc07",
+    "protected-after.json": "64441d88b276ddaad5fae6c3cda4455301da1f9a41378733a11d564bbcc7bc07",
+    "protected-before.json": "64441d88b276ddaad5fae6c3cda4455301da1f9a41378733a11d564bbcc7bc07",
+    "source-hashes-before-regression.json": "ec0d0273a468b5bbb21648c0d117afb8e8117ded7e0e7a73a07b87b41864008d",
+    "v1-current-stack-metrics.json": "6b7ee38a95c31c3971c423cf756bac0ca2af9b697e71d20adfed6e3957bc8230",
+    "v1-current-stack-replay.json": "af29a09da73674b03cd4ad68827287695c39c27b21925584938c49f2b07820a2",
+    "v1-v2-live-comparison.json": "4d032a62f43a437114f1b631b5a32b7748161d3b7319b58ccc676253ae118a30",
+    "verification.json": "c775a93585dbd3ec14b84a5352129084896b4ee756df6a7743bd060657d7ea53"
+  }
+}

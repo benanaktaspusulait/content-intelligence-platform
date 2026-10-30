@@ -1,0 +1,581 @@
+SEMANTIC CONCEPT PROMPT V2 — IMPLEMENTATION AND CONTROLLED EXPERIMENT
+
+Prompt V1, response schema, adapter, canonical evidence, SFE, Naturalness/Admission V2, BG, ranking, shape, history and preselection are unchanged. Six additive prompt/experiment/CLI/test/fixture files select the accepted pipeline explicitly. No new validator or scoring dimension is introduced.
+
+PROMPT DESIGN
+One immutable trigger/response rule across all4–5 beats and payoff; private per-beat editing before response; paused frame-zero task/object/problem evidence; direct function-based object relationship; silent visual causality and rule-derived payoff; diverse progression without arbitrary extra powers; simple one-character/one-location production staging. Self-check claims, rationale and suggested payoff family carry no scoring authority.
+Exact system and user prompt: exact-prompt-v2.txt and exact-prompt-v2.json. Actual transmitted request is recorded separately in the immutable live experiment, including the existing provider JSON-mode schema suffix.
+
+VERSION AND SAFETY
+semanticConceptPromptVersion=v2; promptVersion=semantic-concept-prompt-v2. Existing V1 defaults/API are untouched; PromptV2Request is an additive subtype. SemanticIdea schema remains exactly unchanged. ruleConsistencyStatement is deliberately omitted: no self-certification is needed. dialogueNeed uses the existing NONE/OPTIONAL/REQUIRED enum; silent ideation is requested.
+Canonical source, score and source-adapter provenance remain distinct. The accepted normalizer retains its SEMANTIC_V1 generationSource label and sem1 candidate IDs. Actual prompt version is stored separately on every record; the inherited adapter label is explicitly disclosed rather than misreported as a V1 request.
+
+MOCK COMPARISON
+Hand-authored paired mock outputs validate prompt intent and assessor plumbing only; they are not model responses or proof of creative superiority.
+Both mock result files retain every input and full pipeline result. The comparisons below reflect authored controls, not sampled model behavior. Negative controls remain present in V2 mocks so diagnostics can detect failures; they are not production generation output.
+Case | Purpose | V1 rule / opening | V2 rule / opening
+A | strong same-rule escalation | SUPPORTED_BY_EXISTING_EVIDENCE / 90 | SUPPORTED_BY_EXISTING_EVIDENCE / 90
+B | rule mutation | CONTRADICTION_DETECTED / 90 | SUPPORTED_BY_EXISTING_EVIDENCE / 90
+C | strong paused frame-zero problem | UNRESOLVED / 15 | SUPPORTED_BY_EXISTING_EVIDENCE / 90
+D | motion-dependent weak opening retained as negative control | UNRESOLVED / 15 | UNRESOLVED / 15
+E | rule-derived payoff | SUPPORTED_BY_EXISTING_EVIDENCE / 90 | SUPPORTED_BY_EXISTING_EVIDENCE / 90
+F | unrelated final twist | CONTRADICTION_DETECTED / 90 | CONTRADICTION_DETECTED / 90
+G | outside-taxonomy source evidence | SUPPORTED_BY_EXISTING_EVIDENCE / 35 | SUPPORTED_BY_EXISTING_EVIDENCE / 35
+H | random magic despite explicit novelty | SUPPORTED_BY_EXISTING_EVIDENCE / 15 | SUPPORTED_BY_EXISTING_EVIDENCE / 15
+I | wording change without progression | SUPPORTED_BY_EXISTING_EVIDENCE / 90 | SUPPORTED_BY_EXISTING_EVIDENCE / 90
+J | consistent property transfer | SUPPORTED_BY_EXISTING_EVIDENCE / 15 | SUPPORTED_BY_EXISTING_EVIDENCE / 15
+
+STORED LIVE V1 BASELINE — REPLAYED THROUGH THE CURRENT ACCEPTED STACK
+{
+  "rawCount": 40,
+  "schemaValidCount": 38,
+  "normalizedCount": 33,
+  "ruleConsistentSupportedCount": 10,
+  "ruleConsistencyUnresolvedCount": 9,
+  "frameZeroSupportedCount": 2,
+  "goalVisibleCount": 9,
+  "supportedCausalBeats": 90,
+  "describedBeats": 165,
+  "supportedCausalBeatRatio": 0.5454545454545454,
+  "payoffRuleLinkedCount": 13,
+  "sameRuleEscalationCount": 10,
+  "SFE_mean": 59.60606060606061,
+  "SFE_median": 63,
+  "openingMean": 23.181818181818183,
+  "premiseAdmittedCount": 3,
+  "rankingEligibleCount": 4,
+  "productionAdmissibleCount": 0,
+  "productionSlateSize": 0,
+  "humanReviewCount": 6,
+  "distributions": {
+    "openingScores": {
+      "15": 25,
+      "35": 6,
+      "90": 2
+    },
+    "BeatGrammar": {
+      "MECHANICAL": 11,
+      "ACCEPTABLE": 22
+    },
+    "SFE": {
+      "REVISION_REQUIRED": 29,
+      "PASS": 4
+    },
+    "SFE_scores": {
+      "25": 5,
+      "26": 2,
+      "41": 2,
+      "42": 2,
+      "43": 1,
+      "46": 1,
+      "54": 1,
+      "55": 1,
+      "56": 1,
+      "63": 3,
+      "64": 1,
+      "69": 2,
+      "72": 1,
+      "77": 1,
+      "78": 1,
+      "83": 1,
+      "85": 1,
+      "93": 2,
+      "99": 2,
+      "100": 2
+    },
+    "admissionStatuses": {
+      "NOT_ADMITTED_RULE_INCOHERENT": 14,
+      "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED": 3,
+      "NOT_ADMITTED_INSUFFICIENT_EVIDENCE": 15,
+      "NOT_ADMITTED_INCOMPATIBLE": 1
+    }
+  },
+  "failureReasonDistribution": {
+    "RULE_INCONSISTENCY": {
+      "count": 14,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-5cf30c7094c804b1",
+        "sem1-11beb05a18d36fdb",
+        "sem1-913bc9ae39a3c15e",
+        "sem1-d1e9d5ce1154b96b",
+        "sem1-bbdb302fefb48bd5",
+        "sem1-8a6fb30b4a11976b",
+        "sem1-90670eeaf4ee0468",
+        "sem1-6c8721485468a0f0",
+        "sem1-c2b6225333ed3cda",
+        "sem1-23a3c991b8104bee",
+        "sem1-2ae718e8672f18cc",
+        "sem1-cfeed66616185cb0",
+        "sem1-55fe32d619adcfb4"
+      ]
+    },
+    "OPENING_EVIDENCE_INSUFFICIENT": {
+      "count": 31,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-ca296146499be3ab",
+        "sem1-5cf30c7094c804b1",
+        "sem1-11beb05a18d36fdb",
+        "sem1-913bc9ae39a3c15e",
+        "sem1-d1e9d5ce1154b96b",
+        "sem1-bbdb302fefb48bd5",
+        "sem1-8a6fb30b4a11976b",
+        "sem1-dd72ae9a5bebad5a",
+        "sem1-101af67295c2d0f2",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-a2f775dcd3a914d7",
+        "sem1-8d1da895a1fb41af",
+        "sem1-90670eeaf4ee0468",
+        "sem1-6c8721485468a0f0",
+        "sem1-91ea45894fa28d7b",
+        "sem1-63760a23881b08d8",
+        "sem1-c2b6225333ed3cda",
+        "sem1-94f6d134918f72c9",
+        "sem1-ffcb077f3482bc82",
+        "sem1-48ddf9ea62000d61",
+        "sem1-7a6188be5ce157bd",
+        "sem1-9ba62d8bf2207bb6",
+        "sem1-c85a677474d9ed27",
+        "sem1-cfeed66616185cb0",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-2a58df94ed1346db",
+        "sem1-55fe32d619adcfb4",
+        "sem1-3bc8be33c1b4c778",
+        "sem1-9d566f7a928ca626"
+      ]
+    },
+    "PREMISE_NOT_ADMITTED": {
+      "count": 30,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-5cf30c7094c804b1",
+        "sem1-11beb05a18d36fdb",
+        "sem1-913bc9ae39a3c15e",
+        "sem1-d1e9d5ce1154b96b",
+        "sem1-bbdb302fefb48bd5",
+        "sem1-8a6fb30b4a11976b",
+        "sem1-dd72ae9a5bebad5a",
+        "sem1-101af67295c2d0f2",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-90670eeaf4ee0468",
+        "sem1-6c8721485468a0f0",
+        "sem1-91ea45894fa28d7b",
+        "sem1-63760a23881b08d8",
+        "sem1-c2b6225333ed3cda",
+        "sem1-94f6d134918f72c9",
+        "sem1-ffcb077f3482bc82",
+        "sem1-48ddf9ea62000d61",
+        "sem1-23a3c991b8104bee",
+        "sem1-2ae718e8672f18cc",
+        "sem1-7a6188be5ce157bd",
+        "sem1-9ba62d8bf2207bb6",
+        "sem1-c85a677474d9ed27",
+        "sem1-cfeed66616185cb0",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-2a58df94ed1346db",
+        "sem1-55fe32d619adcfb4",
+        "sem1-3bc8be33c1b4c778",
+        "sem1-9d566f7a928ca626"
+      ]
+    },
+    "ARBITRARY_MAGIC": {
+      "count": 0,
+      "candidateIds": []
+    },
+    "WEAK_OBJECT_SPECIFICITY": {
+      "count": 25,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-5cf30c7094c804b1",
+        "sem1-11beb05a18d36fdb",
+        "sem1-913bc9ae39a3c15e",
+        "sem1-d1e9d5ce1154b96b",
+        "sem1-8a6fb30b4a11976b",
+        "sem1-dd72ae9a5bebad5a",
+        "sem1-101af67295c2d0f2",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-90670eeaf4ee0468",
+        "sem1-6c8721485468a0f0",
+        "sem1-91ea45894fa28d7b",
+        "sem1-63760a23881b08d8",
+        "sem1-c2b6225333ed3cda",
+        "sem1-94f6d134918f72c9",
+        "sem1-48ddf9ea62000d61",
+        "sem1-7a6188be5ce157bd",
+        "sem1-9ba62d8bf2207bb6",
+        "sem1-c85a677474d9ed27",
+        "sem1-cfeed66616185cb0",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-2a58df94ed1346db",
+        "sem1-55fe32d619adcfb4",
+        "sem1-3bc8be33c1b4c778"
+      ]
+    },
+    "WEAK_CAUSAL_PROGRESSION": {
+      "count": 11,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-11beb05a18d36fdb",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-94f6d134918f72c9",
+        "sem1-48ddf9ea62000d61",
+        "sem1-7a6188be5ce157bd",
+        "sem1-9ba62d8bf2207bb6",
+        "sem1-c85a677474d9ed27",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-3bc8be33c1b4c778"
+      ]
+    },
+    "MECHANICAL_BEATS": {
+      "count": 11,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-11beb05a18d36fdb",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-94f6d134918f72c9",
+        "sem1-48ddf9ea62000d61",
+        "sem1-7a6188be5ce157bd",
+        "sem1-9ba62d8bf2207bb6",
+        "sem1-c85a677474d9ed27",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-3bc8be33c1b4c778"
+      ]
+    },
+    "PAYOFF_NOT_RULE_LINKED": {
+      "count": 20,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-ca296146499be3ab",
+        "sem1-5cf30c7094c804b1",
+        "sem1-11beb05a18d36fdb",
+        "sem1-913bc9ae39a3c15e",
+        "sem1-d1e9d5ce1154b96b",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-90670eeaf4ee0468",
+        "sem1-6c8721485468a0f0",
+        "sem1-c2b6225333ed3cda",
+        "sem1-94f6d134918f72c9",
+        "sem1-48ddf9ea62000d61",
+        "sem1-2ae718e8672f18cc",
+        "sem1-7a6188be5ce157bd",
+        "sem1-c85a677474d9ed27",
+        "sem1-cfeed66616185cb0",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-55fe32d619adcfb4",
+        "sem1-3bc8be33c1b4c778"
+      ]
+    },
+    "HISTORICAL_COLLISION": {
+      "count": 0,
+      "candidateIds": []
+    },
+    "CREATIVE_SHAPE_RISK": {
+      "count": 33,
+      "candidateIds": [
+        "sem1-70ee2b7099c48d36",
+        "sem1-ca296146499be3ab",
+        "sem1-5cf30c7094c804b1",
+        "sem1-11beb05a18d36fdb",
+        "sem1-913bc9ae39a3c15e",
+        "sem1-d1e9d5ce1154b96b",
+        "sem1-bbdb302fefb48bd5",
+        "sem1-8a6fb30b4a11976b",
+        "sem1-dd72ae9a5bebad5a",
+        "sem1-101af67295c2d0f2",
+        "sem1-c8c8a33f8c699da0",
+        "sem1-a2f775dcd3a914d7",
+        "sem1-8d1da895a1fb41af",
+        "sem1-90670eeaf4ee0468",
+        "sem1-6c8721485468a0f0",
+        "sem1-91ea45894fa28d7b",
+        "sem1-63760a23881b08d8",
+        "sem1-c2b6225333ed3cda",
+        "sem1-94f6d134918f72c9",
+        "sem1-ffcb077f3482bc82",
+        "sem1-48ddf9ea62000d61",
+        "sem1-23a3c991b8104bee",
+        "sem1-2ae718e8672f18cc",
+        "sem1-7a6188be5ce157bd",
+        "sem1-9ba62d8bf2207bb6",
+        "sem1-c85a677474d9ed27",
+        "sem1-cfeed66616185cb0",
+        "sem1-0ea8b18049cec99f",
+        "sem1-8bb634d95756b01b",
+        "sem1-2a58df94ed1346db",
+        "sem1-55fe32d619adcfb4",
+        "sem1-3bc8be33c1b4c778",
+        "sem1-9d566f7a928ca626"
+      ]
+    },
+    "PRODUCTION_FEASIBILITY": {
+      "count": 4,
+      "candidateIds": [
+        "sem1-dd72ae9a5bebad5a",
+        "sem1-90670eeaf4ee0468",
+        "sem1-c2b6225333ed3cda",
+        "sem1-9d566f7a928ca626"
+      ]
+    }
+  },
+  "taxonomyCoverageGaps": [
+    {
+      "candidateId": "sem1-70ee2b7099c48d36",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-ca296146499be3ab",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED"
+    },
+    {
+      "candidateId": "sem1-5cf30c7094c804b1",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-11beb05a18d36fdb",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-913bc9ae39a3c15e",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-d1e9d5ce1154b96b",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-bbdb302fefb48bd5",
+      "responseClassificationStatus": "PRESENT_CLASSIFIED",
+      "responseClassification": "RETURN_ORIGIN",
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-8a6fb30b4a11976b",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-dd72ae9a5bebad5a",
+      "responseClassificationStatus": "PRESENT_CLASSIFIED",
+      "responseClassification": "CONTACT_RETAINS",
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-101af67295c2d0f2",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-c8c8a33f8c699da0",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-a2f775dcd3a914d7",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED"
+    },
+    {
+      "candidateId": "sem1-8d1da895a1fb41af",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED"
+    },
+    {
+      "candidateId": "sem1-90670eeaf4ee0468",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-6c8721485468a0f0",
+      "responseClassificationStatus": "PRESENT_CLASSIFIED",
+      "responseClassification": "INVERT_ORIENTATION",
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-91ea45894fa28d7b",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-63760a23881b08d8",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-c2b6225333ed3cda",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-94f6d134918f72c9",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-ffcb077f3482bc82",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-48ddf9ea62000d61",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-23a3c991b8104bee",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-2ae718e8672f18cc",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-7a6188be5ce157bd",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-9ba62d8bf2207bb6",
+      "responseClassificationStatus": "PRESENT_CLASSIFIED",
+      "responseClassification": "SCALE_UP",
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-c85a677474d9ed27",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-cfeed66616185cb0",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-0ea8b18049cec99f",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-8bb634d95756b01b",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-2a58df94ed1346db",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "candidateId": "sem1-55fe32d619adcfb4",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_RULE_INCOHERENT"
+    },
+    {
+      "candidateId": "sem1-3bc8be33c1b4c778",
+      "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+      "responseClassification": null,
+      "admissionStatus": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "metricScope": "ALL_NORMALIZED; category counts may overlap; unsupported/unresolved is not proof of invalidity. Existing text-risk screens are not render verification. No new gate or score."
+}
+The full V1 cohort has33 normalized candidates. The previous Admission V2 report covered only18 HUMAN_REVIEW candidates: its1 admitted premise and this full-cohort3 admitted premises use different denominators. Historical results are never overwritten. The stored structured baseline mean59.61 and4 PASS are reproduced here.
+
+METRIC DEFINITIONS AND LIMITS
+Raw/schema/normalized denominators are reported separately. Rule-consistent-supported means the existing Admission V2 causal-coherence evidence supports the rule and its existing coherence checker detects no contradiction. Unresolved cases are shown separately; absence of a detected violation is not proof of correctness. Source-text support does not establish observed frame legibility or full semantic/physical validity.
+Opening support uses the existing opening floor60. Goal visibility comes from canonical SFE evidence. Causal beat ratio uses existing majorCausalBeatCount divided by described source beat count. Payoff linkage requires existing canonical payoff.ruleLinked with no existing coherence finding in the final beat. These are observations, never new ranking/selection inputs.
+Failure distributions map existing outputs: RULE_INCONSISTENCY=existing coherence findings; OPENING/PREMISE use real preselection blockers; ARBITRARY_MAGIC=admission status; WEAK_OBJECT_SPECIFICITY=unsupported existing admission factor; WEAK_CAUSAL_PROGRESSION=existing BG flags with MECHANICAL/BROKEN quality; MECHANICAL_BEATS=BG quality; PAYOFF_NOT_RULE_LINKED=canonical rule linkage/final consistency support absent; HISTORICAL_COLLISION=existing HIGH territory risk; CREATIVE_SHAPE_RISK=existing HIGH template risk; PRODUCTION_FEASIBILITY=existing risk flags. Coverage/risk labels are not certified collisions, arbitrary-magic negatives do not prove non-arbitrariness, and absent risk flags are not proven render feasibility.
+All categories may overlap and include source-coverage limitations. Full original findings and warnings remain attached. Unknown mechanics are retained without new labels or bonuses. V1 and V2 use the same accepted pipeline and thresholds.
+
+HUMAN REVIEW POLICY
+Include all production-admissible candidates, all ranking-eligible candidates, all SFE PASS, admitted premises with exactly one remaining preselection blocker, and unclassified mechanics with core admission evidence. The last category is a discovery hypothesis: novelty is unverified, not automatically certified. Cards retain full progression and concerns, no KEEP/KILL decision and no canonical promotion.
+
+LIVE EXPERIMENT
+Exactly one controlled V2 request was attempted after verification, using deepseek/deepseek-v4-pro. It FAILED with APITimeoutError. Stored response:0 bytes. No retry, fallback or second batch was made. No usable candidate, schema, normalization, creative quality, production or human review result exists for this live attempt. Actual token usage and actual cost were not reported (null), not zero. No cost estimate is made.
+
+EXACT TEST RESULTS
+22 new tests passed in0.88s. Full regression:2949 passed,36 failed,2 skipped,3030 warnings in197.76s. The exact36 failure IDs match the accepted baseline; zero new failures. The earlier focused development log contains an incorrect J-control assertion, corrected before the final new-tests/full regression; it is not a passing verification log.
+
+LIVE TRANSPORT EVIDENCE
+{
+  "startedAt": "2026-10-26T10:14:05.727422+00:00",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "promptVersion": "semantic-concept-prompt-v2",
+  "requestCount": 1,
+  "status": "FAILED",
+  "usage": null,
+  "actualCostUsd": null,
+  "automaticRetries": 0,
+  "renders": 0,
+  "errorType": "APITimeoutError",
+  "httpStatus": null,
+  "error": "Provider failed; no retry or fallback.",
+  "finishedAt": "2026-10-26T10:26:50.609536+00:00",
+  "providerResponseMetadata": null
+}
+Actual elapsed time:764.882114 seconds. Configured SDK timeout:90 seconds; this is a transport timeout, not a total run deadline. SDK max_retries=0. One request-start marker and one final transport record exist. No completion response or usage evidence was returned; provider processing/billing cannot be inferred.
+
+V1 VS V2 LIVE COMPARISON
+V1 current-stack metrics are reproduced above. V2 creative metrics are NOT_AVAILABLE, never converted to zero or filled from mocks. A failed transport cannot establish prompt quality, superiority or inferiority. v1-v2-live-comparison.json retains explicit nulls and status for every unavailable metric.
+
+ALL40 IDEAS / HUMAN REVIEW / DOWNSTREAM RESULTS
+Requested raw count40; actual generated raw count UNKNOWN; accessible source candidates0 because response length0. There are no live stories to return. All40 story fields, schema results, normalization, rule-consistency results, opening scores, BG/SFE distributions, premise admission, ranking eligibility, production candidates/slate, failure-reason distributions, taxonomy gaps and HUMAN_REVIEW cards are unavailable. These are not empty approved/rejected cohorts and are not quality failures. See ../semantic-live-v2-count-40-run-001/offline-status/. No mock story is presented as a live idea.
+
+FILES / UNCHANGED ARCHITECTURE
+{
+  "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.py": "f2a22e66eb47db9a3dfae21bd136671121942025d3c70bb7a35d5b9e63f95052",
+  "intelligence/ml-service/app/workflow/semantic_concept_prompt_v2.txt": "706b4ffc5434874f49a3c8832490e6e9649b25b02eeb4d93ff7c8617c96bc858",
+  "intelligence/ml-service/app/workflow/semantic_prompt_v2_experiment.py": "68d9442f609ed634474a9a0f84433d3ea7ad1c17e17661a3ee4ba86490f57796",
+  "intelligence/ml-service/tests/test_semantic_prompt_v2.py": "1de2ebbaa6c5f2510ade5af23d3201fa984b061049ecbbffcf277f9bfa604c36",
+  "intelligence/ml-service/tests/fixtures/semantic_prompt_v2_mock_pairs.json": "9997cf274b12335dbf15d36cae57da9ed8acd8156faa120aeba443873dd8efa5",
+  "intelligence/scripts/run-semantic-prompt-v2.py": "f03c52f255e2e0b7dfc4eb559fb2fd14d7f50b3e71eb6f754af463b49245b375"
+}
+All1984 pre-existing protected files remain byte-identical, including the V1 evidence and all accepted workflow source/configuration files covered by the snapshot. No active-source or integrity-policy migration was needed. Full source hashes are unchanged since regression.
+
+REQUIRED DELIVERABLE STATUS
+1 Prompt design:above. 2 Exact prompt:exact-prompt-v2.txt/.json and actual live-attempt/request.json. 3 Files:changed-files.json. 4 Mock comparison:mock-comparison.json and both full mock results. 5 Provider/model:deepseek/deepseek-v4-pro. 6 Requests:one attempted,zero completed. 7 Tokens:unavailable. 8 All40 live ideas:unavailable,no response. 9 Schema/normalization:unavailable. 10 Rule consistency:unavailable. 11 Opening:unavailable. 12 BG:unavailable. 13 SFE:unavailable. 14 Admission:unavailable. 15 Ranking eligibility:unavailable. 16 Production candidates:unavailable. 17 Slate:unavailable. 18 HUMAN_REVIEW_SET:unavailable. 19 Real comparison:V1 evidence versus explicit V2 missing-data status. 20 Failure distribution:transport timeout only; no creative evaluation. 21 Taxonomy coverage:V1 control details in coverage-gap-report.json,V2 unavailable,no expansion. 22 Tests:exact counts above. 23 One controlled attempt:request-started/provider-metadata/transport-manifest. 24 Renders0. 25 V1 hashes unchanged. 26 Historical hashes unchanged. 27 Only exact36 accepted baseline failures and2 skips.
+
+STOP
+Implementation and offline verification are complete. The one live attempt failed, so the requested live creative review remains unavailable. No second batch, validator change, threshold change, taxonomy expansion, production prompt or render was performed.

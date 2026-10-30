@@ -1,0 +1,1 @@
+{"title":"Maya’s Rainy Errand","goal":"Maya wants to reach the bakery without getting wet.","object":"A yellow umbrella."}

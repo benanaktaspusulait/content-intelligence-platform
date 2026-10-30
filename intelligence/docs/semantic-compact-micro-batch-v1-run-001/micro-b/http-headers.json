@@ -1,0 +1,8 @@
+{
+  "httpStatus": 200,
+  "timeToHeadersMs": 53822.463875,
+  "safeHeaders": {
+    "x-request-id": "req_a139e7db449c4261a607ca24146cbc06",
+    "content-type": "application/json"
+  }
+}

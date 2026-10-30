@@ -1,0 +1,12 @@
+{
+  "status": "FAILED",
+  "usage": null,
+  "providerCostUsd": null,
+  "providerRequestId": null,
+  "sdkMaxRetries": 0,
+  "errorClass": "RuntimeError",
+  "errorCauseClass": null,
+  "httpStatus": null,
+  "safeError": "Bounded capability probe failed; no retry or fallback.",
+  "providerResponseMetadata": null
+}
