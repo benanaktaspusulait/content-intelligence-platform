@@ -10,7 +10,8 @@ import json
 from pathlib import Path
 
 POLICY_PATH = Path(__file__).parent / "fixtures/approved_active_integrity_v1.json"
-POLICY_SHA256 = "6d8389e5cc567d8408e404c3e11294337200fb64970ed30403d92e751661ff57"
+POLICY_SHA256 = "069b4c2b48569519d80b907f714af3655a216a10128596c65da2f4c191a58c3a"
+POLICY_HISTORICAL_SHA256 = "6d8389e5cc567d8408e404c3e11294337200fb64970ed30403d92e751661ff57"
 ACTIVE_IMPLEMENTATIONS = frozenset(
     {
         "intelligence/ml-service/app/workflow/short_form_engine.py",
@@ -31,6 +32,23 @@ INTEGRITY_TEST_ADAPTERS = frozenset(
         "test_structured_short_form.py",
     )
 )
+
+OFFLINE_SAFETY_IMPLEMENTATIONS = frozenset({
+    "intelligence/ml-service/app/workflow/creative_provider_profiles.py",
+    "intelligence/docker-compose.yml",
+    "intelligence/ml-service/app/llm/provider.py",
+    "intelligence/ml-service/app/llm/openai_provider.py",
+    "intelligence/ml-service/app/llm/claude_provider.py",
+    "intelligence/ml-service/app/llm/gemini_provider.py",
+    "intelligence/ml-service/app/llm/ollama_provider.py",
+    "intelligence/ml-service/app/rules/rule_engine.py",
+    "intelligence/ml-service/app/workflow/short_form_engine.py",
+    "intelligence/ml-service/app/workflow/concept_ranking.py",
+})
+OFFLINE_SAFETY_TESTS = frozenset({
+    "intelligence/ml-service/tests/test_llm_providers.py",
+    "intelligence/ml-service/tests/test_protected_integrity_policy.py",
+})
 
 
 PROPAGATION_PATH = Path(__file__).parent / "fixtures/canonical_evidence_integrity_v1.json"
@@ -111,7 +129,7 @@ def load_premise_evidence(root):
 
 
 OPENING_EVIDENCE_PATH=Path(__file__).parent/'fixtures/opening_evidence_integrity_v1.json'
-OPENING_EVIDENCE_SHA256='cf7686e59ab5e3871ca3428b13ff968de2e05900f2466363935075a4077310da'
+OPENING_EVIDENCE_SHA256='05d7f2827b29dd87fc934f3d7b49f77459c6f326aa45588d97a62ff0f865465e'
 OPENING_EVIDENCE_IMPLEMENTATIONS=frozenset({'intelligence/ml-service/tests/test_semantic_prompt_v2_compact.py', 'intelligence/ml-service/tests/test_semantic_prompt_v2_compact_1.py', 'intelligence/ml-service/tests/test_semantic_low_reasoning_probe_v1.py', 'intelligence/ml-service/tests/test_protected_integrity_policy.py', 'intelligence/ml-service/tests/test_semantic_compact_capability_probe_v1.py', 'intelligence/ml-service/tests/test_semantic_prompt_v2_compact_2.py', 'intelligence/ml-service/tests/test_semantic_two_stage_v1.py', 'intelligence/ml-service/app/workflow/premise_admission_evidence.py'})
 
 
@@ -146,7 +164,7 @@ def load_policy(root):
         "Active integrity policy differs from its reviewed pin"
     )
     policy = json.loads(data)
-    assert set(policy) == {"version", "architectureApproval", "integrityRepairApproval"}, (
+    assert set(policy) == {"version", "architectureApproval", "integrityRepairApproval", "offlineSafetyApproval"}, (
         "Unexpected policy sections"
     )
     assert policy["version"] == "approved-active-integrity-v1", "Unknown integrity policy version"
@@ -193,6 +211,31 @@ def load_policy(root):
         assert previous is None,'Opening evaluator path already has an unrelated approval chain'
         previous=entry['previousSha256']
         approvals[name]=dict(historicalSha256=previous[0] if isinstance(previous,list) else previous,approvedSha256=entry['approvedSha256'])
+    safety = policy["offlineSafetyApproval"]
+    assert set(safety) == {"id", "evidence", "files"}
+    assert set(safety["files"]) == OFFLINE_SAFETY_IMPLEMENTATIONS | OFFLINE_SAFETY_TESTS
+    bound = {}
+    for ref in safety["evidence"]:
+        p = (root / ref["path"]).resolve()
+        assert p.is_relative_to(root.resolve()), "Offline safety approval evidence outside repository"
+        assert sha256(p) == ref["sha256"], f"Offline safety evidence changed: {ref['path']}"
+        bound[ref["role"]] = json.loads(p.read_text())
+    for role, key in [("historical", "historicalSha256"), ("approved", "approvedSha256")]:
+        assert bound.get(role) == {name: value[key] for name, value in safety["files"].items()}, (
+            "Offline safety migration differs from reviewed record"
+        )
+    for name, hashes in safety["files"].items():
+        assert set(hashes) == {"historicalSha256", "approvedSha256"}
+        previous = approvals.get(name)
+        if previous:
+            assert previous["approvedSha256"] == hashes["historicalSha256"], (
+                f"Offline safety approval chain is not contiguous: {name}"
+            )
+            historical = previous["historicalSha256"]
+        else:
+            historical = hashes["historicalSha256"]
+        assert sha256(root / name) == hashes["approvedSha256"], f"Approved active implementation changed: {name}"
+        approvals[name] = {"historicalSha256": historical, "approvedSha256": hashes["approvedSha256"]}
     return approvals
 
 
@@ -213,6 +256,10 @@ def assert_manifest_integrity(root, manifest):
         path = (root / relative).resolve()
         assert path.is_relative_to(root), f"Protected path outside repository: {name}"
         actual = sha256(path)
+        if path == POLICY_PATH.resolve():
+            assert historical == POLICY_HISTORICAL_SHA256, "Unknown historical active-integrity policy"
+            assert actual == POLICY_SHA256, "Active-integrity policy differs from its approved pin"
+            continue
         migration = approvals.get(relative)
         if migration:
             revisions = {migration["historicalSha256"], migration["approvedSha256"]}
@@ -230,6 +277,9 @@ def assert_manifest_integrity(root, manifest):
                 revisions.add(opening_evidence['approvedSha256'])
                 previous=opening_evidence['previousSha256']
                 revisions.update(previous if isinstance(previous,list) else [previous])
+            offline_safety = json.loads(POLICY_PATH.read_text())["offlineSafetyApproval"]["files"].get(relative)
+            if offline_safety:
+                revisions.add(offline_safety["historicalSha256"])
             assert historical in revisions, (
                 f"Unapproved historical active revision: {relative}"
             )

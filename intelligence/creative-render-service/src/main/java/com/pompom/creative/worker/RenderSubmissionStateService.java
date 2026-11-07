@@ -54,6 +54,35 @@ public class RenderSubmissionStateService {
     return job;
   }
 
+  /** Terminally rejects a queued job when the paid-dispatch-time admission replay fails. */
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void markAdmissionRejected(
+      UUID attemptId, UUID jobId, String leaseOwner, String code, String message) {
+    RenderAttempt attempt = findAttempt(attemptId);
+    requireLease(attempt, leaseOwner);
+    if (attempt.getStage() != RenderExecutionStage.QUEUED
+        || !jobId.equals(attempt.getRenderJobId())) {
+      throw new IllegalStateException("Admission rejection does not match a queued attempt");
+    }
+    RenderJob job = findJob(jobId);
+    Instant now = Instant.now();
+    String safeCode = code == null || code.isBlank() ? "RENDER_ADMISSION_REJECTED" : code;
+    String safeMessage = message == null || message.isBlank()
+        ? "Current render admission failed" : message;
+    attempt.setStage(RenderExecutionStage.FAILED);
+    attempt.setErrorCode(safeCode);
+    attempt.setErrorMessage(safeMessage);
+    attempt.setTerminalReason(safeMessage);
+    attempt.setCompletedAt(now);
+    releaseLease(attempt);
+    job.setStatus(RenderJob.RenderJobStatus.FAILED);
+    job.setFailedAt(now);
+    job.setErrorCode(safeCode);
+    job.setErrorMessage(safeMessage);
+    attemptRepository.save(attempt);
+    jobRepository.save(job);
+  }
+
   public void markSubmitted(
       UUID attemptId, UUID jobId, String providerJobId, BigDecimal estimatedCredits) {
     markSubmitted(

@@ -27,6 +27,23 @@ def test_missing_evidence_remains_unknown_and_never_confirms_omitted_requirement
     assert any(c["state"] == "MISSING" for c in evidence["claims"])
 
 
+def test_short_form_is_mandatory_and_binding_for_reel_render_admission(monkeypatch):
+    short = {
+        "status": "REJECT",
+        "humanReadableReport": "The 14-second plan lacks causal progression.",
+        "findings": [{"code": "INSUFFICIENT_CAUSAL_BEATS"}],
+    }
+    monkeypatch.setattr("app.workflow.short_form_engine.assess", lambda text, context: short)
+    value = request("0-14 SEC\nOpa reads as his glasses slide. He turns a page.")
+    value["desiredDuration"] = 14
+
+    result = review_prompt(value)
+
+    assert result["shortFormEngine"] == short
+    assert any(reason["source"] == "SHORT_FORM_ENGINE" for reason in result["family8"]["renderAuthorization"]["reasons"])
+    assert binding_fingerprint(value) == binding_fingerprint({**value, "shortFormEvaluation": True})
+
+
 def test_source_grounded_precision_enrichment_supplies_actual_family10_inputs():
     value = request("0-6 SEC\nLuca must thread a tiny needle with exact finger placement.")
     result = enrich_production_evidence(value)

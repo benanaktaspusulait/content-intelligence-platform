@@ -2,13 +2,14 @@ import os
 
 from anthropic import Anthropic
 
-from .provider import LLMProvider, UnsupportedProviderError
+from .provider import LLMProvider, UnsupportedProviderError, require_inference_authorization
 
 
 class ClaudeProvider(LLMProvider):
     """Anthropic Claude provider."""
 
     def __init__(self, api_key: str | None = None, model: str = "claude-3-5-sonnet-20241022"):
+        require_inference_authorization("claude")
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY not set")

@@ -13,7 +13,7 @@ from typing import Any
 
 from openai import OpenAI, Timeout
 
-from .provider import LLMProvider, UnsupportedProviderError
+from .provider import LLMProvider, UnsupportedProviderError, require_inference_authorization
 from ..semantic_provider import SemanticAnalysisRequest, SemanticAnalysisResult
 
 
@@ -70,6 +70,7 @@ class OpenAIProvider(LLMProvider):
     """OpenAI adapter; provider-neutral semantic code never sees these SDK types."""
 
     def __init__(self, api_key: str | None = None, model: str = "gpt-4o", request_timeout: Timeout | None = None):
+        require_inference_authorization("openai")
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY not set")

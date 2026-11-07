@@ -16,6 +16,10 @@ from app.quality.canonical_evidence import normalize_strategy_family
 
 VERSION = "short-form-engine-v1"
 _TIME = re.compile(r"(?im)^\s*(\d+(?:\.\d+)?)\s*[–—-]\s*(\d+(?:\.\d+)?)\s*(?:seconds?|secs?|s)\b[^\n:]*:?\s*")
+_TABLE_TIME = re.compile(
+    r"(?im)^\s*\|\s*(\d+(?:\.\d+)?)\s*[–—-]\s*"
+    r"(\d+(?:\.\d+)?)\s*(?:seconds?|secs?|s)\s*\|\s*"
+)
 _STOP = re.compile(r"(?im)^\s*(?:MANDATORY|SAFETY|DIALOGUE\s*$|INSTAGRAM RETENTION|PRODUCTION NOTES|CAMERA LOCK)")
 _RULES = {
     "INVERSION": r"upside[ -]down|\bflips?\b",
@@ -60,20 +64,37 @@ def _visual(text: str) -> str:
 
 
 def _timeline(text: str) -> list[dict[str, Any]]:
-    headers = list(_TIME.finditer(text))
+    headers = sorted(
+        [(match, False) for match in _TIME.finditer(text)]
+        + [(match, True) for match in _TABLE_TIME.finditer(text)],
+        key=lambda item: item[0].start(),
+    )
     result = []
-    for i, header in enumerate(headers):
-        end = headers[i + 1].start() if i + 1 < len(headers) else len(text)
-        stop = _STOP.search(text, header.end(), end)
-        if stop:
-            end = stop.start()
+    for i, (header, table_row) in enumerate(headers):
+        # Production prompts sometimes repeat a compact timing summary after
+        # the authored beat sequence. A reset to an earlier timestamp starts
+        # a second mention of the plan, not new sequential story time.
+        if result and float(header[1]) < result[-1]["start"]:
+            break
+        end = headers[i + 1][0].start() if i + 1 < len(headers) else len(text)
         start = header.end()
         while start < end and text[start].isspace():
             start += 1
+        if table_row:
+            line_end = text.find("\n", start, end)
+            if line_end < 0:
+                line_end = end
+            closing_pipe = text.find("|", start, line_end)
+            if closing_pipe >= 0:
+                end = closing_pipe
+        stop = _STOP.search(text, header.end(), end)
+        if stop:
+            end = stop.start()
         while end > start and text[end - 1].isspace():
             end -= 1
+        quote = text[start:end]
         result.append({'id': f'B{i + 1}', 'start': float(header[1]), 'end': float(header[2]),
-                       'quote': text[start:end], 'sourceSpan': [start, end]})
+                       'quote': quote, 'sourceSpan': [start, end]})
     if not headers:
         for m in re.finditer(r'[^\n]+', text):
             if m[0].strip():

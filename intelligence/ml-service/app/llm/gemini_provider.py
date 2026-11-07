@@ -2,13 +2,14 @@ import os
 
 import google.generativeai as genai
 
-from .provider import LLMProvider, UnsupportedProviderError
+from .provider import LLMProvider, UnsupportedProviderError, require_inference_authorization
 
 
 class GeminiProvider(LLMProvider):
     """Google Gemini provider."""
 
     def __init__(self, api_key: str | None = None, model: str = "gemini-2.0-flash-exp"):
+        require_inference_authorization("gemini")
         self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
         if not self.api_key:
             raise ValueError("GOOGLE_API_KEY not set")

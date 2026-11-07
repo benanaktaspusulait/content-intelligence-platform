@@ -6,6 +6,14 @@ import pytest
 from app.llm.provider import LLMProvider, UnsupportedProviderError, get_provider
 
 
+@pytest.fixture(autouse=True)
+def authorize_only_this_mock_provider_suite(monkeypatch):
+    # This module's SDK clients are mocked; explicit authorization exercises
+    # the provider adapters without permitting a real network request.
+    monkeypatch.setenv("POMPOM_OFFLINE_MODE", "false")
+    monkeypatch.setenv("POMPOM_EXTERNAL_AI_AUTHORIZED", "true")
+
+
 def test_abstract_provider_cannot_instantiate() -> None:
     """Abstract LLMProvider cannot be instantiated directly."""
     with pytest.raises(TypeError):
@@ -118,3 +126,23 @@ def test_get_provider_default_uses_env() -> None:
         from app.llm.claude_provider import ClaudeProvider
 
         assert isinstance(provider, ClaudeProvider)
+
+
+def test_offline_mode_denies_factory_before_provider_initialization(monkeypatch) -> None:
+    from app.llm.provider import ExternalInferenceUnavailable
+
+    monkeypatch.setenv("POMPOM_OFFLINE_MODE", "true")
+    monkeypatch.setenv("POMPOM_EXTERNAL_AI_AUTHORIZED", "true")
+    with patch("app.llm.openai_provider.OpenAI") as sdk:
+        with pytest.raises(ExternalInferenceUnavailable, match="OFFLINE_MODE"):
+            get_provider("openai")
+        sdk.assert_not_called()
+
+
+def test_provider_mode_requires_explicit_operator_authorization(monkeypatch) -> None:
+    from app.llm.provider import ExternalInferenceUnavailable
+
+    monkeypatch.setenv("POMPOM_OFFLINE_MODE", "false")
+    monkeypatch.setenv("POMPOM_EXTERNAL_AI_AUTHORIZED", "false")
+    with pytest.raises(ExternalInferenceUnavailable, match="POMPOM_EXTERNAL_AI_AUTHORIZED"):
+        get_provider("openai")

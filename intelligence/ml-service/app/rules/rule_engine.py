@@ -227,6 +227,14 @@ class RuleEngine:
         return {**base, **child, "rules": list(rules.values())}
 
     def _semantic_check(self, check: Any, *args: Any, **kwargs: Any) -> Any:
+        import os
+
+        offline = os.getenv("POMPOM_OFFLINE_MODE", "true").lower() == "true"
+        authorized = os.getenv("POMPOM_EXTERNAL_AI_AUTHORIZED", "false").lower() == "true"
+        if offline or not authorized:
+            raise SemanticEvidenceUnavailable(
+                "AI-dependent judgment is NOT_EVALUATED: offline mode or missing explicit operator authorization prohibits provider dispatch."
+            )
         policy = self.ruleset.get("semanticPolicy")
         if policy == "EXISTING_EVIDENCE_ONLY":
             raise SemanticEvidenceUnavailable("Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.")

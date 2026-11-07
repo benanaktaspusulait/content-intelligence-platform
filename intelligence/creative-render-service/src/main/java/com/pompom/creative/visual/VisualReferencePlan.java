@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -56,12 +58,15 @@ public class VisualReferencePlan {
   @Column(name = "validation_status", nullable = false, length = 40)
   private String validationStatus;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "recommendation", nullable = false, columnDefinition = "jsonb")
   private String recommendationJson;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "capabilities", nullable = false, columnDefinition = "jsonb")
   private String capabilitiesJson;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "cost_estimate", nullable = false, columnDefinition = "jsonb")
   private String costEstimateJson;
 

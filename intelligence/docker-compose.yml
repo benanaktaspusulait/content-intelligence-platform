@@ -20,6 +20,8 @@ services:
       - path: ./ml-service/.env
         required: false
     environment:
+      POMPOM_OFFLINE_MODE: ${POMPOM_OFFLINE_MODE:-true}
+      POMPOM_EXTERNAL_AI_AUTHORIZED: ${POMPOM_EXTERNAL_AI_AUTHORIZED:-false}
       CPQ_PILOT_REAL_ENABLED: ${CPQ_PILOT_REAL_ENABLED:-false}
       POMPOM_DATA_ROOT: /data
       POMPOM_SEMANTIC_ENABLED: ${POMPOM_SEMANTIC_ENABLED:-false}

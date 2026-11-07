@@ -1,6 +1,10 @@
 spring:
   application:
     name: pompom-creative-render-service
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 21MB
   # The render service owns an isolated `creative_render` schema with its own Flyway history,
   # physically separate from the backend-owned `public` schema (historical V1-V28). Flyway creates
   # and manages only this schema; Hibernate never issues DDL (ddl-auto=none) and resolves all

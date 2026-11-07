@@ -2,8 +2,11 @@
   "version": "opening-evidence-supported-coverage-v1",
   "files": {
     "intelligence/ml-service/app/workflow/premise_admission_evidence.py": {
-      "previousSha256": "b3e84e5bda44d226c74b13addbec2a5637379eb0d6505b15e1fb77251c00f71e",
-      "approvedSha256": "e3d41299669392cd50907df4b4d1fb2553b34a299279824d25c041041db40400"
+      "previousSha256": [
+        "b3e84e5bda44d226c74b13addbec2a5637379eb0d6505b15e1fb77251c00f71e",
+        "e3d41299669392cd50907df4b4d1fb2553b34a299279824d25c041041db40400"
+      ],
+      "approvedSha256": "b8d47e8fa744a81d93b253d1a33eb96121c840f7b59ba5bd390ac95db249fab1"
     },
     "intelligence/ml-service/tests/test_protected_integrity_policy.py": {
       "previousSha256": [
@@ -54,17 +57,17 @@
   "evidence": [
     {
       "path": "intelligence/docs/opening-evaluator-coverage-v1/authorized-active-before.json",
-      "sha256": "d2caf1f08600950ef1df879141d71af9305c88d81be6d002bf3bcb8ce858bcf1",
+      "sha256": "83d82d42ee0e734ada756545d03cba87332184d6ce9a6cd740560bcf85c96603",
       "role": "historical"
     },
     {
       "path": "intelligence/docs/opening-evaluator-coverage-v1/authorized-active-after.json",
-      "sha256": "ceb7ed8e4873fdb6cd0a0ab6f88377875811da16b12093f13719ea5b4cbd52c4",
+      "sha256": "fe6a207df7dcd3dff01d8653e577b5ccb70c97399f4a6ebdc6eb43a9c2c933db",
       "role": "approved"
     },
     {
       "path": "intelligence/docs/opening-evaluator-coverage-v1/authorization.txt",
-      "sha256": "a78814b57ca085165bdd3e73bd6f3e286cc5a38a943491088418cd4dd09ee9b0",
+      "sha256": "c3d6354285726b4b2b9ecc21d7579f33749e117de5338313921af5eac3dcffc1",
       "role": "authorization"
     }
   ]

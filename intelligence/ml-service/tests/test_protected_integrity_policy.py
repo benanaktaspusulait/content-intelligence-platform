@@ -20,7 +20,7 @@ def digest(p):
 @pytest.fixture
 def workspace(tmp_path):
     policy = json.loads(integrity.POLICY_PATH.read_text())
-    for section in ["architectureApproval", "integrityRepairApproval"]:
+    for section in ["architectureApproval", "integrityRepairApproval", "offlineSafetyApproval"]:
         for ref in policy[section]["evidence"]:
             p = tmp_path / ref["path"]
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -66,7 +66,7 @@ def workspace(tmp_path):
 
 def test_reviewed_policy_scopes_are_exact_and_all_current_sources_pinned():
     approvals = integrity.load_policy(ROOT)
-    assert set(approvals) == integrity.ACTIVE_IMPLEMENTATIONS | integrity.INTEGRITY_TEST_ADAPTERS | integrity.PROPAGATION_IMPLEMENTATIONS | integrity.BEAT_EVIDENCE_IMPLEMENTATIONS | integrity.OPENING_EVIDENCE_IMPLEMENTATIONS
+    assert set(approvals) == integrity.ACTIVE_IMPLEMENTATIONS | integrity.INTEGRITY_TEST_ADAPTERS | integrity.OFFLINE_SAFETY_IMPLEMENTATIONS | integrity.OFFLINE_SAFETY_TESTS | integrity.PROPAGATION_IMPLEMENTATIONS | integrity.BEAT_EVIDENCE_IMPLEMENTATIONS | integrity.OPENING_EVIDENCE_IMPLEMENTATIONS
     assert len(integrity.ACTIVE_IMPLEMENTATIONS) == 2
     for path, entry in approvals.items():
         assert digest(ROOT / path) == entry["approvedSha256"]

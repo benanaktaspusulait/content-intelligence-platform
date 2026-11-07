@@ -34,7 +34,10 @@ def object_support(name,frame):
     literal=bool(name and re.search(r'\b'+re.escape(name)+r'\b',frame,re.I))
     joined=[w for w in words if len(w)>=3 and w in label]
     compound=any(a!=b and (a+b==label or b+a==label) for a in joined for b in joined)
-    head=bool(name and len(name.split())>1 and name.split()[-1].casefold() in words)
+    # Compare the final lexical label token, not the raw whitespace token:
+    # canonical labels commonly end in punctuation (for example, "spout.").
+    name_words=re.findall(r'[a-z]+',name.casefold())
+    head=bool(len(name_words)>1 and name_words[-1] in words)
     return dict(present=True if literal or compound or head else None,method='LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD',matches=[w for w in joined if w in words])
 
 

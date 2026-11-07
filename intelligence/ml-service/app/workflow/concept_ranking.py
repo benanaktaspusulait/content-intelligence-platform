@@ -92,18 +92,28 @@ _LABELS = {
     "id": "id",
     "candidateid": "id",
     "title": "title",
+    "episode": "title",
+    "character": "protagonist",
     "protagonist": "protagonist",
     "maincharacter": "protagonist",
+    "everydaygoal": "protagonistGoal",
     "protagonistgoal": "protagonistGoal",
     "goal": "protagonistGoal",
     "objectorprimaryinteraction": "objectOrPrimaryInteraction",
+    "mainobject": "objectOrPrimaryInteraction",
     "object": "objectOrPrimaryInteraction",
     "impossibleruleorcorecontradiction": "impossibleRuleOrCoreContradiction",
+    "corephysicalrule": "impossibleRuleOrCoreContradiction",
+    "impossiblerule": "impossibleRuleOrCoreContradiction",
     "rule": "impossibleRuleOrCoreContradiction",
     "framezerodescription": "frameZeroDescription",
     "framezero": "frameZeroDescription",
+    "cleanstartstate": "frameZeroDescription",
     "escalationplan": "escalationPlan",
+    "storyandtiming": "escalationPlan",
     "finalpayoff": "finalPayoff",
+    "completedendstate": "finalPayoff",
+    "stablefinalanchor": "finalPayoff",
     "payoff": "finalPayoff",
     "optionaldialogue": "optionalDialogue",
     "dialogue": "optionalDialogue",
@@ -129,11 +139,31 @@ def _labels(text: str) -> dict[str, Any]:
     found: dict[str, str] = {}
     active = None
     for line in text.splitlines():
-        match = re.match(r"^([A-Za-z][A-Za-z _-]{0,55}):\s*(.*)$", line)
-        key = _LABELS.get(re.sub(r"[^a-z]", "", match[1].lower())) if match else None
+        heading = re.match(r"^\s*#{1,6}\s+([A-Za-z][A-Za-z _-]{0,55})\s*$", line)
+        match = re.match(r"^\s*(?:>\s*|[-*]\s*)?\*{0,2}([A-Za-z][A-Za-z _-]{0,55}):\*{0,2}\s*(.*)$", line)
+        table = re.match(r"^\s*\|\s*([^|]{1,55}?)\s*\|\s*([^|]*?)\s*\|\s*$", line)
+        label = heading[1] if heading else match[1] if match else None
+        key = _LABELS.get(re.sub(r"[^a-z]", "", label.lower())) if label else None
         if key:
             active = key
-            found[key] = match[2].strip()
+            found[key] = match[2].strip() if match else ""
+        elif table:
+            table_label = table[1].strip().strip("*").strip()
+            table_key = _LABELS.get(re.sub(r"[^a-z]", "", table_label.lower()))
+            if table_key:
+                active = table_key
+                found[table_key] = table[2].strip().strip("*").strip()
+            elif active == "escalationPlan" and table_label.lower() in {"time", "---"}:
+                continue
+            elif active == "escalationPlan" and re.match(r"^\d+(?:\.\d+)?\s*[–—-]", table_label):
+                found[active] += "\n" + line.strip()
+            else:
+                active = None
+        elif match or heading:
+            # A recognized section header without a corresponding candidate
+            # field ends the previous value. Preserve absent semantics as
+            # missing instead of absorbing later unrelated sections.
+            active = None
         elif active:
             found[active] += "\n" + line
     return {key: value.strip() for key, value in found.items()}

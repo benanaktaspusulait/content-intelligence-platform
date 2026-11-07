@@ -25,6 +25,15 @@ import com.pompom.creative.qa.QaService;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
+import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
+import com.pompom.creative.evidence.ValidationEvidenceDto;
+import com.pompom.creative.intelligence.ContentPromptSnapshot;
+import com.pompom.creative.intelligence.IntelligenceContentClient;
+import com.pompom.creative.queue.ProductionLifecycleGuard;
+import com.pompom.creative.queue.ValidationEvidencePolicy;
+import com.pompom.creative.queue.ValidationEvidenceRejectedException;
+import com.pompom.creative.visual.VisualReferencePlanningService;
+import com.pompom.creative.workflow.PostFamilyAdmissionClient;
 import com.pompom.creative.service.AssetLibraryManager;
 import com.pompom.creative.service.CreditTrackingService;
 import com.pompom.creative.service.VideoUpscaleService;
@@ -35,12 +44,15 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * One-stage-per-call orchestration: {@link RenderAttemptOrchestrator#processAttempt} must validate
@@ -65,6 +77,12 @@ class RenderAttemptOrchestratorTest {
   @Mock private VideoUpscaleService videoUpscaleService;
   @Mock private OpenArtReferenceResolver referenceResolver;
   @Mock private RenderSubmissionStateService submissionStateService;
+  @Mock private IntelligenceValidationEvidenceClient evidenceClient;
+  @Mock private IntelligenceContentClient contentClient;
+  @Mock private ValidationEvidencePolicy validationEvidencePolicy;
+  @Mock private PostFamilyAdmissionClient workflowAdmission;
+  @Mock private ProductionLifecycleGuard productionLifecycleGuard;
+  @Mock private VisualReferencePlanningService visualReferencePlanning;
 
   private RenderAttemptOrchestrator orchestrator;
   private RenderJob job;
@@ -86,6 +104,12 @@ class RenderAttemptOrchestratorTest {
             videoUpscaleService,
             referenceResolver,
             new ObjectMapper());
+    ReflectionTestUtils.setField(orchestrator, "evidenceClient", evidenceClient);
+    ReflectionTestUtils.setField(orchestrator, "contentClient", contentClient);
+    ReflectionTestUtils.setField(orchestrator, "validationEvidencePolicy", validationEvidencePolicy);
+    ReflectionTestUtils.setField(orchestrator, "workflowAdmission", workflowAdmission);
+    ReflectionTestUtils.setField(orchestrator, "productionLifecycleGuard", productionLifecycleGuard);
+    ReflectionTestUtils.setField(orchestrator, "visualReferencePlanning", visualReferencePlanning);
     job =
         RenderJob.builder()
             .id(UUID.randomUUID())
@@ -135,6 +159,7 @@ class RenderAttemptOrchestratorTest {
 
   @Test
   void queuedStageSubmitsToProviderAndAdvancesToProviderQueued() {
+    prepareValidFirstFrameAdmission();
     RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
     when(referenceResolver.resolveCharacterReferences(anyString()))
         .thenReturn(List.of("/tmp/kiko.png", "/tmp/mimi.png"));
@@ -156,12 +181,26 @@ class RenderAttemptOrchestratorTest {
     verify(openArtAdapter).generateImage(imageRequest.capture());
     assertThat(imageRequest.getValue().getReferenceImagePaths())
         .containsExactly("/tmp/kiko.png", "/tmp/mimi.png");
+    verify(validationEvidencePolicy).validate(any(), any(), any());
+    verify(productionLifecycleGuard).assertEligible(eq(1L), eq(1L), eq("a".repeat(64)), any());
+  }
+
+  @Test
+  void missingValidationRecordBlocksFirstFrameBeforeProviderDispatch() {
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+
+    assertThatThrownBy(() -> orchestrator.processAttempt(attempt.getId(), LEASE_OWNER))
+        .isInstanceOf(ValidationEvidenceRejectedException.class);
+
+    verify(openArtAdapter, never()).generateImage(any());
+    verify(submissionStateService, never()).markSubmitting(any(), anyString());
+    verify(submissionStateService).markAdmissionRejected(eq(attempt.getId()), eq(job.getId()), eq(LEASE_OWNER), eq("RENDER_ADMISSION_UNAVAILABLE"), any());
   }
 
   @Test
   void queuedVideoStageTransportsAcceptedVisualReferenceBindingToProviderPayload() {
     job.setJobType(RenderJob.JobType.VIDEO);
-    job.setOpenartParams("{\"firstFrameImageId\":\"/data/content/1/visual-references/frame.png\",\"visualReferencePlanId\":\"plan-1\",\"durationSeconds\":8,\"aspectRatio\":\"9:16\"}");
+    prepareValidVideoAdmission();
     RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
     when(openArtAdapter.generateVideo(any())).thenReturn(OpenArtJobResponse.builder().jobId("provider-video-1").status("QUEUED").build());
 
@@ -172,10 +211,121 @@ class RenderAttemptOrchestratorTest {
     assertThat(request.getValue().getFirstFrameImageId()).isEqualTo("/data/content/1/visual-references/frame.png");
     assertThat(request.getValue().getDurationSeconds()).isEqualTo(8);
     verify(submissionStateService).markSubmitted(attempt.getId(), job.getId(), "provider-video-1", null, RenderProviderOperation.VIDEO);
+    verify(validationEvidencePolicy).validate(any(), any(), any());
+    verify(workflowAdmission).validate(any());
+    verify(productionLifecycleGuard).assertEligible(eq(1L), eq(1L), eq("a".repeat(64)), any());
+  }
+
+  @Test
+  void missingValidationRecordBlocksVideoBeforeProviderDispatch() {
+    job.setJobType(RenderJob.JobType.VIDEO);
+    job.setOpenartParams("{\"firstFrameImageId\":\"/frame.png\",\"visualReferencePlanId\":\"" + UUID.randomUUID() + "\"}");
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+
+    assertThatThrownBy(() -> orchestrator.processAttempt(attempt.getId(), LEASE_OWNER))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .hasMessageContaining("admission services are unavailable");
+
+    verify(openArtAdapter, never()).generateVideo(any());
+    verify(submissionStateService, never()).markSubmitting(any(), anyString());
+    verify(submissionStateService).markAdmissionRejected(eq(attempt.getId()), eq(job.getId()), eq(LEASE_OWNER), eq("RENDER_ADMISSION_UNAVAILABLE"), any());
+  }
+
+  @Test
+  void failedCurrentEvidenceBlocksVideoBeforeProviderDispatch() {
+    job.setJobType(RenderJob.JobType.VIDEO);
+    prepareValidVideoAdmission();
+    doThrow(new ValidationEvidenceRejectedException("EVIDENCE_HAS_BLOCKERS", "failed evidence"))
+        .when(validationEvidencePolicy).validate(any(), any(), any());
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+
+    assertThatThrownBy(() -> orchestrator.processAttempt(attempt.getId(), LEASE_OWNER))
+        .isInstanceOf(ValidationEvidenceRejectedException.class);
+
+    verify(openArtAdapter, never()).generateVideo(any());
+    verify(submissionStateService, never()).markSubmitting(any(), anyString());
+    verify(submissionStateService).markAdmissionRejected(eq(attempt.getId()), eq(job.getId()), eq(LEASE_OWNER), eq("EVIDENCE_HAS_BLOCKERS"), any());
+  }
+
+  @Test
+  void stalePromptSnapshotBlocksVideoBeforeProviderDispatch() {
+    job.setJobType(RenderJob.JobType.VIDEO);
+    prepareValidVideoAdmission();
+    when(contentClient.fetch(1L, 1L)).thenReturn(new ContentPromptSnapshot(
+        "v1", 1L, "Test Episode", "SHORT", "RENDER_READY", 1L, 1,
+        "stale prompt", null, "b".repeat(64)));
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+
+    assertThatThrownBy(() -> orchestrator.processAttempt(attempt.getId(), LEASE_OWNER))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .hasMessageContaining("no longer matches");
+
+    verify(openArtAdapter, never()).generateVideo(any());
+    verify(submissionStateService, never()).markSubmitting(any(), anyString());
+  }
+
+  @Test
+  void staleFirstFrameBindingBlocksVideoBeforeProviderDispatch() {
+    job.setJobType(RenderJob.JobType.VIDEO);
+    prepareValidVideoAdmission();
+    doThrow(new IllegalStateException("stale frame"))
+        .when(visualReferencePlanning).validateForRender(any(), any(), any(), any(), any(), any(), any());
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+
+    assertThatThrownBy(() -> orchestrator.processAttempt(attempt.getId(), LEASE_OWNER))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .hasMessageContaining("first-frame plan or asset");
+
+    verify(openArtAdapter, never()).generateVideo(any());
+    verify(submissionStateService, never()).markSubmitting(any(), anyString());
+  }
+
+  private void prepareValidVideoAdmission() {
+    String framePath = "/data/content/1/visual-references/frame.png";
+    String frameSha = "f".repeat(64);
+    UUID planId = UUID.randomUUID();
+    job = RenderJob.builder().id(job.getId()).contentId(1L).promptVersionId(1L)
+        .contentTitleSnapshot("Test Episode").promptVersionNumberSnapshot(1)
+        .promptSha256("a".repeat(64)).promptTextSnapshot("a".repeat(120))
+        .validationRecordId(99L).jobType(RenderJob.JobType.VIDEO).openartModel("mock_model")
+        .creativeContractSnapshot("{\"intent\":{\"characterIntent\":{}}}")
+        .status(RenderJob.RenderJobStatus.QUEUED).attemptNumber(1).maxAttempts(3).build();
+    job.setOpenartParams("{\"firstFrameImageId\":\"" + framePath + "\",\"visualReferencePlanId\":\"" + planId
+        + "\",\"durationSeconds\":8,\"aspectRatio\":\"9:16\",\"workflowProfile\":\"post-family-v1\",\"workflowReviewId\":\"" + UUID.randomUUID()
+        + "\",\"workflowBindingHash\":\"" + "c".repeat(64) + "\"}");
+    Map<String, Object> first = Map.of("status", "PASS", "evidenceSetId", "set-1", "assetId", "frame-1", "assetSha256", frameSha);
+    Map<String, Object> silhouette = Map.of("status", "PASS", "evidenceSetId", "set-1", "assetId", "frame-1", "assetSha256", frameSha);
+    ValidationEvidenceDto evidence = new ValidationEvidenceDto(99L, 1L, 1L, "a".repeat(64), "RENDER_READY", 0, 0, 0,
+        "1.12", "local", "fixture", "v1", UUID.randomUUID(), Instant.now(), Instant.now(), Instant.now().plusSeconds(3600),
+        false, true, Map.of("firstFrame", first, "silhouette", silhouette), "AUTHORIZED");
+    lenient().when(evidenceClient.getEvidence(99L)).thenReturn(evidence);
+    lenient().when(contentClient.fetch(1L, 1L)).thenReturn(new ContentPromptSnapshot(
+        "v1", 1L, "Test Episode", "SHORT", "RENDER_READY", 1L, 1,
+        "a".repeat(120), null, "a".repeat(64)));
+    when(renderJobRepo.findById(job.getId())).thenReturn(Optional.of(job));
+  }
+
+  private void prepareValidFirstFrameAdmission() {
+    job = RenderJob.builder().id(job.getId()).contentId(1L).promptVersionId(1L)
+        .contentTitleSnapshot("Test Episode").promptVersionNumberSnapshot(1)
+        .promptSha256("a".repeat(64)).promptTextSnapshot("a".repeat(120))
+        .validationRecordId(98L).jobType(RenderJob.JobType.FIRST_FRAME).openartModel("mock_model")
+        .creativeContractSnapshot("{\"intent\":{\"characterIntent\":{}}}")
+        .status(RenderJob.RenderJobStatus.QUEUED).attemptNumber(1).maxAttempts(3).build();
+    job.setOpenartParams("{\"paidCallAuthorization\":true,\"maxCostUsd\":10}");
+    ValidationEvidenceDto evidence = new ValidationEvidenceDto(98L, 1L, 1L, "a".repeat(64),
+        "PROMPT_READY", 0, 0, 0, "1.12", "local", "fixture", "v1",
+        null, null, Instant.now(), Instant.now().plusSeconds(3600), true, false, Map.of(), null);
+    lenient().when(evidenceClient.getEvidence(98L)).thenReturn(evidence);
+    lenient().when(contentClient.fetch(1L, 1L)).thenReturn(new ContentPromptSnapshot(
+        "v1", 1L, "Test Episode", "SHORT", "DRAFT", 1L, 1,
+        "a".repeat(120), null, "a".repeat(64)));
+    when(renderJobRepo.findById(job.getId())).thenReturn(Optional.of(job));
   }
 
   @Test
   void uncertainProviderSubmissionIsNotRetriedAutomatically() {
+    prepareValidFirstFrameAdmission();
     RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
     when(openArtAdapter.generateImage(any()))
         .thenThrow(new IllegalStateException("connection lost after submit"));

@@ -87,5 +87,80 @@
         "role": "investigation"
       }
     ]
+  },
+  "offlineSafetyApproval": {
+    "id": "KIKO_PILOT_OFFLINE_VALIDATION_SAFETY_V1",
+    "files": {
+      "intelligence/docker-compose.yml": {
+        "historicalSha256": "af81300002cbfbff10b895b21f12242158a03cc6d6c549ce4936dcaa4934f4bc",
+        "approvedSha256": "ebd656a285290addec6bf84852cc242f936804751828cdde79b54bde1a063ba4"
+      },
+      "intelligence/ml-service/app/llm/claude_provider.py": {
+        "historicalSha256": "876527e5a98fb144a27c422efce15b0a9eda3ab4b5496a236bfb6fa3b1c0cf5e",
+        "approvedSha256": "e4df761bc053f33f3fd079f0deb3633e55ab10d640e77dd10501bbd45f073558"
+      },
+      "intelligence/ml-service/app/llm/gemini_provider.py": {
+        "historicalSha256": "a2fcd14448085453e649cd0990a5fde6cd6361fb5819bc82b4027891e9def756",
+        "approvedSha256": "47ea8e9a01c929a3ef09b20f057324147dc4e7512bb9c8fc7f2a90f81378970e"
+      },
+      "intelligence/ml-service/app/llm/ollama_provider.py": {
+        "historicalSha256": "af208267b70e38f71c4da08f19c0a8206284e448d8b21f669e3878911e0e913f",
+        "approvedSha256": "ee1f9c575d58bc73d18c10ca9ac689b3b213772f1c29e13d0dae9b7400da290d"
+      },
+      "intelligence/ml-service/app/llm/openai_provider.py": {
+        "historicalSha256": "fd616c3ab1ee23da3b4a53d7019777e73e2c34bc1afe8937105e0ca1d88b341b",
+        "approvedSha256": "325f1ae1e1a2c425167a2efe0971b97bd78cce881147872da7cefeda1144b01e"
+      },
+      "intelligence/ml-service/app/llm/provider.py": {
+        "historicalSha256": "4b81d447ff601e416533c3289bc113a10cd32fa733bc9d0218815ea5e741ba13",
+        "approvedSha256": "e9b88ae8b6f22eafa4ec677a4a711659ab8dff6c5db05da929369ddbdc4a9dba"
+      },
+      "intelligence/ml-service/app/rules/rule_engine.py": {
+        "historicalSha256": "c2e553fade22b5440d91f5b402c02610954505620f22c019cde23ec88f6a2f3d",
+        "approvedSha256": "06d06b21801780a63850e49184b7f0d37ab28c3e4e891ad7a25ed3cdaff7f103"
+      },
+      "intelligence/ml-service/tests/test_llm_providers.py": {
+        "historicalSha256": "27f5b6c03e89ebad5e717517c9468230ea9f94d149899a971322ec95f6894710",
+        "approvedSha256": "ef4dcc060b84af2c9dfe7efc52fa686eea1ae36938596957a61c18e01ce09d3c"
+      },
+      "intelligence/ml-service/tests/test_protected_integrity_policy.py": {
+        "historicalSha256": "442f95c495206ee1dc350a534926a5af3e35890b640c24cc0e28c0df58fc0f3d",
+        "approvedSha256": "b058ab0236de9930a6018b0129e7f7a588f9dac1c43942e0c2643e5a1867a0f6"
+      },
+      "intelligence/ml-service/app/workflow/short_form_engine.py": {
+        "historicalSha256": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+        "approvedSha256": "53be4351acf8978df62dc5ed937e495c4127610dd1e2823366e6cef3c4708432"
+      },
+      "intelligence/ml-service/app/workflow/concept_ranking.py": {
+        "historicalSha256": "65c136ee1e6727e290c3f14f052cba329807c4e1057e4412ae4c9613070085e3",
+        "approvedSha256": "36a8e34ed485a426527cbf0d41ff964a39bf40793f4100edbf488a88ce722e98"
+      },
+      "intelligence/ml-service/app/workflow/creative_provider_profiles.py": {
+        "historicalSha256": "bea36de864a378a668617ec80cd18d7aab916d2d2f611f45082e558499c4b906",
+        "approvedSha256": "cc04c6462f96d38b57ffbc94f698986d0f3186644b9e7e270748ed11248f1124"
+      }
+    },
+    "evidence": [
+      {
+        "path": "intelligence/docs/kiko-offline-validation-recovery-v1/integrity-before.json",
+        "sha256": "cb2dfb2ec8650fd378e6563ac9fd6a206f530f811c7da23e8b377395acbf536c",
+        "role": "historical"
+      },
+      {
+        "path": "intelligence/docs/kiko-offline-validation-recovery-v1/integrity-after.json",
+        "sha256": "c7a5f9c3ca0c47c02f712e392e86b4ede7f2eaaf0603d339a282b2ff53e0eb95",
+        "role": "approved"
+      },
+      {
+        "path": "intelligence/docs/net-new-generation-v1/phase-a-last-mile-assembly-repair/integrity-before.json",
+        "sha256": "94234305aebcebe4220d42ed50457962c4cec13281f36ce1bea486081dcfc44e",
+        "role": "historical"
+      },
+      {
+        "path": "intelligence/docs/net-new-generation-v1/phase-a-last-mile-assembly-repair/integrity-after.json",
+        "sha256": "a74cfad1c355964e42bbcfa3b170be1a864c61e53732a5029887e90c04e51ab8",
+        "role": "approved"
+      }
+    ]
   }
 }

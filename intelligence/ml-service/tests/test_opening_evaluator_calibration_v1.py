@@ -5,6 +5,8 @@ from pathlib import Path
 from app.workflow.canonical_creative_evidence import from_structured
 from app.workflow.semantic_evidence_adapter import project
 from app.workflow import premise_naturalness as natural
+from app.workflow.premise_admission_evidence import object_support
+from app.workflow.semantic_two_stage_v1 import gate_seed
 
 ROOT=Path(__file__).resolve().parents[3]
 DOCS=ROOT/'intelligence/docs'
@@ -119,6 +121,35 @@ def test_unclassified_ambiguous_motion_goal_missing_and_conflict_stay_weak():
     assert 'temporallyIndependent' in evaluate(motion)[0]['openingEvidence']['evidenceSupportedUnclassifiedFallback']['missingConditions']
     assert 'goalInterferenceVisible' in evaluate(no_goal)[0]['openingEvidence']['evidenceSupportedUnclassifiedFallback']['missingConditions']
     assert evaluate(conflict)[0]['openingEvidence']['evidenceSupportedUnclassifiedFallback']['evidence']['ruleOpeningAgreement']['status']=='CONTRADICTED'
+
+
+def test_punctuated_object_label_head_preserves_explicit_unclassified_opening_evidence():
+    label='An open-topped watering can with a plain spout.'
+    frame=('Kiko holds an open-topped watering can at a pouring angle. '
+           'The plain spout points down above dry soil while a stream curls back into the can.')
+    assert object_support(label,frame)['present'] is True
+
+    run=DOCS/'net-new-generation-v1/runs/net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b'
+    seed=json.loads((run/'phase-a/seed.json').read_text())
+    request=json.loads((run/'phase-a/last-mile-sdk-request.json').read_text())
+    cast=json.loads(request['messages'][1]['content'])['canonicalCast']
+    record=json.loads((run/'candidate-creation-record.json').read_text())
+    identity=record['candidate']['candidateId']
+    gate=gate_seed(seed,cast,identity)
+    opening=gate['Naturalness']['openingEvidence']
+    fallback=opening['evidenceSupportedUnclassifiedFallback']
+    assert gate['openingScore']==90
+    assert gate['acceptedFloor']==60
+    assert gate['acceptedForExpansion']
+    assert opening['objectEvidence']['present'] is True
+    assert opening['stillCausalLegibility']=='SUPPORTED'
+    assert fallback['used'] and not fallback['missingConditions']
+
+
+def test_unclassified_weak_openings_remain_below_floor_after_object_token_fix():
+    for row in FIXTURES[:3]:
+        result,_=evaluate(row)
+        assert result['instantCausalLegibility']<60
 
 
 def test_later_beat_only_anomaly_does_not_support_frame_zero_fallback():

@@ -61,6 +61,9 @@ class RenderJobIdempotencyPostgresTest {
   @Autowired RenderJobRepository renderJobRepo;
   @MockitoBean IntelligenceValidationEvidenceClient evidenceClient;
   @MockitoBean IntelligenceContentClient contentClient;
+  @MockitoBean ProductionLifecycleGuard productionLifecycleGuard;
+  @MockitoBean com.pompom.creative.workflow.PostFamilyAdmissionClient postFamilyAdmissionClient;
+  @MockitoBean com.pompom.creative.visual.VisualReferencePlanningService visualReferencePlanningService;
   @MockitoBean CreditTrackingService creditTrackingService;
   @MockitoBean BudgetAlertService budgetAlertService;
 
@@ -154,7 +157,9 @@ class RenderJobIdempotencyPostgresTest {
 
   private QueueRenderJobRequest request() {
     return new QueueRenderJobRequest(
-        10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x", Map.of("seed", 1), null);
+        10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x",
+        Map.of("seed", 1, "visualReferencePlanId", "11111111-1111-1111-1111-111111111111",
+            "firstFrameImageId", "first-frame-fixture"), null);
   }
 
   private ValidationEvidenceDto renderReadyEvidence() {

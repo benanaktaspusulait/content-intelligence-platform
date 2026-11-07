@@ -92,7 +92,7 @@ public class VisualReferencePlanningService {
         binding.setValidationStatus("STALE");
       }
     }
-    String status = preRenderFirstFrameStatus(contentId, snapshot.promptSha256());
+    String status = preRenderFirstFrameStatus(contentId, snapshot.promptSha256(), plan, stale);
     var openArtCapabilities = openArt.capabilities();
     Map<String, Object> recommendation = new LinkedHashMap<>();
     recommendation.put("strategy", "FIRST_FRAME_ONLY");
@@ -139,13 +139,31 @@ public class VisualReferencePlanningService {
     return result;
   }
 
-  private String preRenderFirstFrameStatus(Long contentId, String promptHash) {
+  private String preRenderFirstFrameStatus(Long contentId, String promptHash,
+      VisualReferencePlan plan, boolean stalePlan) {
+    if (!stalePlan && plan.getId() != null) {
+      boolean currentBoundImage = planAssets.findByPlanIdOrderByCreatedAtAsc(plan.getId()).stream()
+          .filter(binding -> "FIRST_FRAME".equals(binding.getRole()))
+          .filter(binding -> promptHash.equals(binding.getPromptSha256()))
+          .filter(binding -> binding.getSha256() != null && binding.getSha256().matches("[0-9a-f]{64}"))
+          .anyMatch(binding -> hasVerifiedImage(binding.getRelativePath(), binding.getSha256()));
+      if (currentBoundImage) return "AVAILABLE_REVIEW_REQUIRED";
+    }
     var candidates = assets.findByContentIdOrderByCreatedAtDesc(contentId).stream()
         .filter(a -> a.getAssetType() == RenderAsset.AssetType.FIRST_FRAME).toList();
     if (candidates.isEmpty()) return "MISSING";
     boolean matching = candidates.stream().anyMatch(a -> promptHash.equals(a.getPromptHash()));
     if (!matching && candidates.stream().anyMatch(a -> !promptHash.equals(a.getPromptHash()))) return "MISMATCH_CONFIRMED";
     return "AVAILABLE_REVIEW_REQUIRED";
+  }
+
+  private boolean hasVerifiedImage(String relativePath, String checksum) {
+    try {
+      verifiedImagePath(relativePath, checksum);
+      return true;
+    } catch (IllegalStateException invalidImage) {
+      return false;
+    }
   }
 
   @Transactional

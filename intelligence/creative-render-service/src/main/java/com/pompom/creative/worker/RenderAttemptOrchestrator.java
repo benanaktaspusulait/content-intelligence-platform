@@ -8,6 +8,10 @@ import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.domain.RenderProviderOperation;
+import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
+import com.pompom.creative.evidence.ValidationEvidenceDto;
+import com.pompom.creative.intelligence.ContentPromptSnapshot;
+import com.pompom.creative.intelligence.IntelligenceContentClient;
 import com.pompom.creative.openart.OpenArtAdapter;
 import com.pompom.creative.openart.OpenArtReferenceResolver;
 import com.pompom.creative.openart.dto.DownloadResult;
@@ -25,15 +29,23 @@ import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
 import com.pompom.creative.service.CreditTrackingService;
 import com.pompom.creative.service.VideoUpscaleService;
+import com.pompom.creative.queue.QueueRenderJobRequest;
+import com.pompom.creative.queue.ValidationEvidencePolicy;
+import com.pompom.creative.queue.ValidationEvidenceRejectedException;
+import com.pompom.creative.queue.ProductionLifecycleGuard;
+import com.pompom.creative.visual.VisualReferencePlanningService;
+import com.pompom.creative.workflow.PostFamilyAdmissionClient;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
 import com.pompom.creative.websocket.dto.RenderProgressEvent;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +85,15 @@ public class RenderAttemptOrchestrator {
   private final VideoUpscaleService videoUpscaleService;
   private final OpenArtReferenceResolver referenceResolver;
   private final ObjectMapper objectMapper;
+
+  // The worker repeats the queue's existing admission checks immediately before dispatch.
+  // These are optional only for constructor compatibility; a missing dependency blocks video.
+  @Autowired(required = false) private IntelligenceValidationEvidenceClient evidenceClient;
+  @Autowired(required = false) private IntelligenceContentClient contentClient;
+  @Autowired(required = false) private ValidationEvidencePolicy validationEvidencePolicy;
+  @Autowired(required = false) private PostFamilyAdmissionClient workflowAdmission;
+  @Autowired(required = false) private ProductionLifecycleGuard productionLifecycleGuard;
+  @Autowired(required = false) private VisualReferencePlanningService visualReferencePlanning;
 
   @Value("${pompom.openart.max-polls:180}")
   private int maxProviderPolls;
@@ -133,6 +154,24 @@ public class RenderAttemptOrchestrator {
    * second provider generation.
    */
   private void submit(UUID attemptId, String leaseOwner) {
+    RenderAttempt queuedAttempt = renderAttemptRepo.findById(attemptId)
+        .orElseThrow(() -> new IllegalArgumentException("RenderAttempt not found: " + attemptId));
+    RenderJob queuedJob = renderJobRepo.findById(queuedAttempt.getRenderJobId())
+        .orElseThrow(() -> new IllegalArgumentException("RenderJob not found: " + queuedAttempt.getRenderJobId()));
+    try {
+      if (queuedJob.getJobType() == RenderJob.JobType.VIDEO) {
+        revalidateVideoAdmission(queuedJob);
+      } else {
+        revalidateFirstFrameAdmission(queuedJob);
+      }
+    } catch (RuntimeException rejected) {
+      submissionStateService.markAdmissionRejected(
+          attemptId, queuedJob.getId(), leaseOwner,
+          rejected instanceof ValidationEvidenceRejectedException evidenceRejected
+              ? evidenceRejected.getErrorCode() : "RENDER_ADMISSION_REJECTED",
+          rejected.getMessage());
+      throw rejected;
+    }
     RenderJob job = submissionStateService.markSubmitting(attemptId, leaseOwner);
     RenderAttempt attempt =
         renderAttemptRepo
@@ -162,6 +201,101 @@ public class RenderAttemptOrchestrator {
         attemptId, job.getId(), response.getJobId(), response.getEstimatedCredits(), operation);
     RenderJob submittedJob = renderJobRepo.findById(job.getId()).orElse(job);
     publishProgress(submittedJob, "Submitted to provider", 10);
+  }
+
+  private void revalidateFirstFrameAdmission(RenderJob job) {
+    if (job.getValidationRecordId() == null || evidenceClient == null || contentClient == null
+        || validationEvidencePolicy == null || productionLifecycleGuard == null) {
+      throw new ValidationEvidenceRejectedException(
+          "RENDER_ADMISSION_UNAVAILABLE", "Current first-frame validation admission is unavailable; provider dispatch is blocked");
+    }
+    if (job.getPromptSha256() == null || !job.getPromptSha256().matches("[0-9a-f]{64}")) {
+      throw new ValidationEvidenceRejectedException(
+          "PROMPT_BINDING_INVALID", "Queued prompt hash is missing or invalid");
+    }
+    Map<String, Object> params = objectMapper.convertValue(
+        providerParameters(job), new com.fasterxml.jackson.core.type.TypeReference<>() {});
+    QueueRenderJobRequest request = new QueueRenderJobRequest(
+        job.getContentId(), job.getPromptVersionId(), job.getValidationRecordId(),
+        job.getJobType(), job.getOpenartModel(), params, job.getPromptSha256());
+    ValidationEvidenceDto evidence = evidenceClient.getEvidence(job.getValidationRecordId());
+    if (evidence == null || evidence.validationRecordId() != job.getValidationRecordId()) {
+      throw new ValidationEvidenceRejectedException(
+          "VALIDATION_EVIDENCE_MISMATCH", "Current first-frame evidence is missing or belongs to another record");
+    }
+    validationEvidencePolicy.validate(request, evidence, Instant.now());
+    ContentPromptSnapshot current = contentClient.fetch(job.getContentId(), job.getPromptVersionId());
+    if (current.contentId() != job.getContentId()
+        || current.promptVersionId() != job.getPromptVersionId()
+        || !job.getPromptSha256().equals(current.promptSha256())
+        || !job.getPromptSha256().equals(evidence.promptSha256())
+        || current.promptText() == null || current.promptText().isBlank()) {
+      throw new ValidationEvidenceRejectedException(
+          "PROMPT_SNAPSHOT_STALE", "Current first-frame prompt no longer matches the queued validation binding");
+    }
+    productionLifecycleGuard.assertEligible(
+        job.getContentId(), job.getPromptVersionId(), job.getPromptSha256(), params);
+  }
+
+  private void revalidateVideoAdmission(RenderJob job) {
+    if (job.getValidationRecordId() == null || evidenceClient == null
+        || contentClient == null || validationEvidencePolicy == null
+        || workflowAdmission == null || productionLifecycleGuard == null
+        || visualReferencePlanning == null) {
+      throw new ValidationEvidenceRejectedException(
+          "RENDER_ADMISSION_UNAVAILABLE", "Current validation admission services are unavailable; provider dispatch is blocked");
+    }
+    if (job.getPromptSha256() == null || !job.getPromptSha256().matches("[0-9a-f]{64}")) {
+      throw new ValidationEvidenceRejectedException(
+          "PROMPT_BINDING_INVALID", "Queued prompt hash is missing or invalid");
+    }
+    Map<String, Object> params = objectMapper.convertValue(
+        providerParameters(job), new com.fasterxml.jackson.core.type.TypeReference<>() {});
+    QueueRenderJobRequest request = new QueueRenderJobRequest(
+        job.getContentId(), job.getPromptVersionId(), job.getValidationRecordId(),
+        job.getJobType(), job.getOpenartModel(), params, job.getPromptSha256());
+    ValidationEvidenceDto evidence = evidenceClient.getEvidence(job.getValidationRecordId());
+    if (evidence == null || evidence.validationRecordId() != job.getValidationRecordId()) {
+      throw new ValidationEvidenceRejectedException(
+          "VALIDATION_EVIDENCE_MISMATCH", "Current validation evidence is missing or belongs to another record");
+    }
+    validationEvidencePolicy.validate(request, evidence, Instant.now());
+    workflowAdmission.validate(request);
+    ContentPromptSnapshot current = contentClient.fetch(job.getContentId(), job.getPromptVersionId());
+    if (current.contentId() != job.getContentId()
+        || current.promptVersionId() != job.getPromptVersionId()
+        || !job.getPromptSha256().equals(current.promptSha256())
+        || !job.getPromptSha256().equals(evidence.promptSha256())
+        || !"RENDER_READY".equals(current.contentStatus())
+        || current.promptText() == null || current.promptText().isBlank()) {
+      throw new ValidationEvidenceRejectedException(
+          "PROMPT_SNAPSHOT_STALE", "Current canonical prompt/content no longer matches the queued validation binding");
+    }
+    productionLifecycleGuard.assertEligible(
+        job.getContentId(), job.getPromptVersionId(), job.getPromptSha256(), params);
+    Object rawPlanId = params.get("visualReferencePlanId");
+    Object rawFrame = params.get("firstFrameImageId");
+    if (rawPlanId == null || rawFrame == null || String.valueOf(rawFrame).isBlank()) {
+      throw new ValidationEvidenceRejectedException(
+          "FIRST_FRAME_REVIEW_REQUIRED", "A reviewed first-frame asset is required immediately before video dispatch");
+    }
+    String expectedFrameSha = "";
+    Object frame = evidence.visualEvidence() == null ? null : evidence.visualEvidence().get("firstFrame");
+    if (frame instanceof Map<?, ?> frameMap && frameMap.get("assetSha256") != null) {
+      expectedFrameSha = String.valueOf(frameMap.get("assetSha256"));
+    }
+    if (!expectedFrameSha.matches("[0-9a-f]{64}")) {
+      throw new ValidationEvidenceRejectedException(
+          "FIRST_FRAME_REVIEW_REQUIRED", "Current validation evidence has no verified first-frame hash");
+    }
+    try {
+      visualReferencePlanning.validateForRender(
+          UUID.fromString(String.valueOf(rawPlanId)), job.getContentId(), job.getPromptVersionId(),
+          String.valueOf(rawFrame), job.getOpenartModel(), params, expectedFrameSha);
+    } catch (RuntimeException invalidFrame) {
+      throw new ValidationEvidenceRejectedException(
+          "FIRST_FRAME_BINDING_STALE", "Current first-frame plan or asset no longer matches validation evidence");
+    }
   }
 
   private RenderProviderOperation chooseProviderOperation(RenderJob job, RenderAttempt attempt) {

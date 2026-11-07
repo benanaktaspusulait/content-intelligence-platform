@@ -58,16 +58,22 @@ class CreativeCapabilityProvider(LLMProvider):
     def complete(self,prompt,system='',temperature=.7,image=None):
         if image is not None:raise UnsupportedProviderError('Creative production authoring is text-only')
         p=self.configuration
-        schema=deepcopy(self.response_format)
-        if p['responseMode']=='json_object':
-            # JSON mode does not enforce JSON Schema; transmit the exact same
-            # bounded source-ID schema as data and always validate server-side.
-            system+='\nReturn JSON matching this schema; use catalog IDs exactly:\n'+json.dumps(schema['json_schema']['schema'],separators=(',',':'))
-            schema={'type':'json_object'}
-        args={'model':self.model,'messages':[{'role':'system','content':system},{'role':'user','content':prompt}],
-              'response_format':schema,p['tokenParameter']:self.max_output_tokens}
-        if p.get('reasoningEffort'):args['reasoning_effort']=p['reasoningEffort']
-        if p.get('temperatureSupported'):args['temperature']=temperature
+        request_arguments=p.get('_authorizedRequestArguments')
+        if request_arguments is None:
+            schema=deepcopy(self.response_format)
+            if p['responseMode']=='json_object':
+                # JSON mode does not enforce JSON Schema; transmit the exact same
+                # bounded source-ID schema as data and always validate server-side.
+                system+='\nReturn JSON matching this schema; use catalog IDs exactly:\n'+json.dumps(schema['json_schema']['schema'],separators=(',',':'))
+                schema={'type':'json_object'}
+            args={'model':self.model,'messages':[{'role':'system','content':system},{'role':'user','content':prompt}],
+                  'response_format':schema,p['tokenParameter']:self.max_output_tokens}
+            if p.get('reasoningEffort'):args['reasoning_effort']=p['reasoningEffort']
+            if p.get('temperatureSupported'):args['temperature']=temperature
+        else:
+            # A validated request is the canonical SDK payload. Preserve every
+            # message and option; the caller's exact-request guard authorizes it.
+            args=deepcopy(request_arguments)
         self.last_request_started=True
         response=self.client.chat.completions.create(**args)
         usage=getattr(response,'usage',None)

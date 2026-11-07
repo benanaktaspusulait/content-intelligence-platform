@@ -71,6 +71,20 @@ class RenderSubmissionStateServiceTest {
   }
 
   @Test
+  void admissionRejectionFailsQueuedAttemptBeforeProviderIntent() {
+    service.markAdmissionRejected(
+        attempt.getId(), job.getId(), OWNER, "PROMPT_SNAPSHOT_STALE", "prompt changed");
+
+    assertThat(attempt.getStage()).isEqualTo(RenderExecutionStage.FAILED);
+    assertThat(attempt.getErrorCode()).isEqualTo("PROMPT_SNAPSHOT_STALE");
+    assertThat(attempt.getLeaseOwner()).isNull();
+    assertThat(job.getStatus()).isEqualTo(RenderJob.RenderJobStatus.FAILED);
+    assertThat(job.getErrorCode()).isEqualTo("PROMPT_SNAPSHOT_STALE");
+    verify(attemptRepository).save(attempt);
+    verify(jobRepository).save(job);
+  }
+
+  @Test
   void markSubmittedRecordsTheProviderIdentityAndMakesTheAttemptPollable() {
     attempt.setStage(RenderExecutionStage.SUBMITTING);
     attempt.setLeaseOwner(null);

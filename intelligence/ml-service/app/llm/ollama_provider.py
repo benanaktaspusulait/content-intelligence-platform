@@ -3,13 +3,14 @@ from typing import Any
 
 import requests
 
-from .provider import LLMProvider, UnsupportedProviderError
+from .provider import LLMProvider, UnsupportedProviderError, require_inference_authorization
 
 
 class OllamaProvider(LLMProvider):
     """Ollama local LLM provider."""
 
     def __init__(self, base_url: str | None = None, model: str = "llama3.2:latest"):
+        require_inference_authorization("ollama")
         self.base_url = base_url or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
         self.model = model
 

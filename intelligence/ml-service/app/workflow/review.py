@@ -158,9 +158,15 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
         "creativeEvidence",
         "intentChangeReason",
     )
+    short_form_required = (
+        request.get("profile") == VERSION
+        and isinstance(request.get("desiredDuration"), (int, float))
+        and not isinstance(request.get("desiredDuration"), bool)
+        and 0 < request["desiredDuration"] <= 15
+    )
     return sha256(
         json.dumps(
-            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"shortFormEvaluation": True} if request.get("shortFormEvaluation") is True else {}), **({"storyType": request['storyType']} if request.get('storyType') else {}), **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.12"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
+            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"shortFormEvaluation": True} if short_form_required or request.get("shortFormEvaluation") is True else {}), **({"storyType": request['storyType']} if request.get('storyType') else {}), **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.12"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
             sort_keys=True,
             ensure_ascii=False,
         )
@@ -1224,7 +1230,17 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     from .story_premise_engine import assess as assess_premise
     story_premise = assess_premise(request['prompt'], request)
     from .short_form_engine import assess as assess_short_form
-    short_form = assess_short_form(request['prompt'], request)
+    short_form_required = (
+        request.get("profile") == VERSION
+        and isinstance(request.get("desiredDuration"), (int, float))
+        and not isinstance(request.get("desiredDuration"), bool)
+        and 0 < request["desiredDuration"] <= 15
+    )
+    if short_form_required:
+        request = {**request, "shortFormEvaluation": True}
+    short_form = assess_short_form(
+        request['prompt'], request,
+    )
     canonical_evaluation["contentProfile"] = routing["contentProfile"]
     if (request.get("canonicalRulesetVersion") or "1.12") != "1.7":
         canonical_evaluation["profileAdmissionVersion"] = PROFILE_ADMISSION_VERSION
@@ -1246,6 +1262,17 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         )
     )
     reasons: list[dict[str, Any]] = []
+
+    if short_form_required:
+        if short_form is None or short_form.get("status") in {"REJECT", "REVISION_REQUIRED"}:
+            reasons.append({
+                "code": "CREATIVE_BLOCKER",
+                "source": "SHORT_FORM_ENGINE",
+                "message": (short_form or {}).get("humanReadableReport", "Required Short Form evaluation is unavailable."),
+                "references": [finding.get("code", "") for finding in (short_form or {}).get("findings", [])],
+            })
+        elif short_form.get("status") not in {"PASS", "PASS_WITH_WARNINGS"}:
+            pending("Required Short Form evaluation is not a confirmed pass.", "SHORT_FORM_ENGINE")
 
     if story_premise and story_premise['status'] == 'STORY_REVISION_REQUIRED':
         reasons.append({'code': 'CREATIVE_BLOCKER', 'source': 'STORY_PREMISE_ENGINE',

@@ -54,6 +54,7 @@ class RenderJobQueueServiceTest {
   private ValidationEvidencePolicy policy;
   private RequestFingerprint fingerprints;
   private RenderJobQueueService service;
+  private ProductionLifecycleGuard productionLifecycleGuard;
 
   @BeforeEach
   void setUp() {
@@ -76,6 +77,9 @@ class RenderJobQueueServiceTest {
             creditTrackingService,
             budgetAlertService,
             new NoOpTransactionManager());
+    productionLifecycleGuard = mock(ProductionLifecycleGuard.class);
+    org.springframework.test.util.ReflectionTestUtils.setField(
+        service, "productionLifecycleGuard", productionLifecycleGuard);
     org.springframework.test.util.ReflectionTestUtils.setField(
         service, "workflowAdmission", mock(com.pompom.creative.workflow.PostFamilyAdmissionClient.class));
     org.springframework.test.util.ReflectionTestUtils.setField(
@@ -189,6 +193,23 @@ class RenderJobQueueServiceTest {
         .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
         .isEqualTo("FIRST_FRAME_REVIEW_REQUIRED");
     verify(repository, never()).save(any());
+  }
+
+  @Test
+  void productionLifecycleGuardRunsBeforeAnyRenderJobIsPersisted() {
+    when(repository.findByIdempotencyKey("lifecycle-blocked")).thenReturn(Optional.empty());
+    when(evidenceClient.getEvidence(42L)).thenReturn(renderReadyEvidence());
+    org.mockito.Mockito.doThrow(new ValidationEvidenceRejectedException(
+        "PUBLISHED_OR_DUPLICATE_CONTENT", "published candidate"))
+        .when(productionLifecycleGuard).assertEligible(anyLong(), anyLong(), any(), any());
+
+    assertThatThrownBy(() -> service.queue("lifecycle-blocked", request()))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("PUBLISHED_OR_DUPLICATE_CONTENT");
+
+    verify(productionLifecycleGuard).assertEligible(anyLong(), anyLong(), any(), any());
+    verify(repository, never()).save(any(RenderJob.class));
   }
 
   @Test

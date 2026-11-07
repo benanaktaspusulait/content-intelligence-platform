@@ -46,6 +46,7 @@ public class RenderJobQueueService {
   private final TransactionTemplate newTransaction;
   @Autowired private com.pompom.creative.workflow.PostFamilyAdmissionClient workflowAdmission;
   @Autowired private com.pompom.creative.visual.VisualReferencePlanningService visualReferencePlanning;
+  @Autowired private ProductionLifecycleGuard productionLifecycleGuard;
 
   @Autowired
   public RenderJobQueueService(
@@ -159,6 +160,13 @@ public class RenderJobQueueService {
       throw new ValidationEvidenceRejectedException(
           "PROMPT_TEXT_EMPTY", "Canonical approved prompt text is empty");
     }
+    if (productionLifecycleGuard == null) {
+      throw new ValidationEvidenceRejectedException(
+          "PRODUCTION_LIFECYCLE_GUARD_UNAVAILABLE",
+          "Production lifecycle screening is unavailable; no render job was created");
+    }
+    productionLifecycleGuard.assertEligible(
+        request.contentId(), request.promptVersionId(), prompt.promptSha256(), request.openartParams());
     if (request.jobType() == RenderJob.JobType.VIDEO) {
       if (request.openartParams() == null
           || request.openartParams().get("visualReferencePlanId") == null

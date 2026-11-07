@@ -8,6 +8,24 @@ class UnsupportedProviderError(Exception):
     pass
 
 
+class ExternalInferenceUnavailable(RuntimeError):
+    """Inference was denied by the local execution safety policy."""
+
+
+def require_inference_authorization(provider_name: str) -> None:
+    """Fail closed unless an operator explicitly enabled provider inference."""
+    import os
+
+    if os.getenv("POMPOM_OFFLINE_MODE", "true").lower() == "true":
+        raise ExternalInferenceUnavailable(
+            f"{provider_name} inference is unavailable while POMPOM_OFFLINE_MODE is enabled"
+        )
+    if os.getenv("POMPOM_EXTERNAL_AI_AUTHORIZED", "false").lower() != "true":
+        raise ExternalInferenceUnavailable(
+            f"{provider_name} inference requires POMPOM_EXTERNAL_AI_AUTHORIZED=true"
+        )
+
+
 _DEFAULT_MODELS = {
     "openai": "gpt-4o",
     "claude": "claude-3-5-sonnet-20241022",
@@ -74,6 +92,7 @@ def get_provider(name: str | None = None, model: str | None = None) -> LLMProvid
         UnsupportedProviderError: If provider name not recognized
     """
     name, configured_model = get_provider_identity(name)
+    require_inference_authorization(name)
     model = model or configured_model
 
     if name == "openai":

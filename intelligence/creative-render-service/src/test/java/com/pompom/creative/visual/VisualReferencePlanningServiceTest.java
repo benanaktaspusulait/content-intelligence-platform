@@ -81,6 +81,41 @@ class VisualReferencePlanningServiceTest {
   }
 
   @Test
+  void reportsCurrentHashVerifiedBoundFirstFrameAsAvailableWithoutClaimingSemanticVerification(
+      @org.junit.jupiter.api.io.TempDir java.nio.file.Path directory) throws Exception {
+    var planId = java.util.UUID.randomUUID();
+    var plan = VisualReferencePlan.builder().id(planId).contentId(8L).promptVersionId(8L)
+        .promptSha256("a".repeat(64)).model("seedance-2-mini").build();
+    var imagePath = directory.resolve("approved-frame.png");
+    javax.imageio.ImageIO.write(
+        new java.awt.image.BufferedImage(90, 160, java.awt.image.BufferedImage.TYPE_INT_RGB),
+        "png", imagePath.toFile());
+    var checksum = java.util.HexFormat.of().formatHex(
+        java.security.MessageDigest.getInstance("SHA-256")
+            .digest(java.nio.file.Files.readAllBytes(imagePath)));
+    var binding = VisualReferenceAsset.builder().id(java.util.UUID.randomUUID()).plan(plan)
+        .role("FIRST_FRAME").sourceKind("IMPORTED").relativePath("approved-frame.png")
+        .sha256(checksum).promptSha256("a".repeat(64)).validationStatus("METADATA_VERIFIED")
+        .validationEvidenceJson("{\"semanticStatus\":\"UNKNOWN\"}").accepted(true).build();
+    when(plans.findFirstByContentIdAndPromptVersionIdAndRenderJobIsNullOrderByUpdatedAtDesc(8L, 8L))
+        .thenReturn(Optional.of(plan));
+    when(planAssets.findByPlanIdOrderByCreatedAtAsc(planId)).thenReturn(List.of(binding));
+    service = new VisualReferencePlanningService(jobs, content, mock(RenderAttemptRepository.class), assets,
+        plans, planAssets, openArt, credits, new ObjectMapper(), directory.toString());
+
+    var result = service.inspectPrompt(8L, 8L, "seedance-2-mini");
+
+    assertThat(result.get("firstFrameStatus")).isEqualTo("AVAILABLE_REVIEW_REQUIRED");
+    assertThat((List<?>) result.get("referenceBindings")).hasSize(1);
+    assertThat(((List<java.util.Map<String, Object>>) result.get("referenceBindings")).get(0))
+        .containsEntry("accepted", true).containsEntry("sha256", checksum);
+    assertThat(((List<java.util.Map<String, Object>>) result.get("referenceBindings")).get(0)
+        .get("evidence")).extracting(evidence -> ((java.util.Map<?, ?>) evidence).get("semanticStatus"))
+        .isEqualTo("UNKNOWN");
+    assertThat(result.get("paidCallPerformed")).isEqualTo(false);
+  }
+
+  @Test
   void refreshIsReadOnlyAndRetainsRealVersionNumberWithoutCreatingPlan() {
     var result = service.readPrompt(8L, 8L, "seedance-2-mini");
     assertThat(result).containsEntry("promptVersionNumber", 1).containsEntry("promptVersionId", 8L);
