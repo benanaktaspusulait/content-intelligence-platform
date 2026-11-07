@@ -2,6 +2,7 @@ import { Routes, Router } from '@angular/router';
 import { inject } from '@angular/core';
 
 export const routes: Routes = [
+  { path: 'autonomous-production', loadComponent: () => import('./pages/autonomous-production.page').then(m => m.AutonomousProductionPage), title: 'Generate a New Video · Pompom CI' },
   { path: 'concept-ranking', loadComponent: () => import('./pages/concept-ranking.page').then(m => m.ConceptRankingPage), title: 'Concept Ranking · Pompom CI' },
   { path: 'overview', loadComponent: () => import('./pages/overview.page').then((m) => m.OverviewPage), title: 'Overview · Pompom CI' },
   { path: 'render-preparation', loadComponent: () => import('./pages/render-preparation.page').then(m => m.RenderPreparationPage), title: 'Render Preparation · Pompom CI' },

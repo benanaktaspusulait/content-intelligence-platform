@@ -5,11 +5,11 @@ from .canonical_creative_evidence import from_structured
 from .short_concept_generation import ranking_input
 
 
-def evaluate(candidate, structured_input):
+def evaluate(candidate, structured_input, *, source_kind='SEMANTIC'):
     """Acquire once; independent assessors share the same source-bound context."""
     supplied = ranking_input(candidate)
     text = concept_ranking.normalize(supplied)['evaluationText']
-    canonical = from_structured(text, structured_input)
+    canonical = from_structured(text, structured_input, source_kind=source_kind)
     canonical.assert_candidate(candidate)
     result = deepcopy(candidate)
     result['premiseNaturalness'] = premise_naturalness.assess(candidate, canonical_creative_evidence=canonical)

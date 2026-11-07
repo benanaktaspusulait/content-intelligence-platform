@@ -228,7 +228,7 @@ public class QualityMlClient {
 
   public Map<String, Object> workflow(String operation, Map<String, Object> request) {
     if (!List.of("concepts/generate", "concepts/rank", "concepts/validate", "short-form/evaluate", "idea-semantic-review", "idea-evaluation", "idea-exploration/generate",
-            "story-experiment/preflight", "story-experiment/validate", "story-experiment/assessment-preflight", "optimization-loop/local", "cpq-pilot/optimization-loop-execute", "cpq-pilot/capabilities", "cpq-pilot/draft-preflight", "cpq-pilot/execute", "cpq-pilot/revalidate-source", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/recover", "creative-role/readiness", "creative-role/revalidate-production-spec")
+            "story-experiment/preflight", "story-experiment/validate", "story-experiment/assessment-preflight", "optimization-loop/local", "cpq-pilot/optimization-loop-execute", "cpq-pilot/capabilities", "cpq-pilot/draft-preflight", "cpq-pilot/execute", "cpq-pilot/revalidate-source", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/recover", "creative-role/readiness", "creative-role/revalidate-production-spec", "autonomous-production/runs")
         .contains(operation)) {
       throw new IllegalArgumentException("Unsupported workflow operation");
     }
@@ -262,6 +262,13 @@ public class QualityMlClient {
     } catch (java.io.IOException unavailable) {
       throw new MlServiceException("Workflow service unavailable", unavailable);
     }
+  }
+
+  public Map<String, Object> workflowRead(String operation) {
+    if (operation == null || !operation.matches("autonomous-production/runs/[0-9a-fA-F-]{36}"))
+      throw new IllegalArgumentException("Unsupported workflow read operation");
+    String body = restClient.get().uri("/api/v1/workflow/" + operation).retrieve().body(String.class);
+    return readBody(body, new TypeReference<Map<String, Object>>() {});
   }
 
   private String errorDetail(String body) {

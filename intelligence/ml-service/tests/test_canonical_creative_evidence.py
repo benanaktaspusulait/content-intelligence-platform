@@ -116,6 +116,18 @@ def test_manual_source_uses_identical_facts_and_judgment():
     assert a.assess_short_form(text,{'desiredDuration':15})==b.assess_short_form(text,{'desiredDuration':15})
 
 
+def test_propagation_preserves_explicit_manual_source_provenance():
+    row=DATA[0]
+    source=structured_input(row['sourceRow']['rawProviderIdea'],row['candidate'])
+    _,semantic_result,semantic=evaluate(row['candidate'],source)
+    _,manual_result,manual=evaluate(row['candidate'],source,source_kind='MANUAL')
+    assert semantic.receipt()['provenance']['sourceKind']=='SEMANTIC'
+    assert manual.receipt()['provenance']['sourceKind']=='MANUAL'
+    assert manual.receipt()['facts']==semantic.receipt()['facts']
+    assert manual_result['shortFormEngine']==semantic_result['shortFormEngine']
+    assert manual_result['eligibility']==semantic_result['eligibility']
+
+
 @pytest.mark.parametrize('row',DATA,ids=lambda r:r['ideaId'])
 def test_default_legacy_timed_behavior_matches_frozen_result(row):
     assert concept_ranking.validate_concept(ranking_input(row['candidate']))==row['sourceRow']['legacyValidation']

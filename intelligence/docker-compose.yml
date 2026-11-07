@@ -24,6 +24,8 @@ services:
       POMPOM_EXTERNAL_AI_AUTHORIZED: ${POMPOM_EXTERNAL_AI_AUTHORIZED:-false}
       CPQ_PILOT_REAL_ENABLED: ${CPQ_PILOT_REAL_ENABLED:-false}
       POMPOM_DATA_ROOT: /data
+      POMPOM_LIBRARY_ROOT: /data/library
+      AUTONOMOUS_CANDIDATE_SOURCE: /data/accepted-candidates/experiment-seed-42-count-20.json
       POMPOM_SEMANTIC_ENABLED: ${POMPOM_SEMANTIC_ENABLED:-false}
       SEMANTIC_VIDEO_AI_ENABLED: ${SEMANTIC_VIDEO_AI_ENABLED:-false}
       POMPOM_SEMANTIC_PROVIDER: ${POMPOM_SEMANTIC_PROVIDER:-openai}
@@ -44,6 +46,7 @@ services:
     ports: ["127.0.0.1:8000:8000"]
     volumes:
       - "./data:/data"
+      - "./docs/creative-shape-v1/experiment-seed-42-count-20.json:/data/accepted-candidates/experiment-seed-42-count-20.json:ro"
       - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]

@@ -19,6 +19,7 @@ export class App {
   protected readonly navCollapsed = signal(false);
   protected readonly navigation: NavigationItem[] = [
     { label: 'Overview', icon: 'OV', route: '/overview' },
+    { label: 'Generate Video', icon: 'GV', route: '/autonomous-production' },
     { label: 'Video Library', icon: 'VL', route: '/videos' },
     { label: 'Characters', icon: 'CH', route: '/characters' },
     { label: 'Prompt Quality', icon: 'PQ', route: '/quality' },

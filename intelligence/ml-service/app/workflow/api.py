@@ -62,9 +62,40 @@ class ReviewRequest(BaseModel):
     validationStage: Literal["STORY", "VIDEO_PROMPT"] = "VIDEO_PROMPT"
 
 
+class AutonomousProductionStartRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    mode: Literal["EXISTING_ELIGIBLE_FIRST"] = "EXISTING_ELIGIBLE_FIRST"
+    idempotencyKey: str = Field(min_length=1, max_length=200)
+
+
 def capabilities() -> dict[str, Any]:
     path = settings.data_root / "workflow/provider-capabilities.json"
     return dict(json.loads(path.read_text())["models"]) if path.is_file() else {}
+
+
+@router.post("/autonomous-production/runs")
+def start_autonomous_production(request: AutonomousProductionStartRequest) -> dict[str, Any]:
+    """Start one durable, idempotent production run; never dispatches a provider."""
+    from .autonomous_production import start_idempotent
+
+    try:
+        return start_idempotent(request.idempotencyKey)
+    except FileNotFoundError as error:
+        raise HTTPException(503, str(error)) from error
+    except (ValueError, KeyError, TypeError, json.JSONDecodeError) as error:
+        raise HTTPException(409, str(error)) from error
+
+
+@router.get("/autonomous-production/runs/{run_id}")
+def autonomous_production_status(run_id: str) -> dict[str, Any]:
+    from .autonomous_production import read_run
+
+    try:
+        return read_run(run_id)
+    except FileNotFoundError as error:
+        raise HTTPException(404, "Production run not found") from error
+    except ValueError as error:
+        raise HTTPException(400, str(error)) from error
 
 
 @router.post("/review")

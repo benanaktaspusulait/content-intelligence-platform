@@ -17,6 +17,7 @@ describe('App', () => {
     const links = fixture.nativeElement.querySelectorAll('.primary-nav a');
     expect(Array.from(links).map((link:any)=>link.getAttribute('href'))).toContain('/render-jobs');
     expect(Array.from(links).map((link:any)=>link.getAttribute('href'))).toContain('/quality');
+    expect(Array.from(links).map((link:any)=>link.getAttribute('href'))).toContain('/autonomous-production');
     expect(fixture.nativeElement.textContent).toContain('Meta Analytics');
     expect(fixture.nativeElement.textContent).toContain('Operations');
     expect(fixture.nativeElement.textContent).toContain('Creative Intelligence');
