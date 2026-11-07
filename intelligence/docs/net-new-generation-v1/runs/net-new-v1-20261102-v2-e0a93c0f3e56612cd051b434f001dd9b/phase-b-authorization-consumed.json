@@ -1,0 +1,8 @@
+{
+  "runId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b",
+  "candidateId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b-opening-a-kiko-watering-can-return-loop",
+  "authorizationSha256": "2dd939573340c0d9b94c07bafdc94457bd361ff68854552f11b603ff6ad02a55",
+  "requestSha256": "d5eb4e4d7fbcf4ab41478c32efd8d02739245636c2423a33e395ba829e1b338f",
+  "consumedBeforeProviderDispatch": true,
+  "maximumProviderRequests": 1
+}

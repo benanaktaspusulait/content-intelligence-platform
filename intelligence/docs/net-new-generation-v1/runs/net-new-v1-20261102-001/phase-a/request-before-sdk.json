@@ -1,0 +1,173 @@
+{
+  "provider": "openai",
+  "baseUrl": "https://api.openai.com/v1",
+  "phase": "A",
+  "arguments": {
+    "model": "gpt-6.1-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Invent ONLY one opening premise for silent Pompom Hills physical comedy. The deterministic system judges it. No story, beats, escalation, ending or payoff planning. No scores, ranks, confidence, PASS/winner claims or production recommendations. Return only the supplied seed JSON schema. Do not expose reasoning or a checklist.\n\nInvent one frozen image first: one supplied canonical protagonist already performing one credible everyday task with one primary everyday object in one location. The object's impossible physical consequence is ALREADY active and visibly obstructs that task at the same object-goal contact. First activation preceded this frame. Show the actual task/use pose, intended target/result and contradictory current physical state together; never a normal object awaiting activation, preparation, reaction-led hook, remote or random anomaly. Large major shapes should read paused on vertical mobile video. No tiny text, subtle color-only hook, intricate fingers, crowds or invisible timing.\n\nWrite frameZeroDescription as ONE CURRENT STILL STATE, not temporal narration: no then, starts to, begins to, after, once, when she does X or a moment later. The viewer needs no motion, audio, title, caption or prior context. OpeningPhysicalState, openingGoalEvidence and openingProblemEvidence must quote actual visible details from that description; they are source annotations, not proofs or scores. Never rely on those annotations to add facts absent from the frame.\n\nState one immutable, observable physical invariant: WHEN [specific visible interaction], THE [specific target/property] ALWAYS [specific response]. visibleTrigger describes that precise interaction. The frozen state must be an instance of this exact mechanism. No vague backwards/refuses/strange behavior, second power, actor exception or magic unrelated to the object's ordinary function, affordance, material or expected result. Explain normalExpectation, whyThisObject and direct goalRuleRelationship concretely. Unknown coherent mechanics are allowed; do not chase taxonomy labels or copy examples.\n\nPrivately remove all story possibilities: could this single image show who, task, tool, already-impossible state and why it obstructs the task? If unclear, discard/redesign internally, without adding narration or later events. Optimize only opening causal legibility; do not invent a payoff. Sound-off, broad body actions, stable identities, few elements, easy staging and child-safe comedy: no injury, weapons, dangerous restraint or sexual content. dialogueNeed normally NONE; incidental OPTIONAL only, never explanation. No external retry loop is authorized by internal redesign."
+      },
+      {
+        "role": "user",
+        "content": "{\"canonicalCast\": [{\"id\": \"00000000-0000-0000-0000-000000000001\", \"name\": \"Opa\"}, {\"id\": \"00000000-0000-0000-0000-000000000002\", \"name\": \"Kiko\"}, {\"id\": \"00000000-0000-0000-0000-000000000003\", \"name\": \"Mimi\"}, {\"id\": \"00000000-0000-0000-0000-000000000004\", \"name\": \"Arda\"}, {\"id\": \"00000000-0000-0000-0000-000000000005\", \"name\": \"Luca\"}, {\"id\": \"00000000-0000-0000-0000-000000000006\", \"name\": \"Noah\"}], \"promptVersion\": \"semantic-opening-seed-prompt-v1\", \"requestedCount\": 1}"
+      }
+    ],
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "semantic_opening_seed_v1",
+        "strict": false,
+        "schema": {
+          "$defs": {
+            "OpeningSeed": {
+              "additionalProperties": false,
+              "properties": {
+                "seedId": {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+                  "title": "Seedid",
+                  "type": "string"
+                },
+                "protagonistSuggestion": {
+                  "maxLength": 100,
+                  "minLength": 1,
+                  "title": "Protagonistsuggestion",
+                  "type": "string"
+                },
+                "everydayGoal": {
+                  "maxLength": 300,
+                  "minLength": 3,
+                  "title": "Everydaygoal",
+                  "type": "string"
+                },
+                "primaryObject": {
+                  "maxLength": 100,
+                  "minLength": 2,
+                  "title": "Primaryobject",
+                  "type": "string"
+                },
+                "normalExpectation": {
+                  "maxLength": 600,
+                  "minLength": 8,
+                  "title": "Normalexpectation",
+                  "type": "string"
+                },
+                "impossibleRule": {
+                  "maxLength": 1200,
+                  "minLength": 12,
+                  "title": "Impossiblerule",
+                  "type": "string"
+                },
+                "visibleTrigger": {
+                  "maxLength": 300,
+                  "minLength": 3,
+                  "title": "Visibletrigger",
+                  "type": "string"
+                },
+                "whyThisObject": {
+                  "maxLength": 600,
+                  "minLength": 8,
+                  "title": "Whythisobject",
+                  "type": "string"
+                },
+                "goalRuleRelationship": {
+                  "maxLength": 600,
+                  "minLength": 8,
+                  "title": "Goalrulerelationship",
+                  "type": "string"
+                },
+                "frameZeroDescription": {
+                  "maxLength": 1800,
+                  "minLength": 15,
+                  "title": "Framezerodescription",
+                  "type": "string"
+                },
+                "openingPhysicalState": {
+                  "maxLength": 1800,
+                  "minLength": 3,
+                  "title": "Openingphysicalstate",
+                  "type": "string"
+                },
+                "openingGoalEvidence": {
+                  "maxLength": 1800,
+                  "minLength": 3,
+                  "title": "Openinggoalevidence",
+                  "type": "string"
+                },
+                "openingProblemEvidence": {
+                  "maxLength": 1800,
+                  "minLength": 3,
+                  "title": "Openingproblemevidence",
+                  "type": "string"
+                },
+                "environment": {
+                  "maxLength": 300,
+                  "minLength": 3,
+                  "title": "Environment",
+                  "type": "string"
+                },
+                "dialogueNeed": {
+                  "enum": [
+                    "NONE",
+                    "OPTIONAL",
+                    "REQUIRED"
+                  ],
+                  "title": "Dialogueneed",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seedId",
+                "protagonistSuggestion",
+                "everydayGoal",
+                "primaryObject",
+                "normalExpectation",
+                "impossibleRule",
+                "visibleTrigger",
+                "whyThisObject",
+                "goalRuleRelationship",
+                "frameZeroDescription",
+                "openingPhysicalState",
+                "openingGoalEvidence",
+                "openingProblemEvidence",
+                "environment",
+                "dialogueNeed"
+              ],
+              "title": "OpeningSeed",
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "properties": {
+            "seeds": {
+              "items": {
+                "$ref": "#/$defs/OpeningSeed"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "title": "Seeds",
+              "type": "array"
+            }
+          },
+          "required": [
+            "seeds"
+          ],
+          "title": "SeedEnvelope",
+          "type": "object"
+        }
+      }
+    },
+    "max_completion_tokens": 8192,
+    "reasoning_effort": "low"
+  },
+  "requestCountMaximum": 1,
+  "sdkRetries": 0,
+  "timeout": {
+    "connectSeconds": 15,
+    "readSeconds": 90,
+    "writeSeconds": 60,
+    "poolSeconds": 15,
+    "wallSeconds": 180
+  }
+}

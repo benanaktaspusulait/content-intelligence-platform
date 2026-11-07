@@ -1,0 +1,20 @@
+{
+  "step": "FINAL_PROVIDER_SCHEMA_VALIDATION",
+  "version": "semantic-native-schema-integrity-v1",
+  "syntax": "VALID_DRAFT202012",
+  "schemaSha256": "9fcb201118e45ebb75233a02b8f3f917ba01fc6033c46d3edd9e115e2842f06c",
+  "references": [
+    {
+      "reference": "#/$defs/OpeningSeed",
+      "originPath": "/properties/seeds/items/$ref",
+      "resolvedTargetPath": "/$defs/OpeningSeed",
+      "attemptedTargetPath": "/$defs/OpeningSeed",
+      "status": "RESOLVED",
+      "scope": "Final provider document root; no external URI retrieval"
+    }
+  ],
+  "unresolvedReferences": 0,
+  "unsupportedReferences": 0,
+  "cyclicReferences": 0,
+  "serializationRoundTripIdentical": true
+}

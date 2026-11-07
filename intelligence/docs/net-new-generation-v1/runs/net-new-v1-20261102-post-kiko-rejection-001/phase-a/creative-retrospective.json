@@ -1,0 +1,18 @@
+{
+  "documentVersion": "creative-retrospective-v1",
+  "candidateId": "net-new-v1-20261102-post-kiko-rejection-001-opening-a-kiko-cereal-ring-rim",
+  "decision": "REJECTED_FOR_PRODUCTION",
+  "reason": "INSUFFICIENT_STORY_PROGRESSION_POTENTIAL",
+  "lesson": "A striking opening transformation is insufficient unless the same rule supports meaningful state changes, escalating consequences and a distinct final payoff.",
+  "mechanismScope": "This rejected cereal-ring enlargement experiment does not globally exclude object enlargement or shrinking; those mechanisms may support other strong ideas.",
+  "publicationStatus": "NOT_PUBLISHED",
+  "sourceEvidenceSha256": {
+    "seed": "dc9ef0c71dcba814896434cb21bb87f2c48c00d12aa588cdb40dba58048d4104",
+    "openingGate": "dcf6f2ac98f201a781fba9dc886e49f022897c6b75c906b265be19d8e6d5d1c1",
+    "noveltyResult": "fb0f524771935f2a0384d2821dd5ae16e9483b3452fc053285b005ef6b42bc3a",
+    "providerResult": "91ebd7aa18ef706370a4ea219fb32a98ac2d63edb6c6dc0b769ec04a9cd80427",
+    "providerResponse": "c21979a28bdc406ffe7a59019ba11aaf44a3ca3b80d815a9106098e7d063cf1d",
+    "sdkRequest": "dfbbff48cf17458017813a3ae6aa1d8ee0404e5b4af0106d17654bb000ea1220",
+    "candidateCreationRecord": "def2284e2ea56e909541cfe65c3c98475c56ebc1ce71abc2791cc1f450c1ea6a"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "generationArchitecture": "TWO_STAGE_V1",
+  "promptVersion": "semantic-opening-seed-prompt-v1",
+  "promptSha256": "948c3658fa68907d4ee1d6c969a94f55584fe052fcf4cd968f772cfdf889632f",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "phase": "A",
+  "requestedCount": 1,
+  "maximumPhaseARequests": 1,
+  "maximumPhaseBRequests": 1,
+  "maximumTotalProviderRequests": 2,
+  "retries": 0,
+  "sdkRetries": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0
+}

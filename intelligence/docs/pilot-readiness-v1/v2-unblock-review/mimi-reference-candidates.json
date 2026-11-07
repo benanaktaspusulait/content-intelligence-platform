@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "mimi-reference-review-candidates-v1",
+  "characterId": "00000000-0000-0000-0000-000000000003",
+  "candidates": [
+    {
+      "sourcePath": "/Users/benanaktas/project/video/yuvarlak-dunya/01-CHARACTERS/drawings/mimi.png",
+      "packagePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/pilot-readiness-v1/v2-unblock-review/mimi-canonical-source.png",
+      "width": 1536,
+      "height": 1024,
+      "format": "PNG",
+      "bytes": 1904791,
+      "sha256": "7ad3d0042965c53ae20c67c0242d49cec2d3cf43706915d715b4fadec3c59f57",
+      "provenance": "Canonical character sheet under 01-CHARACTERS/drawings; matches 02-mimi.md; owner approval not recorded.",
+      "approvalStatus": "UNREVIEWED; NOT_APPROVED",
+      "canonicalCharacterId": "00000000-0000-0000-0000-000000000003",
+      "matchesMimiCanon": true,
+      "previousSuccessfulUse": "No successful reference-conditioned render evidenced; V1 render sent referenceImages=[]"
+    },
+    {
+      "sourcePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/mimi-sticky-first-frame/mimi-reference-clean-crop-owner-review.png",
+      "packagePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/pilot-readiness-v1/v2-unblock-review/mimi-owner-review-crop.png",
+      "width": 249,
+      "height": 394,
+      "format": "PNG",
+      "bytes": 109003,
+      "sha256": "80e0579ac5979be010da5c7250debbe9e74e84b37661d7a2213f24e055e49f14",
+      "provenance": "Pixel crop only from canonical Mimi sheet; provenance JSON states no retouch/resize/composite/generative alteration.",
+      "approvalStatus": "UNAPPROVED_DERIVATIVE_OWNER_REVIEW_ONLY",
+      "canonicalCharacterId": "00000000-0000-0000-0000-000000000003",
+      "matchesMimiCanon": true,
+      "previousSuccessfulUse": "No successful reference-conditioned render evidenced"
+    }
+  ],
+  "sourceCanonPath": "/Users/benanaktas/project/video/yuvarlak-dunya/01-CHARACTERS/02-mimi.md",
+  "projectEnvironmentAssetRegistry": "/Users/benanaktas/project/video/yuvarlak-dunya/00-CORE/ASSET_REGISTRY.md",
+  "projectAssetRegistryScope": "environment assets only; no character approval record",
+  "approvalStatusChanged": false
+}

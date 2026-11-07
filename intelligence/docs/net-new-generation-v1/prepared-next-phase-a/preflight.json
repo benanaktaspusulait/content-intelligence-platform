@@ -1,0 +1,43 @@
+{
+  "status": "PHASE_A_TWO_EXCLUSIONS_READY",
+  "runId": "net-new-v1-20261102-post-kiko-rejection-001",
+  "preparedRequestSha256": "e8dcb88df8ea79a062ec559ec3d12e34b9727a0ea70471377deceb7aa184ad2b",
+  "preparedContextSha256": "485c7bdc961b129a1e292ed43d303aea9dd14e0cbbac80d403cd76407b192b7e",
+  "preparedExclusionCount": 2,
+  "preparedExclusionIds": [
+    "mimi-rolling-pin-dough-wall",
+    "kiko-watering-can-return-loop"
+  ],
+  "preparedRequestHashVerification": "PASS",
+  "contextCanonicalHashVerification": "PASS",
+  "contextVersionVerification": "PASS",
+  "sourceProvenanceVerification": "PASS (runner verifies both source files, hashes, and Kiko REJECTED_FOR_PRODUCTION decision linkage)",
+  "acceptedPromptSha256": "948c3658fa68907d4ee1d6c969a94f55584fe052fcf4cd968f772cfdf889632f",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "phase": "A",
+  "candidateCount": 1,
+  "lastMileSdkPayload": {
+    "verification": "PASS via existing worker and exact-request guard with local fake SDK/HTTP transport",
+    "messageCount": 3,
+    "exclusionCount": 2,
+    "exclusionIds": [
+      "mimi-rolling-pin-dough-wall",
+      "kiko-watering-can-return-loop"
+    ],
+    "sdkPayloadMatchesPreparedArguments": true,
+    "sdkPayloadSha256": "e8dcb88df8ea79a062ec559ec3d12e34b9727a0ea70471377deceb7aa184ad2b"
+  },
+  "tamperAndAuthorizationTests": "PASS: missing exclusion, modified exclusion, wrong context hash, missing authorization, and legacy no-prepared request path",
+  "retryFallbackRenderControls": "PASS: retries=0; SDK retries=0; fallback=0; phase B disabled; render disabled",
+  "realProviderCalls": 0,
+  "phaseBCalls": 0,
+  "renders": 0,
+  "localFakeTransportRequests": 1,
+  "focusedTests": {
+    "command": "POMPOM_OFFLINE_MODE=true POMPOM_EXTERNAL_AI_AUTHORIZED=false PYTHONPATH=. .venv/bin/pytest -q tests/test_phase_a_last_mile_request_assembly.py tests/test_net_new_novelty.py",
+    "result": "28 passed"
+  },
+  "authorizationFileCreated": false,
+  "operatorAuthorization": "AUTHORIZE_PHASE_A:net-new-v1-20261102-post-kiko-rejection-001:MAX_PROVIDER_REQUESTS=1"
+}

@@ -1,0 +1,35 @@
+{
+  "recordVersion": "human-creative-decision-v1",
+  "candidateId": "net-new-v1-20261102-post-kiko-rejection-001-opening-a-kiko-cereal-ring-rim",
+  "generationRunId": "net-new-v1-20261102-post-kiko-rejection-001",
+  "decision": "REJECTED_FOR_PRODUCTION",
+  "reason": "INSUFFICIENT_STORY_PROGRESSION_POTENTIAL",
+  "decisionSource": "Explicit operator decision in conversation",
+  "recordedAtUtc": "2026-11-02T23:39:46.164058+00:00",
+  "supportingFindings": [
+    "Opening score 90 is valid.",
+    "RULE_UNCLEAR remains unresolved.",
+    "Physical transformation is visually interesting but mechanically arbitrary.",
+    "Four meaningfully different causal beats appear unlikely.",
+    "Likely progression consists of repeated cereal enlargement and obstruction.",
+    "No demonstrated strong final reversal.",
+    "Phase B is not justified."
+  ],
+  "openingScore": 90,
+  "openingDisposition": "RULE_UNCLEAR",
+  "phaseBEligible": false,
+  "noveltyDisposition": "NO_KNOWN_EQUIVALENT",
+  "publicationStatus": "NOT_PUBLISHED",
+  "lifecycleDisposition": "REJECTED_EXPERIMENT_NOT_PUBLISHED",
+  "immutableEvidenceSha256": {
+    "seed": "dc9ef0c71dcba814896434cb21bb87f2c48c00d12aa588cdb40dba58048d4104",
+    "openingGate": "dcf6f2ac98f201a781fba9dc886e49f022897c6b75c906b265be19d8e6d5d1c1",
+    "noveltyResult": "fb0f524771935f2a0384d2821dd5ae16e9483b3452fc053285b005ef6b42bc3a",
+    "providerResult": "91ebd7aa18ef706370a4ea219fb32a98ac2d63edb6c6dc0b769ec04a9cd80427",
+    "providerResponse": "c21979a28bdc406ffe7a59019ba11aaf44a3ca3b80d815a9106098e7d063cf1d",
+    "sdkRequest": "dfbbff48cf17458017813a3ae6aa1d8ee0404e5b4af0106d17654bb000ea1220",
+    "candidateCreationRecord": "def2284e2ea56e909541cfe65c3c98475c56ebc1ce71abc2791cc1f450c1ea6a"
+  },
+  "immutableSourceRecordsPreserved": true,
+  "globalMechanismExclusion": false
+}

@@ -1,0 +1,73 @@
+{
+  "classification": "POST_RENDER_REVISION_REQUIRED",
+  "durationGate": "POST_RENDER_FAIL_DURATION",
+  "provider": "OpenArt",
+  "model": "byte-plus-seedance-2-mini",
+  "renderCount": 1,
+  "secondRenderCount": 0,
+  "semanticProviderCalls": 0,
+  "promptSha256": "9b185670aa97e838975c2f7f717c8b5b947d6b43414dce6d707c887409f03f93",
+  "promptUnchanged": true,
+  "requestedDurationSeconds": 15,
+  "actualContainerDurationSeconds": 15.104,
+  "actualVideoStreamDurationSeconds": 15.041667,
+  "dimensions": [
+    720,
+    1280
+  ],
+  "fps": "24/1",
+  "audioStream": "AAC present; audio contents not assessed; not accepted",
+  "firstFrame": "FAIL_MAJOR: small dough lump on top of barrel, not chest-high ridge under/supporting barrel",
+  "beatAudit": [
+    {
+      "beat": 1,
+      "startApprox": 0.0,
+      "endApprox": 3.0,
+      "progress": "MEANINGFUL_VISUAL_CHANGE_RULE_WEAK",
+      "contact": "ambiguous, dough peak over roller"
+    },
+    {
+      "beat": 2,
+      "startApprox": 3.0,
+      "endApprox": 6.5,
+      "progress": "ACTIVITY_ONLY",
+      "contact": "crosswise orientation unclear; ridge shortens"
+    },
+    {
+      "beat": 3,
+      "startApprox": 6.5,
+      "endApprox": 10.2,
+      "progress": "ACTIVITY_ONLY_CAUSAL_FAIL",
+      "contact": "ridge grows while pin separate 6.6-8.6; pin jumps onto column ~9.0-9.3"
+    },
+    {
+      "beat": 4,
+      "startApprox": 10.2,
+      "endApprox": 15.104,
+      "progress": "MEANINGFUL_PROGRESS",
+      "contact": "final press and support visible; elevated pin payoff"
+    }
+  ],
+  "crossTamp": "MAJOR_DEFECT",
+  "reverseRollRidgeContinuity": "MAJOR_DEFECT_CAUSAL_CONTINUITY",
+  "mimiConsistency": "MAJOR_DEFECT: human child instead of canonical light-blue rabbit",
+  "rollingPinContinuity": "MINOR_DEFECT: single pin, discontinuous position jump ~9.0-9.3s",
+  "handGeometry": "PASS_WITH_MINOR_RISK",
+  "doughGeometry": "MAJOR_DEFECT",
+  "payoff": "PASS visually; readable by ~11.3s",
+  "silentView": "PASS for gist; exact rule unclear",
+  "beatDensity": "FAIL: beat 2 weak/reset, beat 3 rule break, ~1.2s reposition pause, ~3s final hold",
+  "payoffPredictability": "ACCEPTABLE",
+  "mobileLegibility": "PASS for main objects and payoff; first-frame causality weak",
+  "costCreditsObservedDelta": 600,
+  "creditsBefore": 5063,
+  "creditsAfter": 4463,
+  "resultPath": "intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v1/rendered-video.mp4",
+  "videoSha256": "4634143f846a35cf66b1ec33596060407ca54d8fdf9c2daacdcc9650ef088fdf",
+  "phaseAHistoricalEvidenceChanged": false,
+  "originalPhaseBEvidenceUnchanged": true,
+  "originalPhaseBEvidenceFilesChecked": 10,
+  "architectureChanged": false,
+  "renderedPromptPath": "intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v1/FINAL_PRODUCTION_PROMPT.md",
+  "renderedPromptHashMatchesAccepted": true
+}

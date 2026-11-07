@@ -1,0 +1,345 @@
+{
+  "seedDrift": {
+    "check": "STORY_MUST_PRESERVE_OPENING_SEED",
+    "status": "PRESERVED",
+    "differences": [],
+    "exactComparison": true,
+    "repairPerformed": false,
+    "limitation": "Exact field equality is deliberately conservative. Unstated semantic resets inside generated beats are additionally screened by the unchanged downstream source/coherence judges, not fully proved by string identity."
+  },
+  "ruleConsistency": [
+    {
+      "beatNumber": 1,
+      "trigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "expectedResponse": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "actualResponse": "The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.",
+      "consistency": "CONSISTENT",
+      "existingEvidence": {
+        "beatNumber": 1,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_UNCLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Still pressing both handles in the opening pose, Mimi bends her elbows downward to finish flattening the raised strip.",
+        "rawConsequence": "The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.",
+        "strategyClassification": null,
+        "consequenceClassification": null,
+        "newInformation": "Continuing the flattening stroke makes the existing obstacle taller; the remaining dough is still flat on the tabletop.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "source-action:e1bcd97ccff5f927",
+        "consequenceDiversityKey": "source-state:87663527155d846a",
+        "stateDifference": {
+          "before": null,
+          "after": "The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "press",
+          "target": [
+            "both",
+            "handl",
+            "open",
+            "pos"
+          ],
+          "sourceClause": "Still pressing both handles in the opening pose",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].strategy",
+            "sourceText": "Still pressing both handles in the opening pose, Mimi bends her elbows downward to finish flattening the raised strip.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].visibleConsequence",
+            "sourceText": "The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[0].newInformation",
+            "sourceText": "Continuing the flattening stroke makes the existing obstacle taller; the remaining dough is still flat on the tabletop.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "findings": []
+    },
+    {
+      "beatNumber": 2,
+      "trigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "expectedResponse": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "actualResponse": "That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.",
+      "consistency": "CONSISTENT",
+      "existingEvidence": {
+        "beatNumber": 2,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Mimi lifts the pin clear, turns it a quarter-turn, and lowers it onto the flat dough extending toward the viewer from the wall's left end. She presses both handles downward.",
+        "rawConsequence": "That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.",
+        "strategyClassification": "CHANGE_ANGLE",
+        "consequenceClassification": null,
+        "newInformation": "Changing the rolling direction creates a corner rather than a flat patch.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "ANGLE_CHANGE",
+        "consequenceDiversityKey": "source-state:a2cb9e2b09d8cd10",
+        "stateDifference": {
+          "before": "The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.",
+          "after": "That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "lift",
+          "target": [
+            "clear",
+            "pin"
+          ],
+          "sourceClause": "lifts the pin clear",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].strategy",
+            "sourceText": "Mimi lifts the pin clear, turns it a quarter-turn, and lowers it onto the flat dough extending toward the viewer from the wall's left end. She presses both handles downward.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].visibleConsequence",
+            "sourceText": "That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[1].newInformation",
+            "sourceText": "Changing the rolling direction creates a corner rather than a flat patch.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "findings": []
+    },
+    {
+      "beatNumber": 3,
+      "trigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "expectedResponse": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "actualResponse": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+      "consistency": "CONSISTENT",
+      "existingEvidence": {
+        "beatNumber": 3,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Keeping the pin in that orientation, Mimi moves it across the open center to the flat strip extending toward the viewer from the original wall's right end and presses both handles.",
+        "rawConsequence": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+        "strategyClassification": "ANCHOR_TO_ENVIRONMENT",
+        "consequenceClassification": null,
+        "newInformation": "Only the viewer-facing strip remains open and readily visible as a flat route across the sheet.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "ENVIRONMENT_ANCHOR",
+        "consequenceDiversityKey": "source-state:504ed83f4afa8c08",
+        "stateDifference": {
+          "before": "That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.",
+          "after": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "keep",
+          "target": [
+            "orientation",
+            "pin"
+          ],
+          "sourceClause": "Keeping the pin in that orientation",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].strategy",
+            "sourceText": "Keeping the pin in that orientation, Mimi moves it across the open center to the flat strip extending toward the viewer from the original wall's right end and presses both handles.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].visibleConsequence",
+            "sourceText": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[2].newInformation",
+            "sourceText": "Only the viewer-facing strip remains open and readily visible as a flat route across the sheet.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "findings": []
+    },
+    {
+      "beatNumber": 4,
+      "trigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "expectedResponse": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "actualResponse": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+      "consistency": "CONSISTENT",
+      "existingEvidence": {
+        "beatNumber": 4,
+        "strategyPresent": true,
+        "strategyClassificationStatus": "STRATEGY_PRESENT_CLASSIFIED",
+        "consequencePresent": true,
+        "consequenceClassificationStatus": "CONSEQUENCE_PRESENT_UNCLASSIFIED",
+        "rawStrategy": "Mimi reaches the pin across that last flat strip, turns its barrel parallel to the original wall, and presses both handles downward.",
+        "rawConsequence": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+        "strategyClassification": "CHANGE_ANGLE",
+        "consequenceClassification": null,
+        "newInformation": "Every attempted flattening stroke has become another wall around the untouched flat center.",
+        "newInformationPresent": true,
+        "newInformationNovel": true,
+        "stateChangeSupported": true,
+        "goalStateChangeSupported": false,
+        "bodyStateChangeSupported": false,
+        "spatialChangeSupported": false,
+        "informationProgressionSupported": true,
+        "progressionSupported": true,
+        "strategyDiversityKey": "ANGLE_CHANGE",
+        "consequenceDiversityKey": "source-state:8e4f5da8fe14d581",
+        "stateDifference": {
+          "before": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+          "after": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+          "supported": true,
+          "basis": "ACCEPTED_CANONICAL_RULE_LINKED_STATE_CHECK_PLUS_NON_MAGNITUDE_SOURCE_DIFFERENCE",
+          "objectState": null,
+          "goalState": null,
+          "bodyState": null,
+          "spatialState": null,
+          "limitation": "Literal described state contrast, not a classified physical relationship or observed frames."
+        },
+        "actionEvidence": {
+          "predicate": "reach",
+          "target": [
+            "acros",
+            "flat",
+            "pin",
+            "strip"
+          ],
+          "sourceClause": "reaches the pin across that last flat strip",
+          "supported": true
+        },
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].strategy",
+            "sourceText": "Mimi reaches the pin across that last flat strip, turns its barrel parallel to the original wall, and presses both handles downward.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].visibleConsequence",
+            "sourceText": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          },
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "beats[3].newInformation",
+            "sourceText": "Every attempted flattening stroke has become another wall around the untouched flat center.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "findings": []
+    }
+  ],
+  "payoffOrientation": {
+    "beforeState": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+    "trigger": "Mimi reaches the pin across that last flat strip, turns its barrel parallel to the original wall, and presses both handles downward.",
+    "afterState": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+    "classification": "CLEAR",
+    "evidence": {
+      "presence": "PRESENT_UNCLASSIFIED",
+      "ruleLinked": true,
+      "stateChanging": true,
+      "references": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "finalPayoff",
+          "sourceText": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-terminal-field",
+          "confidence": "EXPLICIT"
+        },
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "beats[3].visibleConsequence",
+          "sourceText": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+          "projectionRule": "semantic-evidence-adapter-v1:terminal-consequence-consistency",
+          "confidence": "EXPLICIT"
+        },
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "beats[3].newInformation",
+          "sourceText": "Every attempted flattening stroke has become another wall around the untouched flat center.",
+          "projectionRule": "semantic-evidence-adapter-v1:terminal-information-preserved",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "findings": []
+  },
+  "canonicalRuleFindings": [],
+  "pipelineRecordPresent": true
+}

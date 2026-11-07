@@ -1,0 +1,73 @@
+{
+  "candidate": "mimi-rolling-pin-dough-wall",
+  "status": "PRE_RENDER_V2_CHECK",
+  "renderDecision": "STOP_BEFORE_RENDER",
+  "stopCode": "RENDER_BLOCKED_CANONICAL_REFERENCE_UNAVAILABLE",
+  "reason": "No project-approved Mimi reference is recorded in the project evidence. The production-library character sheet is present, but prior source provenance marks its approvalStatus UNREVIEWED and canonicalApproval NOT_APPROVED. Do not infer approval from presence or canonical identity alone.",
+  "reference": {
+    "path": "/Users/benanaktas/project/video/yuvarlak-dunya/01-CHARACTERS/drawings/mimi.png",
+    "exists": true,
+    "sha256": "7ad3d0042965c53ae20c67c0242d49cec2d3cf43706915d715b4fadec3c59f57",
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "role": "Pompom Hills canonical Mimi v2.1 turnaround/pose/expression/appearance sheet; identity agrees with 01-CHARACTERS/02-mimi.md; approval status conflicts with required approved status."
+  },
+  "referenceMechanism": {
+    "model": "byte-plus-seedance-2-mini",
+    "mode": "element2video",
+    "visualReferencesSchemaSupported": true,
+    "currentProjectCliSupportsMode": false,
+    "availableSchemaFields": [
+      "visualReferences",
+      "duration",
+      "aspectRatio",
+      "resolution",
+      "generateAudio",
+      "seed"
+    ],
+    "verifiedVia": "openart model form byte-plus-seedance-2-mini element2video --json"
+  },
+  "duration": {
+    "targetSeconds": 14.0,
+    "hardMaximumSeconds": 15.0,
+    "supported": true,
+    "schemaMinimumSeconds": 4,
+    "schemaMaximumSeconds": 15,
+    "integerDuration": true
+  },
+  "prompt": {
+    "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v2/V2_PRODUCTION_PROMPT.md",
+    "sha256": "fcc442d53a2ca9d823a924fa4582fc3a3363af14aa9fee39cde1df0092ad5d56",
+    "incorporatesFixes": [
+      "14.0 second timing target",
+      "canonical Mimi reference and species lock",
+      "large ridge directly below/supporting barrel at frame zero",
+      "no-contact-no-growth static reposition rule"
+    ]
+  },
+  "storyArchitecture": "UNCHANGED: Mimi, rolling pin, flat dough, one evolving ridge, four accepted beats, unreachable rolling-pin payoff.",
+  "v1": {
+    "promptSha256": "9b185670aa97e838975c2f7f717c8b5b947d6b43414dce6d707c887409f03f93",
+    "filesUnchanged": true,
+    "changedPaths": [],
+    "renderSha256": "4634143f846a35cf66b1ec33596060407ca54d8fdf9c2daacdcc9650ef088fdf"
+  },
+  "renderCountThisTask": 0,
+  "semanticProviderCalls": 0,
+  "dockerCleanup": {
+    "runningContainersBefore": 0,
+    "removedImages": [
+      "pompom-website-app:f7eb027",
+      "pompom-website-app:65dd8be-final",
+      "pompom-website-app:65dd8be",
+      "pompom-website-app:latest",
+      "pompom-runtime:flat-1843e7d",
+      "pompom-portal-candidate:20261030-followup"
+    ],
+    "siteContainersAfter": 0,
+    "matchingImagesAfter": 0,
+    "preserved": "intelligence project database volume and unlabelled anonymous Docker volumes were not removed because they are not attributed to pompom-website."
+  }
+}

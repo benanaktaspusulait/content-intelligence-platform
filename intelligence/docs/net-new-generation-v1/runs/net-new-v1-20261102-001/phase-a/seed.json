@@ -1,0 +1,17 @@
+{
+  "seedId": "pompom-hills-dough-ridge",
+  "protagonistSuggestion": "Mimi",
+  "everydayGoal": "Roll a sheet of dough flat on the kitchen counter.",
+  "primaryObject": "Rolling pin",
+  "normalExpectation": "Pressing a rolling pin against dough makes the dough thinner and flatter beneath its barrel.",
+  "impossibleRule": "WHEN the rolling pin's barrel presses against dough, THE dough beneath the barrel ALWAYS forms a tall upright ridge instead of flattening.",
+  "visibleTrigger": "The rolling pin's horizontal barrel is pressed firmly against the top of the dough ridge.",
+  "whyThisObject": "A rolling pin applies broad pressure to flatten dough; the impossible response reverses that exact effect at the barrel's contact surface.",
+  "goalRuleRelationship": "Mimi needs a uniformly flat sheet, but the dough directly under the flattening tool stands upright as a thick ridge.",
+  "frameZeroDescription": "In a simple kitchen, Mimi stands behind a low counter, leaning forward with both hands on the handles of a horizontal rolling pin. Her straight arms press the barrel firmly against a thick, chest-high ridge of dough. The ridge is continuous with a broad sheet of dough spread across the counter, with thin, flat edges extending on either side. The rolling pin rests across the ridge's narrow top, far above those flat edges; the upright dough wall occupies the exact strip beneath its barrel.",
+  "openingPhysicalState": "\"Her straight arms press the barrel firmly against a thick, chest-high ridge of dough.\"",
+  "openingGoalEvidence": "\"Mimi stands behind a low counter, leaning forward with both hands on the handles of a horizontal rolling pin.\" \"The ridge is continuous with a broad sheet of dough spread across the counter, with thin, flat edges extending on either side.\"",
+  "openingProblemEvidence": "\"The rolling pin rests across the ridge's narrow top, far above those flat edges; the upright dough wall occupies the exact strip beneath its barrel.\"",
+  "environment": "A simple kitchen with a low counter and an uncluttered background.",
+  "dialogueNeed": "NONE"
+}

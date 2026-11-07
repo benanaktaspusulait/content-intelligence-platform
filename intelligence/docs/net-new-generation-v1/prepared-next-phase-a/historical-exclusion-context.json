@@ -1,0 +1,139 @@
+{
+  "version": "net-new-opening-exclusions-v1",
+  "exclusions": [
+    {
+      "conceptId": "mimi-rolling-pin-dough-wall",
+      "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/source-seed.json",
+      "sourceSha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+      "mechanic": "Mimi uses a rolling pin to flatten dough; pressure at the barrel contact makes that dough strip rise into a tall vertical ridge or wall, lifting/supporting the barrel above the surrounding flat sheet.",
+      "reason": "Historical Phase A seed was expanded as Flat-Pack Dough; this repeated causal opening territory is not acceptable as net-new production.",
+      "sourceFields": {
+        "protagonistSuggestion": "Mimi",
+        "everydayGoal": "Roll a sheet of dough flat on a kitchen table.",
+        "primaryObject": "Rolling pin",
+        "impossibleRule": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+        "visibleTrigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+        "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background."
+      },
+      "supportingHistoricalSeeds": [
+        {
+          "conceptId": "mimi-rolling-pin-ridge",
+          "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-run-001/opening-a/seed.json",
+          "sourceSha256": "9bde97bbc49b99198f140031392d6c22f5271abf73a1af5a721fec5db6e9991f",
+          "protagonistSuggestion": "Mimi",
+          "everydayGoal": "Roll a lump of dough into a flat sheet on the kitchen counter.",
+          "primaryObject": "Rolling pin",
+          "impossibleRule": "WHEN the rolling pin presses against dough, THE dough directly beneath its barrel ALWAYS rises into a tall, thick ridge that supports the pin above the work surface.",
+          "frameZeroDescription": "Mimi stands behind a plain kitchen counter, both hands on the handles of a horizontal rolling pin, shoulders above her hands and elbows spread in a firm downward-pressing pose. A broad piece of dough lies on the counter with low, flat edges on either side. Directly beneath the rolling pin, the same continuous dough forms a thick, chest-high vertical ridge with smooth upright sides. The pin's barrel is embedded shallowly across the ridge's top, far above the flat dough edges. The counter and dough are unobstructed, with no other utensils present."
+        },
+        {
+          "conceptId": "mimi-rolling-pin-dough-column",
+          "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-run-001/opening-c/seed.json",
+          "sourceSha256": "b7732d4b43fc065a8a0205c768d1004a1a5bbe0967be4c19d8c88553779a13ed",
+          "protagonistSuggestion": "Mimi",
+          "everydayGoal": "Roll a piece of dough into a thin, flat sheet on a kitchen counter.",
+          "primaryObject": "Rolling pin",
+          "impossibleRule": "WHEN the rolling pin presses downward against dough, THE dough directly beneath the barrel ALWAYS thickens upward into a tall column instead of flattening.",
+          "frameZeroDescription": "Mimi stands behind a kitchen counter, leaning forward with both palms bearing down on the handles of a horizontal rolling pin. Beneath the barrel, a single piece of pale dough forms a tall, broad vertical column reaching Mimi's chest, joined seamlessly to a wide, thin skirt of dough spread across the counter. The barrel sits in a shallow groove across the column's top. Mimi's elbows point outward in a firm downward pressing pose; the towering dough directly under the pin stands conspicuously above the flat dough surrounding its base. The uncluttered counter and plain kitchen wall leave the rolling pin, dough column, and Mimi's pressing posture fully visible."
+        }
+      ],
+      "aliases": {
+        "goal": [
+          "flatten dough",
+          "roll dough flat",
+          "make dough thinner",
+          "spread dough",
+          "dough flat",
+          "dough thinner"
+        ],
+        "object": [
+          "rolling pin",
+          "dough roller"
+        ],
+        "response": [
+          "dough rises",
+          "dough grows upward",
+          "dough thickens upward",
+          "dough forms a ridge",
+          "dough forms a wall",
+          "vertical dough wall",
+          "upright ridge",
+          "pastry rises",
+          "standing rib",
+          "touched pastry rises"
+        ],
+        "trigger": [
+          "presses against dough",
+          "presses down on dough",
+          "barrel contacts dough",
+          "rolling pin pressure",
+          "bears down",
+          "downward force along"
+        ],
+        "opening": [
+          "barrel rests on ridge",
+          "barrel rests across ridge",
+          "barrel supported by wall",
+          "barrel above flat dough",
+          "wall beneath barrel",
+          "ridge beneath barrel",
+          "wall occupies the exact strip beneath its barrel",
+          "narrow crest carries the tool above the sheet"
+        ]
+      }
+    },
+    {
+      "conceptId": "kiko-watering-can-return-loop",
+      "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/net-new-generation-v1/runs/net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b/frozen-opening-seed.json",
+      "sourceSha256": "74d497f3bbbcb99b491d93bd5630a6b880a8f2381bdd14e4f9ee3b7809265c8d",
+      "mechanic": "When liquid flows out of a container or outlet, its stream curves or loops back into that same source container instead of reaching the intended destination.",
+      "reason": "Rejected Phase B creative experiment; not published content. Exclude this unsuccessful return-to-source liquid mechanism from the next net-new opening.",
+      "experimentDisposition": "UNSUCCESSFUL_CREATIVE_EXPERIMENT_NOT_PUBLISHED",
+      "publicationStatus": "NOT_PUBLISHED",
+      "linkedPublishedVideo": false,
+      "sourceFields": {
+        "protagonistSuggestion": "Kiko",
+        "everydayGoal": "Water a small potted plant.",
+        "primaryObject": "An open-topped watering can with a plain spout.",
+        "normalExpectation": "Tilting the can with its spout above the pot sends water down onto the soil.",
+        "impossibleRule": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+        "visibleTrigger": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+        "whyThisObject": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+        "goalRuleRelationship": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+        "frameZeroDescription": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides."
+      },
+      "relatedRejectedStoryRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/net-new-generation-v1/runs/net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b/phase-b/response.txt",
+      "relatedRejectedStorySha256": "726da36eee25e3e7bef7b2fe5def02defd047e97f3e64ea1bf8bb4d29f81271c",
+      "aliases": {
+        "goal": [
+          "deliver liquid to a target",
+          "water a plant",
+          "pour liquid into a destination"
+        ],
+        "object": [
+          "container with an outlet",
+          "watering can",
+          "jug",
+          "bottle"
+        ],
+        "response": [
+          "liquid stream curves back into the same container",
+          "water loops back into its source",
+          "stream returns through the source opening",
+          "liquid returns to its source instead of reaching the target"
+        ],
+        "trigger": [
+          "liquid flows from an outlet",
+          "water leaves a spout",
+          "container is tilted to pour"
+        ],
+        "opening": [
+          "stream curves upward into the same container",
+          "liquid returns to its own source",
+          "outflow loops back before reaching the target"
+        ]
+      }
+    }
+  ],
+  "contextSha256": "485c7bdc961b129a1e292ed43d303aea9dd14e0cbbac80d403cd76407b192b7e"
+}

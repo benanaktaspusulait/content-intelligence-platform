@@ -1,0 +1,8 @@
+{
+  "baselineFailureCount": 36,
+  "currentFailureCount": 36,
+  "addedFailures": [],
+  "removedFailures": [],
+  "identicalFailureIds": true,
+  "summary": "36 failed, 3487 passed, 2 skipped, 3030 warnings in 223.63s (0:03:43)"
+}

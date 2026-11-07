@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "pompom-local-pilot-v1",
+  "generatedAt": "2026-11-02",
+  "overallStatus": "PILOT_BLOCKED",
+  "primaryCandidateId": "mimi-rolling-pin-dough-wall",
+  "inventory": {
+    "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/pilot-readiness-v1/local-prompt-inventory.json",
+    "matchingFiles": 814,
+    "uniqueContents": 807,
+    "deduplicatedCopies": 7,
+    "scope": "intelligence/docs and configured social reels library only"
+  },
+  "selectedCandidates": [
+    "mimi-rolling-pin-dough-wall",
+    "kiko-late-reflection",
+    "luca-shadow-shortcut"
+  ],
+  "primary": {
+    "sourcePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/complete-story.json",
+    "sourceSha256": "2c1d3b1487a81237e73eeae67b5e61f32795db49884150ba4947979cd57c6025",
+    "productionPromptPath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v2/V2_PRODUCTION_PROMPT.md",
+    "productionPromptSha256": "fcc442d53a2ca9d823a924fa4582fc3a3363af14aa9fee39cde1df0092ad5d56",
+    "humanReview": "PENDING",
+    "declaredSourceDurationSeconds": 16,
+    "targetDurationSeconds": 14,
+    "beats": 4,
+    "canonicalReference": {
+      "path": "/Users/benanaktas/project/video/yuvarlak-dunya/01-CHARACTERS/drawings/mimi.png",
+      "sha256": "7ad3d0042965c53ae20c67c0242d49cec2d3cf43706915d715b4fadec3c59f57",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "provenance": "UNREVIEWED / NOT_APPROVED"
+    },
+    "firstFrame": {
+      "status": "MISSING_APPROVED_ASSET",
+      "specification": "V2 prompt frame-zero section",
+      "path": null
+    },
+    "render": {
+      "model": "byte-plus-seedance-2-mini",
+      "mode": "element2video",
+      "schemaVisualReferences": true,
+      "projectCliSupportsMode": false,
+      "requestedDurationSeconds": 14,
+      "observedPriorRequestedSeconds": 15,
+      "observedContainerDurationSeconds": 15.104,
+      "observedVideoStreamDurationSeconds": 15.041667,
+      "hardMaxSeconds": 15,
+      "durationGuarantee": false,
+      "taskRenderCalls": 0,
+      "taskProviderCalls": 0
+    }
+  },
+  "validation": {
+    "sourceImport": "PASS",
+    "openingEvaluation": "PASS_STORED_GATE_ONLY",
+    "premiseNaturalness": "INSUFFICIENT_EVIDENCE",
+    "premiseAdmission": "INSUFFICIENT_EVIDENCE",
+    "beatGrammar": "INSUFFICIENT_EVIDENCE",
+    "shortFormEngine": "INSUFFICIENT_EVIDENCE",
+    "creativeShape": "INSUFFICIENT_EVIDENCE",
+    "historicalTerritory": "INSUFFICIENT_EVIDENCE",
+    "ranking": "NOT_APPLICABLE",
+    "productionReadiness": "FAIL",
+    "canonicalRuleAudit": "PASS_STORED_AUDIT_TEXT_ONLY",
+    "humanReview": "INSUFFICIENT_EVIDENCE"
+  },
+  "blockers": [
+    "BLOCKED_CHARACTER_REFERENCE",
+    "BLOCKED_FIRST_FRAME",
+    "BLOCKED_RENDER_MODE",
+    "BLOCKED_DURATION_GUARANTEE"
+  ],
+  "postRenderQa": {
+    "existingFixture": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v1/rendered-video.mp4",
+    "sha256": "4634143f846a35cf66b1ec33596060407ca54d8fdf9c2daacdcc9650ef088fdf",
+    "qaPath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v1/POST_RENDER_QA.json",
+    "detected": [
+      "duration overflow",
+      "wrong character identity",
+      "weak first frame",
+      "broken contact causality",
+      "geometry discontinuity",
+      "repeated/weak action and dead time",
+      "unaccepted AAC audio"
+    ],
+    "humanVisualAssessmentRequired": true,
+    "retryPolicy": "single render; stop and inspect; no automatic retry"
+  },
+  "fixesPath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/pilot-readiness-v1/PILOT_FIXES.md",
+  "testResults": {
+    "focusedMlService": {
+      "passed": 261,
+      "failed": 0,
+      "skipped": 0
+    },
+    "fullMlService": {
+      "passed": 3487,
+      "failed": 36,
+      "skipped": 2,
+      "durationSeconds": 228.79,
+      "matchesUserBaselineCounts": true,
+      "failureIdentityCompared": false
+    },
+    "fullCreativeRenderServiceMaven": {
+      "tests": 457,
+      "passed": 445,
+      "failed": 0,
+      "errors": 2,
+      "skipped": 0,
+      "errorTest": "RenderJobIdempotencyPostgresTest: required source-bound post-family admission absent"
+    },
+    "focusedPostRenderQa": {
+      "tests": 16,
+      "passed": 16,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "systemPythonAttempt": "collection failed due missing FastAPI/Pydantic; rerun using service venv passed full collection"
+  },
+  "nextCommand": "open intelligence/docs/pilot-readiness-v1/PILOT_FIXES.md (resolve P1–P4; no render command is currently safe)",
+  "closedPilotWorkflows": [
+    {
+      "pilotWorkflowId": "kiko-runaway-toothbrush-new-pilot-attempt",
+      "candidateId": "kiko-runaway-toothbrush",
+      "workflowStatus": "CLOSED_ALREADY_PUBLISHED",
+      "closureReason": "EXISTING_PUBLISHED_CONTENT_SELECTED_FOR_NEW_PRODUCTION",
+      "closedAt": "2026-11-02",
+      "closureScope": "pilot workflow only; original content and production records unchanged",
+      "sourcePrompt": {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Chaos/01_runaway_toothbrush/01_runaway_toothbrush_prompt.md",
+        "sha256": "d623dd1f1bbbb1207090c7caff4db5f4b8b806cb55d26cb6aa14ceb8f356b610",
+        "contentId": 18,
+        "promptVersionId": 29
+      },
+      "existingRender": {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Chaos/01_runaway_toothbrush/01_runaway_toothbrush_hd.mp4",
+        "sha256": "556e10461a9a5b8dc072a2677e9d60b99326cc6454cf4d1af017ae7e567dec64"
+      },
+      "publication": {
+        "status": "PUBLISHED",
+        "evidenceBasis": "operator-attested in task instruction; local independent platform record not found",
+        "platform": null,
+        "publicationId": null,
+        "url": null,
+        "publishedAt": null,
+        "confidence": "OPERATOR_ATTESTED_CONFLICTS_WITH_LOCAL_TRACKER"
+      },
+      "conflictingLocalEvidence": {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Chaos/tracker.md",
+        "sha256": "17cd80e3d77470f28f0cf451de156cf680fbd2235ea0a4b39e11e5f4b617d6e3",
+        "row": "01_runaway_toothbrush | Meta MISSING_METADATA | TikTok MISSING_METADATA | YouTube READY",
+        "note": "Tracker defines PUBLISHED as live; READY means platform metadata is ready. Tracker last updated 2026-10-03 and does not prove publication."
+      },
+      "doNotRender": true,
+      "originalApprovalsPreserved": true
+    }
+  ]
+}

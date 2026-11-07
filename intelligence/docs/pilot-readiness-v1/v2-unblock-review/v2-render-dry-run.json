@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "v2-render-dry-run-v1",
+  "candidateId": "mimi-rolling-pin-dough-wall",
+  "status": "BLOCKED_BEFORE_PROVIDER_REQUEST_CONSTRUCTION",
+  "promptPath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/human-creative-review-v1/production-render-v2/V2_PRODUCTION_PROMPT.md",
+  "promptSha256": "fcc442d53a2ca9d823a924fa4582fc3a3363af14aa9fee39cde1df0092ad5d56",
+  "intendedRequest": {
+    "model": "byte-plus-seedance-2-mini",
+    "mode": "element2video",
+    "durationSeconds": 14,
+    "hardMaximumVideoStreamSeconds": 15,
+    "aspectRatio": "9:16",
+    "resolution": "720p",
+    "generateAudio": false,
+    "visualReferences": "BLOCKED_UNAPPROVED; exact form payload absent from stored schema",
+    "firstFrame": "BLOCKED_MISSING_APPROVED_SCENE_FRAME; element2video first-frame semantics unverified"
+  },
+  "characterReference": {
+    "path": "/Users/benanaktas/project/video/yuvarlak-dunya/01-CHARACTERS/drawings/mimi.png",
+    "sha256": "7ad3d0042965c53ae20c67c0242d49cec2d3cf43706915d715b4fadec3c59f57",
+    "approvalStatus": "UNREVIEWED / NOT_APPROVED",
+    "includedInConstructedRequest": false,
+    "reason": "approval gate blocks before request construction"
+  },
+  "cli": {
+    "version": "0.1.1",
+    "commit": "85fa0ad",
+    "supportsText2Video": true,
+    "supportsImage2VideoStartFrame": true,
+    "supportsElement2Video": false,
+    "supportsSeparateVideoCharacterReferences": false,
+    "silentAudioFlag": false
+  },
+  "calls": {
+    "provider": 0,
+    "render": 0,
+    "paid": 0
+  },
+  "testResults": {
+    "javaFocused": {
+      "passed": 25,
+      "failed": 0
+    },
+    "pythonWrapper": {
+      "passed": 12,
+      "failed": 0
+    },
+    "allCallsMocked": true
+  },
+  "websiteDocker": {
+    "composeConfigValid": true,
+    "service": "app",
+    "runningContainers": 0,
+    "websiteImagePresent": false,
+    "buildPerformed": false,
+    "started": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "runningContainersBefore": 0,
+  "removedImages": [
+    "pompom-website-app:f7eb027",
+    "pompom-website-app:65dd8be-final",
+    "pompom-website-app:65dd8be",
+    "pompom-website-app:latest",
+    "pompom-runtime:flat-1843e7d",
+    "pompom-portal-candidate:20261030-followup"
+  ],
+  "siteContainersAfter": 0,
+  "matchingImagesAfter": 0,
+  "preserved": "intelligence project database volume and unlabelled anonymous Docker volumes were not removed because they are not attributed to pompom-website."
+}

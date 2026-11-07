@@ -1,0 +1,16 @@
+{
+  "logicalRequests": 1,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "HTTPStartMarkerCount": 1,
+  "SDKStartMarkerCount": 1,
+  "responseFileCount": 1,
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "runPathExclusive": true,
+  "secondAttemptBlockedByExistingRunDirectory": true,
+  "provider": "openai",
+  "model": "gpt-6.1-sol"
+}

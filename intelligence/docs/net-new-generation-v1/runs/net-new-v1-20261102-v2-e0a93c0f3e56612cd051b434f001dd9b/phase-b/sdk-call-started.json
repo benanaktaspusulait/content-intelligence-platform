@@ -1,0 +1,6 @@
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "maximumLiveRequests": 1,
+  "SDKMaxRetries": 0
+}

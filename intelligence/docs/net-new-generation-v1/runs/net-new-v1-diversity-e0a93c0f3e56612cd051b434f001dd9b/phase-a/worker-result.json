@@ -1,0 +1,42 @@
+{
+  "status": "FAILED",
+  "usage": null,
+  "httpStatus": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "providerRequestId": null,
+  "httpRequestId": null,
+  "errorClass": "ValueError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "ValueError",
+      "httpStatus": null,
+      "providerCode": null
+    }
+  ],
+  "safeMessage": "Single compact probe failed; no retry, fallback or replacement.",
+  "safeTrace": [
+    {
+      "file": "semantic_compact_1_probe_v1.py",
+      "line": 86,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "semantic_compact_1_probe_v1.py",
+      "line": 81,
+      "function": "exact_guard"
+    }
+  ],
+  "providerMetadata": null,
+  "finishReason": null,
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 0,
+  "HTTPRequestsObserved": 0
+}

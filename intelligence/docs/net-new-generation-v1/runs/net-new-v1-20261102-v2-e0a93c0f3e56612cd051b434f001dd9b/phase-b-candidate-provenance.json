@@ -1,0 +1,10 @@
+{
+  "candidateId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b-opening-a-kiko-watering-can-return-loop",
+  "phaseBResponseSha256": "726da36eee25e3e7bef7b2fe5def02defd047e97f3e64ea1bf8bb4d29f81271c",
+  "phaseBPromptVersion": "semantic-story-expansion-prompt-v1",
+  "phaseBPromptSha256": "83e4cf1732477ccfe654656f0034832424576d308844f551b244b24b163a7637",
+  "generationRunId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low"
+}

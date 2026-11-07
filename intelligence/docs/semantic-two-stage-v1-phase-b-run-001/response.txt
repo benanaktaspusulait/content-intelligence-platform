@@ -1,0 +1,46 @@
+{
+  "ideas": [
+    {
+      "ideaId": "mimi-rolling-pin-dough-wall",
+      "title": "Flat-Pack Dough",
+      "protagonistSuggestion": "Mimi",
+      "everydayGoal": "Roll a sheet of dough flat on a kitchen table.",
+      "primaryObject": "Rolling pin",
+      "normalExpectation": "Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.",
+      "impossibleRule": "WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.",
+      "visibleTrigger": "Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.",
+      "whyThisObject": "A rolling pin applies broad downward pressure specifically to flatten dough; the upward wall visibly contradicts that ordinary use at the barrel's contact surface.",
+      "goalRuleRelationship": "The pressure Mimi needs to flatten the dough instead makes the contacted dough taller, holding the rolling pin above the surrounding flat sheet.",
+      "frameZeroDescription": "Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.",
+      "beats": [
+        {
+          "strategy": "Still pressing both handles in the opening pose, Mimi bends her elbows downward to finish flattening the raised strip.",
+          "visibleConsequence": "The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.",
+          "newInformation": "Continuing the flattening stroke makes the existing obstacle taller; the remaining dough is still flat on the tabletop."
+        },
+        {
+          "strategy": "Mimi lifts the pin clear, turns it a quarter-turn, and lowers it onto the flat dough extending toward the viewer from the wall's left end. She presses both handles downward.",
+          "visibleConsequence": "That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.",
+          "newInformation": "Changing the rolling direction creates a corner rather than a flat patch."
+        },
+        {
+          "strategy": "Keeping the pin in that orientation, Mimi moves it across the open center to the flat strip extending toward the viewer from the original wall's right end and presses both handles.",
+          "visibleConsequence": "The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.",
+          "newInformation": "Only the viewer-facing strip remains open and readily visible as a flat route across the sheet."
+        },
+        {
+          "strategy": "Mimi reaches the pin across that last flat strip, turns its barrel parallel to the original wall, and presses both handles downward.",
+          "visibleConsequence": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+          "newInformation": "Every attempted flattening stroke has become another wall around the untouched flat center."
+        }
+      ],
+      "finalPayoff": "The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.",
+      "suggestedPayoffFamily": "Accumulation into an enclosing structure",
+      "loopPotential": "No reset; hold on Mimi peeking over the dough box.",
+      "environment": "A simple kitchen with one clear tabletop and a plain background.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "Four downward presses turn the flattening task into visible construction. Changing the pin's placement and orientation makes the accumulating walls readable without dialogue.",
+      "durationSeconds": 16
+    }
+  ]
+}

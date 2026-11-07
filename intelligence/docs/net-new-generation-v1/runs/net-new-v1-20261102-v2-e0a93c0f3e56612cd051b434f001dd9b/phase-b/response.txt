@@ -1,0 +1,46 @@
+{
+  "ideas": [
+    {
+      "ideaId": "kiko-watering-can-return-loop-expanded",
+      "title": "Water Everywhere but There",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Water a small potted plant.",
+      "primaryObject": "An open-topped watering can with a plain spout.",
+      "normalExpectation": "Tilting the can with its spout above the pot sends water down onto the soil.",
+      "impossibleRule": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+      "visibleTrigger": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+      "whyThisObject": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+      "goalRuleRelationship": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+      "frameZeroDescription": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+      "beats": [
+        {
+          "strategy": "Without stopping the pour, Kiko lowers the downward-pointing spout until it nearly touches the dry soil.",
+          "visibleConsequence": "Water issuing just above the soil still curves upward and returns through the can's open top; Kiko bends low beside a completely dry pot.",
+          "newInformation": "Almost eliminating the gap below the spout does not put water on the soil."
+        },
+        {
+          "strategy": "Kiko lifts the still-tilted can sideways away from the pot and follows the returning stream with an exaggerated head tilt.",
+          "visibleConsequence": "The entire water arch travels with the can, continuously linking its spout to its own open top; the dry plant is left visibly separate.",
+          "newInformation": "Both ends of the apparent watering route belong to the can."
+        },
+        {
+          "strategy": "Kiko turns the can upright, then crouches and carries it behind the bench, looking upward toward the plant.",
+          "visibleConsequence": "The outflow stops, and the water already in the arch completes its return through the opening. Kiko positions the can below and behind the pot, with its spout and open top clear of the bench.",
+          "newInformation": "Kiko now has room to aim the upward-curving route above the plant rather than aim the spout down at it."
+        },
+        {
+          "strategy": "From below and behind the pot, Kiko tilts the can again, aiming to bring the rising arch over the drooping leaves.",
+          "visibleConsequence": "Water flows from the lowered spout, curves upward above the plant, and returns through the same can's open top behind the bench. Seen from the front, a grand blue arch crowns the little plant while its leaves still droop and its cracked soil stays completely dry; Kiko peers out beside it, shoulders sagging.",
+          "newInformation": "The plant can sit beneath a spectacular display of watering without receiving a drop."
+        }
+      ],
+      "finalPayoff": "Water flows from the lowered spout, curves upward above the plant, and returns through the same can's open top behind the bench. Seen from the front, a grand blue arch crowns the little plant while its leaves still droop and its cracked soil stays completely dry; Kiko peers out beside it, shoulders sagging.",
+      "suggestedPayoffFamily": "Abundance surrounding an untouched goal",
+      "loopPotential": "No reset; hold on the flowing arch above the dry plant.",
+      "environment": "A simple patio with a low bench and a plain cream wall.",
+      "dialogueNeed": "NONE",
+      "providerRationale": "The changing positions keep the same spout-to-opening return visible, ending with water prominently above the plant but still unavailable to its soil.",
+      "durationSeconds": 16
+    }
+  ]
+}

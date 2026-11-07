@@ -1,0 +1,1466 @@
+{
+  "seedId": "kiko-watering-can-return-loop",
+  "seedSha256": "effa6b432502f2d5a903f5b49860f85e942d7869d8d5127973debad55d8eebd6",
+  "openingSeedId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b-opening-a-kiko-watering-can-return-loop",
+  "openingScore": 35,
+  "acceptedFloor": 60,
+  "acceptedForExpansion": false,
+  "disposition": "OPENING_TOO_WEAK",
+  "blockers": [
+    "OPENING_TOO_WEAK"
+  ],
+  "Naturalness": {
+    "gateVersion": "premise-naturalness-v1",
+    "canonicalCreativeEvidence": {
+      "version": "canonical-creative-evidence-v1",
+      "contextSha256": "55950a1d600f6235bd83497a6fbfc02618ae84ce6e3bc93ead745afe1fb307db",
+      "facts": {
+        "goal": {
+          "declared": true,
+          "visibleInOpening": true,
+          "everyday": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Water a small potted plant.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+        },
+        "opening": {
+          "goalPresent": true,
+          "anomalyPresent": true,
+          "problemPresent": true,
+          "causalRelationshipVisible": true,
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+        },
+        "rule": {
+          "present": true,
+          "visible": false,
+          "dominant": false,
+          "goalRelated": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "trigger": {
+          "present": true,
+          "visible": true,
+          "classificationStatus": "PRESENT_UNCLASSIFIED",
+          "source": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "beats": [],
+        "payoff": {
+          "present": false,
+          "ruleLinked": false,
+          "stateChanging": false,
+          "visual": false,
+          "classificationStatus": "MISSING",
+          "source": []
+        },
+        "loop": {
+          "declared": false,
+          "supported": false,
+          "references": []
+        }
+      },
+      "provenance": {
+        "sourceKind": "SEMANTIC",
+        "structuredSourceSha256": "effa6b432502f2d5a903f5b49860f85e942d7869d8d5127973debad55d8eebd6",
+        "normalizedFieldsSha256": "7c713ffeae549f880f608c0ded5e558ec2415bc80e92d5abc8192417311d2cf8",
+        "textSha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+      },
+      "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+    },
+    "sourceExpectations": {
+      "normalExpectation": "Tilting the can with its spout above the pot sends water down onto the soil.",
+      "whyThisObject": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+      "visibleTrigger": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout."
+    },
+    "responseDiagnosis": {
+      "responsePresent": true,
+      "category": "B",
+      "classification": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "compatibility": "UNRESOLVED",
+      "meaning": "Source behavior existence and configured response/admission compatibility are separate."
+    },
+    "modelVersion": "affordance-expectations-v1",
+    "modelSha256": "f1b2d1978ca8043118a222fa39d041fd3755d0170b5633b3348b32914835bc79",
+    "primaryExpectedBehaviors": [
+      "moves when handled"
+    ],
+    "expectedResponse": [
+      "moves when handled"
+    ],
+    "actualImpossibleResponse": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+    "responseType": null,
+    "contradictionType": null,
+    "expectationDistance": null,
+    "premiseNaturalness": "CONTRIVED",
+    "premiseReviewStatus": "CONTRIVED",
+    "goalInterferenceType": null,
+    "triggerNaturalness": 0,
+    "objectSpecificityScore": 0,
+    "objectSpecificity": "LOW",
+    "functionalIrony": null,
+    "physicalPayoffPotential": 10,
+    "instantCausalLegibility": 35,
+    "staticFrameLegibility": 25,
+    "materialPropertyConnection": {
+      "property": null,
+      "supportedInObjectData": false
+    },
+    "whyThisObject": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion.",
+    "objectSwapTest": {
+      "classification": null,
+      "portableArchetypeFraction": null,
+      "comparisons": [],
+      "scope": "UNRESOLVED_SOURCE_BOUND_COUNTERFACTUAL; absence of a mapped policy is not proof of portable random magic."
+    },
+    "premiseEnergy": "LOW_ENERGY",
+    "admitted": false,
+    "flags": [
+      {
+        "code": "CAUSE_NOT_VISIBLE_AT_FRAME_ZERO",
+        "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+        "qualityScope": "CONFIGURED_USE_TO_AFFORDANCE_CONTRADICTION",
+        "canonicalCausalRelationshipVisible": true,
+        "evidenceClassification": "TAXONOMY_COVERAGE_LIMIT",
+        "openingEvidenceClassification": "CAUSAL_RELATION_NOT_VISIBLE"
+      },
+      {
+        "code": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "scope": "EVIDENCE_STATE_NOT_AUTOMATIC_VERDICT"
+      },
+      {
+        "code": "EXACT_OBJECT_DEPENDENCY_NOT_VERIFIED",
+        "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+      },
+      {
+        "code": "STILL_FRAME_CAUSALITY_NOT_ESTABLISHED",
+        "reason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved."
+      }
+    ],
+    "scoreUse": "NON_CANONICAL_PRE_RENDER_HEURISTICS_NOT_RETENTION",
+    "limitations": [
+      "Curated expectation/response coverage; absence of a policy is a review/filter decision, not proof that an idea is bad.",
+      "Static-frame and causal legibility are text-plan estimates, not observed pixels. Object specificity is function-family dependence, not unique-object originality."
+    ],
+    "responseEvidenceState": "RESPONSE_PRESENT_UNCLASSIFIED",
+    "legacyResponseClassification": "UNSUPPORTED_RESPONSE",
+    "evidenceMode": "premise-admission-opening-evidence-v1",
+    "responseEvidence": {
+      "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+      "classification": null,
+      "diagnosisCategory": "B",
+      "compatibility": "UNRESOLVED",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "impossibleRule",
+          "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "openingEvidence": {
+      "frameZeroDescription": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+      "sourceFrameVisual": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+      "requiresTextOrDialogue": false,
+      "characterVisible": true,
+      "goalDeclared": true,
+      "goalVisible": true,
+      "objectVisible": null,
+      "objectEvidence": {
+        "present": null,
+        "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+        "matches": [
+          "topped",
+          "watering",
+          "water",
+          "spout",
+          "open",
+          "plain",
+          "can",
+          "top"
+        ]
+      },
+      "problemVisible": true,
+      "anomalyVisible": true,
+      "triggerVisible": true,
+      "goalProblemRelationship": true,
+      "impossibleRelationVisible": null,
+      "ruleInferableFromStill": null,
+      "needsMotionToUnderstand": null,
+      "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+      "needsPriorContext": null,
+      "canonicalCausalLegibility": true,
+      "stillCausalLegibility": "UNRESOLVED",
+      "openingFactsState": "OPENING_FACTS_INCOMPLETE",
+      "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+      "stillPropertyContrast": [],
+      "explicitUsePose": false,
+      "sourceFunctionalContrastSupported": false,
+      "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+      "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "frameZeroDescription",
+          "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ],
+      "evidenceSupportedUnclassifiedFallback": {
+        "version": "OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1",
+        "eligible": false,
+        "used": false,
+        "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+        "conditions": {
+          "protagonistPresent": true,
+          "primaryObjectPresent": false,
+          "abnormalStateVisible": true,
+          "interactionVisible": false,
+          "goalInterferenceVisible": true,
+          "sourceCausalLinkSupported": false,
+          "ruleOpeningAgreement": true,
+          "frameZeroOnly": true,
+          "temporallyIndependent": true
+        },
+        "missingConditions": [
+          "primaryObjectPresent",
+          "interactionVisible",
+          "sourceCausalLinkSupported"
+        ],
+        "evidence": {
+          "goal": {
+            "sourceFields": [
+              "everydayGoal",
+              "frameZeroDescription"
+            ],
+            "matches": [
+              "plant",
+              "pott",
+              "water"
+            ],
+            "references": [
+              {
+                "sourceField": "everydayGoal",
+                "sourceText": "Water a small potted plant.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ]
+          },
+          "interaction": {
+            "sourceFields": [
+              "protagonist",
+              "primaryObject",
+              "visibleTrigger",
+              "frameZeroDescription"
+            ],
+            "matches": {
+              "triggerInFrame": [
+                "can",
+                "downward",
+                "hold",
+                "kiko",
+                "point",
+                "spout",
+                "water"
+              ],
+              "triggerInRule": [
+                "can",
+                "spout",
+                "tilt",
+                "water"
+              ],
+              "triggerActionInFrame": [
+                "downward",
+                "hold",
+                "point"
+              ],
+              "contactStateInFrame": true
+            },
+            "references": [
+              {
+                "sourceField": "protagonist",
+                "sourceText": "Kiko",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "primaryObject",
+                "sourceText": "An open-topped watering can with a plain spout.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "visibleTrigger",
+                "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ]
+          },
+          "abnormalState": {
+            "sourceFields": [
+              "impossibleRule",
+              "frameZeroDescription"
+            ],
+            "matches": [
+              "s",
+              "stream",
+              "top",
+              "upward"
+            ],
+            "references": [
+              {
+                "sourceField": "impossibleRule",
+                "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ]
+          },
+          "interference": {
+            "sourceFields": [
+              "everydayGoal",
+              "impossibleRule",
+              "goalRuleRelationship",
+              "frameZeroDescription"
+            ],
+            "matches": {
+              "relationToGoal": [
+                "plant",
+                "water"
+              ],
+              "relationToRule": [
+                "can",
+                "tilt",
+                "water"
+              ],
+              "goalInFrame": [
+                "plant",
+                "pott",
+                "water"
+              ]
+            },
+            "references": [
+              {
+                "sourceField": "everydayGoal",
+                "sourceText": "Water a small potted plant.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "impossibleRule",
+                "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "goalRuleRelationship",
+                "sourceText": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ]
+          },
+          "causalRelationship": {
+            "sourceFields": [
+              "visibleTrigger",
+              "impossibleRule",
+              "frameZeroDescription"
+            ],
+            "matches": {
+              "triggerInRule": [
+                "can",
+                "spout",
+                "tilt",
+                "water"
+              ],
+              "ruleEffectInFrame": [
+                "s",
+                "stream",
+                "top",
+                "upward"
+              ],
+              "triggerInFrame": [
+                "can",
+                "downward",
+                "hold",
+                "kiko",
+                "point",
+                "spout",
+                "water"
+              ]
+            },
+            "references": [
+              {
+                "sourceField": "visibleTrigger",
+                "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "impossibleRule",
+                "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ]
+          },
+          "ruleOpeningAgreement": {
+            "status": "SUPPORTED",
+            "conflicts": [],
+            "references": [
+              {
+                "sourceField": "impossibleRule",
+                "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "visibleTrigger",
+                "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+                "confidence": "EXPLICIT_SOURCE"
+              },
+              {
+                "sourceField": "frameZeroDescription",
+                "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                "confidence": "EXPLICIT_SOURCE"
+              }
+            ]
+          },
+          "laterStoryEvidence": {
+            "used": false,
+            "sourceFields": [
+              "frameZeroDescription"
+            ],
+            "excludedFields": [
+              "beats",
+              "finalPayoff",
+              "loopPotential",
+              "rationale",
+              "provider suggestions"
+            ]
+          },
+          "motionDependency": {
+            "independent": true,
+            "requiresTextOrDialogue": false,
+            "needsMotion": false,
+            "needsPriorContext": null,
+            "temporalLanguagePresent": false
+          }
+        },
+        "sourceScope": "FRAME_ZERO_ONLY_SOURCE_TEXT; NO_OBSERVED_PIXELS_OR_LATER_STORY_EVIDENCE",
+        "scorePolicy": "Existing strong opening score branch (90/85) only when every source-support condition passes; no taxonomy label or score claim is accepted as evidence."
+      },
+      "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+    },
+    "qualityEvidence": {
+      "normalExpectation": {
+        "present": true,
+        "source": "Tilting the can with its spout above the pot sends water down onto the soil.",
+        "functionGoalMatches": [],
+        "qualitySupport": "UNRESOLVED",
+        "limitation": "Explicit expected function is a plan fact; correctness of an unknown object model is not independently verified."
+      },
+      "exactObjectRelevance": {
+        "source": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+        "present": true,
+        "sourceFunctionMatches": [
+          "can",
+          "open",
+          "s",
+          "water"
+        ],
+        "qualitySupport": "UNRESOLVED",
+        "independentlyVerified": false,
+        "independentCounterfactualEvidence": null,
+        "reason": "Why-this-object is explicit, but the supplied18 sources contain no independent cross-object swap/counterfactual witness. Unknown label is not the failure criterion."
+      },
+      "expectedBehaviorContradiction": {
+        "present": true,
+        "classification": null,
+        "qualitySupport": "UNRESOLVED",
+        "expected": "Tilting the can with its spout above the pot sends water down onto the soil.",
+        "actual": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling."
+      },
+      "goalInterference": {
+        "present": true,
+        "source": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+        "classification": null,
+        "qualitySupport": "UNRESOLVED",
+        "relationMatchesGoal": [
+          "plant",
+          "water"
+        ],
+        "relationMatchesRule": [
+          "can",
+          "tilt",
+          "water"
+        ],
+        "visibleEffectGoalMatches": [],
+        "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+      },
+      "triggerNaturalness": {
+        "present": true,
+        "source": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "configuredScore": 0,
+        "sourceExpectationMatches": [
+          "can",
+          "spout",
+          "tilt",
+          "water"
+        ],
+        "qualitySupport": "UNRESOLVED",
+        "limitation": "An explicit use-trigger is not automatically compatible with every object model."
+      },
+      "physicalRelationship": {
+        "source": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+        "qualitySupport": "UNRESOLVED"
+      },
+      "arbitraryMagicRisk": {
+        "qualitySupport": "UNRESOLVED",
+        "explicitlyPortable": false,
+        "reason": "Unknown taxonomy alone does not establish arbitrary magic."
+      },
+      "functionalIrony": {
+        "sourceExpected": "Tilting the can with its spout above the pot sends water down onto the soil.",
+        "sourceActual": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+        "qualitySupport": "UNRESOLVED"
+      }
+    },
+    "qualityAssessmentStatus": "UNRESOLVED",
+    "admissionEvidenceStatus": "UNCLASSIFIED_BUT_EVIDENCE_SUPPORTED",
+    "metricInterpretation": {
+      "objectSpecificityScore": "UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unresolved comparison is not observed low specificity",
+      "triggerNaturalness": "UNCHANGED_CONFIGURED_MODEL_ESTIMATE; unknown classification is not missing trigger",
+      "premiseNaturalness": "CONSERVATIVE_COMPATIBILITY_GRADE; qualityAssessmentStatus distinguishes unresolved from proved weak"
+    },
+    "admissionCriteria": {
+      "naturalnessSupported": false,
+      "directGoalInterference": false,
+      "clearContradiction": false,
+      "exactObjectDependency": "UNRESOLVED",
+      "responseCompatibility": "UNRESOLVED",
+      "knownResponseLabelRequiredAtPresenceStage": false,
+      "taxonomyCoupledAdmissionDetected": true,
+      "taxonomyDependentCriteriaRemainUnresolved": true,
+      "unresolvedCriteria": [
+        "normalExpectation",
+        "exactObjectRelevance",
+        "expectedBehaviorContradiction",
+        "goalInterference",
+        "triggerNaturalness",
+        "physicalRelationship",
+        "arbitraryMagicRisk",
+        "functionalIrony"
+      ],
+      "exactRule": "naturalness in {STRONG,ACCEPTABLE} AND goalInterferenceType=DIRECT AND expectationDistance=CLEAR_CONTRADICTION",
+      "reason": "No automatic admission from field presence or label. No independent object-swap evidence supplied for the unclassified functional relationships; unresolved criteria remain unverified."
+    }
+  },
+  "admissionEvidence": {
+    "version": "evidence-supported-premise-admission-v2",
+    "admitted": false,
+    "status": "NOT_ADMITTED_INSUFFICIENT_EVIDENCE",
+    "provenance": "EVIDENCE_SUPPORTED_UNCLASSIFIED",
+    "coverage": "UNSUPPORTED",
+    "responseClassificationStatus": "PRESENT_UNCLASSIFIED",
+    "responseClassification": null,
+    "openingMandatory": true,
+    "openingPassed": false,
+    "corePremiseSupported": false,
+    "productionOpeningRequirementSatisfied": false,
+    "factors": {
+      "normalExpectation": {
+        "supported": true,
+        "reason": "A concrete ordinary function is explicit; a covered object role must corroborate it. An unmatched wording is unresolved, not proof of an incorrect function.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Tilting the can with its spout above the pot sends water down onto the soil.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "knownObjectFunctionAligned": true
+      },
+      "impossibleResponse": {
+        "supported": true,
+        "reason": "Abnormal outcomes are explicitly described; presence is independent of response class.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "objectSpecificity": {
+        "supported": false,
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass.",
+        "evidenceRefs": [
+          {
+            "sourceField": "primaryObject",
+            "sourceText": "An open-topped watering can with a plain spout.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Tilting the can with its spout above the pot sends water down onto the soil.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "functionAnchors": [
+          "tilt"
+        ],
+        "triggerAnchors": [
+          "tilt"
+        ],
+        "supportedBeats": [],
+        "identityTerms": [
+          "open",
+          "plain",
+          "spout",
+          "topp",
+          "water"
+        ],
+        "effectSubjects": [],
+        "sourceShortName": [],
+        "normalActionEvidence": {
+          "predicate": "tilt",
+          "target": [
+            "can"
+          ],
+          "sourceClause": "Tilting the can with its spout above the pot sends water down onto the soil",
+          "supported": true
+        },
+        "goalActionEvidence": {
+          "predicate": "water",
+          "target": [
+            "plant",
+            "pott",
+            "small"
+          ],
+          "sourceClause": "Water a small potted plant",
+          "supported": true
+        },
+        "matchedFunctionOperations": [
+          "tilt",
+          "water"
+        ]
+      },
+      "trigger": {
+        "supported": true,
+        "reason": "A concrete source action is linked to the declared abnormal behavior.",
+        "evidenceRefs": [
+          {
+            "sourceField": "visibleTrigger",
+            "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "actionEvidence": {
+          "predicate": "hold",
+          "target": [
+            "can",
+            "tilt",
+            "water"
+          ],
+          "sourceClause": "holds the watering can tilted",
+          "supported": true
+        }
+      },
+      "goalInterference": {
+        "supported": false,
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required.",
+        "evidenceRefs": [
+          {
+            "sourceField": "goalRuleRelationship",
+            "sourceText": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "sourceJudgment": {
+          "present": true,
+          "source": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+          "classification": null,
+          "qualitySupport": "UNRESOLVED",
+          "relationMatchesGoal": [
+            "plant",
+            "water"
+          ],
+          "relationMatchesRule": [
+            "can",
+            "tilt",
+            "water"
+          ],
+          "visibleEffectGoalMatches": [],
+          "method": "EXPLICIT_PREVENTION_PLUS_GOAL_RULE_EFFECT_LINKS_AND_ACCEPTED_CANONICAL_RULE_SUPPORT"
+        }
+      },
+      "causalCoherence": {
+        "supported": false,
+        "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats.",
+        "evidenceRefs": [
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "ruleSupported": false,
+        "dominantRule": false,
+        "violations": [],
+        "reviewNotes": []
+      },
+      "nonArbitrary": {
+        "supported": false,
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Tilting the can with its spout above the pot sends water down onto the soil.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ],
+        "explicitlyArbitrary": false
+      },
+      "functionalAffordanceRelationship": {
+        "supported": false,
+        "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name.",
+        "evidenceRefs": [
+          {
+            "sourceField": "normalExpectation",
+            "sourceText": "Tilting the can with its spout above the pot sends water down onto the soil.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+            "confidence": "EXPLICIT_SOURCE"
+          },
+          {
+            "sourceField": "whyThisObject",
+            "sourceText": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+            "confidence": "EXPLICIT_SOURCE"
+          }
+        ]
+      },
+      "openingLegibility": {
+        "supported": false,
+        "reason": "Existing opening score>=60 remains authoritative and is independent of core premise admission.",
+        "evidenceRefs": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "score": 35,
+        "required": true,
+        "standard": {
+          "frameZeroDescription": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+          "sourceFrameVisual": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+          "requiresTextOrDialogue": false,
+          "characterVisible": true,
+          "goalDeclared": true,
+          "goalVisible": true,
+          "objectVisible": null,
+          "objectEvidence": {
+            "present": null,
+            "method": "LITERAL_LABEL_OR_SOURCE_COMPOUND_PARTS_OR_LABEL_HEAD",
+            "matches": [
+              "topped",
+              "watering",
+              "water",
+              "spout",
+              "open",
+              "plain",
+              "can",
+              "top"
+            ]
+          },
+          "problemVisible": true,
+          "anomalyVisible": true,
+          "triggerVisible": true,
+          "goalProblemRelationship": true,
+          "impossibleRelationVisible": null,
+          "ruleInferableFromStill": null,
+          "needsMotionToUnderstand": null,
+          "motionInferenceScope": "Explicit temporal claim requires a sequence to verify; the static goal/problem may still be visible.",
+          "needsPriorContext": null,
+          "canonicalCausalLegibility": true,
+          "stillCausalLegibility": "UNRESOLVED",
+          "openingFactsState": "OPENING_FACTS_INCOMPLETE",
+          "openingQualityState": "OPENING_LEGIBILITY_NOT_ESTABLISHED",
+          "stillPropertyContrast": [],
+          "explicitUsePose": false,
+          "sourceFunctionalContrastSupported": false,
+          "blockerClassification": "CAUSAL_RELATION_NOT_VISIBLE",
+          "blockerReason": "Score below60. Canonical fact overlap establishes declared/linked plan facts, not frozen-frame functional causality. Motion/context and exact-object contradiction may remain unresolved.",
+          "evidenceRefs": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ],
+          "evidenceSupportedUnclassifiedFallback": {
+            "version": "OPENING_EVIDENCE_SUPPORTED_COVERAGE_V1",
+            "eligible": false,
+            "used": false,
+            "responseState": "RESPONSE_PRESENT_UNCLASSIFIED",
+            "conditions": {
+              "protagonistPresent": true,
+              "primaryObjectPresent": false,
+              "abnormalStateVisible": true,
+              "interactionVisible": false,
+              "goalInterferenceVisible": true,
+              "sourceCausalLinkSupported": false,
+              "ruleOpeningAgreement": true,
+              "frameZeroOnly": true,
+              "temporallyIndependent": true
+            },
+            "missingConditions": [
+              "primaryObjectPresent",
+              "interactionVisible",
+              "sourceCausalLinkSupported"
+            ],
+            "evidence": {
+              "goal": {
+                "sourceFields": [
+                  "everydayGoal",
+                  "frameZeroDescription"
+                ],
+                "matches": [
+                  "plant",
+                  "pott",
+                  "water"
+                ],
+                "references": [
+                  {
+                    "sourceField": "everydayGoal",
+                    "sourceText": "Water a small potted plant.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "frameZeroDescription",
+                    "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  }
+                ]
+              },
+              "interaction": {
+                "sourceFields": [
+                  "protagonist",
+                  "primaryObject",
+                  "visibleTrigger",
+                  "frameZeroDescription"
+                ],
+                "matches": {
+                  "triggerInFrame": [
+                    "can",
+                    "downward",
+                    "hold",
+                    "kiko",
+                    "point",
+                    "spout",
+                    "water"
+                  ],
+                  "triggerInRule": [
+                    "can",
+                    "spout",
+                    "tilt",
+                    "water"
+                  ],
+                  "triggerActionInFrame": [
+                    "downward",
+                    "hold",
+                    "point"
+                  ],
+                  "contactStateInFrame": true
+                },
+                "references": [
+                  {
+                    "sourceField": "protagonist",
+                    "sourceText": "Kiko",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "primaryObject",
+                    "sourceText": "An open-topped watering can with a plain spout.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "visibleTrigger",
+                    "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "frameZeroDescription",
+                    "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  }
+                ]
+              },
+              "abnormalState": {
+                "sourceFields": [
+                  "impossibleRule",
+                  "frameZeroDescription"
+                ],
+                "matches": [
+                  "s",
+                  "stream",
+                  "top",
+                  "upward"
+                ],
+                "references": [
+                  {
+                    "sourceField": "impossibleRule",
+                    "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "frameZeroDescription",
+                    "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  }
+                ]
+              },
+              "interference": {
+                "sourceFields": [
+                  "everydayGoal",
+                  "impossibleRule",
+                  "goalRuleRelationship",
+                  "frameZeroDescription"
+                ],
+                "matches": {
+                  "relationToGoal": [
+                    "plant",
+                    "water"
+                  ],
+                  "relationToRule": [
+                    "can",
+                    "tilt",
+                    "water"
+                  ],
+                  "goalInFrame": [
+                    "plant",
+                    "pott",
+                    "water"
+                  ]
+                },
+                "references": [
+                  {
+                    "sourceField": "everydayGoal",
+                    "sourceText": "Water a small potted plant.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "impossibleRule",
+                    "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "goalRuleRelationship",
+                    "sourceText": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "frameZeroDescription",
+                    "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  }
+                ]
+              },
+              "causalRelationship": {
+                "sourceFields": [
+                  "visibleTrigger",
+                  "impossibleRule",
+                  "frameZeroDescription"
+                ],
+                "matches": {
+                  "triggerInRule": [
+                    "can",
+                    "spout",
+                    "tilt",
+                    "water"
+                  ],
+                  "ruleEffectInFrame": [
+                    "s",
+                    "stream",
+                    "top",
+                    "upward"
+                  ],
+                  "triggerInFrame": [
+                    "can",
+                    "downward",
+                    "hold",
+                    "kiko",
+                    "point",
+                    "spout",
+                    "water"
+                  ]
+                },
+                "references": [
+                  {
+                    "sourceField": "visibleTrigger",
+                    "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "impossibleRule",
+                    "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "frameZeroDescription",
+                    "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  }
+                ]
+              },
+              "ruleOpeningAgreement": {
+                "status": "SUPPORTED",
+                "conflicts": [],
+                "references": [
+                  {
+                    "sourceField": "impossibleRule",
+                    "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "visibleTrigger",
+                    "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  },
+                  {
+                    "sourceField": "frameZeroDescription",
+                    "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+                    "confidence": "EXPLICIT_SOURCE"
+                  }
+                ]
+              },
+              "laterStoryEvidence": {
+                "used": false,
+                "sourceFields": [
+                  "frameZeroDescription"
+                ],
+                "excludedFields": [
+                  "beats",
+                  "finalPayoff",
+                  "loopPotential",
+                  "rationale",
+                  "provider suggestions"
+                ]
+              },
+              "motionDependency": {
+                "independent": true,
+                "requiresTextOrDialogue": false,
+                "needsMotion": false,
+                "needsPriorContext": null,
+                "temporalLanguagePresent": false
+              }
+            },
+            "sourceScope": "FRAME_ZERO_ONLY_SOURCE_TEXT; NO_OBSERVED_PIXELS_OR_LATER_STORY_EVIDENCE",
+            "scorePolicy": "Existing strong opening score branch (90/85) only when every source-support condition passes; no taxonomy label or score claim is accepted as evidence."
+          },
+          "scope": "SOURCE_TEXT_PLAN_DIAGNOSTIC_NOT_OBSERVED_PIXELS; None means not established, never an invented yes/no."
+        }
+      }
+    },
+    "reasons": [
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "objectSpecificity",
+        "reason": "Non-identity function operands link expectation, rule, trigger and at least two visible consequences; whyThisObject alone cannot pass."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "goalInterference",
+        "reason": "Existing canonical goal/effect/prevention links support DIRECT interference; no response label is required."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "causalCoherence",
+        "reason": "Action→response→problem must be canonically grounded and preserve declared source constraints across beats."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "nonArbitrary",
+        "reason": "A visible goal obstruction is insufficient when no ordinary-function dependency is supported."
+      },
+      {
+        "code": "FACTOR_NOT_ESTABLISHED",
+        "factor": "functionalAffordanceRelationship",
+        "reason": "The impossible effect changes the object’s stated function/operand, not an unrelated event attached to its name."
+      },
+      {
+        "code": "OPENING_BELOW_EXISTING_FLOOR",
+        "score": 35,
+        "minimum": 60,
+        "reason": "No fallback can make an opening below60 production-admissible."
+      }
+    ],
+    "sourceContextSha256": "55950a1d600f6235bd83497a6fbfc02618ae84ce6e3bc93ead745afe1fb307db",
+    "evidenceScope": "SOURCE_BOUND_PLAN_INFERENCE_NOT_OBSERVED_PIXELS"
+  },
+  "admissionApplicability": "PARTIAL_SEED_ONLY_STORY_FACTORS_UNAVAILABLE",
+  "storyDependentCriteriaUnavailable": [
+    "two supporting beat consequences",
+    "across-beat causal coherence",
+    "payoff"
+  ],
+  "ruleClarity": {
+    "responseEvidence": {
+      "state": "RESPONSE_PRESENT_UNCLASSIFIED",
+      "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+      "classification": null,
+      "diagnosisCategory": "B",
+      "compatibility": "UNRESOLVED",
+      "evidenceRefs": [
+        {
+          "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+          "sourceField": "impossibleRule",
+          "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+          "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+          "confidence": "EXPLICIT"
+        }
+      ]
+    },
+    "triggerActionEvidence": {
+      "predicate": "hold",
+      "target": [
+        "can",
+        "tilt",
+        "water"
+      ],
+      "sourceClause": "holds the watering can tilted",
+      "supported": true
+    },
+    "findings": []
+  },
+  "structuredCanonicalInput": {
+    "projection": {
+      "version": "semantic-evidence-adapter-v1",
+      "sourceSha256": "effa6b432502f2d5a903f5b49860f85e942d7869d8d5127973debad55d8eebd6",
+      "normalizedFieldsSha256": "7c713ffeae549f880f608c0ded5e558ec2415bc80e92d5abc8192417311d2cf8",
+      "candidateId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b-opening-a-kiko-watering-can-return-loop",
+      "fields": {
+        "visibleGoalEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "everydayGoal",
+              "sourceText": "Water a small potted plant.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "primaryObjectEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "primaryObject",
+              "sourceText": "An open-topped watering can with a plain spout.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "expectedAffordanceEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "normalExpectation",
+              "sourceText": "Tilting the can with its spout above the pot sends water down onto the soil.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "coreRuleEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED_CAUSAL_ENGINE",
+          "classificationBasis": "EXISTING_NORMALIZER",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "impossibleRule",
+              "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "triggerEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED_TRIGGER",
+          "classificationBasis": "EXISTING_NORMALIZER",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "visibleTrigger",
+              "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "openingProblemEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "frameZeroDescription",
+              "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "payoffEvidence": {
+          "presence": "MISSING",
+          "classification": "UNCLASSIFIED_PAYOFF_PATTERN",
+          "classificationBasis": "EXISTING_CREATIVE_SHAPE",
+          "evidence": []
+        },
+        "loopEvidence": {
+          "presence": "MISSING",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": []
+        },
+        "affordanceRelationshipEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "whyThisObject",
+              "sourceText": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        },
+        "goalRuleRelationshipEvidence": {
+          "presence": "PRESENT",
+          "classification": "UNCLASSIFIED",
+          "classificationBasis": "NOT_CLASSIFIED",
+          "evidence": [
+            {
+              "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+              "sourceField": "goalRuleRelationship",
+              "sourceText": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+              "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+              "confidence": "EXPLICIT"
+            }
+          ]
+        }
+      },
+      "beats": [],
+      "describedBeatCount": 0,
+      "enginePresence": "PRESENT",
+      "engineClassification": "UNCLASSIFIED_CAUSAL_ENGINE",
+      "payoffPresence": "MISSING",
+      "payoffClassification": "UNCLASSIFIED_PAYOFF_PATTERN",
+      "payoffStatus": "PAYOFF_MISSING",
+      "providerDeclaredLoop": {
+        "presence": "MISSING",
+        "classification": "UNCLASSIFIED",
+        "classificationBasis": "NOT_CLASSIFIED",
+        "evidence": []
+      },
+      "structurePresence": "MISSING",
+      "structureClassification": "PRESENT_UNCLASSIFIED_EVIDENCE",
+      "fullySpecifiedBeatCount": 0
+    },
+    "semanticFields": {
+      "everydayGoal": "Water a small potted plant.",
+      "primaryObject": "An open-topped watering can with a plain spout.",
+      "normalExpectation": "Tilting the can with its spout above the pot sends water down onto the soil.",
+      "impossibleRule": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+      "visibleTrigger": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+      "frameZeroDescription": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+      "finalPayoff": "",
+      "loopPotential": "",
+      "whyThisObject": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+      "goalRuleRelationship": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+      "beats": []
+    },
+    "protagonist": "Kiko",
+    "timing": []
+  },
+  "canonicalReceipt": {
+    "version": "canonical-creative-evidence-v1",
+    "contextSha256": "55950a1d600f6235bd83497a6fbfc02618ae84ce6e3bc93ead745afe1fb307db",
+    "facts": {
+      "goal": {
+        "declared": true,
+        "visibleInOpening": true,
+        "everyday": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "everydayGoal",
+            "sourceText": "Water a small potted plant.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "everydayBasis": "EXPLICIT_EVERYDAY_GOAL_OBJECT_EXPECTATION_FIELDS"
+      },
+      "opening": {
+        "goalPresent": true,
+        "anomalyPresent": true,
+        "problemPresent": true,
+        "causalRelationshipVisible": true,
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "frameZeroDescription",
+            "sourceText": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ],
+        "supportMethod": "ACCEPTED_SOURCE_OVERLAP_PLUS_TRIGGER_OPENING_OVERLAP"
+      },
+      "rule": {
+        "present": true,
+        "visible": false,
+        "dominant": false,
+        "goalRelated": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "impossibleRule",
+            "sourceText": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "trigger": {
+        "present": true,
+        "visible": true,
+        "classificationStatus": "PRESENT_UNCLASSIFIED",
+        "source": [
+          {
+            "sourceType": "SEMANTIC_NORMALIZED_FIELD",
+            "sourceField": "visibleTrigger",
+            "sourceText": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+            "projectionRule": "semantic-evidence-adapter-v1:explicit-field-presence",
+            "confidence": "EXPLICIT"
+          }
+        ]
+      },
+      "beats": [],
+      "payoff": {
+        "present": false,
+        "ruleLinked": false,
+        "stateChanging": false,
+        "visual": false,
+        "classificationStatus": "MISSING",
+        "source": []
+      },
+      "loop": {
+        "declared": false,
+        "supported": false,
+        "references": []
+      }
+    },
+    "provenance": {
+      "sourceKind": "SEMANTIC",
+      "structuredSourceSha256": "effa6b432502f2d5a903f5b49860f85e942d7869d8d5127973debad55d8eebd6",
+      "normalizedFieldsSha256": "7c713ffeae549f880f608c0ded5e558ec2415bc80e92d5abc8192417311d2cf8",
+      "textSha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    "limitation": "Source-text evidence and deterministic support checks; no observed frames or semantic truth claim."
+  },
+  "providerCalls": 0,
+  "scope": "No score bonus from seed annotation fields. Unknown taxonomy is not itself a rejection; unsupported story-dependent admission is not fabricated or treated as an automatic seed failure."
+}

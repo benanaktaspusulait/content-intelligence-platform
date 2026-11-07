@@ -1,0 +1,41 @@
+{
+  "version": "net-new-opening-exclusions-v1",
+  "results": [
+    {
+      "conceptId": "mimi-rolling-pin-dough-wall",
+      "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/source-seed.json",
+      "sourceSha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+      "status": "NO_KNOWN_EQUIVALENT",
+      "matchingAxes": [],
+      "axisEvidence": {
+        "protagonist": false,
+        "goal": false,
+        "object": false,
+        "coreRuleResponse": false,
+        "triggerResponse": false,
+        "firstFrameRelation": false
+      },
+      "scope": "SOURCE_BACKED_CATEGORICAL_OPENING_EXCLUSION_NOT_GENERAL_SIMILARITY_SCORE"
+    },
+    {
+      "conceptId": "kiko-watering-can-return-loop",
+      "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/net-new-generation-v1/runs/net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b/frozen-opening-seed.json",
+      "sourceSha256": "74d497f3bbbcb99b491d93bd5630a6b880a8f2381bdd14e4f9ee3b7809265c8d",
+      "status": "NO_KNOWN_EQUIVALENT",
+      "matchingAxes": [
+        "protagonist"
+      ],
+      "axisEvidence": {
+        "protagonist": true,
+        "goal": false,
+        "object": false,
+        "coreRuleResponse": false,
+        "triggerResponse": false,
+        "firstFrameRelation": false
+      },
+      "scope": "SOURCE_BACKED_CATEGORICAL_OPENING_EXCLUSION_NOT_GENERAL_SIMILARITY_SCORE"
+    }
+  ],
+  "disposition": "NO_KNOWN_EQUIVALENT",
+  "unknownIsPass": false
+}

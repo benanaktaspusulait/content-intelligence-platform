@@ -1,0 +1,23 @@
+{
+  "version": "net-new-opening-exclusions-v1",
+  "results": [
+    {
+      "conceptId": "mimi-rolling-pin-dough-wall",
+      "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/source-seed.json",
+      "sourceSha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+      "status": "NO_KNOWN_EQUIVALENT",
+      "matchingAxes": [],
+      "axisEvidence": {
+        "protagonist": false,
+        "goal": false,
+        "object": false,
+        "coreRuleResponse": false,
+        "triggerResponse": false,
+        "firstFrameRelation": false
+      },
+      "scope": "SOURCE_BACKED_CATEGORICAL_OPENING_EXCLUSION_NOT_GENERAL_SIMILARITY_SCORE"
+    }
+  ],
+  "disposition": "NO_KNOWN_EQUIVALENT",
+  "unknownIsPass": false
+}

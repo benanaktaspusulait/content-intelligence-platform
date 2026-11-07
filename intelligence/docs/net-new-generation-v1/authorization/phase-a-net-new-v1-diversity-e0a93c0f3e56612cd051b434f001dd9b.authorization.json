@@ -1,0 +1,23 @@
+{
+  "authorizationVersion": "phase-a-single-request-binding-v1",
+  "authorizedPhase": "A",
+  "runId": "net-new-v1-diversity-e0a93c0f3e56612cd051b434f001dd9b",
+  "authorizationText": "AUTHORIZE_PHASE_A:net-new-v1-diversity-e0a93c0f3e56612cd051b434f001dd9b:MAX_PROVIDER_REQUESTS=1",
+  "authorizationFile": "intelligence/docs/net-new-generation-v1/authorization/phase-a-net-new-v1-diversity-e0a93c0f3e56612cd051b434f001dd9b.txt",
+  "authorizationFileSha256": "3d9d833f51c1138de29c2518ba269cda55941bd12c2d6e0b11ae0139a6a2a937",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "candidateCount": 1,
+  "requestArgumentsSha256": "e0a93c0f3e56612cd051b434f001dd9b29e794bf91195ed39f54e35f61864bce",
+  "acceptedPromptSha256": "948c3658fa68907d4ee1d6c969a94f55584fe052fcf4cd968f772cfdf889632f",
+  "schemaName": "semantic_opening_seed_v1",
+  "historicalExclusionContextVersion": "net-new-opening-exclusions-v1",
+  "historicalExclusionContextSha256": "9903ea21f764c52b2b716d2a26fb8cb6e00c8a6728bbe69db0714e4478e827aa",
+  "maxProviderRequests": 1,
+  "retries": 0,
+  "fallbacks": 0,
+  "phaseBAuthorized": false,
+  "rendersAuthorized": false,
+  "sourceOfAuthorization": "User-provided execution request in this turn"
+}

@@ -1,0 +1,17 @@
+{
+  "seedId": "kiko-watering-can-return-loop",
+  "protagonistSuggestion": "Kiko",
+  "everydayGoal": "Water a small potted plant.",
+  "primaryObject": "An open-topped watering can with a plain spout.",
+  "normalExpectation": "Tilting the can with its spout above the pot sends water down onto the soil.",
+  "impossibleRule": "WHEN water flows out of the tilted watering can's spout, THE water stream ALWAYS curves upward and returns through that same can's open top instead of falling.",
+  "visibleTrigger": "Kiko holds the watering can tilted, with water visibly issuing from its downward-pointing spout.",
+  "whyThisObject": "The can's ordinary outlet and filling opening become the two ends of a plainly visible water loop.",
+  "goalRuleRelationship": "The same tilt meant to deliver water to the soil sends the water back into the can, leaving the plant unwatered.",
+  "frameZeroDescription": "Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle. The plain spout points downward directly above the pot's broad patch of dry, cracked soil. A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top. The whole water arch is visible against a plain cream wall. The space between the spout and the soil is empty, and the plant's two large leaves droop over the pot's sides.",
+  "openingPhysicalState": "\"A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top.\"",
+  "openingGoalEvidence": "\"Kiko stands beside a single potted plant on a low patio bench, holding an open-topped watering can in both hands at a pouring angle.\" \"The plain spout points downward directly above the pot's broad patch of dry, cracked soil.\"",
+  "openingProblemEvidence": "\"The space between the spout and the soil is empty\" and \"A thick, continuous blue water stream extends from the spout, curls upward in a large inverted U, and enters the can's open top.\"",
+  "environment": "A simple patio with a low bench and a plain cream wall.",
+  "dialogueNeed": "NONE"
+}

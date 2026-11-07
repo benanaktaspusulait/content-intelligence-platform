@@ -1,0 +1,21 @@
+{
+  "seeds": [
+    {
+      "seedId": "kiko-cereal-ring-rim",
+      "protagonistSuggestion": "Kiko",
+      "everydayGoal": "Pour cereal into a breakfast bowl.",
+      "primaryObject": "Breakfast bowl",
+      "normalExpectation": "Small cereal rings pass through the bowl's opening and collect inside it.",
+      "impossibleRule": "WHEN a cereal ring touches the bowl's inner rim, THE cereal ring ALWAYS expands to three times the width of the bowl's opening.",
+      "visibleTrigger": "A cereal ring is in direct contact with the bowl's inner rim.",
+      "whyThisObject": "The bowl's rim is the boundary cereal ordinarily passes to enter the bowl; enlarging cereal at that boundary makes the receiving object obstruct its own use.",
+      "goalRuleRelationship": "The expanded cereal ring bridges the bowl's opening, leaving the poured cereal piled above the rim instead of collected inside.",
+      "frameZeroDescription": "At a small kitchen table, Kiko leans forward holding an open cereal box tipped downward directly over a breakfast bowl. A cereal ring three times the width of the bowl lies across its opening, with its lower curve visibly seated against the inner rim. The oversized ring's central hole is narrower than an ordinary cereal ring. Several ordinary cereal rings form a small heap on top of the oversized ring beneath the box's open spout. The bowl's empty interior is visible through the narrow central hole.",
+      "openingPhysicalState": "\"A cereal ring three times the width of the bowl lies across its opening, with its lower curve visibly seated against the inner rim.\"",
+      "openingGoalEvidence": "\"Kiko leans forward holding an open cereal box tipped downward directly over a breakfast bowl.\"",
+      "openingProblemEvidence": "\"Several ordinary cereal rings form a small heap on top of the oversized ring beneath the box's open spout. The bowl's empty interior is visible through the narrow central hole.\"",
+      "environment": "A small kitchen table with a plain background.",
+      "dialogueNeed": "NONE"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 964,
+    "prompt_tokens": 1287,
+    "total_tokens": 2251,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 512,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 1284,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 31134.722417,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 31146.613417,
+  "providerRequestId": "chatcmpl-EfvrvLzHMQzNqCFjATgA3DdaazApc",
+  "httpRequestId": "req_7defb9918c3848d1897e6bf7e68080c4",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EfvrvLzHMQzNqCFjATgA3DdaazApc",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "phase": "A",
+  "generationRunId": "net-new-v1-20261102-post-kiko-rejection-001",
+  "requestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "sdkRetries": 0,
+  "replacements": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "promptSha256": "948c3658fa68907d4ee1d6c969a94f55584fe052fcf4cd968f772cfdf889632f",
+  "timing": {
+    "wallClockStartUTC": "2026-11-02T23:36:41.999547+00:00",
+    "wallClockEndUTC": "2026-11-02T23:37:13.906320+00:00",
+    "monotonicElapsedSeconds": 31.906462708,
+    "wallClockSpanSeconds": 31.906773,
+    "wallMinusMonotonicSeconds": 0.00031029200000176616,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2058
+}

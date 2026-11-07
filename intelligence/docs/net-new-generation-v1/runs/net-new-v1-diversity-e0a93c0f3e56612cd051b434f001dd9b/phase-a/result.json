@@ -1,0 +1,64 @@
+{
+  "status": "FAILED",
+  "usage": null,
+  "httpStatus": null,
+  "timeToHeadersMs": null,
+  "firstTokenMs": null,
+  "firstUsableContentMs": null,
+  "providerRequestId": null,
+  "httpRequestId": null,
+  "errorClass": "ValueError",
+  "exceptionChain": [
+    {
+      "exceptionClass": "ValueError",
+      "httpStatus": null,
+      "providerCode": null
+    }
+  ],
+  "safeMessage": "Single compact probe failed; no retry, fallback or replacement.",
+  "safeTrace": [
+    {
+      "file": "semantic_compact_1_probe_v1.py",
+      "line": 86,
+      "function": "worker"
+    },
+    {
+      "file": "creative_provider_profiles.py",
+      "line": 72,
+      "function": "complete"
+    },
+    {
+      "file": "semantic_compact_1_probe_v1.py",
+      "line": 81,
+      "function": "exact_guard"
+    }
+  ],
+  "providerMetadata": null,
+  "finishReason": null,
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 0,
+  "HTTPRequestsObserved": 0,
+  "phase": "A",
+  "generationRunId": "net-new-v1-diversity-e0a93c0f3e56612cd051b434f001dd9b",
+  "requestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "sdkRetries": 0,
+  "replacements": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "promptSha256": "948c3658fa68907d4ee1d6c969a94f55584fe052fcf4cd968f772cfdf889632f",
+  "timing": {
+    "wallClockStartUTC": "2026-11-02T22:52:46.436562+00:00",
+    "wallClockEndUTC": "2026-11-02T22:52:47.149228+00:00",
+    "monotonicElapsedSeconds": 0.712453292,
+    "wallClockSpanSeconds": 0.712666,
+    "wallMinusMonotonicSeconds": 0.0002127080000000614,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 0
+}

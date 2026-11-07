@@ -1,0 +1,44 @@
+{
+  "reviewVersion": "net-new-creative-territory-review-v1",
+  "generationRunId": "net-new-v1-20261102-001",
+  "classification": "DUPLICATE_CREATIVE_TERRITORY",
+  "linkedConceptId": "mimi-rolling-pin-dough-wall",
+  "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/source-seed.json",
+  "sourceSha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+  "candidateSeedSha256": "306f82ff64f5970f698fc9d4edf70ac4f3e156e829441403e56a3e1f8ceb5c77",
+  "providerResponseSha256": "dc0efa713ca37c0d0d7c5a27c7aad13492ad700fe7f2373eff5d148da44c7b04",
+  "originalOpeningGateSha256": "fcfa62175bc4e0d7a889490d092c625e5218c8a49f4bfcc5f1ca25e3b923ab57",
+  "noveltyEvidence": {
+    "version": "net-new-opening-exclusions-v1",
+    "results": [
+      {
+        "conceptId": "mimi-rolling-pin-dough-wall",
+        "sourceRecord": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/semantic-two-stage-v1-phase-b-run-001/source-seed.json",
+        "sourceSha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+        "status": "DUPLICATE_CREATIVE_TERRITORY",
+        "matchingAxes": [
+          "protagonist",
+          "goal",
+          "object",
+          "coreRuleResponse",
+          "triggerResponse",
+          "firstFrameRelation"
+        ],
+        "axisEvidence": {
+          "protagonist": true,
+          "goal": true,
+          "object": true,
+          "coreRuleResponse": true,
+          "triggerResponse": true,
+          "firstFrameRelation": true
+        },
+        "scope": "SOURCE_BACKED_CATEGORICAL_OPENING_EXCLUSION_NOT_GENERAL_SIMILARITY_SCORE"
+      }
+    ],
+    "disposition": "DUPLICATE_CREATIVE_TERRITORY",
+    "unknownIsPass": false
+  },
+  "phaseBExecuted": false,
+  "renderExecuted": false,
+  "originalArtifactsModified": false
+}

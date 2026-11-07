@@ -1,0 +1,17 @@
+{
+  "runId": "semantic-two-stage-v1-phase-b-run-001",
+  "sourceSeedId": "mimi-rolling-pin-dough-wall",
+  "sourceSeedSha256": "90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "phase": "B",
+  "promptVersion": "semantic-story-expansion-prompt-v1",
+  "maximumLiveRequests": 1,
+  "maximumPhaseBRequests": 1,
+  "retries": 0,
+  "sdkRetries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0
+}

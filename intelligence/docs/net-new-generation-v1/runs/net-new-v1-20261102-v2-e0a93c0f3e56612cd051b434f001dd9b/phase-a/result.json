@@ -1,0 +1,62 @@
+{
+  "status": "COMPLETED",
+  "usage": {
+    "completion_tokens": 929,
+    "prompt_tokens": 1188,
+    "total_tokens": 2117,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 397,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 1185,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "httpStatus": 200,
+  "timeToHeadersMs": 29272.400917,
+  "firstTokenMs": null,
+  "firstUsableContentMs": 29285.442167,
+  "providerRequestId": "chatcmpl-EfvNBxdFVDGccpxJgvZwVRQDFEUix",
+  "httpRequestId": "req_5859649ee5044b399c3e78953f064391",
+  "providerMetadata": {
+    "requestId": "chatcmpl-EfvNBxdFVDGccpxJgvZwVRQDFEUix",
+    "finishReason": "stop",
+    "apiStatus": "COMPLETED",
+    "provider": "openai",
+    "model": "gpt-6.1-sol"
+  },
+  "finishReason": "stop",
+  "providerRequestIdMeaning": "Completion response.id; HTTP x-request-id recorded separately if observable.",
+  "providerReportedCostUsd": null,
+  "SDKRequestsForwarded": 1,
+  "HTTPRequestsObserved": 1,
+  "phase": "A",
+  "generationRunId": "net-new-v1-20261102-v2-e0a93c0f3e56612cd051b434f001dd9b",
+  "requestCount": 1,
+  "maximumLiveRequests": 1,
+  "retries": 0,
+  "sdkRetries": 0,
+  "replacements": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "promptSha256": "948c3658fa68907d4ee1d6c969a94f55584fe052fcf4cd968f772cfdf889632f",
+  "timing": {
+    "wallClockStartUTC": "2026-11-02T23:04:55.473020+00:00",
+    "wallClockEndUTC": "2026-11-02T23:05:25.446768+00:00",
+    "monotonicElapsedSeconds": 29.973369792,
+    "wallClockSpanSeconds": 29.973748,
+    "wallMinusMonotonicSeconds": 0.00037820800000076815,
+    "recordingToleranceSeconds": 1.0,
+    "timingConsistent": true,
+    "timeoutClock": "time.monotonic; UTC never controls deadlines. Inconsistent records are flagged,not rewritten."
+  },
+  "responseBytes": 2259
+}

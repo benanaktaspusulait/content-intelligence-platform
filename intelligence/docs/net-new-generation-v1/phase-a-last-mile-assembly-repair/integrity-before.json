@@ -1,0 +1,14 @@
+{
+  "intelligence/docker-compose.yml": "af81300002cbfbff10b895b21f12242158a03cc6d6c549ce4936dcaa4934f4bc",
+  "intelligence/ml-service/app/llm/claude_provider.py": "876527e5a98fb144a27c422efce15b0a9eda3ab4b5496a236bfb6fa3b1c0cf5e",
+  "intelligence/ml-service/app/llm/gemini_provider.py": "a2fcd14448085453e649cd0990a5fde6cd6361fb5819bc82b4027891e9def756",
+  "intelligence/ml-service/app/llm/ollama_provider.py": "af208267b70e38f71c4da08f19c0a8206284e448d8b21f669e3878911e0e913f",
+  "intelligence/ml-service/app/llm/openai_provider.py": "fd616c3ab1ee23da3b4a53d7019777e73e2c34bc1afe8937105e0ca1d88b341b",
+  "intelligence/ml-service/app/llm/provider.py": "4b81d447ff601e416533c3289bc113a10cd32fa733bc9d0218815ea5e741ba13",
+  "intelligence/ml-service/app/rules/rule_engine.py": "c2e553fade22b5440d91f5b402c02610954505620f22c019cde23ec88f6a2f3d",
+  "intelligence/ml-service/app/workflow/concept_ranking.py": "65c136ee1e6727e290c3f14f052cba329807c4e1057e4412ae4c9613070085e3",
+  "intelligence/ml-service/app/workflow/creative_provider_profiles.py": "bea36de864a378a668617ec80cd18d7aab916d2d2f611f45082e558499c4b906",
+  "intelligence/ml-service/app/workflow/short_form_engine.py": "a51ae2b9d8e3610f64d493ab442aa47acaef6bb463deb631c7c84566b22d4f46",
+  "intelligence/ml-service/tests/test_llm_providers.py": "27f5b6c03e89ebad5e717517c9468230ea9f94d149899a971322ec95f6894710",
+  "intelligence/ml-service/tests/test_protected_integrity_policy.py": "442f95c495206ee1dc350a534926a5af3e35890b640c24cc0e28c0df58fc0f3d"
+}

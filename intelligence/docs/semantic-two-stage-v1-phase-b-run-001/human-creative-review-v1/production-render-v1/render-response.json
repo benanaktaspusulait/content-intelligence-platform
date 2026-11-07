@@ -1,0 +1,16 @@
+{
+  "history": {
+    "id": "DCHjC7aOM4KLtVTVxrrJ",
+    "status": "completed"
+  },
+  "resources": [
+    {
+      "id": "6N0pJHCuyslBjaEgwJa5",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/XEj7jw5dhfFqMR9Btib3/02179344569273700000000000000000000ffffc0a85c3a8f0e07_1793445826289_5a9f1fac.mp4",
+      "thumbnailUrl": "https://cdn.openart.ai/openart/thumbnail/production/2026-10/create-video/XEj7jw5dhfFqMR9Btib3/02179344569273700000000000000000000ffffc0a85c3a8f0e07_1793445826289_5a9f1fac_1793445830482_045e1c96.webp",
+      "resourceType": "video",
+      "status": "completed",
+      "createdAt": 1793445690547
+    }
+  ]
+}

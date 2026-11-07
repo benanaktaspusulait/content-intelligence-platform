@@ -1,0 +1,12 @@
+{
+  "requestCount": 1,
+  "maximumLiveRequests": 1,
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "requestSha256": "7f12e40dacb382de997d4fa96f5e697e1976a1d2a8f66b196c65155eabf292d5",
+  "retries": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0
+}

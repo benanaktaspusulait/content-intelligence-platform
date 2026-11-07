@@ -1,0 +1,128 @@
+TWO_STAGE_V1 — single Phase B expansion report
+
+SOURCE SEED ID: mimi-rolling-pin-dough-wall
+SOURCE SEED RAW SHA-256: 90feac8225bf9c360a2604913d4c718a5d47b62906a2911a9fb9a2ea9cb62bb8
+SOURCE SEED CANONICAL SHA-256: c6e14f313a63ecec3ffcaeee25af5c9e7d7c427788945bff073cefe526ac5898
+SOURCE RUN: intelligence/docs/semantic-two-stage-v1-run-001/opening-b/seed.json
+
+## 1. Phase B execution
+
+- Prompt: `B` / semantic story expansion prompt `v1`
+- Provider/model/reasoning: OpenAI / gpt-6.1-sol / LOW
+- Candidate count: 1; max completion tokens: 8192
+- Timeout envelope: {'connectSeconds': 15, 'readSeconds': 90, 'writeSeconds': 60, 'poolSeconds': 15, 'wallSeconds': 180}
+- Result: `EXPANDED_AND_VALIDATED`; schema `VALID`; normalization `NORMALIZED`
+- Logical/SDK/HTTP requests: 1 / 1 / 1
+- Duration: 30.099s total; headers at 29303.1ms; first usable content at 29312.6ms
+- HTTP status: 200; response bytes: 4701; finish reason: stop
+- Provider completion ID: chatcmpl-Eemi5SRv23qY2b4EwtCtCaqmpbkje; HTTP request ID: req_110ed1920a8b4a6a82fdeda2941aef6f
+- Tokens: input 1814, output 1289, total 3103, reasoning 325
+- Provider-reported cost: None (not reported; no estimate)
+- Retries 0; fallbacks 0; DeepSeek calls 0; renders 0. The run directory was claimed before the request; a second attempt at that path is refused. See `single-request-proof.json`.
+
+## 2. Frozen seed and drift
+
+Original saved Phase A gate: score 35 under the old evaluator. Re-evaluated Phase A gate: score 90, accepted for expansion: yes.
+Expanded story score: 90 (static 85); no opening score drop.
+Seed drift audit: `PRESERVED`; exact frozen-field comparison found 0 differences; repair performed: False.
+Every frozen field, including protagonist, goal, object, ordinary expectation, rule, trigger, object rationale, goal-rule relationship, frame-zero state, environment and dialogue need, matches the stored seed exactly.
+
+## 3. Complete returned story
+
+**TITLE:** Flat-Pack Dough
+
+**PROTAGONIST:** Mimi
+
+**EVERYDAY GOAL:** Roll a sheet of dough flat on a kitchen table.
+
+**PRIMARY OBJECT:** Rolling pin
+
+**NORMAL EXPECTATION:** Pressing a rolling pin against dough makes the dough thinner and spreads it across the tabletop.
+
+**IMPOSSIBLE RULE:** WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening.
+
+**VISIBLE TRIGGER:** Mimi presses both rolling-pin handles downward with the barrel in contact with the dough.
+
+**WHY THIS OBJECT:** A rolling pin applies broad downward pressure specifically to flatten dough; the upward wall visibly contradicts that ordinary use at the barrel's contact surface.
+
+**FRAME ZERO:** Mimi stands behind a kitchen table, leaning forward with both palms pressing down on the handles of a horizontal rolling pin. A broad, thin sheet of dough lies on the tabletop. Directly beneath the rolling-pin barrel, that same sheet forms a smooth, chest-high vertical wall of dough, as wide as the barrel and only as thick as the barrel's contact strip. The barrel rests across the wall's narrow top, far above the flat dough on either side. Mimi's downward-braced arms and the towering dough wall form the large central silhouette against a plain kitchen background.
+
+### BEAT 1
+- Strategy/action: Still pressing both handles in the opening pose, Mimi bends her elbows downward to finish flattening the raised strip.
+- Visible consequence: The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward.
+- New information/state change: Continuing the flattening stroke makes the existing obstacle taller; the remaining dough is still flat on the tabletop.
+
+### BEAT 2
+- Strategy/action: Mimi lifts the pin clear, turns it a quarter-turn, and lowers it onto the flat dough extending toward the viewer from the wall's left end. She presses both handles downward.
+- Visible consequence: That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough.
+- New information/state change: Changing the rolling direction creates a corner rather than a flat patch.
+
+### BEAT 3
+- Strategy/action: Keeping the pin in that orientation, Mimi moves it across the open center to the flat strip extending toward the viewer from the original wall's right end and presses both handles.
+- Visible consequence: The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure.
+- New information/state change: Only the viewer-facing strip remains open and readily visible as a flat route across the sheet.
+
+### BEAT 4
+- Strategy/action: Mimi reaches the pin across that last flat strip, turns its barrel parallel to the original wall, and presses both handles downward.
+- Visible consequence: The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.
+- New information/state change: Every attempted flattening stroke has become another wall around the untouched flat center.
+
+**FINAL PAYOFF:** The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.
+
+**LOOP POTENTIAL:** No reset; hold on Mimi peeking over the dough box.
+
+**ENVIRONMENT:** A simple kitchen with one clear tabletop and a plain background.
+
+**DIALOGUE NEED:** NONE
+
+**DECLARED DURATION:** 16 seconds (within 10–20; no render-based timing claim)
+
+## 4. Rule and payoff audits
+
+| Beat | Trigger | Expected response | Actual response | Result |
+|---:|---|---|---|---|
+| 1 | Mimi presses both rolling-pin handles downward with the barrel in contact with the dough. | WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening. | The dough directly beneath the barrel thickens upward from the chest-high wall to Mimi's nose height, lifting the barrel and her hands with it. She releases the pressure with her elbows now pointing upward. | **CONSISTENT** |
+| 2 | Mimi presses both rolling-pin handles downward with the barrel in contact with the dough. | WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening. | That contacted strip rises from the tabletop into a perpendicular wall supporting the barrel. Mimi lifts the pin away, leaving an upright L of dough. | **CONSISTENT** |
+| 3 | Mimi presses both rolling-pin handles downward with the barrel in contact with the dough. | WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening. | The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure. | **CONSISTENT** |
+| 4 | Mimi presses both rolling-pin handles downward with the barrel in contact with the dough. | WHEN the rolling pin presses down against dough, THE dough directly beneath its barrel ALWAYS thickens upward into a tall vertical wall supporting the barrel instead of flattening. | The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall. | **CONSISTENT** |
+
+Payoff orientation: **The dough beneath the barrel rises into a matching right-side wall. With the pin lifted clear, the remaining flat dough sits at the bottom of a three-sided enclosure. → Mimi reaches the pin across that last flat strip, turns its barrel parallel to the original wall, and presses both handles downward. → The viewer-facing strip thickens upward beneath the barrel, closing the gap between the side walls. The broad flat sheet has become an open-topped dough box, with Mimi's eyes peeking over its back wall and the rolling pin perched across its front wall.**
+Classification: **CLEAR**; existing evidence says rule-linked=True, state-changing=True. The final payoff equals Beat 4's visible consequence. Provider rationale was not used as authority.
+
+## 5. Full deterministic pipeline
+
+- Canonical evidence: present; rule status `RESPONSE_PRESENT_UNCLASSIFIED`, classification `PRESENT_UNCLASSIFIED`; opening evidence `SUPPORTED`.
+- Premise Naturalness: `CONTRIVED` / `CONTRIVED`; goal interference `DIRECT`; instant/static opening 90/85.
+- Evidence-Supported Premise Admission V2: admitted `True`; status `ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED`; provenance `EVIDENCE_SUPPORTED_UNCLASSIFIED`; opening mandatory gate `True`. No admission blocker.
+- Beat Grammar: `ACCEPTABLE`; 4 beats; 4/4 supported causal beats; strategy diversity 75.0; consequence diversity 100.0.
+- Structured Short Form Engine (SFE): `PASS`; score 100; findings [].
+- Creative Shape: `creative-shape-v1`; shape hash `786b695d64e943a2eee270c195647b339068318a942e924ade088e3acbbc1f3d`; strategy roles ['UNKNOWN', 'ADAPT_APPROACH', 'CONSTRAIN', 'ADAPT_APPROACH']; final relationship/payoff mechanism remain `UNKNOWN` / `UNKNOWN` where the deterministic taxonomy does not resolve the novel shape.
+- Historical territory: risk `LOW`; closest match `sticky-ball-01` at similarity 0.1; template risk `LOW`.
+- Ranking: `ELIGIBLE`; score 97.6; raw rank 1; production slate rank 1.
+- Production gate: admissible `True`; existing pipeline disposition `PRODUCTION_SLATE`; blockers [].
+- Human-review reason: `PRODUCTION_ADMISSIBLE, RANKING_ELIGIBLE, SFE_PASS, UNCLASSIFIED_STRONG_SOURCE_EVIDENCE_NOVELTY_UNVERIFIED`.
+
+## 6. Production decision
+
+**HUMAN_REVIEW.** The existing pipeline admits and ranks the candidate, makes it production-slate admissible at rank 1, and places it in `HUMAN_REVIEW_SET` because `UNCLASSIFIED_STRONG_SOURCE_EVIDENCE_NOVELTY_UNVERIFIED` remains. Overall Premise Naturalness also remains `CONTRIVED`. Those existing outputs call for human review before production.
+
+## 7. Human review card
+
+- **TITLE:** Flat-Pack Dough
+- **ONE-SENTENCE PREMISE:** Mimi tries to roll dough flat, but each downward pass raises the contacted strip into a wall until the dough becomes an open-topped box.
+- **FRAME-ZERO HOOK:** A chest-high dough wall already rises beneath the rolling pin while Mimi presses its handles down.
+- **RULE:** Every downward press makes dough directly beneath the barrel thicken upward into a wall that supports the barrel.
+- **4-BEAT PROGRESSION:** Existing wall rises; a perpendicular wall forms; a matching wall creates a three-sided enclosure; the final strip rises and closes the gap into a dough box.
+- **PAYOFF:** The sheet becomes an open-topped dough box with Mimi peeking over the back and the rolling pin perched on the front wall.
+- **OPENING SCORE:** Phase A re-evaluation 90; expanded 90.
+- **SFE:** PASS (100).
+- **ADMISSION:** ADMITTED_EVIDENCE_SUPPORTED_UNCLASSIFIED.
+- **RANKING:** ELIGIBLE at 97.6; production slate rank 1.
+- **MAIN CONCERN:** PRODUCTION_ADMISSIBLE, RANKING_ELIGIBLE, SFE_PASS, UNCLASSIFIED_STRONG_SOURCE_EVIDENCE_NOVELTY_UNVERIFIED; Naturalness is `CONTRIVED`.
+- **CURRENT STATUS:** HUMAN_REVIEW; no rendering performed.
+
+## 8. Verification and scope
+
+Focused Phase B tests: 60 passed. Full regression: 36 failed, 3487 passed, 2 skipped, 3030 warnings in 223.63s (0:03:43); failure IDs exactly match the accepted baseline (36/36; 0 added, 0 removed).
+One request was verified by the single SDK-forward marker, one HTTP-start marker, one response file, SDK retries set to zero, and exclusive run-directory claim. No second request, retry, replacement, fallback, DeepSeek call or render occurred.
+Validators, acceptance threshold (opening floor 60), Phase A prompt, Phase B prompt and historical territory policy were hash-verified unchanged. `PHASE_A_DIVERSITY_COLLAPSE` remains unresolved and untouched.

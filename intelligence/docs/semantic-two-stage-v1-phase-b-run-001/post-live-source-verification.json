@@ -1,0 +1,24 @@
+{
+  "sourceHashesUnchangedAfterPrelive": true,
+  "phaseAAndPhaseBPromptsUnchanged": {
+    "openingPromptSha256": "dc174ffcc221dddbb034e73f5db24fc4e342bf041e7a35814c1c766a48800d22",
+    "expansionPromptSha256": "31fbf51f588bd97aa7fad351509214bdc30703626683a2df5a6253a1e49ae396"
+  },
+  "validatorsUnchanged": {
+    "intelligence/ml-service/app/workflow/semantic_opening_seed_prompt_v1.txt": true,
+    "intelligence/ml-service/app/workflow/semantic_story_expansion_prompt_v1.txt": true,
+    "intelligence/ml-service/app/workflow/canonical_creative_evidence.py": true,
+    "intelligence/ml-service/app/workflow/concept_ranking.py": true,
+    "intelligence/ml-service/app/workflow/creative_shape.py": true,
+    "intelligence/ml-service/app/workflow/semantic_concept_provider.py": true,
+    "intelligence/ml-service/app/workflow/evidence_supported_admission_v2.py": true,
+    "intelligence/ml-service/app/workflow/semantic_native_schema_integrity_v1.py": true,
+    "intelligence/ml-service/app/workflow/premise_naturalness.py": true,
+    "intelligence/ml-service/app/workflow/beat_grammar.py": true
+  },
+  "thresholdOpeningFloor": 60,
+  "schemaSha256": "91b6a9023b8d7a952ad380b494a4fa91d6f94f58c03a9fe0a979f894f7470ce3",
+  "phaseADiversityPolicyUntouched": true,
+  "providerCallsAfterPrelive": 1,
+  "renderCalls": 0
+}

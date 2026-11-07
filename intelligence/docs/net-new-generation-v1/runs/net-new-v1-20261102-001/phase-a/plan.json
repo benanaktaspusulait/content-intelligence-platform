@@ -1,0 +1,25 @@
+{
+  "generationArchitecture": "TWO_STAGE_V1",
+  "generationRunId": "net-new-v1-20261102-001",
+  "phase": "A",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "maximumPhaseARequests": 1,
+  "maximumPhaseBRequests": 1,
+  "maximumTotalProviderRequests": 2,
+  "phaseBConditionalOnAcceptedPhaseA": true,
+  "retries": 0,
+  "sdkRetries": 0,
+  "replacements": 0,
+  "fallbacks": 0,
+  "DeepSeekCalls": 0,
+  "renders": 0,
+  "maxCompletionTokens": 8192,
+  "timeoutSeconds": 90,
+  "streaming": "NON_STREAMING",
+  "authorization": {
+    "path": "intelligence/docs/net-new-generation-v1/authorization/phase-a.txt",
+    "sha256": "d8c71369f21a4a8dc44ed03995422408dea5b49e887ab183ab8704b0e8a59674"
+  }
+}
